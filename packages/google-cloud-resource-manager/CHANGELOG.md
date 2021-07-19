@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-resource-manager/compare/v0.30.3...v1.0.0) (2021-07-18)
+
+
+### Features
+
+* add always_use_jwt_access ([#73](https://www.github.com/googleapis/python-resource-manager/issues/73)) ([9c0bc88](https://www.github.com/googleapis/python-resource-manager/commit/9c0bc888c685f2dbcbc66ca73e7fd4f27d5be47e))
+* add v3 ([#62](https://www.github.com/googleapis/python-resource-manager/issues/62)) ([72f69f0](https://www.github.com/googleapis/python-resource-manager/commit/72f69f0f3a2205ef3bb49ca3e3ae670fd103f6cb))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#76](https://www.github.com/googleapis/python-resource-manager/issues/76)) ([9f36514](https://www.github.com/googleapis/python-resource-manager/commit/9f365141716b2acc90bb16132dba48b38e470a9b))
+* remove v1beta1 ([72f69f0](https://www.github.com/googleapis/python-resource-manager/commit/72f69f0f3a2205ef3bb49ca3e3ae670fd103f6cb))
+* require google-cloud-core >= 1.3.0 ([#43](https://www.github.com/googleapis/python-resource-manager/issues/43)) ([16df2d0](https://www.github.com/googleapis/python-resource-manager/commit/16df2d064b25ac75234cbbd736b16fba53a51f2d))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-resource-manager/issues/1127)) ([#68](https://www.github.com/googleapis/python-resource-manager/issues/68)) ([d6e699e](https://www.github.com/googleapis/python-resource-manager/commit/d6e699eb0492c979871ed69f6badbec8ab3427f4)), closes [#1126](https://www.github.com/googleapis/python-resource-manager/issues/1126)
+
+
+### Miscellaneous Chores
+
+* release as 1.0.0 ([#78](https://www.github.com/googleapis/python-resource-manager/issues/78)) ([fc852aa](https://www.github.com/googleapis/python-resource-manager/commit/fc852aa0b0e42a37324ca94901c34015e6127df2))
+* release as 1.0.0-rc1 ([#64](https://www.github.com/googleapis/python-resource-manager/issues/64)) ([cce4608](https://www.github.com/googleapis/python-resource-manager/commit/cce46083be8cd73cbe921ee8ac917806507b6084))
+
 ## [1.0.0-rc1](https://www.github.com/googleapis/python-resource-manager/compare/v0.30.3...v1.0.0-rc1) (2021-06-14)
 
 
