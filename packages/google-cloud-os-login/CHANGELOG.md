@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-oslogin/compare/v2.2.1...v2.3.0) (2021-07-14)
+
+
+### Features
+
+* add always_use_jwt_access ([#88](https://www.github.com/googleapis/python-oslogin/issues/88)) ([9f1cf2e](https://www.github.com/googleapis/python-oslogin/commit/9f1cf2ed25c1215cef79ee05df71ade796e956d4))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#92](https://www.github.com/googleapis/python-oslogin/issues/92)) ([46e4261](https://www.github.com/googleapis/python-oslogin/commit/46e42612e75ac156b83cf657bfbbf19a038176ec))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-oslogin/issues/1127)) ([#83](https://www.github.com/googleapis/python-oslogin/issues/83)) ([c50d994](https://www.github.com/googleapis/python-oslogin/commit/c50d994a860cd008bc13b92c00076af2c482b5f6)), closes [#1126](https://www.github.com/googleapis/python-oslogin/issues/1126)
+
 ### [2.2.1](https://www.github.com/googleapis/python-oslogin/compare/v2.2.0...v2.2.1) (2021-06-02)
 
 
