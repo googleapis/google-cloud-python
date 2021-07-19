@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.3.0](https://www.github.com/googleapis/python-translate/compare/v3.2.1...v3.3.0) (2021-07-19)
+
+
+### Features
+
+* add always_use_jwt_access ([778878d](https://www.github.com/googleapis/python-translate/commit/778878d7aeb70a3da249c91b8a2bd36c675b1e4b))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#186](https://www.github.com/googleapis/python-translate/issues/186)) ([778878d](https://www.github.com/googleapis/python-translate/commit/778878d7aeb70a3da249c91b8a2bd36c675b1e4b))
+
 ### [3.2.1](https://www.github.com/googleapis/python-translate/compare/v3.2.0...v3.2.1) (2021-06-21)
 
 
