@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-resource-settings/compare/v0.2.0...v0.3.0) (2021-07-16)
+
+
+### Features
+
+* Set retry and timeout values for Cloud ResourceSettings v1 API ([#15](https://www.github.com/googleapis/python-resource-settings/issues/15)) ([0d127ea](https://www.github.com/googleapis/python-resource-settings/commit/0d127ea2ff9288c3dc2e335d6c2dc4398842ca2d))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([3a2782a](https://www.github.com/googleapis/python-resource-settings/commit/3a2782aad33ab253197c4a54d04d4beae8c48c75))
+* disable always_use_jwt_access ([#11](https://www.github.com/googleapis/python-resource-settings/issues/11)) ([3a2782a](https://www.github.com/googleapis/python-resource-settings/commit/3a2782aad33ab253197c4a54d04d4beae8c48c75))
+
 ## [0.2.0](https://www.github.com/googleapis/python-resource-settings/compare/v0.1.0...v0.2.0) (2021-06-22)
 
 
