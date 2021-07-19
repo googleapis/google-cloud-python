@@ -156,7 +156,81 @@ def test_from_api_repr(target_class):
     assert actual_routine.return_type == bigquery_v2.types.StandardSqlDataType(
         type_kind=bigquery_v2.types.StandardSqlDataType.TypeKind.INT64
     )
+    assert actual_routine.return_table_type is None
     assert actual_routine.type_ == "SCALAR_FUNCTION"
+    assert actual_routine._properties["someNewField"] == "someValue"
+    assert actual_routine.description == "A routine description."
+    assert actual_routine.determinism_level == "DETERMINISTIC"
+
+
+def test_from_api_repr_tvf_function(target_class):
+    from google.cloud.bigquery.routine import RoutineArgument
+    from google.cloud.bigquery.routine import RoutineReference
+    from google.cloud.bigquery.routine import RoutineType
+
+    StandardSqlDataType = bigquery_v2.types.StandardSqlDataType
+    StandardSqlField = bigquery_v2.types.StandardSqlField
+    StandardSqlTableType = bigquery_v2.types.StandardSqlTableType
+
+    creation_time = datetime.datetime(
+        2010, 5, 19, 16, 0, 0, tzinfo=google.cloud._helpers.UTC
+    )
+    modified_time = datetime.datetime(
+        2011, 10, 1, 16, 0, 0, tzinfo=google.cloud._helpers.UTC
+    )
+    resource = {
+        "routineReference": {
+            "projectId": "my-project",
+            "datasetId": "my_dataset",
+            "routineId": "my_routine",
+        },
+        "etag": "abcdefg",
+        "creationTime": str(google.cloud._helpers._millis(creation_time)),
+        "lastModifiedTime": str(google.cloud._helpers._millis(modified_time)),
+        "definitionBody": "SELECT x FROM UNNEST([1,2,3]) x WHERE x > a",
+        "arguments": [{"name": "a", "dataType": {"typeKind": "INT64"}}],
+        "language": "SQL",
+        "returnTableType": {
+            "columns": [{"name": "int_col", "type": {"typeKind": "INT64"}}]
+        },
+        "routineType": "TABLE_VALUED_FUNCTION",
+        "someNewField": "someValue",
+        "description": "A routine description.",
+        "determinismLevel": bigquery.DeterminismLevel.DETERMINISTIC,
+    }
+    actual_routine = target_class.from_api_repr(resource)
+
+    assert actual_routine.project == "my-project"
+    assert actual_routine.dataset_id == "my_dataset"
+    assert actual_routine.routine_id == "my_routine"
+    assert (
+        actual_routine.path
+        == "/projects/my-project/datasets/my_dataset/routines/my_routine"
+    )
+    assert actual_routine.reference == RoutineReference.from_string(
+        "my-project.my_dataset.my_routine"
+    )
+    assert actual_routine.etag == "abcdefg"
+    assert actual_routine.created == creation_time
+    assert actual_routine.modified == modified_time
+    assert actual_routine.arguments == [
+        RoutineArgument(
+            name="a",
+            data_type=StandardSqlDataType(type_kind=StandardSqlDataType.TypeKind.INT64),
+        )
+    ]
+    assert actual_routine.body == "SELECT x FROM UNNEST([1,2,3]) x WHERE x > a"
+    assert actual_routine.language == "SQL"
+    assert actual_routine.return_type is None
+    assert actual_routine.return_table_type == StandardSqlTableType(
+        columns=[
+            StandardSqlField(
+                name="int_col",
+                type=StandardSqlDataType(type_kind=StandardSqlDataType.TypeKind.INT64),
+            )
+        ]
+    )
+    assert actual_routine.type_ == RoutineType.TABLE_VALUED_FUNCTION
     assert actual_routine._properties["someNewField"] == "someValue"
     assert actual_routine.description == "A routine description."
     assert actual_routine.determinism_level == "DETERMINISTIC"
@@ -263,6 +337,24 @@ def test_from_api_repr_w_unknown_fields(target_class):
         ),
         (
             {
+                "definitionBody": "SELECT x FROM UNNEST([1,2,3]) x WHERE x > 1",
+                "language": "SQL",
+                "returnTableType": {
+                    "columns": [{"name": "int_col", "type": {"typeKind": "INT64"}}]
+                },
+                "routineType": "TABLE_VALUED_FUNCTION",
+                "description": "A routine description.",
+                "determinismLevel": bigquery.DeterminismLevel.DETERMINISM_LEVEL_UNSPECIFIED,
+            },
+            ["return_table_type"],
+            {
+                "returnTableType": {
+                    "columns": [{"name": "int_col", "type": {"typeKind": "INT64"}}]
+                }
+            },
+        ),
+        (
+            {
                 "arguments": [{"name": "x", "dataType": {"typeKind": "INT64"}}],
                 "definitionBody": "x * 3",
                 "language": "SQL",
@@ -359,6 +451,41 @@ def test_set_return_type_w_none(object_under_test):
     object_under_test.return_type = None
     assert object_under_test.return_type is None
     assert object_under_test._properties["returnType"] is None
+
+
+def test_set_return_table_type_w_none(object_under_test):
+    object_under_test.return_table_type = None
+    assert object_under_test.return_table_type is None
+    assert object_under_test._properties["returnTableType"] is None
+
+
+def test_set_return_table_type_w_not_none(object_under_test):
+    StandardSqlDataType = bigquery_v2.types.StandardSqlDataType
+    StandardSqlField = bigquery_v2.types.StandardSqlField
+    StandardSqlTableType = bigquery_v2.types.StandardSqlTableType
+
+    table_type = StandardSqlTableType(
+        columns=[
+            StandardSqlField(
+                name="int_col",
+                type=StandardSqlDataType(type_kind=StandardSqlDataType.TypeKind.INT64),
+            ),
+            StandardSqlField(
+                name="str_col",
+                type=StandardSqlDataType(type_kind=StandardSqlDataType.TypeKind.STRING),
+            ),
+        ]
+    )
+
+    object_under_test.return_table_type = table_type
+
+    assert object_under_test.return_table_type == table_type
+    assert object_under_test._properties["returnTableType"] == {
+        "columns": [
+            {"name": "int_col", "type": {"typeKind": "INT64"}},
+            {"name": "str_col", "type": {"typeKind": "STRING"}},
+        ]
+    }
 
 
 def test_set_description_w_none(object_under_test):

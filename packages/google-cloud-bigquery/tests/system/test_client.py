@@ -2228,6 +2228,85 @@ class TestBigQuery(unittest.TestCase):
         assert len(rows) == 1
         assert rows[0].max_value == 100.0
 
+    def test_create_tvf_routine(self):
+        from google.cloud.bigquery import Routine, RoutineArgument, RoutineType
+
+        StandardSqlDataType = bigquery_v2.types.StandardSqlDataType
+        StandardSqlField = bigquery_v2.types.StandardSqlField
+        StandardSqlTableType = bigquery_v2.types.StandardSqlTableType
+
+        INT64 = StandardSqlDataType.TypeKind.INT64
+        STRING = StandardSqlDataType.TypeKind.STRING
+
+        client = Config.CLIENT
+
+        dataset = self.temp_dataset(_make_dataset_id("create_tvf_routine"))
+        routine_ref = dataset.routine("test_tvf_routine")
+
+        routine_body = """
+            SELECT int_col, str_col
+            FROM (
+                UNNEST([1, 2, 3]) int_col
+                JOIN
+                (SELECT str_col FROM UNNEST(["one", "two", "three"]) str_col)
+                ON TRUE
+            )
+            WHERE int_col > threshold
+            """
+
+        return_table_type = StandardSqlTableType(
+            columns=[
+                StandardSqlField(
+                    name="int_col", type=StandardSqlDataType(type_kind=INT64),
+                ),
+                StandardSqlField(
+                    name="str_col", type=StandardSqlDataType(type_kind=STRING),
+                ),
+            ]
+        )
+
+        routine_args = [
+            RoutineArgument(
+                name="threshold", data_type=StandardSqlDataType(type_kind=INT64),
+            )
+        ]
+
+        routine_def = Routine(
+            routine_ref,
+            type_=RoutineType.TABLE_VALUED_FUNCTION,
+            arguments=routine_args,
+            return_table_type=return_table_type,
+            body=routine_body,
+        )
+
+        # Create TVF routine.
+        client.delete_routine(routine_ref, not_found_ok=True)
+        routine = client.create_routine(routine_def)
+
+        assert routine.body == routine_body
+        assert routine.return_table_type == return_table_type
+        assert routine.arguments == routine_args
+
+        # Execute the routine to see if it's working as expected.
+        query_job = client.query(
+            f"""
+            SELECT int_col, str_col
+            FROM `{routine.reference}`(1)
+            ORDER BY int_col, str_col ASC
+            """
+        )
+
+        result_rows = [tuple(row) for row in query_job.result()]
+        expected = [
+            (2, "one"),
+            (2, "three"),
+            (2, "two"),
+            (3, "one"),
+            (3, "three"),
+            (3, "two"),
+        ]
+        assert result_rows == expected
+
     def test_create_table_rows_fetch_nested_schema(self):
         table_name = "test_table"
         dataset = self.temp_dataset(_make_dataset_id("create_table_nested_schema"))

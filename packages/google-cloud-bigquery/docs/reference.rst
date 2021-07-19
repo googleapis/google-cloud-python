@@ -118,6 +118,7 @@ Routine
     routine.Routine
     routine.RoutineArgument
     routine.RoutineReference
+    routine.RoutineType
 
 Schema
 ======

@@ -1386,12 +1386,12 @@ class QueryJob(_AsyncJob):
 
                 This argument does nothing if ``bqstorage_client`` is supplied.
 
-                ..versionadded:: 1.24.0
+                .. versionadded:: 1.24.0
 
             max_results (Optional[int]):
                 Maximum number of rows to include in the result. No limit by default.
 
-                ..versionadded:: 2.21.0
+                .. versionadded:: 2.21.0
 
         Returns:
             pyarrow.Table
@@ -1403,7 +1403,7 @@ class QueryJob(_AsyncJob):
             ValueError:
                 If the :mod:`pyarrow` library cannot be imported.
 
-        ..versionadded:: 1.17.0
+        .. versionadded:: 1.17.0
         """
         query_result = wait_for_query(self, progress_bar_type, max_results=max_results)
         return query_result.to_arrow(
@@ -1452,7 +1452,7 @@ class QueryJob(_AsyncJob):
                 :func:`~google.cloud.bigquery.table.RowIterator.to_dataframe`
                 for details.
 
-                ..versionadded:: 1.11.0
+                .. versionadded:: 1.11.0
             create_bqstorage_client (Optional[bool]):
                 If ``True`` (default), create a BigQuery Storage API client
                 using the default API settings. The BigQuery Storage API
@@ -1461,18 +1461,18 @@ class QueryJob(_AsyncJob):
 
                 This argument does nothing if ``bqstorage_client`` is supplied.
 
-                ..versionadded:: 1.24.0
+                .. versionadded:: 1.24.0
 
             date_as_object (Optional[bool]):
                 If ``True`` (default), cast dates to objects. If ``False``, convert
                 to datetime64[ns] dtype.
 
-                ..versionadded:: 1.26.0
+                .. versionadded:: 1.26.0
 
             max_results (Optional[int]):
                 Maximum number of rows to include in the result. No limit by default.
 
-                ..versionadded:: 2.21.0
+                .. versionadded:: 2.21.0
 
         Returns:
             A :class:`~pandas.DataFrame` populated with row data and column
