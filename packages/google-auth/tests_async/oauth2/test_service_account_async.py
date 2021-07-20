@@ -152,10 +152,7 @@ class TestCredentials(object):
         token = credentials._make_authorization_grant_assertion()
         payload = jwt.decode(token, test_service_account.PUBLIC_CERT_BYTES)
         assert payload["iss"] == self.SERVICE_ACCOUNT_EMAIL
-        assert (
-            payload["aud"]
-            == service_account.service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT
-        )
+        assert payload["aud"] == self.TOKEN_URI
 
     def test__make_authorization_grant_assertion_scoped(self):
         credentials = self.make_credentials()
@@ -314,10 +311,7 @@ class TestIDTokenCredentials(object):
         token = credentials._make_authorization_grant_assertion()
         payload = jwt.decode(token, test_service_account.PUBLIC_CERT_BYTES)
         assert payload["iss"] == self.SERVICE_ACCOUNT_EMAIL
-        assert (
-            payload["aud"]
-            == service_account.service_account._GOOGLE_OAUTH2_TOKEN_ENDPOINT
-        )
+        assert payload["aud"] == self.TOKEN_URI
         assert payload["target_audience"] == self.TARGET_AUDIENCE
 
     @mock.patch("google.oauth2._client_async.id_token_jwt_grant", autospec=True)
