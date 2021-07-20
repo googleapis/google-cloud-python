@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.33.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.33.0...v1.33.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* fallback to source creds expiration in downscoped tokens ([#805](https://www.github.com/googleapis/google-auth-library-python/issues/805)) ([dfad661](https://www.github.com/googleapis/google-auth-library-python/commit/dfad66128c6ee7513e5565d39bc7b002055dd0d5))
+
+
+### Reverts
+
+* revert "feat: service account is able to use a private token endpoint ([#784](https://www.github.com/googleapis/google-auth-library-python/issues/784))" ([#808](https://www.github.com/googleapis/google-auth-library-python/issues/808)) ([d94e65c](https://www.github.com/googleapis/google-auth-library-python/commit/d94e65c0e441183403608d762b92b30b77e21eeb))
+
 ## [1.33.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.32.1...v1.33.0) (2021-07-14)
 
 
