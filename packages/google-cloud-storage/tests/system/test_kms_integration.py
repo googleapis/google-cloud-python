@@ -229,7 +229,7 @@ def test_blob_upload_w_bucket_cmek_enabled(
     blob.upload_from_string(payload)
     blobs_to_delete.append(blob)
 
-    _helpers.retry_429_harder(blob.reload)()
+    _helpers.retry_429_harder(_helpers.retry_has_kms_key_name(blob.reload))()
     # We don't know the current version of the key.
     assert blob.kms_key_name.startswith(kms_key_name)
 

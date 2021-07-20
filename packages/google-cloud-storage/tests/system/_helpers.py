@@ -54,8 +54,13 @@ def _no_event_based_hold(blob):
     return not blob.event_based_hold
 
 
+def _has_kms_key_name(blob):
+    return blob.kms_key_name is not None
+
+
 retry_bad_copy = RetryErrors(exceptions.BadRequest, error_predicate=_bad_copy)
 retry_no_event_based_hold = RetryInstanceState(_no_event_based_hold)
+retry_has_kms_key_name = RetryInstanceState(_has_kms_key_name)
 
 
 def unique_name(prefix):
