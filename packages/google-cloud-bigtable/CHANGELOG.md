@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+### [2.3.2](https://www.github.com/googleapis/python-bigtable/compare/v2.3.1...v2.3.2) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#379](https://www.github.com/googleapis/python-bigtable/issues/379)) ([95b2e13](https://www.github.com/googleapis/python-bigtable/commit/95b2e13b776dca4a6998313c41aa960ffe2e47e9))
+* directly append to pb for beter read row performance ([#382](https://www.github.com/googleapis/python-bigtable/issues/382)) ([7040e11](https://www.github.com/googleapis/python-bigtable/commit/7040e113b93bb2e0625c054486305235d8f14c2a))
+
 ### [2.3.1](https://www.github.com/googleapis/python-bigtable/compare/v2.3.0...v2.3.1) (2021-07-13)
 
 
