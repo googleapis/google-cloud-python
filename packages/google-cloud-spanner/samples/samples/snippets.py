@@ -47,7 +47,7 @@ def create_instance(instance_id):
         node_count=1,
         labels={
             "cloud_spanner_samples": "true",
-            "sample_name": "snippets-create_instance",
+            "sample_name": "snippets-create_instance-explicit",
             "created": str(int(time.time()))
         }
     )
