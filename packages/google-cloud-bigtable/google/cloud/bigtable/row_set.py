@@ -137,7 +137,7 @@ class RowSet(object):
         :param message: The ``ReadRowsRequest`` protobuf
         """
         for each in self.row_keys:
-            message.rows.row_keys.append(_to_bytes(each))
+            message.rows.row_keys._pb.append(_to_bytes(each))
 
         for each in self.row_ranges:
             r_kwrags = each.get_range_kwargs()
