@@ -28,9 +28,12 @@ description = "Google Cloud Storage API client library"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "google-auth >= 1.24.0, < 2.0dev",
-    "google-cloud-core >= 1.6.0, < 2.0dev",
-    "google-resumable-media >= 1.3.0, < 2.0dev",
+    "google-auth >= 1.24.0, < 2.0dev; python_version<'3.0'",
+    "google-auth >= 1.24.0, < 3.0dev; python_version>='3.6'",
+    "google-cloud-core >= 1.6.0, < 2.0dev; python_version<'3.0'",
+    "google-cloud-core >= 1.6.0, < 3.0dev; python_version>='3.6'",
+    "google-resumable-media >= 1.3.0, < 2.0dev; python_version<'3.0'",
+    "google-resumable-media >= 1.3.0, < 3.0dev; python_version>='3.6'",
     "requests >= 2.18.0, < 3.0.0dev",
     "googleapis-common-protos < 1.53.0; python_version<'3.0'",
 ]
