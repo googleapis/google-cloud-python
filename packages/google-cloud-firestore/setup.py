@@ -25,8 +25,14 @@ description = "Google Cloud Firestore API client library"
 version = "2.1.3"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
+    # NOTE: Maintainers, please do not require google-api-core>=2.x.x
+    # Until this issue is closed
+    # https://github.com/googleapis/google-cloud-python/issues/10566
     "google-api-core[grpc] >= 1.26.0, <3.0.0dev",
-    "google-cloud-core >= 1.4.1, < 3.0dev",
+    # NOTE: Maintainers, please do not require google-api-core>=2.x.x
+    # Until this issue is closed
+    # https://github.com/googleapis/google-cloud-python/issues/10566
+    "google-cloud-core >= 1.4.1, <3.0.0dev",
     "packaging >= 14.3",
     "pytz",
     "proto-plus >= 1.10.0",
