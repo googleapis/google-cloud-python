@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [1.10.0](https://www.github.com/googleapis/python-ndb/compare/v1.9.0...v1.10.0) (2021-07-20)
+
+
+### Features
+
+* add 'python_requires' metadata to setup ([#681](https://www.github.com/googleapis/python-ndb/issues/681)) ([e9a09d3](https://www.github.com/googleapis/python-ndb/commit/e9a09d3f0facd29836ccce078575f12e102462c9))
+
+
+### Bug Fixes
+
+* fix bug with repeated structured properties with Expando values ([#671](https://www.github.com/googleapis/python-ndb/issues/671)) ([882dff0](https://www.github.com/googleapis/python-ndb/commit/882dff0517be9ddad5814317853ce87bf99d5db0)), closes [#669](https://www.github.com/googleapis/python-ndb/issues/669)
+* properly handle legacy structured properties in Expando instances ([#676](https://www.github.com/googleapis/python-ndb/issues/676)) ([70710c8](https://www.github.com/googleapis/python-ndb/commit/70710c83c5ace83504167801da990bc81cb43c89)), closes [#673](https://www.github.com/googleapis/python-ndb/issues/673)
+* refactor global cache to address concurrency and fault tolerance issues ([#667](https://www.github.com/googleapis/python-ndb/issues/667)) ([5e2c591](https://www.github.com/googleapis/python-ndb/commit/5e2c591cbd89d8783527252d7f771fba91792602))
+
 ## [1.9.0](https://www.github.com/googleapis/python-ndb/compare/v1.8.0...v1.9.0) (2021-06-07)
 
 
