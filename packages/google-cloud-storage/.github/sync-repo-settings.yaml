@@ -1,0 +1,11 @@
+# https://github.com/googleapis/repo-automation-bots/tree/master/packages/sync-repo-settings
+# Rules for master branch protection
+branchProtectionRules:
+# Identifies the protection rule pattern. Name of the branch to be protected.
+# Defaults to `master`
+- pattern: master
+  requiredStatusCheckContexts:
+    - 'Kokoro'
+    - 'cla/google'
+    - 'Kokoro system-2.7'
+    - 'Kokoro system-3.8'

@@ -26,6 +26,7 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
     cov_level=100,
+    split_system_tests=True,
     system_test_external_dependencies=[
         "google-cloud-iam",
         "google-cloud-pubsub < 2.0.0",
@@ -38,7 +39,11 @@ templated_files = common.py_library(
 )
 
 s.move(
-    templated_files, excludes=["docs/multiprocessing.rst", "noxfile.py", "CONTRIBUTING.rst"],
+    templated_files, excludes=[
+        "docs/multiprocessing.rst",
+        "noxfile.py",
+        "CONTRIBUTING.rst",
+    ],
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
