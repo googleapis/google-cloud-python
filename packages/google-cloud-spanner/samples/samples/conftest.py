@@ -16,6 +16,7 @@
 import time
 import uuid
 
+from google.api_core import exceptions
 from google.cloud.spanner_v1 import backup
 from google.cloud.spanner_v1 import client
 from google.cloud.spanner_v1 import database
@@ -90,7 +91,8 @@ def sample_instance(
             "created": str(int(time.time()))
         },
     )
-    op = sample_instance.create()
+    retry_429 = retry.RetryErrors(exceptions.ResourceExhausted, delay=15)
+    op = retry_429(sample_instance.create)()
     op.result(120)  # block until completion
 
     # Eventual consistency check
