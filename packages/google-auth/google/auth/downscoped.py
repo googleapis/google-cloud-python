@@ -479,8 +479,16 @@ class Credentials(credentials.CredentialsWithQuotaProject):
             additional_options=self._credential_access_boundary.to_json(),
         )
         self.token = response_data.get("access_token")
-        lifetime = datetime.timedelta(seconds=response_data.get("expires_in"))
-        self.expiry = now + lifetime
+        # For downscoping CAB flow, the STS endpoint may not return the expiration
+        # field for some flows. The generated downscoped token should always have
+        # the same expiration time as the source credentials. When no expires_in
+        # field is returned in the response, we can just get the expiration time
+        # from the source credentials.
+        if response_data.get("expires_in"):
+            lifetime = datetime.timedelta(seconds=response_data.get("expires_in"))
+            self.expiry = now + lifetime
+        else:
+            self.expiry = self._source_credentials.expiry
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
