@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+### [1.41.1](https://www.github.com/googleapis/python-storage/compare/v1.41.0...v1.41.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin `{api,cloud}-core`, `auth` to allow 2.x versions on Python 3 ([#512](https://www.github.com/googleapis/python-storage/issues/512)) ([4d7500e](https://www.github.com/googleapis/python-storage/commit/4d7500e39c51efd817b8363b69c88be040f3edb8))
+* remove trailing commas from error message constants ([#505](https://www.github.com/googleapis/python-storage/issues/505)) ([d4a86ce](https://www.github.com/googleapis/python-storage/commit/d4a86ceb7a7c5e00ba7bae37c7078d52478040ff)), closes [#501](https://www.github.com/googleapis/python-storage/issues/501)
+
+
+### Documentation
+
+* replace usage of deprecated function `download_as_string` in docs ([#508](https://www.github.com/googleapis/python-storage/issues/508)) ([8dfa4d4](https://www.github.com/googleapis/python-storage/commit/8dfa4d429dce94b671dc3e3755e52ab82733f61a))
+
 ## [1.41.0](https://www.github.com/googleapis/python-storage/compare/v1.40.0...v1.41.0) (2021-07-13)
 
 
