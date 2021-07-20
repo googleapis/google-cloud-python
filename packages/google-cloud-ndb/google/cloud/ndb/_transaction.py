@@ -250,7 +250,6 @@ def transaction_async_(
 @tasklets.tasklet
 def _transaction_async(context, callback, read_only=False):
     # Avoid circular import in Python 2.7
-    from google.cloud.ndb import _cache
     from google.cloud.ndb import _datastore_api
 
     # Start the transaction
@@ -259,9 +258,11 @@ def _transaction_async(context, callback, read_only=False):
     utils.logging_debug(log, "Transaction Id: {}", transaction_id)
 
     on_commit_callbacks = []
+    transaction_complete_callbacks = []
     tx_context = context.new(
         transaction=transaction_id,
         on_commit_callbacks=on_commit_callbacks,
+        transaction_complete_callbacks=transaction_complete_callbacks,
         batches=None,
         commit_batches=None,
         cache=None,
@@ -282,35 +283,35 @@ def _transaction_async(context, callback, read_only=False):
 
     context.eventloop.add_idle(run_inner_loop, tx_context)
 
-    tx_context.global_cache_flush_keys = flush_keys = set()
     with tx_context.use():
         try:
-            # Run the callback
-            result = callback()
-            if isinstance(result, tasklets.Future):
-                result = yield result
+            try:
+                # Run the callback
+                result = callback()
+                if isinstance(result, tasklets.Future):
+                    result = yield result
 
-            # Make sure we've run everything we can run before calling commit
-            _datastore_api.prepare_to_commit(transaction_id)
-            tx_context.eventloop.run()
+                # Make sure we've run everything we can run before calling commit
+                _datastore_api.prepare_to_commit(transaction_id)
+                tx_context.eventloop.run()
 
-            # Commit the transaction
-            yield _datastore_api.commit(transaction_id, retries=0)
+                # Commit the transaction
+                yield _datastore_api.commit(transaction_id, retries=0)
 
-        # Rollback if there is an error
-        except Exception as e:  # noqa: E722
-            tx_context.cache.clear()
-            yield _datastore_api.rollback(transaction_id)
-            raise e
+            # Rollback if there is an error
+            except Exception as e:  # noqa: E722
+                tx_context.cache.clear()
+                yield _datastore_api.rollback(transaction_id)
+                raise e
 
-        # Flush keys of entities written during the transaction from the global cache
-        if flush_keys:
-            yield [_cache.global_delete(key) for key in flush_keys]
+            for callback in on_commit_callbacks:
+                callback()
 
-        for callback in on_commit_callbacks:
-            callback()
+        finally:
+            for callback in transaction_complete_callbacks:
+                callback()
 
-        raise tasklets.Return(result)
+    raise tasklets.Return(result)
 
 
 def transactional(

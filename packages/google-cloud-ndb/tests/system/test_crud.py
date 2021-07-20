@@ -110,8 +110,10 @@ def test_retrieve_entity_with_global_cache(ds_entity, client_context):
         cache_key = _cache.global_cache_key(key._key)
         assert cache_key in cache_dict
 
-        patch = mock.patch("google.cloud.ndb._datastore_api._LookupBatch.add")
-        patch.side_effect = Exception("Shouldn't call this")
+        patch = mock.patch(
+            "google.cloud.ndb._datastore_api._LookupBatch.add",
+            mock.Mock(side_effect=Exception("Shouldn't call this")),
+        )
         with patch:
             entity = key.get()
             assert isinstance(entity, SomeKind)
@@ -140,8 +142,10 @@ def test_retrieve_entity_with_redis_cache(ds_entity, redis_context):
     cache_key = _cache.global_cache_key(key._key)
     assert redis_context.global_cache.redis.get(cache_key) is not None
 
-    patch = mock.patch("google.cloud.ndb._datastore_api._LookupBatch.add")
-    patch.side_effect = Exception("Shouldn't call this")
+    patch = mock.patch(
+        "google.cloud.ndb._datastore_api._LookupBatch.add",
+        mock.Mock(side_effect=Exception("Shouldn't call this")),
+    )
     with patch:
         entity = key.get()
         assert isinstance(entity, SomeKind)
@@ -171,8 +175,10 @@ def test_retrieve_entity_with_memcache(ds_entity, memcache_context):
     cache_key = global_cache_module.MemcacheCache._key(cache_key)
     assert memcache_context.global_cache.client.get(cache_key) is not None
 
-    patch = mock.patch("google.cloud.ndb._datastore_api._LookupBatch.add")
-    patch.side_effect = Exception("Shouldn't call this")
+    patch = mock.patch(
+        "google.cloud.ndb._datastore_api._LookupBatch.add",
+        mock.Mock(side_effect=Exception("Shouldn't call this")),
+    )
     with patch:
         entity = key.get()
         assert isinstance(entity, SomeKind)
@@ -587,8 +593,6 @@ def test_insert_entity_with_global_cache(dispose_of, client_context):
         entity.foo = 43
         entity.put()
 
-        # This is py27 behavior. I can see a case being made for caching the
-        # entity on write rather than waiting for a subsequent lookup.
         assert cache_key not in cache_dict
 
 
@@ -613,8 +617,6 @@ def test_insert_entity_with_redis_cache(dispose_of, redis_context):
     entity.foo = 43
     entity.put()
 
-    # This is py27 behavior. I can see a case being made for caching the
-    # entity on write rather than waiting for a subsequent lookup.
     assert redis_context.global_cache.redis.get(cache_key) is None
 
 
@@ -640,8 +642,6 @@ def test_insert_entity_with_memcache(dispose_of, memcache_context):
     entity.foo = 43
     entity.put()
 
-    # This is py27 behavior. I can see a case being made for caching the
-    # entity on write rather than waiting for a subsequent lookup.
     assert memcache_context.global_cache.client.get(cache_key) is None
 
 
@@ -783,7 +783,7 @@ def test_delete_entity_with_global_cache(ds_entity, client_context):
         # This is py27 behavior. Not entirely sold on leaving _LOCKED value for
         # Datastore misses.
         assert key.get() is None
-        assert cache_dict[cache_key][0] == b"0"
+        assert cache_dict[cache_key][0].startswith(b"0-")
 
 
 @pytest.mark.skipif(not USE_REDIS_CACHE, reason="Redis is not configured")
@@ -806,7 +806,7 @@ def test_delete_entity_with_redis_cache(ds_entity, redis_context):
     # This is py27 behavior. Not entirely sold on leaving _LOCKED value for
     # Datastore misses.
     assert key.get() is None
-    assert redis_context.global_cache.redis.get(cache_key) == b"0"
+    assert redis_context.global_cache.redis.get(cache_key).startswith(b"0-")
 
 
 @pytest.mark.skipif(not USE_MEMCACHE, reason="Memcache is not configured")
@@ -830,7 +830,7 @@ def test_delete_entity_with_memcache(ds_entity, memcache_context):
     # This is py27 behavior. Not entirely sold on leaving _LOCKED value for
     # Datastore misses.
     assert key.get() is None
-    assert memcache_context.global_cache.client.get(cache_key) == b"0"
+    assert memcache_context.global_cache.client.get(cache_key).startswith(b"0-")
 
 
 @pytest.mark.usefixtures("client_context")

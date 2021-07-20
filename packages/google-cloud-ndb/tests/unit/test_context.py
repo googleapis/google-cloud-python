@@ -93,11 +93,6 @@ class TestContext:
         assert new_context.transaction == "tx123"
         assert context.transaction is None
 
-    def test_new_global_cache_flush_keys(self):
-        context = self._make_one(global_cache_flush_keys={"hi", "mom!"})
-        new_context = context.new()
-        assert new_context.global_cache_flush_keys == {"hi", "mom!"}
-
     def test_new_with_cache(self):
         context = self._make_one()
         context.cache["foo"] = "bar"
@@ -335,6 +330,21 @@ class TestContext:
         context = self._make_one(transaction=b"tx123", on_commit_callbacks=callbacks)
         context.call_on_commit(callback)
         assert context.on_commit_callbacks == ["himom!"]
+
+    def test_call_on_transaction_complete(self):
+        context = self._make_one()
+        callback = mock.Mock()
+        context.call_on_transaction_complete(callback)
+        callback.assert_called_once_with()
+
+    def test_call_on_transaction_complete_with_transaction(self):
+        callbacks = []
+        callback = "himom!"
+        context = self._make_one(
+            transaction=b"tx123", transaction_complete_callbacks=callbacks
+        )
+        context.call_on_transaction_complete(callback)
+        assert context.transaction_complete_callbacks == ["himom!"]
 
     def test_in_transaction(self):
         context = self._make_one()

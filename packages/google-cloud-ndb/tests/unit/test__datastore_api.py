@@ -272,6 +272,32 @@ class Test_lookup_WithGlobalCache:
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api._LookupBatch")
+    def test_cache_miss_followed_by_lock_acquisition_failure(
+        _LookupBatch, global_cache
+    ):
+        class SomeKind(model.Model):
+            pass
+
+        key = key_module.Key("SomeKind", 1)
+        cache_key = _cache.global_cache_key(key._key)
+
+        entity = SomeKind(key=key)
+        entity_pb = model._entity_to_protobuf(entity)
+
+        batch = _LookupBatch.return_value
+        batch.add.return_value = future_result(entity_pb)
+
+        global_cache.set_if_not_exists = mock.Mock(
+            return_value=future_result({cache_key: False})
+        )
+
+        future = _api.lookup(key._key, _options.ReadOptions())
+        assert future.result() == entity_pb
+
+        assert global_cache.get([cache_key]) == [None]
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api._LookupBatch")
     def test_cache_miss_no_datastore(_LookupBatch, global_cache):
         class SomeKind(model.Model):
             pass
@@ -320,7 +346,7 @@ class Test_lookup_WithGlobalCache:
         entity = SomeKind(key=key)
         entity_pb = model._entity_to_protobuf(entity)
 
-        global_cache.set({cache_key: _cache._LOCKED})
+        global_cache.set({cache_key: _cache._LOCKED_FOR_READ})
 
         batch = _LookupBatch.return_value
         batch.add.return_value = future_result(entity_pb)
@@ -328,7 +354,7 @@ class Test_lookup_WithGlobalCache:
         future = _api.lookup(key._key, _options.ReadOptions())
         assert future.result() == entity_pb
 
-        assert global_cache.get([cache_key]) == [_cache._LOCKED]
+        assert global_cache.get([cache_key]) == [_cache._LOCKED_FOR_READ]
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api._LookupBatch")
@@ -345,7 +371,7 @@ class Test_lookup_WithGlobalCache:
         future = _api.lookup(key._key, _options.ReadOptions())
         assert future.result() is _api._NOT_FOUND
 
-        assert global_cache.get([cache_key]) == [_cache._LOCKED]
+        assert global_cache.get([cache_key])[0].startswith(_cache._LOCKED_FOR_READ)
         assert len(global_cache._watch_keys) == 0
 
 
@@ -716,8 +742,10 @@ class Test_put_WithGlobalCache:
             pass
 
         context = context_module.get_context()
-        with context.new(transaction=b"abc123").use() as in_context:
-            in_context.global_cache_flush_keys = set()
+        callbacks = []
+        with context.new(
+            transaction=b"abc123", transaction_complete_callbacks=callbacks
+        ).use():
             key = key_module.Key("SomeKind", 1)
             cache_key = _cache.global_cache_key(key._key)
 
@@ -728,7 +756,11 @@ class Test_put_WithGlobalCache:
             future = _api.put(model._entity_to_ds_entity(entity), _options.Options())
             assert future.result() is None
 
-            assert in_context.global_cache_flush_keys == {cache_key}
+            assert cache_key in global_cache.cache  # lock
+            for callback in callbacks:
+                callback()
+
+            assert cache_key not in global_cache.cache  # unlocked by callback
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api._NonTransactionalCommitBatch")
@@ -843,8 +875,10 @@ class Test_delete_WithGlobalCache:
     @mock.patch("google.cloud.ndb._datastore_api._NonTransactionalCommitBatch")
     def test_w_transaction(Batch, global_cache):
         context = context_module.get_context()
-        with context.new(transaction=b"abc123").use() as in_context:
-            in_context.global_cache_flush_keys = set()
+        callbacks = []
+        with context.new(
+            transaction=b"abc123", transaction_complete_callbacks=callbacks
+        ).use():
             key = key_module.Key("SomeKind", 1)
             cache_key = _cache.global_cache_key(key._key)
 
@@ -854,7 +888,11 @@ class Test_delete_WithGlobalCache:
             future = _api.delete(key._key, _options.Options())
             assert future.result() is None
 
-            assert in_context.global_cache_flush_keys == {cache_key}
+            assert cache_key in global_cache.cache  # lock
+            for callback in callbacks:
+                callback()
+
+            assert cache_key not in global_cache.cache  # lock removed by callback
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api._NonTransactionalCommitBatch")

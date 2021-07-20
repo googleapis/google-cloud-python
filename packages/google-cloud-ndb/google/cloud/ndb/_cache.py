@@ -14,6 +14,7 @@
 
 import functools
 import itertools
+import uuid
 import warnings
 
 from google.api_core import retry as core_retry
@@ -22,7 +23,8 @@ from google.cloud.ndb import _batch
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import tasklets
 
-_LOCKED = b"0"
+_LOCKED_FOR_READ = b"0-"
+_LOCKED_FOR_WRITE = b"00"
 _LOCK_TIME = 32
 _PREFIX = b"NDB30"
 
@@ -200,8 +202,7 @@ def _handle_transient_errors(read=False):
     return wrap
 
 
-@_handle_transient_errors(read=True)
-def global_get(key):
+def _global_get(key):
     """Get entity from global cache.
 
     Args:
@@ -213,6 +214,9 @@ def global_get(key):
     """
     batch = _batch.get_batch(_GlobalCacheGetBatch)
     return batch.add(key)
+
+
+global_get = _handle_transient_errors(read=True)(_global_get)
 
 
 class _GlobalCacheGetBatch(_GlobalCacheBatch):
@@ -306,6 +310,33 @@ class _GlobalCacheSetBatch(_GlobalCacheBatch):
         self.todo = {}
         self.futures = {}
 
+    def done_callback(self, cache_call):
+        """Process results of call to global cache.
+
+        If there is an exception for the cache call, distribute that to waiting
+        futures, otherwise examine the result of the cache call. If the result is
+        :data:`None`, simply set the result to :data:`None` for all waiting futures.
+        Otherwise, if the result is a `dict`, use that to propagate results for
+        individual keys to waiting futures.
+        """
+        exception = cache_call.exception()
+        if exception:
+            for future in self.futures.values():
+                future.set_exception(exception)
+            return
+
+        result = cache_call.result()
+        if result:
+            for key, future in self.futures.items():
+                key_result = result.get(key, None)
+                if isinstance(key_result, Exception):
+                    future.set_exception(key_result)
+                else:
+                    future.set_result(key_result)
+        else:
+            for future in self.futures.values():
+                future.set_result(None)
+
     def add(self, key, value):
         """Add a key, value pair to store in the cache.
 
@@ -335,33 +366,6 @@ class _GlobalCacheSetBatch(_GlobalCacheBatch):
         self.futures[key] = future
         return future
 
-    def done_callback(self, cache_call):
-        """Process results of call to global cache.
-
-        If there is an exception for the cache call, distribute that to waiting
-        futures, otherwise examine the result of the cache call. If the result is
-        :data:`None`, simply set the result to :data:`None` for all waiting futures.
-        Otherwise, if the result is a `dict`, use that to propagate results for
-        individual keys to waiting figures.
-        """
-        exception = cache_call.exception()
-        if exception:
-            for future in self.futures.values():
-                future.set_exception(exception)
-            return
-
-        result = cache_call.result()
-        if result:
-            for key, future in self.futures.items():
-                key_result = result.get(key, None)
-                if isinstance(key_result, Exception):
-                    future.set_exception(key_result)
-                else:
-                    future.set_result(key_result)
-        else:
-            for future in self.futures.values():
-                future.set_result(None)
-
     def make_call(self):
         """Call :method:`GlobalCache.set`."""
         return _global_cache().set(self.todo, expires=self.expires)
@@ -371,8 +375,70 @@ class _GlobalCacheSetBatch(_GlobalCacheBatch):
         return "GlobalCache.set({}, {})".format(key, value)
 
 
-@_handle_transient_errors()
-def global_delete(key):
+@tasklets.tasklet
+def global_set_if_not_exists(key, value, expires=None):
+    """Store entity in the global cache if key is not already present.
+
+    Args:
+        key (bytes): The key to save.
+        value (bytes): The entity to save.
+        expires (Optional[float]): Number of seconds until value expires.
+
+    Returns:
+        tasklets.Future: Eventual result will be a ``bool`` value which will be
+            :data:`True` if a new value was set for the key, or :data:`False` if a value
+            was already set for the key or if a transient error occurred while
+            attempting to set the key.
+    """
+    options = {}
+    if expires:
+        options = {"expires": expires}
+
+    cache = _global_cache()
+    batch = _batch.get_batch(_GlobalCacheSetIfNotExistsBatch, options)
+    try:
+        success = yield batch.add(key, value)
+    except cache.transient_errors:
+        success = False
+
+    raise tasklets.Return(success)
+
+
+class _GlobalCacheSetIfNotExistsBatch(_GlobalCacheSetBatch):
+    """Batch for global cache set_if_not_exists requests. """
+
+    def add(self, key, value):
+        """Add a key, value pair to store in the cache.
+
+        Arguments:
+            key (bytes): The key to store in the cache.
+            value (bytes): The value to store in the cache.
+
+        Returns:
+            tasklets.Future: Eventual result will be a ``bool`` value which will be
+                :data:`True` if a new value was set for the key, or :data:`False` if a
+                value was already set for the key.
+        """
+        if key in self.todo:
+            future = tasklets.Future()
+            future.set_result(False)
+            return future
+
+        future = tasklets.Future(info=self.future_info(key, value))
+        self.todo[key] = value
+        self.futures[key] = future
+        return future
+
+    def make_call(self):
+        """Call :method:`GlobalCache.set`."""
+        return _global_cache().set_if_not_exists(self.todo, expires=self.expires)
+
+    def future_info(self, key, value):
+        """Generate info string for Future."""
+        return "GlobalCache.set_if_not_exists({}, {})".format(key, value)
+
+
+def _global_delete(key):
     """Delete an entity from the global cache.
 
     Args:
@@ -383,6 +449,9 @@ def global_delete(key):
     """
     batch = _batch.get_batch(_GlobalCacheDeleteBatch)
     return batch.add(key)
+
+
+global_delete = _handle_transient_errors()(_global_delete)
 
 
 class _GlobalCacheDeleteBatch(_GlobalCacheBatch):
@@ -415,8 +484,7 @@ class _GlobalCacheDeleteBatch(_GlobalCacheBatch):
         return "GlobalCache.delete({})".format(key)
 
 
-@_handle_transient_errors(read=True)
-def global_watch(key):
+def _global_watch(key, value):
     """Start optimistic transaction with global cache.
 
     A future call to :func:`global_compare_and_swap` will only set the value
@@ -428,24 +496,23 @@ def global_watch(key):
     Returns:
         tasklets.Future: Eventual result will be ``None``.
     """
-    batch = _batch.get_batch(_GlobalCacheWatchBatch)
-    return batch.add(key)
+    batch = _batch.get_batch(_GlobalCacheWatchBatch, {})
+    return batch.add(key, value)
 
 
-class _GlobalCacheWatchBatch(_GlobalCacheDeleteBatch):
+global_watch = _handle_transient_errors(read=True)(_global_watch)
+
+
+class _GlobalCacheWatchBatch(_GlobalCacheSetBatch):
     """Batch for global cache watch requests. """
-
-    def __init__(self, ignore_options):
-        self.keys = []
-        self.futures = []
 
     def make_call(self):
         """Call :method:`GlobalCache.watch`."""
-        return _global_cache().watch(self.keys)
+        return _global_cache().watch(self.todo)
 
-    def future_info(self, key):
+    def future_info(self, key, value):
         """Generate info string for Future."""
-        return "GlobalCache.watch({})".format(key)
+        return "GlobalCache.watch({}, {})".format(key, value)
 
 
 @_handle_transient_errors()
@@ -462,11 +529,11 @@ def global_unwatch(key):
     Returns:
         tasklets.Future: Eventual result will be ``None``.
     """
-    batch = _batch.get_batch(_GlobalCacheUnwatchBatch)
+    batch = _batch.get_batch(_GlobalCacheUnwatchBatch, {})
     return batch.add(key)
 
 
-class _GlobalCacheUnwatchBatch(_GlobalCacheWatchBatch):
+class _GlobalCacheUnwatchBatch(_GlobalCacheDeleteBatch):
     """Batch for global cache unwatch requests. """
 
     def make_call(self):
@@ -478,8 +545,7 @@ class _GlobalCacheUnwatchBatch(_GlobalCacheWatchBatch):
         return "GlobalCache.unwatch({})".format(key)
 
 
-@_handle_transient_errors(read=True)
-def global_compare_and_swap(key, value, expires=None):
+def _global_compare_and_swap(key, value, expires=None):
     """Like :func:`global_set` but using an optimistic transaction.
 
     Value will only be set for the given key if the value in the cache hasn't
@@ -501,6 +567,9 @@ def global_compare_and_swap(key, value, expires=None):
     return batch.add(key, value)
 
 
+global_compare_and_swap = _handle_transient_errors(read=True)(_global_compare_and_swap)
+
+
 class _GlobalCacheCompareAndSwapBatch(_GlobalCacheSetBatch):
     """Batch for global cache compare and swap requests. """
 
@@ -513,17 +582,99 @@ class _GlobalCacheCompareAndSwapBatch(_GlobalCacheSetBatch):
         return "GlobalCache.compare_and_swap({}, {})".format(key, value)
 
 
-def global_lock(key, read=False):
-    """Lock a key by setting a special value.
+@tasklets.tasklet
+def global_lock_for_read(key):
+    """Lock a key for a read (lookup) operation by setting a special value.
+
+    Lock may be preempted by a parallel write (put) operation.
 
     Args:
         key (bytes): The key to lock.
-        read (bool): Indicates if being called as part of a read (lookup) operation.
 
     Returns:
-        tasklets.Future: Eventual result will be ``None``.
+        tasklets.Future: Eventual result will be lock value (``bytes``) written to
+            Datastore for the given key, or :data:`None` if the lock was not acquired.
     """
-    return global_set(key, _LOCKED, expires=_LOCK_TIME, read=read)
+    lock = _LOCKED_FOR_READ + str(uuid.uuid4()).encode("ascii")
+    lock_acquired = yield global_set_if_not_exists(key, lock, expires=_LOCK_TIME)
+    if lock_acquired:
+        raise tasklets.Return(lock)
+
+
+@_handle_transient_errors()
+@tasklets.tasklet
+def global_lock_for_write(key):
+    """Lock a key for a write (put) operation, by setting or updating a special value.
+
+    There can be multiple write locks for a given key. Key will only be released when
+    all write locks have been released.
+
+    Args:
+        key (bytes): The key to lock.
+
+    Returns:
+        tasklets.Future: Eventual result will be a lock value to be used later with
+            :func:`global_unlock`.
+    """
+    lock = "." + str(uuid.uuid4())
+    lock = lock.encode("ascii")
+
+    def new_value(old_value):
+        if old_value and old_value.startswith(_LOCKED_FOR_WRITE):
+            return old_value + lock
+
+        return _LOCKED_FOR_WRITE + lock
+
+    yield _update_key(key, new_value)
+
+    raise tasklets.Return(lock)
+
+
+@tasklets.tasklet
+def global_unlock_for_write(key, lock):
+    """Remove a lock for key by updating or removing a lock value.
+
+    The lock represented by the ``lock`` argument will be released. If no other locks
+    remain, the key will be deleted.
+
+    Args:
+        key (bytes): The key to lock.
+        lock (bytes): The return value from the call :func:`global_lock` which acquired
+            the lock.
+
+    Returns:
+        tasklets.Future: Eventual result will be :data:`None`.
+    """
+
+    def new_value(old_value):
+        return old_value.replace(lock, b"")
+
+    cache = _global_cache()
+    try:
+        yield _update_key(key, new_value)
+    except cache.transient_errors:
+        # Worst case scenario, lock sticks around for longer than we'd like
+        pass
+
+
+@tasklets.tasklet
+def _update_key(key, new_value):
+    success = False
+
+    while not success:
+        old_value = yield _global_get(key)
+        value = new_value(old_value)
+        if value == _LOCKED_FOR_WRITE:
+            # No more locks for this key, we can delete
+            yield _global_delete(key)
+            break
+
+        if old_value:
+            yield _global_watch(key, old_value)
+            success = yield _global_compare_and_swap(key, value, expires=_LOCK_TIME)
+
+        else:
+            success = yield global_set_if_not_exists(key, value, expires=_LOCK_TIME)
 
 
 def is_locked_value(value):
@@ -532,7 +683,10 @@ def is_locked_value(value):
     Returns:
         bool: Whether the value is the special reserved value for key lock.
     """
-    return value == _LOCKED
+    if value:
+        return value.startswith(_LOCKED_FOR_READ) or value.startswith(_LOCKED_FOR_WRITE)
+
+    return False
 
 
 def global_cache_key(key):

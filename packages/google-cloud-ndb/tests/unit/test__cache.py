@@ -412,7 +412,6 @@ class Test_GlobalCacheSetBatch:
     def test_add_and_idle_and_done_callbacks_w_error(in_context):
         error = Exception("spurious error")
         cache = mock.Mock(spec=("set",))
-        cache.set.return_value = []
         cache.set.return_value = tasklets.Future()
         cache.set.return_value.set_exception(error)
 
@@ -442,6 +441,182 @@ class Test_GlobalCacheSetBatch:
         )
 
         batch = _cache._GlobalCacheSetBatch({})
+        future1 = batch.add(b"foo", b"one")
+        future2 = batch.add(b"bar", b"two")
+
+        batch.done_callback(cache_call)
+
+        assert future1.result() == "this is a result"
+        with pytest.raises(SpeciousError):
+            assert future2.result()
+
+
+@pytest.mark.usefixtures("in_context")
+class Test_global_set_if_not_exists:
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache._global_cache")
+    @mock.patch("google.cloud.ndb._cache._batch")
+    def test_without_expires(_batch, _global_cache):
+        batch = _batch.get_batch.return_value
+        future = _future_result("hi mom!")
+        batch.add.return_value = future
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(),
+            strict_write=False,
+            spec=("transient_errors", "strict_write"),
+        )
+
+        assert _cache.global_set_if_not_exists(b"key", b"value").result() == "hi mom!"
+        _batch.get_batch.assert_called_once_with(
+            _cache._GlobalCacheSetIfNotExistsBatch, {}
+        )
+        batch.add.assert_called_once_with(b"key", b"value")
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache._global_cache")
+    @mock.patch("google.cloud.ndb._cache._batch")
+    def test_transientError(_batch, _global_cache):
+        class TransientError(Exception):
+            pass
+
+        batch = _batch.get_batch.return_value
+        future = _future_exception(TransientError("oops, mom!"))
+        batch.add.return_value = future
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(TransientError,),
+            strict_write=False,
+            spec=("transient_errors", "strict_write"),
+        )
+
+        assert _cache.global_set_if_not_exists(b"key", b"value").result() is False
+        _batch.get_batch.assert_called_once_with(
+            _cache._GlobalCacheSetIfNotExistsBatch, {}
+        )
+        batch.add.assert_called_once_with(b"key", b"value")
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache._global_cache")
+    @mock.patch("google.cloud.ndb._cache._batch")
+    def test_with_expires(_batch, _global_cache):
+        batch = _batch.get_batch.return_value
+        future = _future_result("hi mom!")
+        batch.add.return_value = future
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(),
+            strict_write=False,
+            spec=("transient_errors", "strict_write"),
+        )
+
+        assert (
+            _cache.global_set_if_not_exists(b"key", b"value", expires=123).result()
+            == "hi mom!"
+        )
+        _batch.get_batch.assert_called_once_with(
+            _cache._GlobalCacheSetIfNotExistsBatch, {"expires": 123}
+        )
+        batch.add.assert_called_once_with(b"key", b"value")
+
+
+class Test_GlobalCacheSetIfNotExistsBatch:
+    @staticmethod
+    def test_add_duplicate_key_and_value():
+        batch = _cache._GlobalCacheSetIfNotExistsBatch({})
+        future1 = batch.add(b"foo", b"one")
+        future2 = batch.add(b"foo", b"one")
+        assert not future1.done()
+        assert future2.result() is False
+
+    @staticmethod
+    def test_add_and_idle_and_done_callbacks(in_context):
+        cache = mock.Mock(spec=("set_if_not_exists",))
+        cache.set_if_not_exists.return_value = {}
+
+        batch = _cache._GlobalCacheSetIfNotExistsBatch({})
+        future1 = batch.add(b"foo", b"one")
+        future2 = batch.add(b"bar", b"two")
+
+        assert batch.expires is None
+
+        with in_context.new(global_cache=cache).use():
+            batch.idle_callback()
+
+        cache.set_if_not_exists.assert_called_once_with(
+            {b"foo": b"one", b"bar": b"two"}, expires=None
+        )
+        assert future1.result() is None
+        assert future2.result() is None
+
+    @staticmethod
+    def test_add_and_idle_and_done_callbacks_with_duplicate_keys(in_context):
+        cache = mock.Mock(spec=("set_if_not_exists",))
+        cache.set_if_not_exists.return_value = {b"foo": True}
+
+        batch = _cache._GlobalCacheSetIfNotExistsBatch({})
+        future1 = batch.add(b"foo", b"one")
+        future2 = batch.add(b"foo", b"two")
+
+        assert batch.expires is None
+
+        with in_context.new(global_cache=cache).use():
+            batch.idle_callback()
+
+        cache.set_if_not_exists.assert_called_once_with({b"foo": b"one"}, expires=None)
+        assert future1.result() is True
+        assert future2.result() is False
+
+    @staticmethod
+    def test_add_and_idle_and_done_callbacks_with_expires(in_context):
+        cache = mock.Mock(spec=("set_if_not_exists",))
+        cache.set_if_not_exists.return_value = []
+
+        batch = _cache._GlobalCacheSetIfNotExistsBatch({"expires": 5})
+        future1 = batch.add(b"foo", b"one")
+        future2 = batch.add(b"bar", b"two")
+
+        assert batch.expires == 5
+
+        with in_context.new(global_cache=cache).use():
+            batch.idle_callback()
+
+        cache.set_if_not_exists.assert_called_once_with(
+            {b"foo": b"one", b"bar": b"two"}, expires=5
+        )
+        assert future1.result() is None
+        assert future2.result() is None
+
+    @staticmethod
+    def test_add_and_idle_and_done_callbacks_w_error(in_context):
+        error = Exception("spurious error")
+        cache = mock.Mock(spec=("set_if_not_exists",))
+        cache.set_if_not_exists.return_value = tasklets.Future()
+        cache.set_if_not_exists.return_value.set_exception(error)
+
+        batch = _cache._GlobalCacheSetIfNotExistsBatch({})
+        future1 = batch.add(b"foo", b"one")
+        future2 = batch.add(b"bar", b"two")
+
+        with in_context.new(global_cache=cache).use():
+            batch.idle_callback()
+
+        cache.set_if_not_exists.assert_called_once_with(
+            {b"foo": b"one", b"bar": b"two"}, expires=None
+        )
+        assert future1.exception() is error
+        assert future2.exception() is error
+
+    @staticmethod
+    def test_done_callbacks_with_results(in_context):
+        class SpeciousError(Exception):
+            pass
+
+        cache_call = _future_result(
+            {
+                b"foo": "this is a result",
+                b"bar": SpeciousError("this is also a kind of result"),
+            }
+        )
+
+        batch = _cache._GlobalCacheSetIfNotExistsBatch({})
         future1 = batch.add(b"foo", b"one")
         future2 = batch.add(b"bar", b"two")
 
@@ -500,24 +675,28 @@ def test_global_watch(_batch, _global_cache):
         spec=("transient_errors", "strict_read"),
     )
 
-    assert _cache.global_watch(b"key").result() == "hi mom!"
-    _batch.get_batch.assert_called_once_with(_cache._GlobalCacheWatchBatch)
-    batch.add.assert_called_once_with(b"key")
+    assert _cache.global_watch(b"key", b"value").result() == "hi mom!"
+    _batch.get_batch.assert_called_once_with(_cache._GlobalCacheWatchBatch, {})
+    batch.add.assert_called_once_with(b"key", b"value")
 
 
+@pytest.mark.usefixtures("in_context")
 class Test_GlobalCacheWatchBatch:
     @staticmethod
     def test_add_and_idle_and_done_callbacks(in_context):
-        cache = mock.Mock()
+        cache = mock.Mock(spec=("watch",))
+        cache.watch.return_value = None
 
         batch = _cache._GlobalCacheWatchBatch({})
-        future1 = batch.add(b"foo")
-        future2 = batch.add(b"bar")
+        future1 = batch.add(b"foo", b"one")
+        future2 = batch.add(b"bar", b"two")
+
+        assert batch.expires is None
 
         with in_context.new(global_cache=cache).use():
             batch.idle_callback()
 
-        cache.watch.assert_called_once_with([b"foo", b"bar"])
+        cache.watch.assert_called_once_with({b"foo": b"one", b"bar": b"two"})
         assert future1.result() is None
         assert future2.result() is None
 
@@ -536,7 +715,7 @@ def test_global_unwatch(_batch, _global_cache):
     )
 
     assert _cache.global_unwatch(b"key").result() == "hi mom!"
-    _batch.get_batch.assert_called_once_with(_cache._GlobalCacheUnwatchBatch)
+    _batch.get_batch.assert_called_once_with(_cache._GlobalCacheUnwatchBatch, {})
     batch.add.assert_called_once_with(b"key")
 
 
@@ -643,28 +822,195 @@ class Test_GlobalCacheCompareAndSwapBatch:
 
 
 @pytest.mark.usefixtures("in_context")
-@mock.patch("google.cloud.ndb._cache._global_cache")
-@mock.patch("google.cloud.ndb._cache._batch")
-def test_global_lock(_batch, _global_cache):
-    batch = _batch.get_batch.return_value
-    future = _future_result("hi mom!")
-    batch.add.return_value = future
-    _global_cache.return_value = mock.Mock(
-        transient_errors=(),
-        strict_write=False,
-        spec=("transient_errors", "strict_write"),
-    )
+class Test_global_lock_for_read:
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache.global_set_if_not_exists")
+    def test_lock_acquired(global_set_if_not_exists):
+        global_set_if_not_exists.return_value = _future_result(True)
+        assert (
+            _cache.global_lock_for_read(b"key")
+            .result()
+            .startswith(_cache._LOCKED_FOR_READ)
+        )
 
-    assert _cache.global_lock(b"key").result() == "hi mom!"
-    _batch.get_batch.assert_called_once_with(
-        _cache._GlobalCacheSetBatch, {"expires": _cache._LOCK_TIME}
-    )
-    batch.add.assert_called_once_with(b"key", _cache._LOCKED)
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache.global_set_if_not_exists")
+    def test_lock_not_acquired(global_set_if_not_exists):
+        global_set_if_not_exists.return_value = _future_result(False)
+        assert _cache.global_lock_for_read(b"key").result() is None
+
+
+@pytest.mark.usefixtures("in_context")
+class Test_global_lock_for_write:
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache.uuid")
+    @mock.patch("google.cloud.ndb._cache.global_set_if_not_exists")
+    @mock.patch("google.cloud.ndb._cache._global_get")
+    @mock.patch("google.cloud.ndb._cache._global_cache")
+    def test_first_time(_global_cache, _global_get, global_set_if_not_exists, uuid):
+        uuid.uuid4.return_value = "arandomuuid"
+
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(),
+            strict_write=False,
+            spec=("transient_errors", "strict_write"),
+        )
+
+        lock_value = _cache._LOCKED_FOR_WRITE + b".arandomuuid"
+        _global_get.return_value = _future_result(None)
+        global_set_if_not_exists.return_value = _future_result(True)
+
+        assert _cache.global_lock_for_write(b"key").result() == b".arandomuuid"
+        _global_get.assert_called_once_with(b"key")
+        global_set_if_not_exists.assert_called_once_with(b"key", lock_value, expires=32)
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache.uuid")
+    @mock.patch("google.cloud.ndb._cache._global_compare_and_swap")
+    @mock.patch("google.cloud.ndb._cache._global_watch")
+    @mock.patch("google.cloud.ndb._cache._global_get")
+    @mock.patch("google.cloud.ndb._cache._global_cache")
+    def test_not_first_time_fail_once(
+        _global_cache, _global_get, _global_watch, _global_compare_and_swap, uuid
+    ):
+        uuid.uuid4.return_value = "arandomuuid"
+
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(),
+            strict_write=False,
+            spec=("transient_errors", "strict_write"),
+        )
+
+        old_lock_value = _cache._LOCKED_FOR_WRITE + b".whatevs"
+        new_lock_value = old_lock_value + b".arandomuuid"
+        _global_get.return_value = _future_result(old_lock_value)
+        _global_watch.return_value = _future_result(None)
+        _global_compare_and_swap.side_effect = (
+            _future_result(False),
+            _future_result(True),
+        )
+        assert _cache.global_lock_for_write(b"key").result() == b".arandomuuid"
+        _global_get.assert_has_calls(
+            [
+                mock.call(b"key"),
+                mock.call(b"key"),
+            ]
+        )
+        _global_watch.assert_has_calls(
+            [
+                mock.call(b"key", old_lock_value),
+                mock.call(b"key", old_lock_value),
+            ]
+        )
+        _global_compare_and_swap.assert_has_calls(
+            [
+                mock.call(b"key", new_lock_value, expires=32),
+                mock.call(b"key", new_lock_value, expires=32),
+            ]
+        )
+
+
+@pytest.mark.usefixtures("in_context")
+class Test_global_unlock_for_write:
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache.uuid")
+    @mock.patch("google.cloud.ndb._cache._global_delete")
+    @mock.patch("google.cloud.ndb._cache._global_get")
+    @mock.patch("google.cloud.ndb._cache._global_cache")
+    def test_last_time(_global_cache, _global_get, _global_delete, uuid):
+        lock = b".arandomuuid"
+
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(),
+            strict_write=False,
+            spec=("transient_errors", "strict_write"),
+        )
+
+        lock_value = _cache._LOCKED_FOR_WRITE + lock
+        _global_get.return_value = _future_result(lock_value)
+        _global_delete.return_value = _future_result(None)
+
+        assert _cache.global_unlock_for_write(b"key", lock).result() is None
+        _global_get.assert_called_once_with(b"key")
+        _global_delete.assert_called_once_with(b"key")
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache.uuid")
+    @mock.patch("google.cloud.ndb._cache._global_delete")
+    @mock.patch("google.cloud.ndb._cache._global_get")
+    @mock.patch("google.cloud.ndb._cache._global_cache")
+    def test_transient_error(_global_cache, _global_get, _global_delete, uuid):
+        class TransientError(Exception):
+            pass
+
+        lock = b".arandomuuid"
+
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(TransientError,),
+            strict_write=False,
+            spec=("transient_errors", "strict_write"),
+        )
+
+        lock_value = _cache._LOCKED_FOR_WRITE + lock
+        _global_get.return_value = _future_result(lock_value)
+        _global_delete.return_value = _future_exception(TransientError())
+
+        assert _cache.global_unlock_for_write(b"key", lock).result() is None
+        _global_get.assert_called_once_with(b"key")
+        _global_delete.assert_called_once_with(b"key")
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache.uuid")
+    @mock.patch("google.cloud.ndb._cache._global_compare_and_swap")
+    @mock.patch("google.cloud.ndb._cache._global_watch")
+    @mock.patch("google.cloud.ndb._cache._global_get")
+    @mock.patch("google.cloud.ndb._cache._global_cache")
+    def test_not_last_time_fail_once(
+        _global_cache, _global_get, _global_watch, _global_compare_and_swap, uuid
+    ):
+        lock = b".arandomuuid"
+
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(),
+            strict_write=False,
+            spec=("transient_errors", "strict_write"),
+        )
+
+        new_lock_value = _cache._LOCKED_FOR_WRITE + b".whatevs"
+        old_lock_value = new_lock_value + lock
+        _global_get.return_value = _future_result(old_lock_value)
+        _global_watch.return_value = _future_result(None)
+        _global_compare_and_swap.side_effect = (
+            _future_result(False),
+            _future_result(True),
+        )
+
+        assert _cache.global_unlock_for_write(b"key", lock).result() is None
+        _global_get.assert_has_calls(
+            [
+                mock.call(b"key"),
+                mock.call(b"key"),
+            ]
+        )
+        _global_watch.assert_has_calls(
+            [
+                mock.call(b"key", old_lock_value),
+                mock.call(b"key", old_lock_value),
+            ]
+        )
+        _global_compare_and_swap.assert_has_calls(
+            [
+                mock.call(b"key", new_lock_value, expires=32),
+                mock.call(b"key", new_lock_value, expires=32),
+            ]
+        )
 
 
 def test_is_locked_value():
-    assert _cache.is_locked_value(_cache._LOCKED)
-    assert not _cache.is_locked_value("new db, who dis?")
+    assert _cache.is_locked_value(_cache._LOCKED_FOR_READ)
+    assert _cache.is_locked_value(_cache._LOCKED_FOR_WRITE + b"whatever")
+    assert not _cache.is_locked_value(b"new db, who dis?")
+    assert not _cache.is_locked_value(None)
 
 
 def test_global_cache_key():

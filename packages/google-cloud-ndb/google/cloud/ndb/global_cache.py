@@ -16,14 +16,12 @@
 
 import abc
 import base64
-import collections
 import hashlib
 import os
 import pymemcache.exceptions
 import redis.exceptions
 import threading
 import time
-import uuid
 import warnings
 
 import pymemcache
@@ -117,6 +115,23 @@ class GlobalCache(object):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def set_if_not_exists(self, items, expires=None):
+        """Stores entities in the cache if and only if keys are not already set.
+
+        Arguments:
+            items (Dict[bytes, Union[bytes, None]]): Mapping of keys to
+                serialized entities.
+            expires (Optional[float]): Number of seconds until value expires.
+
+
+        Returns:
+            Dict[bytes, bool]: A `dict` mapping to boolean value wich will be
+                :data:`True` if that key was set with a new value, and :data:`False`
+                otherwise.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def delete(self, keys):
         """Remove entities from the cache.
 
@@ -126,14 +141,15 @@ class GlobalCache(object):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def watch(self, keys):
-        """Begin an optimistic transaction for the given keys.
+    def watch(self, items):
+        """Begin an optimistic transaction for the given items.
 
         A future call to :meth:`compare_and_swap` will only set values for keys
-        whose values haven't changed since the call to this method.
+        whose values haven't changed since the call to this method. Values are used to
+        check that the watched value matches the expected value for a given key.
 
         Arguments:
-            keys (List[bytes]): The keys to watch.
+            items (Dict[bytes, bytes]): The items to watch.
         """
         raise NotImplementedError
 
@@ -161,6 +177,10 @@ class GlobalCache(object):
             items (Dict[bytes, Union[bytes, None]]): Mapping of keys to
                 serialized entities.
             expires (Optional[float]): Number of seconds until value expires.
+
+        Returns:
+            Dict[bytes, bool]: A mapping of key to result. A key will have a result of
+                :data:`True` if it was changed successfully.
         """
         raise NotImplementedError
 
@@ -217,15 +237,27 @@ class _InProcessGlobalCache(GlobalCache):
         for key, value in items.items():
             self.cache[key] = (value, expires)  # Supposedly threadsafe
 
+    def set_if_not_exists(self, items, expires=None):
+        """Implements :meth:`GlobalCache.set_if_not_exists`."""
+        if expires:
+            expires = time.time() + expires
+
+        results = {}
+        for key, value in items.items():
+            set_value = (value, expires)
+            results[key] = self.cache.setdefault(key, set_value) is set_value
+
+        return results
+
     def delete(self, keys):
         """Implements :meth:`GlobalCache.delete`."""
         for key in keys:
             self.cache.pop(key, None)  # Threadsafe?
 
-    def watch(self, keys):
+    def watch(self, items):
         """Implements :meth:`GlobalCache.watch`."""
-        for key in keys:
-            self._watch_keys[key] = self.cache.get(key)
+        for key, value in items.items():
+            self._watch_keys[key] = value
 
     def unwatch(self, keys):
         """Implements :meth:`GlobalCache.unwatch`."""
@@ -237,18 +269,20 @@ class _InProcessGlobalCache(GlobalCache):
         if expires:
             expires = time.time() + expires
 
+        results = {key: False for key in items.keys()}
         for key, new_value in items.items():
             watch_value = self._watch_keys.get(key)
             current_value = self.cache.get(key)
+            current_value = current_value[0] if current_value else current_value
             if watch_value == current_value:
                 self.cache[key] = (new_value, expires)
+                results[key] = True
+
+        return results
 
     def clear(self):
         """Implements :meth:`GlobalCache.clear`."""
         self.cache.clear()
-
-
-_Pipeline = collections.namedtuple("_Pipeline", ("pipe", "id"))
 
 
 class RedisCache(GlobalCache):
@@ -355,52 +389,55 @@ class RedisCache(GlobalCache):
             for key in items.keys():
                 self.redis.expire(key, expires)
 
+    def set_if_not_exists(self, items, expires=None):
+        """Implements :meth:`GlobalCache.set_if_not_exists`."""
+        results = {}
+        for key, value in items.items():
+            results[key] = key_was_set = self.redis.setnx(key, value)
+            if key_was_set and expires:
+                self.redis.expire(key, expires)
+
+        return results
+
     def delete(self, keys):
         """Implements :meth:`GlobalCache.delete`."""
         self.redis.delete(*keys)
 
-    def watch(self, keys):
+    def watch(self, items):
         """Implements :meth:`GlobalCache.watch`."""
-        pipe = self.redis.pipeline()
-        pipe.watch(*keys)
-        holder = _Pipeline(pipe, str(uuid.uuid4()))
-        for key in keys:
-            self.pipes[key] = holder
+        for key, value in items.items():
+            pipe = self.redis.pipeline()
+            pipe.watch(key)
+            if pipe.get(key) == value:
+                self.pipes[key] = pipe
+            else:
+                pipe.reset()
 
     def unwatch(self, keys):
         """Implements :meth:`GlobalCache.watch`."""
         for key in keys:
-            holder = self.pipes.pop(key, None)
-            if holder:
-                holder.pipe.reset()
+            pipe = self.pipes.pop(key, None)
+            if pipe:
+                pipe.reset()
 
     def compare_and_swap(self, items, expires=None):
         """Implements :meth:`GlobalCache.compare_and_swap`."""
-        pipes = {}
-        mappings = {}
-        remove_keys = []
+        results = {key: False for key in items.keys()}
 
-        # get associated pipes
+        pipes = self.pipes
         for key, value in items.items():
-            remove_keys.append(key)
-            if key not in self.pipes:
+            pipe = pipes.pop(key, None)
+            if pipe is None:
                 continue
 
-            pipe = self.pipes[key]
-            pipes[pipe.id] = pipe
-            mapping = mappings.setdefault(pipe.id, {})
-            mapping[key] = value
-
-        # execute transaction for each pipes
-        for pipe_id, mapping in mappings.items():
-            pipe = pipes[pipe_id].pipe
             try:
                 pipe.multi()
-                pipe.mset(mapping)
                 if expires:
-                    for key in mapping.keys():
-                        pipe.expire(key, expires)
+                    pipe.setex(key, expires, value)
+                else:
+                    pipe.set(key, value)
                 pipe.execute()
+                results[key] = True
 
             except redis_module.exceptions.WatchError:
                 pass
@@ -408,14 +445,7 @@ class RedisCache(GlobalCache):
             finally:
                 pipe.reset()
 
-        # get keys associated to pipes but not updated
-        for key, pipe in self.pipes.items():
-            if pipe.id in pipes:
-                remove_keys.append(key)
-
-        # remove keys
-        for key in remove_keys:
-            self.pipes.pop(key, None)
+        return results
 
     def clear(self):
         """Implements :meth:`GlobalCache.clear`."""
@@ -599,17 +629,35 @@ class MemcacheCache(GlobalCache):
             )
             return {key: MemcacheCache.KeyNotSet(key) for key in unset_keys}
 
+    def set_if_not_exists(self, items, expires=None):
+        """Implements :meth:`GlobalCache.set_if_not_exists`."""
+        expires = expires if expires else 0
+        results = {}
+        for key, value in items.items():
+            results[key] = self.client.add(
+                self._key(key), value, expire=expires, noreply=False
+            )
+
+        return results
+
     def delete(self, keys):
         """Implements :meth:`GlobalCache.delete`."""
         keys = [self._key(key) for key in keys]
         self.client.delete_many(keys)
 
-    def watch(self, keys):
+    def watch(self, items):
         """Implements :meth:`GlobalCache.watch`."""
-        keys = [self._key(key) for key in keys]
         caskeys = self.caskeys
+        keys = []
+        prev_values = {}
+        for key, prev_value in items.items():
+            key = self._key(key)
+            keys.append(key)
+            prev_values[key] = prev_value
+
         for key, (value, caskey) in self.client.gets_many(keys).items():
-            caskeys[key] = caskey
+            if prev_values[key] == value:
+                caskeys[key] = caskey
 
     def unwatch(self, keys):
         """Implements :meth:`GlobalCache.unwatch`."""
@@ -621,14 +669,19 @@ class MemcacheCache(GlobalCache):
     def compare_and_swap(self, items, expires=None):
         """Implements :meth:`GlobalCache.compare_and_swap`."""
         caskeys = self.caskeys
-        for key, value in items.items():
-            key = self._key(key)
+        results = {}
+        for orig_key, value in items.items():
+            key = self._key(orig_key)
             caskey = caskeys.pop(key, None)
             if caskey is None:
                 continue
 
             expires = expires if expires else 0
-            self.client.cas(key, value, caskey, expire=expires)
+            results[orig_key] = bool(
+                self.client.cas(key, value, caskey, expire=expires, noreply=False)
+            )
+
+        return results
 
     def clear(self):
         """Implements :meth:`GlobalCache.clear`."""

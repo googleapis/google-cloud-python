@@ -28,8 +28,6 @@ from google.cloud.ndb import exceptions
 from google.cloud.ndb import tasklets
 from google.cloud.ndb import _transaction
 
-from . import utils
-
 
 class Test_in_transaction:
     @staticmethod
@@ -90,12 +88,47 @@ class Test_transaction_async:
     @mock.patch("google.cloud.ndb._datastore_api")
     def test_success(_datastore_api):
         context_module.get_context().cache["foo"] = "bar"
-        on_commit_callback = mock.Mock()
 
         def callback():
+            # The transaction uses its own in-memory cache, which should be empty in
+            # the transaction context and not include the key set above.
             context = context_module.get_context()
             assert not context.cache
+
+            return "I tried, momma."
+
+        begin_future = tasklets.Future("begin transaction")
+        _datastore_api.begin_transaction.return_value = begin_future
+
+        commit_future = tasklets.Future("commit transaction")
+        _datastore_api.commit.return_value = commit_future
+
+        future = _transaction.transaction_async(callback)
+
+        _datastore_api.begin_transaction.assert_called_once_with(False, retries=0)
+        begin_future.set_result(b"tx123")
+
+        _datastore_api.commit.assert_called_once_with(b"tx123", retries=0)
+        commit_future.set_result(None)
+
+        assert future.result() == "I tried, momma."
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_api")
+    def test_success_w_callbacks(_datastore_api):
+        context_module.get_context().cache["foo"] = "bar"
+        on_commit_callback = mock.Mock()
+        transaction_complete_callback = mock.Mock()
+
+        def callback():
+            # The transaction uses its own in-memory cache, which should be empty in
+            # the transaction context and not include the key set above.
+            context = context_module.get_context()
+            assert not context.cache
+
             context.call_on_commit(on_commit_callback)
+            context.call_on_transaction_complete(transaction_complete_callback)
             return "I tried, momma."
 
         begin_future = tasklets.Future("begin transaction")
@@ -114,6 +147,46 @@ class Test_transaction_async:
 
         assert future.result() == "I tried, momma."
         on_commit_callback.assert_called_once_with()
+        transaction_complete_callback.assert_called_once_with()
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb._datastore_api")
+    def test_failure_w_callbacks(_datastore_api):
+        class SpuriousError(Exception):
+            pass
+
+        context_module.get_context().cache["foo"] = "bar"
+        on_commit_callback = mock.Mock()
+        transaction_complete_callback = mock.Mock()
+
+        def callback():
+            context = context_module.get_context()
+            assert not context.cache
+            context.call_on_commit(on_commit_callback)
+            context.call_on_transaction_complete(transaction_complete_callback)
+            raise SpuriousError()
+
+        begin_future = tasklets.Future("begin transaction")
+        _datastore_api.begin_transaction.return_value = begin_future
+
+        rollback_future = tasklets.Future("rollback transaction")
+        _datastore_api.rollback.return_value = rollback_future
+
+        future = _transaction.transaction_async(callback)
+
+        _datastore_api.begin_transaction.assert_called_once_with(False, retries=0)
+        begin_future.set_result(b"tx123")
+
+        _datastore_api.commit.assert_not_called()
+        _datastore_api.rollback.assert_called_once_with(b"tx123")
+        rollback_future.set_result(None)
+
+        with pytest.raises(SpuriousError):
+            future.result()
+
+        on_commit_callback.assert_not_called()
+        transaction_complete_callback.assert_called_once_with()
 
     @staticmethod
     def test_success_join(in_context):
@@ -406,35 +479,6 @@ class Test_transaction_async:
         commit_future.set_result(None)
 
         assert future.result() == "I tried, momma."
-
-    @staticmethod
-    @pytest.mark.usefixtures("in_context")
-    @mock.patch("google.cloud.ndb._cache")
-    @mock.patch("google.cloud.ndb._datastore_api")
-    def test_success_flush_keys(_datastore_api, _cache):
-        def callback():
-            context = context_module.get_context()
-            context.global_cache_flush_keys.add(b"abc123")
-            return "I tried, momma."
-
-        _cache.global_delete.return_value = utils.future_result(None)
-
-        begin_future = tasklets.Future("begin transaction")
-        _datastore_api.begin_transaction.return_value = begin_future
-
-        commit_future = tasklets.Future("commit transaction")
-        _datastore_api.commit.return_value = commit_future
-
-        future = _transaction.transaction_async(callback, retries=0)
-
-        _datastore_api.begin_transaction.assert_called_once_with(False, retries=0)
-        begin_future.set_result(b"tx123")
-
-        _datastore_api.commit.assert_called_once_with(b"tx123", retries=0)
-        commit_future.set_result(None)
-
-        assert future.result() == "I tried, momma."
-        _cache.global_delete.assert_called_once_with(b"abc123")
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
