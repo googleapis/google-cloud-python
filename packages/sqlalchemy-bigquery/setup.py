@@ -66,7 +66,10 @@ setup(
     platforms="Posix; MacOS X; Windows",
     install_requires=[
         "google-api-core>=1.30.0",  # Work-around bug in cloud core deps.
-        "google-auth>=1.25.0,<3.0dev",  # Work around pip wack.
+        # NOTE: Maintainers, please do not require google-auth>=2.x.x
+        # Until this issue is closed
+        # https://github.com/googleapis/google-cloud-python/issues/10566
+        "google-auth>=1.25.0,<3.0.0dev",  # Work around pip wack.
         "google-cloud-bigquery>=2.19.0",
         "sqlalchemy>=1.2.0,<1.5.0dev",
         "future",
