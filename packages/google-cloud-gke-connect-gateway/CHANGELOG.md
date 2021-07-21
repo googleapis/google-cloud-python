@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-gke-connect-gateway/compare/v0.2.0...v0.2.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#14](https://www.github.com/googleapis/python-gke-connect-gateway/issues/14)) ([3aa8b31](https://www.github.com/googleapis/python-gke-connect-gateway/commit/3aa8b3104cb2aa784556cd2896e9cf791177ef25))
+
 ## [0.2.0](https://www.github.com/googleapis/python-gke-connect-gateway/compare/v0.1.0...v0.2.0) (2021-07-14)
 
 
