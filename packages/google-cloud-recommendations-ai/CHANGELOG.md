@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.3.0...v0.3.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#67](https://www.github.com/googleapis/python-recommendations-ai/issues/67)) ([cd12659](https://www.github.com/googleapis/python-recommendations-ai/commit/cd12659af98033da94724ba28f5f942f5b43e732))
+
 ## [0.3.0](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.2.2...v0.3.0) (2021-07-01)
 
 
