@@ -85,6 +85,7 @@ s.remove_staging_dirs()
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
     samples=True,  # set to True only if there are samples
+    split_system_tests=True,
     microgenerator=True,
     cov_level=100,
 )
