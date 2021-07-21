@@ -586,6 +586,10 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
             top_summary = _extract_docstring_info(summary_info, summary, name)
             datam['summary'] = top_summary
 
+    # If there is no summary, add a short snippet.
+    else:
+        datam['summary'] = "API documentation for {} {}.".format(name, _type)
+
     if args or sig or summary_info:
         datam['syntax'] = {}
 
@@ -1126,7 +1130,7 @@ def build_finished(app, exception):
                     'langs': ['python'],
                     'type': 'package',
                     'kind': 'distribution',
-                    'summary': '',
+                    'summary': 'Reference API documentation for `{}`.'.format(app.config.project),
                     'children': index_children
                 }],
                 'references': index_references
