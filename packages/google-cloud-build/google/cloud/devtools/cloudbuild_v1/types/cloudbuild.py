@@ -17,6 +17,7 @@ import proto  # type: ignore
 
 from google.api import httpbody_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
@@ -66,14 +67,16 @@ __protobuf__ = proto.module(
         "ReceiveTriggerWebhookRequest",
         "ReceiveTriggerWebhookResponse",
         "WorkerPool",
-        "WorkerConfig",
-        "Network",
+        "PrivatePoolV1Config",
         "CreateWorkerPoolRequest",
         "GetWorkerPoolRequest",
         "DeleteWorkerPoolRequest",
         "UpdateWorkerPoolRequest",
         "ListWorkerPoolsRequest",
         "ListWorkerPoolsResponse",
+        "CreateWorkerPoolOperationMetadata",
+        "UpdateWorkerPoolOperationMetadata",
+        "DeleteWorkerPoolOperationMetadata",
     },
 )
 
@@ -1430,11 +1433,13 @@ class BuildOptions(proto.Message):
             Option to define build log streaming behavior
             to Google Cloud Storage.
         worker_pool (str):
-            Option to specify a ``WorkerPool`` for the build. Format:
-            projects/{project}/locations/{location}/workerPools/{workerPool}
+            This field deprecated; please use ``pool.name`` instead.
+        pool (google.cloud.devtools.cloudbuild_v1.types.BuildOptions.PoolOption):
+            Optional. Specification for execution on a ``WorkerPool``.
 
-            This field is in beta and is available only to restricted
-            users.
+            See `running builds in a private
+            pool <https://cloud.google.com/build/docs/private-pools/run-builds-in-private-pool>`__
+            for more information.
         logging (google.cloud.devtools.cloudbuild_v1.types.BuildOptions.LoggingMode):
             Option to specify the logging mode, which
             determines if and where build logs are stored.
@@ -1509,6 +1514,25 @@ class BuildOptions(proto.Message):
         CLOUD_LOGGING_ONLY = 5
         NONE = 4
 
+    class PoolOption(proto.Message):
+        r"""Details about how a build should be executed on a ``WorkerPool``.
+
+        See `running builds in a private
+        pool <https://cloud.google.com/build/docs/private-pools/run-builds-in-private-pool>`__
+        for more information.
+
+        Attributes:
+            name (str):
+                The ``WorkerPool`` resource to execute the build on. You
+                must have ``cloudbuild.workerpools.use`` on the project
+                hosting the WorkerPool.
+
+                Format
+                projects/{project}/locations/{location}/workerPools/{workerPoolId}
+        """
+
+        name = proto.Field(proto.STRING, number=1,)
+
     source_provenance_hash = proto.RepeatedField(
         proto.ENUM, number=1, enum="Hash.HashType",
     )
@@ -1519,6 +1543,7 @@ class BuildOptions(proto.Message):
     dynamic_substitutions = proto.Field(proto.BOOL, number=17,)
     log_streaming_option = proto.Field(proto.ENUM, number=5, enum=LogStreamingOption,)
     worker_pool = proto.Field(proto.STRING, number=7,)
+    pool = proto.Field(proto.MESSAGE, number=19, message=PoolOption,)
     logging = proto.Field(proto.ENUM, number=11, enum=LoggingMode,)
     env = proto.RepeatedField(proto.STRING, number=12,)
     secret_env = proto.RepeatedField(proto.STRING, number=13,)
@@ -1560,37 +1585,39 @@ class ReceiveTriggerWebhookResponse(proto.Message):
 
 
 class WorkerPool(proto.Message):
-    r"""Configuration for a WorkerPool to run the builds.
-    Workers are machines that Cloud Build uses to run your builds.
-    By default, all workers run in a project owned by Cloud Build.
-    To have full control over the workers that execute your builds
-    -- such as enabling them to access private resources on your
-    private network -- you can request Cloud Build to run the
-    workers in your own project by creating a custom workers pool.
+    r"""Configuration for a ``WorkerPool``.
+
+    Cloud Build owns and maintains a pool of workers for general use and
+    have no access to a project's private network. By default, builds
+    submitted to Cloud Build will use a worker from this pool.
+
+    If your build needs access to resources on a private network, create
+    and use a ``WorkerPool`` to run your builds. Private
+    ``WorkerPool``\ s give your builds access to any single VPC network
+    that you administer, including any on-prem resources connected to
+    that VPC network. For an overview of private pools, see `Private
+    pools
+    overview <https://cloud.google.com/build/docs/private-pools/private-pools-overview>`__.
 
     Attributes:
         name (str):
-            User-defined name of the ``WorkerPool``.
-        project_id (str):
-            The project ID of the GCP project for which the
-            ``WorkerPool`` is created.
-        service_account_email (str):
-            Output only. The service account used to manage the
-            ``WorkerPool``. The service account must have the Compute
-            Instance Admin (Beta) permission at the project level.
-        worker_count (int):
-            Total number of workers to be created across
-            all requested regions.
-        worker_config (google.cloud.devtools.cloudbuild_v1.types.WorkerConfig):
-            Configuration to be used for a creating workers in the
-            ``WorkerPool``.
-        regions (Sequence[google.cloud.devtools.cloudbuild_v1.types.WorkerPool.Region]):
-            List of regions to create the ``WorkerPool``. Regions can't
-            be empty. If Cloud Build adds a new GCP region in the
-            future, the existing ``WorkerPool`` will not be enabled in
-            the new region automatically; you must add the new region to
-            the ``regions`` field to enable the ``WorkerPool`` in that
-            region.
+            Output only. The resource name of the ``WorkerPool``, with
+            format
+            ``projects/{project}/locations/{location}/workerPools/{worker_pool}``.
+            The value of ``{worker_pool}`` is provided by
+            ``worker_pool_id`` in ``CreateWorkerPool`` request and the
+            value of ``{location}`` is determined by the endpoint
+            accessed.
+        display_name (str):
+            A user-specified, human-readable name for the
+            ``WorkerPool``. If provided, this value must be 1-63
+            characters.
+        uid (str):
+            Output only. A unique identifier for the ``WorkerPool``.
+        annotations (Sequence[google.cloud.devtools.cloudbuild_v1.types.WorkerPool.AnnotationsEntry]):
+            User specified annotations. See
+            https://google.aip.dev/128#annotations for more
+            details such as format and size limitations.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time at which the request to create the
             ``WorkerPool`` was received.
@@ -1600,106 +1627,102 @@ class WorkerPool(proto.Message):
         delete_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time at which the request to delete the
             ``WorkerPool`` was received.
-        status (google.cloud.devtools.cloudbuild_v1.types.WorkerPool.Status):
-            Output only. WorkerPool Status.
+        state (google.cloud.devtools.cloudbuild_v1.types.WorkerPool.State):
+            Output only. ``WorkerPool`` state.
+        private_pool_v1_config (google.cloud.devtools.cloudbuild_v1.types.PrivatePoolV1Config):
+            Private Pool using a v1 configuration.
+        etag (str):
+            Output only. Checksum computed by the server.
+            May be sent on update and delete requests to
+            ensure that the client has an up-to-date value
+            before proceeding.
     """
 
-    class Region(proto.Enum):
-        r"""Supported GCP regions to create the ``WorkerPool``."""
-        REGION_UNSPECIFIED = 0
-        US_CENTRAL1 = 1
-        US_WEST1 = 2
-        US_EAST1 = 3
-        US_EAST4 = 4
-
-    class Status(proto.Enum):
-        r"""``WorkerPool`` status"""
-        STATUS_UNSPECIFIED = 0
+    class State(proto.Enum):
+        r"""State of the ``WorkerPool``."""
+        STATE_UNSPECIFIED = 0
         CREATING = 1
         RUNNING = 2
         DELETING = 3
         DELETED = 4
 
-    name = proto.Field(proto.STRING, number=14,)
-    project_id = proto.Field(proto.STRING, number=2,)
-    service_account_email = proto.Field(proto.STRING, number=3,)
-    worker_count = proto.Field(proto.INT64, number=4,)
-    worker_config = proto.Field(proto.MESSAGE, number=16, message="WorkerConfig",)
-    regions = proto.RepeatedField(proto.ENUM, number=9, enum=Region,)
-    create_time = proto.Field(
-        proto.MESSAGE, number=11, message=timestamp_pb2.Timestamp,
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
+    uid = proto.Field(proto.STRING, number=3,)
+    annotations = proto.MapField(proto.STRING, proto.STRING, number=4,)
+    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    delete_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
+    state = proto.Field(proto.ENUM, number=8, enum=State,)
+    private_pool_v1_config = proto.Field(
+        proto.MESSAGE, number=12, oneof="config", message="PrivatePoolV1Config",
     )
-    update_time = proto.Field(
-        proto.MESSAGE, number=17, message=timestamp_pb2.Timestamp,
-    )
-    delete_time = proto.Field(
-        proto.MESSAGE, number=12, message=timestamp_pb2.Timestamp,
-    )
-    status = proto.Field(proto.ENUM, number=13, enum=Status,)
+    etag = proto.Field(proto.STRING, number=11,)
 
 
-class WorkerConfig(proto.Message):
-    r"""WorkerConfig defines the configuration to be used for a
-    creating workers in the pool.
+class PrivatePoolV1Config(proto.Message):
+    r"""Configuration for a V1 ``PrivatePool``.
 
     Attributes:
-        machine_type (str):
-            Machine Type of the worker, such as n1-standard-1. See
-            https://cloud.google.com/compute/docs/machine-types. If left
-            blank, Cloud Build will use a standard unspecified machine
-            to create the worker pool. ``machine_type`` is overridden if
-            you specify a different machine type in ``build_options``.
-            In this case, the VM specified in the ``build_options`` will
-            be created on demand at build time. For more information see
-            https://cloud.google.com/cloud-build/docs/speeding-up-builds#using_custom_virtual_machine_sizes
-        disk_size_gb (int):
-            Size of the disk attached to the worker, in GB. See
-            https://cloud.google.com/compute/docs/disks/ If ``0`` is
-            specified, Cloud Build will use a standard disk size.
-            ``disk_size`` is overridden if you specify a different disk
-            size in ``build_options``. In this case, a VM with a disk
-            size specified in the ``build_options`` will be created on
-            demand at build time. For more information see
-            https://cloud.google.com/cloud-build/docs/api/reference/rest/v1/projects.builds#buildoptions
-        network (google.cloud.devtools.cloudbuild_v1.types.Network):
-            The network definition used to create the worker. If this
-            section is left empty, the workers will be created in
-            WorkerPool.project_id on the default network.
-        tag (str):
-            The tag applied to the worker, and the same tag used by the
-            firewall rule. It is used to identify the Cloud Build
-            workers among other VMs. The default value for tag is
-            ``worker``.
+        worker_config (google.cloud.devtools.cloudbuild_v1.types.PrivatePoolV1Config.WorkerConfig):
+            Machine configuration for the workers in the
+            pool.
+        network_config (google.cloud.devtools.cloudbuild_v1.types.PrivatePoolV1Config.NetworkConfig):
+            Network configuration for the pool.
     """
 
-    machine_type = proto.Field(proto.STRING, number=1,)
-    disk_size_gb = proto.Field(proto.INT64, number=2,)
-    network = proto.Field(proto.MESSAGE, number=3, message="Network",)
-    tag = proto.Field(proto.STRING, number=4,)
+    class WorkerConfig(proto.Message):
+        r"""Defines the configuration to be used for creating workers in
+        the pool.
 
+        Attributes:
+            machine_type (str):
+                Machine type of a worker, such as ``e2-medium``. See `Worker
+                pool config
+                file <https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema>`__.
+                If left blank, Cloud Build will use a sensible default.
+            disk_size_gb (int):
+                Size of the disk attached to the worker, in GB. See `Worker
+                pool config
+                file <https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema>`__.
+                Specify a value of up to 1000. If ``0`` is specified, Cloud
+                Build will use a standard disk size.
+        """
 
-class Network(proto.Message):
-    r"""Network describes the GCP network used to create workers in.
+        machine_type = proto.Field(proto.STRING, number=1,)
+        disk_size_gb = proto.Field(proto.INT64, number=2,)
 
-    Attributes:
-        project_id (str):
-            Project id containing the defined network and subnetwork.
-            For a peered VPC, this will be the same as the project_id in
-            which the workers are created. For a shared VPC, this will
-            be the project sharing the network with the project_id
-            project in which workers will be created. For custom workers
-            with no VPC, this will be the same as project_id.
-        network (str):
-            Network on which the workers are created.
-            "default" network is used if empty.
-        subnetwork (str):
-            Subnetwork on which the workers are created.
-            "default" subnetwork is used if empty.
-    """
+    class NetworkConfig(proto.Message):
+        r"""Defines the network configuration for the pool.
+        Attributes:
+            peered_network (str):
+                Required. Immutable. The network definition that the workers
+                are peered to. If this section is left empty, the workers
+                will be peered to ``WorkerPool.project_id`` on the service
+                producer network. Must be in the format
+                ``projects/{project}/global/networks/{network}``, where
+                ``{project}`` is a project number, such as ``12345``, and
+                ``{network}`` is the name of a VPC network in the project.
+                See `Understanding network configuration
+                options <https://cloud.google.com/build/docs/private-pools/set-up-private-pool-environment>`__
+            egress_option (google.cloud.devtools.cloudbuild_v1.types.PrivatePoolV1Config.NetworkConfig.EgressOption):
+                Option to configure network egress for the
+                workers.
+        """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    network = proto.Field(proto.STRING, number=2,)
-    subnetwork = proto.Field(proto.STRING, number=3,)
+        class EgressOption(proto.Enum):
+            r"""Defines the egress option for the pool."""
+            EGRESS_OPTION_UNSPECIFIED = 0
+            NO_PUBLIC_EGRESS = 1
+            PUBLIC_EGRESS = 2
+
+        peered_network = proto.Field(proto.STRING, number=1,)
+        egress_option = proto.Field(
+            proto.ENUM, number=2, enum="PrivatePoolV1Config.NetworkConfig.EgressOption",
+        )
+
+    worker_config = proto.Field(proto.MESSAGE, number=1, message=WorkerConfig,)
+    network_config = proto.Field(proto.MESSAGE, number=2, message=NetworkConfig,)
 
 
 class CreateWorkerPoolRequest(proto.Message):
@@ -1707,13 +1730,26 @@ class CreateWorkerPoolRequest(proto.Message):
 
     Attributes:
         parent (str):
-            ID of the parent project.
+            Required. The parent resource where this worker pool will be
+            created. Format:
+            ``projects/{project}/locations/{location}``.
         worker_pool (google.cloud.devtools.cloudbuild_v1.types.WorkerPool):
-            ``WorkerPool`` resource to create.
+            Required. ``WorkerPool`` resource to create.
+        worker_pool_id (str):
+            Required. Immutable. The ID to use for the ``WorkerPool``,
+            which will become the final component of the resource name.
+
+            This value should be 1-63 characters, and valid characters
+            are /[a-z][0-9]-/.
+        validate_only (bool):
+            If set, validate the request and preview the
+            response, but do not actually post it.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
     worker_pool = proto.Field(proto.MESSAGE, number=2, message="WorkerPool",)
+    worker_pool_id = proto.Field(proto.STRING, number=3,)
+    validate_only = proto.Field(proto.BOOL, number=4,)
 
 
 class GetWorkerPoolRequest(proto.Message):
@@ -1721,9 +1757,9 @@ class GetWorkerPoolRequest(proto.Message):
 
     Attributes:
         name (str):
-            The field will contain name of the resource
-            requested, for example:
-            "projects/project-1/workerPools/workerpool-name".
+            Required. The name of the ``WorkerPool`` to retrieve.
+            Format:
+            ``projects/{project}/locations/{location}/workerPools/{workerPool}``.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -1734,39 +1770,70 @@ class DeleteWorkerPoolRequest(proto.Message):
 
     Attributes:
         name (str):
-            The field will contain name of the resource
-            requested, for example:
-            "projects/project-1/workerPools/workerpool-name".
+            Required. The name of the ``WorkerPool`` to delete. Format:
+            ``projects/{project}/locations/{workerPool}/workerPools/{workerPool}``.
+        etag (str):
+            Optional. If this is provided, it must match
+            the server's etag on the workerpool for the
+            request to be processed.
+        allow_missing (bool):
+            If set to true, and the ``WorkerPool`` is not found, the
+            request will succeed but no action will be taken on the
+            server.
+        validate_only (bool):
+            If set, validate the request and preview the
+            response, but do not actually post it.
     """
 
     name = proto.Field(proto.STRING, number=1,)
+    etag = proto.Field(proto.STRING, number=2,)
+    allow_missing = proto.Field(proto.BOOL, number=3,)
+    validate_only = proto.Field(proto.BOOL, number=4,)
 
 
 class UpdateWorkerPoolRequest(proto.Message):
     r"""Request to update a ``WorkerPool``.
 
     Attributes:
-        name (str):
-            The field will contain name of the resource
-            requested, for example:
-            "projects/project-1/workerPools/workerpool-name".
         worker_pool (google.cloud.devtools.cloudbuild_v1.types.WorkerPool):
-            ``WorkerPool`` resource to update.
+            Required. The ``WorkerPool`` to update.
+
+            The ``name`` field is used to identify the ``WorkerPool`` to
+            update. Format:
+            ``projects/{project}/locations/{location}/workerPools/{workerPool}``.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            A mask specifying which fields in ``worker_pool`` to update.
+        validate_only (bool):
+            If set, validate the request and preview the
+            response, but do not actually post it.
     """
 
-    name = proto.Field(proto.STRING, number=2,)
-    worker_pool = proto.Field(proto.MESSAGE, number=3, message="WorkerPool",)
+    worker_pool = proto.Field(proto.MESSAGE, number=1, message="WorkerPool",)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
+    validate_only = proto.Field(proto.BOOL, number=4,)
 
 
 class ListWorkerPoolsRequest(proto.Message):
-    r"""Request to list ``WorkerPools``.
+    r"""Request to list ``WorkerPool``\ s.
 
     Attributes:
         parent (str):
-            ID of the parent project.
+            Required. The parent of the collection of ``WorkerPools``.
+            Format: ``projects/{project}/locations/{location}``.
+        page_size (int):
+            The maximum number of ``WorkerPool``\ s to return. The
+            service may return fewer than this value. If omitted, the
+            server will use a sensible default.
+        page_token (str):
+            A page token, received from a previous ``ListWorkerPools``
+            call. Provide this to retrieve the subsequent page.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListWorkerPoolsResponse(proto.Message):
@@ -1774,10 +1841,82 @@ class ListWorkerPoolsResponse(proto.Message):
 
     Attributes:
         worker_pools (Sequence[google.cloud.devtools.cloudbuild_v1.types.WorkerPool]):
-            ``WorkerPools`` for the project.
+            ``WorkerPools`` for the specified project.
+        next_page_token (str):
+            Continuation token used to page through large
+            result sets. Provide this value in a subsequent
+            ListWorkerPoolsRequest to return the next page
+            of results.
     """
 
+    @property
+    def raw_page(self):
+        return self
+
     worker_pools = proto.RepeatedField(proto.MESSAGE, number=1, message="WorkerPool",)
+    next_page_token = proto.Field(proto.STRING, number=2,)
+
+
+class CreateWorkerPoolOperationMetadata(proto.Message):
+    r"""Metadata for the ``CreateWorkerPool`` operation.
+
+    Attributes:
+        worker_pool (str):
+            The resource name of the ``WorkerPool`` to create. Format:
+            ``projects/{project}/locations/{location}/workerPools/{worker_pool}``.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Time the operation was created.
+        complete_time (google.protobuf.timestamp_pb2.Timestamp):
+            Time the operation was completed.
+    """
+
+    worker_pool = proto.Field(proto.STRING, number=1,)
+    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    complete_time = proto.Field(
+        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+    )
+
+
+class UpdateWorkerPoolOperationMetadata(proto.Message):
+    r"""Metadata for the ``UpdateWorkerPool`` operation.
+
+    Attributes:
+        worker_pool (str):
+            The resource name of the ``WorkerPool`` being updated.
+            Format:
+            ``projects/{project}/locations/{location}/workerPools/{worker_pool}``.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Time the operation was created.
+        complete_time (google.protobuf.timestamp_pb2.Timestamp):
+            Time the operation was completed.
+    """
+
+    worker_pool = proto.Field(proto.STRING, number=1,)
+    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    complete_time = proto.Field(
+        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+    )
+
+
+class DeleteWorkerPoolOperationMetadata(proto.Message):
+    r"""Metadata for the ``DeleteWorkerPool`` operation.
+
+    Attributes:
+        worker_pool (str):
+            The resource name of the ``WorkerPool`` being deleted.
+            Format:
+            ``projects/{project}/locations/{location}/workerPools/{worker_pool}``.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Time the operation was created.
+        complete_time (google.protobuf.timestamp_pb2.Timestamp):
+            Time the operation was completed.
+    """
+
+    worker_pool = proto.Field(proto.STRING, number=1,)
+    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    complete_time = proto.Field(
+        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

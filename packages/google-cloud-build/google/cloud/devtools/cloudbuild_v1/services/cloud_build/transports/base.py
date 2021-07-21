@@ -424,7 +424,7 @@ class CloudBuildTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloudbuild.CreateWorkerPoolRequest],
-        Union[cloudbuild.WorkerPool, Awaitable[cloudbuild.WorkerPool]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -442,7 +442,7 @@ class CloudBuildTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloudbuild.DeleteWorkerPoolRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -451,7 +451,7 @@ class CloudBuildTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloudbuild.UpdateWorkerPoolRequest],
-        Union[cloudbuild.WorkerPool, Awaitable[cloudbuild.WorkerPool]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

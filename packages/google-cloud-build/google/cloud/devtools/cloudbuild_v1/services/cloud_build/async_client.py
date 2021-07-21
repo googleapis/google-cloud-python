@@ -31,6 +31,8 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.devtools.cloudbuild_v1.services.cloud_build import pagers
 from google.cloud.devtools.cloudbuild_v1.types import cloudbuild
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import CloudBuildTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import CloudBuildGrpcAsyncIOTransport
@@ -59,6 +61,8 @@ class CloudBuildAsyncClient:
     parse_build_trigger_path = staticmethod(CloudBuildClient.parse_build_trigger_path)
     crypto_key_path = staticmethod(CloudBuildClient.crypto_key_path)
     parse_crypto_key_path = staticmethod(CloudBuildClient.parse_crypto_key_path)
+    network_path = staticmethod(CloudBuildClient.network_path)
+    parse_network_path = staticmethod(CloudBuildClient.parse_network_path)
     secret_version_path = staticmethod(CloudBuildClient.secret_version_path)
     parse_secret_version_path = staticmethod(CloudBuildClient.parse_secret_version_path)
     service_account_path = staticmethod(CloudBuildClient.service_account_path)
@@ -69,6 +73,8 @@ class CloudBuildAsyncClient:
     parse_subscription_path = staticmethod(CloudBuildClient.parse_subscription_path)
     topic_path = staticmethod(CloudBuildClient.topic_path)
     parse_topic_path = staticmethod(CloudBuildClient.parse_topic_path)
+    worker_pool_path = staticmethod(CloudBuildClient.worker_pool_path)
+    parse_worker_pool_path = staticmethod(CloudBuildClient.parse_worker_pool_path)
     common_billing_account_path = staticmethod(
         CloudBuildClient.common_billing_account_path
     )
@@ -1281,19 +1287,43 @@ class CloudBuildAsyncClient:
         self,
         request: cloudbuild.CreateWorkerPoolRequest = None,
         *,
+        parent: str = None,
+        worker_pool: cloudbuild.WorkerPool = None,
+        worker_pool_id: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> cloudbuild.WorkerPool:
-        r"""Creates a ``WorkerPool`` to run the builds, and returns the new
-        worker pool.
-
-        This API is experimental.
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a ``WorkerPool``.
 
         Args:
             request (:class:`google.cloud.devtools.cloudbuild_v1.types.CreateWorkerPoolRequest`):
                 The request object. Request to create a new
                 `WorkerPool`.
+            parent (:class:`str`):
+                Required. The parent resource where this worker pool
+                will be created. Format:
+                ``projects/{project}/locations/{location}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            worker_pool (:class:`google.cloud.devtools.cloudbuild_v1.types.WorkerPool`):
+                Required. ``WorkerPool`` resource to create.
+                This corresponds to the ``worker_pool`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            worker_pool_id (:class:`str`):
+                Required. Immutable. The ID to use for the
+                ``WorkerPool``, which will become the final component of
+                the resource name.
+
+                This value should be 1-63 characters, and valid
+                characters are /[a-z][0-9]-/.
+
+                This corresponds to the ``worker_pool_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1301,23 +1331,48 @@ class CloudBuildAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.devtools.cloudbuild_v1.types.WorkerPool:
-                Configuration for a WorkerPool to run
-                the builds.
-                Workers are machines that Cloud Build
-                uses to run your builds. By default, all
-                workers run in a project owned by Cloud
-                Build. To have full control over the
-                workers that execute your builds -- such
-                as enabling them to access private
-                resources on your private network -- you
-                can request Cloud Build to run the
-                workers in your own project by creating
-                a custom workers pool.
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.devtools.cloudbuild_v1.types.WorkerPool`
+                Configuration for a WorkerPool.
+
+                   Cloud Build owns and maintains a pool of workers for
+                   general use and have no access to a project's private
+                   network. By default, builds submitted to Cloud Build
+                   will use a worker from this pool.
+
+                   If your build needs access to resources on a private
+                   network, create and use a WorkerPool to run your
+                   builds. Private WorkerPools give your builds access
+                   to any single VPC network that you administer,
+                   including any on-prem resources connected to that VPC
+                   network. For an overview of private pools, see
+                   [Private pools
+                   overview](\ https://cloud.google.com/build/docs/private-pools/private-pools-overview).
 
         """
         # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, worker_pool, worker_pool_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         request = cloudbuild.CreateWorkerPoolRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if worker_pool is not None:
+            request.worker_pool = worker_pool
+        if worker_pool_id is not None:
+            request.worker_pool_id = worker_pool_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1327,8 +1382,22 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
         # Send the request.
         response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            cloudbuild.WorkerPool,
+            metadata_type=cloudbuild.CreateWorkerPoolOperationMetadata,
+        )
 
         # Done; return the response.
         return response
@@ -1337,18 +1406,25 @@ class CloudBuildAsyncClient:
         self,
         request: cloudbuild.GetWorkerPoolRequest = None,
         *,
+        name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.WorkerPool:
-        r"""Returns information about a ``WorkerPool``.
-
-        This API is experimental.
+        r"""Returns details of a ``WorkerPool``.
 
         Args:
             request (:class:`google.cloud.devtools.cloudbuild_v1.types.GetWorkerPoolRequest`):
                 The request object. Request to get a `WorkerPool` with
                 the specified name.
+            name (:class:`str`):
+                Required. The name of the ``WorkerPool`` to retrieve.
+                Format:
+                ``projects/{project}/locations/{location}/workerPools/{workerPool}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1357,22 +1433,39 @@ class CloudBuildAsyncClient:
 
         Returns:
             google.cloud.devtools.cloudbuild_v1.types.WorkerPool:
-                Configuration for a WorkerPool to run
-                the builds.
-                Workers are machines that Cloud Build
-                uses to run your builds. By default, all
-                workers run in a project owned by Cloud
-                Build. To have full control over the
-                workers that execute your builds -- such
-                as enabling them to access private
-                resources on your private network -- you
-                can request Cloud Build to run the
-                workers in your own project by creating
-                a custom workers pool.
+                Configuration for a WorkerPool.
+
+                   Cloud Build owns and maintains a pool of workers for
+                   general use and have no access to a project's private
+                   network. By default, builds submitted to Cloud Build
+                   will use a worker from this pool.
+
+                   If your build needs access to resources on a private
+                   network, create and use a WorkerPool to run your
+                   builds. Private WorkerPools give your builds access
+                   to any single VPC network that you administer,
+                   including any on-prem resources connected to that VPC
+                   network. For an overview of private pools, see
+                   [Private pools
+                   overview](\ https://cloud.google.com/build/docs/private-pools/private-pools-overview).
 
         """
         # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         request = cloudbuild.GetWorkerPoolRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1392,6 +1485,12 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
         # Send the request.
         response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
@@ -1402,25 +1501,65 @@ class CloudBuildAsyncClient:
         self,
         request: cloudbuild.DeleteWorkerPoolRequest = None,
         *,
+        name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes a ``WorkerPool`` by its project ID and WorkerPool name.
-
-        This API is experimental.
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes a ``WorkerPool``.
 
         Args:
             request (:class:`google.cloud.devtools.cloudbuild_v1.types.DeleteWorkerPoolRequest`):
                 The request object. Request to delete a `WorkerPool`.
+            name (:class:`str`):
+                Required. The name of the ``WorkerPool`` to delete.
+                Format:
+                ``projects/{project}/locations/{workerPool}/workerPools/{workerPool}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+                   The JSON representation for Empty is empty JSON
+                   object {}.
+
         """
         # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         request = cloudbuild.DeleteWorkerPoolRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1430,26 +1569,58 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
-        # Send the request.
-        await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=cloudbuild.DeleteWorkerPoolOperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
 
     async def update_worker_pool(
         self,
         request: cloudbuild.UpdateWorkerPoolRequest = None,
         *,
+        worker_pool: cloudbuild.WorkerPool = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> cloudbuild.WorkerPool:
-        r"""Update a ``WorkerPool``.
-
-        This API is experimental.
+    ) -> operation_async.AsyncOperation:
+        r"""Updates a ``WorkerPool``.
 
         Args:
             request (:class:`google.cloud.devtools.cloudbuild_v1.types.UpdateWorkerPoolRequest`):
                 The request object. Request to update a `WorkerPool`.
+            worker_pool (:class:`google.cloud.devtools.cloudbuild_v1.types.WorkerPool`):
+                Required. The ``WorkerPool`` to update.
+
+                The ``name`` field is used to identify the
+                ``WorkerPool`` to update. Format:
+                ``projects/{project}/locations/{location}/workerPools/{workerPool}``.
+
+                This corresponds to the ``worker_pool`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                A mask specifying which fields in ``worker_pool`` to
+                update.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1457,23 +1628,46 @@ class CloudBuildAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.devtools.cloudbuild_v1.types.WorkerPool:
-                Configuration for a WorkerPool to run
-                the builds.
-                Workers are machines that Cloud Build
-                uses to run your builds. By default, all
-                workers run in a project owned by Cloud
-                Build. To have full control over the
-                workers that execute your builds -- such
-                as enabling them to access private
-                resources on your private network -- you
-                can request Cloud Build to run the
-                workers in your own project by creating
-                a custom workers pool.
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.devtools.cloudbuild_v1.types.WorkerPool`
+                Configuration for a WorkerPool.
+
+                   Cloud Build owns and maintains a pool of workers for
+                   general use and have no access to a project's private
+                   network. By default, builds submitted to Cloud Build
+                   will use a worker from this pool.
+
+                   If your build needs access to resources on a private
+                   network, create and use a WorkerPool to run your
+                   builds. Private WorkerPools give your builds access
+                   to any single VPC network that you administer,
+                   including any on-prem resources connected to that VPC
+                   network. For an overview of private pools, see
+                   [Private pools
+                   overview](\ https://cloud.google.com/build/docs/private-pools/private-pools-overview).
 
         """
         # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([worker_pool, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         request = cloudbuild.UpdateWorkerPoolRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if worker_pool is not None:
+            request.worker_pool = worker_pool
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1483,8 +1677,24 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("worker_pool.name", request.worker_pool.name),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            cloudbuild.WorkerPool,
+            metadata_type=cloudbuild.UpdateWorkerPoolOperationMetadata,
+        )
 
         # Done; return the response.
         return response
@@ -1493,17 +1703,24 @@ class CloudBuildAsyncClient:
         self,
         request: cloudbuild.ListWorkerPoolsRequest = None,
         *,
+        parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> cloudbuild.ListWorkerPoolsResponse:
-        r"""List project's ``WorkerPools``.
-
-        This API is experimental.
+    ) -> pagers.ListWorkerPoolsAsyncPager:
+        r"""Lists ``WorkerPool``\ s.
 
         Args:
             request (:class:`google.cloud.devtools.cloudbuild_v1.types.ListWorkerPoolsRequest`):
-                The request object. Request to list `WorkerPools`.
+                The request object. Request to list `WorkerPool`\s.
+            parent (:class:`str`):
+                Required. The parent of the collection of
+                ``WorkerPools``. Format:
+                ``projects/{project}/locations/{location}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1511,11 +1728,29 @@ class CloudBuildAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.devtools.cloudbuild_v1.types.ListWorkerPoolsResponse:
+            google.cloud.devtools.cloudbuild_v1.services.cloud_build.pagers.ListWorkerPoolsAsyncPager:
                 Response containing existing WorkerPools.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
         """
         # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         request = cloudbuild.ListWorkerPoolsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1535,8 +1770,20 @@ class CloudBuildAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
         # Send the request.
         response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListWorkerPoolsAsyncPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

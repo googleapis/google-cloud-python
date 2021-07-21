@@ -28,8 +28,10 @@ from .types.cloudbuild import BuiltImage
 from .types.cloudbuild import CancelBuildRequest
 from .types.cloudbuild import CreateBuildRequest
 from .types.cloudbuild import CreateBuildTriggerRequest
+from .types.cloudbuild import CreateWorkerPoolOperationMetadata
 from .types.cloudbuild import CreateWorkerPoolRequest
 from .types.cloudbuild import DeleteBuildTriggerRequest
+from .types.cloudbuild import DeleteWorkerPoolOperationMetadata
 from .types.cloudbuild import DeleteWorkerPoolRequest
 from .types.cloudbuild import FileHashes
 from .types.cloudbuild import GetBuildRequest
@@ -44,7 +46,7 @@ from .types.cloudbuild import ListBuildTriggersRequest
 from .types.cloudbuild import ListBuildTriggersResponse
 from .types.cloudbuild import ListWorkerPoolsRequest
 from .types.cloudbuild import ListWorkerPoolsResponse
-from .types.cloudbuild import Network
+from .types.cloudbuild import PrivatePoolV1Config
 from .types.cloudbuild import PubsubConfig
 from .types.cloudbuild import PullRequestFilter
 from .types.cloudbuild import PushFilter
@@ -63,10 +65,10 @@ from .types.cloudbuild import StorageSource
 from .types.cloudbuild import StorageSourceManifest
 from .types.cloudbuild import TimeSpan
 from .types.cloudbuild import UpdateBuildTriggerRequest
+from .types.cloudbuild import UpdateWorkerPoolOperationMetadata
 from .types.cloudbuild import UpdateWorkerPoolRequest
 from .types.cloudbuild import Volume
 from .types.cloudbuild import WebhookConfig
-from .types.cloudbuild import WorkerConfig
 from .types.cloudbuild import WorkerPool
 
 __all__ = (
@@ -83,8 +85,10 @@ __all__ = (
     "CloudBuildClient",
     "CreateBuildRequest",
     "CreateBuildTriggerRequest",
+    "CreateWorkerPoolOperationMetadata",
     "CreateWorkerPoolRequest",
     "DeleteBuildTriggerRequest",
+    "DeleteWorkerPoolOperationMetadata",
     "DeleteWorkerPoolRequest",
     "FileHashes",
     "GetBuildRequest",
@@ -99,7 +103,7 @@ __all__ = (
     "ListBuildsResponse",
     "ListWorkerPoolsRequest",
     "ListWorkerPoolsResponse",
-    "Network",
+    "PrivatePoolV1Config",
     "PubsubConfig",
     "PullRequestFilter",
     "PushFilter",
@@ -118,9 +122,9 @@ __all__ = (
     "StorageSourceManifest",
     "TimeSpan",
     "UpdateBuildTriggerRequest",
+    "UpdateWorkerPoolOperationMetadata",
     "UpdateWorkerPoolRequest",
     "Volume",
     "WebhookConfig",
-    "WorkerConfig",
     "WorkerPool",
 )

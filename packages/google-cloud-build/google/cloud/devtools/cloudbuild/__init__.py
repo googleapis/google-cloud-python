@@ -34,9 +34,15 @@ from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import CreateBuildRequ
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
     CreateBuildTriggerRequest,
 )
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
+    CreateWorkerPoolOperationMetadata,
+)
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import CreateWorkerPoolRequest
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
     DeleteBuildTriggerRequest,
+)
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
+    DeleteWorkerPoolOperationMetadata,
 )
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import DeleteWorkerPoolRequest
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import FileHashes
@@ -56,7 +62,7 @@ from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
 )
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import ListWorkerPoolsRequest
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import ListWorkerPoolsResponse
-from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Network
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import PrivatePoolV1Config
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import PubsubConfig
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import PullRequestFilter
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import PushFilter
@@ -81,10 +87,12 @@ from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import TimeSpan
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
     UpdateBuildTriggerRequest,
 )
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
+    UpdateWorkerPoolOperationMetadata,
+)
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import UpdateWorkerPoolRequest
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Volume
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import WebhookConfig
-from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import WorkerConfig
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import WorkerPool
 
 __all__ = (
@@ -101,8 +109,10 @@ __all__ = (
     "CancelBuildRequest",
     "CreateBuildRequest",
     "CreateBuildTriggerRequest",
+    "CreateWorkerPoolOperationMetadata",
     "CreateWorkerPoolRequest",
     "DeleteBuildTriggerRequest",
+    "DeleteWorkerPoolOperationMetadata",
     "DeleteWorkerPoolRequest",
     "FileHashes",
     "GetBuildRequest",
@@ -117,7 +127,7 @@ __all__ = (
     "ListBuildTriggersResponse",
     "ListWorkerPoolsRequest",
     "ListWorkerPoolsResponse",
-    "Network",
+    "PrivatePoolV1Config",
     "PubsubConfig",
     "PullRequestFilter",
     "PushFilter",
@@ -136,9 +146,9 @@ __all__ = (
     "StorageSourceManifest",
     "TimeSpan",
     "UpdateBuildTriggerRequest",
+    "UpdateWorkerPoolOperationMetadata",
     "UpdateWorkerPoolRequest",
     "Volume",
     "WebhookConfig",
-    "WorkerConfig",
     "WorkerPool",
 )
