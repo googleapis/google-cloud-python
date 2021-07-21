@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.5.2](https://www.github.com/googleapis/python-media-translation/compare/v0.5.1...v0.5.2) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#86](https://www.github.com/googleapis/python-media-translation/issues/86)) ([8f9f974](https://www.github.com/googleapis/python-media-translation/commit/8f9f974f5d768e316d32ce46eabd5e684940bd69))
+
 ### [0.5.1](https://www.github.com/googleapis/python-media-translation/compare/v0.5.0...v0.5.1) (2021-07-19)
 
 
