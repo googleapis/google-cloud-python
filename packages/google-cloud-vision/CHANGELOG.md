@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+### [2.4.1](https://www.github.com/googleapis/python-vision/compare/v2.4.0...v2.4.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#200](https://www.github.com/googleapis/python-vision/issues/200)) ([1409d36](https://www.github.com/googleapis/python-vision/commit/1409d366835f3e12bc5b26c09123b2e70f9dcb70))
+
 ## [2.4.0](https://www.github.com/googleapis/python-vision/compare/v2.3.2...v2.4.0) (2021-07-12)
 
 
