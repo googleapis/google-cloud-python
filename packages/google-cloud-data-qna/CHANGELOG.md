@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-data-qna/compare/v0.3.0...v0.3.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#66](https://www.github.com/googleapis/python-data-qna/issues/66)) ([c0cddbb](https://www.github.com/googleapis/python-data-qna/commit/c0cddbb98a51c1284876f8a132cec1ffdb4b310e))
+
 ## [0.3.0](https://www.github.com/googleapis/python-data-qna/compare/v0.2.1...v0.3.0) (2021-06-30)
 
 
