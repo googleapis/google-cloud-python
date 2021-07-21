@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+### [2.2.1](https://www.github.com/googleapis/python-language/compare/v2.2.0...v2.2.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#160](https://www.github.com/googleapis/python-language/issues/160)) ([f8f9092](https://www.github.com/googleapis/python-language/commit/f8f90924ca4332016d5bbd9ed131cc82f07c7f9f))
+
 ## [2.2.0](https://www.github.com/googleapis/python-language/compare/v2.1.0...v2.2.0) (2021-07-01)
 
 
