@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-security-private-ca/compare/v1.0.1...v1.0.2) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#83](https://www.github.com/googleapis/python-security-private-ca/issues/83)) ([cd5390c](https://www.github.com/googleapis/python-security-private-ca/commit/cd5390cf5fff50419b000c71431d8ede0de35833))
+
 ### [1.0.1](https://www.github.com/googleapis/python-security-private-ca/compare/v1.0.0...v1.0.1) (2021-07-16)
 
 
