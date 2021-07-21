@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+### [3.3.1](https://www.github.com/googleapis/python-translate/compare/v3.3.0...v3.3.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#205](https://www.github.com/googleapis/python-translate/issues/205)) ([3a11025](https://www.github.com/googleapis/python-translate/commit/3a1102560ab70f8a7021f3b4f024e3e9feb134fe))
+
 ## [3.3.0](https://www.github.com/googleapis/python-translate/compare/v3.2.1...v3.3.0) (2021-07-19)
 
 
