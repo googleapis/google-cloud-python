@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+### [2.2.1](https://www.github.com/googleapis/python-redis/compare/v2.2.0...v2.2.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#97](https://www.github.com/googleapis/python-redis/issues/97)) ([5fcec51](https://www.github.com/googleapis/python-redis/commit/5fcec51612b8a22ceb7e121e23b9a29ece60b130))
+
 ## [2.2.0](https://www.github.com/googleapis/python-redis/compare/v2.1.1...v2.2.0) (2021-07-01)
 
 
