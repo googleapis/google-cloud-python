@@ -25,7 +25,10 @@ description = "App Engine Admin API client library"
 release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-appengine-admin"
 dependencies = [
-    "google-api-core[grpc] >= 1.26.0, <2.0.0dev",
+    # NOTE: Maintainers, please do not require google-api-core>=2.x.x
+    # Until this issue is closed
+    # https://github.com/googleapis/google-cloud-python/issues/10566
+    "google-api-core[grpc] >= 1.26.0, <3.0.0dev",
     "proto-plus >= 1.18.1",
     "packaging >= 14.3",
     "grpc-google-iam-v1",
