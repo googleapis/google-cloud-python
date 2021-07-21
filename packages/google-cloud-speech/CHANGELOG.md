@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+### [2.5.1](https://www.github.com/googleapis/python-speech/compare/v2.5.0...v2.5.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#210](https://www.github.com/googleapis/python-speech/issues/210)) ([44d3f5b](https://www.github.com/googleapis/python-speech/commit/44d3f5b221955f196c41f9fdb74f2dbc0ea1c83d))
+
 ## [2.5.0](https://www.github.com/googleapis/python-speech/compare/v2.4.1...v2.5.0) (2021-07-01)
 
 
