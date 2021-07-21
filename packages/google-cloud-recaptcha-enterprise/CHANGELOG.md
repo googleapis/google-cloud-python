@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.4.0...v0.4.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#96](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/96)) ([dafb540](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/dafb540844946190af288039b745f77ac08d90ab))
+
 ## [0.4.0](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.3.3...v0.4.0) (2021-07-12)
 
 
