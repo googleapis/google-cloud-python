@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-api-gateway/compare/v1.0.1...v1.0.2) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#47](https://www.github.com/googleapis/python-api-gateway/issues/47)) ([17aed88](https://www.github.com/googleapis/python-api-gateway/commit/17aed8856fd9143e141ffc5c6ff51c0fc8937743))
+
 ### [1.0.1](https://www.github.com/googleapis/python-api-gateway/compare/v1.0.0...v1.0.1) (2021-07-12)
 
 
