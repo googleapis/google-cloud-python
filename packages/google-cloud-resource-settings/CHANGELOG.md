@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-resource-settings/compare/v0.3.0...v0.3.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#18](https://www.github.com/googleapis/python-resource-settings/issues/18)) ([2ea4dd4](https://www.github.com/googleapis/python-resource-settings/commit/2ea4dd42a6c8b2420a1819193bfd8d0941efe8e2))
+
 ## [0.3.0](https://www.github.com/googleapis/python-resource-settings/compare/v0.2.0...v0.3.0) (2021-07-16)
 
 
