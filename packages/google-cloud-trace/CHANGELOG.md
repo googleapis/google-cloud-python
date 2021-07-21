@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+### [1.3.1](https://www.github.com/googleapis/python-trace/compare/v1.3.0...v1.3.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#108](https://www.github.com/googleapis/python-trace/issues/108)) ([63a9999](https://www.github.com/googleapis/python-trace/commit/63a9999ee62a956c3df5516bccaa942e53f999db))
+
 ## [1.3.0](https://www.github.com/googleapis/python-trace/compare/v1.2.0...v1.3.0) (2021-07-01)
 
 
