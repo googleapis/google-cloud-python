@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-service-management/compare/v1.0.0...v1.0.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#36](https://www.github.com/googleapis/python-service-management/issues/36)) ([84e2ee4](https://www.github.com/googleapis/python-service-management/commit/84e2ee48eaf4605bb445ac01479c4aada420679a))
+
 ## [1.0.0](https://www.github.com/googleapis/python-service-management/compare/v0.1.0...v1.0.0) (2021-07-10)
 
 
