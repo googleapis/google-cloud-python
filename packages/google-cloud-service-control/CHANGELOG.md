@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-service-control/compare/v1.0.0...v1.0.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#47](https://www.github.com/googleapis/python-service-control/issues/47)) ([5dd88d4](https://www.github.com/googleapis/python-service-control/commit/5dd88d43aae715f8a899a6dece2a5fe25863e7a9))
+
 ## [1.0.0](https://www.github.com/googleapis/python-service-control/compare/v0.3.0...v1.0.0) (2021-07-18)
 
 
