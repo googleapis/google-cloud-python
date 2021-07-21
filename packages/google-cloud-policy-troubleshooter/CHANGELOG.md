@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/python-policy-troubleshooter/compare/v1.1.0...v1.1.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#43](https://www.github.com/googleapis/python-policy-troubleshooter/issues/43)) ([27bf301](https://www.github.com/googleapis/python-policy-troubleshooter/commit/27bf301320a1aad517fd2c9ea42c9b079e4a5cc4))
+
 ## [1.1.0](https://www.github.com/googleapis/python-policy-troubleshooter/compare/v1.0.0...v1.1.0) (2021-07-14)
 
 
