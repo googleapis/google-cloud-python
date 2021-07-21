@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-eventarc/compare/v0.2.0...v0.2.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#16](https://www.github.com/googleapis/python-eventarc/issues/16)) ([74277de](https://www.github.com/googleapis/python-eventarc/commit/74277dee9067a109e0a76c5fd9fbfd7cac696c80))
+
 ## [0.2.0](https://www.github.com/googleapis/python-eventarc/compare/v0.1.0...v0.2.0) (2021-07-14)
 
 
