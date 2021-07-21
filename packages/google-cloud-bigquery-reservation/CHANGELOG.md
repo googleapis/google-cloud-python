@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.2.0...v1.2.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#131](https://www.github.com/googleapis/python-bigquery-reservation/issues/131)) ([9a011b6](https://www.github.com/googleapis/python-bigquery-reservation/commit/9a011b604ffc2256b89d2fd6909a7219c0bcc88b))
+
 ## [1.2.0](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.1.0...v1.2.0) (2021-06-30)
 
 
