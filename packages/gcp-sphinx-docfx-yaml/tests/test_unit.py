@@ -38,30 +38,41 @@ class TestGenerate(unittest.TestCase):
 
         want_file = open('tests/yaml_post.yaml', 'r')
         yaml_want = load(want_file, Loader=Loader)
+        disambiguated_names_want = {
+            'google.cloud.spanner_admin_database_v1.types': 'spanner_admin_database_v1.types',
+            'google.cloud.spanner_admin_instance_v1.types': 'spanner_admin_instance_v1.types', 
+            'google.cloud.spanner_v1.types': 'spanner_v1.types'
+        }
 
         test_file = open('tests/yaml_pre.yaml', 'r')
         yaml_got = load(test_file, Loader=Loader)
-        disambiguate_toc_name(yaml_got)
+        disambiguated_names_got = disambiguate_toc_name(yaml_got)
 
         want_file.close()
         test_file.close()
 
         self.assertEqual(yaml_want, yaml_got)
+        self.assertEqual(disambiguated_names_want, disambiguated_names_got)
 
 
     def test_disambiguate_toc_name_duplicate(self):
 
         want_file = open('tests/yaml_post_duplicate.yaml', 'r')
         yaml_want = load(want_file, Loader=Loader)
-
+        disambiguated_names_want = {
+            'google.api_core.client_info': 'client_info', 
+            'google.api_core.gapic_v1.client_info': 'gapic_v1.client_info'
+        }
+        
         test_file = open('tests/yaml_pre_duplicate.yaml', 'r')
         yaml_got = load(test_file, Loader=Loader)
-        disambiguate_toc_name(yaml_got)
+        disambiguated_names_got = disambiguate_toc_name(yaml_got)
 
         want_file.close()
         test_file.close()
 
         self.assertEqual(yaml_want, yaml_got)
+        self.assertEqual(disambiguated_names_want, disambiguated_names_got)
 
 
     def test_reference_in_summary(self):

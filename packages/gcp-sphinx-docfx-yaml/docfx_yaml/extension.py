@@ -813,8 +813,12 @@ def find_unique_name(package_name, entries):
     return [package_name[-1]]
 
 # Used to disambiguate names that have same entries.
+# Returns a dictionary of names that are disambiguated in the form of:
+# {uidname: disambiguated_name}
 def disambiguate_toc_name(toc_yaml):
     name_entries = {}
+    disambiguated_names = {}
+
     for module in toc_yaml:
         module_name = module['name']
         if module_name not in name_entries:
@@ -833,13 +837,17 @@ def disambiguate_toc_name(toc_yaml):
             name_entries[module_name][module_name] = 1
 
         if 'items' in module:
-            disambiguate_toc_name(module['items'])
+            # Update the dictionary of dismabiguated names
+            disambiguated_names.update(disambiguate_toc_name(module['items']))
 
     for module in toc_yaml:
         module_name = module['name']
         # Check if there are multiple entires of module['name'], disambiguate if needed.
         if name_entries[module_name][module_name] > 1:
             module['name'] = ".".join(find_unique_name(module['uidname'].split("."), name_entries[module_name]))
+            disambiguated_names[module['uidname']] = module['name']
+
+    return disambiguated_names
 
 def build_finished(app, exception):
     """
@@ -890,6 +898,9 @@ def build_finished(app, exception):
     # Used to record filenames dumped to avoid confliction
     # caused by Windows case insensitive file system
     file_name_set = set()
+
+    # Used to disambiguate entry names
+    yaml_map = {}
 
     # Order matters here, we need modules before lower level classes,
     # so that we can make sure to inject the TOC properly
@@ -1020,33 +1031,7 @@ def build_finished(app, exception):
                     obj['source']['remote']['repo'] == 'https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation'):
                         del(obj['source'])
 
-            # Output file
-            if uid.lower() in file_name_set:
-                filename = uid + "(%s)" % app.env.docfx_info_uid_types[uid]
-            else:
-                filename = uid
-
-            out_file = os.path.join(normalized_outdir, '%s.yml' % filename)
-            ensuredir(os.path.dirname(out_file))
-            if app.verbosity >= 1:
-                app.info(bold('[docfx_yaml] ') + darkgreen('Outputting %s' % filename))
-
-            with open(out_file, 'w') as out_file_obj:
-                out_file_obj.write('### YamlMime:UniversalReference\n')
-                try:
-                    dump(
-                        {
-                            'items': yaml_data,
-                            'references': references,
-                            'api_name': [],  # Hack around docfx YAML
-                        },
-                        out_file_obj,
-                        default_flow_style=False
-                    )
-                except Exception as e:
-                    raise ValueError("Unable to dump object\n{0}".format(yaml_data)) from e
-
-            file_name_set.add(filename)
+            yaml_map[uid] = [yaml_data, references]
            
             # Parse the name of the object.
             # Some types will need additional parsing to de-duplicate their names and contain
@@ -1088,7 +1073,7 @@ def build_finished(app, exception):
         raise RuntimeError("No documentation for this module.")
 
     # Perform additional disambiguation of the name
-    disambiguate_toc_name(toc_yaml)
+    disambiguated_names = disambiguate_toc_name(toc_yaml)
 
     # Keeping uidname field carrys over onto the toc.yaml files, we need to
     # be keep using them but don't need them in the actual file
@@ -1139,6 +1124,45 @@ def build_finished(app, exception):
             default_flow_style=False
         )
 
+    # Output files
+    for uid, data in iter(yaml_map.items()):
+
+        for yaml_item in data:
+            for obj in yaml_item:
+                # If the entry was disambiguated, update here:
+                obj_full_name = obj['fullName']
+                if disambiguated_names.get(obj_full_name):
+                    obj['name'] = disambiguated_names[obj_full_name]
+      
+        # data is formatted as [yaml_data, references]
+        yaml_data, references = data
+
+        if uid.lower() in file_name_set:
+            filename = uid + "(%s)" % app.env.docfx_info_uid_types[uid]
+        else:
+            filename = uid
+
+        out_file = os.path.join(normalized_outdir, '%s.yml' % filename)
+        ensuredir(os.path.dirname(out_file))
+        if app.verbosity >= 1:
+            app.info(bold('[docfx_yaml] ') + darkgreen('Outputting %s' % filename))
+
+        with open(out_file, 'w') as out_file_obj:
+            out_file_obj.write('### YamlMime:UniversalReference\n')
+            try:
+                dump(
+                    {
+                        'items': yaml_data,
+                        'references': references,
+                        'api_name': [],  # Hack around docfx YAML
+                    },
+                    out_file_obj,
+                    default_flow_style=False
+                )
+            except Exception as e:
+                raise ValueError("Unable to dump object\n{0}".format(yaml_data)) from e
+
+        file_name_set.add(filename)
 
 def missing_reference(app, env, node, contnode):
     reftarget = ''
