@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-shell/compare/v0.2.0...v0.2.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#16](https://www.github.com/googleapis/python-shell/issues/16)) ([61b6123](https://www.github.com/googleapis/python-shell/commit/61b61231accd865e69f3a3b097e1c1c1a755f3bc))
+
 ## [0.2.0](https://www.github.com/googleapis/python-shell/compare/v0.1.0...v0.2.0) (2021-07-01)
 
 
