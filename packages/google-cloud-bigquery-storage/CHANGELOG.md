@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+### [2.6.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.6.0...v2.6.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#240](https://www.github.com/googleapis/python-bigquery-storage/issues/240)) ([8f848e1](https://www.github.com/googleapis/python-bigquery-storage/commit/8f848e18379085160492cdd2d12dc8de50a46c8e))
+
+
+### Documentation
+
+* pandas DataFrame samples are more standalone ([#224](https://www.github.com/googleapis/python-bigquery-storage/issues/224)) ([4026997](https://www.github.com/googleapis/python-bigquery-storage/commit/4026997d7a286b63ed2b969c0bd49de59635326d))
+
 ## [2.6.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.5.0...v2.6.0) (2021-07-09)
 
 
