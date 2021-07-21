@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.0...v0.2.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#21](https://www.github.com/googleapis/python-private-catalog/issues/21)) ([1d61588](https://www.github.com/googleapis/python-private-catalog/commit/1d61588c38ac7fc961e207283f0f9acf58b3b355))
+
 ## [0.2.0](https://www.github.com/googleapis/python-private-catalog/compare/v0.1.1...v0.2.0) (2021-07-14)
 
 
