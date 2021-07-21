@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/googleapis/python-os-config/compare/v1.3.0...v1.3.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#96](https://www.github.com/googleapis/python-os-config/issues/96)) ([022e149](https://www.github.com/googleapis/python-os-config/commit/022e149322e719465f1b0b66850def2b94c42eb1))
+
 ## [1.3.0](https://www.github.com/googleapis/python-os-config/compare/v1.2.0...v1.3.0) (2021-07-14)
 
 
