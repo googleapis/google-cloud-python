@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.2.0...v1.2.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#97](https://www.github.com/googleapis/python-bigquery-connection/issues/97)) ([11e1214](https://www.github.com/googleapis/python-bigquery-connection/commit/11e12147753b04f68811ec9144d59c0fc8b15530))
+
 ## [1.2.0](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.1.1...v1.2.0) (2021-07-13)
 
 
