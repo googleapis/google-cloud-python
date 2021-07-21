@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.2](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.1...v0.3.2) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#54](https://www.github.com/googleapis/python-artifact-registry/issues/54)) ([b171295](https://www.github.com/googleapis/python-artifact-registry/commit/b171295c19c0e29025aad08975ceb9a8c9aac66c))
+
 ### [0.3.1](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.0...v0.3.1) (2021-06-30)
 
 
