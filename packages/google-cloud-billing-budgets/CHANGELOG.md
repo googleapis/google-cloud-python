@@ -1,4 +1,11 @@
 # Changelog
+### [1.4.1](https://www.github.com/googleapis/python-billingbudgets/compare/v1.4.0...v1.4.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#116](https://www.github.com/googleapis/python-billingbudgets/issues/116)) ([ac1ec98](https://www.github.com/googleapis/python-billingbudgets/commit/ac1ec98c77ba2f18d7e2d9aa10c4cb9b7367216e))
+
 ## [1.4.0](https://www.github.com/googleapis/python-billingbudgets/compare/v1.3.0...v1.4.0) (2021-07-12)
 
 
