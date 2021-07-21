@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+### [3.2.1](https://www.github.com/googleapis/python-dlp/compare/v3.2.0...v3.2.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#209](https://www.github.com/googleapis/python-dlp/issues/209)) ([a016e6b](https://www.github.com/googleapis/python-dlp/commit/a016e6bd69a04b1e68efe48dd77493bd5267fbe5))
+
 ## [3.2.0](https://www.github.com/googleapis/python-dlp/compare/v3.1.1...v3.2.0) (2021-07-12)
 
 
