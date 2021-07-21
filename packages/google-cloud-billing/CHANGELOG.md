@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/googleapis/python-billing/compare/v1.3.0...v1.3.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#96](https://www.github.com/googleapis/python-billing/issues/96)) ([a9e5368](https://www.github.com/googleapis/python-billing/commit/a9e536849aea8fe4ba513cd5503c275c4a7db880))
+
 ## [1.3.0](https://www.github.com/googleapis/python-billing/compare/v1.2.1...v1.3.0) (2021-07-01)
 
 
