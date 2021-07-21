@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+### [2.4.1](https://www.github.com/googleapis/python-kms/compare/v2.4.0...v2.4.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#143](https://www.github.com/googleapis/python-kms/issues/143)) ([c1f33e1](https://www.github.com/googleapis/python-kms/commit/c1f33e1844dfe2bca4b03d9ad29195381b5c0fd8))
+
 ## [2.4.0](https://www.github.com/googleapis/python-kms/compare/v2.3.0...v2.4.0) (2021-07-12)
 
 
