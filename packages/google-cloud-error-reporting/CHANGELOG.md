@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+### [1.2.1](https://www.github.com/googleapis/python-error-reporting/compare/v1.2.0...v1.2.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#150](https://www.github.com/googleapis/python-error-reporting/issues/150)) ([1c87673](https://www.github.com/googleapis/python-error-reporting/commit/1c876738b0bdca1b2bd65d78fa541846b0474cfa))
+
 ## [1.2.0](https://www.github.com/googleapis/python-error-reporting/compare/v1.1.2...v1.2.0) (2021-07-01)
 
 
