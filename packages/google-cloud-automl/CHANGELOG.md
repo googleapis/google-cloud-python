@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+### [2.4.1](https://www.github.com/googleapis/python-automl/compare/v2.4.0...v2.4.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#209](https://www.github.com/googleapis/python-automl/issues/209)) ([2cf09fa](https://www.github.com/googleapis/python-automl/commit/2cf09fa43fa62c340bfea3998c41184e191cbf81))
+
 ## [2.4.0](https://www.github.com/googleapis/python-automl/compare/v2.3.0...v2.4.0) (2021-07-12)
 
 
