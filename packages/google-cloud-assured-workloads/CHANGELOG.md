@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-assured-workloads/compare/v0.4.0...v0.4.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#59](https://www.github.com/googleapis/python-assured-workloads/issues/59)) ([5113968](https://www.github.com/googleapis/python-assured-workloads/commit/5113968fa3e779a1e1d69f3642d9cd2f7ebcbe91))
+
 ## [0.4.0](https://www.github.com/googleapis/python-assured-workloads/compare/v0.3.1...v0.4.0) (2021-06-30)
 
 
