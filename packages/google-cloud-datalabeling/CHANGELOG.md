@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+### [1.2.1](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.0...v1.2.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#123](https://www.github.com/googleapis/python-datalabeling/issues/123)) ([d5cd5da](https://www.github.com/googleapis/python-datalabeling/commit/d5cd5daebf98404e57f43fc910f7bb478d910044))
+
 ## [1.2.0](https://www.github.com/googleapis/python-datalabeling/compare/v1.1.0...v1.2.0) (2021-07-12)
 
 
