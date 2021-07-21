@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.3](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.2...v0.1.3) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#18](https://www.github.com/googleapis/python-appengine-logging/issues/18)) ([6f49270](https://www.github.com/googleapis/python-appengine-logging/commit/6f492709a55926c7b993da7bb26469fc0bf79128))
+
 ### [0.1.2](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.1...v0.1.2) (2021-07-14)
 
 
