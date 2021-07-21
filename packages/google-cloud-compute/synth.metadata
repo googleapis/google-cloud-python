@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-compute.git",
-        "sha": "ce057e7b80baca7ef577ee1495ba034cdb3a491a"
+        "sha": "1163f2bb15f0e042bdd9562a31ad2ac7f39e3536"
       }
     },
     {
@@ -42,7 +42,6 @@
     ".kokoro/continuous/common.cfg",
     ".kokoro/continuous/continuous.cfg",
     ".kokoro/docker/docs/Dockerfile",
-    ".kokoro/docker/docs/fetch_gpg_keys.sh",
     ".kokoro/docs/common.cfg",
     ".kokoro/docs/docs-presubmit.cfg",
     ".kokoro/docs/docs.cfg",
@@ -72,6 +71,11 @@
     ".kokoro/samples/python3.8/periodic-head.cfg",
     ".kokoro/samples/python3.8/periodic.cfg",
     ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/samples/python3.9/common.cfg",
+    ".kokoro/samples/python3.9/continuous.cfg",
+    ".kokoro/samples/python3.9/periodic-head.cfg",
+    ".kokoro/samples/python3.9/periodic.cfg",
+    ".kokoro/samples/python3.9/presubmit.cfg",
     ".kokoro/test-samples-against-head.sh",
     ".kokoro/test-samples-impl.sh",
     ".kokoro/test-samples.sh",
@@ -83,6 +87,7 @@
     "CONTRIBUTING.rst",
     "LICENSE",
     "MANIFEST.in",
+    "SECURITY.md",
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/compute_v1/accelerator_types.rst",
@@ -644,6 +649,7 @@
     "mypy.ini",
     "noxfile.py",
     "renovate.json",
+    "samples/snippets/noxfile.py",
     "scripts/decrypt-secrets.sh",
     "scripts/readme-gen/readme_gen.py",
     "scripts/readme-gen/templates/README.tmpl.rst",
