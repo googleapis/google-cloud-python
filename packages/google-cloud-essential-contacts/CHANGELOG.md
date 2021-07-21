@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.0...v0.2.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#22](https://www.github.com/googleapis/python-essential-contacts/issues/22)) ([926e1ea](https://www.github.com/googleapis/python-essential-contacts/commit/926e1ea935ada48c24cef48df201e279e692e97a))
+
 ## [0.2.0](https://www.github.com/googleapis/python-essential-contacts/compare/v0.1.1...v0.2.0) (2021-07-14)
 
 
