@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+### [3.2.1](https://www.github.com/googleapis/python-asset/compare/v3.2.0...v3.2.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#234](https://www.github.com/googleapis/python-asset/issues/234)) ([0687c84](https://www.github.com/googleapis/python-asset/commit/0687c843a2bca03ddd4671dfe2b40863dbba3fee))
+
 ## [3.2.0](https://www.github.com/googleapis/python-asset/compare/v3.1.0...v3.2.0) (2021-07-12)
 
 
