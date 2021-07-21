@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+### [2.3.1](https://www.github.com/googleapis/python-recommender/compare/v2.3.0...v2.3.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#109](https://www.github.com/googleapis/python-recommender/issues/109)) ([c0979ca](https://www.github.com/googleapis/python-recommender/commit/c0979caf8d3d33ed1b914907b51c3647addea2da))
+
 ## [2.3.0](https://www.github.com/googleapis/python-recommender/compare/v2.2.0...v2.3.0) (2021-07-01)
 
 
