@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-apigee-connect"
 description = "Apigee Connect API client library"
-version = "0.2.0"
+version = "0.2.1"
 release_status = "Development Status :: 4 - Beta"
 url = "https://github.com/googleapis/python-apigee-connect"
 dependencies = [

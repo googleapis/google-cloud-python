@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-apigee-connect/compare/v0.2.0...v0.2.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#19](https://www.github.com/googleapis/python-apigee-connect/issues/19)) ([cfa46e7](https://www.github.com/googleapis/python-apigee-connect/commit/cfa46e7528595d57f396839ef167cb8ede29981b))
+
 ## [0.2.0](https://www.github.com/googleapis/python-apigee-connect/compare/v0.1.0...v0.2.0) (2021-07-14)
 
 
