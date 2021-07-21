@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.2](https://www.github.com/googleapis/python-analytics-admin/compare/v0.4.1...v0.4.2) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#101](https://www.github.com/googleapis/python-analytics-admin/issues/101)) ([cde3379](https://www.github.com/googleapis/python-analytics-admin/commit/cde3379e9b40082f69327b46ba0acdabe520c21b))
+
 ### [0.4.1](https://www.github.com/googleapis/python-analytics-admin/compare/v0.4.0...v0.4.1) (2021-06-30)
 
 
