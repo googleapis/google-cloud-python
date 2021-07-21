@@ -585,6 +585,9 @@ class Build(proto.Message):
         warnings (Sequence[google.cloud.devtools.cloudbuild_v1.types.Build.Warning]):
             Output only. Non-fatal problems encountered
             during the execution of the build.
+        failure_info (google.cloud.devtools.cloudbuild_v1.types.Build.FailureInfo):
+            Output only. Contains information about the
+            build when status=FAILURE.
     """
 
     class Status(proto.Enum):
@@ -620,6 +623,33 @@ class Build(proto.Message):
         text = proto.Field(proto.STRING, number=1,)
         priority = proto.Field(proto.ENUM, number=2, enum="Build.Warning.Priority",)
 
+    class FailureInfo(proto.Message):
+        r"""A fatal problem encountered during the execution of the
+        build.
+
+        Attributes:
+            type_ (google.cloud.devtools.cloudbuild_v1.types.Build.FailureInfo.FailureType):
+                The name of the failure.
+            detail (str):
+                Explains the failure issue in more detail
+                using hard-coded text.
+        """
+
+        class FailureType(proto.Enum):
+            r"""The name of a fatal problem encountered during the execution
+            of the build.
+            """
+            FAILURE_TYPE_UNSPECIFIED = 0
+            PUSH_FAILED = 1
+            PUSH_IMAGE_NOT_FOUND = 2
+            PUSH_NOT_AUTHORIZED = 3
+            LOGGING_FAILURE = 4
+            USER_BUILD_STEP = 5
+            FETCH_SOURCE_FAILED = 6
+
+        type_ = proto.Field(proto.ENUM, number=1, enum="Build.FailureInfo.FailureType",)
+        detail = proto.Field(proto.STRING, number=2,)
+
     name = proto.Field(proto.STRING, number=45,)
     id = proto.Field(proto.STRING, number=1,)
     project_id = proto.Field(proto.STRING, number=16,)
@@ -649,6 +679,7 @@ class Build(proto.Message):
     service_account = proto.Field(proto.STRING, number=42,)
     available_secrets = proto.Field(proto.MESSAGE, number=47, message="Secrets",)
     warnings = proto.RepeatedField(proto.MESSAGE, number=49, message=Warning,)
+    failure_info = proto.Field(proto.MESSAGE, number=51, message=FailureInfo,)
 
 
 class Artifacts(proto.Message):
