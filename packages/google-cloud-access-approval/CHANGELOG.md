@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.2](https://www.github.com/googleapis/python-access-approval/compare/v1.3.1...v1.3.2) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#97](https://www.github.com/googleapis/python-access-approval/issues/97)) ([9400ffe](https://www.github.com/googleapis/python-access-approval/commit/9400ffeffb89458f738961ef0ef4729141f37ee8))
+
 ### [1.3.1](https://www.github.com/googleapis/python-access-approval/compare/v1.3.0...v1.3.1) (2021-06-30)
 
 
