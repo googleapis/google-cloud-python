@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+### [1.1.1](https://www.github.com/googleapis/python-grafeas/compare/v1.1.0...v1.1.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#83](https://www.github.com/googleapis/python-grafeas/issues/83)) ([1ada5bc](https://www.github.com/googleapis/python-grafeas/commit/1ada5bceefcbe750d40613614fccf5ad3a94fec5))
+
 ## [1.1.0](https://www.github.com/googleapis/python-grafeas/compare/v1.0.1...v1.1.0) (2021-05-20)
 
 
