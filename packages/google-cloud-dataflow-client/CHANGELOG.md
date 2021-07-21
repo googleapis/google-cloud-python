@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.2](https://www.github.com/googleapis/python-dataflow-client/compare/v0.1.1...v0.1.2) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#13](https://www.github.com/googleapis/python-dataflow-client/issues/13)) ([a85e8aa](https://www.github.com/googleapis/python-dataflow-client/commit/a85e8aac12a35a6bf82c2414d8c4018b64d36cc4))
+
 ### [0.1.1](https://www.github.com/googleapis/python-dataflow-client/compare/v0.1.0...v0.1.1) (2021-06-30)
 
 
