@@ -3,6 +3,13 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+### [1.4.1](https://www.github.com/googleapis/python-webrisk/compare/v1.4.0...v1.4.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#104](https://www.github.com/googleapis/python-webrisk/issues/104)) ([49314f2](https://www.github.com/googleapis/python-webrisk/commit/49314f2a102b5074874fd4d8b2c4d0e30c983ae2))
+
 ## [1.4.0](https://www.github.com/googleapis/python-webrisk/compare/v1.3.0...v1.4.0) (2021-07-01)
 
 
