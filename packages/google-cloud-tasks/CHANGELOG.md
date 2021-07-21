@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.5.0](https://www.github.com/googleapis/python-tasks/compare/v2.4.0...v2.5.0) (2021-07-21)
+
+
+### Features
+
+* Set `audience` field in authenticated HTTP task example ([#138](https://www.github.com/googleapis/python-tasks/issues/138)) ([7a5a0c6](https://www.github.com/googleapis/python-tasks/commit/7a5a0c6ca5372035521d5366373054a7ba95f2bd))
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#134](https://www.github.com/googleapis/python-tasks/issues/134)) ([fd3cb31](https://www.github.com/googleapis/python-tasks/commit/fd3cb31bc1d36e5b6373bfa3d3bb9bb65aeb3f90))
+
 ## [2.4.0](https://www.github.com/googleapis/python-tasks/compare/v2.3.0...v2.4.0) (2021-07-01)
 
 
