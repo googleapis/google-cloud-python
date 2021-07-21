@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-life-sciences/compare/v0.2.0...v0.2.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#18](https://www.github.com/googleapis/python-life-sciences/issues/18)) ([f5adb94](https://www.github.com/googleapis/python-life-sciences/commit/f5adb941bc03cddea5243c58fce7e6fe7ca3c4bf))
+
 ## [0.2.0](https://www.github.com/googleapis/python-life-sciences/compare/v0.1.0...v0.2.0) (2021-07-14)
 
 
