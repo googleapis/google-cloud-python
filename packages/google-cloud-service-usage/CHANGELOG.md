@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-service-usage/compare/v0.2.0...v0.2.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#19](https://www.github.com/googleapis/python-service-usage/issues/19)) ([599eee0](https://www.github.com/googleapis/python-service-usage/commit/599eee0fe0f92efa4a19835691a9216c8804349f))
+
 ## [0.2.0](https://www.github.com/googleapis/python-service-usage/compare/v0.1.0...v0.2.0) (2021-07-14)
 
 
