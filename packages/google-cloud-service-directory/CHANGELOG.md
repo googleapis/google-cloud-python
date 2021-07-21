@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-service-directory/compare/v1.0.0...v1.0.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#96](https://www.github.com/googleapis/python-service-directory/issues/96)) ([ec30558](https://www.github.com/googleapis/python-service-directory/commit/ec30558ee8b89b951509e3f7b9cea6f548b69fe6))
+
 ## [1.0.0](https://www.github.com/googleapis/python-service-directory/compare/v0.5.0...v1.0.0) (2021-06-30)
 
 
