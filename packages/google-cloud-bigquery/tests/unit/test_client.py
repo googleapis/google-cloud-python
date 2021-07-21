@@ -27,6 +27,7 @@ import unittest
 import warnings
 
 import mock
+import packaging
 import requests
 import pytest
 import pytz
@@ -7509,6 +7510,42 @@ class TestClientUpload(object):
                     location=self.LOCATION,
                     parquet_compression="gzip",
                 )
+
+    def test_load_table_from_dataframe_w_bad_pyarrow_issues_warning(self):
+        pytest.importorskip("pandas", reason="Requires `pandas`")
+        pytest.importorskip("pyarrow", reason="Requires `pyarrow`")
+
+        client = self._make_client()
+        records = [{"id": 1, "age": 100}, {"id": 2, "age": 60}]
+        dataframe = pandas.DataFrame(records)
+
+        pyarrow_version_patch = mock.patch(
+            "google.cloud.bigquery.client._PYARROW_VERSION",
+            packaging.version.parse("2.0.0"),  # A known bad version of pyarrow.
+        )
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            side_effect=google.api_core.exceptions.NotFound("Table not found"),
+        )
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+
+        with load_patch, get_table_patch, pyarrow_version_patch:
+            with warnings.catch_warnings(record=True) as warned:
+                client.load_table_from_dataframe(
+                    dataframe, self.TABLE_REF, location=self.LOCATION,
+                )
+
+        expected_warnings = [
+            warning for warning in warned if "pyarrow" in str(warning).lower()
+        ]
+        assert len(expected_warnings) == 1
+        assert issubclass(expected_warnings[0].category, RuntimeWarning)
+        msg = str(expected_warnings[0].message)
+        assert "pyarrow 2.0.0" in msg
+        assert "data corruption" in msg
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
