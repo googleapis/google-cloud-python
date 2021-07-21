@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-channel/compare/v1.2.0...v1.2.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#71](https://www.github.com/googleapis/python-channel/issues/71)) ([36ba3c3](https://www.github.com/googleapis/python-channel/commit/36ba3c36d9ffb37c1f156fd69f7216c331f55f87))
+
 ## [1.2.0](https://www.github.com/googleapis/python-channel/compare/v1.1.1...v1.2.0) (2021-07-01)
 
 
