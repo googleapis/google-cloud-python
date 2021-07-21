@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+### [2.1.5](https://www.github.com/googleapis/python-datastore/compare/v2.1.4...v2.1.5) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#194](https://www.github.com/googleapis/python-datastore/issues/194)) ([e94f97c](https://www.github.com/googleapis/python-datastore/commit/e94f97ce42b04ba76766737eb69cdaf92bc2ac05))
+
 ### [2.1.4](https://www.github.com/googleapis/python-datastore/compare/v2.1.3...v2.1.4) (2021-07-09)
 
 
