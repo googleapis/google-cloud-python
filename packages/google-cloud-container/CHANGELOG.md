@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+### [2.6.1](https://www.github.com/googleapis/python-container/compare/v2.6.0...v2.6.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#128](https://www.github.com/googleapis/python-container/issues/128)) ([7a8fb93](https://www.github.com/googleapis/python-container/commit/7a8fb93cc083ffbd44b9c321a706ce6f37066ee1))
+
 ## [2.6.0](https://www.github.com/googleapis/python-container/compare/v2.5.0...v2.6.0) (2021-07-09)
 
 
