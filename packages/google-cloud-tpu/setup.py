@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-tpu"
 description = "Cloud TPU API client library"
-version = "0.2.0"
+version = "0.2.1"
 release_status = "Development Status :: 4 - Beta"
 url = "https://github.com/googleapis/python-tpu"
 dependencies = [
