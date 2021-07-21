@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-functions/compare/v1.0.0...v1.0.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#85](https://www.github.com/googleapis/python-functions/issues/85)) ([5ad78fb](https://www.github.com/googleapis/python-functions/commit/5ad78fb363b8aa4057f8dc76ebac35dbdf5c39f7))
+
 ## [1.0.0](https://www.github.com/googleapis/python-functions/compare/v0.7.0...v1.0.0) (2021-06-30)
 
 
