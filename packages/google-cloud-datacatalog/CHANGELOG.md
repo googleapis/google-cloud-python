@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+### [3.3.1](https://www.github.com/googleapis/python-datacatalog/compare/v3.3.0...v3.3.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#186](https://www.github.com/googleapis/python-datacatalog/issues/186)) ([915f387](https://www.github.com/googleapis/python-datacatalog/commit/915f3875bf8496203aa6bc4ee6ce11fde33f65e9))
+
 ## [3.3.0](https://www.github.com/googleapis/python-datacatalog/compare/v3.2.1...v3.3.0) (2021-07-01)
 
 
