@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.2](https://www.github.com/googleapis/python-appengine-admin/compare/v1.1.1...v1.1.2) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#48](https://www.github.com/googleapis/python-appengine-admin/issues/48)) ([c9fac07](https://www.github.com/googleapis/python-appengine-admin/commit/c9fac071151957e69fd83cb9aefb027c6551a55c))
+
 ### [1.1.1](https://www.github.com/googleapis/python-appengine-admin/compare/v1.1.0...v1.1.1) (2021-06-30)
 
 
