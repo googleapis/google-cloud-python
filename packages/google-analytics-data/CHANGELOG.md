@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.7.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.7.0...v0.7.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#109](https://www.github.com/googleapis/python-analytics-data/issues/109)) ([62e0ee7](https://www.github.com/googleapis/python-analytics-data/commit/62e0ee732cbd915d3630f2526a0591d76b027a3e))
+
 ## [0.7.0](https://www.github.com/googleapis/python-analytics-data/compare/v0.6.1...v0.7.0) (2021-07-10)
 
 
