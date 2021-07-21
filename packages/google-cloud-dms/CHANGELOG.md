@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-dms/compare/v0.2.0...v0.2.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#19](https://www.github.com/googleapis/python-dms/issues/19)) ([98cf0fe](https://www.github.com/googleapis/python-dms/commit/98cf0fed4dc550df01420d10499eff073de3631a))
+
 ## [0.2.0](https://www.github.com/googleapis/python-dms/compare/v0.1.0...v0.2.0) (2021-07-14)
 
 
