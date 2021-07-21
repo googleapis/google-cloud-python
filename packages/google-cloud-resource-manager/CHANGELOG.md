@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+### [1.0.1](https://www.github.com/googleapis/python-resource-manager/compare/v1.0.0...v1.0.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#84](https://www.github.com/googleapis/python-resource-manager/issues/84)) ([92c3ec8](https://www.github.com/googleapis/python-resource-manager/commit/92c3ec8ef175430daf18657a212638c56a382c2b))
+
 ## [1.0.0](https://www.github.com/googleapis/python-resource-manager/compare/v0.30.3...v1.0.0) (2021-07-18)
 
 
