@@ -28,8 +28,9 @@ import nox
 # WARNING - WARNING - WARNING - WARNING - WARNING
 # WARNING - WARNING - WARNING - WARNING - WARNING
 
-# Copy `noxfile_config.py` to your directory and modify it instead.
+BLACK_VERSION = "black==19.10b0"
 
+# Copy `noxfile_config.py` to your directory and modify it instead.
 
 # `TEST_CONFIG` dict is a configuration hook that allows users to
 # modify the test configurations. The values here should be in sync
@@ -159,7 +160,7 @@ def lint(session: nox.sessions.Session) -> None:
 
 @nox.session
 def blacken(session: nox.sessions.Session) -> None:
-    session.install("black")
+    session.install(BLACK_VERSION)
     python_files = [path for path in os.listdir(".") if path.endswith(".py")]
 
     session.run("black", *python_files)
@@ -226,7 +227,7 @@ def py(session: nox.sessions.Session) -> None:
 
 
 def _get_repo_root() -> Optional[str]:
-    """Returns the root folder of the project."""
+    """ Returns the root folder of the project. """
     # Get root of this repository. Assume we don't have directories nested deeper than 10 items.
     p = Path(os.getcwd())
     for i in range(10):
