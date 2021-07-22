@@ -146,11 +146,11 @@ class TestBaseClient(unittest.TestCase):
         )
 
         emulator_host = "localhost:8081"
+        credentials = _make_credentials()
+        database = "quanta"
         with mock.patch("os.getenv") as getenv:
             getenv.return_value = emulator_host
-
-            credentials = _make_credentials()
-            database = "quanta"
+            credentials.id_token = None
             client = self._make_one(
                 project=self.PROJECT, credentials=credentials, database=database
             )
@@ -160,21 +160,23 @@ class TestBaseClient(unittest.TestCase):
         self.assertTrue(isinstance(channel, grpc.Channel))
         channel = client._emulator_channel(FirestoreGrpcAsyncIOTransport)
         self.assertTrue(isinstance(channel, grpc.aio.Channel))
-        # checks that the credentials are composite ones using a local channel from grpc
-        composite_credentials = client._local_composite_credentials()
-        self.assertTrue(isinstance(composite_credentials, grpc.ChannelCredentials))
-        self.assertTrue(
-            isinstance(
-                composite_credentials._credentials._call_credentialses[0],
-                grpc._cython.cygrpc.MetadataPluginCallCredentials,
+
+        # Verify that when credentials are provided with an id token it is used
+        # for channel construction
+        # NOTE: On windows, emulation requires an insecure channel. If this is
+        # altered to use a secure channel, start by verifying that it still
+        # works as expected on windows.
+        with mock.patch("os.getenv") as getenv:
+            getenv.return_value = emulator_host
+            credentials.id_token = "test"
+            client = self._make_one(
+                project=self.PROJECT, credentials=credentials, database=database
             )
-        )
-        self.assertTrue(
-            isinstance(
-                composite_credentials._credentials._channel_credentials,
-                grpc._cython.cygrpc.LocalChannelCredentials,
+        with mock.patch("grpc.insecure_channel") as insecure_channel:
+            channel = client._emulator_channel(FirestoreGrpcTransport)
+            insecure_channel.assert_called_once_with(
+                emulator_host, options=[("Authorization", "Bearer test")]
             )
-        )
 
     def test_field_path(self):
         klass = self._get_target_class()
@@ -392,9 +394,9 @@ class Test__get_doc_mask(unittest.TestCase):
 
 
 def _make_credentials():
-    import google.auth.credentials
+    import google.oauth2.credentials
 
-    return mock.Mock(spec=google.auth.credentials.Credentials)
+    return mock.Mock(spec=google.oauth2.credentials.Credentials)
 
 
 def _make_batch_response(**kwargs):
