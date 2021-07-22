@@ -143,6 +143,18 @@ class Topic(proto.Message):
             Reserved for future use. This field is set
             only in responses from the server; it is ignored
             if it is set in any requests.
+        message_retention_duration (google.protobuf.duration_pb2.Duration):
+            Indicates the minimum duration to retain a message after it
+            is published to the topic. If this field is set, messages
+            published to the topic in the last
+            ``message_retention_duration`` are always available to
+            subscribers. For instance, it allows any attached
+            subscription to `seek to a
+            timestamp <https://cloud.google.com/pubsub/docs/replay-overview#seek_to_a_time>`__
+            that is up to ``message_retention_duration`` in the past. If
+            this field is not set, message retention is controlled by
+            settings on individual subscriptions. Cannot be more than 7
+            days or less than 10 minutes.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -153,6 +165,9 @@ class Topic(proto.Message):
     kms_key_name = proto.Field(proto.STRING, number=5,)
     schema_settings = proto.Field(proto.MESSAGE, number=6, message="SchemaSettings",)
     satisfies_pzs = proto.Field(proto.BOOL, number=7,)
+    message_retention_duration = proto.Field(
+        proto.MESSAGE, number=8, message=duration_pb2.Duration,
+    )
 
 
 class PubsubMessage(proto.Message):
@@ -541,6 +556,15 @@ class Subscription(proto.Message):
             ``StreamingPull`` requests will return FAILED_PRECONDITION.
             If the subscription is a push subscription, pushes to the
             endpoint will not be made.
+        topic_message_retention_duration (google.protobuf.duration_pb2.Duration):
+            Output only. Indicates the minimum duration for which a
+            message is retained after it is published to the
+            subscription's topic. If this field is set, messages
+            published to the subscription's topic in the last
+            ``topic_message_retention_duration`` are always available to
+            subscribers. See the ``message_retention_duration`` field in
+            ``Topic``. This field is set only in responses from the
+            server; it is ignored if it is set in any requests.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -562,6 +586,9 @@ class Subscription(proto.Message):
     )
     retry_policy = proto.Field(proto.MESSAGE, number=14, message="RetryPolicy",)
     detached = proto.Field(proto.BOOL, number=15,)
+    topic_message_retention_duration = proto.Field(
+        proto.MESSAGE, number=17, message=duration_pb2.Duration,
+    )
 
 
 class RetryPolicy(proto.Message):
