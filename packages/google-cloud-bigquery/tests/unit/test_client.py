@@ -8076,3 +8076,23 @@ class TestClientUpload(object):
 
         client.schema_to_json(schema_list, fake_file)
         assert file_content == json.loads(fake_file.getvalue())
+
+
+def test_upload_chunksize(client):
+    with mock.patch("google.cloud.bigquery.client.ResumableUpload") as RU:
+        upload = RU.return_value
+
+        upload.finished = False
+
+        def transmit_next_chunk(transport):
+            upload.finished = True
+            result = mock.MagicMock()
+            result.json.return_value = {}
+            return result
+
+        upload.transmit_next_chunk = transmit_next_chunk
+        f = io.BytesIO()
+        client.load_table_from_file(f, "foo.bar")
+
+        chunk_size = RU.call_args_list[0][0][1]
+        assert chunk_size == 100 * (1 << 20)
