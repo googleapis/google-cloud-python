@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-notebooks/compare/v0.3.0...v0.3.1) (2021-07-20)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#63](https://www.github.com/googleapis/python-notebooks/issues/63)) ([dcfad3e](https://www.github.com/googleapis/python-notebooks/commit/dcfad3ed534fc8150d0f2ff349da78f22b72b6b3))
+
 ## [0.3.0](https://www.github.com/googleapis/python-notebooks/compare/v0.2.0...v0.3.0) (2021-07-01)
 
 
