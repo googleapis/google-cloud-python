@@ -74,6 +74,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         quota_project_id=None,
         expiry=None,
         rapt_token=None,
+        refresh_handler=None,
     ):
         """
         Args:
@@ -103,6 +104,13 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
                 This project may be different from the project used to
                 create the credentials.
             rapt_token (Optional[str]): The reauth Proof Token.
+            refresh_handler (Optional[Callable[[google.auth.transport.Request, Sequence[str]], [str, datetime]]]):
+                A callable which takes in the HTTP request callable and the list of
+                OAuth scopes and when called returns an access token string for the
+                requested scopes and its expiry datetime. This is useful when no
+                refresh tokens are provided and tokens are obtained by calling
+                some external process on demand. It is particularly useful for
+                retrieving downscoped tokens from a token broker.
         """
         super(Credentials, self).__init__()
         self.token = token
@@ -116,13 +124,20 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._client_secret = client_secret
         self._quota_project_id = quota_project_id
         self._rapt_token = rapt_token
+        self.refresh_handler = refresh_handler
 
     def __getstate__(self):
         """A __getstate__ method must exist for the __setstate__ to be called
         This is identical to the default implementation.
         See https://docs.python.org/3.7/library/pickle.html#object.__setstate__
         """
-        return self.__dict__
+        state_dict = self.__dict__.copy()
+        # Remove _refresh_handler function as there are limitations pickling and
+        # unpickling certain callables (lambda, functools.partial instances)
+        # because they need to be importable.
+        # Instead, the refresh_handler setter should be used to repopulate this.
+        del state_dict["_refresh_handler"]
+        return state_dict
 
     def __setstate__(self, d):
         """Credentials pickled with older versions of the class do not have
@@ -138,6 +153,8 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._client_secret = d.get("_client_secret")
         self._quota_project_id = d.get("_quota_project_id")
         self._rapt_token = d.get("_rapt_token")
+        # The refresh_handler setter should be used to repopulate this.
+        self._refresh_handler = None
 
     @property
     def refresh_token(self):
@@ -187,6 +204,31 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         """Optional[str]: The reauth Proof Token."""
         return self._rapt_token
 
+    @property
+    def refresh_handler(self):
+        """Returns the refresh handler if available.
+
+        Returns:
+           Optional[Callable[[google.auth.transport.Request, Sequence[str]], [str, datetime]]]:
+               The current refresh handler.
+        """
+        return self._refresh_handler
+
+    @refresh_handler.setter
+    def refresh_handler(self, value):
+        """Updates the current refresh handler.
+
+        Args:
+            value (Optional[Callable[[google.auth.transport.Request, Sequence[str]], [str, datetime]]]):
+                The updated value of the refresh handler.
+
+        Raises:
+            TypeError: If the value is not a callable or None.
+        """
+        if not callable(value) and value is not None:
+            raise TypeError("The provided refresh_handler is not a callable or None.")
+        self._refresh_handler = value
+
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
 
@@ -205,6 +247,31 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
 
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):
+        scopes = self._scopes if self._scopes is not None else self._default_scopes
+        # Use refresh handler if available and no refresh token is
+        # available. This is useful in general when tokens are obtained by calling
+        # some external process on demand. It is particularly useful for retrieving
+        # downscoped tokens from a token broker.
+        if self._refresh_token is None and self.refresh_handler:
+            token, expiry = self.refresh_handler(request, scopes=scopes)
+            # Validate returned data.
+            if not isinstance(token, str):
+                raise exceptions.RefreshError(
+                    "The refresh_handler returned token is not a string."
+                )
+            if not isinstance(expiry, datetime):
+                raise exceptions.RefreshError(
+                    "The refresh_handler returned expiry is not a datetime object."
+                )
+            if _helpers.utcnow() >= expiry - _helpers.CLOCK_SKEW:
+                raise exceptions.RefreshError(
+                    "The credentials returned by the refresh_handler are "
+                    "already expired."
+                )
+            self.token = token
+            self.expiry = expiry
+            return
+
         if (
             self._refresh_token is None
             or self._token_uri is None
@@ -216,8 +283,6 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
                 "refresh the access token. You must specify refresh_token, "
                 "token_uri, client_id, and client_secret."
             )
-
-        scopes = self._scopes if self._scopes is not None else self._default_scopes
 
         (
             access_token,
