@@ -79,7 +79,7 @@ def delete_blob(blob):
     errors = (exceptions.Conflict, exceptions.TooManyRequests)
     retry = RetryErrors(errors)
     try:
-        retry(blob.delete)()
+        retry(blob.delete)(timeout=120)  # seconds
     except exceptions.NotFound:  # race
         pass
 
