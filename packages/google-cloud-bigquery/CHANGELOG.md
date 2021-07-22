@@ -5,6 +5,20 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+### [2.22.1](https://www.github.com/googleapis/python-bigquery/compare/v2.22.0...v2.22.1) (2021-07-22)
+
+
+### Bug Fixes
+
+* issue a warning if buggy pyarrow is detected ([#787](https://www.github.com/googleapis/python-bigquery/issues/787)) ([e403721](https://www.github.com/googleapis/python-bigquery/commit/e403721af1373eb1f1a1c7be5b2182e3819ed1f9))
+* use a larger chunk size when loading data ([#799](https://www.github.com/googleapis/python-bigquery/issues/799)) ([b804373](https://www.github.com/googleapis/python-bigquery/commit/b804373277c1c1baa3370ebfb4783503b7ff360f))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#785](https://www.github.com/googleapis/python-bigquery/issues/785)) ([e587029](https://www.github.com/googleapis/python-bigquery/commit/e58702967d572e83b4c774278818302594a511b7))
+* add sample to delete job metadata ([#798](https://www.github.com/googleapis/python-bigquery/issues/798)) ([be9b242](https://www.github.com/googleapis/python-bigquery/commit/be9b242f2180f5b795dfb3a168a97af1682999fd))
+
 ## [2.22.0](https://www.github.com/googleapis/python-bigquery/compare/v2.21.0...v2.22.0) (2021-07-19)
 
 
