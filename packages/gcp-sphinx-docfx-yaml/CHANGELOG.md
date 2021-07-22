@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.3.4...v0.4.0) (2021-07-21)
+
+
+### Features
+
+* add short snippet for missing summary ([#73](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/73)) ([bb432e7](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/bb432e7ef0e1df6b4315306ddb3b8a82eebb375f))
+
+
+### Bug Fixes
+
+* disambiguate all entry names to clarify duplicate names ([#72](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/72)) ([b632eb7](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/b632eb74fd3ce1dd16bc626b9a23ff79c2b6559f))
+
 ### [0.3.4](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.3.3...v0.3.4) (2021-07-05)
 
 
