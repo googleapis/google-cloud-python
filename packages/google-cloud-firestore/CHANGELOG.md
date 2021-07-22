@@ -5,6 +5,26 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.2.0](https://www.github.com/googleapis/python-firestore/compare/v2.1.3...v2.2.0) (2021-07-22)
+
+
+### Features
+
+* add `always_use_jwt_access` ([#380](https://www.github.com/googleapis/python-firestore/issues/380)) ([2ef4194](https://www.github.com/googleapis/python-firestore/commit/2ef41949390f9f9ab11c1472e037b3a72c1b7ff6))
+
+
+### Bug Fixes
+
+* disable `always_use_jwt_access` ([#385](https://www.github.com/googleapis/python-firestore/issues/385)) ([13753e2](https://www.github.com/googleapis/python-firestore/commit/13753e2d4a9207e0b010b2599c9728ac1df4f8bf))
+* reseed RNG for each auto id on 3.6 to avoid collisions ([#388](https://www.github.com/googleapis/python-firestore/issues/388)) ([784e8ae](https://www.github.com/googleapis/python-firestore/commit/784e8ae27d42d8e25deacaf37c34d79369738b00))
+* update type hint for `async_collection.document()` ([#370](https://www.github.com/googleapis/python-firestore/issues/370)) ([ee6a1c2](https://www.github.com/googleapis/python-firestore/commit/ee6a1c25ed9af729eb39860a8756be2e9c0ba5ae))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in `CONTRIBUTING.rst`([#377](https://www.github.com/googleapis/python-firestore/issues/377)) ([23ec468](https://www.github.com/googleapis/python-firestore/commit/23ec468bfc615dc2967022dd0ea689a94bc66aa9))
+* add "Samples" section to `CONTRIBUTING.rst` ([#401](https://www.github.com/googleapis/python-firestore/issues/401)) ([0f9184d](https://www.github.com/googleapis/python-firestore/commit/0f9184de72a39ba19e29e888ca6c44be5d21c043))
+
 ### [2.1.3](https://www.github.com/googleapis/python-firestore/compare/v2.1.2...v2.1.3) (2021-06-15)
 
 
