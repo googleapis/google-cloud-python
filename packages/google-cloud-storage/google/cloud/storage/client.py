@@ -384,6 +384,7 @@ class Client(ClientWithProject):
         max_results=None,
         extra_params=None,
         page_start=page_iterator._do_nothing_page_start,
+        page_size=None,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
     ):
@@ -399,6 +400,7 @@ class Client(ClientWithProject):
             max_results=max_results,
             extra_params=extra_params,
             page_start=page_start,
+            page_size=page_size,
         )
 
     def _patch_resource(
@@ -1134,6 +1136,7 @@ class Client(ClientWithProject):
         versions=None,
         projection="noAcl",
         fields=None,
+        page_size=None,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
     ):
@@ -1199,6 +1202,10 @@ class Client(ClientWithProject):
                 page token and the name and language of each blob returned:
                 ``'items(name,contentLanguage),nextPageToken'``.
                 See: https://cloud.google.com/storage/docs/json_api/v1/parameters#fields
+
+            page_size (int):
+                (Optional) Maximum number of blobs to return in each page.
+                Defaults to a value set by the API.
 
             timeout (Optional[Union[float, Tuple[float, float]]]):
                 The amount of time, in seconds, to wait for the server response.
@@ -1269,6 +1276,7 @@ class Client(ClientWithProject):
             max_results=max_results,
             extra_params=extra_params,
             page_start=_blobs_page_start,
+            page_size=page_size,
             timeout=timeout,
             retry=retry,
         )
@@ -1284,6 +1292,7 @@ class Client(ClientWithProject):
         projection="noAcl",
         fields=None,
         project=None,
+        page_size=None,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
     ):
@@ -1330,6 +1339,10 @@ class Client(ClientWithProject):
         :param project: (Optional) The project whose buckets are to be listed.
                         If not passed, uses the project set on the client.
 
+        :type page_size: int
+        :param page_size: (Optional) Maximum number of buckets to return in each page.
+            Defaults to a value set by the API.
+
         :type timeout: float or tuple
         :param timeout:
             (Optional) The amount of time, in seconds, to wait
@@ -1367,6 +1380,7 @@ class Client(ClientWithProject):
             page_token=page_token,
             max_results=max_results,
             extra_params=extra_params,
+            page_size=page_size,
             timeout=timeout,
             retry=retry,
         )

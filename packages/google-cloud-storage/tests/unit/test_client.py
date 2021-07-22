@@ -1589,6 +1589,7 @@ class TestClient(unittest.TestCase):
         expected_max_results = None
         expected_extra_params = {"projection": "noAcl"}
         expected_page_start = _blobs_page_start
+        expected_page_size = None
         client._list_resource.assert_called_once_with(
             expected_path,
             expected_item_to_value,
@@ -1596,6 +1597,7 @@ class TestClient(unittest.TestCase):
             max_results=expected_max_results,
             extra_params=expected_extra_params,
             page_start=expected_page_start,
+            page_size=expected_page_size,
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
         )
@@ -1616,6 +1618,7 @@ class TestClient(unittest.TestCase):
         include_trailing_delimiter = True
         versions = True
         projection = "full"
+        page_size = 2
         fields = "items/contentLanguage,nextPageToken"
         credentials = _make_credentials()
         client = self._make_one(project=project, credentials=credentials)
@@ -1641,6 +1644,7 @@ class TestClient(unittest.TestCase):
             versions=versions,
             projection=projection,
             fields=fields,
+            page_size=page_size,
             timeout=timeout,
             retry=retry,
         )
@@ -1665,6 +1669,7 @@ class TestClient(unittest.TestCase):
             "userProject": user_project,
         }
         expected_page_start = _blobs_page_start
+        expected_page_size = 2
         client._list_resource.assert_called_once_with(
             expected_path,
             expected_item_to_value,
@@ -1672,6 +1677,7 @@ class TestClient(unittest.TestCase):
             max_results=expected_max_results,
             extra_params=expected_extra_params,
             page_start=expected_page_start,
+            page_size=expected_page_size,
             timeout=timeout,
             retry=retry,
         )
@@ -1699,6 +1705,7 @@ class TestClient(unittest.TestCase):
         expected_item_to_value = _item_to_bucket
         expected_page_token = None
         expected_max_results = None
+        expected_page_size = None
         expected_extra_params = {
             "project": project,
             "projection": "noAcl",
@@ -1709,6 +1716,7 @@ class TestClient(unittest.TestCase):
             page_token=expected_page_token,
             max_results=expected_max_results,
             extra_params=expected_extra_params,
+            page_size=expected_page_size,
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
         )
@@ -1726,6 +1734,7 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=project, credentials=credentials)
         client._list_resource = mock.Mock(spec=[])
+        page_size = 2
         timeout = 42
         retry = mock.Mock(spec=[])
 
@@ -1736,6 +1745,7 @@ class TestClient(unittest.TestCase):
             prefix=prefix,
             projection=projection,
             fields=fields,
+            page_size=page_size,
             timeout=timeout,
             retry=retry,
         )
@@ -1752,12 +1762,14 @@ class TestClient(unittest.TestCase):
             "projection": projection,
             "fields": fields,
         }
+        expected_page_size = 2
         client._list_resource.assert_called_once_with(
             expected_path,
             expected_item_to_value,
             page_token=expected_page_token,
             max_results=expected_max_results,
             extra_params=expected_extra_params,
+            page_size=expected_page_size,
             timeout=timeout,
             retry=retry,
         )
