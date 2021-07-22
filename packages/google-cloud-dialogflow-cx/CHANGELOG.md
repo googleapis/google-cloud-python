@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.0.0...v1.1.0) (2021-07-22)
+
+
+### Features
+
+* add Samples section to CONTRIBUTING.rst ([#129](https://www.github.com/googleapis/python-dialogflow-cx/issues/129)) ([19238ad](https://www.github.com/googleapis/python-dialogflow-cx/commit/19238ad534b7528e3481e50a44663b541da197ef))
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#128](https://www.github.com/googleapis/python-dialogflow-cx/issues/128)) ([fbe63e8](https://www.github.com/googleapis/python-dialogflow-cx/commit/fbe63e86df05150e009e8e7b7e103735b382556e))
+
 ## [1.0.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.8.0...v1.0.0) (2021-06-30)
 
 
