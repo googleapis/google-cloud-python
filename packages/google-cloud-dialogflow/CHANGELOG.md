@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.7.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.6.0...v2.7.0) (2021-07-22)
+
+
+### Features
+
+* add Samples section to CONTRIBUTING.rst ([#340](https://www.github.com/googleapis/python-dialogflow/issues/340)) ([25217a3](https://www.github.com/googleapis/python-dialogflow/commit/25217a385a315a3f209039e82141f0bd153e43a0))
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#339](https://www.github.com/googleapis/python-dialogflow/issues/339)) ([3bfe5b6](https://www.github.com/googleapis/python-dialogflow/commit/3bfe5b6c4c2d81ec3f1cb5e1b7aa96c60a269eb4))
+
 ## [2.6.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.5.0...v2.6.0) (2021-07-10)
 
 
