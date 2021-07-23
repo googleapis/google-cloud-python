@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.7.0](https://www.github.com/googleapis/python-container/compare/v2.6.1...v2.7.0) (2021-07-22)
+
+
+### Features
+
+* add Samples section to CONTRIBUTING.rst ([#129](https://www.github.com/googleapis/python-container/issues/129)) ([a5905b8](https://www.github.com/googleapis/python-container/commit/a5905b820c970217a3ad1604982a7e38412d8dda))
+
 ### [2.6.1](https://www.github.com/googleapis/python-container/compare/v2.6.0...v2.6.1) (2021-07-20)
 
 
