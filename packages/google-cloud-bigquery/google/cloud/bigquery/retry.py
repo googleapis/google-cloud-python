@@ -27,6 +27,7 @@ _UNSTRUCTURED_RETRYABLE_TYPES = (
     exceptions.TooManyRequests,
     exceptions.InternalServerError,
     exceptions.BadGateway,
+    requests.exceptions.ChunkedEncodingError,
     requests.exceptions.ConnectionError,
     auth_exceptions.TransportError,
 )
