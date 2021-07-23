@@ -109,6 +109,9 @@ Libraries
    * - `Billing <https://github.com/googleapis/python-billing>`_
      - |ga|
      - |PyPI-google-cloud-billing|
+   * - `Billing Budget <https://github.com/googleapis/python-billingbudgets>`_
+     - |ga|
+     - |PyPI-google-cloud-billing-budgets|
    * - `Build <https://github.com/googleapis/python-cloudbuild>`_
      - |ga|
      - |PyPI-google-cloud-build|
@@ -193,6 +196,9 @@ Libraries
    * - `Pub/Sub <https://github.com/googleapis/python-pubsub>`_
      - |ga|
      - |PyPI-google-cloud-pubsub|
+   * - `Pub/Sub Lite <https://github.com/googleapis/python-pubsublite>`_
+     - |ga|
+     - |PyPI-google-cloud-pubsublite|
    * - `Recommender API <https://github.com/googleapis/python-recommender>`_
      - |ga|
      - |PyPI-google-cloud-recommender|
@@ -283,12 +289,18 @@ Libraries
    * - `BigQuery Logging Protos <https://github.com/googleapis/python-bigquery-logging>`_
      - |beta|
      - |PyPI-google-cloud-bigquery-logging|
-   * - `Billing Budget <https://github.com/googleapis/python-billingbudgets>`_
+   * - `BigQuery connector for pandas <https://github.com/googleapis/python-bigquery-pandas>`_
      - |beta|
-     - |PyPI-google-cloud-billing-budgets|
+     - |PyPI-pandas-gbq|
    * - `Binary Authorization <https://github.com/googleapis/python-binary-authorization>`_
      - |beta|
      - |PyPI-google-cloud-binary-authorization|
+   * - `Contact Center AI Insights API <https://github.com/googleapis/python-contact-center-insights>`_
+     - |beta|
+     - |PyPI-google-cloud-contact-center-insights|
+   * - `Data Fusion <https://github.com/googleapis/python-data-fusion>`_
+     - |beta|
+     - |PyPI-google-cloud-data-fusion|
    * - `Data Labeling <https://github.com/googleapis/python-datalabeling>`_
      - |beta|
      - |PyPI-google-cloud-datalabeling|
@@ -325,6 +337,9 @@ Libraries
    * - `IAM Logging Protos <https://github.com/googleapis/python-iam-logging>`_
      - |beta|
      - |PyPI-google-cloud-iam-logging|
+   * - `Identity-Aware Proxy <https://github.com/googleapis/python-iap>`_
+     - |beta|
+     - |PyPI-google-cloud-iap|
    * - `Life Sciences <https://github.com/googleapis/python-life-sciences>`_
      - |beta|
      - |PyPI-google-cloud-life-sciences|
@@ -343,9 +358,6 @@ Libraries
    * - `Private Catalog <https://github.com/googleapis/python-private-catalog>`_
      - |beta|
      - |PyPI-google-cloud-private-catalog|
-   * - `Pub/Sub Lite <https://github.com/googleapis/python-pubsublite>`_
-     - |beta|
-     - |PyPI-google-cloud-pubsublite|
    * - `Recommendations AI <https://github.com/googleapis/python-recommendations-ai>`_
      - |beta|
      - |PyPI-google-cloud-recommendations-ai|
@@ -436,6 +448,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-bigtable
 .. |PyPI-google-cloud-billing| image:: https://img.shields.io/pypi/v/google-cloud-billing.svg
      :target: https://pypi.org/project/google-cloud-billing
+.. |PyPI-google-cloud-billing-budgets| image:: https://img.shields.io/pypi/v/google-cloud-billing-budgets.svg
+     :target: https://pypi.org/project/google-cloud-billing-budgets
 .. |PyPI-google-cloud-build| image:: https://img.shields.io/pypi/v/google-cloud-build.svg
      :target: https://pypi.org/project/google-cloud-build
 .. |PyPI-google-cloud-channel| image:: https://img.shields.io/pypi/v/google-cloud-channel.svg
@@ -492,6 +506,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-private-ca
 .. |PyPI-google-cloud-pubsub| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg
      :target: https://pypi.org/project/google-cloud-pubsub
+.. |PyPI-google-cloud-pubsublite| image:: https://img.shields.io/pypi/v/google-cloud-pubsublite.svg
+     :target: https://pypi.org/project/google-cloud-pubsublite
 .. |PyPI-google-cloud-recommender| image:: https://img.shields.io/pypi/v/google-cloud-recommender.svg
      :target: https://pypi.org/project/google-cloud-recommender
 .. |PyPI-google-cloud-redis| image:: https://img.shields.io/pypi/v/google-cloud-redis.svg
@@ -552,10 +568,14 @@ Libraries
      :target: https://pypi.org/project/google-cloud-audit-log
 .. |PyPI-google-cloud-bigquery-logging| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-logging.svg
      :target: https://pypi.org/project/google-cloud-bigquery-logging
-.. |PyPI-google-cloud-billing-budgets| image:: https://img.shields.io/pypi/v/google-cloud-billing-budgets.svg
-     :target: https://pypi.org/project/google-cloud-billing-budgets
+.. |PyPI-pandas-gbq| image:: https://img.shields.io/pypi/v/pandas-gbq.svg
+     :target: https://pypi.org/project/pandas-gbq
 .. |PyPI-google-cloud-binary-authorization| image:: https://img.shields.io/pypi/v/google-cloud-binary-authorization.svg
      :target: https://pypi.org/project/google-cloud-binary-authorization
+.. |PyPI-google-cloud-contact-center-insights| image:: https://img.shields.io/pypi/v/google-cloud-contact-center-insights.svg
+     :target: https://pypi.org/project/google-cloud-contact-center-insights
+.. |PyPI-google-cloud-data-fusion| image:: https://img.shields.io/pypi/v/google-cloud-data-fusion.svg
+     :target: https://pypi.org/project/google-cloud-data-fusion
 .. |PyPI-google-cloud-datalabeling| image:: https://img.shields.io/pypi/v/google-cloud-datalabeling.svg
      :target: https://pypi.org/project/google-cloud-datalabeling
 .. |PyPI-google-cloud-dms| image:: https://img.shields.io/pypi/v/google-cloud-dms.svg
@@ -580,6 +600,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-gke-hub
 .. |PyPI-google-cloud-iam-logging| image:: https://img.shields.io/pypi/v/google-cloud-iam-logging.svg
      :target: https://pypi.org/project/google-cloud-iam-logging
+.. |PyPI-google-cloud-iap| image:: https://img.shields.io/pypi/v/google-cloud-iap.svg
+     :target: https://pypi.org/project/google-cloud-iap
 .. |PyPI-google-cloud-life-sciences| image:: https://img.shields.io/pypi/v/google-cloud-life-sciences.svg
      :target: https://pypi.org/project/google-cloud-life-sciences
 .. |PyPI-google-cloud-media-translation| image:: https://img.shields.io/pypi/v/google-cloud-media-translation.svg
@@ -592,8 +614,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-phishing-protection
 .. |PyPI-google-cloud-private-catalog| image:: https://img.shields.io/pypi/v/google-cloud-private-catalog.svg
      :target: https://pypi.org/project/google-cloud-private-catalog
-.. |PyPI-google-cloud-pubsublite| image:: https://img.shields.io/pypi/v/google-cloud-pubsublite.svg
-     :target: https://pypi.org/project/google-cloud-pubsublite
 .. |PyPI-google-cloud-recommendations-ai| image:: https://img.shields.io/pypi/v/google-cloud-recommendations-ai.svg
      :target: https://pypi.org/project/google-cloud-recommendations-ai
 .. |PyPI-google-cloud-resource-manager| image:: https://img.shields.io/pypi/v/google-cloud-resource-manager.svg
