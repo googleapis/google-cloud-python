@@ -875,11 +875,19 @@ class Blob(_PropertyMixin):
             :class requests.models.Response
         :param response: The server response from downloading a non-chunked file
         """
-        self.content_encoding = response.headers.get("Content-Encoding", None)
-        self.content_type = response.headers.get("Content-Type", None)
-        self.cache_control = response.headers.get("Cache-Control", None)
-        self.storage_class = response.headers.get("X-Goog-Storage-Class", None)
-        self.content_language = response.headers.get("Content-Language", None)
+        self._properties["contentEncoding"] = response.headers.get(
+            "Content-Encoding", None
+        )
+        self._properties[_CONTENT_TYPE_FIELD] = response.headers.get(
+            "Content-Type", None
+        )
+        self._properties["cacheControl"] = response.headers.get("Cache-Control", None)
+        self._properties["storageClass"] = response.headers.get(
+            "X-Goog-Storage-Class", None
+        )
+        self._properties["contentLanguage"] = response.headers.get(
+            "Content-Language", None
+        )
         self._properties["etag"] = response.headers.get("ETag", None)
         self._properties["generation"] = response.headers.get("X-goog-generation", None)
         self._properties["metageneration"] = response.headers.get(
@@ -896,8 +904,8 @@ class Blob(_PropertyMixin):
                     method, digest = match.groups()
                     digests[method] = digest
 
-            self.crc32c = digests.get("crc32c", None)
-            self.md5_hash = digests.get("md5", None)
+            self._properties["crc32c"] = digests.get("crc32c", None)
+            self._properties["md5Hash"] = digests.get("md5", None)
 
     def _do_download(
         self,

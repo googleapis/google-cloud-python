@@ -1090,6 +1090,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob.etag, "kittens")
         self.assertEqual(blob.generation, 42)
         self.assertEqual(blob.metageneration, 4)
+        self.assertEqual(blob._changes, set())
 
     def test__extract_headers_from_download_empty(self):
         blob_name = "blob-name"
@@ -1120,6 +1121,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob.etag, "kittens")
         self.assertEqual(blob.generation, 42)
         self.assertEqual(blob.metageneration, 4)
+        self.assertEqual(blob._changes, set())
 
     def test__extract_headers_from_download_w_hash_response_header_none(self):
         blob_name = "blob-name"
