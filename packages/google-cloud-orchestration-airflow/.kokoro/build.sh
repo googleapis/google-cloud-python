@@ -16,7 +16,7 @@
 set -eo pipefail
 
 if [[ -z "${PROJECT_ROOT:-}" ]]; then
-    PROJECT_ROOT="github/python-composer"
+    PROJECT_ROOT="github/python-orchestration-airflow"
 fi
 
 cd "${PROJECT_ROOT}"

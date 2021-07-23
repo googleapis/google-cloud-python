@@ -7,7 +7,7 @@
     "release_level": "beta",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-composer",
-    "distribution_name": "google-cloud-composer",
+    "repo": "googleapis/python-orchestration-airflow",
+    "distribution_name": "google-cloud-orchestration-airflow",
     "api_id": "composer.googleapis.com"
 }

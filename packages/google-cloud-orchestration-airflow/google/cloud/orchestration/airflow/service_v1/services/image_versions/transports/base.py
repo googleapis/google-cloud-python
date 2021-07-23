@@ -31,7 +31,7 @@ from google.cloud.orchestration.airflow.service_v1.types import image_versions
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-orchestration-airflow-service",
+            "google-cloud-orchestration-airflow",
         ).version,
     )
 except pkg_resources.DistributionNotFound:

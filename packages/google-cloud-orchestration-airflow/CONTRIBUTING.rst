@@ -35,21 +35,21 @@ Using a Development Checkout
 You'll have to create a development environment using a Git checkout:
 
 - While logged into your GitHub account, navigate to the
-  ``python-composer`` `repo`_ on GitHub.
+  ``python-orchestration-airflow`` `repo`_ on GitHub.
 
-- Fork and clone the ``python-composer`` repository to your GitHub account by
+- Fork and clone the ``python-orchestration-airflow`` repository to your GitHub account by
   clicking the "Fork" button.
 
-- Clone your fork of ``python-composer`` from your GitHub account to your local
+- Clone your fork of ``python-orchestration-airflow`` from your GitHub account to your local
   computer, substituting your account username and specifying the destination
-  as ``hack-on-python-composer``.  E.g.::
+  as ``hack-on-python-orchestration-airflow``.  E.g.::
 
    $ cd ${HOME}
-   $ git clone git@github.com:USERNAME/python-composer.git hack-on-python-composer
-   $ cd hack-on-python-composer
-   # Configure remotes such that you can pull changes from the googleapis/python-composer
+   $ git clone git@github.com:USERNAME/python-orchestration-airflow.git hack-on-python-orchestration-airflow
+   $ cd hack-on-python-orchestration-airflow
+   # Configure remotes such that you can pull changes from the googleapis/python-orchestration-airflow
    # repository into your local repository.
-   $ git remote add upstream git@github.com:googleapis/python-composer.git
+   $ git remote add upstream git@github.com:googleapis/python-orchestration-airflow.git
    # fetch and merge changes from upstream into master
    $ git fetch upstream
    $ git merge upstream/master
@@ -60,7 +60,7 @@ repo, from which you can submit a pull request.
 To work on the codebase and run the tests, we recommend using ``nox``,
 but you can also use a ``virtualenv`` of your own creation.
 
-.. _repo: https://github.com/googleapis/python-composer
+.. _repo: https://github.com/googleapis/python-orchestration-airflow
 
 Using ``nox``
 =============
@@ -113,7 +113,7 @@ Coding Style
    export GOOGLE_CLOUD_TESTING_BRANCH="master"
 
   By doing this, you are specifying the location of the most up-to-date
-  version of ``python-composer``. The the suggested remote name ``upstream``
+  version of ``python-orchestration-airflow``. The the suggested remote name ``upstream``
   should point to the official ``googleapis`` checkout and the
   the branch should be the main branch on that remote (``master``).
 
@@ -185,10 +185,10 @@ The `description on PyPI`_ for the project comes directly from the
 ``README``. Due to the reStructuredText (``rst``) parser used by
 PyPI, relative links which will work on GitHub (e.g. ``CONTRIBUTING.rst``
 instead of
-``https://github.com/googleapis/python-composer/blob/master/CONTRIBUTING.rst``)
+``https://github.com/googleapis/python-orchestration-airflow/blob/master/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
-.. _description on PyPI: https://pypi.org/project/google-cloud-composer
+.. _description on PyPI: https://pypi.org/project/google-cloud-orchestration-airflow
 
 
 *************************
@@ -210,7 +210,7 @@ We support:
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
 
-.. _config: https://github.com/googleapis/python-composer/blob/master/noxfile.py
+.. _config: https://github.com/googleapis/python-orchestration-airflow/blob/master/noxfile.py
 
 
 We also explicitly decided to support Python 3 beginning with version 3.6.
