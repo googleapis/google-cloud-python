@@ -5,6 +5,7 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 import datetime
+import os
 
 # Monkey-patch AutoField to generate a random value since Cloud Spanner can't
 # do that.
@@ -23,6 +24,8 @@ from .lookups import register_lookups
 from .utils import check_django_compatability
 
 __version__ = pkg_resources.get_distribution("django-google-spanner").version
+
+USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
 
 check_django_compatability()
 register_expressions()

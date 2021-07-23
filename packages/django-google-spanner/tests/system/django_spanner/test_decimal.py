@@ -6,14 +6,13 @@
 
 from .models import Author, Number
 from django.test import TransactionTestCase
-from django.db import connection, ProgrammingError
+from django.db import connection
 from decimal import Decimal
 from tests.system.django_spanner.utils import (
     setup_instance,
     teardown_instance,
     setup_database,
     teardown_database,
-    USE_EMULATOR,
 )
 
 
@@ -87,12 +86,8 @@ class TestDecimal(TransactionTestCase):
         Tests decimal object precission limit.
         """
         num_val = Number(num=Decimal(1) / Decimal(3))
-        if USE_EMULATOR:
-            with self.assertRaises(ValueError):
-                num_val.save()
-        else:
-            with self.assertRaises(ProgrammingError):
-                num_val.save()
+        with self.assertRaises(ValueError):
+            num_val.save()
 
     def test_decimal_update(self):
         """

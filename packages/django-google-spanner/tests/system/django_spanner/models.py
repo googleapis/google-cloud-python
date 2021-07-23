@@ -21,3 +21,16 @@ class Number(models.Model):
 
     def __str__(self):
         return str(self.num)
+
+
+class Event(models.Model):
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(end_date__gt=models.F("start_date")),
+                name="check_start_date",
+            ),
+        ]

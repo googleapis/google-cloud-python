@@ -43,7 +43,7 @@ def lint(session):
     session.run("flake8", "django_spanner", "tests")
 
 
-@nox.session(python="3.6")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
     """Run black.
 

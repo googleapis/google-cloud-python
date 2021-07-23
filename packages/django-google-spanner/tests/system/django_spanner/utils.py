@@ -15,11 +15,12 @@ from google.cloud.spanner_v1.instance import Instance, Backup
 from test_utils.retry import RetryErrors
 
 from django_spanner.creation import DatabaseCreation
+from django_spanner import USE_EMULATOR
 
 CREATE_INSTANCE = (
     os.getenv("GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE") is not None
 )
-USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
+
 SPANNER_OPERATION_TIMEOUT_IN_SECONDS = int(
     os.getenv("SPANNER_OPERATION_TIMEOUT_IN_SECONDS", 60)
 )
