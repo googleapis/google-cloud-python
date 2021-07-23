@@ -45,6 +45,7 @@ def test_if_transient_error():
     assert retry.if_transient_error(exceptions.TooManyRequests(""))
     assert retry.if_transient_error(exceptions.ServiceUnavailable(""))
     assert retry.if_transient_error(requests.exceptions.ConnectionError(""))
+    assert retry.if_transient_error(requests.exceptions.ChunkedEncodingError(""))
     assert retry.if_transient_error(auth_exceptions.TransportError(""))
     assert not retry.if_transient_error(exceptions.InvalidArgument(""))
 

@@ -104,6 +104,7 @@ if_transient_error = if_exception_type(
     exceptions.TooManyRequests,
     exceptions.ServiceUnavailable,
     requests.exceptions.ConnectionError,
+    requests.exceptions.ChunkedEncodingError,
     auth_exceptions.TransportError,
 )
 """A predicate that checks if an exception is a transient API error.
