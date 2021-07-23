@@ -52,6 +52,7 @@ def test_get_project_id(app_identity):
     assert app_engine.get_project_id() == mock.sentinel.project
 
 
+@mock.patch.object(app_engine, "app_identity", new=None)
 def test_get_project_id_missing_apis():
     with pytest.raises(EnvironmentError) as excinfo:
         assert app_engine.get_project_id()
@@ -86,6 +87,7 @@ class TestSigner(object):
 
 
 class TestCredentials(object):
+    @mock.patch.object(app_engine, "app_identity", new=None)
     def test_missing_apis(self):
         with pytest.raises(EnvironmentError) as excinfo:
             app_engine.Credentials()

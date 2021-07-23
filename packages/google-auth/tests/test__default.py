@@ -447,7 +447,9 @@ def app_identity(monkeypatch):
     yield app_identity_module
 
 
-def test__get_gae_credentials(app_identity):
+@mock.patch.dict(os.environ)
+def test__get_gae_credentials_gen1(app_identity):
+    os.environ[environment_vars.LEGACY_APPENGINE_RUNTIME] = "python27"
     app_identity.get_application_id.return_value = mock.sentinel.project
 
     credentials, project_id = _default._get_gae_credentials()
@@ -456,18 +458,65 @@ def test__get_gae_credentials(app_identity):
     assert project_id == mock.sentinel.project
 
 
+@mock.patch.dict(os.environ)
+def test__get_gae_credentials_gen2():
+    os.environ["GAE_RUNTIME"] = "python37"
+    credentials, project_id = _default._get_gae_credentials()
+    assert credentials is None
+    assert project_id is None
+
+
+@mock.patch.dict(os.environ)
+def test__get_gae_credentials_gen2_backwards_compat():
+    # compat helpers may copy GAE_RUNTIME to APPENGINE_RUNTIME
+    # for backwards compatibility with code that relies on it
+    os.environ[environment_vars.LEGACY_APPENGINE_RUNTIME] = "python37"
+    os.environ["GAE_RUNTIME"] = "python37"
+    credentials, project_id = _default._get_gae_credentials()
+    assert credentials is None
+    assert project_id is None
+
+
+def test__get_gae_credentials_env_unset():
+    assert environment_vars.LEGACY_APPENGINE_RUNTIME not in os.environ
+    assert "GAE_RUNTIME" not in os.environ
+    credentials, project_id = _default._get_gae_credentials()
+    assert credentials is None
+    assert project_id is None
+
+
+@mock.patch.dict(os.environ)
 def test__get_gae_credentials_no_app_engine():
+    # test both with and without LEGACY_APPENGINE_RUNTIME setting
+    assert environment_vars.LEGACY_APPENGINE_RUNTIME not in os.environ
+
     import sys
 
-    with mock.patch.dict("sys.modules"):
-        sys.modules["google.auth.app_engine"] = None
+    with mock.patch.dict(sys.modules, {"google.auth.app_engine": None}):
+        credentials, project_id = _default._get_gae_credentials()
+        assert credentials is None
+        assert project_id is None
+
+        os.environ[environment_vars.LEGACY_APPENGINE_RUNTIME] = "python27"
         credentials, project_id = _default._get_gae_credentials()
         assert credentials is None
         assert project_id is None
 
 
+@mock.patch.dict(os.environ)
+@mock.patch.object(app_engine, "app_identity", new=None)
 def test__get_gae_credentials_no_apis():
-    assert _default._get_gae_credentials() == (None, None)
+    # test both with and without LEGACY_APPENGINE_RUNTIME setting
+    assert environment_vars.LEGACY_APPENGINE_RUNTIME not in os.environ
+
+    credentials, project_id = _default._get_gae_credentials()
+    assert credentials is None
+    assert project_id is None
+
+    os.environ[environment_vars.LEGACY_APPENGINE_RUNTIME] = "python27"
+    credentials, project_id = _default._get_gae_credentials()
+    assert credentials is None
+    assert project_id is None
 
 
 @mock.patch(

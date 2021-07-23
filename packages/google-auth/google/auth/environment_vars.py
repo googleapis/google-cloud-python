@@ -60,6 +60,12 @@ GOOGLE_API_USE_CLIENT_CERTIFICATE = "GOOGLE_API_USE_CLIENT_CERTIFICATE"
 The default value is false. Users have to explicitly set this value to true
 in order to use client certificate to establish a mutual TLS channel."""
 
+LEGACY_APPENGINE_RUNTIME = "APPENGINE_RUNTIME"
+"""Gen1 environment variable defining the App Engine Runtime.
+
+Used to distinguish between GAE gen1 and GAE gen2+.
+"""
+
 # AWS environment variables used with AWS workload identity pools to retrieve
 # AWS security credentials and the AWS region needed to create a serialized
 # signed requests to the AWS STS GetCalledIdentity API that can be exchanged

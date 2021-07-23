@@ -230,6 +230,11 @@ def _get_explicit_environ_credentials():
 
 def _get_gae_credentials():
     """Gets Google App Engine App Identity credentials and project ID."""
+    # If not GAE gen1, prefer the metadata service even if the GAE APIs are
+    # available as per https://google.aip.dev/auth/4115.
+    if os.environ.get(environment_vars.LEGACY_APPENGINE_RUNTIME) != "python27":
+        return None, None
+
     # While this library is normally bundled with app_engine, there are
     # some cases where it's not available, so we tolerate ImportError.
     try:
