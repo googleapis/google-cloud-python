@@ -196,6 +196,9 @@ Libraries
    * - `Pub/Sub <https://github.com/googleapis/python-pubsub>`_
      - |ga|
      - |PyPI-google-cloud-pubsub|
+   * - `Pub/Sub Lite <https://github.com/googleapis/python-pubsublite>`_
+     - |ga|
+     - |PyPI-google-cloud-pubsublite|
    * - `Recommender API <https://github.com/googleapis/python-recommender>`_
      - |ga|
      - |PyPI-google-cloud-recommender|
@@ -286,9 +289,15 @@ Libraries
    * - `BigQuery Logging Protos <https://github.com/googleapis/python-bigquery-logging>`_
      - |beta|
      - |PyPI-google-cloud-bigquery-logging|
+   * - `BigQuery connector for pandas <https://github.com/googleapis/python-bigquery-pandas>`_
+     - |beta|
+     - |PyPI-pandas-gbq|
    * - `Binary Authorization <https://github.com/googleapis/python-binary-authorization>`_
      - |beta|
      - |PyPI-google-cloud-binary-authorization|
+   * - `Contact Center AI Insights API <https://github.com/googleapis/python-contact-center-insights>`_
+     - |beta|
+     - |PyPI-google-cloud-contact-center-insights|
    * - `Data Fusion <https://github.com/googleapis/python-data-fusion>`_
      - |beta|
      - |PyPI-google-cloud-data-fusion|
@@ -349,9 +358,6 @@ Libraries
    * - `Private Catalog <https://github.com/googleapis/python-private-catalog>`_
      - |beta|
      - |PyPI-google-cloud-private-catalog|
-   * - `Pub/Sub Lite <https://github.com/googleapis/python-pubsublite>`_
-     - |beta|
-     - |PyPI-google-cloud-pubsublite|
    * - `Recommendations AI <https://github.com/googleapis/python-recommendations-ai>`_
      - |beta|
      - |PyPI-google-cloud-recommendations-ai|
@@ -500,6 +506,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-private-ca
 .. |PyPI-google-cloud-pubsub| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg
      :target: https://pypi.org/project/google-cloud-pubsub
+.. |PyPI-google-cloud-pubsublite| image:: https://img.shields.io/pypi/v/google-cloud-pubsublite.svg
+     :target: https://pypi.org/project/google-cloud-pubsublite
 .. |PyPI-google-cloud-recommender| image:: https://img.shields.io/pypi/v/google-cloud-recommender.svg
      :target: https://pypi.org/project/google-cloud-recommender
 .. |PyPI-google-cloud-redis| image:: https://img.shields.io/pypi/v/google-cloud-redis.svg
@@ -560,8 +568,12 @@ Libraries
      :target: https://pypi.org/project/google-cloud-audit-log
 .. |PyPI-google-cloud-bigquery-logging| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-logging.svg
      :target: https://pypi.org/project/google-cloud-bigquery-logging
+.. |PyPI-pandas-gbq| image:: https://img.shields.io/pypi/v/pandas-gbq.svg
+     :target: https://pypi.org/project/pandas-gbq
 .. |PyPI-google-cloud-binary-authorization| image:: https://img.shields.io/pypi/v/google-cloud-binary-authorization.svg
      :target: https://pypi.org/project/google-cloud-binary-authorization
+.. |PyPI-google-cloud-contact-center-insights| image:: https://img.shields.io/pypi/v/google-cloud-contact-center-insights.svg
+     :target: https://pypi.org/project/google-cloud-contact-center-insights
 .. |PyPI-google-cloud-data-fusion| image:: https://img.shields.io/pypi/v/google-cloud-data-fusion.svg
      :target: https://pypi.org/project/google-cloud-data-fusion
 .. |PyPI-google-cloud-datalabeling| image:: https://img.shields.io/pypi/v/google-cloud-datalabeling.svg
@@ -602,8 +614,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-phishing-protection
 .. |PyPI-google-cloud-private-catalog| image:: https://img.shields.io/pypi/v/google-cloud-private-catalog.svg
      :target: https://pypi.org/project/google-cloud-private-catalog
-.. |PyPI-google-cloud-pubsublite| image:: https://img.shields.io/pypi/v/google-cloud-pubsublite.svg
-     :target: https://pypi.org/project/google-cloud-pubsublite
 .. |PyPI-google-cloud-recommendations-ai| image:: https://img.shields.io/pypi/v/google-cloud-recommendations-ai.svg
      :target: https://pypi.org/project/google-cloud-recommendations-ai
 .. |PyPI-google-cloud-resource-manager| image:: https://img.shields.io/pypi/v/google-cloud-resource-manager.svg
