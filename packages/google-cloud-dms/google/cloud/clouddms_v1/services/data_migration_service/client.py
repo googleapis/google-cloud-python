@@ -372,6 +372,10 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=(
+                    Transport == type(self).get_transport_class("grpc")
+                    or Transport == type(self).get_transport_class("grpc_asyncio")
+                ),
             )
 
     def list_migration_jobs(
