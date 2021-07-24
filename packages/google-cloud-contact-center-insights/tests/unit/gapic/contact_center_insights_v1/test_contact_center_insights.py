@@ -4241,6 +4241,7 @@ def test_create_phrase_matcher(
             display_name="display_name_value",
             type_=resources.PhraseMatcher.PhraseMatcherType.ALL_OF,
             active=True,
+            role_match=resources.ConversationParticipant.Role.HUMAN_AGENT,
         )
         response = client.create_phrase_matcher(request)
 
@@ -4257,6 +4258,7 @@ def test_create_phrase_matcher(
     assert response.display_name == "display_name_value"
     assert response.type_ == resources.PhraseMatcher.PhraseMatcherType.ALL_OF
     assert response.active is True
+    assert response.role_match == resources.ConversationParticipant.Role.HUMAN_AGENT
 
 
 def test_create_phrase_matcher_from_dict():
@@ -4306,6 +4308,7 @@ async def test_create_phrase_matcher_async(
                 display_name="display_name_value",
                 type_=resources.PhraseMatcher.PhraseMatcherType.ALL_OF,
                 active=True,
+                role_match=resources.ConversationParticipant.Role.HUMAN_AGENT,
             )
         )
         response = await client.create_phrase_matcher(request)
@@ -4323,6 +4326,7 @@ async def test_create_phrase_matcher_async(
     assert response.display_name == "display_name_value"
     assert response.type_ == resources.PhraseMatcher.PhraseMatcherType.ALL_OF
     assert response.active is True
+    assert response.role_match == resources.ConversationParticipant.Role.HUMAN_AGENT
 
 
 @pytest.mark.asyncio
@@ -4501,6 +4505,7 @@ def test_get_phrase_matcher(
             display_name="display_name_value",
             type_=resources.PhraseMatcher.PhraseMatcherType.ALL_OF,
             active=True,
+            role_match=resources.ConversationParticipant.Role.HUMAN_AGENT,
         )
         response = client.get_phrase_matcher(request)
 
@@ -4517,6 +4522,7 @@ def test_get_phrase_matcher(
     assert response.display_name == "display_name_value"
     assert response.type_ == resources.PhraseMatcher.PhraseMatcherType.ALL_OF
     assert response.active is True
+    assert response.role_match == resources.ConversationParticipant.Role.HUMAN_AGENT
 
 
 def test_get_phrase_matcher_from_dict():
@@ -4566,6 +4572,7 @@ async def test_get_phrase_matcher_async(
                 display_name="display_name_value",
                 type_=resources.PhraseMatcher.PhraseMatcherType.ALL_OF,
                 active=True,
+                role_match=resources.ConversationParticipant.Role.HUMAN_AGENT,
             )
         )
         response = await client.get_phrase_matcher(request)
@@ -4583,6 +4590,7 @@ async def test_get_phrase_matcher_async(
     assert response.display_name == "display_name_value"
     assert response.type_ == resources.PhraseMatcher.PhraseMatcherType.ALL_OF
     assert response.active is True
+    assert response.role_match == resources.ConversationParticipant.Role.HUMAN_AGENT
 
 
 @pytest.mark.asyncio

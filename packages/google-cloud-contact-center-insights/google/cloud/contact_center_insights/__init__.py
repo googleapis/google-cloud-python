@@ -135,6 +135,9 @@ from google.cloud.contact_center_insights_v1.types.resources import (
 from google.cloud.contact_center_insights_v1.types.resources import (
     ConversationLevelSentiment,
 )
+from google.cloud.contact_center_insights_v1.types.resources import (
+    ConversationParticipant,
+)
 from google.cloud.contact_center_insights_v1.types.resources import DialogflowIntent
 from google.cloud.contact_center_insights_v1.types.resources import (
     DialogflowInteractionData,
@@ -215,6 +218,7 @@ __all__ = (
     "Conversation",
     "ConversationDataSource",
     "ConversationLevelSentiment",
+    "ConversationParticipant",
     "DialogflowIntent",
     "DialogflowInteractionData",
     "DialogflowSource",

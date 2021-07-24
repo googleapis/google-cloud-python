@@ -59,6 +59,7 @@ from .types.resources import CallAnnotation
 from .types.resources import Conversation
 from .types.resources import ConversationDataSource
 from .types.resources import ConversationLevelSentiment
+from .types.resources import ConversationParticipant
 from .types.resources import DialogflowIntent
 from .types.resources import DialogflowInteractionData
 from .types.resources import DialogflowSource
@@ -104,6 +105,7 @@ __all__ = (
     "Conversation",
     "ConversationDataSource",
     "ConversationLevelSentiment",
+    "ConversationParticipant",
     "ConversationView",
     "CreateAnalysisOperationMetadata",
     "CreateAnalysisRequest",
