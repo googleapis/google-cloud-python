@@ -14,10 +14,13 @@
 # limitations under the License.
 #
 from .asset_service import (
+    AnalyzeIamPolicyLongrunningMetadata,
     AnalyzeIamPolicyLongrunningRequest,
     AnalyzeIamPolicyLongrunningResponse,
     AnalyzeIamPolicyRequest,
     AnalyzeIamPolicyResponse,
+    AnalyzeMoveRequest,
+    AnalyzeMoveResponse,
     BatchGetAssetsHistoryRequest,
     BatchGetAssetsHistoryResponse,
     BigQueryDestination,
@@ -36,6 +39,9 @@ from .asset_service import (
     ListAssetsResponse,
     ListFeedsRequest,
     ListFeedsResponse,
+    MoveAnalysis,
+    MoveAnalysisResult,
+    MoveImpact,
     OutputConfig,
     OutputResult,
     PartitionSpec,
@@ -49,6 +55,7 @@ from .asset_service import (
 )
 from .assets import (
     Asset,
+    AttachedResource,
     ConditionEvaluation,
     IamPolicyAnalysisResult,
     IamPolicyAnalysisState,
@@ -57,13 +64,17 @@ from .assets import (
     ResourceSearchResult,
     TemporalAsset,
     TimeWindow,
+    VersionedResource,
 )
 
 __all__ = (
+    "AnalyzeIamPolicyLongrunningMetadata",
     "AnalyzeIamPolicyLongrunningRequest",
     "AnalyzeIamPolicyLongrunningResponse",
     "AnalyzeIamPolicyRequest",
     "AnalyzeIamPolicyResponse",
+    "AnalyzeMoveRequest",
+    "AnalyzeMoveResponse",
     "BatchGetAssetsHistoryRequest",
     "BatchGetAssetsHistoryResponse",
     "BigQueryDestination",
@@ -82,6 +93,9 @@ __all__ = (
     "ListAssetsResponse",
     "ListFeedsRequest",
     "ListFeedsResponse",
+    "MoveAnalysis",
+    "MoveAnalysisResult",
+    "MoveImpact",
     "OutputConfig",
     "OutputResult",
     "PartitionSpec",
@@ -93,6 +107,7 @@ __all__ = (
     "UpdateFeedRequest",
     "ContentType",
     "Asset",
+    "AttachedResource",
     "ConditionEvaluation",
     "IamPolicyAnalysisResult",
     "IamPolicyAnalysisState",
@@ -101,4 +116,5 @@ __all__ = (
     "ResourceSearchResult",
     "TemporalAsset",
     "TimeWindow",
+    "VersionedResource",
 )

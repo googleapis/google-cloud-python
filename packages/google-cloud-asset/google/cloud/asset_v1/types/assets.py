@@ -34,6 +34,8 @@ __protobuf__ = proto.module(
         "Asset",
         "Resource",
         "ResourceSearchResult",
+        "VersionedResource",
+        "AttachedResource",
         "IamPolicySearchResult",
         "IamPolicyAnalysisState",
         "ConditionEvaluation",
@@ -464,6 +466,25 @@ class ResourceSearchResult(proto.Message):
             -  use a field query. Example:
                ``parentFullResourceName:"project-name"``
             -  use a free text query. Example: ``project-name``
+        versioned_resources (Sequence[google.cloud.asset_v1.types.VersionedResource]):
+            Versioned resource representations of this resource. This is
+            repeated because there could be multiple versions of
+            resource representations during version migration.
+
+            This ``versioned_resources`` field is not searchable. Some
+            attributes of the resource representations are exposed in
+            ``additional_attributes`` field, so as to allow users to
+            search on them.
+        attached_resources (Sequence[google.cloud.asset_v1.types.AttachedResource]):
+            Attached resources of this resource. For example, an
+            OSConfig Inventory is an attached resource of a Compute
+            Instance. This field is repeated because a resource could
+            have multiple attached resources.
+
+            This ``attached_resources`` field is not searchable. Some
+            attributes of the attached resources are exposed in
+            ``additional_attributes`` field, so as to allow users to
+            search on them.
         parent_asset_type (str):
             The type of this resource's immediate parent, if there is
             one.
@@ -498,7 +519,71 @@ class ResourceSearchResult(proto.Message):
         proto.MESSAGE, number=9, message=struct_pb2.Struct,
     )
     parent_full_resource_name = proto.Field(proto.STRING, number=19,)
+    versioned_resources = proto.RepeatedField(
+        proto.MESSAGE, number=16, message="VersionedResource",
+    )
+    attached_resources = proto.RepeatedField(
+        proto.MESSAGE, number=20, message="AttachedResource",
+    )
     parent_asset_type = proto.Field(proto.STRING, number=103,)
+
+
+class VersionedResource(proto.Message):
+    r"""Resource representation as defined by the corresponding
+    service providing the resource for a given API version.
+
+    Attributes:
+        version (str):
+            API version of the resource.
+
+            Example: If the resource is an instance provided by Compute
+            Engine v1 API as defined in
+            ``https://cloud.google.com/compute/docs/reference/rest/v1/instances``,
+            version will be "v1".
+        resource (google.protobuf.struct_pb2.Struct):
+            JSON representation of the resource as defined by the
+            corresponding service providing this resource.
+
+            Example: If the resource is an instance provided by Compute
+            Engine, this field will contain the JSON representation of
+            the instance as defined by Compute Engine:
+            ``https://cloud.google.com/compute/docs/reference/rest/v1/instances``.
+
+            You can find the resource definition for each supported
+            resource type in this table:
+            ``https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types``
+    """
+
+    version = proto.Field(proto.STRING, number=1,)
+    resource = proto.Field(proto.MESSAGE, number=2, message=struct_pb2.Struct,)
+
+
+class AttachedResource(proto.Message):
+    r"""Attached resource representation, which is defined by the
+    corresponding service provider. It represents an attached
+    resource's payload.
+
+    Attributes:
+        asset_type (str):
+            The type of this attached resource.
+
+            Example: ``osconfig.googleapis.com/Inventory``
+
+            You can find the supported attached asset types of each
+            resource in this table:
+            ``https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types``
+        versioned_resources (Sequence[google.cloud.asset_v1.types.VersionedResource]):
+            Versioned resource representations of this
+            attached resource. This is repeated because
+            there could be multiple versions of the attached
+            resource representations during version
+            migration.
+    """
+
+    asset_type = proto.Field(proto.STRING, number=1,)
+    versioned_resources = proto.RepeatedField(
+        proto.MESSAGE, number=3, message="VersionedResource",
+    )
 
 
 class IamPolicySearchResult(proto.Message):

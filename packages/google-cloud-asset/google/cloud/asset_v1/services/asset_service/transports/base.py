@@ -286,6 +286,9 @@ class AssetServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.analyze_move: gapic_v1.method.wrap_method(
+                self.analyze_move, default_timeout=None, client_info=client_info,
+            ),
         }
 
     @property
@@ -415,6 +418,18 @@ class AssetServiceTransport(abc.ABC):
     ) -> Callable[
         [asset_service.AnalyzeIamPolicyLongrunningRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def analyze_move(
+        self,
+    ) -> Callable[
+        [asset_service.AnalyzeMoveRequest],
+        Union[
+            asset_service.AnalyzeMoveResponse,
+            Awaitable[asset_service.AnalyzeMoveResponse],
+        ],
     ]:
         raise NotImplementedError()
 

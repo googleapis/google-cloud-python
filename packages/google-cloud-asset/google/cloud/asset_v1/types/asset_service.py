@@ -19,6 +19,7 @@ from google.cloud.asset_v1.types import assets as gca_assets
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 
 
@@ -26,6 +27,7 @@ __protobuf__ = proto.module(
     package="google.cloud.asset.v1",
     manifest={
         "ContentType",
+        "AnalyzeIamPolicyLongrunningMetadata",
         "ExportAssetsRequest",
         "ExportAssetsResponse",
         "ListAssetsRequest",
@@ -57,6 +59,11 @@ __protobuf__ = proto.module(
         "IamPolicyAnalysisOutputConfig",
         "AnalyzeIamPolicyLongrunningRequest",
         "AnalyzeIamPolicyLongrunningResponse",
+        "AnalyzeMoveRequest",
+        "AnalyzeMoveResponse",
+        "MoveAnalysis",
+        "MoveAnalysisResult",
+        "MoveImpact",
     },
 )
 
@@ -69,6 +76,18 @@ class ContentType(proto.Enum):
     ORG_POLICY = 4
     ACCESS_POLICY = 5
     OS_INVENTORY = 6
+
+
+class AnalyzeIamPolicyLongrunningMetadata(proto.Message):
+    r"""Represents the metadata of the longrunning operation for the
+    AnalyzeIamPolicyLongrunning rpc.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation was created.
+    """
+
+    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
 
 
 class ExportAssetsRequest(proto.Message):
@@ -654,7 +673,7 @@ class Feed(proto.Message):
             optional.
 
             See our `user
-            guide <https://cloud.google.com/asset-inventory/docs/monitoring-asset-changes#feed_with_condition>`__
+            guide <https://cloud.google.com/asset-inventory/docs/monitoring-asset-changes-with-condition>`__
             for detailed instructions.
     """
 
@@ -713,8 +732,8 @@ class SearchAllResourcesRequest(proto.Message):
                word "key".
             -  ``state:ACTIVE`` to find Cloud resources whose state
                contains "ACTIVE" as a word.
-            -  ``NOT state:ACTIVE`` to find {{gcp_name}} resources whose
-               state doesn't contain "ACTIVE" as a word.
+            -  ``NOT state:ACTIVE`` to find Cloud resources whose state
+               doesn't contain "ACTIVE" as a word.
             -  ``createTime<1609459200`` to find Cloud resources that
                were created before "2021-01-01 00:00:00 UTC". 1609459200
                is the epoch timestamp of "2021-01-01 00:00:00 UTC" in
@@ -781,10 +800,42 @@ class SearchAllResourcesRequest(proto.Message):
             -  updateTime
             -  state
             -  parentFullResourceName
-            -  parentAssetType All the other fields such as repeated
-               fields (e.g., ``networkTags``), map fields (e.g.,
-               ``labels``) and struct fields (e.g.,
-               ``additionalAttributes``) are not supported.
+            -  parentAssetType
+
+            All the other fields such as repeated fields (e.g.,
+            ``networkTags``), map fields (e.g., ``labels``) and struct
+            fields (e.g., ``additionalAttributes``) are not supported.
+        read_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. A comma-separated list of fields specifying which
+            fields to be returned in ResourceSearchResult. Only '*' or
+            combination of top level fields can be specified. Field
+            names of both snake_case and camelCase are supported.
+            Examples: ``"*"``, ``"name,location"``,
+            ``"name,versionedResources"``.
+
+            The read_mask paths must be valid field paths listed but not
+            limited to (both snake_case and camelCase are supported):
+
+            -  name
+            -  assetType
+            -  project
+            -  displayName
+            -  description
+            -  location
+            -  labels
+            -  networkTags
+            -  kmsKey
+            -  createTime
+            -  updateTime
+            -  state
+            -  additionalAttributes
+            -  versionedResources
+
+            If read_mask is not specified, all fields except
+            versionedResources will be returned. If only '*' is
+            specified, all fields including versionedResources will be
+            returned. Any invalid field path will trigger
+            INVALID_ARGUMENT error.
     """
 
     scope = proto.Field(proto.STRING, number=1,)
@@ -793,6 +844,7 @@ class SearchAllResourcesRequest(proto.Message):
     page_size = proto.Field(proto.INT32, number=4,)
     page_token = proto.Field(proto.STRING, number=5,)
     order_by = proto.Field(proto.STRING, number=6,)
+    read_mask = proto.Field(proto.MESSAGE, number=8, message=field_mask_pb2.FieldMask,)
 
 
 class SearchAllResourcesResponse(proto.Message):
@@ -1385,6 +1437,108 @@ class AnalyzeIamPolicyLongrunningResponse(proto.Message):
     r"""A response message for
     [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
         """
+
+
+class AnalyzeMoveRequest(proto.Message):
+    r"""The request message for performing resource move analysis.
+    Attributes:
+        resource (str):
+            Required. Name of the resource to perform the
+            analysis against. Only GCP Project are supported
+            as of today. Hence, this can only be Project ID
+            (such as "projects/my-project-id") or a Project
+            Number (such as "projects/12345").
+        destination_parent (str):
+            Required. Name of the GCP Folder or
+            Organization to reparent the target resource.
+            The analysis will be performed against
+            hypothetically moving the resource to this
+            specified desitination parent. This can only be
+            a Folder number (such as "folders/123") or an
+            Organization number (such as
+            "organizations/123").
+        view (google.cloud.asset_v1.types.AnalyzeMoveRequest.AnalysisView):
+            Analysis view indicating what information
+            should be included in the analysis response. If
+            unspecified, the default view is FULL.
+    """
+
+    class AnalysisView(proto.Enum):
+        r"""View enum for supporting partial analysis responses."""
+        ANALYSIS_VIEW_UNSPECIFIED = 0
+        FULL = 1
+        BASIC = 2
+
+    resource = proto.Field(proto.STRING, number=1,)
+    destination_parent = proto.Field(proto.STRING, number=2,)
+    view = proto.Field(proto.ENUM, number=3, enum=AnalysisView,)
+
+
+class AnalyzeMoveResponse(proto.Message):
+    r"""The response message for resource move analysis.
+    Attributes:
+        move_analysis (Sequence[google.cloud.asset_v1.types.MoveAnalysis]):
+            The list of analyses returned from performing
+            the intended resource move analysis. The
+            analysis is grouped by different Cloud services.
+    """
+
+    move_analysis = proto.RepeatedField(
+        proto.MESSAGE, number=1, message="MoveAnalysis",
+    )
+
+
+class MoveAnalysis(proto.Message):
+    r"""A message to group the analysis information.
+    Attributes:
+        display_name (str):
+            The user friendly display name of the
+            analysis. E.g. IAM, Organization Policy etc.
+        analysis (google.cloud.asset_v1.types.MoveAnalysisResult):
+            Analysis result of moving the target
+            resource.
+        error (google.rpc.status_pb2.Status):
+            Description of error encountered when
+            performing the analysis.
+    """
+
+    display_name = proto.Field(proto.STRING, number=1,)
+    analysis = proto.Field(
+        proto.MESSAGE, number=2, oneof="result", message="MoveAnalysisResult",
+    )
+    error = proto.Field(
+        proto.MESSAGE, number=3, oneof="result", message=status_pb2.Status,
+    )
+
+
+class MoveAnalysisResult(proto.Message):
+    r"""An analysis result including blockers and warnings.
+    Attributes:
+        blockers (Sequence[google.cloud.asset_v1.types.MoveImpact]):
+            Blocking information that would prevent the
+            target resource from moving to the specified
+            destination at runtime.
+        warnings (Sequence[google.cloud.asset_v1.types.MoveImpact]):
+            Warning information indicating that moving
+            the target resource to the specified destination
+            might be unsafe. This can include important
+            policy information and configuration changes,
+            but will not block moves at runtime.
+    """
+
+    blockers = proto.RepeatedField(proto.MESSAGE, number=1, message="MoveImpact",)
+    warnings = proto.RepeatedField(proto.MESSAGE, number=2, message="MoveImpact",)
+
+
+class MoveImpact(proto.Message):
+    r"""A message to group impacts of moving the target resource.
+    Attributes:
+        detail (str):
+            User friendly impact detail in a free form
+            message.
+    """
+
+    detail = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -41,6 +41,7 @@ class assetCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
           'analyze_iam_policy': ('analysis_query', 'execution_timeout', ),
           'analyze_iam_policy_longrunning': ('analysis_query', 'output_config', ),
+          'analyze_move': ('resource', 'destination_parent', 'view', ),
           'batch_get_assets_history': ('parent', 'asset_names', 'content_type', 'read_time_window', ),
           'create_feed': ('parent', 'feed_id', 'feed', ),
           'delete_feed': ('name', ),
@@ -49,7 +50,7 @@ class assetCallTransformer(cst.CSTTransformer):
           'list_assets': ('parent', 'read_time', 'asset_types', 'content_type', 'page_size', 'page_token', ),
           'list_feeds': ('parent', ),
           'search_all_iam_policies': ('scope', 'query', 'page_size', 'page_token', 'asset_types', 'order_by', ),
-          'search_all_resources': ('scope', 'query', 'asset_types', 'page_size', 'page_token', 'order_by', ),
+          'search_all_resources': ('scope', 'query', 'asset_types', 'page_size', 'page_token', 'order_by', 'read_mask', ),
           'update_feed': ('feed', 'update_mask', ),
     }
 

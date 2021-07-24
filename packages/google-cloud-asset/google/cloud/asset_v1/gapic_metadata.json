@@ -20,6 +20,11 @@
                 "analyze_iam_policy_longrunning"
               ]
             },
+            "AnalyzeMove": {
+              "methods": [
+                "analyze_move"
+              ]
+            },
             "BatchGetAssetsHistory": {
               "methods": [
                 "batch_get_assets_history"
@@ -83,6 +88,11 @@
             "AnalyzeIamPolicyLongrunning": {
               "methods": [
                 "analyze_iam_policy_longrunning"
+              ]
+            },
+            "AnalyzeMove": {
+              "methods": [
+                "analyze_move"
               ]
             },
             "BatchGetAssetsHistory": {

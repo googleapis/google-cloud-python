@@ -3149,6 +3149,136 @@ async def test_analyze_iam_policy_longrunning_field_headers_async():
     ) in kw["metadata"]
 
 
+def test_analyze_move(
+    transport: str = "grpc", request_type=asset_service.AnalyzeMoveRequest
+):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.analyze_move), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeMoveResponse()
+        response = client.analyze_move(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeMoveRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.AnalyzeMoveResponse)
+
+
+def test_analyze_move_from_dict():
+    test_analyze_move(request_type=dict)
+
+
+def test_analyze_move_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.analyze_move), "__call__") as call:
+        client.analyze_move()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeMoveRequest()
+
+
+@pytest.mark.asyncio
+async def test_analyze_move_async(
+    transport: str = "grpc_asyncio", request_type=asset_service.AnalyzeMoveRequest
+):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.analyze_move), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.AnalyzeMoveResponse()
+        )
+        response = await client.analyze_move(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeMoveRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.AnalyzeMoveResponse)
+
+
+@pytest.mark.asyncio
+async def test_analyze_move_async_from_dict():
+    await test_analyze_move_async(request_type=dict)
+
+
+def test_analyze_move_field_headers():
+    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeMoveRequest()
+
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.analyze_move), "__call__") as call:
+        call.return_value = asset_service.AnalyzeMoveResponse()
+        client.analyze_move(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_analyze_move_field_headers_async():
+    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeMoveRequest()
+
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.analyze_move), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.AnalyzeMoveResponse()
+        )
+        await client.analyze_move(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AssetServiceGrpcTransport(
@@ -3258,6 +3388,7 @@ def test_asset_service_base_transport():
         "search_all_iam_policies",
         "analyze_iam_policy",
         "analyze_iam_policy_longrunning",
+        "analyze_move",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):

@@ -600,8 +600,8 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         [google.longrunning.Operation][google.longrunning.Operation],
         which allows you to track the operation status. We recommend
         intervals of at least 2 seconds with exponential backoff retry
-        to poll the operation result. The metadata contains the request
-        to help callers to map responses to requests.
+        to poll the operation result. The metadata contains the metadata
+        for the long-running operation.
 
         Returns:
             Callable[[~.AnalyzeIamPolicyLongrunningRequest],
@@ -622,6 +622,40 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["analyze_iam_policy_longrunning"]
+
+    @property
+    def analyze_move(
+        self,
+    ) -> Callable[
+        [asset_service.AnalyzeMoveRequest], Awaitable[asset_service.AnalyzeMoveResponse]
+    ]:
+        r"""Return a callable for the analyze move method over gRPC.
+
+        Analyze moving a resource to a specified destination
+        without kicking off the actual move. The analysis is
+        best effort depending on the user's permissions of
+        viewing different hierarchical policies and
+        configurations. The policies and configuration are
+        subject to change before the actual resource migration
+        takes place.
+
+        Returns:
+            Callable[[~.AnalyzeMoveRequest],
+                    Awaitable[~.AnalyzeMoveResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "analyze_move" not in self._stubs:
+            self._stubs["analyze_move"] = self.grpc_channel.unary_unary(
+                "/google.cloud.asset.v1.AssetService/AnalyzeMove",
+                request_serializer=asset_service.AnalyzeMoveRequest.serialize,
+                response_deserializer=asset_service.AnalyzeMoveResponse.deserialize,
+            )
+        return self._stubs["analyze_move"]
 
 
 __all__ = ("AssetServiceGrpcAsyncIOTransport",)
