@@ -299,13 +299,110 @@ for library in s.get_staging_dirs(default_version):
         ),
     )
 
+    # Add development feature `message_retention_duration` from pubsub_dev branch of googleapis
+    # See PR https://github.com/googleapis/python-pubsub/pull/456
+    count = s.replace(
+        library / f"google/pubsub_{library.name}/types/pubsub.py",
+        """satisfies_pzs \(bool\):
+            Reserved for future use. This field is set
+            only in responses from the server; it is ignored
+            if it is set in any requests.""",
+        """satisfies_pzs (bool):
+            Reserved for future use. This field is set
+            only in responses from the server; it is ignored
+            if it is set in any requests.
+        message_retention_duration (google.protobuf.duration_pb2.Duration):
+            Indicates the minimum duration to retain a message after it
+            is published to the topic. If this field is set, messages
+            published to the topic in the last
+            ``message_retention_duration`` are always available to
+            subscribers. For instance, it allows any attached
+            subscription to `seek to a
+            timestamp <https://cloud.google.com/pubsub/docs/replay-overview#seek_to_a_time>`__
+            that is up to ``message_retention_duration`` in the past. If
+            this field is not set, message retention is controlled by
+            settings on individual subscriptions. Cannot be more than 7
+            days or less than 10 minutes."""
+    )
+
+    # Add development feature `message_retention_duration` from pubsub_dev branch of googleapis
+    # See PR https://github.com/googleapis/python-pubsub/pull/456
+    count += s.replace(
+        library / f"google/pubsub_{library.name}/types/pubsub.py",
+        """satisfies_pzs = proto.Field\(
+        proto.BOOL,
+        number=7,
+    \)""",
+        """satisfies_pzs = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    message_retention_duration = proto.Field(
+        proto.MESSAGE, number=8, message=duration_pb2.Duration,
+    )"""
+    )
+
+    # Add development feature `topic_message_retention_duration` from pubsub_dev branch of googleapis
+    # See PR https://github.com/googleapis/python-pubsub/pull/456
+    count += s.replace(
+        library / f"google/pubsub_{library.name}/types/pubsub.py",
+        """detached \(bool\):
+            Indicates whether the subscription is detached from its
+            topic. Detached subscriptions don't receive messages from
+            their topic and don't retain any backlog. ``Pull`` and
+            ``StreamingPull`` requests will return FAILED_PRECONDITION.
+            If the subscription is a push subscription, pushes to the
+            endpoint will not be made.""",
+        """detached (bool):
+            Indicates whether the subscription is detached from its
+            topic. Detached subscriptions don't receive messages from
+            their topic and don't retain any backlog. ``Pull`` and
+            ``StreamingPull`` requests will return FAILED_PRECONDITION.
+            If the subscription is a push subscription, pushes to the
+            endpoint will not be made.
+        topic_message_retention_duration (google.protobuf.duration_pb2.Duration):
+            Output only. Indicates the minimum duration for which a
+            message is retained after it is published to the
+            subscription's topic. If this field is set, messages
+            published to the subscription's topic in the last
+            ``topic_message_retention_duration`` are always available to
+            subscribers. See the ``message_retention_duration`` field in
+            ``Topic``. This field is set only in responses from the
+            server; it is ignored if it is set in any requests."""
+    )
+
+    # Add development feature `topic_message_retention_duration` from pubsub_dev branch of googleapis
+    # See PR https://github.com/googleapis/python-pubsub/pull/456
+    count += s.replace(
+        library / f"google/pubsub_{library.name}/types/pubsub.py",
+        """detached = proto.Field\(
+        proto.BOOL,
+        number=15,
+    \)""",
+        """detached = proto.Field(
+        proto.BOOL,
+        number=15,
+    )
+    topic_message_retention_duration = proto.Field(
+        proto.MESSAGE, number=17, message=duration_pb2.Duration,
+    )
+    """
+    )
+
+    if count != 4:
+        raise Exception("Pub/Sub topic retention feature not added")
+
     # The namespace package declaration in google/cloud/__init__.py should be excluded
     # from coverage.
-    s.replace(
-        ".coveragerc",
-        r"((?P<indent>[^\n\S]+)google/pubsub/__init__\.py)",
-        "\g<indent>google/cloud/__init__.py\n\g<0>",
+    count = s.replace(
+        library / ".coveragerc",
+        "google/pubsub/__init__.py",
+        """google/cloud/__init__.py
+    google/pubsub/__init__.py""",
     )
+
+    if count < 1:
+        raise Exception(".coveragerc replacement failed.")
 
     s.move(
         library,

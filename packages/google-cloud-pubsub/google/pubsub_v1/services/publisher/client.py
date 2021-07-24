@@ -34,7 +34,6 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
 from google.pubsub_v1.services.publisher import pagers
 from google.pubsub_v1.types import pubsub
 from google.pubsub_v1.types import TimeoutType
@@ -399,6 +398,10 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=(
+                    Transport == type(self).get_transport_class("grpc")
+                    or Transport == type(self).get_transport_class("grpc_asyncio")
+                ),
             )
 
     def create_topic(
