@@ -14,13 +14,25 @@
 
 import pytest
 
+from google.cloud import bigquery
+import test_utils.prefixer
+
 from . import helpers
+
+prefixer = test_utils.prefixer.Prefixer("python-bigquery", "tests/system")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def cleanup_datasets(bigquery_client: bigquery.Client):
+    for dataset in bigquery_client.list_datasets():
+        if prefixer.should_cleanup(dataset.dataset_id):
+            bigquery_client.delete_dataset(
+                dataset, delete_contents=True, not_found_ok=True
+            )
 
 
 @pytest.fixture(scope="session")
 def bigquery_client():
-    from google.cloud import bigquery
-
     return bigquery.Client()
 
 
@@ -33,10 +45,10 @@ def bqstorage_client(bigquery_client):
 
 @pytest.fixture(scope="session")
 def dataset_id(bigquery_client):
-    dataset_id = f"bqsystem_{helpers.temp_suffix()}"
+    dataset_id = prefixer.create_prefix()
     bigquery_client.create_dataset(dataset_id)
     yield dataset_id
-    bigquery_client.delete_dataset(dataset_id, delete_contents=True)
+    bigquery_client.delete_dataset(dataset_id, delete_contents=True, not_found_ok=True)
 
 
 @pytest.fixture
