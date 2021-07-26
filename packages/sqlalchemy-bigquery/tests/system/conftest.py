@@ -17,23 +17,17 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import datetime
 import pathlib
-import random
 from typing import List
 
 import pytest
 
 from google.cloud import bigquery
+import test_utils.prefixer
 
+prefixer = test_utils.prefixer.Prefixer("python-bigquery-sqlalchemy", "tests/system")
 
 DATA_DIR = pathlib.Path(__file__).parent / "data"
-
-
-def temp_suffix():
-    timestamp = datetime.datetime.utcnow().strftime("%y%m%d_%H%M%S")
-    random_string = hex(random.randrange(1000000))[2:]
-    return f"{timestamp}_{random_string}"
 
 
 def load_sample_data(
@@ -73,7 +67,7 @@ def bigquery_dataset(
     bigquery_client: bigquery.Client, bigquery_schema: List[bigquery.SchemaField]
 ):
     project_id = bigquery_client.project
-    dataset_id = f"test_pybigquery_{temp_suffix()}"
+    dataset_id = prefixer.create_prefix()
     dataset = bigquery.Dataset(f"{project_id}.{dataset_id}")
     dataset = bigquery_client.create_dataset(dataset)
     sample_table_id = f"{project_id}.{dataset_id}.sample"
@@ -112,7 +106,7 @@ def bigquery_empty_table(
 @pytest.fixture(scope="session")
 def bigquery_regional_dataset(bigquery_client, bigquery_schema):
     project_id = bigquery_client.project
-    dataset_id = f"test_pybigquery_location_{temp_suffix()}"
+    dataset_id = prefixer.create_prefix()
     dataset = bigquery.Dataset(f"{project_id}.{dataset_id}")
     dataset.location = "asia-northeast1"
     dataset = bigquery_client.create_dataset(dataset)
@@ -126,3 +120,12 @@ def bigquery_regional_dataset(bigquery_client, bigquery_schema):
     job.result()
     yield dataset_id
     bigquery_client.delete_dataset(dataset_id, delete_contents=True)
+
+
+@pytest.fixture(scope="session", autouse=True)
+def cleanup_datasets(bigquery_client: bigquery.Client):
+    for dataset in bigquery_client.list_datasets():
+        if prefixer.should_cleanup(dataset.dataset_id):
+            bigquery_client.delete_dataset(
+                dataset, delete_contents=True, not_found_ok=True
+            )

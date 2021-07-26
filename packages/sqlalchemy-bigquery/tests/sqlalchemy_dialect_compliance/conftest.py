@@ -18,7 +18,6 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import contextlib
-import random
 import re
 import traceback
 
@@ -30,7 +29,13 @@ from sqlalchemy.testing.plugin.pytestplugin import (
 )
 
 import google.cloud.bigquery.dbapi.connection
+import test_utils.prefixer
+
 import pybigquery.sqlalchemy_bigquery
+
+prefixer = test_utils.prefixer.Prefixer(
+    "python-bigquery-sqlalchemy", "tests/compliance"
+)
 
 pybigquery.sqlalchemy_bigquery.BigQueryDialect.preexecute_autoincrement_sequences = True
 google.cloud.bigquery.dbapi.connection.Connection.rollback = lambda self: None
@@ -62,7 +67,7 @@ pybigquery.sqlalchemy_bigquery.BigQueryCompiler.visit_delete = visit_delete
 
 
 def pytest_sessionstart(session):
-    dataset_id = f"test_pybigquery_sqla{random.randint(0, 1<<63)}"
+    dataset_id = prefixer.create_prefix()
     session.config.option.dburi = [f"bigquery:///{dataset_id}"]
     with contextlib.closing(google.cloud.bigquery.Client()) as client:
         client.create_dataset(dataset_id)
@@ -73,4 +78,7 @@ def pytest_sessionfinish(session):
     dataset_id = config.db.dialect.dataset_id
     _pytest_sessionfinish(session)
     with contextlib.closing(google.cloud.bigquery.Client()) as client:
-        client.delete_dataset(dataset_id, delete_contents=True)
+        client.delete_dataset(dataset_id, delete_contents=True, not_found_ok=True)
+        for dataset in client.list_datasets():
+            if prefixer.should_cleanup(dataset.dataset_id):
+                client.delete_dataset(dataset, delete_contents=True, not_found_ok=True)
