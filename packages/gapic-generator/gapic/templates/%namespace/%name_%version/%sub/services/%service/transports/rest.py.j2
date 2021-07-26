@@ -190,7 +190,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         {# TODO(yon-mg): move all query param logic out of wrappers into here to handle
                          nested fields correctly (can't just use set of top level fields
         #}
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
+        # TODO(yon-mg): handle nested fields correctly rather than using only top level fields
         #               not required for GCE
         query_params = {}
         {% for field in method.query_params | sort%}

@@ -119,7 +119,7 @@ class ConfigServiceV2Transport(abc.ABC):
         elif credentials is None:
             credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
 
-        # If the credentials is service account credentials, then always try to use self signed JWT.
+        # If the credentials are service account credentials, then always try to use self signed JWT.
         if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
             credentials = credentials.with_always_use_jwt_access(True)
 
