@@ -170,7 +170,7 @@ class LoadJobConfig(_JobConfig):
 
     @property
     def destination_table_description(self):
-        """Optional[str]: Name given to destination table.
+        """Optional[str]: Description of the destination table.
 
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#DestinationTableProperties.FIELDS.description
