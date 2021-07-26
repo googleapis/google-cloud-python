@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+### [3.3.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.3.0...v3.3.1) (2021-07-24)
+
+
+### Features
+
+* add a WorkerPools API ([#129](https://www.github.com/googleapis/python-cloudbuild/issues/129)) ([2ea98bd](https://www.github.com/googleapis/python-cloudbuild/commit/2ea98bddbfafd5e728b99f8bcae6b7dc2a741e60))
+* add Samples section to CONTRIBUTING.rst ([#131](https://www.github.com/googleapis/python-cloudbuild/issues/131)) ([7593c96](https://www.github.com/googleapis/python-cloudbuild/commit/7593c96f3b3276c3b5432bbe1fbbf6c3bb3a358a))
+* Implementation of Build Failure Info: - Added message FailureInfo field ([#132](https://www.github.com/googleapis/python-cloudbuild/issues/132)) ([76564e8](https://www.github.com/googleapis/python-cloudbuild/commit/76564e85da5e3a1e66d64720cf47ce5e80b1fc22))
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#130](https://www.github.com/googleapis/python-cloudbuild/issues/130)) ([e92b7a2](https://www.github.com/googleapis/python-cloudbuild/commit/e92b7a21ce2115461ff7884885a88118731d56ef))
+* enable self signed jwt for grpc ([#139](https://www.github.com/googleapis/python-cloudbuild/issues/139)) ([89f7931](https://www.github.com/googleapis/python-cloudbuild/commit/89f7931e9f33d823e31a0e997dfc22d728f55008))
+
+
+### Miscellaneous Chores
+
+* release as 3.3.1 ([#136](https://www.github.com/googleapis/python-cloudbuild/issues/136)) ([5d6e342](https://www.github.com/googleapis/python-cloudbuild/commit/5d6e342a6c6c3d163b61f6ffa05a551519c1f461))
+
 ## [3.3.0](https://www.github.com/googleapis/python-cloudbuild/compare/v3.2.1...v3.3.0) (2021-06-30)
 
 
