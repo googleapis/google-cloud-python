@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+### [2.3.2](https://www.github.com/googleapis/python-videointelligence/compare/v2.3.1...v2.3.2) (2021-07-26)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#193](https://www.github.com/googleapis/python-videointelligence/issues/193)) ([29475ff](https://www.github.com/googleapis/python-videointelligence/commit/29475ff90809473bf23cbc3d284e1a2afdc69e94))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#190](https://www.github.com/googleapis/python-videointelligence/issues/190)) ([bed1899](https://www.github.com/googleapis/python-videointelligence/commit/bed1899b6f31e4fd29cbdebbe21b0dea587ce483))
+
 ### [2.3.1](https://www.github.com/googleapis/python-videointelligence/compare/v2.3.0...v2.3.1) (2021-07-20)
 
 
