@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.1.0...v1.1.1) (2021-07-24)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#134](https://www.github.com/googleapis/python-dialogflow-cx/issues/134)) ([5e42bd0](https://www.github.com/googleapis/python-dialogflow-cx/commit/5e42bd0786607ed0636e80be073007224bcb520e))
+
 ## [1.1.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.0.0...v1.1.0) (2021-07-22)
 
 
