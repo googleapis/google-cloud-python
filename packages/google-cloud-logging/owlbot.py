@@ -82,6 +82,17 @@ s.replace(
     'exclude =\n  # Exclude environment test code.\n  tests/environment/**\n'
 )
 
+# use conventional commits for renovate bot
+s.replace(
+    "renovate.json",
+    """}
+}""",
+    """},
+  "semanticCommits": "enabled"
+}"""
+)
+
+
 # --------------------------------------------------------------------------
 # Samples templates
 # --------------------------------------------------------------------------
