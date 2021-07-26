@@ -5,5 +5,6 @@
   "ignorePaths": [".pre-commit-config.yaml"],
   "pip_requirements": {
     "fileMatch": ["requirements-test.txt", "samples/[\\S/]*constraints.txt", "samples/[\\S/]*constraints-test.txt"]
-  }
+  },
+  "semanticCommits": "enabled"
 }
