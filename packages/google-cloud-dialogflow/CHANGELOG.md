@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+### [2.7.1](https://www.github.com/googleapis/python-dialogflow/compare/v2.7.0...v2.7.1) (2021-07-26)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#345](https://www.github.com/googleapis/python-dialogflow/issues/345)) ([ae434ed](https://www.github.com/googleapis/python-dialogflow/commit/ae434edc46c5e9c3243b928674727ea91cdf0145))
+
+
+### Documentation
+
+* fix typos ([#347](https://www.github.com/googleapis/python-dialogflow/issues/347)) ([1aa9a7a](https://www.github.com/googleapis/python-dialogflow/commit/1aa9a7a67d2997d87735666ecdcc55c8f8442cdf))
+
 ## [2.7.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.6.0...v2.7.0) (2021-07-22)
 
 
