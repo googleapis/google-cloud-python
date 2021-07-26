@@ -1,5 +1,23 @@
 # Changelog
 
+### [0.4.2](https://www.github.com/googleapis/python-area120-tables/compare/v0.4.1...v0.4.2) (2021-07-26)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#69](https://www.github.com/googleapis/python-area120-tables/issues/69)) ([954f6c7](https://www.github.com/googleapis/python-area120-tables/commit/954f6c7ef550d502cb75edb1f981de8eb67849b1))
+* enable self signed jwt for grpc ([#75](https://www.github.com/googleapis/python-area120-tables/issues/75)) ([75f29fc](https://www.github.com/googleapis/python-area120-tables/commit/75f29fc84173a1c9497d261fc74d71cb068a41af))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#70](https://www.github.com/googleapis/python-area120-tables/issues/70)) ([15716f3](https://www.github.com/googleapis/python-area120-tables/commit/15716f32094df082a6536513699e68ab308aaf17))
+
+
+### Miscellaneous Chores
+
+* release as 0.4.2 ([#74](https://www.github.com/googleapis/python-area120-tables/issues/74)) ([682d5dd](https://www.github.com/googleapis/python-area120-tables/commit/682d5dd57c6f752595401bd2d5d232f875bc163b))
+
 ### [0.4.1](https://www.github.com/googleapis/python-area120-tables/compare/v0.4.0...v0.4.1) (2021-06-30)
 
 
