@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+### [3.3.1](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.0...v3.3.1) (2021-07-26)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#180](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/180)) ([b0e9533](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/b0e953347b43dd2252cf907bfaa8b6fbb16379b6))
+* enable self signed jwt for grpc ([#185](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/185)) ([3dd3bdd](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/3dd3bdd9074297803eced776e0ab12491f91da3b))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#181](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/181)) ([5bc909c](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/5bc909c606fdf7cc037e1f014a997272f6284c65))
+
+
+### Miscellaneous Chores
+
+* release as 3.3.1 ([#186](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/186)) ([7c1a7b9](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/7c1a7b98fcb08dbe081c8c645d079a6586fa7b7b))
+
 ## [3.3.0](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.2.0...v3.3.0) (2021-07-12)
 
 
