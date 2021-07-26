@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-documentai/compare/v0.5.0...v1.0.0) (2021-07-26)
+
+
+### Features
+
+* add always_use_jwt_access ([35e3b74](https://www.github.com/googleapis/python-documentai/commit/35e3b74474719ef22449fbcb4772e6d381e80874))
+* add the processor management methods ([35e3b74](https://www.github.com/googleapis/python-documentai/commit/35e3b74474719ef22449fbcb4772e6d381e80874))
+* bump release level to production/stable ([#151](https://www.github.com/googleapis/python-documentai/issues/151)) ([1e6b470](https://www.github.com/googleapis/python-documentai/commit/1e6b470673c4ff71f0f49c11825cb408d1929a88))
+* Move CommonOperationMetadata for potential reuse ([#157](https://www.github.com/googleapis/python-documentai/issues/157)) ([a1a92b2](https://www.github.com/googleapis/python-documentai/commit/a1a92b20cc6afa80434a00a90690f1470ed48353))
+* update ReviewDocumentRequest to allow set priority and enable validation ([#172](https://www.github.com/googleapis/python-documentai/issues/172)) ([35e3b74](https://www.github.com/googleapis/python-documentai/commit/35e3b74474719ef22449fbcb4772e6d381e80874))
+* **v1beta3:** update document.proto, add the processor management methods ([#160](https://www.github.com/googleapis/python-documentai/issues/160)) ([54bc0e9](https://www.github.com/googleapis/python-documentai/commit/54bc0e9c70046bb411dafd53d98c501676585aaf))
+* **v1:** Move CommonOperationMetadata into a separate file for potential reuse ([#158](https://www.github.com/googleapis/python-documentai/issues/158)) ([c309f8f](https://www.github.com/googleapis/python-documentai/commit/c309f8f6f88e0308677fc68a7825b3eac7b57627))
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#162](https://www.github.com/googleapis/python-documentai/issues/162)) ([f09f807](https://www.github.com/googleapis/python-documentai/commit/f09f8075a3b76fe0d226afa955dae170117df0d0))
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#180](https://www.github.com/googleapis/python-documentai/issues/180)) ([8eab36e](https://www.github.com/googleapis/python-documentai/commit/8eab36e8ff8616ccfdfd4c4149265030bab45d19))
+* disable always_use_jwt_access ([35e3b74](https://www.github.com/googleapis/python-documentai/commit/35e3b74474719ef22449fbcb4772e6d381e80874))
+* enable self signed jwt for grpc ([#184](https://www.github.com/googleapis/python-documentai/issues/184)) ([1e35b42](https://www.github.com/googleapis/python-documentai/commit/1e35b42739f36d7e1f19528299dac40de5b0cca4))
+* exclude docs and tests from package ([#159](https://www.github.com/googleapis/python-documentai/issues/159)) ([1325677](https://www.github.com/googleapis/python-documentai/commit/132567742a2a9927665ed46278952815088ccafc))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-documentai/issues/1127)) ([#164](https://www.github.com/googleapis/python-documentai/issues/164)) ([baba888](https://www.github.com/googleapis/python-documentai/commit/baba888184d6cc872e048aefd52b14d2486c553f))
+* add Samples section to CONTRIBUTING.rst ([#181](https://www.github.com/googleapis/python-documentai/issues/181)) ([b0f4c7a](https://www.github.com/googleapis/python-documentai/commit/b0f4c7ab32d7b864eade29e44efc1b51c80fb3e1))
+
+
 ## [0.5.0](https://www.github.com/googleapis/python-documentai/compare/v0.4.0...v0.5.0) (2021-05-28)
 
 
