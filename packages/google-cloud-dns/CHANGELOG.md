@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dns/#history
 
+## [0.33.0](https://www.github.com/googleapis/python-dns/compare/v0.32.3...v0.33.0) (2021-07-23)
+
+
+### Features
+
+* require python 3.6 ([#61](https://www.github.com/googleapis/python-dns/issues/61)) ([56ab29f](https://www.github.com/googleapis/python-dns/commit/56ab29f35e0fda4f290f7cf2697466928080bd2f))
+
 ### [0.32.3](https://www.github.com/googleapis/python-dns/compare/v0.32.2...v0.32.3) (2021-05-27)
 
 
