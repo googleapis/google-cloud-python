@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+### [2.7.1](https://www.github.com/googleapis/python-container/compare/v2.7.0...v2.7.1) (2021-07-24)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#133](https://www.github.com/googleapis/python-container/issues/133)) ([6e34b81](https://www.github.com/googleapis/python-container/commit/6e34b81070b14de226c703191e8fe7f37357dea8))
+
 ## [2.7.0](https://www.github.com/googleapis/python-container/compare/v2.6.1...v2.7.0) (2021-07-22)
 
 
