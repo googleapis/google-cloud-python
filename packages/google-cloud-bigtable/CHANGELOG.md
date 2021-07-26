@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+### [2.3.3](https://www.github.com/googleapis/python-bigtable/compare/v2.3.2...v2.3.3) (2021-07-24)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#397](https://www.github.com/googleapis/python-bigtable/issues/397)) ([9d43a38](https://www.github.com/googleapis/python-bigtable/commit/9d43a388470746608d324ca8d72f41bb3a4492b7))
+
 ### [2.3.2](https://www.github.com/googleapis/python-bigtable/compare/v2.3.1...v2.3.2) (2021-07-20)
 
 

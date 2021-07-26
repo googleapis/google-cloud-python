@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-bigtable"
 description = "Google Cloud Bigtable API client library"
-version = "2.3.2"
+version = "2.3.3"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
