@@ -1,5 +1,24 @@
 # Changelog
 
+### [0.4.2](https://www.github.com/googleapis/python-compute/compare/v0.4.1...v0.4.2) (2021-07-26)
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#81](https://www.github.com/googleapis/python-compute/issues/81)) ([1163f2b](https://www.github.com/googleapis/python-compute/commit/1163f2bb15f0e042bdd9562a31ad2ac7f39e3536))
+
+
+### Documentation
+
+* samples docstring and comments update ([#69](https://www.github.com/googleapis/python-compute/issues/69)) ([2d53eb1](https://www.github.com/googleapis/python-compute/commit/2d53eb1839a8751945ba7cdf12991f2970893df2))
+* adding samples for default values ([#64](https://www.github.com/googleapis/python-compute/issues/64)) ([553e389](https://www.github.com/googleapis/python-compute/commit/553e3891179c2719a57d398ffc26c1459945bf4d))
+
+
+### Miscellaneous Chores
+
+* release as 0.4.2 ([#84](https://www.github.com/googleapis/python-compute/issues/84)) ([dc77c0c](https://www.github.com/googleapis/python-compute/commit/dc77c0c55eef9cc1c2e515137fe66b4d4afca77e))
+* Kokoro uses separate project for concurent tests. ([#83](https://www.github.com/googleapis/python-compute/issues/83)) ([40afb33](https://www.github.com/googleapis/python-compute/commit/40afb333a963717853f70410a7a08eda5492418c))
+
+
 ### [0.4.1](https://www.github.com/googleapis/python-compute/compare/v0.4.0...v0.4.1) (2021-06-16)
 
 
