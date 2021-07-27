@@ -17,7 +17,7 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.gkehub.multiclusteringress_v1", manifest={"FeatureSpec",},
+    package="google.cloud.gkehub.multiclusteringress.v1", manifest={"FeatureSpec",},
 )
 
 

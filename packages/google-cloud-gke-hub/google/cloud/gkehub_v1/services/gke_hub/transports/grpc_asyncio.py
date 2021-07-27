@@ -43,8 +43,8 @@ class GkeHubGrpcAsyncIOTransport(GkeHubTransport):
 
     The GKE Hub service operates on the following resources:
 
-    -  [Membership][google.cloud.gkehub_v1.Membership]
-    -  [Feature][google.cloud.gkehub_v1.Feature]
+    -  [Membership][google.cloud.gkehub.v1.Membership]
+    -  [Feature][google.cloud.gkehub.v1.Feature]
 
     GKE Hub is currently only available in the global region.
 
@@ -284,7 +284,7 @@ class GkeHubGrpcAsyncIOTransport(GkeHubTransport):
         # to pass in the functions for each.
         if "list_memberships" not in self._stubs:
             self._stubs["list_memberships"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkehub_v1.GkeHub/ListMemberships",
+                "/google.cloud.gkehub.v1.GkeHub/ListMemberships",
                 request_serializer=service.ListMembershipsRequest.serialize,
                 response_deserializer=service.ListMembershipsResponse.deserialize,
             )
@@ -312,7 +312,7 @@ class GkeHubGrpcAsyncIOTransport(GkeHubTransport):
         # to pass in the functions for each.
         if "list_features" not in self._stubs:
             self._stubs["list_features"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkehub_v1.GkeHub/ListFeatures",
+                "/google.cloud.gkehub.v1.GkeHub/ListFeatures",
                 request_serializer=service.ListFeaturesRequest.serialize,
                 response_deserializer=service.ListFeaturesResponse.deserialize,
             )
@@ -338,7 +338,7 @@ class GkeHubGrpcAsyncIOTransport(GkeHubTransport):
         # to pass in the functions for each.
         if "get_membership" not in self._stubs:
             self._stubs["get_membership"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkehub_v1.GkeHub/GetMembership",
+                "/google.cloud.gkehub.v1.GkeHub/GetMembership",
                 request_serializer=service.GetMembershipRequest.serialize,
                 response_deserializer=membership.Membership.deserialize,
             )
@@ -364,7 +364,7 @@ class GkeHubGrpcAsyncIOTransport(GkeHubTransport):
         # to pass in the functions for each.
         if "get_feature" not in self._stubs:
             self._stubs["get_feature"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkehub_v1.GkeHub/GetFeature",
+                "/google.cloud.gkehub.v1.GkeHub/GetFeature",
                 request_serializer=service.GetFeatureRequest.serialize,
                 response_deserializer=feature.Feature.deserialize,
             )
@@ -396,7 +396,7 @@ class GkeHubGrpcAsyncIOTransport(GkeHubTransport):
         # to pass in the functions for each.
         if "create_membership" not in self._stubs:
             self._stubs["create_membership"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkehub_v1.GkeHub/CreateMembership",
+                "/google.cloud.gkehub.v1.GkeHub/CreateMembership",
                 request_serializer=service.CreateMembershipRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -422,7 +422,7 @@ class GkeHubGrpcAsyncIOTransport(GkeHubTransport):
         # to pass in the functions for each.
         if "create_feature" not in self._stubs:
             self._stubs["create_feature"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkehub_v1.GkeHub/CreateFeature",
+                "/google.cloud.gkehub.v1.GkeHub/CreateFeature",
                 request_serializer=service.CreateFeatureRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -455,7 +455,7 @@ class GkeHubGrpcAsyncIOTransport(GkeHubTransport):
         # to pass in the functions for each.
         if "delete_membership" not in self._stubs:
             self._stubs["delete_membership"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkehub_v1.GkeHub/DeleteMembership",
+                "/google.cloud.gkehub.v1.GkeHub/DeleteMembership",
                 request_serializer=service.DeleteMembershipRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -481,7 +481,7 @@ class GkeHubGrpcAsyncIOTransport(GkeHubTransport):
         # to pass in the functions for each.
         if "delete_feature" not in self._stubs:
             self._stubs["delete_feature"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkehub_v1.GkeHub/DeleteFeature",
+                "/google.cloud.gkehub.v1.GkeHub/DeleteFeature",
                 request_serializer=service.DeleteFeatureRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -509,7 +509,7 @@ class GkeHubGrpcAsyncIOTransport(GkeHubTransport):
         # to pass in the functions for each.
         if "update_membership" not in self._stubs:
             self._stubs["update_membership"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkehub_v1.GkeHub/UpdateMembership",
+                "/google.cloud.gkehub.v1.GkeHub/UpdateMembership",
                 request_serializer=service.UpdateMembershipRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -535,7 +535,7 @@ class GkeHubGrpcAsyncIOTransport(GkeHubTransport):
         # to pass in the functions for each.
         if "update_feature" not in self._stubs:
             self._stubs["update_feature"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkehub_v1.GkeHub/UpdateFeature",
+                "/google.cloud.gkehub.v1.GkeHub/UpdateFeature",
                 request_serializer=service.UpdateFeatureRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -567,7 +567,7 @@ class GkeHubGrpcAsyncIOTransport(GkeHubTransport):
         # to pass in the functions for each.
         if "generate_connect_manifest" not in self._stubs:
             self._stubs["generate_connect_manifest"] = self.grpc_channel.unary_unary(
-                "/google.cloud.gkehub_v1.GkeHub/GenerateConnectManifest",
+                "/google.cloud.gkehub.v1.GkeHub/GenerateConnectManifest",
                 request_serializer=service.GenerateConnectManifestRequest.serialize,
                 response_deserializer=service.GenerateConnectManifestResponse.deserialize,
             )

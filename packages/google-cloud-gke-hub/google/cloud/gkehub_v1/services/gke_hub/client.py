@@ -82,8 +82,8 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
 
     The GKE Hub service operates on the following resources:
 
-    -  [Membership][google.cloud.gkehub_v1.Membership]
-    -  [Feature][google.cloud.gkehub_v1.Feature]
+    -  [Membership][google.cloud.gkehub.v1.Membership]
+    -  [Feature][google.cloud.gkehub.v1.Feature]
 
     GKE Hub is currently only available in the global region.
 

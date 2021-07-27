@@ -30,16 +30,6 @@ for library in s.get_staging_dirs(default_version):
       "multiclusteringress",
     ]
 
-    # rename google.cloud.gkehub.vX to google.cloud.gkehub_vX
-    s.replace(
-      [
-            library  / f"google/cloud/gkehub_{library.name}/**/*.py",
-            library  / f"tests/unit/gapic/gkehub_{library.name}/**/*.py",
-      ],
-      f"google.cloud.gkehub.{library.name}",
-      f"google.cloud.gkehub_{library.name}",
-    )
-
     # rename dependencies google.cloud.gkehub.dep.vX to google.cloud.gkehub.dep_vX
     for dep in dependencies:
         s.replace(
@@ -49,17 +39,7 @@ for library in s.get_staging_dirs(default_version):
             library  / f"google/cloud/gkehub/{dep}_{library.name}/**/*.py",
           ],
           f"from google.cloud.gkehub.{dep}.{library.name} import",
-          f"import google.cloud.gkehub.{dep}_{library.name} as"
-        )
-
-        s.replace(
-          [
-            library  / f"google/cloud/gkehub_{library.name}/**/*.py",
-            library  / f"tests/unit/gapic/gkehub_{library.name}/**/*.py",
-            library  / f"google/cloud/gkehub/{dep}_{library.name}/**/*.py",
-          ],
-          f"google.cloud.gkehub.{dep}.{library.name}",
-          f"google.cloud.gkehub.{dep}_{library.name}"
+          f"from google.cloud.gkehub import {dep}_{library.name} as"
         )
 
     # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
@@ -83,7 +63,8 @@ for library in s.get_staging_dirs(default_version):
         """the GKE cluster. For example:
             //container.googleapis.com/projects/my-"""
     )
-    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst","google/cloud/gkehub/__init__.py"])
+
+    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst", "google/cloud/gkehub/configmanagement", "google/cloud/gkehub/multiclusteringress"])
 
 s.remove_staging_dirs()
 

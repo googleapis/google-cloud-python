@@ -19,7 +19,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.gkehub.configmanagement_v1",
+    package="google.cloud.gkehub.configmanagement.v1",
     manifest={
         "DeploymentState",
         "MembershipState",
