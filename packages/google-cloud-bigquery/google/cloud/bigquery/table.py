@@ -1552,11 +1552,6 @@ class RowIterator(HTTPIterator):
             return False
 
         if self.max_results is not None:
-            warnings.warn(
-                "Cannot use bqstorage_client if max_results is set, "
-                "reverting to fetching data with the REST endpoint.",
-                stacklevel=2,
-            )
             return False
 
         try:
@@ -1603,6 +1598,25 @@ class RowIterator(HTTPIterator):
     def total_rows(self):
         """int: The total number of rows in the table."""
         return self._total_rows
+
+    def _maybe_warn_max_results(
+        self, bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"],
+    ):
+        """Issue a warning if BQ Storage client is not ``None`` with ``max_results`` set.
+
+        This helper method should be used directly in the relevant top-level public
+        methods, so that the warning is issued for the correct line in user code.
+
+        Args:
+            bqstorage_client:
+                The BigQuery Storage client intended to use for downloading result rows.
+        """
+        if bqstorage_client is not None and self.max_results is not None:
+            warnings.warn(
+                "Cannot use bqstorage_client if max_results is set, "
+                "reverting to fetching data with the REST endpoint.",
+                stacklevel=3,
+            )
 
     def _to_page_iterable(
         self, bqstorage_download, tabledata_list_download, bqstorage_client=None
@@ -1700,6 +1714,8 @@ class RowIterator(HTTPIterator):
         if pyarrow is None:
             raise ValueError(_NO_PYARROW_ERROR)
 
+        self._maybe_warn_max_results(bqstorage_client)
+
         if not self._validate_bqstorage(bqstorage_client, create_bqstorage_client):
             create_bqstorage_client = False
             bqstorage_client = None
@@ -1789,6 +1805,8 @@ class RowIterator(HTTPIterator):
             raise ValueError(_NO_PANDAS_ERROR)
         if dtypes is None:
             dtypes = {}
+
+        self._maybe_warn_max_results(bqstorage_client)
 
         column_names = [field.name for field in self._schema]
         bqstorage_download = functools.partial(
@@ -1895,6 +1913,8 @@ class RowIterator(HTTPIterator):
             raise ValueError(_NO_PANDAS_ERROR)
         if dtypes is None:
             dtypes = {}
+
+        self._maybe_warn_max_results(bqstorage_client)
 
         if not self._validate_bqstorage(bqstorage_client, create_bqstorage_client):
             create_bqstorage_client = False
