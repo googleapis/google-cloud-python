@@ -85,6 +85,8 @@ _NO_ORDERS_FOR_CURSOR = (
 )
 _MISMATCH_CURSOR_W_ORDER_BY = "The cursor {!r} does not match the order fields {!r}."
 
+_not_passed = object()
+
 
 class BaseQuery(object):
     """Represents a query to the Firestore API.
@@ -231,18 +233,40 @@ class BaseQuery(object):
                 for field_path in field_paths
             ]
         )
+        return self._copy(projection=new_projection)
+
+    def _copy(
+        self,
+        *,
+        projection: Optional[query.StructuredQuery.Projection] = _not_passed,
+        field_filters: Optional[Tuple[query.StructuredQuery.FieldFilter]] = _not_passed,
+        orders: Optional[Tuple[query.StructuredQuery.Order]] = _not_passed,
+        limit: Optional[int] = _not_passed,
+        limit_to_last: Optional[bool] = _not_passed,
+        offset: Optional[int] = _not_passed,
+        start_at: Optional[Tuple[dict, bool]] = _not_passed,
+        end_at: Optional[Tuple[dict, bool]] = _not_passed,
+        all_descendants: Optional[bool] = _not_passed,
+    ) -> "BaseQuery":
         return self.__class__(
             self._parent,
-            projection=new_projection,
-            field_filters=self._field_filters,
-            orders=self._orders,
-            limit=self._limit,
-            limit_to_last=self._limit_to_last,
-            offset=self._offset,
-            start_at=self._start_at,
-            end_at=self._end_at,
-            all_descendants=self._all_descendants,
+            projection=self._evaluate_param(projection, self._projection),
+            field_filters=self._evaluate_param(field_filters, self._field_filters),
+            orders=self._evaluate_param(orders, self._orders),
+            limit=self._evaluate_param(limit, self._limit),
+            limit_to_last=self._evaluate_param(limit_to_last, self._limit_to_last),
+            offset=self._evaluate_param(offset, self._offset),
+            start_at=self._evaluate_param(start_at, self._start_at),
+            end_at=self._evaluate_param(end_at, self._end_at),
+            all_descendants=self._evaluate_param(
+                all_descendants, self._all_descendants
+            ),
         )
+
+    def _evaluate_param(self, value, fallback_value):
+        """Helper which allows `None` to be passed into `copy` and be set on the
+        copy instead of being misinterpreted as an unpassed parameter."""
+        return value if value is not _not_passed else fallback_value
 
     def where(self, field_path: str, op_string: str, value) -> "BaseQuery":
         """Filter the query on a field.
@@ -301,18 +325,7 @@ class BaseQuery(object):
             )
 
         new_filters = self._field_filters + (filter_pb,)
-        return self.__class__(
-            self._parent,
-            projection=self._projection,
-            field_filters=new_filters,
-            orders=self._orders,
-            limit=self._limit,
-            offset=self._offset,
-            limit_to_last=self._limit_to_last,
-            start_at=self._start_at,
-            end_at=self._end_at,
-            all_descendants=self._all_descendants,
-        )
+        return self._copy(field_filters=new_filters)
 
     @staticmethod
     def _make_order(field_path, direction) -> StructuredQuery.Order:
@@ -354,18 +367,7 @@ class BaseQuery(object):
         order_pb = self._make_order(field_path, direction)
 
         new_orders = self._orders + (order_pb,)
-        return self.__class__(
-            self._parent,
-            projection=self._projection,
-            field_filters=self._field_filters,
-            orders=new_orders,
-            limit=self._limit,
-            limit_to_last=self._limit_to_last,
-            offset=self._offset,
-            start_at=self._start_at,
-            end_at=self._end_at,
-            all_descendants=self._all_descendants,
-        )
+        return self._copy(orders=new_orders)
 
     def limit(self, count: int) -> "BaseQuery":
         """Limit a query to return at most `count` matching results.
@@ -384,18 +386,7 @@ class BaseQuery(object):
             A limited query. Acts as a copy of the current query, modified
             with the newly added "limit" filter.
         """
-        return self.__class__(
-            self._parent,
-            projection=self._projection,
-            field_filters=self._field_filters,
-            orders=self._orders,
-            limit=count,
-            limit_to_last=False,
-            offset=self._offset,
-            start_at=self._start_at,
-            end_at=self._end_at,
-            all_descendants=self._all_descendants,
-        )
+        return self._copy(limit=count, limit_to_last=False)
 
     def limit_to_last(self, count: int) -> "BaseQuery":
         """Limit a query to return the last `count` matching results.
@@ -414,18 +405,7 @@ class BaseQuery(object):
             A limited query. Acts as a copy of the current query, modified
             with the newly added "limit" filter.
         """
-        return self.__class__(
-            self._parent,
-            projection=self._projection,
-            field_filters=self._field_filters,
-            orders=self._orders,
-            limit=count,
-            limit_to_last=True,
-            offset=self._offset,
-            start_at=self._start_at,
-            end_at=self._end_at,
-            all_descendants=self._all_descendants,
-        )
+        return self._copy(limit=count, limit_to_last=True)
 
     def offset(self, num_to_skip: int) -> "BaseQuery":
         """Skip to an offset in a query.
@@ -442,18 +422,7 @@ class BaseQuery(object):
             An offset query. Acts as a copy of the current query, modified
             with the newly added "offset" field.
         """
-        return self.__class__(
-            self._parent,
-            projection=self._projection,
-            field_filters=self._field_filters,
-            orders=self._orders,
-            limit=self._limit,
-            limit_to_last=self._limit_to_last,
-            offset=num_to_skip,
-            start_at=self._start_at,
-            end_at=self._end_at,
-            all_descendants=self._all_descendants,
-        )
+        return self._copy(offset=num_to_skip)
 
     def _check_snapshot(self, document_snapshot) -> None:
         """Validate local snapshots for non-collection-group queries.
@@ -523,7 +492,7 @@ class BaseQuery(object):
             query_kwargs["start_at"] = self._start_at
             query_kwargs["end_at"] = cursor_pair
 
-        return self.__class__(self._parent, **query_kwargs)
+        return self._copy(**query_kwargs)
 
     def start_at(
         self, document_fields_or_snapshot: Union[DocumentSnapshot, dict, list, tuple]
