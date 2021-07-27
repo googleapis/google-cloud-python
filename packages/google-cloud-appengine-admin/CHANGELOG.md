@@ -1,5 +1,22 @@
 # Changelog
 
+### [1.1.3](https://www.github.com/googleapis/python-appengine-admin/compare/v1.1.2...v1.1.3) (2021-07-27)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#53](https://www.github.com/googleapis/python-appengine-admin/issues/53)) ([8b6c798](https://www.github.com/googleapis/python-appengine-admin/commit/8b6c79806ea6c052d27434da1d6b997d27a83156))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#49](https://www.github.com/googleapis/python-appengine-admin/issues/49)) ([6b59802](https://www.github.com/googleapis/python-appengine-admin/commit/6b59802d54d044575520711416baa85b0a636bea))
+
+
+### Miscellaneous Chores
+
+* release as 1.1.3 ([#54](https://www.github.com/googleapis/python-appengine-admin/issues/54)) ([aeeefd1](https://www.github.com/googleapis/python-appengine-admin/commit/aeeefd10f953ec09ddc8e3bde38f0d90bdab47f8))
+
 ### [1.1.2](https://www.github.com/googleapis/python-appengine-admin/compare/v1.1.1...v1.1.2) (2021-07-21)
 
 
