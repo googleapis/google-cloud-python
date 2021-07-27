@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+### [1.4.1](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.4.0...v1.4.1) (2021-07-27)
+
+
+### Features
+
+* add Samples section to CONTRIBUTING.rst ([#88](https://www.github.com/googleapis/python-websecurityscanner/issues/88)) ([4fa9ba7](https://www.github.com/googleapis/python-websecurityscanner/commit/4fa9ba70a3b8b0d1363225a7fd4fbaac01f6ec64))
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#87](https://www.github.com/googleapis/python-websecurityscanner/issues/87)) ([a614187](https://www.github.com/googleapis/python-websecurityscanner/commit/a614187426125f66ad9d95d14bc9538a2cd00945))
+* enable self signed jwt for grpc ([#93](https://www.github.com/googleapis/python-websecurityscanner/issues/93)) ([aaaec29](https://www.github.com/googleapis/python-websecurityscanner/commit/aaaec29793ec671c12326fa9efae1424c7204fc7))
+
+
+### Miscellaneous Chores
+
+* release 1.4.1 ([#92](https://www.github.com/googleapis/python-websecurityscanner/issues/92)) ([b36280c](https://www.github.com/googleapis/python-websecurityscanner/commit/b36280c07eb58d55ac7d0c053c52fc41c310baae))
+
 ## [1.4.0](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.3.0...v1.4.0) (2021-07-01)
 
 
