@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import requests
+import requests.exceptions as requests_exceptions
 
 from google.api_core import exceptions as api_exceptions
 from google.api_core import retry
@@ -33,6 +34,7 @@ _RETRYABLE_TYPES = _RETRYABLE_STDLIB_TYPES + (
     api_exceptions.ServiceUnavailable,  # 503
     api_exceptions.GatewayTimeout,  # 504
     requests.ConnectionError,
+    requests_exceptions.ChunkedEncodingError,
 )
 
 

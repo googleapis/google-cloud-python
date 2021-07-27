@@ -69,6 +69,12 @@ class Test_should_retry(unittest.TestCase):
         exc = requests.ConnectionError()
         self.assertTrue(self._call_fut(exc))
 
+    def test_w_requests_chunked_encoding_error(self):
+        import requests.exceptions
+
+        exc = requests.exceptions.ChunkedEncodingError()
+        self.assertTrue(self._call_fut(exc))
+
     def test_miss_w_stdlib_error(self):
         exc = ValueError("testing")
         self.assertFalse(self._call_fut(exc))
