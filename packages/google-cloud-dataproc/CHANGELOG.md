@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [2.5.0](https://www.github.com/googleapis/python-dataproc/compare/v2.4.0...v2.5.0) (2021-07-24)
+
+
+### Features
+
+* add always_use_jwt_access ([#209](https://www.github.com/googleapis/python-dataproc/issues/209)) ([6aec13c](https://www.github.com/googleapis/python-dataproc/commit/6aec13ce39a2afc0f36878bd61cff1614ec66972))
+
+
+### Bug Fixes
+
+* Attribute error Name while executing the sample code ([#205](https://www.github.com/googleapis/python-dataproc/issues/205)) ([cb0328f](https://www.github.com/googleapis/python-dataproc/commit/cb0328f3bfec416be9aec34d027fe0f48aab4242))
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#227](https://www.github.com/googleapis/python-dataproc/issues/227)) ([5acfcd0](https://www.github.com/googleapis/python-dataproc/commit/5acfcd019dede3684fdf23cbed8bfcebdce606af))
+* disable always_use_jwt_access ([#215](https://www.github.com/googleapis/python-dataproc/issues/215)) ([a57e253](https://www.github.com/googleapis/python-dataproc/commit/a57e25388691335b6672613210ee566ed91dc97b))
+* enable self signed jwt for grpc ([#233](https://www.github.com/googleapis/python-dataproc/issues/233)) ([7df4fef](https://www.github.com/googleapis/python-dataproc/commit/7df4fefdced730fffd9b994608575512efe8d72a))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-dataproc/issues/1127)) ([#201](https://www.github.com/googleapis/python-dataproc/issues/201)) ([feea064](https://www.github.com/googleapis/python-dataproc/commit/feea0642ea6dbd6e08d4e52c89789a6b17e4de97))
+* add Samples section to CONTRIBUTING.rst ([#228](https://www.github.com/googleapis/python-dataproc/issues/228)) ([3e248c2](https://www.github.com/googleapis/python-dataproc/commit/3e248c29470d635abf0d6fa7ae84dc8370a86bef))
+
+
 ## [2.4.0](https://www.github.com/googleapis/python-dataproc/compare/v2.3.1...v2.4.0) (2021-05-20)
 
 
