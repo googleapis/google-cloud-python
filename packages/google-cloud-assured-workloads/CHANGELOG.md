@@ -1,5 +1,22 @@
 # Changelog
 
+### [0.4.2](https://www.github.com/googleapis/python-assured-workloads/compare/v0.4.1...v0.4.2) (2021-07-27)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#64](https://www.github.com/googleapis/python-assured-workloads/issues/64)) ([c7e4331](https://www.github.com/googleapis/python-assured-workloads/commit/c7e43317be9e68508449a0f9cb548d1bd5904f1e))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#60](https://www.github.com/googleapis/python-assured-workloads/issues/60)) ([b161d65](https://www.github.com/googleapis/python-assured-workloads/commit/b161d658c8cdf294f72181b368e9e8df3529c392))
+
+
+### Miscellaneous Chores
+
+* release as 0.4.2 ([#65](https://www.github.com/googleapis/python-assured-workloads/issues/65)) ([8f8f538](https://www.github.com/googleapis/python-assured-workloads/commit/8f8f53852fd2e3ae4a917cdd7c37125fb01043a4))
+
 ### [0.4.1](https://www.github.com/googleapis/python-assured-workloads/compare/v0.4.0...v0.4.1) (2021-07-20)
 
 
