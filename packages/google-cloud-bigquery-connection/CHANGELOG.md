@@ -1,5 +1,22 @@
 # Changelog
 
+### [1.2.2](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.2.1...v1.2.2) (2021-07-27)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#102](https://www.github.com/googleapis/python-bigquery-connection/issues/102)) ([d3d00a5](https://www.github.com/googleapis/python-bigquery-connection/commit/d3d00a5ba2e4521217b09a53c279dc2134d20e48))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#98](https://www.github.com/googleapis/python-bigquery-connection/issues/98)) ([842e239](https://www.github.com/googleapis/python-bigquery-connection/commit/842e239cbde9f041a5d2d9a8785c94682bc9140b))
+
+
+### Miscellaneous Chores
+
+* release as 1.2.2 ([#103](https://www.github.com/googleapis/python-bigquery-connection/issues/103)) ([2d6b168](https://www.github.com/googleapis/python-bigquery-connection/commit/2d6b168a7fce539383e72c9ea00d93fffe233607))
+
 ### [1.2.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.2.0...v1.2.1) (2021-07-20)
 
 
