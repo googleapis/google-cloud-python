@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+### [2.4.2](https://www.github.com/googleapis/python-automl/compare/v2.4.1...v2.4.2) (2021-07-27)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#217](https://www.github.com/googleapis/python-automl/issues/217)) ([20a72aa](https://www.github.com/googleapis/python-automl/commit/20a72aa0524fabb855cfda8589dd3722e4c65bdd))
+
+
 ### [2.4.1](https://www.github.com/googleapis/python-automl/compare/v2.4.0...v2.4.1) (2021-07-21)
 
 
