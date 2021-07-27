@@ -1,5 +1,22 @@
 # Changelog
 
+### [1.2.2](https://www.github.com/googleapis/python-channel/compare/v1.2.1...v1.2.2) (2021-07-27)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#76](https://www.github.com/googleapis/python-channel/issues/76)) ([016111e](https://www.github.com/googleapis/python-channel/commit/016111ee4750d047c44324bf3dca752560840376))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#72](https://www.github.com/googleapis/python-channel/issues/72)) ([b70a090](https://www.github.com/googleapis/python-channel/commit/b70a0900ab7b820e623a286cbd6f0e5c29ad9256))
+
+
+### Miscellaneous Chores
+
+* release as 1.2.2 ([#77](https://www.github.com/googleapis/python-channel/issues/77)) ([2e950a4](https://www.github.com/googleapis/python-channel/commit/2e950a41e5099facad90b884fe24f43e00b59255))
+
 ### [1.2.1](https://www.github.com/googleapis/python-channel/compare/v1.2.0...v1.2.1) (2021-07-20)
 
 
