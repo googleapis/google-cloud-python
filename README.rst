@@ -295,6 +295,9 @@ Libraries
    * - `Binary Authorization <https://github.com/googleapis/python-binary-authorization>`_
      - |beta|
      - |PyPI-google-cloud-binary-authorization|
+   * - `Composer <https://github.com/googleapis/python-orchestration-airflow>`_
+     - |beta|
+     - |PyPI-google-cloud-orchestration-airflow|
    * - `Contact Center AI Insights API <https://github.com/googleapis/python-contact-center-insights>`_
      - |beta|
      - |PyPI-google-cloud-contact-center-insights|
@@ -572,6 +575,8 @@ Libraries
      :target: https://pypi.org/project/pandas-gbq
 .. |PyPI-google-cloud-binary-authorization| image:: https://img.shields.io/pypi/v/google-cloud-binary-authorization.svg
      :target: https://pypi.org/project/google-cloud-binary-authorization
+.. |PyPI-google-cloud-orchestration-airflow| image:: https://img.shields.io/pypi/v/google-cloud-orchestration-airflow.svg
+     :target: https://pypi.org/project/google-cloud-orchestration-airflow
 .. |PyPI-google-cloud-contact-center-insights| image:: https://img.shields.io/pypi/v/google-cloud-contact-center-insights.svg
      :target: https://pypi.org/project/google-cloud-contact-center-insights
 .. |PyPI-google-cloud-data-fusion| image:: https://img.shields.io/pypi/v/google-cloud-data-fusion.svg
