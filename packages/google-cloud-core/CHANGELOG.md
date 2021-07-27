@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+### [1.7.2](https://www.github.com/googleapis/python-cloud-core/compare/v1.7.1...v1.7.2) (2021-07-27)
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#119](https://www.github.com/googleapis/python-cloud-core/issues/119)) ([5c3959b](https://www.github.com/googleapis/python-cloud-core/commit/5c3959b3870b8c6ccaf321cc030f4b0cba7ce2ba))
+
 ## [1.7.1](https://www.github.com/googleapis/python-cloud-core/compare/v1.7.0...v1.7.1) (2021-06-25)
 
 
