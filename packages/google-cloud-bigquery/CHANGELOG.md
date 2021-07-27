@@ -5,6 +5,24 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [2.23.0](https://www.github.com/googleapis/python-bigquery/compare/v2.22.1...v2.23.0) (2021-07-27)
+
+
+### Features
+
+* Update proto definitions for bigquery/v2 to support new proto fields for BQML. ([#817](https://www.github.com/googleapis/python-bigquery/issues/817)) ([fe7a902](https://www.github.com/googleapis/python-bigquery/commit/fe7a902e8b3e723ace335c9b499aea6d180a025b))
+
+
+### Bug Fixes
+
+* no longer raise a warning in `to_dataframe` if `max_results` set ([#815](https://www.github.com/googleapis/python-bigquery/issues/815)) ([3c1be14](https://www.github.com/googleapis/python-bigquery/commit/3c1be149e76b1d1d8879fdcf0924ddb1c1839e94))
+* retry ChunkedEncodingError by default ([#802](https://www.github.com/googleapis/python-bigquery/issues/802)) ([419d36d](https://www.github.com/googleapis/python-bigquery/commit/419d36d6b1887041e5795dbc8fc808890e91ab11))
+
+
+### Documentation
+
+* correct docs for `LoadJobConfig.destination_table_description` ([#810](https://www.github.com/googleapis/python-bigquery/issues/810)) ([da87fd9](https://www.github.com/googleapis/python-bigquery/commit/da87fd921cc8067b187d7985c978aac8eb58d107))
+
 ### [2.22.1](https://www.github.com/googleapis/python-bigquery/compare/v2.22.0...v2.22.1) (2021-07-22)
 
 
