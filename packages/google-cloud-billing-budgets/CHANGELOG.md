@@ -1,4 +1,21 @@
 # Changelog
+### [1.4.2](https://www.github.com/googleapis/python-billingbudgets/compare/v1.4.1...v1.4.2) (2021-07-27)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#121](https://www.github.com/googleapis/python-billingbudgets/issues/121)) ([84835a8](https://www.github.com/googleapis/python-billingbudgets/commit/84835a8d660b0669d6b337472fa965447914dd25))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#117](https://www.github.com/googleapis/python-billingbudgets/issues/117)) ([89c5db1](https://www.github.com/googleapis/python-billingbudgets/commit/89c5db1c7fdbf1b303e322db7c9909ac86c15f5a))
+
+
+### Miscellaneous Chores
+
+* release as 1.4.2 ([#122](https://www.github.com/googleapis/python-billingbudgets/issues/122)) ([652c0b2](https://www.github.com/googleapis/python-billingbudgets/commit/652c0b239c303369701447862d98a5aa5f109213))
+
 ### [1.4.1](https://www.github.com/googleapis/python-billingbudgets/compare/v1.4.0...v1.4.1) (2021-07-20)
 
 
