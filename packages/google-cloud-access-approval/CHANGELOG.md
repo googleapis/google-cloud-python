@@ -1,5 +1,22 @@
 # Changelog
 
+### [1.3.3](https://www.github.com/googleapis/python-access-approval/compare/v1.3.2...v1.3.3) (2021-07-27)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#102](https://www.github.com/googleapis/python-access-approval/issues/102)) ([a7a1fc2](https://www.github.com/googleapis/python-access-approval/commit/a7a1fc248176131331526a331f121d369a872f2a))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#98](https://www.github.com/googleapis/python-access-approval/issues/98)) ([4fda4f9](https://www.github.com/googleapis/python-access-approval/commit/4fda4f97b3cf12043fe69d3bde7d8f0057c428e0))
+
+
+### Miscellaneous Chores
+
+* release as 1.3.3 ([#103](https://www.github.com/googleapis/python-access-approval/issues/103)) ([0b964c6](https://www.github.com/googleapis/python-access-approval/commit/0b964c60b8306d53e364a4431be55bebf1c48b48))
+
 ### [1.3.2](https://www.github.com/googleapis/python-access-approval/compare/v1.3.1...v1.3.2) (2021-07-20)
 
 
