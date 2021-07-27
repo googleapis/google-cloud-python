@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.34.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.33.1...v1.34.0) (2021-07-23)
+
+
+### Features
+
+* support refresh callable on google.oauth2.credentials.Credentials ([#812](https://www.github.com/googleapis/google-auth-library-python/issues/812)) ([ec2fb18](https://www.github.com/googleapis/google-auth-library-python/commit/ec2fb18e7f0f452fb20e43fd0bfbb788bcf7f46b))
+
+
+### Bug Fixes
+
+* do not use the GAE APIs on gen2+ runtimes ([#807](https://www.github.com/googleapis/google-auth-library-python/issues/807)) ([7f7d92d](https://www.github.com/googleapis/google-auth-library-python/commit/7f7d92d63ffee91859fc819416af78cef3baf574))
+
 ### [1.33.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.33.0...v1.33.1) (2021-07-20)
 
 
