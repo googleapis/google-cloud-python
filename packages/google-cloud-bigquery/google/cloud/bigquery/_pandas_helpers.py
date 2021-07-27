@@ -93,6 +93,8 @@ def pyarrow_numeric():
 
 
 def pyarrow_bignumeric():
+    # 77th digit is partial.
+    # https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types
     return pyarrow.decimal256(76, 38)
 
 
