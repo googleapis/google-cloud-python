@@ -15,6 +15,7 @@
 """Virtual bases classes for downloading media from Google APIs."""
 
 
+import functools
 import re
 
 from six.moves import http_client
@@ -207,6 +208,37 @@ class Download(DownloadBase):
             NotImplementedError: Always, since virtual.
         """
         raise NotImplementedError(u"This implementation is virtual.")
+
+    def _consume_with_retries(self, func, transport, timeout=None):
+        """Attempts to retry a download and consume until success.
+
+        The consume ``func`` is retry-able based on the HTTP response and
+        connection error type. Retry covers both the initial response and
+        the streaming portion of the download.
+
+        Will retry until :meth:`~.RetryStrategy.retry_allowed` (on the current
+        ``retry_strategy``) returns :data:`False`.
+
+        Args:
+            func (Callable): A callable that takes no arguments and produces
+                an HTTP response which will be checked as retry-able.
+            transport (object): An object which can make authenticated
+                requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+
+        Returns:
+            ~requests.Response: The return value of ``transport.request()``.
+        """
+        func_to_retry = functools.partial(func, transport=transport, timeout=timeout)
+        return _helpers.wait_and_retry(
+            func_to_retry, self._get_status_code, self._retry_strategy
+        )
 
 
 class ChunkedDownload(DownloadBase):
@@ -438,6 +470,37 @@ class ChunkedDownload(DownloadBase):
             NotImplementedError: Always, since virtual.
         """
         raise NotImplementedError(u"This implementation is virtual.")
+
+    def _consume_with_retries(self, func, transport, timeout=None):
+        """Attempts to retry a consume_next_chunk until success.
+
+        The consume_next_chunk ``func`` is retry-able based on the HTTP response
+        and connection error type. Retry covers both the initial response and
+        the streaming portion of the download.
+
+        Will retry until :meth:`~.RetryStrategy.retry_allowed` (on the current
+        ``retry_strategy``) returns :data:`False`.
+
+        Args:
+            func (Callable): A callable that takes no arguments and produces
+                an HTTP response which will be checked as retry-able.
+            transport (object): An object which can make authenticated
+                requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+
+        Returns:
+            ~requests.Response: The return value of ``transport.request()``.
+        """
+        func_to_retry = functools.partial(func, transport=transport, timeout=timeout)
+        return _helpers.wait_and_retry(
+            func_to_retry, self._get_status_code, self._retry_strategy
+        )
 
 
 def add_bytes_range(start, end, headers):

@@ -119,7 +119,7 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
                 )
                 raise common.DataCorruption(response, msg)
 
-    def consume(
+    def _consume(
         self,
         transport,
         timeout=(
@@ -127,10 +127,10 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
     ):
-        """Consume the resource to be downloaded.
+        """Consume the resource to be downloaded without any retries.
 
-        If a ``stream`` is attached to this download, then the downloaded
-        resource will be written to the stream.
+        This is intended to be called by :meth:`consume` so it can be
+        wrapped with error handling and retry strategy.
 
         Args:
             transport (~requests.Session): A ``requests`` object which can
@@ -157,13 +157,12 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
         request_kwargs = {
             u"data": payload,
             u"headers": headers,
-            u"retry_strategy": self._retry_strategy,
             u"timeout": timeout,
         }
         if self._stream is not None:
             request_kwargs[u"stream"] = True
 
-        result = _request_helpers.http_request(transport, method, url, **request_kwargs)
+        result = transport.request(method, url, **request_kwargs)
 
         self._process_response(result)
 
@@ -171,6 +170,47 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
             self._write_to_stream(result)
 
         return result
+
+    def consume(
+        self,
+        transport,
+        timeout=(
+            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
+            _request_helpers._DEFAULT_READ_TIMEOUT,
+        ),
+    ):
+        """Consume the resource to be downloaded.
+
+        If a ``stream`` is attached to this download, then the downloaded
+        resource will be written to the stream.
+
+        This operation is retry-able based on the download HTTP response and
+        connection error type. Will retry until :meth:`~.RetryStrategy.retry_allowed`
+        (on the current``self._retry_strategy``) returns :data:`False`.
+
+        Args:
+            transport (~requests.Session): A ``requests`` object which can
+                make authenticated requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+
+        Returns:
+            ~requests.Response: The HTTP response returned by ``transport``.
+
+        Raises:
+            ~google.resumable_media.common.DataCorruption: If the download's
+                checksum doesn't agree with server-computed checksum.
+            ValueError: If the current :class:`Download` has already
+                finished.
+        """
+        return self._consume_with_retries(
+            self._consume, transport=transport, timeout=timeout
+        )
 
 
 class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
@@ -251,7 +291,7 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
                 )
                 raise common.DataCorruption(response, msg)
 
-    def consume(
+    def _consume(
         self,
         transport,
         timeout=(
@@ -259,10 +299,10 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
     ):
-        """Consume the resource to be downloaded.
+        """Consume the resource to be downloaded without any retries.
 
-        If a ``stream`` is attached to this download, then the downloaded
-        resource will be written to the stream.
+        This is intended to be called by :meth:`consume` so it can be
+        wrapped with error handling and retry strategy.
 
         Args:
             transport (~requests.Session): A ``requests`` object which can
@@ -286,13 +326,11 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
         """
         method, url, payload, headers = self._prepare_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
-        result = _request_helpers.http_request(
-            transport,
+        result = transport.request(
             method,
             url,
             data=payload,
             headers=headers,
-            retry_strategy=self._retry_strategy,
             stream=True,
             timeout=timeout,
         )
@@ -303,6 +341,47 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
             self._write_to_stream(result)
 
         return result
+
+    def consume(
+        self,
+        transport,
+        timeout=(
+            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
+            _request_helpers._DEFAULT_READ_TIMEOUT,
+        ),
+    ):
+        """Consume the resource to be downloaded.
+
+        If a ``stream`` is attached to this download, then the downloaded
+        resource will be written to the stream.
+
+        This operation is retry-able based on the download HTTP response and
+        connection error type. Will retry until :meth:`~.RetryStrategy.retry_allowed`
+        (on the current``self._retry_strategy``) returns :data:`False`.
+
+        Args:
+            transport (~requests.Session): A ``requests`` object which can
+                make authenticated requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+
+        Returns:
+            ~requests.Response: The HTTP response returned by ``transport``.
+
+        Raises:
+            ~google.resumable_media.common.DataCorruption: If the download's
+                checksum doesn't agree with server-computed checksum.
+            ValueError: If the current :class:`Download` has already
+                finished.
+        """
+        return self._consume_with_retries(
+            self._consume, transport=transport, timeout=timeout
+        )
 
 
 class ChunkedDownload(_request_helpers.RequestsMixin, _download.ChunkedDownload):
@@ -333,7 +412,7 @@ class ChunkedDownload(_request_helpers.RequestsMixin, _download.ChunkedDownload)
         ValueError: If ``start`` is negative.
     """
 
-    def consume_next_chunk(
+    def _consume_next_chunk(
         self,
         transport,
         timeout=(
@@ -341,7 +420,10 @@ class ChunkedDownload(_request_helpers.RequestsMixin, _download.ChunkedDownload)
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
     ):
-        """Consume the next chunk of the resource to be downloaded.
+        """Consume the next chunk of the resource to be downloaded without any retries.
+
+        This is intended to be called by :meth:`consume_next_chunk` so it can be
+        wrapped with error handling and retry strategy.
 
         Args:
             transport (~requests.Session): A ``requests`` object which can
@@ -362,17 +444,47 @@ class ChunkedDownload(_request_helpers.RequestsMixin, _download.ChunkedDownload)
         """
         method, url, payload, headers = self._prepare_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
-        result = _request_helpers.http_request(
-            transport,
+        result = transport.request(
             method,
             url,
             data=payload,
             headers=headers,
-            retry_strategy=self._retry_strategy,
             timeout=timeout,
         )
         self._process_response(result)
         return result
+
+    def consume_next_chunk(
+        self,
+        transport,
+        timeout=(
+            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
+            _request_helpers._DEFAULT_READ_TIMEOUT,
+        ),
+    ):
+        """Consume the next chunk of the resource to be downloaded.
+
+        This operation is retry-able based on the download HTTP response and
+        connection error type. Will retry until :meth:`~.RetryStrategy.retry_allowed`
+        (on the current``self._retry_strategy``) returns :data:`False`.
+
+        Args:
+            transport (~requests.Session): A ``requests`` object which can
+                make authenticated requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+        Returns:
+            ~requests.Response: The HTTP response returned by ``transport``.
+        Raises:
+            ValueError: If the current download has finished.
+        """
+        return self._consume_with_retries(
+            self._consume_next_chunk, transport=transport, timeout=timeout
+        )
 
 
 class RawChunkedDownload(_request_helpers.RawRequestsMixin, _download.ChunkedDownload):
@@ -403,7 +515,7 @@ class RawChunkedDownload(_request_helpers.RawRequestsMixin, _download.ChunkedDow
         ValueError: If ``start`` is negative.
     """
 
-    def consume_next_chunk(
+    def _consume_next_chunk(
         self,
         transport,
         timeout=(
@@ -411,7 +523,10 @@ class RawChunkedDownload(_request_helpers.RawRequestsMixin, _download.ChunkedDow
             _request_helpers._DEFAULT_READ_TIMEOUT,
         ),
     ):
-        """Consume the next chunk of the resource to be downloaded.
+        """Consume the next chunk of the resource to be downloaded without any retries.
+
+        This is intended to be called by :meth:`consume_next_chunk` so it can be
+        wrapped with error handling and retry strategy.
 
         Args:
             transport (~requests.Session): A ``requests`` object which can
@@ -432,18 +547,48 @@ class RawChunkedDownload(_request_helpers.RawRequestsMixin, _download.ChunkedDow
         """
         method, url, payload, headers = self._prepare_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
-        result = _request_helpers.http_request(
-            transport,
+        result = transport.request(
             method,
             url,
             data=payload,
             headers=headers,
             stream=True,
-            retry_strategy=self._retry_strategy,
             timeout=timeout,
         )
         self._process_response(result)
         return result
+
+    def consume_next_chunk(
+        self,
+        transport,
+        timeout=(
+            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
+            _request_helpers._DEFAULT_READ_TIMEOUT,
+        ),
+    ):
+        """Consume the next chunk of the resource to be downloaded.
+
+        This operation is retry-able based on the download HTTP response and
+        connection error type. Will retry until :meth:`~.RetryStrategy.retry_allowed`
+        (on the current``self._retry_strategy``) returns :data:`False`.
+
+        Args:
+            transport (~requests.Session): A ``requests`` object which can
+                make authenticated requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+        Returns:
+            ~requests.Response: The HTTP response returned by ``transport``.
+        Raises:
+            ValueError: If the current download has finished.
+        """
+        return self._consume_with_retries(
+            self._consume_next_chunk, transport=transport, timeout=timeout
+        )
 
 
 def _add_decoder(response_raw, checksum):
