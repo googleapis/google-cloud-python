@@ -192,13 +192,8 @@ class CloudLoggingHandler(logging.StreamHandler):
         """
         resource = record._resource or self.resource
         labels = record._labels
-        message = None
-        if isinstance(record.msg, collections.abc.Mapping):
-            # if input is a dictionary, pass as-is for structured logging
-            message = record.msg
-        elif record.msg:
-            # otherwise, format message string based on superclass
-            message = super(CloudLoggingHandler, self).format(record)
+        message = _format_and_parse_message(record, self)
+
         if resource.type == _GAE_RESOURCE_TYPE and record._trace is not None:
             # add GAE-specific label
             labels = {_GAE_TRACE_ID_LABEL: record._trace, **(labels or {})}
@@ -213,6 +208,35 @@ class CloudLoggingHandler(logging.StreamHandler):
             http_request=record._http_request,
             source_location=record._source_location,
         )
+
+
+def _format_and_parse_message(record, formatter_handler):
+    """
+    Helper function to apply formatting to a LogRecord message,
+    and attempt to parse encoded JSON into a dictionary object.
+
+    Resulting output will be of type (str | dict | None)
+
+    Args:
+        record (logging.LogRecord): The record object representing the log
+        formatter_handler (logging.Handler): The handler used to format the log
+    """
+    # if message is a dictionary, return as-is
+    if isinstance(record.msg, collections.abc.Mapping):
+        return record.msg
+    # format message string based on superclass
+    message = formatter_handler.format(record)
+    try:
+        # attempt to parse encoded json into dictionary
+        if message[0] == "{":
+            json_message = json.loads(message)
+            if isinstance(json_message, collections.abc.Mapping):
+                message = json_message
+    except (json.decoder.JSONDecodeError, IndexError):
+        # log string is not valid json
+        pass
+    # if formatted message contains no content, return None
+    return message if message != "None" else None
 
 
 def setup_logging(

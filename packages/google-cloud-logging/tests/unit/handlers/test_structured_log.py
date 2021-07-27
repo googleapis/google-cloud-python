@@ -92,13 +92,16 @@ class TestStructuredLogHandler(unittest.TestCase):
         record = logging.LogRecord(None, logging.INFO, None, None, None, None, None,)
         record.created = None
         expected_payload = {
+            "severity": "INFO",
             "logging.googleapis.com/trace": "",
+            "logging.googleapis.com/spanId": "",
             "logging.googleapis.com/sourceLocation": {},
             "httpRequest": {},
             "logging.googleapis.com/labels": {},
         }
         handler.filter(record)
         result = json.loads(handler.format(record))
+        self.assertEqual(set(expected_payload.keys()), set(result.keys()))
         for (key, value) in expected_payload.items():
             self.assertEqual(
                 value, result[key], f"expected_payload[{key}] != result[{key}]"
@@ -170,6 +173,44 @@ class TestStructuredLogHandler(unittest.TestCase):
         handler.filter(record)
         result = handler.format(record)
         self.assertIn(expected_result, result)
+        self.assertIn("message", result)
+
+    def test_dict(self):
+        """
+        Handler should parse json encoded as a string
+        """
+        import logging
+
+        handler = self._make_one()
+        message = {"x": "test"}
+        expected_result = '"x": "test"'
+        record = logging.LogRecord(
+            "logname", logging.INFO, None, None, message, None, None,
+        )
+        record.created = None
+        handler.filter(record)
+        result = handler.format(record)
+        self.assertIn(expected_result, result)
+        self.assertNotIn("message", result)
+
+    def test_encoded_json(self):
+        """
+        Handler should parse json encoded as a string
+        """
+        import logging
+
+        handler = self._make_one()
+        logFormatter = logging.Formatter(fmt='{ "name" : "%(name)s" }')
+        handler.setFormatter(logFormatter)
+        expected_result = '"name": "logname"'
+        record = logging.LogRecord(
+            "logname", logging.INFO, None, None, None, None, None,
+        )
+        record.created = None
+        handler.filter(record)
+        result = handler.format(record)
+        self.assertIn(expected_result, result)
+        self.assertNotIn("message", result)
 
     def test_format_with_arguments(self):
         """
