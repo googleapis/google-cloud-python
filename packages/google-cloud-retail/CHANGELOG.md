@@ -1,5 +1,23 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-retail/compare/v0.3.0...v0.3.1) (2021-07-26)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#59](https://www.github.com/googleapis/python-retail/issues/59)) ([23223a7](https://www.github.com/googleapis/python-retail/commit/23223a7a195511f4fd63a638f7680999eb4fb554))
+* enable self signed jwt for grpc ([#65](https://www.github.com/googleapis/python-retail/issues/65)) ([51b9934](https://www.github.com/googleapis/python-retail/commit/51b9934977c367b4d19a8d104905224386c08c2e))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#60](https://www.github.com/googleapis/python-retail/issues/60)) ([70d0585](https://www.github.com/googleapis/python-retail/commit/70d0585541bb5cfcf698f5223dec3f5a8ebd5b97))
+
+
+### Miscellaneous Chores
+
+* release 0.3.1 ([#64](https://www.github.com/googleapis/python-retail/issues/64)) ([7ffa868](https://www.github.com/googleapis/python-retail/commit/7ffa868ec872930b37368d9eb7c87ff468b75d48))
+
 ## [0.3.0](https://www.github.com/googleapis/python-retail/compare/v0.2.0...v0.3.0) (2021-07-01)
 
 
