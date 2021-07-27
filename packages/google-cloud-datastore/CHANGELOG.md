@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+### [2.1.6](https://www.github.com/googleapis/python-datastore/compare/v2.1.5...v2.1.6) (2021-07-26)
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#195](https://www.github.com/googleapis/python-datastore/issues/195)) ([f607fb5](https://www.github.com/googleapis/python-datastore/commit/f607fb544a2f7279267e5a5a534fc31e573b6b74))
+
+
 ### [2.1.5](https://www.github.com/googleapis/python-datastore/compare/v2.1.4...v2.1.5) (2021-07-20)
 
 
