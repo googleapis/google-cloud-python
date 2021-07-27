@@ -1,5 +1,22 @@
 # Changelog
 
+### [0.4.3](https://www.github.com/googleapis/python-analytics-admin/compare/v0.4.2...v0.4.3) (2021-07-27)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#107](https://www.github.com/googleapis/python-analytics-admin/issues/107)) ([dd2235c](https://www.github.com/googleapis/python-analytics-admin/commit/dd2235ca02ff481253dee5e90fa15f6c7bcfc4e8))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#102](https://www.github.com/googleapis/python-analytics-admin/issues/102)) ([99d607c](https://www.github.com/googleapis/python-analytics-admin/commit/99d607c5dc6ea562c4d70cb56c65b01e6c4d9e25))
+
+
+### Miscellaneous Chores
+
+* release as 0.4.3 ([#108](https://www.github.com/googleapis/python-analytics-admin/issues/108)) ([4dd86a1](https://www.github.com/googleapis/python-analytics-admin/commit/4dd86a139ecfcdab9b1ed847fe7c76fb578ca6af))
+
 ### [0.4.2](https://www.github.com/googleapis/python-analytics-admin/compare/v0.4.1...v0.4.2) (2021-07-20)
 
 
