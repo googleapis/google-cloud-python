@@ -1,5 +1,23 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-video-transcoder/compare/v0.4.0...v0.4.1) (2021-07-27)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#70](https://www.github.com/googleapis/python-video-transcoder/issues/70)) ([37d076a](https://www.github.com/googleapis/python-video-transcoder/commit/37d076a9fba1fc995ee955528007d10c75765975))
+* enable self signed jwt for grpc ([#75](https://www.github.com/googleapis/python-video-transcoder/issues/75)) ([af5ecd9](https://www.github.com/googleapis/python-video-transcoder/commit/af5ecd9295f46bc9a82bc62cd53b815ef5db10df))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#71](https://www.github.com/googleapis/python-video-transcoder/issues/71)) ([0b67055](https://www.github.com/googleapis/python-video-transcoder/commit/0b670557d0000fc891ebae7ea8f4f54959c89b79))
+
+
+### Miscellaneous Chores
+
+* release as 0.4.1 ([#76](https://www.github.com/googleapis/python-video-transcoder/issues/76)) ([4173cf3](https://www.github.com/googleapis/python-video-transcoder/commit/4173cf356a1ce84cde8ef28e0098cb8ad06f57e4))
+
 ## [0.4.0](https://www.github.com/googleapis/python-video-transcoder/compare/v0.3.1...v0.4.0) (2021-07-09)
 
 
