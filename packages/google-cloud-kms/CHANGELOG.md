@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+### [2.4.2](https://www.github.com/googleapis/python-kms/compare/v2.4.1...v2.4.2) (2021-07-28)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#149](https://www.github.com/googleapis/python-kms/issues/149)) ([211fe79](https://www.github.com/googleapis/python-kms/commit/211fe797d8847675390af67691d7296bbf150a02))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#144](https://www.github.com/googleapis/python-kms/issues/144)) ([88fee3a](https://www.github.com/googleapis/python-kms/commit/88fee3ab24acca72d2bade56e471d60cc893d97f))
+
+
+### Miscellaneous Chores
+
+* release as 2.4.2 ([#150](https://www.github.com/googleapis/python-kms/issues/150)) ([6663190](https://www.github.com/googleapis/python-kms/commit/66631903dc8c32eea1af0bd0265893e6bdffd55f))
+
 ### [2.4.1](https://www.github.com/googleapis/python-kms/compare/v2.4.0...v2.4.1) (2021-07-20)
 
 
