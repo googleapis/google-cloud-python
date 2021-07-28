@@ -1,5 +1,28 @@
 # Changelog
 
+## 2.2.1b2 (2021-07-27)
+
+
+### Features
+- Added support for check constraint ([#679](https://www.github.com/googleapis/python-spanner-django/issues/679)) ([42352c0](https://www.github.com/googleapis/python-spanner-django/commit/42352c0))
+- Add open telemetry trace in schema and related unit tests ([#648](https://www.github.com/googleapis/python-spanner-django/issues/648)) ([fc51086](https://www.github.com/googleapis/python-spanner-django/commit/fc51086))
+
+
+### Bug Fixes
+- updated assets to have text background so it works with dark mode ([#674](https://www.github.com/googleapis/python-spanner-django/issues/674)) ([306eeba](https://www.github.com/googleapis/python-spanner-django/commit/306eeba))
+- updated assets to have text background so it works with dark mode ([#671](https://www.github.com/googleapis/python-spanner-django/issues/671)) ([0f99938](https://www.github.com/googleapis/python-spanner-django/commit/0f99938))
+- bump version number after 2.2.1b1 release ([#652](https://www.github.com/googleapis/python-spanner-django/issues/652)) ([287b893](https://www.github.com/googleapis/python-spanner-django/commit/287b893))
+
+
+### Documentation
+- update docs to show decimal field support and check constraints but no support for unsigned data type ([#683](https://www.github.com/googleapis/python-spanner-django/issues/683)) ([74f2269](https://www.github.com/googleapis/python-spanner-django/commit/74f2269))
+- Adding documentation for GA ([#665](https://www.github.com/googleapis/python-spanner-django/issues/665)) ([216c2e0](https://www.github.com/googleapis/python-spanner-django/commit/216c2e0))
+
+
+### Miscellaneous Chores
+- release 2.2.1b2 ([#685](https://www.github.com/googleapis/python-spanner-django/issues/685)) ([96a809d](https://www.github.com/googleapis/python-spanner-django/commit/96a809d))
+- fix release build ([#659](https://www.github.com/googleapis/python-spanner-django/issues/659)) ([11bc9c2](https://www.github.com/googleapis/python-spanner-django/commit/11bc9c2))
+
 ## 2.2.1b1 (2021-06-17)
 
 
