@@ -690,19 +690,43 @@ class Test_float_to_json(unittest.TestCase):
     def test_w_none(self):
         self.assertEqual(self._call_fut(None), None)
 
+    def test_w_non_numeric(self):
+        with self.assertRaises(TypeError):
+            self._call_fut(object())
+
+    def test_w_integer(self):
+        result = self._call_fut(123)
+        self.assertIsInstance(result, float)
+        self.assertEqual(result, 123.0)
+
     def test_w_float(self):
         self.assertEqual(self._call_fut(1.23), 1.23)
 
+    def test_w_float_as_string(self):
+        self.assertEqual(self._call_fut("1.23"), 1.23)
+
     def test_w_nan(self):
         result = self._call_fut(float("nan"))
+        self.assertEqual(result.lower(), "nan")
+
+    def test_w_nan_as_string(self):
+        result = self._call_fut("NaN")
         self.assertEqual(result.lower(), "nan")
 
     def test_w_infinity(self):
         result = self._call_fut(float("inf"))
         self.assertEqual(result.lower(), "inf")
 
+    def test_w_infinity_as_string(self):
+        result = self._call_fut("inf")
+        self.assertEqual(result.lower(), "inf")
+
     def test_w_negative_infinity(self):
         result = self._call_fut(float("-inf"))
+        self.assertEqual(result.lower(), "-inf")
+
+    def test_w_negative_infinity_as_string(self):
+        result = self._call_fut("-inf")
         self.assertEqual(result.lower(), "-inf")
 
 
