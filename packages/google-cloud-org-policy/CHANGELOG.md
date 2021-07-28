@@ -1,5 +1,23 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-org-policy/compare/v1.0.0...v1.0.1) (2021-07-26)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#65](https://www.github.com/googleapis/python-org-policy/issues/65)) ([f486869](https://www.github.com/googleapis/python-org-policy/commit/f486869b2c232f2c4934dab8e25637a45f577f9b))
+* enable self signed jwt for grpc ([#71](https://www.github.com/googleapis/python-org-policy/issues/71)) ([26c70cd](https://www.github.com/googleapis/python-org-policy/commit/26c70cdc94326d5c312a6f601f2976e67087717b))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#66](https://www.github.com/googleapis/python-org-policy/issues/66)) ([9cf6fc8](https://www.github.com/googleapis/python-org-policy/commit/9cf6fc8dbcfe6798a06f0704165dc58af2a5170a))
+
+
+### Miscellaneous Chores
+
+* release 1.0.1 ([#70](https://www.github.com/googleapis/python-org-policy/issues/70)) ([f0a76b6](https://www.github.com/googleapis/python-org-policy/commit/f0a76b66e5fe5535c01663f01b453c527b960b5f))
+
 ## [1.0.0](https://www.github.com/googleapis/python-org-policy/compare/v0.3.0...v1.0.0) (2021-07-01)
 
 
