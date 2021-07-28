@@ -239,6 +239,7 @@ class Workload(proto.Message):
         US_REGIONAL_ACCESS = 5
         HIPAA = 6
         HITRUST = 7
+        EU_REGIONS_AND_SUPPORT = 8
 
     class ResourceInfo(proto.Message):
         r"""Represent the resources that are children of this Workload.
