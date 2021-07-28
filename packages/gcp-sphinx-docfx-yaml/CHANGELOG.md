@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.4.0...v0.5.0) (2021-07-28)
+
+
+### Features
+
+* add subclasses to children and reference ([#77](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/77)) ([0cab5f6](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/0cab5f6cd6cd9b1da2f5f63cbcabeea69e0d7c81))
+* add subPackage types for better classification ([#76](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/76)) ([3c84f3e](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/3c84f3ea05677e2e8a5a6659a14f281f537ae37a))
+* process xrefs properly ([#78](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/78)) ([fcc1989](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/fcc1989a114640fd21955d35ef3eabce2d043fc9))
+
 ## [0.4.0](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.3.4...v0.4.0) (2021-07-21)
 
 
