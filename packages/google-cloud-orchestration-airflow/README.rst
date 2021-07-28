@@ -11,10 +11,10 @@ schedule, and monitor pipelines.
 
 .. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-composer.svg
-   :target: https://pypi.org/project/google-cloud-composer/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-composer.svg
-   :target: https://pypi.org/project/google-cloud-composer/
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-orchestration-airflow.svg
+   :target: https://pypi.org/project/google-cloud-orchestration-airflow/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-orchestration-airflow.svg
+   :target: https://pypi.org/project/google-cloud-orchestration-airflow/
 .. _Cloud Composer: https://cloud.google.com/composer
 .. _Client Library Documentation: https://googleapis.dev/python/composer/latest
 .. _Product Documentation:  https://cloud.google.com/composer/docs
@@ -56,7 +56,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-composer
+    <your-env>/bin/pip install google-cloud-orchestration-airflow
 
 
 Windows
@@ -67,7 +67,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-composer
+    <your-env>\Scripts\pip.exe install google-cloud-orchestration-airflow
 
 Next Steps
 ~~~~~~~~~~

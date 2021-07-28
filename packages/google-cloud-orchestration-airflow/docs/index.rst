@@ -21,7 +21,7 @@ API Reference
 Changelog
 ---------
 
-For a list of all ``google-cloud-composer`` releases:
+For a list of all ``google-cloud-orchestration-airflow`` releases:
 
 .. toctree::
    :maxdepth: 2
