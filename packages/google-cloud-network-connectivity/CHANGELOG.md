@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/python-network-connectivity/compare/v0.4.0...v0.5.0) (2021-07-28)
+
+
+### Features
+
+* add v1 ([#62](https://www.github.com/googleapis/python-network-connectivity/issues/62)) ([27d7fa0](https://www.github.com/googleapis/python-network-connectivity/commit/27d7fa0892bfea2c35b3c336c1dc054a8c0925d9))
+* bump release level from alpha to beta ([27d7fa0](https://www.github.com/googleapis/python-network-connectivity/commit/27d7fa0892bfea2c35b3c336c1dc054a8c0925d9))
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#55](https://www.github.com/googleapis/python-network-connectivity/issues/55)) ([efcacf5](https://www.github.com/googleapis/python-network-connectivity/commit/efcacf507d9e03d0357326e581a72447891aa84d))
+* enable self signed jwt for grpc ([#60](https://www.github.com/googleapis/python-network-connectivity/issues/60)) ([1d0ad6c](https://www.github.com/googleapis/python-network-connectivity/commit/1d0ad6ccd9539e8411bab9343dd982ce09ad48b5))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#56](https://www.github.com/googleapis/python-network-connectivity/issues/56)) ([cf009ca](https://www.github.com/googleapis/python-network-connectivity/commit/cf009ca34d1bc2dce0deaa59eef7dc8b9a65a3e4))
+
+
 ## [0.4.0](https://www.github.com/googleapis/python-network-connectivity/compare/v0.3.0...v0.4.0) (2021-07-01)
 
 
