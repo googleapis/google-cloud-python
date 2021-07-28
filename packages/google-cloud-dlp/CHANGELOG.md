@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+### [3.2.2](https://www.github.com/googleapis/python-dlp/compare/v3.2.1...v3.2.2) (2021-07-27)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#218](https://www.github.com/googleapis/python-dlp/issues/218)) ([584a887](https://www.github.com/googleapis/python-dlp/commit/584a887ac2bb648ebac439d4044f3fd8f12a01f4))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#210](https://www.github.com/googleapis/python-dlp/issues/210)) ([566827b](https://www.github.com/googleapis/python-dlp/commit/566827ba4cead4a5237fed370da132dd6fb55602))
+
+
+### Miscellaneous Chores
+
+* release as 3.2.2 ([#219](https://www.github.com/googleapis/python-dlp/issues/219)) ([5618115](https://www.github.com/googleapis/python-dlp/commit/56181152dbc1e48a70583e81dbe0fc089725f463))
+
 ### [3.2.1](https://www.github.com/googleapis/python-dlp/compare/v3.2.0...v3.2.1) (2021-07-21)
 
 
