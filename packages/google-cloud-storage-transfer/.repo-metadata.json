@@ -1,0 +1,13 @@
+{
+    "name": "storagetransfer",
+    "name_pretty": "Storage Transfer Service",
+    "product_documentation": "https://cloud.google.com/storage-transfer/",
+    "client_documentation": "https://googleapis.dev/python/storagetransfer/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-storage-transfer",
+    "distribution_name": "google-cloud-storage-transfer",
+    "api_id": "storagetransfer.googleapis.com"
+}
