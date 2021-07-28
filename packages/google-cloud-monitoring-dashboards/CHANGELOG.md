@@ -1,5 +1,23 @@
 # Changelog
 
+### [2.2.2](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.1...v2.2.2) (2021-07-26)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#93](https://www.github.com/googleapis/python-monitoring-dashboards/issues/93)) ([eef0a3e](https://www.github.com/googleapis/python-monitoring-dashboards/commit/eef0a3e274d29c1c7aad0799763c935b2ff4feb1))
+* enable self signed jwt for grpc ([#99](https://www.github.com/googleapis/python-monitoring-dashboards/issues/99)) ([0a8b547](https://www.github.com/googleapis/python-monitoring-dashboards/commit/0a8b547f8692e2158bbb1de539db7efc4bb96c4c))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#94](https://www.github.com/googleapis/python-monitoring-dashboards/issues/94)) ([017fcbd](https://www.github.com/googleapis/python-monitoring-dashboards/commit/017fcbd4ac623c25e56ab2161f651a3999442f9d))
+
+
+### Miscellaneous Chores
+
+* release as 2.2.2 ([#98](https://www.github.com/googleapis/python-monitoring-dashboards/issues/98)) ([3266da2](https://www.github.com/googleapis/python-monitoring-dashboards/commit/3266da2924b0b56ef7892c78700ccf7242efab0a))
+
 ### [2.2.1](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.0...v2.2.1) (2021-07-14)
 
 
