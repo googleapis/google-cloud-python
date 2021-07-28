@@ -102,6 +102,8 @@ def build_init(app):
     # This stores uidnames of docstrings already parsed
     app.env.docfx_uid_names = {}
 
+    app.env.docfx_xrefs = {}
+
     remote = getoutput('git remote -v')
 
     try:
@@ -190,7 +192,7 @@ def _refact_example_in_module_summary(lines):
 
 
 def _resolve_reference_in_module_summary(pattern, lines):
-    new_lines = []
+    new_lines, xrefs = [], []
     for line in lines:
         matched_objs = list(re.finditer(pattern, line))
         new_line = line
@@ -207,16 +209,35 @@ def _resolve_reference_in_module_summary(pattern, lines):
                     # match string like ':func:`~***`' or ':func:`***`'
                     index = matched_str.index('~') if '~' in matched_str else matched_str.index('`')
                     ref_name = matched_str[index+1:-1]
+
+                index = ref_name.rfind('.') + 1
+                # Find the last component of the target. "~Queue.get" only returns <xref:get>
+                ref_name = ref_name[index:]
+
             else:
                 index = matched_str.rfind('.') + 1
                 if index == 0:
                     # If there is no dot, push index to not include tilde
                     index = 1
-                # Find the last component of the target. "~Queue.get" only returns <xref:get>
                 ref_name = matched_str[index:]
-            new_line = new_line.replace(matched_str, '<xref:{}>'.format(ref_name))
+
+            # Find the uid to add for xref
+            index = matched_str.find("google.cloud")
+            if index > -1:
+                xref = matched_str[index:]
+                while not xref[-1].isalnum():
+                    xref = xref[:-1]
+                xrefs.append(xref)
+
+            # Check to see if we should create an xref for it.
+            if 'google.cloud' in matched_str:
+                new_line = new_line.replace(matched_str, '<xref uid=\"{}\">{}</xref>'.format(xref, ref_name))
+            # If it not a Cloud library, don't create xref for it.
+            else:
+                new_line = new_line.replace(matched_str, '`{}`'.format(ref_name))
+
         new_lines.append(new_line)
-    return new_lines
+    return new_lines, xrefs
 
 
 def enumerate_extract_signature(doc, max_args=20):
@@ -286,6 +307,8 @@ def _extract_signature(obj_sig):
 # Given documentation docstring, parse them into summary_info.
 def _extract_docstring_info(summary_info, summary, name):
     top_summary = ""
+    # Return clean summary if returning early.
+    parsed_text = summary
 
     # Initialize known types needing further processing.
     var_types = {
@@ -300,56 +323,38 @@ def _extract_docstring_info(summary_info, summary, name):
     initial_index = -1
         
     # Prevent GoogleDocstring crashing on custom types and parse all xrefs to normal
-    if '~' in summary or '<xref:' in summary:
+    if '<xref:' in parsed_text:
         type_pairs = []
-        # Find first character after one of the three combination
-        initial_index = min(
-          max(0, summary.find('~')), 
-          max(0, summary.find('<xref'))
-        )
+        initial_index = max(0, parsed_text.find('<xref'))
 
-        summary_part = summary[initial_index:]
+        summary_part = parsed_text[initial_index:]
        
-        # Remove all occurrences of "~xref" and "<xref:type>"
-        while '~' in summary_part or "<xref:" in summary_part:
-
-            # Expecting format of "~xref"
-            if '~' in summary_part:
-                initial_index += summary_part.find('~')
-                original_type = summary[initial_index:initial_index+(summary[initial_index:].find(':'))]
-                initial_index += len(original_type)
-                original_type = " ".join(filter(None, re.split(r'\n|  |\|\s|\t', original_type)))
-                safe_type = original_type[1:]
+        # Remove all occurrences of "<xref:type>"
+        while "<xref:" in summary_part:
 
             # Expecting format of "<xref:type>:"
-            elif "<xref:" in summary_part:
+            if "<xref:" in summary_part:
                 initial_index += summary_part.find("<xref")
-                original_type = summary[initial_index:initial_index+(summary[initial_index:].find('>'))+1]
+                original_type = parsed_text[initial_index:initial_index+(parsed_text[initial_index:].find('>'))+1]
                 initial_index += len(original_type)
                 original_type = " ".join(filter(None, re.split(r'\n|  |\|\s|\t', original_type)))
-                safe_type = original_type[6:-1]
+                safe_type = 'xref_' + original_type[6:-1]
             else:
                 raise ValueError("Encountered unexpected type in Exception docstring.")
 
             type_pairs.append([original_type, safe_type])
-            summary_part = summary[initial_index:]
+            summary_part = parsed_text[initial_index:]
 
         # Replace all the found occurrences
         for pairs in type_pairs:
             original_type, safe_type = pairs[0], pairs[1]
-            summary = summary.replace(original_type, safe_type)
+            parsed_text = parsed_text.replace(original_type, safe_type)
         
     # Clean the string by cleaning newlines and backlashes, then split by white space.
     config = Config(napoleon_use_param=True, napoleon_use_rtype=True)
     # Convert Google style to reStructuredText
-    parsed_text = str(GoogleDocstring(summary, config))
+    parsed_text = str(GoogleDocstring(parsed_text, config))
     
-    # Revert back to original type
-    if initial_index > -1:
-        for pairs in type_pairs:
-            original_type, safe_type = pairs[0], pairs[1]
-            parsed_text = parsed_text.replace(safe_type, original_type)
-
     # Trim the top summary but maintain its formatting.
     indexes = []
     for types in var_types:
@@ -377,6 +382,12 @@ def _extract_docstring_info(summary_info, summary, name):
 
     top_summary = parsed_text[:index]
     parsed_text = parsed_text[index:]
+
+    # Revert back to original type
+    if initial_index > -1:
+        for pairs in type_pairs:
+            original_type, safe_type = pairs[0], pairs[1]
+            parsed_text = parsed_text.replace(safe_type, original_type)
 
     # Clean up whitespace and other characters
     parsed_text = " ".join(filter(None, re.split(r'\|\s', parsed_text))).split()
@@ -576,9 +587,17 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
     if lines != []:
         # Resolve references for xrefs in two different formats.
         # REF_PATTERN checks for patterns like ":class:`~google.package.module`"
-        lines = _resolve_reference_in_module_summary(REF_PATTERN, lines)
+        lines, xrefs = _resolve_reference_in_module_summary(REF_PATTERN, lines)
+        for xref in xrefs:
+            if xref not in app.env.docfx_xrefs:
+                app.env.docfx_xrefs[xref] = ''
+
         # REF_PATTERN_LAST checks for patterns like "~package.module"
-        lines = _resolve_reference_in_module_summary(REF_PATTERN_LAST, lines)
+        lines, xrefs = _resolve_reference_in_module_summary(REF_PATTERN_LAST, lines)
+        for xref in xrefs:
+            if xref not in app.env.docfx_xrefs:
+                app.env.docfx_xrefs[xref] = ''
+
         summary = app.docfx_transform_string('\n'.join(_refact_example_in_module_summary(lines)))
     
         # Extract summary info into respective sections.
@@ -1174,6 +1193,14 @@ def build_finished(app, exception):
                 raise ValueError("Unable to dump object\n{0}".format(yaml_data)) from e
 
         file_name_set.add(filename)
+
+    '''
+    # TODO: handle xref for other products.
+    xref_file = os.path.join(normalized_outdir, 'xrefs.yml')
+    with open(xref_file, 'w') as xref_file_obj:
+        for xref in app.env.docfx_xrefs:
+            xref_file_obj.write(f'{xref}\n')
+    '''
 
 def missing_reference(app, env, node, contnode):
     reftarget = ''
