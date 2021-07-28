@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.3.0](https://www.github.com/googleapis/python-asset/compare/v3.2.1...v3.3.0) (2021-07-28)
+
+
+### Features
+
+* Add AnalyzeMove API ([a242adc](https://www.github.com/googleapis/python-asset/commit/a242adc8864724acb2d12136bb09d68cb7fc729c))
+* Add AttachedResource field for ResourceSearchResult ([a242adc](https://www.github.com/googleapis/python-asset/commit/a242adc8864724acb2d12136bb09d68cb7fc729c))
+* Add read_mask field for SearchAllResourcesRequest ([a242adc](https://www.github.com/googleapis/python-asset/commit/a242adc8864724acb2d12136bb09d68cb7fc729c))
+* Add VersionedResource field for ResourceSearchResult ([a242adc](https://www.github.com/googleapis/python-asset/commit/a242adc8864724acb2d12136bb09d68cb7fc729c))
+* Change metadata field for the AnalyzeIamPolicyLongrunning ([#245](https://www.github.com/googleapis/python-asset/issues/245)) ([a242adc](https://www.github.com/googleapis/python-asset/commit/a242adc8864724acb2d12136bb09d68cb7fc729c))
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#244](https://www.github.com/googleapis/python-asset/issues/244)) ([a15e185](https://www.github.com/googleapis/python-asset/commit/a15e18574ce4d58a22955284ebfe444c152b30c7))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#235](https://www.github.com/googleapis/python-asset/issues/235)) ([0d00e75](https://www.github.com/googleapis/python-asset/commit/0d00e75bf46d52beea0829b83a2df580a37491ca))
+
+
 ### [3.2.1](https://www.github.com/googleapis/python-asset/compare/v3.2.0...v3.2.1) (2021-07-21)
 
 
