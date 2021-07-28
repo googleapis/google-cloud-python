@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+### [2.2.1](https://www.github.com/googleapis/python-talent/compare/v2.2.0...v2.2.1) (2021-07-28)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#133](https://www.github.com/googleapis/python-talent/issues/133)) ([9032d52](https://www.github.com/googleapis/python-talent/commit/9032d52e1f69f1e58e867aa8968d63af1398d36f))
+* enable self signed jwt for grpc ([#138](https://www.github.com/googleapis/python-talent/issues/138)) ([95fbb59](https://www.github.com/googleapis/python-talent/commit/95fbb597e2a4b9aac0b0bb0fc920e69b5e04f22b))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#134](https://www.github.com/googleapis/python-talent/issues/134)) ([4a4c133](https://www.github.com/googleapis/python-talent/commit/4a4c1337be504d7b45c1a1ec000302472787d409))
+
+
+### Miscellaneous Chores
+
+* release 2.2.1 ([#139](https://www.github.com/googleapis/python-talent/issues/139)) ([9c15373](https://www.github.com/googleapis/python-talent/commit/9c15373aa362220b20836b6a8fade858f8d41e31))
+
 ## [2.2.0](https://www.github.com/googleapis/python-talent/compare/v2.1.0...v2.2.0) (2021-06-30)
 
 
