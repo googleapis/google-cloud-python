@@ -1,5 +1,22 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-service-management/compare/v1.0.1...v1.0.2) (2021-07-28)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#41](https://www.github.com/googleapis/python-service-management/issues/41)) ([a995bbb](https://www.github.com/googleapis/python-service-management/commit/a995bbb11f53bfd2a224155d0665c141aababc1e))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#37](https://www.github.com/googleapis/python-service-management/issues/37)) ([87472ed](https://www.github.com/googleapis/python-service-management/commit/87472ed593f442e7b73a3aa2ee45a4357094d290))
+
+
+### Miscellaneous Chores
+
+* release as 1.0.2 ([#42](https://www.github.com/googleapis/python-service-management/issues/42)) ([27b79f7](https://www.github.com/googleapis/python-service-management/commit/27b79f7d63ae01e2ba6553eaeedb20b86e878f88))
+
 ### [1.0.1](https://www.github.com/googleapis/python-service-management/compare/v1.0.0...v1.0.1) (2021-07-21)
 
 
