@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [2.6.0](https://www.github.com/googleapis/python-logging/compare/v2.5.0...v2.6.0) (2021-07-28)
+
+
+### Features
+
+* add always_use_jwt_access ([#334](https://www.github.com/googleapis/python-logging/issues/334)) ([ae67d10](https://www.github.com/googleapis/python-logging/commit/ae67d10a661a3561b366bb05f5cf6d34520164b4))
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#356](https://www.github.com/googleapis/python-logging/issues/356)) ([a970dd2](https://www.github.com/googleapis/python-logging/commit/a970dd293d4fddc983946cb1c362f487a82d9609))
+* disable always_use_jwt_access ([#342](https://www.github.com/googleapis/python-logging/issues/342)) ([a95e401](https://www.github.com/googleapis/python-logging/commit/a95e40188c9483310fb1dce9242c7c66721a6b7f))
+* enable self signed jwt for grpc ([#360](https://www.github.com/googleapis/python-logging/issues/360)) ([707fad1](https://www.github.com/googleapis/python-logging/commit/707fad1a714d951727336b03f4444f53199737e3))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-logging/issues/1127)) ([#327](https://www.github.com/googleapis/python-logging/issues/327)) ([faa6fb9](https://www.github.com/googleapis/python-logging/commit/faa6fb9a86c82b99b529e979160bfdd7a505793b)), closes [#1126](https://www.github.com/googleapis/python-logging/issues/1126)
+* add Samples section to CONTRIBUTING.rst ([#357](https://www.github.com/googleapis/python-logging/issues/357)) ([8771716](https://www.github.com/googleapis/python-logging/commit/8771716cae7cf67d710b3741b8b718fc4a8aa2b6))
+
+
 ## [2.5.0](https://www.github.com/googleapis/python-logging/compare/v2.4.0...v2.5.0) (2021-06-10)
 
 
