@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/python-assured-workloads/compare/v0.4.2...v0.5.0) (2021-07-28)
+
+
+### Features
+
+* Add EU Regions And Support compliance regime ([#67](https://www.github.com/googleapis/python-assured-workloads/issues/67)) ([a370ad5](https://www.github.com/googleapis/python-assured-workloads/commit/a370ad5c1c7525544f3e5a83e84e0c05ed1851e2))
+
 ### [0.4.2](https://www.github.com/googleapis/python-assured-workloads/compare/v0.4.1...v0.4.2) (2021-07-27)
 
 
