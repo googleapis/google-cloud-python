@@ -39,8 +39,8 @@ def partition(
 class speechCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_custom_class': ('parent', 'custom_class', 'custom_class_id', ),
-          'create_phrase_set': ('parent', 'phrase_set', 'phrase_set_id', ),
+          'create_custom_class': ('parent', 'custom_class_id', 'custom_class', ),
+          'create_phrase_set': ('parent', 'phrase_set_id', 'phrase_set', ),
           'delete_custom_class': ('name', ),
           'delete_phrase_set': ('name', ),
           'get_custom_class': ('name', ),
