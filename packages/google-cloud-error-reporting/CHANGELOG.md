@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+### [1.2.2](https://www.github.com/googleapis/python-error-reporting/compare/v1.2.1...v1.2.2) (2021-07-28)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#156](https://www.github.com/googleapis/python-error-reporting/issues/156)) ([f9656c8](https://www.github.com/googleapis/python-error-reporting/commit/f9656c81db2f29ba4ac9ba4a5304004cd725ca5c))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#151](https://www.github.com/googleapis/python-error-reporting/issues/151)) ([8f11190](https://www.github.com/googleapis/python-error-reporting/commit/8f11190661e62165bd1c4a30b40797ef31abed33))
+
+
+### Miscellaneous Chores
+
+* release as 1.2.2 ([#157](https://www.github.com/googleapis/python-error-reporting/issues/157)) ([ea26377](https://www.github.com/googleapis/python-error-reporting/commit/ea2637721efac36b122edc499da08c12ae894d28))
+
 ### [1.2.1](https://www.github.com/googleapis/python-error-reporting/compare/v1.2.0...v1.2.1) (2021-07-20)
 
 
