@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.4.0](https://www.github.com/googleapis/python-datacatalog/compare/v3.3.2...v3.4.0) (2021-07-28)
+
+
+### Features
+
+* Added ReplaceTaxonomy in Policy Tag Manager Serialization API ([6abe29d](https://www.github.com/googleapis/python-datacatalog/commit/6abe29d21c7481aa836a103d99722adcfbf6a6d3))
+* Added support for BigQuery connections entries ([#196](https://www.github.com/googleapis/python-datacatalog/issues/196)) ([6abe29d](https://www.github.com/googleapis/python-datacatalog/commit/6abe29d21c7481aa836a103d99722adcfbf6a6d3))
+* Added support for BigQuery routines entries ([6abe29d](https://www.github.com/googleapis/python-datacatalog/commit/6abe29d21c7481aa836a103d99722adcfbf6a6d3))
+* Added support for public tag templates ([6abe29d](https://www.github.com/googleapis/python-datacatalog/commit/6abe29d21c7481aa836a103d99722adcfbf6a6d3))
+* Added support for rich text tags ([6abe29d](https://www.github.com/googleapis/python-datacatalog/commit/6abe29d21c7481aa836a103d99722adcfbf6a6d3))
+* Added usage_signal field ([6abe29d](https://www.github.com/googleapis/python-datacatalog/commit/6abe29d21c7481aa836a103d99722adcfbf6a6d3))
+
+
+### Documentation
+
+* Documentation improvements ([6abe29d](https://www.github.com/googleapis/python-datacatalog/commit/6abe29d21c7481aa836a103d99722adcfbf6a6d3))
+
 ### [3.3.2](https://www.github.com/googleapis/python-datacatalog/compare/v3.3.1...v3.3.2) (2021-07-27)
 
 
