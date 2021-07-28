@@ -1,5 +1,22 @@
 # Changelog
 
+### [0.5.3](https://www.github.com/googleapis/python-media-translation/compare/v0.5.2...v0.5.3) (2021-07-28)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#92](https://www.github.com/googleapis/python-media-translation/issues/92)) ([86447f1](https://www.github.com/googleapis/python-media-translation/commit/86447f199a26530743f43f115a0981e3111e2bae))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#87](https://www.github.com/googleapis/python-media-translation/issues/87)) ([0970f66](https://www.github.com/googleapis/python-media-translation/commit/0970f66d153ae5b4f4457b3b5447d6ae02065739))
+
+
+### Miscellaneous Chores
+
+* release as 0.5.3 ([#93](https://www.github.com/googleapis/python-media-translation/issues/93)) ([8a09e4e](https://www.github.com/googleapis/python-media-translation/commit/8a09e4e397169b880e91320df21742babe953c85))
+
 ### [0.5.2](https://www.github.com/googleapis/python-media-translation/compare/v0.5.1...v0.5.2) (2021-07-20)
 
 
