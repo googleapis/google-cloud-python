@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+### [2.5.1](https://www.github.com/googleapis/python-tasks/compare/v2.5.0...v2.5.1) (2021-07-28)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc chore: use gapic-generator-python 0.50.5 ([#143](https://www.github.com/googleapis/python-tasks/issues/143)) ([b8ec21e](https://www.github.com/googleapis/python-tasks/commit/b8ec21e2d3bc173249a33f34b27373e0f6c08cd2))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#135](https://www.github.com/googleapis/python-tasks/issues/135)) ([ccfc32d](https://www.github.com/googleapis/python-tasks/commit/ccfc32d56c5d0750a8f14ce244e1bc40eb4e31bd))
+
+
+### Miscellaneous Chores
+
+* release as 2.5.1 ([#144](https://www.github.com/googleapis/python-tasks/issues/144)) ([28ffe6b](https://www.github.com/googleapis/python-tasks/commit/28ffe6b149fd1267c967a8432ef41042620c314e))
+
 ## [2.5.0](https://www.github.com/googleapis/python-tasks/compare/v2.4.0...v2.5.0) (2021-07-21)
 
 
