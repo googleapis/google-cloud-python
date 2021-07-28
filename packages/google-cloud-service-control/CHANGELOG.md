@@ -1,5 +1,22 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-service-control/compare/v1.0.1...v1.0.2) (2021-07-28)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#52](https://www.github.com/googleapis/python-service-control/issues/52)) ([2941b84](https://www.github.com/googleapis/python-service-control/commit/2941b84c3a50ada15605679adeb38d250b3310a3))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#48](https://www.github.com/googleapis/python-service-control/issues/48)) ([1bbd444](https://www.github.com/googleapis/python-service-control/commit/1bbd4440166cfa72a647a0dccd15e91222b4051a))
+
+
+### Miscellaneous Chores
+
+* release as 1.0.2 ([#53](https://www.github.com/googleapis/python-service-control/issues/53)) ([0dd6658](https://www.github.com/googleapis/python-service-control/commit/0dd6658d4b526f0559acd2fc08af9f6549b62023))
+
 ### [1.0.1](https://www.github.com/googleapis/python-service-control/compare/v1.0.0...v1.0.1) (2021-07-21)
 
 
