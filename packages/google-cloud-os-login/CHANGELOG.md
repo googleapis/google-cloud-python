@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+### [2.3.1](https://www.github.com/googleapis/python-oslogin/compare/v2.3.0...v2.3.1) (2021-07-26)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#96](https://www.github.com/googleapis/python-oslogin/issues/96)) ([14d463f](https://www.github.com/googleapis/python-oslogin/commit/14d463fed2ac8ddb4abef5cf8ef2353b8a0d6c77))
+* enable self signed jwt for grpc ([#102](https://www.github.com/googleapis/python-oslogin/issues/102)) ([1676f31](https://www.github.com/googleapis/python-oslogin/commit/1676f3151336d61cdb9c1c8874f96d2303ba4ee4))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#97](https://www.github.com/googleapis/python-oslogin/issues/97)) ([c216231](https://www.github.com/googleapis/python-oslogin/commit/c216231e75c1c7d0d7315dba4182fd33b1afded6))
+
+
+### Miscellaneous Chores
+
+* release 2.3.1 ([#101](https://www.github.com/googleapis/python-oslogin/issues/101)) ([42d6b41](https://www.github.com/googleapis/python-oslogin/commit/42d6b4177f34e1f73de6c08c9d07f8716976911a))
+
 ## [2.3.0](https://www.github.com/googleapis/python-oslogin/compare/v2.2.1...v2.3.0) (2021-07-14)
 
 
