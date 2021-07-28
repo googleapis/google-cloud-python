@@ -28,7 +28,12 @@ version = "0.33.0"
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 3 - Alpha"
-dependencies = ["google-cloud-core >= 1.3.0, < 3.0dev"]
+dependencies = [
+    # NOTE: Maintainers, please do not require google-cloud-core>=2.x.x
+    # Until this issue is closed
+    # https://github.com/googleapis/google-cloud-python/issues/10566
+    "google-cloud-core >= 1.3.0, < 3.0dev",
+]
 extras = {}
 
 
