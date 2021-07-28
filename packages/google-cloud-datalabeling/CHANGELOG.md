@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+### [1.2.2](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.1...v1.2.2) (2021-07-27)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#129](https://www.github.com/googleapis/python-datalabeling/issues/129)) ([4fdf2f6](https://www.github.com/googleapis/python-datalabeling/commit/4fdf2f66b84bfad9504551124b7ed13126d329ea))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#124](https://www.github.com/googleapis/python-datalabeling/issues/124)) ([025a4fa](https://www.github.com/googleapis/python-datalabeling/commit/025a4fa4d31612a02eaf3b8250225d6d467f4248))
+
+
+### Miscellaneous Chores
+
+* release as 1.2.2 ([#130](https://www.github.com/googleapis/python-datalabeling/issues/130)) ([b8d85c1](https://www.github.com/googleapis/python-datalabeling/commit/b8d85c11e01fcfbdc1b8abe2aeb94b0d82b09e01))
+
 ### [1.2.1](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.0...v1.2.1) (2021-07-20)
 
 
