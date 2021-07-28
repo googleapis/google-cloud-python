@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+### [2.6.2](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.6.1...v2.6.2) (2021-07-28)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#249](https://www.github.com/googleapis/python-bigquery-storage/issues/249)) ([a7e8d91](https://www.github.com/googleapis/python-bigquery-storage/commit/a7e8d913fc3de67a3f38ecbd35af2f9d1a33aa8d))
+
+
+### Documentation
+
+* remove duplicate code samples ([#246](https://www.github.com/googleapis/python-bigquery-storage/issues/246)) ([303f273](https://www.github.com/googleapis/python-bigquery-storage/commit/303f2732ced38e491df92e965dd37bac24a61d2f))
+* add Samples section to CONTRIBUTING.rst ([#241](https://www.github.com/googleapis/python-bigquery-storage/issues/241)) ([5d02358](https://www.github.com/googleapis/python-bigquery-storage/commit/5d02358fbd397cafcc1169d829859fe2dd568645))
+
+
 ### [2.6.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.6.0...v2.6.1) (2021-07-20)
 
 
