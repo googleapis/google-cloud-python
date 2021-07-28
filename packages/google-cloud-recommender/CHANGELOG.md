@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+### [2.3.2](https://www.github.com/googleapis/python-recommender/compare/v2.3.1...v2.3.2) (2021-07-28)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#114](https://www.github.com/googleapis/python-recommender/issues/114)) ([63d3fc9](https://www.github.com/googleapis/python-recommender/commit/63d3fc92cebeb8148b35cacaac4bfea096242f2f))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#110](https://www.github.com/googleapis/python-recommender/issues/110)) ([23a901b](https://www.github.com/googleapis/python-recommender/commit/23a901b992697c0e4ccdfb42573bc34d7244c31e))
+
+
+### Miscellaneous Chores
+
+* release as 2.3.2 ([#115](https://www.github.com/googleapis/python-recommender/issues/115)) ([6e177d4](https://www.github.com/googleapis/python-recommender/commit/6e177d4790a2074d035516ada6b27c66315aa44c))
+
 ### [2.3.1](https://www.github.com/googleapis/python-recommender/compare/v2.3.0...v2.3.1) (2021-07-20)
 
 
