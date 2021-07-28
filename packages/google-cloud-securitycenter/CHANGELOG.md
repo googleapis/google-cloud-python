@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.5.0](https://www.github.com/googleapis/python-securitycenter/compare/v1.4.0...v1.5.0) (2021-07-28)
+
+
+### Features
+
+* add finding_class and indicator fields in Finding ([#201](https://www.github.com/googleapis/python-securitycenter/issues/201)) ([4af011d](https://www.github.com/googleapis/python-securitycenter/commit/4af011d96bd84692a1474018675dcd616a1592bd))
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#194](https://www.github.com/googleapis/python-securitycenter/issues/194)) ([37af051](https://www.github.com/googleapis/python-securitycenter/commit/37af0515bbb5b9de9719baf3ff5bc5e51df0cb58))
+* enable self signed jwt for grpc ([#199](https://www.github.com/googleapis/python-securitycenter/issues/199)) ([a00be7c](https://www.github.com/googleapis/python-securitycenter/commit/a00be7c6dd09f64a3def127cbe963abab939b464))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#195](https://www.github.com/googleapis/python-securitycenter/issues/195)) ([8f402c2](https://www.github.com/googleapis/python-securitycenter/commit/8f402c29d026132fdae448c1835b4da4dda4d186))
+
+
+
 ## [1.4.0](https://www.github.com/googleapis/python-securitycenter/compare/v1.3.1...v1.4.0) (2021-07-12)
 
 
