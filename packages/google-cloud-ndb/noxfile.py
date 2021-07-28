@@ -124,7 +124,9 @@ def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".")
-    session.install("sphinx", "alabaster", "recommonmark", "sphinxcontrib.spelling")
+    session.install(
+        "Sphinx==4.0.1", "alabaster", "recommonmark", "sphinxcontrib.spelling"
+    )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
@@ -144,7 +146,7 @@ def docs(session):
 @nox.session(py=DEFAULT_INTERPRETER)
 def doctest(session):
     # Install all dependencies.
-    session.install("Sphinx")
+    session.install("Sphinx==4.0.1")
     session.install("sphinxcontrib.spelling")
     session.install(".")
     # Run the script for building docs and running doctests.
