@@ -3757,6 +3757,46 @@ def test_asset_service_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
+def test_access_level_path():
+    access_policy = "squid"
+    access_level = "clam"
+    expected = "accessPolicies/{access_policy}/accessLevels/{access_level}".format(
+        access_policy=access_policy, access_level=access_level,
+    )
+    actual = AssetServiceClient.access_level_path(access_policy, access_level)
+    assert expected == actual
+
+
+def test_parse_access_level_path():
+    expected = {
+        "access_policy": "whelk",
+        "access_level": "octopus",
+    }
+    path = AssetServiceClient.access_level_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AssetServiceClient.parse_access_level_path(path)
+    assert expected == actual
+
+
+def test_access_policy_path():
+    access_policy = "oyster"
+    expected = "accessPolicies/{access_policy}".format(access_policy=access_policy,)
+    actual = AssetServiceClient.access_policy_path(access_policy)
+    assert expected == actual
+
+
+def test_parse_access_policy_path():
+    expected = {
+        "access_policy": "nudibranch",
+    }
+    path = AssetServiceClient.access_policy_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AssetServiceClient.parse_access_policy_path(path)
+    assert expected == actual
+
+
 def test_asset_path():
     expected = "*".format()
     actual = AssetServiceClient.asset_path()
@@ -3764,8 +3804,8 @@ def test_asset_path():
 
 
 def test_feed_path():
-    project = "squid"
-    feed = "clam"
+    project = "cuttlefish"
+    feed = "mussel"
     expected = "projects/{project}/feeds/{feed}".format(project=project, feed=feed,)
     actual = AssetServiceClient.feed_path(project, feed)
     assert expected == actual
@@ -3773,8 +3813,8 @@ def test_feed_path():
 
 def test_parse_feed_path():
     expected = {
-        "project": "whelk",
-        "feed": "octopus",
+        "project": "winkle",
+        "feed": "nautilus",
     }
     path = AssetServiceClient.feed_path(**expected)
 
@@ -3783,8 +3823,30 @@ def test_parse_feed_path():
     assert expected == actual
 
 
+def test_service_perimeter_path():
+    access_policy = "scallop"
+    service_perimeter = "abalone"
+    expected = "accessPolicies/{access_policy}/servicePerimeters/{service_perimeter}".format(
+        access_policy=access_policy, service_perimeter=service_perimeter,
+    )
+    actual = AssetServiceClient.service_perimeter_path(access_policy, service_perimeter)
+    assert expected == actual
+
+
+def test_parse_service_perimeter_path():
+    expected = {
+        "access_policy": "squid",
+        "service_perimeter": "clam",
+    }
+    path = AssetServiceClient.service_perimeter_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AssetServiceClient.parse_service_perimeter_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3794,7 +3856,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "octopus",
     }
     path = AssetServiceClient.common_billing_account_path(**expected)
 
@@ -3804,7 +3866,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "oyster"
     expected = "folders/{folder}".format(folder=folder,)
     actual = AssetServiceClient.common_folder_path(folder)
     assert expected == actual
@@ -3812,7 +3874,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "nudibranch",
     }
     path = AssetServiceClient.common_folder_path(**expected)
 
@@ -3822,7 +3884,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = AssetServiceClient.common_organization_path(organization)
     assert expected == actual
@@ -3830,7 +3892,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "mussel",
     }
     path = AssetServiceClient.common_organization_path(**expected)
 
@@ -3840,7 +3902,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "winkle"
     expected = "projects/{project}".format(project=project,)
     actual = AssetServiceClient.common_project_path(project)
     assert expected == actual
@@ -3848,7 +3910,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nautilus",
     }
     path = AssetServiceClient.common_project_path(**expected)
 
@@ -3858,8 +3920,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -3869,8 +3931,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "squid",
+        "location": "clam",
     }
     path = AssetServiceClient.common_location_path(**expected)
 

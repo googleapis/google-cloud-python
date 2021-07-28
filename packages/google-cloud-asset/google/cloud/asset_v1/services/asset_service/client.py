@@ -158,6 +158,33 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def access_level_path(access_policy: str, access_level: str,) -> str:
+        """Returns a fully-qualified access_level string."""
+        return "accessPolicies/{access_policy}/accessLevels/{access_level}".format(
+            access_policy=access_policy, access_level=access_level,
+        )
+
+    @staticmethod
+    def parse_access_level_path(path: str) -> Dict[str, str]:
+        """Parses a access_level path into its component segments."""
+        m = re.match(
+            r"^accessPolicies/(?P<access_policy>.+?)/accessLevels/(?P<access_level>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def access_policy_path(access_policy: str,) -> str:
+        """Returns a fully-qualified access_policy string."""
+        return "accessPolicies/{access_policy}".format(access_policy=access_policy,)
+
+    @staticmethod
+    def parse_access_policy_path(path: str) -> Dict[str, str]:
+        """Parses a access_policy path into its component segments."""
+        m = re.match(r"^accessPolicies/(?P<access_policy>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def asset_path() -> str:
         """Returns a fully-qualified asset string."""
         return "*".format()
@@ -171,6 +198,22 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     def parse_feed_path(path: str) -> Dict[str, str]:
         """Parses a feed path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/feeds/(?P<feed>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def service_perimeter_path(access_policy: str, service_perimeter: str,) -> str:
+        """Returns a fully-qualified service_perimeter string."""
+        return "accessPolicies/{access_policy}/servicePerimeters/{service_perimeter}".format(
+            access_policy=access_policy, service_perimeter=service_perimeter,
+        )
+
+    @staticmethod
+    def parse_service_perimeter_path(path: str) -> Dict[str, str]:
+        """Parses a service_perimeter path into its component segments."""
+        m = re.match(
+            r"^accessPolicies/(?P<access_policy>.+?)/servicePerimeters/(?P<service_perimeter>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
