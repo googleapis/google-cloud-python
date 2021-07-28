@@ -1,5 +1,22 @@
 # Changelog
 
+### [0.3.2](https://www.github.com/googleapis/python-notebooks/compare/v0.3.1...v0.3.2) (2021-07-28)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#68](https://www.github.com/googleapis/python-notebooks/issues/68)) ([ec048cd](https://www.github.com/googleapis/python-notebooks/commit/ec048cd10d04b76fcbac5a246e3bcb6ef81353c8))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#64](https://www.github.com/googleapis/python-notebooks/issues/64)) ([2e9c620](https://www.github.com/googleapis/python-notebooks/commit/2e9c620c45723fe8de13b437fb9642d14b2d8029))
+
+
+### Miscellaneous Chores
+
+* release as 0.3.2 ([#69](https://www.github.com/googleapis/python-notebooks/issues/69)) ([e3eb4df](https://www.github.com/googleapis/python-notebooks/commit/e3eb4df74a19b88f4f60fab87b9d85349f025ce0))
+
 ### [0.3.1](https://www.github.com/googleapis/python-notebooks/compare/v0.3.0...v0.3.1) (2021-07-20)
 
 
