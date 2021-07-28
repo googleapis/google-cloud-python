@@ -211,4 +211,11 @@ s.replace(
     "--cov=grafeas",
 )
 
+# Block pushing non-cloud libraries to Cloud RAD
+s.replace(
+    ".kokoro/docs/common.cfg",
+    r'value: "docs-staging-v2"',
+    r'value: "docs-staging-v2-staging"'
+)
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
