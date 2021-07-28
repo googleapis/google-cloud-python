@@ -16,6 +16,7 @@
 from .asset import Asset
 from .finding import Finding
 from .folder import Folder
+from .indicator import Indicator
 from .notification_config import NotificationConfig
 from .notification_message import NotificationMessage
 from .organization_settings import OrganizationSettings
@@ -57,6 +58,7 @@ __all__ = (
     "Asset",
     "Finding",
     "Folder",
+    "Indicator",
     "NotificationConfig",
     "NotificationMessage",
     "OrganizationSettings",

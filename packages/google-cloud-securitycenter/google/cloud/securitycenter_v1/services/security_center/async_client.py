@@ -31,6 +31,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.securitycenter_v1.services.security_center import pagers
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
+from google.cloud.securitycenter_v1.types import indicator
 from google.cloud.securitycenter_v1.types import notification_config
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,

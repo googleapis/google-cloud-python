@@ -15,6 +15,7 @@
 #
 import proto  # type: ignore
 
+from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -100,6 +101,14 @@ class Finding(proto.Message):
             "projects/{project_number}/sources/{source_id}/findings/{finding_id}",
             depending on the closest CRM ancestor of the resource
             associated with the finding.
+        finding_class (google.cloud.securitycenter_v1.types.Finding.FindingClass):
+            The class of the finding.
+        indicator (google.cloud.securitycenter_v1.types.Indicator):
+            Represents what's commonly known as an Indicator of
+            compromise (IoC) in computer forensics. This is an artifact
+            observed on a network or in an operating system that, with
+            high confidence, indicates a computer intrusion. Reference:
+            https://en.wikipedia.org/wiki/Indicator_of_compromise
     """
 
     class State(proto.Enum):
@@ -115,6 +124,14 @@ class Finding(proto.Message):
         HIGH = 2
         MEDIUM = 3
         LOW = 4
+
+    class FindingClass(proto.Enum):
+        r"""Represents what kind of Finding it is."""
+        FINDING_CLASS_UNSPECIFIED = 0
+        THREAT = 1
+        VULNERABILITY = 2
+        MISCONFIGURATION = 3
+        OBSERVATION = 4
 
     name = proto.Field(proto.STRING, number=1,)
     parent = proto.Field(proto.STRING, number=2,)
@@ -134,6 +151,8 @@ class Finding(proto.Message):
     )
     severity = proto.Field(proto.ENUM, number=12, enum=Severity,)
     canonical_name = proto.Field(proto.STRING, number=14,)
+    finding_class = proto.Field(proto.ENUM, number=17, enum=FindingClass,)
+    indicator = proto.Field(proto.MESSAGE, number=18, message=gcs_indicator.Indicator,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

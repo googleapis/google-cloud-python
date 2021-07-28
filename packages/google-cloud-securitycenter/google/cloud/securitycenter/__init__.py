@@ -24,6 +24,7 @@ from google.cloud.securitycenter_v1.services.security_center.async_client import
 from google.cloud.securitycenter_v1.types.asset import Asset
 from google.cloud.securitycenter_v1.types.finding import Finding
 from google.cloud.securitycenter_v1.types.folder import Folder
+from google.cloud.securitycenter_v1.types.indicator import Indicator
 from google.cloud.securitycenter_v1.types.notification_config import NotificationConfig
 from google.cloud.securitycenter_v1.types.notification_message import (
     NotificationMessage,
@@ -121,6 +122,7 @@ __all__ = (
     "Asset",
     "Finding",
     "Folder",
+    "Indicator",
     "NotificationConfig",
     "NotificationMessage",
     "OrganizationSettings",
