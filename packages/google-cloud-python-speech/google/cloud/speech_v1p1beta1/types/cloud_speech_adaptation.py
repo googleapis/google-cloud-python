@@ -46,8 +46,9 @@ class CreatePhraseSetRequest(proto.Message):
             created. Format:
             {api_version}/projects/{project}/locations/{location}/phraseSets
         phrase_set_id (str):
-            The ID to use for the phrase set, which will become the
-            final component of the phrase set's resource name.
+            Required. The ID to use for the phrase set, which will
+            become the final component of the phrase set's resource
+            name.
 
             This value should be 4-63 characters, and valid characters
             are /[a-z][0-9]-/.
@@ -157,8 +158,9 @@ class CreateCustomClassRequest(proto.Message):
             be created. Format:
             {api_version}/projects/{project}/locations/{location}/customClasses
         custom_class_id (str):
-            The ID to use for the custom class, which will become the
-            final component of the custom class' resource name.
+            Required. The ID to use for the custom class, which will
+            become the final component of the custom class' resource
+            name.
 
             This value should be 4-63 characters, and valid characters
             are /[a-z][0-9]-/.
