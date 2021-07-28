@@ -1,7 +1,7 @@
 Python Client for Network Connectivity Center
 =================================================
 
-|alpha| |pypi| |versions|
+|beta| |pypi| |versions|
 
 `Network Connectivity Center`_: The Network Connectivity API will be home
 to various services which provide information pertaining to network connectivity. 
@@ -13,8 +13,8 @@ inconsistencies, etc.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
+.. |beta| image:: https://img.shields.io/badge/support-alpha-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-network-connectivity.svg
    :target: https://pypi.org/project/google-cloud-network-connectivity/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-network-connectivity.svg

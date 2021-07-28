@@ -3,6 +3,18 @@
 .. include:: multiprocessing.rst
 
 
+This package includes clients for multiple versions of ``google-cloud-network-connectivity``.
+By default, you will get version ``v1``.
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    networkconnectivity_v1/services
+    networkconnectivity_v1/types
+
+
 API Reference
 -------------
 .. toctree::
