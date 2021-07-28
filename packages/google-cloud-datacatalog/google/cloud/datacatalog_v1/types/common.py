@@ -22,8 +22,8 @@ __protobuf__ = proto.module(
 
 
 class IntegratedSystem(proto.Enum):
-    r"""This enum describes all the possible systems that Data
-    Catalog integrates with.
+    r"""This enum lists all the systems that Data Catalog integrates
+    with.
     """
     INTEGRATED_SYSTEM_UNSPECIFIED = 0
     BIGQUERY = 1

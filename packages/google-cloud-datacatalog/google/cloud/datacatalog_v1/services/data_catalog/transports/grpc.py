@@ -35,8 +35,8 @@ from .base import DataCatalogTransport, DEFAULT_CLIENT_INFO
 class DataCatalogGrpcTransport(DataCatalogTransport):
     """gRPC backend transport for DataCatalog.
 
-    Data Catalog API service allows clients to discover,
-    understand, and manage their data.
+    Data Catalog API service allows you to discover, understand,
+    and manage your data.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -238,23 +238,22 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ]:
         r"""Return a callable for the search catalog method over gRPC.
 
-        Searches Data Catalog for multiple resources like entries, tags
-        that match a query.
+        Searches Data Catalog for multiple resources like entries and
+        tags that match a query.
 
-        This is a custom method
-        (https://cloud.google.com/apis/design/custom_methods) and does
-        not return the complete resource, only the resource identifier
-        and high level fields. Clients can subsequently call ``Get``
-        methods.
+        This is a [Custom Method]
+        (https://cloud.google.com/apis/design/custom_methods) that
+        doesn't return all information on a resource, only its ID and
+        high level fields. To get more information, you can subsequently
+        call specific get methods.
 
-        Note that Data Catalog search queries do not guarantee full
-        recall. Query results that match your query may not be returned,
-        even in subsequent result pages. Also note that results returned
-        (and not returned) can vary across repeated search queries.
+        Note: Data Catalog search queries don't guarantee full recall.
+        Results that match your query might not be returned, even in
+        subsequent result pages. Additionally, returned (and not
+        returned) results can vary if you repeat search queries.
 
-        See `Data Catalog Search
-        Syntax <https://cloud.google.com/data-catalog/docs/how-to/search-reference>`__
-        for more information.
+        For more information, see [Data Catalog search syntax]
+        (https://cloud.google.com/data-catalog/docs/how-to/search-reference).
 
         Returns:
             Callable[[~.SearchCatalogRequest],
@@ -280,27 +279,36 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.CreateEntryGroupRequest], datacatalog.EntryGroup]:
         r"""Return a callable for the create entry group method over gRPC.
 
-        Creates an EntryGroup.
+        Creates an entry group.
 
         An entry group contains logically related entries together with
-        Cloud Identity and Access Management policies that specify the
-        users who can create, edit, and view entries within the entry
-        group.
+        `Cloud Identity and Access
+        Management </data-catalog/docs/concepts/iam>`__ policies. These
+        policies specify users who can create, edit, and view entries
+        within entry groups.
 
-        Data Catalog automatically creates an entry group for BigQuery
-        entries ("@bigquery") and Pub/Sub topics ("@pubsub"). Users
-        create their own entry group to contain Cloud Storage fileset
-        entries or custom type entries, and the IAM policies associated
-        with those entries. Entry groups, like entries, can be searched.
+        Data Catalog automatically creates entry groups with names that
+        start with the ``@`` symbol for the following resources:
+
+        -  BigQuery entries (``@bigquery``)
+        -  Pub/Sub topics (``@pubsub``)
+        -  Dataproc Metastore services
+           (``@dataproc_metastore_{SERVICE_NAME_HASH}``)
+
+        You can create your own entry groups for Cloud Storage fileset
+        entries and custom entries together with the corresponding IAM
+        policies. User-created entry groups can't contain the ``@``
+        symbol, it is reserved for automatically created groups.
+
+        Entry groups, like entries, can be searched.
 
         A maximum of 10,000 entry groups may be created per organization
         across all locations.
 
-        Users should enable the Data Catalog API in the project
-        identified by the ``parent`` parameter (see [Data Catalog
-        Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        You must enable the Data Catalog API in the project identified
+        by the ``parent`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Returns:
             Callable[[~.CreateEntryGroupRequest],
@@ -326,7 +334,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.GetEntryGroupRequest], datacatalog.EntryGroup]:
         r"""Return a callable for the get entry group method over gRPC.
 
-        Gets an EntryGroup.
+        Gets an entry group.
 
         Returns:
             Callable[[~.GetEntryGroupRequest],
@@ -352,11 +360,12 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.UpdateEntryGroupRequest], datacatalog.EntryGroup]:
         r"""Return a callable for the update entry group method over gRPC.
 
-        Updates an EntryGroup. The user should enable the Data Catalog
-        API in the project identified by the ``entry_group.name``
-        parameter (see [Data Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        Updates an entry group.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``entry_group.name`` parameter. For more information, see
+        `Data Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Returns:
             Callable[[~.UpdateEntryGroupRequest],
@@ -382,12 +391,12 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.DeleteEntryGroupRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete entry group method over gRPC.
 
-        Deletes an EntryGroup. Only entry groups that do not contain
-        entries can be deleted. Users should enable the Data Catalog API
-        in the project identified by the ``name`` parameter (see [Data
-        Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        Deletes an entry group.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``name`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Returns:
             Callable[[~.DeleteEntryGroupRequest],
@@ -441,16 +450,19 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.CreateEntryRequest], datacatalog.Entry]:
         r"""Return a callable for the create entry method over gRPC.
 
-        Creates an entry. Only entries of types 'FILESET', 'CLUSTER',
-        'DATA_STREAM' or with a user-specified type can be created.
+        Creates an entry.
 
-        Users should enable the Data Catalog API in the project
-        identified by the ``parent`` parameter (see [Data Catalog
-        Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        You can create entries only with 'FILESET', 'CLUSTER',
+        'DATA_STREAM', or custom types. Data Catalog automatically
+        creates entries with other types during metadata ingestion from
+        integrated systems.
 
-        A maximum of 100,000 entries may be created per entry group.
+        You must enable the Data Catalog API in the project identified
+        by the ``parent`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
+
+        An entry group can have a maximum of 100,000 entries.
 
         Returns:
             Callable[[~.CreateEntryRequest],
@@ -476,11 +488,12 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.UpdateEntryRequest], datacatalog.Entry]:
         r"""Return a callable for the update entry method over gRPC.
 
-        Updates an existing entry. Users should enable the Data Catalog
-        API in the project identified by the ``entry.name`` parameter
-        (see [Data Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        Updates an existing entry.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``entry.name`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Returns:
             Callable[[~.UpdateEntryRequest],
@@ -506,13 +519,16 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.DeleteEntryRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete entry method over gRPC.
 
-        Deletes an existing entry. Only entries created through
+        Deletes an existing entry.
+
+        You can delete only the entries created by the
         [CreateEntry][google.cloud.datacatalog.v1.DataCatalog.CreateEntry]
-        method can be deleted. Users should enable the Data Catalog API
-        in the project identified by the ``name`` parameter (see [Data
-        Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        method.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``name`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Returns:
             Callable[[~.DeleteEntryRequest],
@@ -562,10 +578,9 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.LookupEntryRequest], datacatalog.Entry]:
         r"""Return a callable for the lookup entry method over gRPC.
 
-        Get an entry by target resource name. This method
-        allows clients to use the resource name from the source
-        Google Cloud Platform service to get the Data Catalog
-        Entry.
+        Gets an entry by its target resource name.
+        The resource name comes from the source Google Cloud
+        Platform service.
 
         Returns:
             Callable[[~.LookupEntryRequest],
@@ -617,11 +632,12 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.CreateTagTemplateRequest], tags.TagTemplate]:
         r"""Return a callable for the create tag template method over gRPC.
 
-        Creates a tag template. The user should enable the Data Catalog
-        API in the project identified by the ``parent`` parameter (see
-        `Data Catalog Resource
-        Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
-        for more information).
+        Creates a tag template.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``parent`` parameter. For more information, see [Data
+        Catalog resource project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 
         Returns:
             Callable[[~.CreateTagTemplateRequest],
@@ -673,15 +689,16 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.UpdateTagTemplateRequest], tags.TagTemplate]:
         r"""Return a callable for the update tag template method over gRPC.
 
-        Updates a tag template. This method cannot be used to update the
-        fields of a template. The tag template fields are represented as
-        separate resources and should be updated using their own
-        create/update/delete methods. Users should enable the Data
-        Catalog API in the project identified by the
-        ``tag_template.name`` parameter (see [Data Catalog Resource
-        Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        Updates a tag template.
+
+        You can't update template fields with this method. These fields
+        are separate resources with their own create, update, and delete
+        methods.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``tag_template.name`` parameter. For more information,
+        see `Data Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Returns:
             Callable[[~.UpdateTagTemplateRequest],
@@ -707,11 +724,12 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.DeleteTagTemplateRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete tag template method over gRPC.
 
-        Deletes a tag template and all tags using the template. Users
-        should enable the Data Catalog API in the project identified by
-        the ``name`` parameter (see [Data Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        Deletes a tag template and all tags that use it.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``name`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Returns:
             Callable[[~.DeleteTagTemplateRequest],
@@ -737,11 +755,12 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.CreateTagTemplateFieldRequest], tags.TagTemplateField]:
         r"""Return a callable for the create tag template field method over gRPC.
 
-        Creates a field in a tag template. The user should enable the
-        Data Catalog API in the project identified by the ``parent``
-        parameter (see `Data Catalog Resource
-        Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
-        for more information).
+        Creates a field in a tag template.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``parent`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Returns:
             Callable[[~.CreateTagTemplateFieldRequest],
@@ -767,12 +786,14 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.UpdateTagTemplateFieldRequest], tags.TagTemplateField]:
         r"""Return a callable for the update tag template field method over gRPC.
 
-        Updates a field in a tag template. This method cannot be used to
-        update the field type. Users should enable the Data Catalog API
-        in the project identified by the ``name`` parameter (see [Data
-        Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        Updates a field in a tag template.
+
+        You can't update the field type with this method.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``name`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Returns:
             Callable[[~.UpdateTagTemplateFieldRequest],
@@ -798,11 +819,12 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.RenameTagTemplateFieldRequest], tags.TagTemplateField]:
         r"""Return a callable for the rename tag template field method over gRPC.
 
-        Renames a field in a tag template. The user should enable the
-        Data Catalog API in the project identified by the ``name``
-        parameter (see `Data Catalog Resource
-        Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
-        for more information).
+        Renames a field in a tag template.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``name`` parameter. For more information, see [Data
+        Catalog resource project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 
         Returns:
             Callable[[~.RenameTagTemplateFieldRequest],
@@ -831,8 +853,8 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         r"""Return a callable for the rename tag template field enum
         value method over gRPC.
 
-        Renames an enum value in a tag template. The enum
-        values have to be unique within one enum field.
+        Renames an enum value in a tag template.
+        Within a single enum field, enum values must be unique.
 
         Returns:
             Callable[[~.RenameTagTemplateFieldEnumValueRequest],
@@ -860,12 +882,13 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.DeleteTagTemplateFieldRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete tag template field method over gRPC.
 
-        Deletes a field in a tag template and all uses of that field.
-        Users should enable the Data Catalog API in the project
-        identified by the ``name`` parameter (see [Data Catalog Resource
-        Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        Deletes a field in a tag template and all uses of this field
+        from the tags based on this template.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``name`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Returns:
             Callable[[~.DeleteTagTemplateFieldRequest],
@@ -889,12 +912,21 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     def create_tag(self) -> Callable[[datacatalog.CreateTagRequest], tags.Tag]:
         r"""Return a callable for the create tag method over gRPC.
 
-        Creates a tag on an [Entry][google.cloud.datacatalog.v1.Entry].
+        Creates a tag and assigns it to:
+
+        -  An [Entry][google.cloud.datacatalog.v1.Entry] if the method
+           name is
+           ``projects.locations.entryGroups.entries.tags.create``.
+        -  Or [EntryGroup][google.cloud.datacatalog.v1.EntryGroup]if the
+           method name is
+           ``projects.locations.entryGroups.tags.create``.
+
         Note: The project identified by the ``parent`` parameter for the
-        `tag <https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.entryGroups.entries.tags/create#path-parameters>`__
-        and the `tag
-        template <https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.tagTemplates/create#path-parameters>`__
-        used to create the tag must be from the same organization.
+        [tag]
+        (https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.entryGroups.entries.tags/create#path-parameters)
+        and the [tag template]
+        (https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.tagTemplates/create#path-parameters)
+        used to create the tag must be in the same organization.
 
         Returns:
             Callable[[~.CreateTagRequest],
@@ -968,7 +1000,8 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.ListTagsRequest], datacatalog.ListTagsResponse]:
         r"""Return a callable for the list tags method over gRPC.
 
-        Lists the tags on an [Entry][google.cloud.datacatalog.v1.Entry].
+        Lists tags assigned to an
+        [Entry][google.cloud.datacatalog.v1.Entry].
 
         Returns:
             Callable[[~.ListTagsRequest],
@@ -994,21 +1027,24 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
-        Sets the access control policy for a resource. Replaces any
-        existing policy. Supported resources are:
+        Sets an access control policy for a resource. Replaces any
+        existing policy.
 
-        -  Tag templates.
-        -  Entries.
-        -  Entry groups. Note, this method cannot be used to manage
-           policies for BigQuery, Pub/Sub and any external Google Cloud
-           Platform resources synced to Data Catalog.
+        Supported resources are:
 
-        Callers must have following Google IAM permission
+        -  Tag templates
+        -  Entry groups
+
+        Note: This method sets policies only within Data Catalog and
+        can't be used to manage policies in BigQuery, Pub/Sub, Dataproc
+        Metastore, and any external Google Cloud Platform resources
+        synced with the Data Catalog.
+
+        To call this method, you must have the following Google IAM
+        permissions:
 
         -  ``datacatalog.tagTemplates.setIamPolicy`` to set policies on
            tag templates.
-        -  ``datacatalog.entries.setIamPolicy`` to set policies on
-           entries.
         -  ``datacatalog.entryGroups.setIamPolicy`` to set policies on
            entry groups.
 
@@ -1036,25 +1072,28 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
-        Gets the access control policy for a resource. A ``NOT_FOUND``
-        error is returned if the resource does not exist. An empty
-        policy is returned if the resource exists but does not have a
-        policy set on it.
+        Gets the access control policy for a resource.
+
+        May return:
+
+        -  A\ ``NOT_FOUND`` error if the resource doesn't exist or you
+           don't have the permission to view it.
+        -  An empty policy if the resource exists but doesn't have a set
+           policy.
 
         Supported resources are:
 
-        -  Tag templates.
-        -  Entries.
-        -  Entry groups. Note, this method cannot be used to manage
-           policies for BigQuery, Pub/Sub and any external Google Cloud
-           Platform resources synced to Data Catalog.
+        -  Tag templates
+        -  Entry groups
 
-        Callers must have following Google IAM permission
+        Note: This method doesn't get policies from Google Cloud
+        Platform resources ingested into Data Catalog.
+
+        To call this method, you must have the following Google IAM
+        permissions:
 
         -  ``datacatalog.tagTemplates.getIamPolicy`` to get policies on
            tag templates.
-        -  ``datacatalog.entries.getIamPolicy`` to get policies on
-           entries.
         -  ``datacatalog.entryGroups.getIamPolicy`` to get policies on
            entry groups.
 
@@ -1085,20 +1124,20 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
-        Returns the caller's permissions on a resource. If the resource
-        does not exist, an empty set of permissions is returned (We
-        don't return a ``NOT_FOUND`` error).
-
+        Gets your permissions on a resource.
+        Returns an empty set of permissions if the resource
+        doesn't exist.
         Supported resources are:
 
-        -  Tag templates.
-        -  Entries.
-        -  Entry groups. Note, this method cannot be used to manage
-           policies for BigQuery, Pub/Sub and any external Google Cloud
-           Platform resources synced to Data Catalog.
+        - Tag templates
+        - Entry groups
 
-        A caller is not required to have Google IAM permission to make
-        this request.
+        Note: This method gets policies only within Data Catalog
+        and can't be used to get policies from BigQuery,
+        Pub/Sub, Dataproc Metastore, and any external Google
+        Cloud Platform resources ingested into Data Catalog.
+        No Google IAM permissions are required to call this
+        method.
 
         Returns:
             Callable[[~.TestIamPermissionsRequest],

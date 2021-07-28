@@ -457,6 +457,11 @@
               "methods": [
                 "import_taxonomies"
               ]
+            },
+            "ReplaceTaxonomy": {
+              "methods": [
+                "replace_taxonomy"
+              ]
             }
           }
         },
@@ -471,6 +476,11 @@
             "ImportTaxonomies": {
               "methods": [
                 "import_taxonomies"
+              ]
+            },
+            "ReplaceTaxonomy": {
+              "methods": [
+                "replace_taxonomy"
               ]
             }
           }

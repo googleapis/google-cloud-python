@@ -32,6 +32,7 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.datacatalog_v1.types import policytagmanager
 from google.cloud.datacatalog_v1.types import policytagmanagerserialization
+from google.cloud.datacatalog_v1.types import timestamps
 from .transports.base import PolicyTagManagerSerializationTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import PolicyTagManagerSerializationGrpcTransport
 from .transports.grpc_asyncio import PolicyTagManagerSerializationGrpcAsyncIOTransport
@@ -77,9 +78,10 @@ class PolicyTagManagerSerializationClientMeta(type):
 class PolicyTagManagerSerializationClient(
     metaclass=PolicyTagManagerSerializationClientMeta
 ):
-    """Policy Tag Manager serialization API service allows clients
-    to manipulate their policy tags and taxonomies in serialized
-    format, where taxonomy is a hierarchical group of policy tags.
+    """Policy Tag Manager Serialization API service allows you to
+    manipulate your policy tags and taxonomies in a serialized
+    format.
+    Taxonomy is a hierarchical group of policy tags.
     """
 
     @staticmethod
@@ -359,6 +361,80 @@ class PolicyTagManagerSerializationClient(
                 ),
             )
 
+    def replace_taxonomy(
+        self,
+        request: policytagmanagerserialization.ReplaceTaxonomyRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> policytagmanager.Taxonomy:
+        r"""Replaces (updates) a taxonomy and all its policy tags.
+
+        The taxonomy and its entire hierarchy of policy tags must be
+        represented literally by ``SerializedTaxonomy`` and the nested
+        ``SerializedPolicyTag`` messages.
+
+        This operation automatically does the following:
+
+        -  Deletes the existing policy tags that are missing from the
+           ``SerializedPolicyTag``.
+        -  Creates policy tags that don't have resource names. They are
+           considered new.
+        -  Updates policy tags with valid resources names accordingly.
+
+        Args:
+            request (google.cloud.datacatalog_v1.types.ReplaceTaxonomyRequest):
+                The request object. Request message for
+                [ReplaceTaxonomy][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ReplaceTaxonomy].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datacatalog_v1.types.Taxonomy:
+                A taxonomy is a collection of hierarchical policy tags that classify data
+                   along a common axis.
+
+                   For example, a "data sensitivity" taxonomy might
+                   contain the following policy tags:
+
+                   :literal:`\` + PII   + Account number   + Age   + SSN   + Zipcode + Financials   + Revenue`\ \`
+
+                   A "data origin" taxonomy might contain the following
+                   policy tags:
+
+                   :literal:`\` + User data + Employee data + Partner data + Public data`\ \`
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a policytagmanagerserialization.ReplaceTaxonomyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, policytagmanagerserialization.ReplaceTaxonomyRequest
+        ):
+            request = policytagmanagerserialization.ReplaceTaxonomyRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.replace_taxonomy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
     def import_taxonomies(
         self,
         request: policytagmanagerserialization.ImportTaxonomiesRequest = None,
@@ -368,16 +444,13 @@ class PolicyTagManagerSerializationClient(
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanagerserialization.ImportTaxonomiesResponse:
         r"""Creates new taxonomies (including their policy tags)
-        by importing from inlined source or cross-regional
-        source. New taxonomies will be created in a given parent
-        project.
+        in a given project by importing from inlined or cross-
+        regional sources.
+        For a cross-regional source, new taxonomies are created
+        by copying from a source in another region.
 
-        If using the cross-regional source, a new taxonomy is
-        created by copying from a source in another region.
-
-        If using the inlined source, this method provides a way
-        to bulk create taxonomies and policy tags using nested
-        proto structure.
+        For an inlined source, taxonomies and policy tags are
+        created in bulk using nested protocol buffer structures.
 
         Args:
             request (google.cloud.datacatalog_v1.types.ImportTaxonomiesRequest):
@@ -429,13 +502,13 @@ class PolicyTagManagerSerializationClient(
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanagerserialization.ExportTaxonomiesResponse:
-        r"""Exports taxonomies as the requested type and returns
-        the taxonomies including their policy tags. The
-        requested taxonomies must belong to one project.
+        r"""Exports taxonomies in the requested type and returns them,
+        including their policy tags. The requested taxonomies must
+        belong to the same project.
 
-        SerializedTaxonomy protos with nested policy tags that
-        are generated by this method can be used as input for
-        future ImportTaxonomies calls.
+        This method generates ``SerializedTaxonomy`` protocol buffers
+        with nested policy tags that can be used as input for
+        ``ImportTaxonomies`` calls.
 
         Args:
             request (google.cloud.datacatalog_v1.types.ExportTaxonomiesRequest):

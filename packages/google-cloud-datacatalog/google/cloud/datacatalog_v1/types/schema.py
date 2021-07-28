@@ -22,7 +22,9 @@ __protobuf__ = proto.module(
 
 
 class Schema(proto.Message):
-    r"""Represents a schema (e.g. BigQuery, GoogleSQL, Avro schema).
+    r"""Represents a schema, for example, a BigQuery, GoogleSQL, or
+    Avro schema.
+
     Attributes:
         columns (Sequence[google.cloud.datacatalog_v1.types.ColumnSchema]):
             The unified GoogleSQL-like schema of columns.
@@ -35,8 +37,8 @@ class Schema(proto.Message):
 
 
 class ColumnSchema(proto.Message):
-    r"""Representation of a column within a schema. Columns could be
-    nested inside other columns.
+    r"""A column within a schema. Columns can be nested inside
+    other columns.
 
     Attributes:
         column (str):
@@ -53,8 +55,8 @@ class ColumnSchema(proto.Message):
             The description must be a UTF-8 string with the
             maximum size of 2000 bytes.
         mode (str):
-            Optional. A column's mode indicates if values in this column
-            are required, nullable, or repeated.
+            Optional. A column's mode indicates whether values in this
+            column are required, nullable, or repeated.
 
             Only ``NULLABLE``, ``REQUIRED``, and ``REPEATED`` values are
             supported. Default mode is ``NULLABLE``.

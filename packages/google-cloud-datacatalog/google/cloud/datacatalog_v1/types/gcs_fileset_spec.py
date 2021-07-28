@@ -28,17 +28,19 @@ class GcsFilesetSpec(proto.Message):
     Attributes:
         file_patterns (Sequence[str]):
             Required. Patterns to identify a set of files in Google
-            Cloud Storage. See `Cloud Storage
-            documentation <https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames>`__
-            for more information. Note that bucket wildcards are
-            currently not supported.
+            Cloud Storage.
 
-            Examples of valid file_patterns:
+            For more information, see [Wildcard Names]
+            (https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames).
 
-            -  ``gs://bucket_name/dir/*``: matches all files within
-               ``bucket_name/dir`` directory.
+            Note: Currently, bucket wildcards are not supported.
+
+            Examples of valid ``file_patterns``:
+
+            -  ``gs://bucket_name/dir/*``: matches all files in
+               ``bucket_name/dir`` directory
             -  ``gs://bucket_name/dir/**``: matches all files in
-               ``bucket_name/dir`` spanning all subdirectories.
+               ``bucket_name/dir`` and all subdirectories
             -  ``gs://bucket_name/file*``: matches files prefixed by
                ``file`` in ``bucket_name``
             -  ``gs://bucket_name/??.txt``: matches files with two
@@ -50,15 +52,15 @@ class GcsFilesetSpec(proto.Message):
                contain ``a``, ``b``, ... or ``m`` followed by ``.txt``
                in ``bucket_name``
             -  ``gs://bucket_name/a/*/b``: matches all files in
-               ``bucket_name`` that match ``a/*/b`` pattern, such as
+               ``bucket_name`` that match the ``a/*/b`` pattern, such as
                ``a/c/b``, ``a/d/b``
             -  ``gs://another_bucket/a.txt``: matches
                ``gs://another_bucket/a.txt``
 
-            You can combine wildcards to provide more powerful matches,
+            You can combine wildcards to match complex sets of files,
             for example:
 
-            -  ``gs://bucket_name/[a-m]??.j*g``
+            ``gs://bucket_name/[a-m]??.j*g``
         sample_gcs_file_specs (Sequence[google.cloud.datacatalog_v1.types.GcsFileSpec]):
             Output only. Sample files contained in this
             fileset, not all files contained in this fileset
@@ -72,16 +74,16 @@ class GcsFilesetSpec(proto.Message):
 
 
 class GcsFileSpec(proto.Message):
-    r"""Specifications of a single file in Cloud Storage.
+    r"""Specification of a single file in Cloud Storage.
     Attributes:
         file_path (str):
-            Required. The full file path. Example:
+            Required. Full file path. Example:
             ``gs://bucket_name/a/b.txt``.
         gcs_timestamps (google.cloud.datacatalog_v1.types.SystemTimestamps):
-            Output only. Timestamps about the Cloud
-            Storage file.
+            Output only. Creation, modification, and
+            expiration timestamps of a Cloud Storage file.
         size_bytes (int):
-            Output only. The size of the file, in bytes.
+            Output only. File size in bytes.
     """
 
     file_path = proto.Field(proto.STRING, number=1,)

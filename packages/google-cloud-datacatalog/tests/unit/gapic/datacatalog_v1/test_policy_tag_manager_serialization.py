@@ -45,6 +45,7 @@ from google.cloud.datacatalog_v1.services.policy_tag_manager_serialization.trans
 )
 from google.cloud.datacatalog_v1.types import policytagmanager
 from google.cloud.datacatalog_v1.types import policytagmanagerserialization
+from google.cloud.datacatalog_v1.types import timestamps
 from google.oauth2 import service_account
 import google.auth
 
@@ -537,6 +538,172 @@ def test_policy_tag_manager_serialization_client_client_options_from_dict():
         )
 
 
+def test_replace_taxonomy(
+    transport: str = "grpc",
+    request_type=policytagmanagerserialization.ReplaceTaxonomyRequest,
+):
+    client = PolicyTagManagerSerializationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.replace_taxonomy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policytagmanager.Taxonomy(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            policy_tag_count=1715,
+            activated_policy_types=[
+                policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
+            ],
+        )
+        response = client.replace_taxonomy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanagerserialization.ReplaceTaxonomyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policytagmanager.Taxonomy)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.policy_tag_count == 1715
+    assert response.activated_policy_types == [
+        policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
+    ]
+
+
+def test_replace_taxonomy_from_dict():
+    test_replace_taxonomy(request_type=dict)
+
+
+def test_replace_taxonomy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerSerializationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.replace_taxonomy), "__call__") as call:
+        client.replace_taxonomy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanagerserialization.ReplaceTaxonomyRequest()
+
+
+@pytest.mark.asyncio
+async def test_replace_taxonomy_async(
+    transport: str = "grpc_asyncio",
+    request_type=policytagmanagerserialization.ReplaceTaxonomyRequest,
+):
+    client = PolicyTagManagerSerializationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.replace_taxonomy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policytagmanager.Taxonomy(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                policy_tag_count=1715,
+                activated_policy_types=[
+                    policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
+                ],
+            )
+        )
+        response = await client.replace_taxonomy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == policytagmanagerserialization.ReplaceTaxonomyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policytagmanager.Taxonomy)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.policy_tag_count == 1715
+    assert response.activated_policy_types == [
+        policytagmanager.Taxonomy.PolicyType.FINE_GRAINED_ACCESS_CONTROL
+    ]
+
+
+@pytest.mark.asyncio
+async def test_replace_taxonomy_async_from_dict():
+    await test_replace_taxonomy_async(request_type=dict)
+
+
+def test_replace_taxonomy_field_headers():
+    client = PolicyTagManagerSerializationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = policytagmanagerserialization.ReplaceTaxonomyRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.replace_taxonomy), "__call__") as call:
+        call.return_value = policytagmanager.Taxonomy()
+        client.replace_taxonomy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_replace_taxonomy_field_headers_async():
+    client = PolicyTagManagerSerializationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = policytagmanagerserialization.ReplaceTaxonomyRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.replace_taxonomy), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policytagmanager.Taxonomy()
+        )
+        await client.replace_taxonomy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
 def test_import_taxonomies(
     transport: str = "grpc",
     request_type=policytagmanagerserialization.ImportTaxonomiesRequest,
@@ -930,6 +1097,7 @@ def test_policy_tag_manager_serialization_base_transport():
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
+        "replace_taxonomy",
         "import_taxonomies",
         "export_taxonomies",
     )

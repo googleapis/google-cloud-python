@@ -26,6 +26,7 @@ from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.datacatalog_v1.types import policytagmanager
 from google.cloud.datacatalog_v1.types import policytagmanagerserialization
 
 try:
@@ -154,6 +155,9 @@ class PolicyTagManagerSerializationTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.replace_taxonomy: gapic_v1.method.wrap_method(
+                self.replace_taxonomy, default_timeout=None, client_info=client_info,
+            ),
             self.import_taxonomies: gapic_v1.method.wrap_method(
                 self.import_taxonomies, default_timeout=None, client_info=client_info,
             ),
@@ -161,6 +165,15 @@ class PolicyTagManagerSerializationTransport(abc.ABC):
                 self.export_taxonomies, default_timeout=None, client_info=client_info,
             ),
         }
+
+    @property
+    def replace_taxonomy(
+        self,
+    ) -> Callable[
+        [policytagmanagerserialization.ReplaceTaxonomyRequest],
+        Union[policytagmanager.Taxonomy, Awaitable[policytagmanager.Taxonomy]],
+    ]:
+        raise NotImplementedError()
 
     @property
     def import_taxonomies(

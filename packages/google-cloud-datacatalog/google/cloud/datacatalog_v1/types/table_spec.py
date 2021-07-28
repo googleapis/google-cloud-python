@@ -42,11 +42,11 @@ class BigQueryTableSpec(proto.Message):
         table_source_type (google.cloud.datacatalog_v1.types.TableSourceType):
             Output only. The table source type.
         view_spec (google.cloud.datacatalog_v1.types.ViewSpec):
-            Table view specification. This field should only be
-            populated if ``table_source_type`` is ``BIGQUERY_VIEW``.
+            Table view specification. Populated only if the
+            ``table_source_type`` is ``BIGQUERY_VIEW``.
         table_spec (google.cloud.datacatalog_v1.types.TableSpec):
-            Spec of a BigQuery table. This field should only be
-            populated if ``table_source_type`` is ``BIGQUERY_TABLE``.
+            Specification of a BigQuery table. Populated only if the
+            ``table_source_type`` is ``BIGQUERY_TABLE``.
     """
 
     table_source_type = proto.Field(proto.ENUM, number=1, enum="TableSourceType",)
@@ -70,14 +70,16 @@ class ViewSpec(proto.Message):
 
 
 class TableSpec(proto.Message):
-    r"""Normal BigQuery table spec.
+    r"""Normal BigQuery table specification.
     Attributes:
         grouped_entry (str):
-            Output only. If the table is a dated shard, i.e., with name
-            pattern ``[prefix]YYYYMMDD``, ``grouped_entry`` is the Data
-            Catalog resource name of the date sharded grouped entry, for
-            example,
-            ``projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}``.
+            Output only. If the table is date-sharded, that is, it
+            matches the ``[prefix]YYYYMMDD`` name pattern, this field is
+            the Data Catalog resource name of the date-sharded grouped
+            entry. For example:
+
+            ``projects/{PROJECT_ID}/locations/{LOCATION}/entrygroups/{ENTRY_GROUP_ID}/entries/{ENTRY_ID}``.
+
             Otherwise, ``grouped_entry`` is empty.
     """
 
@@ -85,20 +87,24 @@ class TableSpec(proto.Message):
 
 
 class BigQueryDateShardedSpec(proto.Message):
-    r"""Spec for a group of BigQuery tables with name pattern
-    ``[prefix]YYYYMMDD``. Context:
-    https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding
+    r"""Specification for a group of BigQuery tables with the
+    ``[prefix]YYYYMMDD`` name pattern.
+
+    For more information, see [Introduction to partitioned tables]
+    (https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding).
 
     Attributes:
         dataset (str):
             Output only. The Data Catalog resource name of the dataset
-            entry the current table belongs to, for example,
-            ``projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}``.
+            entry the current table belongs to. For example:
+
+            ``projects/{PROJECT_ID}/locations/{LOCATION}/entrygroups/{ENTRY_GROUP_ID}/entries/{ENTRY_ID}``.
         table_prefix (str):
-            Output only. The table name prefix of the shards. The name
-            of any given shard is ``[table_prefix]YYYYMMDD``, for
-            example, for shard ``MyTable20180101``, the ``table_prefix``
-            is ``MyTable``.
+            Output only. The table name prefix of the shards.
+
+            The name of any given shard is ``[table_prefix]YYYYMMDD``.
+            For example, for the ``MyTable20180101`` shard, the
+            ``table_prefix`` is ``MyTable``.
         shard_count (int):
             Output only. Total number of shards.
     """

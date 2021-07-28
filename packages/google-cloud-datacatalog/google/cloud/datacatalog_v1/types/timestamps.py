@@ -24,20 +24,24 @@ __protobuf__ = proto.module(
 
 
 class SystemTimestamps(proto.Message):
-    r"""Timestamps about this resource according to a particular
+    r"""Timestamps associated with this resource in a particular
     system.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            The creation time of the resource within the
+            Creation timestamp of the resource within the
             given system.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            The last-modified time of the resource within
-            the given system.
+            Timestamp of the last modification of the
+            resource or its metadata within a given system.
+            Note: Depending on the source system, not every
+            modification updates this timestamp.
+            For example, BigQuery timestamps every metadata
+            modification but not data or permission changes.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The expiration time of the
-            resource within the given system. Currently only
-            apllicable to BigQuery resources.
+            Output only. Expiration timestamp of the
+            resource within the given system.
+            Currently only applicable to BigQuery resources.
     """
 
     create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)

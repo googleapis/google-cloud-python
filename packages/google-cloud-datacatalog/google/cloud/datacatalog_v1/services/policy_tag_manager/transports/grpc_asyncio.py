@@ -36,7 +36,7 @@ from .grpc import PolicyTagManagerGrpcTransport
 class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
     """gRPC AsyncIO backend transport for PolicyTagManager.
 
-    Policy Tag Manager API service allows clients to manage their
+    Policy Tag Manager API service allows you to manage your
     policy tags and taxonomies.
 
     Policy tags are used to tag BigQuery columns and apply
@@ -244,9 +244,9 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
     ]:
         r"""Return a callable for the create taxonomy method over gRPC.
 
-        Creates a taxonomy in a specified project. The
-        taxonomy is initially empty, i.e., does not contain
-        policy tags.
+        Creates a taxonomy in a specified project.
+        The taxonomy is initially empty, that is, it doesn't
+        contain policy tags.
 
         Returns:
             Callable[[~.CreateTaxonomyRequest],
@@ -272,9 +272,9 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
     ) -> Callable[[policytagmanager.DeleteTaxonomyRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete taxonomy method over gRPC.
 
-        Deletes a taxonomy. This method will also delete all
-        policy tags in this taxonomy, their associated policies,
-        and the policy tags references from BigQuery columns.
+        Deletes a taxonomy, including all policy tags in this
+        taxonomy, their associated policies, and the policy tags
+        references from BigQuery columns.
 
         Returns:
             Callable[[~.DeleteTaxonomyRequest],
@@ -302,9 +302,8 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
     ]:
         r"""Return a callable for the update taxonomy method over gRPC.
 
-        Updates a taxonomy. This method can update the
-        taxonomy's display name, description, and activated
-        policy types.
+        Updates a taxonomy, including its display name,
+        description, and activated policy types.
 
         Returns:
             Callable[[~.UpdateTaxonomyRequest],
@@ -334,7 +333,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
         r"""Return a callable for the list taxonomies method over gRPC.
 
         Lists all taxonomies in a project in a particular
-        location that the caller has permission to view.
+        location that you have a permission to view.
 
         Returns:
             Callable[[~.ListTaxonomiesRequest],
@@ -418,13 +417,12 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
     ]:
         r"""Return a callable for the delete policy tag method over gRPC.
 
-        Deletes a policy tag. This method also deletes:
+        Deletes a policy tag together with the following:
 
-        -  all of its descendant policy tags, if any
-        -  the policies associated with the policy tag and its
-           descendants
-        -  references from BigQuery table schema of the policy tag and
-           its descendants.
+        -  All of its descendant policy tags, if any
+        -  Policies associated with the policy tag and its descendants
+        -  References from BigQuery table schema of the policy tag and
+           its descendants
 
         Returns:
             Callable[[~.DeletePolicyTagRequest],
@@ -452,9 +450,8 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
     ]:
         r"""Return a callable for the update policy tag method over gRPC.
 
-        Updates a policy tag. This method can update the
-        policy tag's display name, description, and parent
-        policy tag.
+        Updates a policy tag, including its display
+        name, description, and parent policy tag.
 
         Returns:
             Callable[[~.UpdatePolicyTagRequest],
@@ -592,8 +589,8 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
-        Returns the permissions that a caller has on a
-        specified policy tag or taxonomy.
+        Returns your permissions on a specified policy tag or
+        taxonomy.
 
         Returns:
             Callable[[~.TestIamPermissionsRequest],

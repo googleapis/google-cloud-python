@@ -69,6 +69,7 @@ class datacatalogCallTransformer(cst.CSTTransformer):
           'lookup_entry': ('linked_resource', 'sql_resource', 'fully_qualified_name', ),
           'rename_tag_template_field': ('name', 'new_tag_template_field_id', ),
           'rename_tag_template_field_enum_value': ('name', 'new_enum_value_display_name', ),
+          'replace_taxonomy': ('name', 'serialized_taxonomy', ),
           'search_catalog': ('scope', 'query', 'page_size', 'page_token', 'order_by', ),
           'set_iam_policy': ('resource', 'policy', ),
           'test_iam_permissions': ('resource', 'permissions', ),

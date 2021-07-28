@@ -22,18 +22,19 @@ __protobuf__ = proto.module(
 
 
 class DataSource(proto.Message):
-    r"""Describes the physical location of an entry.
+    r"""Physical location of an entry.
     Attributes:
         service (google.cloud.datacatalog_v1.types.DataSource.Service):
-            Service in which the data is physically
-            stored.
+            Service that physically stores the data.
         resource (str):
-            Full name of the resource as defined by the service, e.g.
-            //bigquery.googleapis.com/projects/{project_id}/locations/{location}/datasets/{dataset_id}/tables/{table_id}
+            Full name of a resource as defined by the service. For
+            example:
+
+            ``//bigquery.googleapis.com/projects/{PROJECT_ID}/locations/{LOCATION}/datasets/{DATASET_ID}/tables/{TABLE_ID}``
     """
 
     class Service(proto.Enum):
-        r"""Service name where the data is stored."""
+        r"""Name of a service that stores the data."""
         SERVICE_UNSPECIFIED = 0
         CLOUD_STORAGE = 1
         BIGQUERY = 2

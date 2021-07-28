@@ -25,8 +25,9 @@ __protobuf__ = proto.module(
 
 
 class Tag(proto.Message):
-    r"""Tags are used to attach custom metadata to Data Catalog resources.
-    Tags conform to the specifications within their tag template.
+    r"""Tags contain custom metadata and are attached to Data Catalog
+    resources. Tags conform with the specification of their tag
+    template.
 
     See `Data Catalog
     IAM <https://cloud.google.com/data-catalog/docs/concepts/iam>`__ for
@@ -34,19 +35,15 @@ class Tag(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the tag in URL format. Example:
-
-            ``projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}``
-
-            where ``tag_id`` is a system-generated identifier.
-
-            Note: The tag itself might not be stored in the location
-            specified in its name.
+            The resource name of the tag in URL format
+            where tag ID is a system-generated identifier.
+            Note: The tag itself might not be stored in the
+            location specified in its name.
         template (str):
-            Required. The resource name of the tag template that this
-            tag uses. Example:
+            Required. The resource name of the tag template this tag
+            uses. Example:
 
-            ``projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}``
+            ``projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE_ID}``
 
             This field cannot be modified after creation.
         template_display_name (str):
@@ -54,17 +51,18 @@ class Tag(proto.Message):
             template.
         column (str):
             Resources like entry can have schemas associated with them.
-            This scope allows users to attach tags to an individual
-            column based on that schema.
+            This scope allows you to attach tags to an individual column
+            based on that schema.
 
             To attach a tag to a nested column, separate column names
             with a dot (``.``). Example: ``column.nested_column``.
         fields (Sequence[google.cloud.datacatalog_v1.types.Tag.FieldsEntry]):
-            Required. This maps the ID of a tag field to
-            the value of and additional information about
-            that field. Valid field IDs are defined by the
-            tag's template. A tag must have at least 1 field
-            and at most 500 fields.
+            Required. Maps the ID of a tag field to its
+            value and additional information about that
+            field.
+            Tag template defines valid field IDs. A tag
+            must have at least 1 field and at most 500
+            fields.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -75,41 +73,46 @@ class Tag(proto.Message):
 
 
 class TagField(proto.Message):
-    r"""Contains the value and supporting information for a field within a
+    r"""Contains the value and additional information on a field within a
     [Tag][google.cloud.datacatalog.v1.Tag].
 
     Attributes:
         display_name (str):
             Output only. The display name of this field.
         double_value (float):
-            Holds the value for a tag field with double
-            type.
+            The value of a tag field with a double type.
         string_value (str):
-            Holds the value for a tag field with string
-            type. The maximum length is 2000 UTF-8
-            characters.
+            The value of a tag field with a string type.
+            The maximum length is 2000 UTF-8 characters.
         bool_value (bool):
-            Holds the value for a tag field with boolean
-            type.
+            The value of a tag field with a boolean type.
         timestamp_value (google.protobuf.timestamp_pb2.Timestamp):
-            Holds the value for a tag field with
-            timestamp type.
+            The value of a tag field with a timestamp
+            type.
         enum_value (google.cloud.datacatalog_v1.types.TagField.EnumValue):
-            Holds the value for a tag field with enum
-            type. This value must be one of the allowed
-            values in the definition of this enum.
+            The value of a tag field with an enum type.
+            This value must be one of the allowed values
+            listed in this enum.
+        richtext_value (str):
+            The value of a tag field with a rich text
+            type.
+            The maximum length is 10 MiB as this value holds
+            HTML descriptions including encoded images. The
+            maximum length of the text without images is 100
+            KiB.
         order (int):
             Output only. The order of this field with respect to other
-            fields in this tag. It can be set in
+            fields in this tag. Can be set by
             [Tag][google.cloud.datacatalog.v1.TagTemplateField.order].
+
             For example, a higher value can indicate a more important
             field. The value can be negative. Multiple fields can have
-            the same order, and field orders within a tag do not have to
+            the same order, and field orders within a tag don't have to
             be sequential.
     """
 
     class EnumValue(proto.Message):
-        r"""Holds an enum value.
+        r"""An enum value.
         Attributes:
             display_name (str):
                 The display name of the enum value.
@@ -125,50 +128,87 @@ class TagField(proto.Message):
         proto.MESSAGE, number=5, oneof="kind", message=timestamp_pb2.Timestamp,
     )
     enum_value = proto.Field(proto.MESSAGE, number=6, oneof="kind", message=EnumValue,)
+    richtext_value = proto.Field(proto.STRING, number=8, oneof="kind",)
     order = proto.Field(proto.INT32, number=7,)
 
 
 class TagTemplate(proto.Message):
-    r"""A tag template defines a tag, which can have one or more typed
-    fields. The template is used to create and attach the tag to GCP
-    resources. `Tag template
-    roles <https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles>`__
-    provide permissions to create, edit, and use the template. See, for
-    example, the `TagTemplate
-    User <https://cloud.google.com/data-catalog/docs/how-to/template-user>`__
-    role, which includes permission to use the tag template to tag
+    r"""A tag template defines a tag that can have one or more typed fields.
+
+    The template is used to create tags that are attached to GCP
+    resources. [Tag template roles]
+    (https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
+    provide permissions to create, edit, and use the template. For
+    example, see the [TagTemplate User]
+    (https://cloud.google.com/data-catalog/docs/how-to/template-user)
+    role that includes a permission to use the tag template to tag
     resources.
 
     Attributes:
         name (str):
-            The resource name of the tag template in URL format.
-            Example:
-
-            ``projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}``
-
-            Note: The tag template itself and its child resources might
-            not be stored in the location specified in its name.
+            The resource name of the tag template in URL
+            format.
+            Note: The tag template itself and its child
+            resources might not be stored in the location
+            specified in its name.
         display_name (str):
             Display name for this template. Defaults to an empty string.
 
             The name must contain only Unicode letters, numbers (0-9),
             underscores (_), dashes (-), spaces ( ), and can't start or
             end with spaces. The maximum length is 200 characters.
+        is_publicly_readable (bool):
+            Indicates whether this is a public tag template.
+
+            Every user has view access to a *public* tag template by
+            default. This means that:
+
+            -  Every user can use this tag template to tag an entry.
+            -  If an entry is tagged using the tag template, the tag is
+               always shown in the response to ``ListTags`` called on
+               the entry.
+            -  To get the template using the GetTagTemplate method, you
+               need view access either on the project or the
+               organization the tag template resides in but no other
+               permission is needed.
+            -  Operations on the tag template other than viewing (for
+               example, editing IAM policies) follow standard IAM
+               structures.
+
+            Tags created with a public tag template are referred to as
+            public tags.
+
+            You can search for a public tag by value with a simple
+            search query instead of using a ``tag:`` predicate.
+
+            Public tag templates may not appear in search results
+            depending on scope, see:
+            [include_public_tag_templates][google.cloud.datacatalog.v1.SearchCatalogRequest.Scope.include_public_tag_templates]
+
+            Note: If an `IAM domain
+            restriction <https://cloud.google.com/resource-manager/docs/organization-policy/restricting-domains>`__
+            is configured in the tag template's location, the public
+            access will not be enabled but the simple search for tag
+            values will still work.
         fields (Sequence[google.cloud.datacatalog_v1.types.TagTemplate.FieldsEntry]):
             Required. Map of tag template field IDs to the settings for
             the field. This map is an exhaustive list of the allowed
-            fields. This map must contain at least one field and at most
+            fields. The map must contain at least one field and at most
             500 fields.
 
-            The keys to this map are tag template field IDs. Field IDs
-            can contain letters (both uppercase and lowercase), numbers
-            (0-9) and underscores (_). Field IDs must be at least 1
-            character long and at most 64 characters long. Field IDs
-            must start with a letter or underscore.
+            The keys to this map are tag template field IDs. The IDs
+            have the following limitations:
+
+            -  Can contain uppercase and lowercase letters, numbers
+               (0-9) and underscores (_).
+            -  Must be at least 1 character and at most 64 characters
+               long.
+            -  Must start with a letter or underscore.
     """
 
     name = proto.Field(proto.STRING, number=1,)
     display_name = proto.Field(proto.STRING, number=2,)
+    is_publicly_readable = proto.Field(proto.BOOL, number=5,)
     fields = proto.MapField(
         proto.STRING, proto.MESSAGE, number=3, message="TagTemplateField",
     )
@@ -181,9 +221,9 @@ class TagTemplateField(proto.Message):
             Output only. The resource name of the tag template field in
             URL format. Example:
 
-            ``projects/{project_id}/locations/{location}/tagTemplates/{tag_template}/fields/{field}``
+            ``projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE}/fields/{FIELD}``
 
-            Note: The ``TagTemplateField`` itself might not be stored in
+            Note: The tag template field itself might not be stored in
             the location specified in its name.
 
             The name must contain only letters (a-z, A-Z), numbers
@@ -200,18 +240,20 @@ class TagTemplateField(proto.Message):
             Required. The type of value this tag field
             can contain.
         is_required (bool):
-            Whether this is a required field. Defaults to
+            If true, this field is required. Defaults to
             false.
         description (str):
             The description for this field. Defaults to
             an empty string.
         order (int):
             The order of this field with respect to other
-            fields in this tag template. For example, a
-            higher value can indicate a more important
-            field. The value can be negative. Multiple
-            fields can have the same order, and field orders
-            within a tag do not have to be sequential.
+            fields in this tag template.
+
+            For example, a higher value can indicate a more
+            important field. The value can be negative.
+            Multiple fields can have the same order and
+            field orders within a tag don't have to be
+            sequential.
     """
 
     name = proto.Field(proto.STRING, number=6,)
@@ -226,10 +268,10 @@ class FieldType(proto.Message):
     r"""
     Attributes:
         primitive_type (google.cloud.datacatalog_v1.types.FieldType.PrimitiveType):
-            Represents primitive types - string, bool
+            Primitive types, such as string, boolean,
             etc.
         enum_type (google.cloud.datacatalog_v1.types.FieldType.EnumType):
-            Represents an enum type.
+            An enum type.
     """
 
     class PrimitiveType(proto.Enum):
@@ -239,6 +281,7 @@ class FieldType(proto.Message):
         STRING = 2
         BOOL = 3
         TIMESTAMP = 4
+        RICHTEXT = 5
 
     class EnumType(proto.Message):
         r"""
@@ -252,9 +295,9 @@ class FieldType(proto.Message):
                 set.
 
                 The order of items in this set is preserved. This field can
-                be used to create, remove and reorder enum values. To rename
-                enum values, use the ``RenameTagTemplateFieldEnumValue``
-                method.
+                be used to create, remove, and reorder enum values. To
+                rename enum values, use the
+                ``RenameTagTemplateFieldEnumValue`` method.
         """
 
         class EnumValue(proto.Message):

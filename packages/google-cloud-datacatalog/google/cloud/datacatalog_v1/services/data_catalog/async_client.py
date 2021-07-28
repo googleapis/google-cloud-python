@@ -36,6 +36,7 @@ from google.cloud.datacatalog_v1.types import search
 from google.cloud.datacatalog_v1.types import table_spec
 from google.cloud.datacatalog_v1.types import tags
 from google.cloud.datacatalog_v1.types import timestamps
+from google.cloud.datacatalog_v1.types import usage
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -45,8 +46,8 @@ from .client import DataCatalogClient
 
 
 class DataCatalogAsyncClient:
-    """Data Catalog API service allows clients to discover,
-    understand, and manage their data.
+    """Data Catalog API service allows you to discover, understand,
+    and manage your data.
     """
 
     _client: DataCatalogClient
@@ -196,54 +197,53 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchCatalogAsyncPager:
-        r"""Searches Data Catalog for multiple resources like entries, tags
-        that match a query.
+        r"""Searches Data Catalog for multiple resources like entries and
+        tags that match a query.
 
-        This is a custom method
-        (https://cloud.google.com/apis/design/custom_methods) and does
-        not return the complete resource, only the resource identifier
-        and high level fields. Clients can subsequently call ``Get``
-        methods.
+        This is a [Custom Method]
+        (https://cloud.google.com/apis/design/custom_methods) that
+        doesn't return all information on a resource, only its ID and
+        high level fields. To get more information, you can subsequently
+        call specific get methods.
 
-        Note that Data Catalog search queries do not guarantee full
-        recall. Query results that match your query may not be returned,
-        even in subsequent result pages. Also note that results returned
-        (and not returned) can vary across repeated search queries.
+        Note: Data Catalog search queries don't guarantee full recall.
+        Results that match your query might not be returned, even in
+        subsequent result pages. Additionally, returned (and not
+        returned) results can vary if you repeat search queries.
 
-        See `Data Catalog Search
-        Syntax <https://cloud.google.com/data-catalog/docs/how-to/search-reference>`__
-        for more information.
+        For more information, see [Data Catalog search syntax]
+        (https://cloud.google.com/data-catalog/docs/how-to/search-reference).
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.SearchCatalogRequest`):
                 The request object. Request message for
                 [SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog].
             scope (:class:`google.cloud.datacatalog_v1.types.SearchCatalogRequest.Scope`):
-                Required. The scope of this search request. A ``scope``
-                that has empty ``include_org_ids``,
-                ``include_project_ids`` AND false
-                ``include_gcp_public_datasets`` is considered invalid.
-                Data Catalog will return an error in such a case.
+                Required. The scope of this search request.
+
+                The ``scope`` is invalid if ``include_org_ids``,
+                ``include_project_ids`` are empty AND
+                ``include_gcp_public_datasets`` is set to ``false``. In
+                this case, the request returns an error.
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             query (:class:`str`):
-                Optional. The query string in search query syntax. An
-                empty query string will result in all data assets (in
-                the specified scope) that the user has access to.
+                Optional. The query string with a minimum of 3
+                characters and specific syntax. For more information,
+                see `Data Catalog search
+                syntax </data-catalog/docs/how-to/search-reference>`__.
 
-                Query strings can be simple as "x" or more qualified as:
+                An empty query string returns all data assets (in the
+                specified scope) that you have access to.
 
-                -  name:x
-                -  column:x
-                -  description:y
+                A query string can be a simple ``xyz`` or qualified by
+                predicates:
 
-                Note: Query tokens need to have a minimum of 3
-                characters for substring matching to work correctly. See
-                `Data Catalog Search
-                Syntax <https://cloud.google.com/data-catalog/docs/how-to/search-reference>`__
-                for more information.
+                -  ``name:x``
+                -  ``column:y``
+                -  ``description:z``
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -322,41 +322,48 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.EntryGroup:
-        r"""Creates an EntryGroup.
+        r"""Creates an entry group.
 
         An entry group contains logically related entries together with
-        Cloud Identity and Access Management policies that specify the
-        users who can create, edit, and view entries within the entry
-        group.
+        `Cloud Identity and Access
+        Management </data-catalog/docs/concepts/iam>`__ policies. These
+        policies specify users who can create, edit, and view entries
+        within entry groups.
 
-        Data Catalog automatically creates an entry group for BigQuery
-        entries ("@bigquery") and Pub/Sub topics ("@pubsub"). Users
-        create their own entry group to contain Cloud Storage fileset
-        entries or custom type entries, and the IAM policies associated
-        with those entries. Entry groups, like entries, can be searched.
+        Data Catalog automatically creates entry groups with names that
+        start with the ``@`` symbol for the following resources:
+
+        -  BigQuery entries (``@bigquery``)
+        -  Pub/Sub topics (``@pubsub``)
+        -  Dataproc Metastore services
+           (``@dataproc_metastore_{SERVICE_NAME_HASH}``)
+
+        You can create your own entry groups for Cloud Storage fileset
+        entries and custom entries together with the corresponding IAM
+        policies. User-created entry groups can't contain the ``@``
+        symbol, it is reserved for automatically created groups.
+
+        Entry groups, like entries, can be searched.
 
         A maximum of 10,000 entry groups may be created per organization
         across all locations.
 
-        Users should enable the Data Catalog API in the project
-        identified by the ``parent`` parameter (see [Data Catalog
-        Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        You must enable the Data Catalog API in the project identified
+        by the ``parent`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.CreateEntryGroupRequest`):
                 The request object. Request message for
                 [CreateEntryGroup][google.cloud.datacatalog.v1.DataCatalog.CreateEntryGroup].
             parent (:class:`str`):
-                Required. The name of the project this entry group
-                belongs to. Example:
-
-                ``projects/{project_id}/locations/{location}``
-
-                Note: The entry group itself and its child resources
-                might not be stored in the location specified in its
-                name.
+                Required. The names of the project
+                and location that the new entry group
+                belongs to.  Note: The entry group
+                itself and its child resources might not
+                be stored in the location specified in
+                its name.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -374,7 +381,7 @@ class DataCatalogAsyncClient:
                 should not be set.
             entry_group (:class:`google.cloud.datacatalog_v1.types.EntryGroup`):
                 The entry group to create. Defaults
-                to an empty entry group.
+                to empty.
 
                 This corresponds to the ``entry_group`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -387,7 +394,8 @@ class DataCatalogAsyncClient:
 
         Returns:
             google.cloud.datacatalog_v1.types.EntryGroup:
-                EntryGroup Metadata.
+                Entry group metadata.
+
                    An EntryGroup resource represents a logical grouping
                    of zero or more Data Catalog
                    [Entry][google.cloud.datacatalog.v1.Entry] resources.
@@ -444,22 +452,22 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.EntryGroup:
-        r"""Gets an EntryGroup.
+        r"""Gets an entry group.
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.GetEntryGroupRequest`):
                 The request object. Request message for
                 [GetEntryGroup][google.cloud.datacatalog.v1.DataCatalog.GetEntryGroup].
             name (:class:`str`):
-                Required. The name of the entry group. For example,
-                ``projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}``.
+                Required. The name of the entry group
+                to get.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             read_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                The fields to return. If not set or
-                empty, all fields are returned.
+                The fields to return. If empty or
+                omitted, all fields are returned.
 
                 This corresponds to the ``read_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -472,7 +480,8 @@ class DataCatalogAsyncClient:
 
         Returns:
             google.cloud.datacatalog_v1.types.EntryGroup:
-                EntryGroup Metadata.
+                Entry group metadata.
+
                    An EntryGroup resource represents a logical grouping
                    of zero or more Data Catalog
                    [Entry][google.cloud.datacatalog.v1.Entry] resources.
@@ -536,19 +545,20 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.EntryGroup:
-        r"""Updates an EntryGroup. The user should enable the Data Catalog
-        API in the project identified by the ``entry_group.name``
-        parameter (see [Data Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        r"""Updates an entry group.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``entry_group.name`` parameter. For more information, see
+        `Data Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.UpdateEntryGroupRequest`):
                 The request object. Request message for
                 [UpdateEntryGroup][google.cloud.datacatalog.v1.DataCatalog.UpdateEntryGroup].
             entry_group (:class:`google.cloud.datacatalog_v1.types.EntryGroup`):
-                Required. The updated entry group.
-                "name" field must be set.
+                Required. Updates for the entry group. The ``name``
+                field must be set.
 
                 This corresponds to the ``entry_group`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -573,7 +583,8 @@ class DataCatalogAsyncClient:
 
         Returns:
             google.cloud.datacatalog_v1.types.EntryGroup:
-                EntryGroup Metadata.
+                Entry group metadata.
+
                    An EntryGroup resource represents a logical grouping
                    of zero or more Data Catalog
                    [Entry][google.cloud.datacatalog.v1.Entry] resources.
@@ -629,20 +640,20 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes an EntryGroup. Only entry groups that do not contain
-        entries can be deleted. Users should enable the Data Catalog API
-        in the project identified by the ``name`` parameter (see [Data
-        Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        r"""Deletes an entry group.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``name`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.DeleteEntryGroupRequest`):
                 The request object. Request message for
                 [DeleteEntryGroup][google.cloud.datacatalog.v1.DataCatalog.DeleteEntryGroup].
             name (:class:`str`):
-                Required. The name of the entry group. For example,
-                ``projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}``.
+                Required. The name of the entry group
+                to delete.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -705,11 +716,9 @@ class DataCatalogAsyncClient:
                 The request object. Request message for
                 [ListEntryGroups][google.cloud.datacatalog.v1.DataCatalog.ListEntryGroups].
             parent (:class:`str`):
-                Required. The name of the location that contains the
-                entry groups, which can be provided in URL format.
-                Example:
-
-                -  projects/{project_id}/locations/{location}
+                Required. The name of the location
+                that contains the entry groups to list.
+                Can be provided as a URL.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -792,29 +801,30 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.Entry:
-        r"""Creates an entry. Only entries of types 'FILESET', 'CLUSTER',
-        'DATA_STREAM' or with a user-specified type can be created.
+        r"""Creates an entry.
 
-        Users should enable the Data Catalog API in the project
-        identified by the ``parent`` parameter (see [Data Catalog
-        Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        You can create entries only with 'FILESET', 'CLUSTER',
+        'DATA_STREAM', or custom types. Data Catalog automatically
+        creates entries with other types during metadata ingestion from
+        integrated systems.
 
-        A maximum of 100,000 entries may be created per entry group.
+        You must enable the Data Catalog API in the project identified
+        by the ``parent`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
+
+        An entry group can have a maximum of 100,000 entries.
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.CreateEntryRequest`):
                 The request object. Request message for
                 [CreateEntry][google.cloud.datacatalog.v1.DataCatalog.CreateEntry].
             parent (:class:`str`):
-                Required. The name of the entry group this entry belongs
-                to. Example:
-
-                ``projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}``
-
-                Note: The entry itself and its child resources might not
-                be stored in the location specified in its name.
+                Required. The name of the entry group
+                this entry belongs to.
+                Note: The entry itself and its child
+                resources might not be stored in the
+                location specified in its name.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -842,17 +852,16 @@ class DataCatalogAsyncClient:
 
         Returns:
             google.cloud.datacatalog_v1.types.Entry:
-                Entry Metadata.
-                   A Data Catalog Entry resource represents another
-                   resource in Google Cloud Platform (such as a BigQuery
-                   dataset or a Pub/Sub topic) or outside of Google
-                   Cloud Platform. Clients can use the linked_resource
-                   field in the Entry resource to refer to the original
-                   resource ID of the source system.
+                Entry metadata.
+                   A Data Catalog entry represents another resource in
+                   Google Cloud Platform (such as a BigQuery dataset or
+                   a Pub/Sub topic) or outside of it. You can use the
+                   linked_resource field in the entry resource to refer
+                   to the original resource ID of the source system.
 
-                   An Entry resource contains resource details, such as
-                   its schema. An Entry can also be used to attach
-                   flexible metadata, such as a
+                   An entry resource contains resource details, for
+                   example, its schema. Additionally, you can attach
+                   flexible metadata to an entry in the form of a
                    [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
@@ -907,19 +916,20 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.Entry:
-        r"""Updates an existing entry. Users should enable the Data Catalog
-        API in the project identified by the ``entry.name`` parameter
-        (see [Data Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        r"""Updates an existing entry.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``entry.name`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.UpdateEntryRequest`):
                 The request object. Request message for
                 [UpdateEntry][google.cloud.datacatalog.v1.DataCatalog.UpdateEntry].
             entry (:class:`google.cloud.datacatalog_v1.types.Entry`):
-                Required. The updated entry. The
-                "name" field must be set.
+                Required. Updates for the entry. The ``name`` field must
+                be set.
 
                 This corresponds to the ``entry`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -932,29 +942,29 @@ class DataCatalogAsyncClient:
                 and omitted in the request body, their values are
                 emptied.
 
-                The following fields are modifiable:
+                You can modify only the fields listed below.
 
-                -  For entries with type ``DATA_STREAM``:
+                For entries with type ``DATA_STREAM``:
 
-                   -  ``schema``
+                -  ``schema``
 
-                -  For entries with type ``FILESET``:
+                For entries with type ``FILESET``:
 
-                   -  ``schema``
-                   -  ``display_name``
-                   -  ``description``
-                   -  ``gcs_fileset_spec``
-                   -  ``gcs_fileset_spec.file_patterns``
+                -  ``schema``
+                -  ``display_name``
+                -  ``description``
+                -  ``gcs_fileset_spec``
+                -  ``gcs_fileset_spec.file_patterns``
 
-                -  For entries with ``user_specified_type``:
+                For entries with ``user_specified_type``:
 
-                   -  ``schema``
-                   -  ``display_name``
-                   -  ``description``
-                   -  ``user_specified_type``
-                   -  ``user_specified_system``
-                   -  ``linked_resource``
-                   -  ``source_system_timestamps``
+                -  ``schema``
+                -  ``display_name``
+                -  ``description``
+                -  ``user_specified_type``
+                -  ``user_specified_system``
+                -  ``linked_resource``
+                -  ``source_system_timestamps``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -967,17 +977,16 @@ class DataCatalogAsyncClient:
 
         Returns:
             google.cloud.datacatalog_v1.types.Entry:
-                Entry Metadata.
-                   A Data Catalog Entry resource represents another
-                   resource in Google Cloud Platform (such as a BigQuery
-                   dataset or a Pub/Sub topic) or outside of Google
-                   Cloud Platform. Clients can use the linked_resource
-                   field in the Entry resource to refer to the original
-                   resource ID of the source system.
+                Entry metadata.
+                   A Data Catalog entry represents another resource in
+                   Google Cloud Platform (such as a BigQuery dataset or
+                   a Pub/Sub topic) or outside of it. You can use the
+                   linked_resource field in the entry resource to refer
+                   to the original resource ID of the source system.
 
-                   An Entry resource contains resource details, such as
-                   its schema. An Entry can also be used to attach
-                   flexible metadata, such as a
+                   An entry resource contains resource details, for
+                   example, its schema. Additionally, you can attach
+                   flexible metadata to an entry in the form of a
                    [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
@@ -1031,22 +1040,24 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes an existing entry. Only entries created through
+        r"""Deletes an existing entry.
+
+        You can delete only the entries created by the
         [CreateEntry][google.cloud.datacatalog.v1.DataCatalog.CreateEntry]
-        method can be deleted. Users should enable the Data Catalog API
-        in the project identified by the ``name`` parameter (see [Data
-        Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        method.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``name`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.DeleteEntryRequest`):
                 The request object. Request message for
                 [DeleteEntry][google.cloud.datacatalog.v1.DataCatalog.DeleteEntry].
             name (:class:`str`):
-                Required. The name of the entry. Example:
-
-                -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
+                Required. The name of the entry to
+                delete.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1109,9 +1120,8 @@ class DataCatalogAsyncClient:
                 The request object. Request message for
                 [GetEntry][google.cloud.datacatalog.v1.DataCatalog.GetEntry].
             name (:class:`str`):
-                Required. The name of the entry. Example:
-
-                -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
+                Required. The name of the entry to
+                get.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1124,17 +1134,16 @@ class DataCatalogAsyncClient:
 
         Returns:
             google.cloud.datacatalog_v1.types.Entry:
-                Entry Metadata.
-                   A Data Catalog Entry resource represents another
-                   resource in Google Cloud Platform (such as a BigQuery
-                   dataset or a Pub/Sub topic) or outside of Google
-                   Cloud Platform. Clients can use the linked_resource
-                   field in the Entry resource to refer to the original
-                   resource ID of the source system.
+                Entry metadata.
+                   A Data Catalog entry represents another resource in
+                   Google Cloud Platform (such as a BigQuery dataset or
+                   a Pub/Sub topic) or outside of it. You can use the
+                   linked_resource field in the entry resource to refer
+                   to the original resource ID of the source system.
 
-                   An Entry resource contains resource details, such as
-                   its schema. An Entry can also be used to attach
-                   flexible metadata, such as a
+                   An entry resource contains resource details, for
+                   example, its schema. Additionally, you can attach
+                   flexible metadata to an entry in the form of a
                    [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
@@ -1192,10 +1201,9 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.Entry:
-        r"""Get an entry by target resource name. This method
-        allows clients to use the resource name from the source
-        Google Cloud Platform service to get the Data Catalog
-        Entry.
+        r"""Gets an entry by its target resource name.
+        The resource name comes from the source Google Cloud
+        Platform service.
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.LookupEntryRequest`):
@@ -1209,17 +1217,16 @@ class DataCatalogAsyncClient:
 
         Returns:
             google.cloud.datacatalog_v1.types.Entry:
-                Entry Metadata.
-                   A Data Catalog Entry resource represents another
-                   resource in Google Cloud Platform (such as a BigQuery
-                   dataset or a Pub/Sub topic) or outside of Google
-                   Cloud Platform. Clients can use the linked_resource
-                   field in the Entry resource to refer to the original
-                   resource ID of the source system.
+                Entry metadata.
+                   A Data Catalog entry represents another resource in
+                   Google Cloud Platform (such as a BigQuery dataset or
+                   a Pub/Sub topic) or outside of it. You can use the
+                   linked_resource field in the entry resource to refer
+                   to the original resource ID of the source system.
 
-                   An Entry resource contains resource details, such as
-                   its schema. An Entry can also be used to attach
-                   flexible metadata, such as a
+                   An entry resource contains resource details, for
+                   example, its schema. Additionally, you can attach
+                   flexible metadata to an entry in the form of a
                    [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
@@ -1265,10 +1272,9 @@ class DataCatalogAsyncClient:
                 The request object. Request message for
                 [ListEntries][google.cloud.datacatalog.v1.DataCatalog.ListEntries].
             parent (:class:`str`):
-                Required. The name of the entry group that contains the
-                entries, which can be provided in URL format. Example:
-
-                -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
+                Required. The name of the entry group
+                that contains the entries to list.
+                Can be provided in URL format.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1351,11 +1357,12 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.TagTemplate:
-        r"""Creates a tag template. The user should enable the Data Catalog
-        API in the project identified by the ``parent`` parameter (see
-        `Data Catalog Resource
-        Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
-        for more information).
+        r"""Creates a tag template.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``parent`` parameter. For more information, see [Data
+        Catalog resource project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.CreateTagTemplateRequest`):
@@ -1365,10 +1372,6 @@ class DataCatalogAsyncClient:
                 Required. The name of the project and the template
                 location
                 `region <https://cloud.google.com/data-catalog/docs/concepts/regions>`__.
-
-                Example:
-
-                -  projects/{project_id}/locations/us-central1
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1397,14 +1400,16 @@ class DataCatalogAsyncClient:
 
         Returns:
             google.cloud.datacatalog_v1.types.TagTemplate:
-                A tag template defines a tag, which can have one or more typed fields.
-                   The template is used to create and attach the tag to
-                   GCP resources. [Tag template
-                   roles](\ https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
+                A tag template defines a tag that can have one or more
+                typed fields.
+
+                   The template is used to create tags that are attached
+                   to GCP resources. [Tag template roles]
+                   (https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
                    provide permissions to create, edit, and use the
-                   template. See, for example, the [TagTemplate
-                   User](\ https://cloud.google.com/data-catalog/docs/how-to/template-user)
-                   role, which includes permission to use the tag
+                   template. For example, see the [TagTemplate User]
+                   (https://cloud.google.com/data-catalog/docs/how-to/template-user)
+                   role that includes a permission to use the tag
                    template to tag resources.
 
         """
@@ -1465,9 +1470,8 @@ class DataCatalogAsyncClient:
                 The request object. Request message for
                 [GetTagTemplate][google.cloud.datacatalog.v1.DataCatalog.GetTagTemplate].
             name (:class:`str`):
-                Required. The name of the tag template. Example:
-
-                -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
+                Required. The name of the tag
+                template to get.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1480,14 +1484,16 @@ class DataCatalogAsyncClient:
 
         Returns:
             google.cloud.datacatalog_v1.types.TagTemplate:
-                A tag template defines a tag, which can have one or more typed fields.
-                   The template is used to create and attach the tag to
-                   GCP resources. [Tag template
-                   roles](\ https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
+                A tag template defines a tag that can have one or more
+                typed fields.
+
+                   The template is used to create tags that are attached
+                   to GCP resources. [Tag template roles]
+                   (https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
                    provide permissions to create, edit, and use the
-                   template. See, for example, the [TagTemplate
-                   User](\ https://cloud.google.com/data-catalog/docs/how-to/template-user)
-                   role, which includes permission to use the tag
+                   template. For example, see the [TagTemplate User]
+                   (https://cloud.google.com/data-catalog/docs/how-to/template-user)
+                   role that includes a permission to use the tag
                    template to tag resources.
 
         """
@@ -1538,23 +1544,24 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.TagTemplate:
-        r"""Updates a tag template. This method cannot be used to update the
-        fields of a template. The tag template fields are represented as
-        separate resources and should be updated using their own
-        create/update/delete methods. Users should enable the Data
-        Catalog API in the project identified by the
-        ``tag_template.name`` parameter (see [Data Catalog Resource
-        Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        r"""Updates a tag template.
+
+        You can't update template fields with this method. These fields
+        are separate resources with their own create, update, and delete
+        methods.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``tag_template.name`` parameter. For more information,
+        see `Data Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.UpdateTagTemplateRequest`):
                 The request object. Request message for
                 [UpdateTagTemplate][google.cloud.datacatalog.v1.DataCatalog.UpdateTagTemplate].
             tag_template (:class:`google.cloud.datacatalog_v1.types.TagTemplate`):
-                Required. The template to update. The
-                "name" field must be set.
+                Required. The template to update. The ``name`` field
+                must be set.
 
                 This corresponds to the ``tag_template`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1564,10 +1571,10 @@ class DataCatalogAsyncClient:
                 template. Currently, only ``display_name`` can be
                 overwritten.
 
-                In general, if this parameter is absent or empty, all
-                modifiable fields are overwritten. If such fields are
-                non-required and omitted in the request body, their
-                values are emptied.
+                If this parameter is absent or empty, all modifiable
+                fields are overwritten. If such fields are non-required
+                and omitted in the request body, their values are
+                emptied.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1580,14 +1587,16 @@ class DataCatalogAsyncClient:
 
         Returns:
             google.cloud.datacatalog_v1.types.TagTemplate:
-                A tag template defines a tag, which can have one or more typed fields.
-                   The template is used to create and attach the tag to
-                   GCP resources. [Tag template
-                   roles](\ https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
+                A tag template defines a tag that can have one or more
+                typed fields.
+
+                   The template is used to create tags that are attached
+                   to GCP resources. [Tag template roles]
+                   (https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
                    provide permissions to create, edit, and use the
-                   template. See, for example, the [TagTemplate
-                   User](\ https://cloud.google.com/data-catalog/docs/how-to/template-user)
-                   role, which includes permission to use the tag
+                   template. For example, see the [TagTemplate User]
+                   (https://cloud.google.com/data-catalog/docs/how-to/template-user)
+                   role that includes a permission to use the tag
                    template to tag resources.
 
         """
@@ -1642,30 +1651,29 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes a tag template and all tags using the template. Users
-        should enable the Data Catalog API in the project identified by
-        the ``name`` parameter (see [Data Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        r"""Deletes a tag template and all tags that use it.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``name`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.DeleteTagTemplateRequest`):
                 The request object. Request message for
                 [DeleteTagTemplate][google.cloud.datacatalog.v1.DataCatalog.DeleteTagTemplate].
             name (:class:`str`):
-                Required. The name of the tag template to delete.
-                Example:
-
-                -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
+                Required. The name of the tag
+                template to delete.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             force (:class:`bool`):
-                Required. Currently, this field must always be set to
-                ``true``. This confirms the deletion of any possible
-                tags using this template. ``force = false`` will be
-                supported in the future.
+                Required. If true, deletes all tags that use this
+                template.
+
+                Currently, ``true`` is the only supported value.
 
                 This corresponds to the ``force`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1725,11 +1733,12 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.TagTemplateField:
-        r"""Creates a field in a tag template. The user should enable the
-        Data Catalog API in the project identified by the ``parent``
-        parameter (see `Data Catalog Resource
-        Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
-        for more information).
+        r"""Creates a field in a tag template.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``parent`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.CreateTagTemplateFieldRequest`):
@@ -1739,10 +1748,6 @@ class DataCatalogAsyncClient:
                 Required. The name of the project and the template
                 location
                 `region <https://cloud.google.com/data-catalog/docs/concepts/regions>`__.
-
-                Example:
-
-                -  projects/{project_id}/locations/us-central1/tagTemplates/{tag_template_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1833,21 +1838,22 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.TagTemplateField:
-        r"""Updates a field in a tag template. This method cannot be used to
-        update the field type. Users should enable the Data Catalog API
-        in the project identified by the ``name`` parameter (see [Data
-        Catalog Resource Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        r"""Updates a field in a tag template.
+
+        You can't update the field type with this method.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``name`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.UpdateTagTemplateFieldRequest`):
                 The request object. Request message for
                 [UpdateTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.UpdateTagTemplateField].
             name (:class:`str`):
-                Required. The name of the tag template field. Example:
-
-                -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
+                Required. The name of the tag
+                template field.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1943,20 +1949,20 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.TagTemplateField:
-        r"""Renames a field in a tag template. The user should enable the
-        Data Catalog API in the project identified by the ``name``
-        parameter (see `Data Catalog Resource
-        Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
-        for more information).
+        r"""Renames a field in a tag template.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``name`` parameter. For more information, see [Data
+        Catalog resource project]
+        (https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.RenameTagTemplateFieldRequest`):
                 The request object. Request message for
                 [RenameTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.RenameTagTemplateField].
             name (:class:`str`):
-                Required. The name of the tag template. Example:
-
-                -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
+                Required. The name of the tag
+                template.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2029,17 +2035,16 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.TagTemplateField:
-        r"""Renames an enum value in a tag template. The enum
-        values have to be unique within one enum field.
+        r"""Renames an enum value in a tag template.
+        Within a single enum field, enum values must be unique.
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.RenameTagTemplateFieldEnumValueRequest`):
                 The request object. Request message for
                 [RenameTagTemplateFieldEnumValue][google.cloud.datacatalog.v1.DataCatalog.RenameTagTemplateFieldEnumValue].
             name (:class:`str`):
-                Required. The name of the enum field value. Example:
-
-                -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}/enumValues/{enum_value_display_name}
+                Required. The name of the enum field
+                value.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2112,31 +2117,30 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes a field in a tag template and all uses of that field.
-        Users should enable the Data Catalog API in the project
-        identified by the ``name`` parameter (see [Data Catalog Resource
-        Project]
-        (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
-        for more information).
+        r"""Deletes a field in a tag template and all uses of this field
+        from the tags based on this template.
+
+        You must enable the Data Catalog API in the project identified
+        by the ``name`` parameter. For more information, see `Data
+        Catalog resource
+        project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.DeleteTagTemplateFieldRequest`):
                 The request object. Request message for
                 [DeleteTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.DeleteTagTemplateField].
             name (:class:`str`):
-                Required. The name of the tag template field to delete.
-                Example:
-
-                -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
+                Required. The name of the tag
+                template field to delete.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             force (:class:`bool`):
-                Required. Currently, this field must always be set to
-                ``true``. This confirms the deletion of this field from
-                any tags using this field. ``force = false`` will be
-                supported in the future.
+                Required. If true, deletes this field from any tags that
+                use it.
+
+                Currently, ``true`` is the only supported value.
 
                 This corresponds to the ``force`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2195,26 +2199,36 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.Tag:
-        r"""Creates a tag on an [Entry][google.cloud.datacatalog.v1.Entry].
+        r"""Creates a tag and assigns it to:
+
+        -  An [Entry][google.cloud.datacatalog.v1.Entry] if the method
+           name is
+           ``projects.locations.entryGroups.entries.tags.create``.
+        -  Or [EntryGroup][google.cloud.datacatalog.v1.EntryGroup]if the
+           method name is
+           ``projects.locations.entryGroups.tags.create``.
+
         Note: The project identified by the ``parent`` parameter for the
-        `tag <https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.entryGroups.entries.tags/create#path-parameters>`__
-        and the `tag
-        template <https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.tagTemplates/create#path-parameters>`__
-        used to create the tag must be from the same organization.
+        [tag]
+        (https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.entryGroups.entries.tags/create#path-parameters)
+        and the [tag template]
+        (https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.tagTemplates/create#path-parameters)
+        used to create the tag must be in the same organization.
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.CreateTagRequest`):
                 The request object. Request message for
                 [CreateTag][google.cloud.datacatalog.v1.DataCatalog.CreateTag].
             parent (:class:`str`):
-                Required. The name of the resource to attach this tag
-                to. Tags can be attached to entries. An entry can have
-                up to 1000 attached tags. Example:
+                Required. The name of the resource to
+                attach this tag to.
+                Tags can be attached to entries or entry
+                groups. An entry can have up to 1000
+                attached tags.
 
-                ``projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}``
-
-                Note: The tag and its child resources might not be
-                stored in the location specified in its name.
+                Note: The tag and its child resources
+                might not be stored in the location
+                specified in its name.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2232,9 +2246,8 @@ class DataCatalogAsyncClient:
 
         Returns:
             google.cloud.datacatalog_v1.types.Tag:
-                Tags are used to attach custom metadata to Data Catalog resources. Tags
-                   conform to the specifications within their tag
-                   template.
+                Tags contain custom metadata and are attached to Data Catalog resources. Tags
+                   conform with the specification of their tag template.
 
                    See [Data Catalog
                    IAM](\ https://cloud.google.com/data-catalog/docs/concepts/iam)
@@ -2325,9 +2338,8 @@ class DataCatalogAsyncClient:
 
         Returns:
             google.cloud.datacatalog_v1.types.Tag:
-                Tags are used to attach custom metadata to Data Catalog resources. Tags
-                   conform to the specifications within their tag
-                   template.
+                Tags contain custom metadata and are attached to Data Catalog resources. Tags
+                   conform with the specification of their tag template.
 
                    See [Data Catalog
                    IAM](\ https://cloud.google.com/data-catalog/docs/concepts/iam)
@@ -2390,9 +2402,8 @@ class DataCatalogAsyncClient:
                 The request object. Request message for
                 [DeleteTag][google.cloud.datacatalog.v1.DataCatalog.DeleteTag].
             name (:class:`str`):
-                Required. The name of the tag to delete. Example:
-
-                -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}
+                Required. The name of the tag to
+                delete.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2448,7 +2459,8 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTagsAsyncPager:
-        r"""Lists the tags on an [Entry][google.cloud.datacatalog.v1.Entry].
+        r"""Lists tags assigned to an
+        [Entry][google.cloud.datacatalog.v1.Entry].
 
         Args:
             request (:class:`google.cloud.datacatalog_v1.types.ListTagsRequest`):
@@ -2456,14 +2468,12 @@ class DataCatalogAsyncClient:
                 [ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags].
             parent (:class:`str`):
                 Required. The name of the Data Catalog resource to list
-                the tags of. The resource could be an
+                the tags of.
+
+                The resource can be an
                 [Entry][google.cloud.datacatalog.v1.Entry] or an
-                [EntryGroup][google.cloud.datacatalog.v1.EntryGroup].
-
-                Examples:
-
-                -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
-                -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
+                [EntryGroup][google.cloud.datacatalog.v1.EntryGroup]
+                (without ``/entries/{entries}`` at the end).
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2544,21 +2554,24 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
-        r"""Sets the access control policy for a resource. Replaces any
-        existing policy. Supported resources are:
+        r"""Sets an access control policy for a resource. Replaces any
+        existing policy.
 
-        -  Tag templates.
-        -  Entries.
-        -  Entry groups. Note, this method cannot be used to manage
-           policies for BigQuery, Pub/Sub and any external Google Cloud
-           Platform resources synced to Data Catalog.
+        Supported resources are:
 
-        Callers must have following Google IAM permission
+        -  Tag templates
+        -  Entry groups
+
+        Note: This method sets policies only within Data Catalog and
+        can't be used to manage policies in BigQuery, Pub/Sub, Dataproc
+        Metastore, and any external Google Cloud Platform resources
+        synced with the Data Catalog.
+
+        To call this method, you must have the following Google IAM
+        permissions:
 
         -  ``datacatalog.tagTemplates.setIamPolicy`` to set policies on
            tag templates.
-        -  ``datacatalog.entries.setIamPolicy`` to set policies on
-           entries.
         -  ``datacatalog.entryGroups.setIamPolicy`` to set policies on
            entry groups.
 
@@ -2686,25 +2699,28 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
-        r"""Gets the access control policy for a resource. A ``NOT_FOUND``
-        error is returned if the resource does not exist. An empty
-        policy is returned if the resource exists but does not have a
-        policy set on it.
+        r"""Gets the access control policy for a resource.
+
+        May return:
+
+        -  A\ ``NOT_FOUND`` error if the resource doesn't exist or you
+           don't have the permission to view it.
+        -  An empty policy if the resource exists but doesn't have a set
+           policy.
 
         Supported resources are:
 
-        -  Tag templates.
-        -  Entries.
-        -  Entry groups. Note, this method cannot be used to manage
-           policies for BigQuery, Pub/Sub and any external Google Cloud
-           Platform resources synced to Data Catalog.
+        -  Tag templates
+        -  Entry groups
 
-        Callers must have following Google IAM permission
+        Note: This method doesn't get policies from Google Cloud
+        Platform resources ingested into Data Catalog.
+
+        To call this method, you must have the following Google IAM
+        permissions:
 
         -  ``datacatalog.tagTemplates.getIamPolicy`` to get policies on
            tag templates.
-        -  ``datacatalog.entries.getIamPolicy`` to get policies on
-           entries.
         -  ``datacatalog.entryGroups.getIamPolicy`` to get policies on
            entry groups.
 
@@ -2840,20 +2856,20 @@ class DataCatalogAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
-        r"""Returns the caller's permissions on a resource. If the resource
-        does not exist, an empty set of permissions is returned (We
-        don't return a ``NOT_FOUND`` error).
-
+        r"""Gets your permissions on a resource.
+        Returns an empty set of permissions if the resource
+        doesn't exist.
         Supported resources are:
 
-        -  Tag templates.
-        -  Entries.
-        -  Entry groups. Note, this method cannot be used to manage
-           policies for BigQuery, Pub/Sub and any external Google Cloud
-           Platform resources synced to Data Catalog.
+        - Tag templates
+        - Entry groups
 
-        A caller is not required to have Google IAM permission to make
-        this request.
+        Note: This method gets policies only within Data Catalog
+        and can't be used to get policies from BigQuery,
+        Pub/Sub, Dataproc Metastore, and any external Google
+        Cloud Platform resources ingested into Data Catalog.
+        No Google IAM permissions are required to call this
+        method.
 
         Args:
             request (:class:`google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest`):

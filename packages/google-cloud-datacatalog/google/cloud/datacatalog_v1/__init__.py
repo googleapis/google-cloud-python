@@ -25,6 +25,9 @@ from .services.policy_tag_manager_serialization import (
     PolicyTagManagerSerializationAsyncClient,
 )
 
+from .types.bigquery import BigQueryConnectionSpec
+from .types.bigquery import BigQueryRoutineSpec
+from .types.bigquery import CloudSqlBigQueryConnectionSpec
 from .types.common import IntegratedSystem
 from .types.data_source import DataSource
 from .types.datacatalog import CreateEntryGroupRequest
@@ -33,6 +36,7 @@ from .types.datacatalog import CreateTagRequest
 from .types.datacatalog import CreateTagTemplateFieldRequest
 from .types.datacatalog import CreateTagTemplateRequest
 from .types.datacatalog import DatabaseTableSpec
+from .types.datacatalog import DataSourceConnectionSpec
 from .types.datacatalog import DeleteEntryGroupRequest
 from .types.datacatalog import DeleteEntryRequest
 from .types.datacatalog import DeleteTagRequest
@@ -52,6 +56,7 @@ from .types.datacatalog import ListTagsResponse
 from .types.datacatalog import LookupEntryRequest
 from .types.datacatalog import RenameTagTemplateFieldEnumValueRequest
 from .types.datacatalog import RenameTagTemplateFieldRequest
+from .types.datacatalog import RoutineSpec
 from .types.datacatalog import SearchCatalogRequest
 from .types.datacatalog import SearchCatalogResponse
 from .types.datacatalog import UpdateEntryGroupRequest
@@ -82,6 +87,7 @@ from .types.policytagmanagerserialization import ExportTaxonomiesResponse
 from .types.policytagmanagerserialization import ImportTaxonomiesRequest
 from .types.policytagmanagerserialization import ImportTaxonomiesResponse
 from .types.policytagmanagerserialization import InlineSource
+from .types.policytagmanagerserialization import ReplaceTaxonomyRequest
 from .types.policytagmanagerserialization import SerializedPolicyTag
 from .types.policytagmanagerserialization import SerializedTaxonomy
 from .types.schema import ColumnSchema
@@ -99,13 +105,18 @@ from .types.tags import TagField
 from .types.tags import TagTemplate
 from .types.tags import TagTemplateField
 from .types.timestamps import SystemTimestamps
+from .types.usage import UsageSignal
+from .types.usage import UsageStats
 
 __all__ = (
     "DataCatalogAsyncClient",
     "PolicyTagManagerAsyncClient",
     "PolicyTagManagerSerializationAsyncClient",
+    "BigQueryConnectionSpec",
     "BigQueryDateShardedSpec",
+    "BigQueryRoutineSpec",
     "BigQueryTableSpec",
+    "CloudSqlBigQueryConnectionSpec",
     "ColumnSchema",
     "CreateEntryGroupRequest",
     "CreateEntryRequest",
@@ -117,6 +128,7 @@ __all__ = (
     "CrossRegionalSource",
     "DataCatalogClient",
     "DataSource",
+    "DataSourceConnectionSpec",
     "DatabaseTableSpec",
     "DeleteEntryGroupRequest",
     "DeleteEntryRequest",
@@ -158,6 +170,8 @@ __all__ = (
     "PolicyTagManagerSerializationClient",
     "RenameTagTemplateFieldEnumValueRequest",
     "RenameTagTemplateFieldRequest",
+    "ReplaceTaxonomyRequest",
+    "RoutineSpec",
     "Schema",
     "SearchCatalogRequest",
     "SearchCatalogResponse",
@@ -180,5 +194,7 @@ __all__ = (
     "UpdateTagTemplateFieldRequest",
     "UpdateTagTemplateRequest",
     "UpdateTaxonomyRequest",
+    "UsageSignal",
+    "UsageStats",
     "ViewSpec",
 )
