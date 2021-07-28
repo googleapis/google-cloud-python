@@ -5,6 +5,29 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.7.0](https://www.github.com/googleapis/python-pubsub/compare/v2.6.1...v2.7.0) (2021-07-24)
+
+
+### Features
+
+* Add `always_use_jwt_access`. ([1f30ef7](https://www.github.com/googleapis/python-pubsub/commit/1f30ef7f26ae1156751bc42305b1eb156115b5e5))
+* Add method signature for `Subscriber.Pull` without the deprecated `return_immediately` field. ([1f30ef7](https://www.github.com/googleapis/python-pubsub/commit/1f30ef7f26ae1156751bc42305b1eb156115b5e5))
+* Add Pub/Sub topic retention fields. ([#456](https://www.github.com/googleapis/python-pubsub/issues/456)) ([911829d](https://www.github.com/googleapis/python-pubsub/commit/911829d85c6ec36a87b873cbfe34497b1a493dde))
+* Add subscription properties to streaming pull response. ([1f30ef7](https://www.github.com/googleapis/python-pubsub/commit/1f30ef7f26ae1156751bc42305b1eb156115b5e5))
+* Support self-signed JWT flow for service accounts. ([1f30ef7](https://www.github.com/googleapis/python-pubsub/commit/1f30ef7f26ae1156751bc42305b1eb156115b5e5))
+
+
+### Bug Fixes
+
+* Add async client to `%name_%version/init.py`. ([1f30ef7](https://www.github.com/googleapis/python-pubsub/commit/1f30ef7f26ae1156751bc42305b1eb156115b5e5))
+* Disable `always_use_jwt_access`. ([1f30ef7](https://www.github.com/googleapis/python-pubsub/commit/1f30ef7f26ae1156751bc42305b1eb156115b5e5))
+* Enable self signed JWT for gRPC. ([#458](https://www.github.com/googleapis/python-pubsub/issues/458)) ([c6e0ff6](https://www.github.com/googleapis/python-pubsub/commit/c6e0ff69faeda614aa6088af59d3420e16720d27))
+
+### Dependencies
+
+* Add `packaging` requirement. ([1f30ef7](https://www.github.com/googleapis/python-pubsub/commit/1f30ef7f26ae1156751bc42305b1eb156115b5e5))
+* Require `google-api-core >= 1.26.0`. ([1f30ef7](https://www.github.com/googleapis/python-pubsub/commit/1f30ef7f26ae1156751bc42305b1eb156115b5e5))
+
 ## 2.6.1
 
 07-05-2021 10:33 PDT
