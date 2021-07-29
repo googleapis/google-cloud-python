@@ -19,6 +19,7 @@ System tests for queries.
 import datetime
 import functools
 import operator
+import uuid
 
 import pytest
 import pytz
@@ -373,10 +374,12 @@ def test_query_default_namespace_when_context_namespace_is_other(
 
     https://github.com/googleapis/python-ndb/issues/476
     """
+    unique_id = str(uuid.uuid4())
 
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
+        discriminator = ndb.StringProperty(default=unique_id)
 
     entity1 = SomeKind(foo=1, bar="a", id="x", namespace=other_namespace)
     entity1.put()
@@ -389,7 +392,7 @@ def test_query_default_namespace_when_context_namespace_is_other(
     eventually(SomeKind.query(namespace=other_namespace).fetch, length_equals(1))
 
     with client_context.new(namespace=other_namespace).use():
-        query = SomeKind.query(namespace="")
+        query = SomeKind.query(namespace="").filter(SomeKind.discriminator == unique_id)
         results = eventually(query.fetch, length_equals(1))
 
     assert results[0].foo == 2
