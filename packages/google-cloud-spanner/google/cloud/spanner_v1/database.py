@@ -144,6 +144,7 @@ class Database(object):
         self._version_retention_period = None
         self._earliest_version_time = None
         self._encryption_info = None
+        self._default_leader = None
         self.log_commit_stats = False
         self._logger = logger
         self._encryption_config = encryption_config
@@ -280,6 +281,15 @@ class Database(object):
         return self._encryption_info
 
     @property
+    def default_leader(self):
+        """The read-write region which contains the database's leader replicas.
+
+        :rtype: str
+        :returns: a string representing the read-write region
+        """
+        return self._default_leader
+
+    @property
     def ddl_statements(self):
         """DDL Statements used to define database schema.
 
@@ -414,6 +424,7 @@ class Database(object):
         self._earliest_version_time = response.earliest_version_time
         self._encryption_config = response.encryption_config
         self._encryption_info = response.encryption_info
+        self._default_leader = response.default_leader
 
     def update_ddl(self, ddl_statements, operation_id=""):
         """Update DDL for this database.

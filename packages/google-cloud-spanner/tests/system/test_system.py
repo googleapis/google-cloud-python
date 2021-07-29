@@ -68,6 +68,7 @@ else:
     INSTANCE_ID = os.environ.get(
         "GOOGLE_CLOUD_TESTS_SPANNER_INSTANCE", "google-cloud-python-systest"
     )
+MULTI_REGION_INSTANCE_ID = "multi-region" + unique_resource_id("-")
 EXISTING_INSTANCES = []
 COUNTERS_TABLE = "counters"
 COUNTERS_COLUMNS = ("name", "value")
@@ -353,9 +354,25 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
             SPANNER_OPERATION_TIMEOUT_IN_SECONDS
         )  # raises on failure / timeout.
 
+        # Create a multi-region instance
+        multi_region_config = "nam3"
+        config_name = "{}/instanceConfigs/{}".format(
+            Config.CLIENT.project_name, multi_region_config
+        )
+        create_time = str(int(time.time()))
+        labels = {"python-spanner-systests": "true", "created": create_time}
+        cls._instance = Config.CLIENT.instance(
+            instance_id=MULTI_REGION_INSTANCE_ID,
+            configuration_name=config_name,
+            labels=labels,
+        )
+        operation = cls._instance.create()
+        operation.result(SPANNER_OPERATION_TIMEOUT_IN_SECONDS)
+
     @classmethod
     def tearDownClass(cls):
         cls._db.drop()
+        cls._instance.delete()
 
     def setUp(self):
         self.to_delete = []
@@ -442,6 +459,42 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
             )
             for result in results:
                 self.assertEqual(result[0], retention_period)
+
+    @unittest.skipIf(
+        USE_EMULATOR, "Default leader setting is not supported by the emulator"
+    )
+    def test_create_database_with_default_leader_success(self):
+        pool = BurstyPool(labels={"testcase": "create_database_default_leader"})
+
+        temp_db_id = "temp_db" + unique_resource_id("_")
+        default_leader = "us-east4"
+        ddl_statements = [
+            "ALTER DATABASE {}"
+            " SET OPTIONS (default_leader = '{}')".format(temp_db_id, default_leader)
+        ]
+        temp_db = self._instance.database(
+            temp_db_id, pool=pool, ddl_statements=ddl_statements
+        )
+        operation = temp_db.create()
+        self.to_delete.append(temp_db)
+
+        # We want to make sure the operation completes.
+        operation.result(30)  # raises on failure / timeout.
+
+        database_ids = [database.name for database in self._instance.list_databases()]
+        self.assertIn(temp_db.name, database_ids)
+
+        temp_db.reload()
+        self.assertEqual(temp_db.default_leader, default_leader)
+
+        with temp_db.snapshot() as snapshot:
+            results = snapshot.execute_sql(
+                "SELECT OPTION_VALUE AS default_leader "
+                "FROM INFORMATION_SCHEMA.DATABASE_OPTIONS "
+                "WHERE SCHEMA_NAME = '' AND OPTION_NAME = 'default_leader'"
+            )
+            for result in results:
+                self.assertEqual(result[0], default_leader)
 
     def test_table_not_found(self):
         temp_db_id = "temp_db" + unique_resource_id("_")
@@ -549,6 +602,36 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
         temp_db.reload()
         self.assertEqual(temp_db.version_retention_period, retention_period)
+        self.assertEqual(len(temp_db.ddl_statements), len(ddl_statements))
+
+    @unittest.skipIf(
+        USE_EMULATOR, "Default leader update is not supported by the emulator"
+    )
+    def test_update_database_ddl_default_leader_success(self):
+        pool = BurstyPool(labels={"testcase": "update_database_ddl_default_leader"})
+
+        temp_db_id = "temp_db" + unique_resource_id("_")
+        default_leader = "us-east4"
+        temp_db = self._instance.database(temp_db_id, pool=pool)
+        create_op = temp_db.create()
+        self.to_delete.append(temp_db)
+
+        # We want to make sure the operation completes.
+        create_op.result(240)  # raises on failure / timeout.
+
+        self.assertIsNone(temp_db.default_leader)
+
+        ddl_statements = DDL_STATEMENTS + [
+            "ALTER DATABASE {}"
+            " SET OPTIONS (default_leader = '{}')".format(temp_db_id, default_leader)
+        ]
+        operation = temp_db.update_ddl(ddl_statements)
+
+        # We want to make sure the operation completes.
+        operation.result(240)  # raises on failure / timeout.
+
+        temp_db.reload()
+        self.assertEqual(temp_db.default_leader, default_leader)
         self.assertEqual(len(temp_db.ddl_statements), len(ddl_statements))
 
     def test_db_batch_insert_then_db_snapshot_read(self):

@@ -40,6 +40,7 @@ class TestClient(unittest.TestCase):
     PROCESSING_UNITS = 5000
     LABELS = {"test": "true"}
     TIMEOUT_SECONDS = 80
+    LEADER_OPTIONS = ["leader1", "leader2"]
 
     def _get_target_class(self):
         from google.cloud import spanner
@@ -457,7 +458,9 @@ class TestClient(unittest.TestCase):
         instance_config_pbs = ListInstanceConfigsResponse(
             instance_configs=[
                 InstanceConfigPB(
-                    name=self.CONFIGURATION_NAME, display_name=self.DISPLAY_NAME
+                    name=self.CONFIGURATION_NAME,
+                    display_name=self.DISPLAY_NAME,
+                    leader_options=self.LEADER_OPTIONS,
                 )
             ]
         )
@@ -473,6 +476,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(instance_config, InstanceConfigPB)
         self.assertEqual(instance_config.name, self.CONFIGURATION_NAME)
         self.assertEqual(instance_config.display_name, self.DISPLAY_NAME)
+        self.assertEqual(instance_config.leader_options, self.LEADER_OPTIONS)
 
         expected_metadata = (
             ("google-cloud-resource-prefix", client.project_name),

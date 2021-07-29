@@ -333,6 +333,13 @@ class TestDatabase(_BaseTest):
         ]
         self.assertEqual(database.encryption_info, encryption_info)
 
+    def test_default_leader(self):
+        instance = _Instance(self.INSTANCE_NAME)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+        default_leader = database._default_leader = "us-east4"
+        self.assertEqual(database.default_leader, default_leader)
+
     def test_spanner_api_property_w_scopeless_creds(self):
 
         client = _Client()
@@ -715,6 +722,7 @@ class TestDatabase(_BaseTest):
                 kms_key_version="kms_key_version",
             )
         ]
+        default_leader = "us-east4"
         api = client.database_admin_api = self._make_database_admin_api()
         api.get_database_ddl.return_value = ddl_pb
         db_pb = Database(
@@ -725,6 +733,7 @@ class TestDatabase(_BaseTest):
             earliest_version_time=_datetime_to_pb_timestamp(timestamp),
             encryption_config=encryption_config,
             encryption_info=encryption_info,
+            default_leader=default_leader,
         )
         api.get_database.return_value = db_pb
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -740,6 +749,7 @@ class TestDatabase(_BaseTest):
         self.assertEqual(database._ddl_statements, tuple(DDL_STATEMENTS))
         self.assertEqual(database._encryption_config, encryption_config)
         self.assertEqual(database._encryption_info, encryption_info)
+        self.assertEqual(database._default_leader, default_leader)
 
         api.get_database_ddl.assert_called_once_with(
             database=self.DATABASE_NAME,
