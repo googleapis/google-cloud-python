@@ -1,5 +1,22 @@
 # Changelog
 
+### [0.2.2](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.1...v0.2.2) (2021-07-29)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#27](https://www.github.com/googleapis/python-essential-contacts/issues/27)) ([fdbaa0e](https://www.github.com/googleapis/python-essential-contacts/commit/fdbaa0e78a35657c36b6ec25dbea113cd18e98b0))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#23](https://www.github.com/googleapis/python-essential-contacts/issues/23)) ([a3e6040](https://www.github.com/googleapis/python-essential-contacts/commit/a3e6040d854e213620031c65276997dd39bce428))
+
+
+### Miscellaneous Chores
+
+* release as 0.2.2 ([#28](https://www.github.com/googleapis/python-essential-contacts/issues/28)) ([e1ec288](https://www.github.com/googleapis/python-essential-contacts/commit/e1ec2887af5a87395c7af79e07189b35ee13d85f))
+
 ### [0.2.1](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.0...v0.2.1) (2021-07-21)
 
 
