@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
+### [0.4.5](https://www.github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.4...v0.4.5) (2021-07-26)
+
+
+### Documentation
+
+* fix links to installed app, client secrets docs ([#86](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/86)) ([e8e5dbb](https://www.github.com/googleapis/google-auth-library-python-oauthlib/commit/e8e5dbbf0b118fc68a9b60b91f0075f84908b6f6)), closes [#85](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/85)
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/1127)) ([#126](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/126)) ([8806324](https://www.github.com/googleapis/google-auth-library-python-oauthlib/commit/8806324428b5aebe6659c49a16066afafbe4d400)), closes [#1126](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/1126)
+* add Samples section to CONTRIBUTING.rst ([#134](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/134)) ([1599a97](https://www.github.com/googleapis/google-auth-library-python-oauthlib/commit/1599a97831bbe1c15cf5a0d257817967c1cd227f))
+
+
+### Miscellaneous Chores
+
+* release as 0.4.5 ([#137](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/137)) ([a54f283](https://www.github.com/googleapis/google-auth-library-python-oauthlib/commit/a54f283ee7854367ff289ee863a7404692f31099))
+
 ### [0.4.4](https://www.github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.3...v0.4.4) (2021-03-29)
 
 
