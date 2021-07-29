@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-data-fusion"
 description = "Cloud Data Fusion API client library"
-version = "0.1.1"
+version = "0.1.2"
 release_status = "Development Status :: 4 - Beta"
 url = "https://github.com/googleapis/python-data-fusion"
 dependencies = [
