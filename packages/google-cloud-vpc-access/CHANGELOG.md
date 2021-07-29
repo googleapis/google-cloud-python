@@ -1,5 +1,23 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-vpc-access/compare/v0.2.0...v0.2.1) (2021-07-26)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#20](https://www.github.com/googleapis/python-vpc-access/issues/20)) ([46a4eaf](https://www.github.com/googleapis/python-vpc-access/commit/46a4eaf7814d69edb7b5ecb1767805088e3e82f9))
+* enable self signed jwt for grpc ([#26](https://www.github.com/googleapis/python-vpc-access/issues/26)) ([aca8358](https://www.github.com/googleapis/python-vpc-access/commit/aca8358bf75e76a49508688507aba3d73ec8d95c))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#21](https://www.github.com/googleapis/python-vpc-access/issues/21)) ([d1fc404](https://www.github.com/googleapis/python-vpc-access/commit/d1fc404fd34d69b70c925bf3af2a022c116a5a11))
+
+
+### Miscellaneous Chores
+
+* release 0.2.1 ([#25](https://www.github.com/googleapis/python-vpc-access/issues/25)) ([8ded00a](https://www.github.com/googleapis/python-vpc-access/commit/8ded00a39a9f151376e1060b617805222aef78c9))
+
 ## [0.2.0](https://www.github.com/googleapis/python-vpc-access/compare/v0.1.0...v0.2.0) (2021-07-14)
 
 
