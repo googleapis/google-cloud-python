@@ -21,6 +21,7 @@ import json
 import io
 import operator
 
+import google.api_core.retry
 import pkg_resources
 import pytest
 import pytz
@@ -39,6 +40,10 @@ pyarrow = pytest.importorskip("pyarrow", minversion="1.0.0")
 
 PANDAS_INSTALLED_VERSION = pkg_resources.get_distribution("pandas").parsed_version
 PANDAS_INT64_VERSION = pkg_resources.parse_version("1.0.0")
+
+
+class MissingDataError(Exception):
+    pass
 
 
 def test_load_table_from_dataframe_w_automatic_schema(bigquery_client, dataset_id):
@@ -666,19 +671,6 @@ def test_insert_rows_from_dataframe(bigquery_client, dataset_id):
     )
     for errors in chunk_errors:
         assert not errors
-
-    # Use query to fetch rows instead of listing directly from the table so
-    # that we get values from the streaming buffer.
-    rows = list(
-        bigquery_client.query(
-            "SELECT * FROM `{}.{}.{}`".format(
-                table.project, table.dataset_id, table.table_id
-            )
-        )
-    )
-
-    sorted_rows = sorted(rows, key=operator.attrgetter("int_col"))
-    row_tuples = [r.values() for r in sorted_rows]
     expected = [
         # Pandas often represents NULL values as NaN. Convert to None for
         # easier comparison.
@@ -686,7 +678,27 @@ def test_insert_rows_from_dataframe(bigquery_client, dataset_id):
         for data_row in dataframe.itertuples(index=False)
     ]
 
-    assert len(row_tuples) == len(expected)
+    # Use query to fetch rows instead of listing directly from the table so
+    # that we get values from the streaming buffer "within a few seconds".
+    # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
+    @google.api_core.retry.Retry(
+        predicate=google.api_core.retry.if_exception_type(MissingDataError)
+    )
+    def get_rows():
+        rows = list(
+            bigquery_client.query(
+                "SELECT * FROM `{}.{}.{}`".format(
+                    table.project, table.dataset_id, table.table_id
+                )
+            )
+        )
+        if len(rows) != len(expected):
+            raise MissingDataError()
+        return rows
+
+    rows = get_rows()
+    sorted_rows = sorted(rows, key=operator.attrgetter("int_col"))
+    row_tuples = [r.values() for r in sorted_rows]
 
     for row, expected_row in zip(row_tuples, expected):
         assert (
