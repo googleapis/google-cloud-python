@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.5.1](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.5.0...v0.5.1) (2021-07-29)
+
+
+### Bug Fixes
+
+* handle more xrefs and keep long uid ([#85](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/85)) ([fd4f9f3](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/fd4f9f373fcf6429d0faa76846d2d50673809a59))
+* remove redundant class info for subclasses ([#87](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/87)) ([06bb556](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/06bb556a4c2371ef05e9749c6f68b9eeb18315a6))
+
 ## [0.5.0](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.4.0...v0.5.0) (2021-07-28)
 
 
