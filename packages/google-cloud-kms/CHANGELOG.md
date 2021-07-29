@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+### [2.4.3](https://www.github.com/googleapis/python-kms/compare/v2.4.2...v2.4.3) (2021-07-29)
+
+
+### Documentation
+
+* update README for attestation verification scripts ([#151](https://www.github.com/googleapis/python-kms/issues/151)) ([a1a111d](https://www.github.com/googleapis/python-kms/commit/a1a111d67017b89235c18455512658514ce65140))
+
 ### [2.4.2](https://www.github.com/googleapis/python-kms/compare/v2.4.1...v2.4.2) (2021-07-28)
 
 
