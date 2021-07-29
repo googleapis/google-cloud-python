@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+### [3.3.2](https://www.github.com/googleapis/python-translate/compare/v3.3.1...v3.3.2) (2021-07-29)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#215](https://www.github.com/googleapis/python-translate/issues/215)) ([2f1bc32](https://www.github.com/googleapis/python-translate/commit/2f1bc327fd436f2f7e86c676cbbf1e7d7cc61921))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#206](https://www.github.com/googleapis/python-translate/issues/206)) ([6f1df67](https://www.github.com/googleapis/python-translate/commit/6f1df6794394bcbedb18199793aaebb9c095ccf5))
+
+
+### Miscellaneous Chores
+
+* release as 3.3.2 ([#218](https://www.github.com/googleapis/python-translate/issues/218)) ([e14de99](https://www.github.com/googleapis/python-translate/commit/e14de99d9d3480274ba92ef36c93f0b626a2bd91))
+
 ### [3.3.1](https://www.github.com/googleapis/python-translate/compare/v3.3.0...v3.3.1) (2021-07-21)
 
 
