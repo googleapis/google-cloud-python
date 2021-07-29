@@ -109,8 +109,8 @@ s.remove_staging_dirs()
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(microgenerator=True, samples=True)
-s.move(templated_files, excludes=[".coveragerc", "noxfile.py"])
+templated_files = common.py_library(microgenerator=True, samples=True, cov_level=99)
+s.move(templated_files, excludes=[".coveragerc"])
 
 # Ensure CI runs on a new instance each time
 s.replace(
@@ -126,5 +126,86 @@ s.replace(
 # ----------------------------------------------------------------------------
 
 python.py_samples()
+
+# ----------------------------------------------------------------------------
+# Customize noxfile.py
+# ----------------------------------------------------------------------------
+
+def place_before(path, text, *before_text, escape=None):
+    replacement = "\n".join(before_text) + "\n" + text
+    if escape:
+        for c in escape:
+            text = text.replace(c, '\\' + c)
+    s.replace([path], text, replacement)
+
+open_telemetry_test = """
+    session.install("-e", ".[tracing]", "-c", constraints_path)
+
+    # Run py.test against the unit tests with OpenTelemetry.
+    session.run(
+        "py.test",
+        "--quiet",
+        "--cov=google.cloud.spanner",
+        "--cov=google.cloud",
+        "--cov=tests.unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        os.path.join("tests", "unit"),
+        *session.posargs,
+    )
+"""
+
+place_before(
+    "noxfile.py",
+    "@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)",
+    open_telemetry_test,
+    escape="()"
+)
+
+skip_tests_if_env_var_not_set ="""# Sanity check: Only run tests if the environment variable is set.
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
+        "SPANNER_EMULATOR_HOST", ""
+    ):
+        session.skip(
+            "Credentials or emulator host must be set via environment variable"
+        )
+"""
+
+place_before(
+    "noxfile.py",
+    "# Install pyopenssl for mTLS testing.",
+    skip_tests_if_env_var_not_set,
+    escape="()"
+)
+
+s.replace(
+    "noxfile.py",
+    """f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=google/cloud",
+        "--cov=tests/unit",""",
+    """\"--cov=google.cloud.spanner",
+        "--cov=google.cloud",
+        "--cov=tests.unit","""
+)
+
+s.replace(
+    "noxfile.py",
+    """session.install\("-e", "."\)""",
+    """session.install("-e", ".[tracing]")"""
+)
+
+s.replace(
+    "noxfile.py",
+    """# Install all test dependencies, then install this package into the
+    # virtualenv's dist-packages.
+    session.install\("mock", "pytest", "google-cloud-testutils", "-c", constraints_path\)
+    session.install\("-e", ".", "-c", constraints_path\)""",
+    """# Install all test dependencies, then install this package into the
+    # virtualenv's dist-packages.
+    session.install("mock", "pytest", "google-cloud-testutils", "-c", constraints_path)
+    session.install("-e", ".[tracing]", "-c", constraints_path)"""
+)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
