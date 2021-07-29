@@ -1,5 +1,23 @@
 # Changelog
 
+### [0.1.2](https://www.github.com/googleapis/python-iam-logging/compare/v0.1.1...v0.1.2) (2021-07-29)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#20](https://www.github.com/googleapis/python-iam-logging/issues/20)) ([7959815](https://www.github.com/googleapis/python-iam-logging/commit/7959815a36f4e173dcac5d9b5f8434f50ed0cdbb))
+* enable self signed jwt for grpc ([#18](https://www.github.com/googleapis/python-iam-logging/issues/18)) ([788a335](https://www.github.com/googleapis/python-iam-logging/commit/788a3350a068c48cb7c1dc4645229b7a337dd983))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#15](https://www.github.com/googleapis/python-iam-logging/issues/15)) ([85a6eca](https://www.github.com/googleapis/python-iam-logging/commit/85a6eca7ff08b934a307c50d47eb235bfa3479ab))
+
+
+### Miscellaneous Chores
+
+* release as 0.1.2 ([#21](https://www.github.com/googleapis/python-iam-logging/issues/21)) ([cbdafee](https://www.github.com/googleapis/python-iam-logging/commit/cbdafee9741024b45f61030183cb27c7cedcd73a))
+
 ### [0.1.1](https://www.github.com/googleapis/python-iam-logging/compare/v0.1.0...v0.1.1) (2021-07-14)
 
 
