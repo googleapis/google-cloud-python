@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+### [3.3.2](https://www.github.com/googleapis/python-cloudbuild/compare/v3.3.1...v3.3.2) (2021-07-28)
+
+
+### Documentation
+
+* Add a new build phase `SETUPBUILD` for timing information ([#142](https://www.github.com/googleapis/python-cloudbuild/issues/142)) ([eb23c8d](https://www.github.com/googleapis/python-cloudbuild/commit/eb23c8dbc35dc45b228a1536f8143b8a291bcd87))
+
 ### [3.3.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.3.0...v3.3.1) (2021-07-24)
 
 
