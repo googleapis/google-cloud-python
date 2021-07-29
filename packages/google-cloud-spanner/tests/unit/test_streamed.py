@@ -164,6 +164,19 @@ class TestStreamedResultSet(unittest.TestCase):
         with self.assertRaises(Unmergeable):
             streamed._merge_chunk(chunk)
 
+    def test__merge_chunk_numeric(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        FIELDS = [self._make_scalar_field("total", TypeCode.NUMERIC)]
+        streamed._metadata = self._make_result_set_metadata(FIELDS)
+        streamed._pending_chunk = self._make_value(u"1234.")
+        chunk = self._make_value(u"5678")
+
+        merged = streamed._merge_chunk(chunk)
+        self.assertEqual(merged.string_value, u"1234.5678")
+
     def test__merge_chunk_int64(self):
         from google.cloud.spanner_v1 import TypeCode
 
