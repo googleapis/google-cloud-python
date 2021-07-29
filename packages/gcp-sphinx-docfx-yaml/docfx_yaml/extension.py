@@ -73,9 +73,9 @@ REFMETHOD = 'meth'
 REFFUNCTION = 'func'
 INITPY = '__init__.py'
 # Regex expression for checking references of pattern like ":class:`~package_v1.module`"
-REF_PATTERN = ':(py:)?(func|class|meth|mod|ref|attr|exc):`~?[a-zA-Z0-9_\.<> ]*?`'
+REF_PATTERN = ':(py:)?(func|class|meth|mod|ref|attr|exc):`~?[a-zA-Z0-9_\.<> ]*(\(\))?`'
 # Regex expression for checking references of pattern like "~package_v1.subpackage.module"
-REF_PATTERN_LAST = '~(([a-zA-Z0-9_<>]*\.)*[a-zA-Z0-9_<>]*)'
+REF_PATTERN_LAST = '~([a-zA-Z0-9_<>]*\.)*[a-zA-Z0-9_<>]*(\(\))?'
 
 PROPERTY = 'property'
 
@@ -234,6 +234,12 @@ def _resolve_reference_in_module_summary(pattern, lines):
                 new_line = new_line.replace(matched_str, '<xref uid=\"{}\">{}</xref>'.format(xref, ref_name))
             # If it not a Cloud library, don't create xref for it.
             else:
+                # Carefully extract the original uid
+                if pattern == REF_PATTERN:
+                    index = matched_str.index('~') if '~' in matched_str else matched_str.index('`')
+                    ref_name = matched_str[index+1:-1]
+                else:
+                    ref_name = matched_str[1:]
                 new_line = new_line.replace(matched_str, '`{}`'.format(ref_name))
 
         new_lines.append(new_line)

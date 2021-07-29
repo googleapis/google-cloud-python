@@ -102,9 +102,14 @@ Raises:
         finished.
 """
         lines_got = lines_got.split("\n")
+        xrefs_got = []
         # Resolve over different regular expressions for different types of reference patterns.
         lines_got, xrefs = _resolve_reference_in_module_summary(REF_PATTERN, lines_got)
+        for xref in xrefs:
+            xrefs_got.append(xref)
         lines_got, xrefs = _resolve_reference_in_module_summary(REF_PATTERN_LAST, lines_got)
+        for xref in xrefs:
+            xrefs_got.append(xref)
 
         lines_want = """
 If a ``stream`` is attached to this download, then the downloaded
@@ -132,8 +137,74 @@ Raises:
         finished.
 """
         lines_want = lines_want.split("\n")
+        xrefs_want = [
+          "google.cloud.requests.Session",
+          "google.cloud.requests.Session.request",
+          "google.cloud.requests.Response",
+          "google.cloud.resumable_media.common.DataCorruption"
+        ]
 
         self.assertEqual(lines_got, lines_want)
+        self.assertCountEqual(xrefs_got, xrefs_want)
+        # assertCountEqual is a misleading name but checks that two lists contain
+        # same items regardless of order, as long as items in list are sortable.
+
+
+    # Test for added xref coverage and third party xrefs staying as-is
+    def test_reference_in_summary_more_xrefs(self):
+        lines_got = """
+If a ~dateutil.time.stream() is attached to this download, then the downloaded
+resource will be written to the stream.
+
+Args:
+    transport (~google.cloud.requests.Session()): A ``requests`` object which can
+        make authenticated requests.
+
+    timeout (Optional[Union[float, Tuple[float, float]]]):
+        The number of seconds to wait for the server response.
+        Depending on the retry strategy, a request may be repeated
+        several times using the same timeout each time.
+
+        Can also be passed as a :func:`~google.cloud.requests.tuple()` (connect_timeout, read_timeout).
+        See :meth:`google.cloud.requests.Session.request()` documentation for details.
+"""
+        lines_got = lines_got.split("\n")
+        xrefs_got = []
+        # Resolve over different regular expressions for different types of reference patterns.
+        lines_got, xrefs = _resolve_reference_in_module_summary(REF_PATTERN, lines_got)
+        for xref in xrefs:
+            xrefs_got.append(xref)
+        lines_got, xrefs = _resolve_reference_in_module_summary(REF_PATTERN_LAST, lines_got)
+        for xref in xrefs:
+            xrefs_got.append(xref)
+
+        lines_want = """
+If a `dateutil.time.stream()` is attached to this download, then the downloaded
+resource will be written to the stream.
+
+Args:
+    transport (<xref uid="google.cloud.requests.Session">Session()</xref>): A ``requests`` object which can
+        make authenticated requests.
+
+    timeout (Optional[Union[float, Tuple[float, float]]]):
+        The number of seconds to wait for the server response.
+        Depending on the retry strategy, a request may be repeated
+        several times using the same timeout each time.
+
+        Can also be passed as a <xref uid="google.cloud.requests.tuple">tuple()</xref> (connect_timeout, read_timeout).
+        See <xref uid="google.cloud.requests.Session.request">request()</xref> documentation for details.
+"""
+        lines_want = lines_want.split("\n")
+        xrefs_want = [
+          "google.cloud.requests.Session",
+          "google.cloud.requests.tuple",
+          "google.cloud.requests.Session.request"
+        ]
+
+        self.assertEqual(lines_got, lines_want)
+        self.assertCountEqual(xrefs_got, xrefs_want)
+        # assertCountEqual is a misleading name but checks that two lists contain
+        # same items regardless of order, as long as items in list are sortable.
 
 
     # Variables used for testing _extract_docstring_info
