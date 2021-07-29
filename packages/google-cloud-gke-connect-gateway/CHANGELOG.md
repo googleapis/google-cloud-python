@@ -1,5 +1,22 @@
 # Changelog
 
+### [0.2.2](https://www.github.com/googleapis/python-gke-connect-gateway/compare/v0.2.1...v0.2.2) (2021-07-29)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#19](https://www.github.com/googleapis/python-gke-connect-gateway/issues/19)) ([9091e3f](https://www.github.com/googleapis/python-gke-connect-gateway/commit/9091e3f97a5a0e6bd844243dba05093c6c09f188))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#15](https://www.github.com/googleapis/python-gke-connect-gateway/issues/15)) ([d3d7206](https://www.github.com/googleapis/python-gke-connect-gateway/commit/d3d72060bb9f2b1ea516b904b9118a66bf0ca209))
+
+
+### Miscellaneous Chores
+
+* release as 0.2.2 ([#20](https://www.github.com/googleapis/python-gke-connect-gateway/issues/20)) ([6494fae](https://www.github.com/googleapis/python-gke-connect-gateway/commit/6494fae2a5fe3e1d1472048fb889c78a520764eb))
+
 ### [0.2.1](https://www.github.com/googleapis/python-gke-connect-gateway/compare/v0.2.0...v0.2.1) (2021-07-21)
 
 
