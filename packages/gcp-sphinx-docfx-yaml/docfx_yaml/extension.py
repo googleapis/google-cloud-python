@@ -797,23 +797,28 @@ def insert_children_on_class(app, _type, datam):
     insert_class = app.env.docfx_yaml_classes[datam[CLASS]]
     # Find the parent class using the module for subclasses of a class.
     parent_class = app.env.docfx_yaml_classes.get(datam[MODULE])
-    if parent_class:
-        insert_class += parent_class
+
     # Find the class which the datam belongs to
     for obj in insert_class:
         if obj['type'] != CLASS:
             continue
         # Add subclass & methods & attributes & properties to class
         if _type in [METHOD, ATTRIBUTE, PROPERTY, CLASS] and \
-                (
-                  # If obj is either method, attr or prop of a class and not self, or
-                  (obj[CLASS] == datam[CLASS] and obj != datam) or \
-                  # If datam is a subclass of another class.
-                  (_type == CLASS and obj['class'] == datam['module'])
-                ):
+          (obj[CLASS] == datam[CLASS] and obj != datam):
             obj['children'].append(datam['uid'])
             obj['references'].append(_create_reference(datam, parent=obj['uid']))
             insert_class.append(datam)
+
+    # If there is a parent class, determine if current class is a subclass.
+    if not parent_class:
+        return
+    for obj in parent_class:
+        if obj['type'] != CLASS:
+            continue
+        if _type == CLASS and obj['class'] == datam['module']:
+            # No need to add datam to the parent class.
+            obj['children'].append(datam['uid'])
+            obj['references'].append(_create_reference(datam, parent=obj['uid']))
 
 
 def insert_children_on_function(app, _type, datam):
