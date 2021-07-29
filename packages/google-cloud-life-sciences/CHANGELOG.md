@@ -1,5 +1,22 @@
 # Changelog
 
+### [0.2.2](https://www.github.com/googleapis/python-life-sciences/compare/v0.2.1...v0.2.2) (2021-07-29)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#23](https://www.github.com/googleapis/python-life-sciences/issues/23)) ([aaa9ba0](https://www.github.com/googleapis/python-life-sciences/commit/aaa9ba0bb02aa33c0382e8637844ba55f117125f))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#19](https://www.github.com/googleapis/python-life-sciences/issues/19)) ([c755467](https://www.github.com/googleapis/python-life-sciences/commit/c755467dc69154f4cb9e7ebd12634bcc23820fbb))
+
+
+### Miscellaneous Chores
+
+* release as 0.2.2 ([#24](https://www.github.com/googleapis/python-life-sciences/issues/24)) ([d479778](https://www.github.com/googleapis/python-life-sciences/commit/d4797787f08de2df80206b8af4728e8479e44687))
+
 ### [0.2.1](https://www.github.com/googleapis/python-life-sciences/compare/v0.2.0...v0.2.1) (2021-07-21)
 
 

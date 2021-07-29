@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-life-sciences"
 description = "Cloud Life Sciences client library"
-version = "0.2.1"
+version = "0.2.2"
 release_status = "Development Status :: 4 - Beta"
 url = "https://github.com/googleapis/python-life-sciences"
 dependencies = [
