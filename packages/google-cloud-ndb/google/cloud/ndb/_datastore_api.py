@@ -89,6 +89,7 @@ def make_call(rpc_name, request, retries=None, timeout=None):
         rpc = _remote.RemoteCall(call, rpc_name)
         utils.logging_debug(log, rpc)
         utils.logging_debug(log, "timeout={}", timeout)
+        utils.logging_debug(log, request)
 
         try:
             result = yield rpc
