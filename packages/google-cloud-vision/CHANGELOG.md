@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+### [2.4.2](https://www.github.com/googleapis/python-vision/compare/v2.4.1...v2.4.2) (2021-07-29)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#207](https://www.github.com/googleapis/python-vision/issues/207)) ([f5b5ca5](https://www.github.com/googleapis/python-vision/commit/f5b5ca52aaa04dbe91dcf32097309e00593b5ce9))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#201](https://www.github.com/googleapis/python-vision/issues/201)) ([f6eaa1c](https://www.github.com/googleapis/python-vision/commit/f6eaa1c0a89258f9378672b8713990fc10cea0c9))
+
+
+### Miscellaneous Chores
+
+* release as 2.4.2 ([#209](https://www.github.com/googleapis/python-vision/issues/209)) ([8d48b1b](https://www.github.com/googleapis/python-vision/commit/8d48b1b2284da8eff95190478292f5422d59a2f1))
+
 ### [2.4.1](https://www.github.com/googleapis/python-vision/compare/v2.4.0...v2.4.1) (2021-07-21)
 
 
