@@ -20,6 +20,12 @@ from unittest import mock
 import google.auth.credentials
 
 
+INSTANCE = "test-instance"
+DATABASE = "test-database"
+PROJECT = "test-project"
+USER_AGENT = "user-agent"
+
+
 def _make_credentials():
     class _CredentialsWithScopes(
         google.auth.credentials.Credentials, google.auth.credentials.Scoped
@@ -29,138 +35,105 @@ def _make_credentials():
     return mock.Mock(spec=_CredentialsWithScopes)
 
 
+@mock.patch("google.cloud.spanner_v1.Client")
 class Test_connect(unittest.TestCase):
-    def test_connect(self):
+    def test_w_implicit(self, mock_client):
         from google.cloud.spanner_dbapi import connect
         from google.cloud.spanner_dbapi import Connection
 
-        PROJECT = "test-project"
-        USER_AGENT = "user-agent"
-        CREDENTIALS = _make_credentials()
+        client = mock_client.return_value
+        instance = client.instance.return_value
+        database = instance.database.return_value
 
-        with mock.patch("google.cloud.spanner_v1.Client") as client_mock:
-            connection = connect(
-                "test-instance",
-                "test-database",
-                PROJECT,
-                CREDENTIALS,
-                user_agent=USER_AGENT,
-            )
-
-            self.assertIsInstance(connection, Connection)
-
-            client_mock.assert_called_once_with(
-                project=PROJECT, credentials=CREDENTIALS, client_info=mock.ANY
-            )
-
-    def test_instance_not_found(self):
-        from google.cloud.spanner_dbapi import connect
-
-        with mock.patch(
-            "google.cloud.spanner_v1.instance.Instance.exists", return_value=False,
-        ) as exists_mock:
-
-            with self.assertRaises(ValueError):
-                connect("test-instance", "test-database")
-
-            exists_mock.assert_called_once_with()
-
-    def test_database_not_found(self):
-        from google.cloud.spanner_dbapi import connect
-
-        with mock.patch(
-            "google.cloud.spanner_v1.instance.Instance.exists", return_value=True,
-        ):
-            with mock.patch(
-                "google.cloud.spanner_v1.database.Database.exists", return_value=False,
-            ) as exists_mock:
-
-                with self.assertRaises(ValueError):
-                    connect("test-instance", "test-database")
-
-                exists_mock.assert_called_once_with()
-
-    def test_connect_instance_id(self):
-        from google.cloud.spanner_dbapi import connect
-        from google.cloud.spanner_dbapi import Connection
-
-        INSTANCE = "test-instance"
-
-        with mock.patch(
-            "google.cloud.spanner_v1.client.Client.instance"
-        ) as instance_mock:
-            connection = connect(INSTANCE, "test-database")
-
-            instance_mock.assert_called_once_with(INSTANCE)
+        connection = connect(INSTANCE, DATABASE)
 
         self.assertIsInstance(connection, Connection)
 
-    def test_connect_database_id(self):
+        self.assertIs(connection.instance, instance)
+        client.instance.assert_called_once_with(INSTANCE)
+
+        self.assertIs(connection.database, database)
+        instance.database.assert_called_once_with(DATABASE, pool=None)
+        # Datbase constructs its own pool
+        self.assertIsNotNone(connection.database._pool)
+
+    def test_w_explicit(self, mock_client):
+        from google.cloud.spanner_v1.pool import AbstractSessionPool
         from google.cloud.spanner_dbapi import connect
         from google.cloud.spanner_dbapi import Connection
+        from google.cloud.spanner_dbapi.version import PY_VERSION
 
-        DATABASE = "test-database"
+        credentials = _make_credentials()
+        pool = mock.create_autospec(AbstractSessionPool)
+        client = mock_client.return_value
+        instance = client.instance.return_value
+        database = instance.database.return_value
 
-        with mock.patch(
-            "google.cloud.spanner_v1.instance.Instance.database"
-        ) as database_mock:
-            with mock.patch(
-                "google.cloud.spanner_v1.instance.Instance.exists", return_value=True,
-            ):
-                connection = connect("test-instance", DATABASE)
-
-                database_mock.assert_called_once_with(DATABASE, pool=mock.ANY)
+        connection = connect(
+            INSTANCE, DATABASE, PROJECT, credentials, pool=pool, user_agent=USER_AGENT,
+        )
 
         self.assertIsInstance(connection, Connection)
 
-    def test_default_sessions_pool(self):
+        mock_client.assert_called_once_with(
+            project=PROJECT, credentials=credentials, client_info=mock.ANY
+        )
+        client_info = mock_client.call_args_list[0][1]["client_info"]
+        self.assertEqual(client_info.user_agent, USER_AGENT)
+        self.assertEqual(client_info.python_version, PY_VERSION)
+
+        self.assertIs(connection.instance, instance)
+        client.instance.assert_called_once_with(INSTANCE)
+
+        self.assertIs(connection.database, database)
+        instance.database.assert_called_once_with(DATABASE, pool=pool)
+
+    def test_w_instance_not_found(self, mock_client):
         from google.cloud.spanner_dbapi import connect
 
-        with mock.patch("google.cloud.spanner_v1.instance.Instance.database"):
-            with mock.patch(
-                "google.cloud.spanner_v1.instance.Instance.exists", return_value=True,
-            ):
-                connection = connect("test-instance", "test-database")
+        client = mock_client.return_value
+        instance = client.instance.return_value
+        instance.exists.return_value = False
 
-                self.assertIsNotNone(connection.database._pool)
+        with self.assertRaises(ValueError):
+            connect(INSTANCE, DATABASE)
 
-    def test_sessions_pool(self):
+        instance.exists.assert_called_once_with()
+
+    def test_w_database_not_found(self, mock_client):
         from google.cloud.spanner_dbapi import connect
-        from google.cloud.spanner_v1.pool import FixedSizePool
 
-        database_id = "test-database"
-        pool = FixedSizePool()
+        client = mock_client.return_value
+        instance = client.instance.return_value
+        database = instance.database.return_value
+        database.exists.return_value = False
 
-        with mock.patch(
-            "google.cloud.spanner_v1.instance.Instance.database"
-        ) as database_mock:
-            with mock.patch(
-                "google.cloud.spanner_v1.instance.Instance.exists", return_value=True,
-            ):
-                connect("test-instance", database_id, pool=pool)
-                database_mock.assert_called_once_with(database_id, pool=pool)
+        with self.assertRaises(ValueError):
+            connect(INSTANCE, DATABASE)
 
-    def test_connect_w_credential_file_path(self):
+        database.exists.assert_called_once_with()
+
+    def test_w_credential_file_path(self, mock_client):
         from google.cloud.spanner_dbapi import connect
         from google.cloud.spanner_dbapi import Connection
+        from google.cloud.spanner_dbapi.version import PY_VERSION
 
-        PROJECT = "test-project"
-        USER_AGENT = "user-agent"
-        credentials = "dummy/file/path.json"
+        credentials_path = "dummy/file/path.json"
 
-        with mock.patch(
-            "google.cloud.spanner_v1.Client.from_service_account_json"
-        ) as client_mock:
-            connection = connect(
-                "test-instance",
-                "test-database",
-                PROJECT,
-                credentials=credentials,
-                user_agent=USER_AGENT,
-            )
+        connection = connect(
+            INSTANCE,
+            DATABASE,
+            PROJECT,
+            credentials=credentials_path,
+            user_agent=USER_AGENT,
+        )
 
-            self.assertIsInstance(connection, Connection)
+        self.assertIsInstance(connection, Connection)
 
-            client_mock.assert_called_once_with(
-                credentials, project=PROJECT, client_info=mock.ANY
-            )
+        factory = mock_client.from_service_account_json
+        factory.assert_called_once_with(
+            credentials_path, project=PROJECT, client_info=mock.ANY,
+        )
+        client_info = factory.call_args_list[0][1]["client_info"]
+        self.assertEqual(client_info.user_agent, USER_AGENT)
+        self.assertEqual(client_info.python_version, PY_VERSION)
