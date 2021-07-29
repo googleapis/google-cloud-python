@@ -1,5 +1,22 @@
 # Changelog
 
+### [0.2.2](https://www.github.com/googleapis/python-dms/compare/v0.2.1...v0.2.2) (2021-07-29)
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#24](https://www.github.com/googleapis/python-dms/issues/24)) ([26b493b](https://www.github.com/googleapis/python-dms/commit/26b493b90991df0d17773c6ceb3aa0d6a14a6c52))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#20](https://www.github.com/googleapis/python-dms/issues/20)) ([21247a3](https://www.github.com/googleapis/python-dms/commit/21247a331aa1b6ddecdeb13efe4705e0b60ba69d))
+
+
+### Miscellaneous Chores
+
+* release as 0.2.2 ([#25](https://www.github.com/googleapis/python-dms/issues/25)) ([787b401](https://www.github.com/googleapis/python-dms/commit/787b401c50047303c1beabb046e9117497824a1d))
+
 ### [0.2.1](https://www.github.com/googleapis/python-dms/compare/v0.2.0...v0.2.1) (2021-07-21)
 
 
