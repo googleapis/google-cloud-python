@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.1.4](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.3...v0.1.4) (2021-07-29)
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#19](https://www.github.com/googleapis/python-appengine-logging/issues/19)) ([8854cbe](https://www.github.com/googleapis/python-appengine-logging/commit/8854cbe02c233901bf4601a99cdfbd9826b616bf))
+
+
+### Miscellaneous Chores
+
+* release as 0.1.4 ([#24](https://www.github.com/googleapis/python-appengine-logging/issues/24)) ([5aa924e](https://www.github.com/googleapis/python-appengine-logging/commit/5aa924e0a24a94cf259168cc1dd5aa65dc0f40a9))
+
 ### [0.1.3](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.2...v0.1.3) (2021-07-21)
 
 
