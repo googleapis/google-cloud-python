@@ -43,6 +43,7 @@ from google.cloud.retail_v2.types import catalog as gcr_catalog
 from google.cloud.retail_v2.types import catalog_service
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
 
 
@@ -1043,6 +1044,438 @@ async def test_update_catalog_flattened_error_async():
         )
 
 
+def test_set_default_branch(
+    transport: str = "grpc", request_type=catalog_service.SetDefaultBranchRequest
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_default_branch), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.set_default_branch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.SetDefaultBranchRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_set_default_branch_from_dict():
+    test_set_default_branch(request_type=dict)
+
+
+def test_set_default_branch_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_default_branch), "__call__"
+    ) as call:
+        client.set_default_branch()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.SetDefaultBranchRequest()
+
+
+@pytest.mark.asyncio
+async def test_set_default_branch_async(
+    transport: str = "grpc_asyncio",
+    request_type=catalog_service.SetDefaultBranchRequest,
+):
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_default_branch), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.set_default_branch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.SetDefaultBranchRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_set_default_branch_async_from_dict():
+    await test_set_default_branch_async(request_type=dict)
+
+
+def test_set_default_branch_field_headers():
+    client = CatalogServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.SetDefaultBranchRequest()
+
+    request.catalog = "catalog/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_default_branch), "__call__"
+    ) as call:
+        call.return_value = None
+        client.set_default_branch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "catalog=catalog/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_set_default_branch_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.SetDefaultBranchRequest()
+
+    request.catalog = "catalog/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_default_branch), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.set_default_branch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "catalog=catalog/value",) in kw["metadata"]
+
+
+def test_set_default_branch_flattened():
+    client = CatalogServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_default_branch), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.set_default_branch(catalog="catalog_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].catalog == "catalog_value"
+
+
+def test_set_default_branch_flattened_error():
+    client = CatalogServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.set_default_branch(
+            catalog_service.SetDefaultBranchRequest(), catalog="catalog_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_default_branch_flattened_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_default_branch), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.set_default_branch(catalog="catalog_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].catalog == "catalog_value"
+
+
+@pytest.mark.asyncio
+async def test_set_default_branch_flattened_error_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.set_default_branch(
+            catalog_service.SetDefaultBranchRequest(), catalog="catalog_value",
+        )
+
+
+def test_get_default_branch(
+    transport: str = "grpc", request_type=catalog_service.GetDefaultBranchRequest
+):
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_default_branch), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog_service.GetDefaultBranchResponse(
+            branch="branch_value", note="note_value",
+        )
+        response = client.get_default_branch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.GetDefaultBranchRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog_service.GetDefaultBranchResponse)
+    assert response.branch == "branch_value"
+    assert response.note == "note_value"
+
+
+def test_get_default_branch_from_dict():
+    test_get_default_branch(request_type=dict)
+
+
+def test_get_default_branch_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_default_branch), "__call__"
+    ) as call:
+        client.get_default_branch()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.GetDefaultBranchRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_default_branch_async(
+    transport: str = "grpc_asyncio",
+    request_type=catalog_service.GetDefaultBranchRequest,
+):
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_default_branch), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog_service.GetDefaultBranchResponse(
+                branch="branch_value", note="note_value",
+            )
+        )
+        response = await client.get_default_branch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.GetDefaultBranchRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, catalog_service.GetDefaultBranchResponse)
+    assert response.branch == "branch_value"
+    assert response.note == "note_value"
+
+
+@pytest.mark.asyncio
+async def test_get_default_branch_async_from_dict():
+    await test_get_default_branch_async(request_type=dict)
+
+
+def test_get_default_branch_field_headers():
+    client = CatalogServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.GetDefaultBranchRequest()
+
+    request.catalog = "catalog/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_default_branch), "__call__"
+    ) as call:
+        call.return_value = catalog_service.GetDefaultBranchResponse()
+        client.get_default_branch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "catalog=catalog/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_default_branch_field_headers_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = catalog_service.GetDefaultBranchRequest()
+
+    request.catalog = "catalog/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_default_branch), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog_service.GetDefaultBranchResponse()
+        )
+        await client.get_default_branch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "catalog=catalog/value",) in kw["metadata"]
+
+
+def test_get_default_branch_flattened():
+    client = CatalogServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_default_branch), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog_service.GetDefaultBranchResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_default_branch(catalog="catalog_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].catalog == "catalog_value"
+
+
+def test_get_default_branch_flattened_error():
+    client = CatalogServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_default_branch(
+            catalog_service.GetDefaultBranchRequest(), catalog="catalog_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_default_branch_flattened_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_default_branch), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = catalog_service.GetDefaultBranchResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog_service.GetDefaultBranchResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_default_branch(catalog="catalog_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].catalog == "catalog_value"
+
+
+@pytest.mark.asyncio
+async def test_get_default_branch_flattened_error_async():
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_default_branch(
+            catalog_service.GetDefaultBranchRequest(), catalog="catalog_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CatalogServiceGrpcTransport(
@@ -1142,6 +1575,8 @@ def test_catalog_service_base_transport():
     methods = (
         "list_catalogs",
         "update_catalog",
+        "set_default_branch",
+        "get_default_branch",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -1490,10 +1925,36 @@ def test_catalog_service_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_catalog_path():
+def test_branch_path():
     project = "squid"
     location = "clam"
     catalog = "whelk"
+    branch = "octopus"
+    expected = "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}".format(
+        project=project, location=location, catalog=catalog, branch=branch,
+    )
+    actual = CatalogServiceClient.branch_path(project, location, catalog, branch)
+    assert expected == actual
+
+
+def test_parse_branch_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "catalog": "cuttlefish",
+        "branch": "mussel",
+    }
+    path = CatalogServiceClient.branch_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CatalogServiceClient.parse_branch_path(path)
+    assert expected == actual
+
+
+def test_catalog_path():
+    project = "winkle"
+    location = "nautilus"
+    catalog = "scallop"
     expected = "projects/{project}/locations/{location}/catalogs/{catalog}".format(
         project=project, location=location, catalog=catalog,
     )
@@ -1503,9 +1964,9 @@ def test_catalog_path():
 
 def test_parse_catalog_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "catalog": "nudibranch",
+        "project": "abalone",
+        "location": "squid",
+        "catalog": "clam",
     }
     path = CatalogServiceClient.catalog_path(**expected)
 
@@ -1515,7 +1976,7 @@ def test_parse_catalog_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -1525,7 +1986,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "octopus",
     }
     path = CatalogServiceClient.common_billing_account_path(**expected)
 
@@ -1535,7 +1996,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "oyster"
     expected = "folders/{folder}".format(folder=folder,)
     actual = CatalogServiceClient.common_folder_path(folder)
     assert expected == actual
@@ -1543,7 +2004,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "nudibranch",
     }
     path = CatalogServiceClient.common_folder_path(**expected)
 
@@ -1553,7 +2014,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = CatalogServiceClient.common_organization_path(organization)
     assert expected == actual
@@ -1561,7 +2022,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "mussel",
     }
     path = CatalogServiceClient.common_organization_path(**expected)
 
@@ -1571,7 +2032,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "winkle"
     expected = "projects/{project}".format(project=project,)
     actual = CatalogServiceClient.common_project_path(project)
     assert expected == actual
@@ -1579,7 +2040,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nautilus",
     }
     path = CatalogServiceClient.common_project_path(**expected)
 
@@ -1589,8 +2050,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -1600,8 +2061,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "squid",
+        "location": "clam",
     }
     path = CatalogServiceClient.common_location_path(**expected)
 

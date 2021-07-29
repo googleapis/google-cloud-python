@@ -23,7 +23,7 @@ from google.protobuf import wrappers_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.retail.v2",
-    manifest={"UserEvent", "ProductDetail", "PurchaseTransaction",},
+    manifest={"UserEvent", "ProductDetail", "CompletionDetail", "PurchaseTransaction",},
 )
 
 
@@ -38,8 +38,12 @@ class UserEvent(proto.Message):
             -  ``add-to-cart``: Products being added to cart.
             -  ``category-page-view``: Special pages such as sale or
                promotion pages viewed.
+            -  ``completion``: Completion query result showed/clicked.
             -  ``detail-page-view``: Products detail page viewed.
             -  ``home-page-view``: Homepage viewed.
+            -  ``promotion-offered``: Promotion is offered to a user.
+            -  ``promotion-not-offered``: Promotion is not offered to a
+               user.
             -  ``purchase-complete``: User finishing a purchase.
             -  ``search``: Product search.
             -  ``shopping-cart-page-view``: User viewing a shopping
@@ -55,6 +59,22 @@ class UserEvent(proto.Message):
             The field must be a UTF-8 encoded string with a length limit
             of 128 characters. Otherwise, an INVALID_ARGUMENT error is
             returned.
+
+            The field should not contain PII or user-data. We recommend
+            to use Google Analystics `Client
+            ID <https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#clientId>`__
+            for this field.
+        session_id (str):
+            A unique identifier for tracking a visitor session with a
+            length limit of 128 bytes. A session is an aggregation of an
+            end user behavior in a time span.
+
+            A general guideline to populate the sesion_id:
+
+            1. If user has no activity for 30 min, a new session_id
+               should be assigned.
+            2. The session_id should be unique across users, suggest use
+               uuid or add visitor_id as prefix.
         event_time (google.protobuf.timestamp_pb2.Timestamp):
             Only required for
             [UserEventService.ImportUserEvents][google.cloud.retail.v2.UserEventService.ImportUserEvents]
@@ -76,6 +96,10 @@ class UserEvent(proto.Message):
             [PredictResponse.attribution_token][google.cloud.retail.v2.PredictResponse.attribution_token]
             for user events that are the result of
             [PredictionService.Predict][google.cloud.retail.v2.PredictionService.Predict].
+            The value must be a valid
+            [SearchResponse.attribution_token][google.cloud.retail.v2.SearchResponse.attribution_token]
+            for user events that are the result of
+            [SearchService.Search][google.cloud.retail.v2.SearchService.Search].
 
             This token enables us to accurately attribute page view or
             purchase back to the event and the particular predict
@@ -104,6 +128,14 @@ class UserEvent(proto.Message):
             [product_details][google.cloud.retail.v2.UserEvent.product_details]
             is desired. The end user may have not finished broswing the
             whole page yet.
+        completion_detail (google.cloud.retail_v2.types.CompletionDetail):
+            The main completion details related to the event.
+
+            In a ``completion`` event, this field represents the
+            completions returned to the end user and the clicked
+            completion by the end user. In a ``search`` event, it
+            represents the search event happens after clicking
+            completion.
         attributes (Sequence[google.cloud.retail_v2.types.UserEvent.AttributesEntry]):
             Extra user event features to include in the recommendation
             model.
@@ -133,13 +165,61 @@ class UserEvent(proto.Message):
         search_query (str):
             The user's search query.
 
+            See
+            [SearchRequest.query][google.cloud.retail.v2.SearchRequest.query]
+            for definition.
+
             The value must be a UTF-8 encoded string with a length limit
             of 5,000 characters. Otherwise, an INVALID_ARGUMENT error is
             returned.
 
-            Required for ``search`` events. Other event types should not
-            set this field. Otherwise, an INVALID_ARGUMENT error is
+            At least one of
+            [search_query][google.cloud.retail.v2.UserEvent.search_query]
+            or
+            [page_categories][google.cloud.retail.v2.UserEvent.page_categories]
+            is required for ``search`` events. Other event types should
+            not set this field. Otherwise, an INVALID_ARGUMENT error is
             returned.
+        filter (str):
+            The filter syntax consists of an expression language for
+            constructing a predicate from one or more fields of the
+            products being filtered.
+
+            See
+            [SearchRequest.filter][google.cloud.retail.v2.SearchRequest.filter]
+            for definition and syntax.
+
+            The value must be a UTF-8 encoded string with a length limit
+            of 1,000 characters. Otherwise, an INVALID_ARGUMENT error is
+            returned.
+        order_by (str):
+            The order in which products are returned.
+
+            See
+            [SearchRequest.order_by][google.cloud.retail.v2.SearchRequest.order_by]
+            for definition and syntax.
+
+            The value must be a UTF-8 encoded string with a length limit
+            of 1,000 characters. Otherwise, an INVALID_ARGUMENT error is
+            returned.
+
+            This can only be set for ``search`` events. Other event
+            types should not set this field. Otherwise, an
+            INVALID_ARGUMENT error is returned.
+        offset (int):
+            An integer that specifies the current offset for pagination
+            (the 0-indexed starting location, amongst the products
+            deemed by the API as relevant).
+
+            See
+            [SearchRequest.offset][google.cloud.retail.v2.SearchRequest.offset]
+            for definition.
+
+            If this field is negative, an INVALID_ARGUMENT is returned.
+
+            This can only be set for ``search`` events. Other event
+            types should not set this field. Otherwise, an
+            INVALID_ARGUMENT error is returned.
         page_categories (Sequence[str]):
             The categories associated with a category page.
 
@@ -152,9 +232,13 @@ class UserEvent(proto.Message):
             category hierarchy: "pageCategories" : ["Sales > 2017 Black
             Friday Deals"].
 
-            Required for ``category-page-view`` events. Other event
-            types should not set this field. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            Required for ``category-page-view`` events. At least one of
+            [search_query][google.cloud.retail.v2.UserEvent.search_query]
+            or
+            [page_categories][google.cloud.retail.v2.UserEvent.page_categories]
+            is required for ``search`` events. Other event types should
+            not set this field. Otherwise, an INVALID_ARGUMENT error is
+            returned.
         user_info (google.cloud.retail_v2.types.UserInfo):
             User information.
         uri (str):
@@ -186,11 +270,15 @@ class UserEvent(proto.Message):
 
     event_type = proto.Field(proto.STRING, number=1,)
     visitor_id = proto.Field(proto.STRING, number=2,)
+    session_id = proto.Field(proto.STRING, number=21,)
     event_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
     experiment_ids = proto.RepeatedField(proto.STRING, number=4,)
     attribution_token = proto.Field(proto.STRING, number=5,)
     product_details = proto.RepeatedField(
         proto.MESSAGE, number=6, message="ProductDetail",
+    )
+    completion_detail = proto.Field(
+        proto.MESSAGE, number=22, message="CompletionDetail",
     )
     attributes = proto.MapField(
         proto.STRING, proto.MESSAGE, number=7, message=common.CustomAttribute,
@@ -200,6 +288,9 @@ class UserEvent(proto.Message):
         proto.MESSAGE, number=9, message="PurchaseTransaction",
     )
     search_query = proto.Field(proto.STRING, number=10,)
+    filter = proto.Field(proto.STRING, number=16,)
+    order_by = proto.Field(proto.STRING, number=17,)
+    offset = proto.Field(proto.INT32, number=18,)
     page_categories = proto.RepeatedField(proto.STRING, number=11,)
     user_info = proto.Field(proto.MESSAGE, number=12, message=common.UserInfo,)
     uri = proto.Field(proto.STRING, number=13,)
@@ -228,6 +319,28 @@ class ProductDetail(proto.Message):
 
     product = proto.Field(proto.MESSAGE, number=1, message=gcr_product.Product,)
     quantity = proto.Field(proto.MESSAGE, number=2, message=wrappers_pb2.Int32Value,)
+
+
+class CompletionDetail(proto.Message):
+    r"""Detailed completion information including completion
+    attribution token and clicked completion info.
+
+    Attributes:
+        completion_attribution_token (str):
+            Completion attribution token in
+            [CompleteQueryResponse.attribution_token][google.cloud.retail.v2.CompleteQueryResponse.attribution_token].
+        selected_suggestion (str):
+            End user selected
+            [CompleteQueryResponse.CompletionResult.suggestion][google.cloud.retail.v2.CompleteQueryResponse.CompletionResult.suggestion].
+        selected_position (int):
+            End user selected
+            [CompleteQueryResponse.CompletionResult.suggestion][google.cloud.retail.v2.CompleteQueryResponse.CompletionResult.suggestion]
+            position, starting from 0.
+    """
+
+    completion_attribution_token = proto.Field(proto.STRING, number=1,)
+    selected_suggestion = proto.Field(proto.STRING, number=2,)
+    selected_position = proto.Field(proto.INT32, number=3,)
 
 
 class PurchaseTransaction(proto.Message):

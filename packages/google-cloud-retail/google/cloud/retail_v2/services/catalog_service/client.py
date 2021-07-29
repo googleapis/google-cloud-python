@@ -35,6 +35,7 @@ from google.cloud.retail_v2.types import catalog
 from google.cloud.retail_v2.types import catalog as gcr_catalog
 from google.cloud.retail_v2.types import catalog_service
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import CatalogServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import CatalogServiceGrpcTransport
 from .transports.grpc_asyncio import CatalogServiceGrpcAsyncIOTransport
@@ -157,6 +158,22 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def branch_path(project: str, location: str, catalog: str, branch: str,) -> str:
+        """Returns a fully-qualified branch string."""
+        return "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}".format(
+            project=project, location=location, catalog=catalog, branch=branch,
+        )
+
+    @staticmethod
+    def parse_branch_path(path: str) -> Dict[str, str]:
+        """Parses a branch path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/catalogs/(?P<catalog>.+?)/branches/(?P<branch>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def catalog_path(project: str, location: str, catalog: str,) -> str:
@@ -475,11 +492,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Indicates which fields in the provided
-                [Catalog][google.cloud.retail.v2.Catalog] to update. If
-                not set, will only update the
-                [Catalog.product_level_config][google.cloud.retail.v2.Catalog.product_level_config]
-                field, which is also the only currently supported field
-                to update.
+                [Catalog][google.cloud.retail.v2.Catalog] to update.
 
                 If an unsupported or unknown field is provided, an
                 INVALID_ARGUMENT error is returned.
@@ -530,6 +543,187 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
             gapic_v1.routing_header.to_grpc_metadata(
                 (("catalog.name", request.catalog.name),)
             ),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def set_default_branch(
+        self,
+        request: catalog_service.SetDefaultBranchRequest = None,
+        *,
+        catalog: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Set a specified branch id as default branch. API methods such as
+        [SearchService.Search][google.cloud.retail.v2.SearchService.Search],
+        [ProductService.GetProduct][google.cloud.retail.v2.ProductService.GetProduct],
+        [ProductService.ListProducts][google.cloud.retail.v2.ProductService.ListProducts]
+        will treat requests using "default_branch" to the actual branch
+        id set as default.
+
+        For example, if ``projects/*/locations/*/catalogs/*/branches/1``
+        is set as default, setting
+        [SearchRequest.branch][google.cloud.retail.v2.SearchRequest.branch]
+        to ``projects/*/locations/*/catalogs/*/branches/default_branch``
+        is equivalent to setting
+        [SearchRequest.branch][google.cloud.retail.v2.SearchRequest.branch]
+        to ``projects/*/locations/*/catalogs/*/branches/1``.
+
+        Using multiple branches can be useful when developers would like
+        to have a staging branch to test and verify for future usage.
+        When it becomes ready, developers switch on the staging branch
+        using this API while keeping using
+        ``projects/*/locations/*/catalogs/*/branches/default_branch`` as
+        [SearchRequest.branch][google.cloud.retail.v2.SearchRequest.branch]
+        to route the traffic to this staging branch.
+
+        CAUTION: If you have live predict/search traffic, switching the
+        default branch could potentially cause outages if the ID space
+        of the new branch is very different from the old one.
+
+        More specifically:
+
+        -  PredictionService will only return product IDs from branch
+           {newBranch}.
+        -  SearchService will only return product IDs from branch
+           {newBranch} (if branch is not explicitly set).
+        -  UserEventService will only join events with products from
+           branch {newBranch}.
+
+        This feature is only available for users who have Retail Search
+        enabled. Contact Retail Support
+        (retail-search-support@google.com) if you are interested in
+        using Retail Search.
+
+        Args:
+            request (google.cloud.retail_v2.types.SetDefaultBranchRequest):
+                The request object. Request message to set a specified
+                branch as new default_branch.
+            catalog (str):
+                Full resource name of the catalog, such as
+                ``projects/*/locations/global/catalogs/default_catalog``.
+
+                This corresponds to the ``catalog`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([catalog])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a catalog_service.SetDefaultBranchRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, catalog_service.SetDefaultBranchRequest):
+            request = catalog_service.SetDefaultBranchRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if catalog is not None:
+                request.catalog = catalog
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.set_default_branch]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("catalog", request.catalog),)),
+        )
+
+        # Send the request.
+        rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
+
+    def get_default_branch(
+        self,
+        request: catalog_service.GetDefaultBranchRequest = None,
+        *,
+        catalog: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> catalog_service.GetDefaultBranchResponse:
+        r"""Get which branch is currently default branch set by
+        [CatalogService.SetDefaultBranch][google.cloud.retail.v2.CatalogService.SetDefaultBranch]
+        method under a specified parent catalog.
+
+        This feature is only available for users who have Retail Search
+        enabled. Contact Retail Support
+        (retail-search-support@google.com) if you are interested in
+        using Retail Search.
+
+        Args:
+            request (google.cloud.retail_v2.types.GetDefaultBranchRequest):
+                The request object. Request message to show which branch
+                is currently the default branch.
+            catalog (str):
+                The parent catalog resource name, such as
+                ``projects/*/locations/global/catalogs/default_catalog``.
+
+                This corresponds to the ``catalog`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.retail_v2.types.GetDefaultBranchResponse:
+                Response message of
+                   [CatalogService.GetDefaultBranch][google.cloud.retail.v2.CatalogService.GetDefaultBranch].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([catalog])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a catalog_service.GetDefaultBranchRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, catalog_service.GetDefaultBranchRequest):
+            request = catalog_service.GetDefaultBranchRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if catalog is not None:
+                request.catalog = catalog
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_default_branch]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("catalog", request.catalog),)),
         )
 
         # Send the request.

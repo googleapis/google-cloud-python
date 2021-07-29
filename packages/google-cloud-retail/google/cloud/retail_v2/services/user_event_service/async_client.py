@@ -51,6 +51,8 @@ class UserEventServiceAsyncClient:
     DEFAULT_ENDPOINT = UserEventServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = UserEventServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    catalog_path = staticmethod(UserEventServiceClient.catalog_path)
+    parse_catalog_path = staticmethod(UserEventServiceClient.parse_catalog_path)
     product_path = staticmethod(UserEventServiceClient.product_path)
     parse_product_path = staticmethod(UserEventServiceClient.parse_product_path)
     common_billing_account_path = staticmethod(

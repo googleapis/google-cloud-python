@@ -28,6 +28,7 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.retail_v2.types import catalog as gcr_catalog
 from google.cloud.retail_v2.types import catalog_service
+from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -159,6 +160,12 @@ class CatalogServiceTransport(abc.ABC):
             self.update_catalog: gapic_v1.method.wrap_method(
                 self.update_catalog, default_timeout=None, client_info=client_info,
             ),
+            self.set_default_branch: gapic_v1.method.wrap_method(
+                self.set_default_branch, default_timeout=None, client_info=client_info,
+            ),
+            self.get_default_branch: gapic_v1.method.wrap_method(
+                self.get_default_branch, default_timeout=None, client_info=client_info,
+            ),
         }
 
     @property
@@ -179,6 +186,27 @@ class CatalogServiceTransport(abc.ABC):
     ) -> Callable[
         [catalog_service.UpdateCatalogRequest],
         Union[gcr_catalog.Catalog, Awaitable[gcr_catalog.Catalog]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_default_branch(
+        self,
+    ) -> Callable[
+        [catalog_service.SetDefaultBranchRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_default_branch(
+        self,
+    ) -> Callable[
+        [catalog_service.GetDefaultBranchRequest],
+        Union[
+            catalog_service.GetDefaultBranchResponse,
+            Awaitable[catalog_service.GetDefaultBranchResponse],
+        ],
     ]:
         raise NotImplementedError()
 

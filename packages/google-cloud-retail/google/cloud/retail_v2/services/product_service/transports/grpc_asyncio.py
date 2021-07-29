@@ -307,6 +307,35 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
         return self._stubs["get_product"]
 
     @property
+    def list_products(
+        self,
+    ) -> Callable[
+        [product_service.ListProductsRequest],
+        Awaitable[product_service.ListProductsResponse],
+    ]:
+        r"""Return a callable for the list products method over gRPC.
+
+        Gets a list of [Product][google.cloud.retail.v2.Product]s.
+
+        Returns:
+            Callable[[~.ListProductsRequest],
+                    Awaitable[~.ListProductsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_products" not in self._stubs:
+            self._stubs["list_products"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2.ProductService/ListProducts",
+                request_serializer=product_service.ListProductsRequest.serialize,
+                response_deserializer=product_service.ListProductsResponse.deserialize,
+            )
+        return self._stubs["list_products"]
+
+    @property
     def update_product(
         self,
     ) -> Callable[
@@ -395,6 +424,172 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["import_products"]
+
+    @property
+    def set_inventory(
+        self,
+    ) -> Callable[
+        [product_service.SetInventoryRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the set inventory method over gRPC.
+
+        Updates inventory information for a
+        [Product][google.cloud.retail.v2.Product] while respecting the
+        last update timestamps of each inventory field.
+
+        This process is asynchronous and does not require the
+        [Product][google.cloud.retail.v2.Product] to exist before
+        updating fulfillment information. If the request is valid, the
+        update will be enqueued and processed downstream. As a
+        consequence, when a response is returned, updates are not
+        immediately manifested in the
+        [Product][google.cloud.retail.v2.Product] queried by
+        [GetProduct][google.cloud.retail.v2.ProductService.GetProduct]
+        or
+        [ListProducts][google.cloud.retail.v2.ProductService.ListProducts].
+
+        When inventory is updated with
+        [CreateProduct][google.cloud.retail.v2.ProductService.CreateProduct]
+        and
+        [UpdateProduct][google.cloud.retail.v2.ProductService.UpdateProduct],
+        the specified inventory field value(s) will overwrite any
+        existing value(s) while ignoring the last update time for this
+        field. Furthermore, the last update time for the specified
+        inventory fields will be overwritten to the time of the
+        [CreateProduct][google.cloud.retail.v2.ProductService.CreateProduct]
+        or
+        [UpdateProduct][google.cloud.retail.v2.ProductService.UpdateProduct]
+        request.
+
+        If no inventory fields are set in
+        [CreateProductRequest.product][google.cloud.retail.v2.CreateProductRequest.product],
+        then any pre-existing inventory information for this product
+        will be used.
+
+        If no inventory fields are set in
+        [UpdateProductRequest.set_mask][], then any existing inventory
+        information will be preserved.
+
+        Pre-existing inventory information can only be updated with
+        [SetInventory][google.cloud.retail.v2.ProductService.SetInventory],
+        [AddFulfillmentPlaces][google.cloud.retail.v2.ProductService.AddFulfillmentPlaces],
+        and
+        [RemoveFulfillmentPlaces][google.cloud.retail.v2.ProductService.RemoveFulfillmentPlaces].
+
+        This feature is only available for users who have Retail Search
+        enabled. Contact Retail Support
+        (retail-search-support@google.com) if you are interested in
+        using Retail Search.
+
+        Returns:
+            Callable[[~.SetInventoryRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_inventory" not in self._stubs:
+            self._stubs["set_inventory"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2.ProductService/SetInventory",
+                request_serializer=product_service.SetInventoryRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["set_inventory"]
+
+    @property
+    def add_fulfillment_places(
+        self,
+    ) -> Callable[
+        [product_service.AddFulfillmentPlacesRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the add fulfillment places method over gRPC.
+
+        Incrementally adds place IDs to
+        [Product.fulfillment_info.place_ids][google.cloud.retail.v2.FulfillmentInfo.place_ids].
+
+        This process is asynchronous and does not require the
+        [Product][google.cloud.retail.v2.Product] to exist before
+        updating fulfillment information. If the request is valid, the
+        update will be enqueued and processed downstream. As a
+        consequence, when a response is returned, the added place IDs
+        are not immediately manifested in the
+        [Product][google.cloud.retail.v2.Product] queried by
+        [GetProduct][google.cloud.retail.v2.ProductService.GetProduct]
+        or
+        [ListProducts][google.cloud.retail.v2.ProductService.ListProducts].
+
+        This feature is only available for users who have Retail Search
+        enabled. Contact Retail Support
+        (retail-search-support@google.com) if you are interested in
+        using Retail Search.
+
+        Returns:
+            Callable[[~.AddFulfillmentPlacesRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "add_fulfillment_places" not in self._stubs:
+            self._stubs["add_fulfillment_places"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2.ProductService/AddFulfillmentPlaces",
+                request_serializer=product_service.AddFulfillmentPlacesRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["add_fulfillment_places"]
+
+    @property
+    def remove_fulfillment_places(
+        self,
+    ) -> Callable[
+        [product_service.RemoveFulfillmentPlacesRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the remove fulfillment places method over gRPC.
+
+        Incrementally removes place IDs from a
+        [Product.fulfillment_info.place_ids][google.cloud.retail.v2.FulfillmentInfo.place_ids].
+
+        This process is asynchronous and does not require the
+        [Product][google.cloud.retail.v2.Product] to exist before
+        updating fulfillment information. If the request is valid, the
+        update will be enqueued and processed downstream. As a
+        consequence, when a response is returned, the removed place IDs
+        are not immediately manifested in the
+        [Product][google.cloud.retail.v2.Product] queried by
+        [GetProduct][google.cloud.retail.v2.ProductService.GetProduct]
+        or
+        [ListProducts][google.cloud.retail.v2.ProductService.ListProducts].
+
+        This feature is only available for users who have Retail Search
+        enabled. Contact Retail Support
+        (retail-search-support@google.com) if you are interested in
+        using Retail Search.
+
+        Returns:
+            Callable[[~.RemoveFulfillmentPlacesRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "remove_fulfillment_places" not in self._stubs:
+            self._stubs["remove_fulfillment_places"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2.ProductService/RemoveFulfillmentPlaces",
+                request_serializer=product_service.RemoveFulfillmentPlacesRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["remove_fulfillment_places"]
 
 
 __all__ = ("ProductServiceGrpcAsyncIOTransport",)

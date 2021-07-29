@@ -17,6 +17,7 @@ import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
+from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -24,16 +25,20 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
-from google.cloud.retail_v2.types import catalog as gcr_catalog
-from google.cloud.retail_v2.types import catalog_service
-from google.protobuf import empty_pb2  # type: ignore
-from .base import CatalogServiceTransport, DEFAULT_CLIENT_INFO
+from google.cloud.retail_v2.types import completion_service
+from google.cloud.retail_v2.types import import_config
+from google.longrunning import operations_pb2  # type: ignore
+from .base import CompletionServiceTransport, DEFAULT_CLIENT_INFO
 
 
-class CatalogServiceGrpcTransport(CatalogServiceTransport):
-    """gRPC backend transport for CatalogService.
+class CompletionServiceGrpcTransport(CompletionServiceTransport):
+    """gRPC backend transport for CompletionService.
 
-    Service for managing catalog configuration.
+    Auto-completion service for retail.
+    This feature is only available for users who have Retail Search
+    enabled. Contact Retail Support (retail-search-
+    support@google.com) if you are interested in using Retail
+    Search.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -112,6 +117,7 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -228,19 +234,38 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         return self._grpc_channel
 
     @property
-    def list_catalogs(
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Sanity check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+
+        # Return the client from cache.
+        return self._operations_client
+
+    @property
+    def complete_query(
         self,
     ) -> Callable[
-        [catalog_service.ListCatalogsRequest], catalog_service.ListCatalogsResponse
+        [completion_service.CompleteQueryRequest],
+        completion_service.CompleteQueryResponse,
     ]:
-        r"""Return a callable for the list catalogs method over gRPC.
+        r"""Return a callable for the complete query method over gRPC.
 
-        Lists all the [Catalog][google.cloud.retail.v2.Catalog]s
-        associated with the project.
+        Completes the specified prefix with keyword
+        suggestions.
+        This feature is only available for users who have Retail
+        Search enabled. Contact Retail Support (retail-search-
+        support@google.com) if you are interested in using
+        Retail Search.
 
         Returns:
-            Callable[[~.ListCatalogsRequest],
-                    ~.ListCatalogsResponse]:
+            Callable[[~.CompleteQueryRequest],
+                    ~.CompleteQueryResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -248,126 +273,33 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_catalogs" not in self._stubs:
-            self._stubs["list_catalogs"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2.CatalogService/ListCatalogs",
-                request_serializer=catalog_service.ListCatalogsRequest.serialize,
-                response_deserializer=catalog_service.ListCatalogsResponse.deserialize,
+        if "complete_query" not in self._stubs:
+            self._stubs["complete_query"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2.CompletionService/CompleteQuery",
+                request_serializer=completion_service.CompleteQueryRequest.serialize,
+                response_deserializer=completion_service.CompleteQueryResponse.deserialize,
             )
-        return self._stubs["list_catalogs"]
+        return self._stubs["complete_query"]
 
     @property
-    def update_catalog(
-        self,
-    ) -> Callable[[catalog_service.UpdateCatalogRequest], gcr_catalog.Catalog]:
-        r"""Return a callable for the update catalog method over gRPC.
-
-        Updates the [Catalog][google.cloud.retail.v2.Catalog]s.
-
-        Returns:
-            Callable[[~.UpdateCatalogRequest],
-                    ~.Catalog]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_catalog" not in self._stubs:
-            self._stubs["update_catalog"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2.CatalogService/UpdateCatalog",
-                request_serializer=catalog_service.UpdateCatalogRequest.serialize,
-                response_deserializer=gcr_catalog.Catalog.deserialize,
-            )
-        return self._stubs["update_catalog"]
-
-    @property
-    def set_default_branch(
-        self,
-    ) -> Callable[[catalog_service.SetDefaultBranchRequest], empty_pb2.Empty]:
-        r"""Return a callable for the set default branch method over gRPC.
-
-        Set a specified branch id as default branch. API methods such as
-        [SearchService.Search][google.cloud.retail.v2.SearchService.Search],
-        [ProductService.GetProduct][google.cloud.retail.v2.ProductService.GetProduct],
-        [ProductService.ListProducts][google.cloud.retail.v2.ProductService.ListProducts]
-        will treat requests using "default_branch" to the actual branch
-        id set as default.
-
-        For example, if ``projects/*/locations/*/catalogs/*/branches/1``
-        is set as default, setting
-        [SearchRequest.branch][google.cloud.retail.v2.SearchRequest.branch]
-        to ``projects/*/locations/*/catalogs/*/branches/default_branch``
-        is equivalent to setting
-        [SearchRequest.branch][google.cloud.retail.v2.SearchRequest.branch]
-        to ``projects/*/locations/*/catalogs/*/branches/1``.
-
-        Using multiple branches can be useful when developers would like
-        to have a staging branch to test and verify for future usage.
-        When it becomes ready, developers switch on the staging branch
-        using this API while keeping using
-        ``projects/*/locations/*/catalogs/*/branches/default_branch`` as
-        [SearchRequest.branch][google.cloud.retail.v2.SearchRequest.branch]
-        to route the traffic to this staging branch.
-
-        CAUTION: If you have live predict/search traffic, switching the
-        default branch could potentially cause outages if the ID space
-        of the new branch is very different from the old one.
-
-        More specifically:
-
-        -  PredictionService will only return product IDs from branch
-           {newBranch}.
-        -  SearchService will only return product IDs from branch
-           {newBranch} (if branch is not explicitly set).
-        -  UserEventService will only join events with products from
-           branch {newBranch}.
-
-        This feature is only available for users who have Retail Search
-        enabled. Contact Retail Support
-        (retail-search-support@google.com) if you are interested in
-        using Retail Search.
-
-        Returns:
-            Callable[[~.SetDefaultBranchRequest],
-                    ~.Empty]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "set_default_branch" not in self._stubs:
-            self._stubs["set_default_branch"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2.CatalogService/SetDefaultBranch",
-                request_serializer=catalog_service.SetDefaultBranchRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
-            )
-        return self._stubs["set_default_branch"]
-
-    @property
-    def get_default_branch(
+    def import_completion_data(
         self,
     ) -> Callable[
-        [catalog_service.GetDefaultBranchRequest],
-        catalog_service.GetDefaultBranchResponse,
+        [import_config.ImportCompletionDataRequest], operations_pb2.Operation
     ]:
-        r"""Return a callable for the get default branch method over gRPC.
+        r"""Return a callable for the import completion data method over gRPC.
 
-        Get which branch is currently default branch set by
-        [CatalogService.SetDefaultBranch][google.cloud.retail.v2.CatalogService.SetDefaultBranch]
-        method under a specified parent catalog.
-
-        This feature is only available for users who have Retail Search
-        enabled. Contact Retail Support
-        (retail-search-support@google.com) if you are interested in
-        using Retail Search.
+        Bulk import of processed completion dataset.
+        Request processing may be synchronous. Partial updating
+        is not supported.
+        This feature is only available for users who have Retail
+        Search enabled. Contact Retail Support (retail-search-
+        support@google.com) if you are interested in using
+        Retail Search.
 
         Returns:
-            Callable[[~.GetDefaultBranchRequest],
-                    ~.GetDefaultBranchResponse]:
+            Callable[[~.ImportCompletionDataRequest],
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -375,13 +307,13 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_default_branch" not in self._stubs:
-            self._stubs["get_default_branch"] = self.grpc_channel.unary_unary(
-                "/google.cloud.retail.v2.CatalogService/GetDefaultBranch",
-                request_serializer=catalog_service.GetDefaultBranchRequest.serialize,
-                response_deserializer=catalog_service.GetDefaultBranchResponse.deserialize,
+        if "import_completion_data" not in self._stubs:
+            self._stubs["import_completion_data"] = self.grpc_channel.unary_unary(
+                "/google.cloud.retail.v2.CompletionService/ImportCompletionData",
+                request_serializer=import_config.ImportCompletionDataRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["get_default_branch"]
+        return self._stubs["import_completion_data"]
 
 
-__all__ = ("CatalogServiceGrpcTransport",)
+__all__ = ("CompletionServiceGrpcTransport",)

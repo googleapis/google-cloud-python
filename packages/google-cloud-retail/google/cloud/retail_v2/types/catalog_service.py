@@ -17,11 +17,19 @@ import proto  # type: ignore
 
 from google.cloud.retail_v2.types import catalog as gcr_catalog
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
     package="google.cloud.retail.v2",
-    manifest={"ListCatalogsRequest", "ListCatalogsResponse", "UpdateCatalogRequest",},
+    manifest={
+        "ListCatalogsRequest",
+        "ListCatalogsResponse",
+        "UpdateCatalogRequest",
+        "SetDefaultBranchRequest",
+        "GetDefaultBranchRequest",
+        "GetDefaultBranchResponse",
+    },
 )
 
 
@@ -109,11 +117,7 @@ class UpdateCatalogRequest(proto.Message):
             does not exist, a NOT_FOUND error is returned.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Indicates which fields in the provided
-            [Catalog][google.cloud.retail.v2.Catalog] to update. If not
-            set, will only update the
-            [Catalog.product_level_config][google.cloud.retail.v2.Catalog.product_level_config]
-            field, which is also the only currently supported field to
-            update.
+            [Catalog][google.cloud.retail.v2.Catalog] to update.
 
             If an unsupported or unknown field is provided, an
             INVALID_ARGUMENT error is returned.
@@ -123,6 +127,66 @@ class UpdateCatalogRequest(proto.Message):
     update_mask = proto.Field(
         proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
     )
+
+
+class SetDefaultBranchRequest(proto.Message):
+    r"""Request message to set a specified branch as new default_branch.
+    Attributes:
+        catalog (str):
+            Full resource name of the catalog, such as
+            ``projects/*/locations/global/catalogs/default_catalog``.
+        branch_id (str):
+            The final component of the resource name of a branch.
+
+            This field must be one of "0", "1" or "2". Otherwise, an
+            INVALID_ARGUMENT error is returned.
+        note (str):
+            Some note on this request, this can be retrieved by
+            [CatalogService.GetDefaultBranch][google.cloud.retail.v2.CatalogService.GetDefaultBranch]
+            before next valid default branch set occurs.
+
+            This field must be a UTF-8 encoded string with a length
+            limit of 1,000 characters. Otherwise, an INVALID_ARGUMENT
+            error is returned.
+    """
+
+    catalog = proto.Field(proto.STRING, number=1,)
+    branch_id = proto.Field(proto.STRING, number=2,)
+    note = proto.Field(proto.STRING, number=3,)
+
+
+class GetDefaultBranchRequest(proto.Message):
+    r"""Request message to show which branch is currently the default
+    branch.
+
+    Attributes:
+        catalog (str):
+            The parent catalog resource name, such as
+            ``projects/*/locations/global/catalogs/default_catalog``.
+    """
+
+    catalog = proto.Field(proto.STRING, number=1,)
+
+
+class GetDefaultBranchResponse(proto.Message):
+    r"""Response message of
+    [CatalogService.GetDefaultBranch][google.cloud.retail.v2.CatalogService.GetDefaultBranch].
+
+    Attributes:
+        branch (str):
+            Full resource name of the branch id currently
+            set as default branch.
+        set_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when this branch is set to default.
+        note (str):
+            This corresponds to
+            [SetDefaultBranchRequest.note][google.cloud.retail.v2.SetDefaultBranchRequest.note]
+            field, when this branch was set as default.
+    """
+
+    branch = proto.Field(proto.STRING, number=1,)
+    set_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    note = proto.Field(proto.STRING, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

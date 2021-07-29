@@ -31,24 +31,16 @@ from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.retail_v2.services.prediction_service import (
-    PredictionServiceAsyncClient,
-)
-from google.cloud.retail_v2.services.prediction_service import PredictionServiceClient
-from google.cloud.retail_v2.services.prediction_service import transports
-from google.cloud.retail_v2.services.prediction_service.transports.base import (
+from google.cloud.retail_v2.services.search_service import SearchServiceAsyncClient
+from google.cloud.retail_v2.services.search_service import SearchServiceClient
+from google.cloud.retail_v2.services.search_service import pagers
+from google.cloud.retail_v2.services.search_service import transports
+from google.cloud.retail_v2.services.search_service.transports.base import (
     _GOOGLE_AUTH_VERSION,
 )
 from google.cloud.retail_v2.types import common
-from google.cloud.retail_v2.types import prediction_service
-from google.cloud.retail_v2.types import product
-from google.cloud.retail_v2.types import user_event
+from google.cloud.retail_v2.types import search_service
 from google.oauth2 import service_account
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
 import google.auth
 
 
@@ -88,33 +80,32 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert PredictionServiceClient._get_default_mtls_endpoint(None) is None
+    assert SearchServiceClient._get_default_mtls_endpoint(None) is None
     assert (
-        PredictionServiceClient._get_default_mtls_endpoint(api_endpoint)
+        SearchServiceClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        PredictionServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        SearchServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        PredictionServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
+        SearchServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        PredictionServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        SearchServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        PredictionServiceClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
+        SearchServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
     )
 
 
 @pytest.mark.parametrize(
-    "client_class", [PredictionServiceClient, PredictionServiceAsyncClient,]
+    "client_class", [SearchServiceClient, SearchServiceAsyncClient,]
 )
-def test_prediction_service_client_from_service_account_info(client_class):
+def test_search_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
@@ -131,11 +122,11 @@ def test_prediction_service_client_from_service_account_info(client_class):
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.PredictionServiceGrpcTransport, "grpc"),
-        (transports.PredictionServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.SearchServiceGrpcTransport, "grpc"),
+        (transports.SearchServiceGrpcAsyncIOTransport, "grpc_asyncio"),
     ],
 )
-def test_prediction_service_client_service_account_always_use_jwt(
+def test_search_service_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -154,9 +145,9 @@ def test_prediction_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [PredictionServiceClient, PredictionServiceAsyncClient,]
+    "client_class", [SearchServiceClient, SearchServiceAsyncClient,]
 )
-def test_prediction_service_client_from_service_account_file(client_class):
+def test_search_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
@@ -173,49 +164,49 @@ def test_prediction_service_client_from_service_account_file(client_class):
         assert client.transport._host == "retail.googleapis.com:443"
 
 
-def test_prediction_service_client_get_transport_class():
-    transport = PredictionServiceClient.get_transport_class()
+def test_search_service_client_get_transport_class():
+    transport = SearchServiceClient.get_transport_class()
     available_transports = [
-        transports.PredictionServiceGrpcTransport,
+        transports.SearchServiceGrpcTransport,
     ]
     assert transport in available_transports
 
-    transport = PredictionServiceClient.get_transport_class("grpc")
-    assert transport == transports.PredictionServiceGrpcTransport
+    transport = SearchServiceClient.get_transport_class("grpc")
+    assert transport == transports.SearchServiceGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (PredictionServiceClient, transports.PredictionServiceGrpcTransport, "grpc"),
+        (SearchServiceClient, transports.SearchServiceGrpcTransport, "grpc"),
         (
-            PredictionServiceAsyncClient,
-            transports.PredictionServiceGrpcAsyncIOTransport,
+            SearchServiceAsyncClient,
+            transports.SearchServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
     ],
 )
 @mock.patch.object(
-    PredictionServiceClient,
+    SearchServiceClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(PredictionServiceClient),
+    modify_default_endpoint(SearchServiceClient),
 )
 @mock.patch.object(
-    PredictionServiceAsyncClient,
+    SearchServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(PredictionServiceAsyncClient),
+    modify_default_endpoint(SearchServiceAsyncClient),
 )
-def test_prediction_service_client_client_options(
+def test_search_service_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(PredictionServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(SearchServiceClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(PredictionServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(SearchServiceClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -302,44 +293,34 @@ def test_prediction_service_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
+        (SearchServiceClient, transports.SearchServiceGrpcTransport, "grpc", "true"),
         (
-            PredictionServiceClient,
-            transports.PredictionServiceGrpcTransport,
-            "grpc",
-            "true",
-        ),
-        (
-            PredictionServiceAsyncClient,
-            transports.PredictionServiceGrpcAsyncIOTransport,
+            SearchServiceAsyncClient,
+            transports.SearchServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
+        (SearchServiceClient, transports.SearchServiceGrpcTransport, "grpc", "false"),
         (
-            PredictionServiceClient,
-            transports.PredictionServiceGrpcTransport,
-            "grpc",
-            "false",
-        ),
-        (
-            PredictionServiceAsyncClient,
-            transports.PredictionServiceGrpcAsyncIOTransport,
+            SearchServiceAsyncClient,
+            transports.SearchServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
     ],
 )
 @mock.patch.object(
-    PredictionServiceClient,
+    SearchServiceClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(PredictionServiceClient),
+    modify_default_endpoint(SearchServiceClient),
 )
 @mock.patch.object(
-    PredictionServiceAsyncClient,
+    SearchServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(PredictionServiceAsyncClient),
+    modify_default_endpoint(SearchServiceAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_prediction_service_client_mtls_env_auto(
+def test_search_service_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -435,15 +416,15 @@ def test_prediction_service_client_mtls_env_auto(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (PredictionServiceClient, transports.PredictionServiceGrpcTransport, "grpc"),
+        (SearchServiceClient, transports.SearchServiceGrpcTransport, "grpc"),
         (
-            PredictionServiceAsyncClient,
-            transports.PredictionServiceGrpcAsyncIOTransport,
+            SearchServiceAsyncClient,
+            transports.SearchServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
     ],
 )
-def test_prediction_service_client_client_options_scopes(
+def test_search_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -466,15 +447,15 @@ def test_prediction_service_client_client_options_scopes(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (PredictionServiceClient, transports.PredictionServiceGrpcTransport, "grpc"),
+        (SearchServiceClient, transports.SearchServiceGrpcTransport, "grpc"),
         (
-            PredictionServiceAsyncClient,
-            transports.PredictionServiceGrpcAsyncIOTransport,
+            SearchServiceAsyncClient,
+            transports.SearchServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
     ],
 )
-def test_prediction_service_client_client_options_credentials_file(
+def test_search_service_client_client_options_credentials_file(
     client_class, transport_class, transport_name
 ):
     # Check the case credentials file is provided.
@@ -494,12 +475,12 @@ def test_prediction_service_client_client_options_credentials_file(
         )
 
 
-def test_prediction_service_client_client_options_from_dict():
+def test_search_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.retail_v2.services.prediction_service.transports.PredictionServiceGrpcTransport.__init__"
+        "google.cloud.retail_v2.services.search_service.transports.SearchServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = PredictionServiceClient(
+        client = SearchServiceClient(
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
         grpc_transport.assert_called_once_with(
@@ -514,10 +495,8 @@ def test_prediction_service_client_client_options_from_dict():
         )
 
 
-def test_predict(
-    transport: str = "grpc", request_type=prediction_service.PredictRequest
-):
-    client = PredictionServiceClient(
+def test_search(transport: str = "grpc", request_type=search_service.SearchRequest):
+    client = SearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -526,51 +505,55 @@ def test_predict(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.predict), "__call__") as call:
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = prediction_service.PredictResponse(
+        call.return_value = search_service.SearchResponse(
+            total_size=1086,
+            corrected_query="corrected_query_value",
             attribution_token="attribution_token_value",
-            missing_ids=["missing_ids_value"],
-            validate_only=True,
+            next_page_token="next_page_token_value",
+            redirect_uri="redirect_uri_value",
         )
-        response = client.predict(request)
+        response = client.search(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == prediction_service.PredictRequest()
+        assert args[0] == search_service.SearchRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, prediction_service.PredictResponse)
+    assert isinstance(response, pagers.SearchPager)
+    assert response.total_size == 1086
+    assert response.corrected_query == "corrected_query_value"
     assert response.attribution_token == "attribution_token_value"
-    assert response.missing_ids == ["missing_ids_value"]
-    assert response.validate_only is True
+    assert response.next_page_token == "next_page_token_value"
+    assert response.redirect_uri == "redirect_uri_value"
 
 
-def test_predict_from_dict():
-    test_predict(request_type=dict)
+def test_search_from_dict():
+    test_search(request_type=dict)
 
 
-def test_predict_empty_call():
+def test_search_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = PredictionServiceClient(
+    client = SearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.predict), "__call__") as call:
-        client.predict()
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
+        client.search()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == prediction_service.PredictRequest()
+        assert args[0] == search_service.SearchRequest()
 
 
 @pytest.mark.asyncio
-async def test_predict_async(
-    transport: str = "grpc_asyncio", request_type=prediction_service.PredictRequest
+async def test_search_async(
+    transport: str = "grpc_asyncio", request_type=search_service.SearchRequest
 ):
-    client = PredictionServiceAsyncClient(
+    client = SearchServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -579,47 +562,51 @@ async def test_predict_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.predict), "__call__") as call:
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            prediction_service.PredictResponse(
+            search_service.SearchResponse(
+                total_size=1086,
+                corrected_query="corrected_query_value",
                 attribution_token="attribution_token_value",
-                missing_ids=["missing_ids_value"],
-                validate_only=True,
+                next_page_token="next_page_token_value",
+                redirect_uri="redirect_uri_value",
             )
         )
-        response = await client.predict(request)
+        response = await client.search(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == prediction_service.PredictRequest()
+        assert args[0] == search_service.SearchRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, prediction_service.PredictResponse)
+    assert isinstance(response, pagers.SearchAsyncPager)
+    assert response.total_size == 1086
+    assert response.corrected_query == "corrected_query_value"
     assert response.attribution_token == "attribution_token_value"
-    assert response.missing_ids == ["missing_ids_value"]
-    assert response.validate_only is True
+    assert response.next_page_token == "next_page_token_value"
+    assert response.redirect_uri == "redirect_uri_value"
 
 
 @pytest.mark.asyncio
-async def test_predict_async_from_dict():
-    await test_predict_async(request_type=dict)
+async def test_search_async_from_dict():
+    await test_search_async(request_type=dict)
 
 
-def test_predict_field_headers():
-    client = PredictionServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_search_field_headers():
+    client = SearchServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = prediction_service.PredictRequest()
+    request = search_service.SearchRequest()
 
     request.placement = "placement/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.predict), "__call__") as call:
-        call.return_value = prediction_service.PredictResponse()
-        client.predict(request)
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
+        call.return_value = search_service.SearchResponse()
+        client.search(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -632,23 +619,23 @@ def test_predict_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_predict_field_headers_async():
-    client = PredictionServiceAsyncClient(
+async def test_search_field_headers_async():
+    client = SearchServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = prediction_service.PredictRequest()
+    request = search_service.SearchRequest()
 
     request.placement = "placement/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.predict), "__call__") as call:
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            prediction_service.PredictResponse()
+            search_service.SearchResponse()
         )
-        await client.predict(request)
+        await client.search(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -660,54 +647,212 @@ async def test_predict_field_headers_async():
     assert ("x-goog-request-params", "placement=placement/value",) in kw["metadata"]
 
 
+def test_search_pager():
+    client = SearchServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            search_service.SearchResponse(
+                results=[
+                    search_service.SearchResponse.SearchResult(),
+                    search_service.SearchResponse.SearchResult(),
+                    search_service.SearchResponse.SearchResult(),
+                ],
+                next_page_token="abc",
+            ),
+            search_service.SearchResponse(results=[], next_page_token="def",),
+            search_service.SearchResponse(
+                results=[search_service.SearchResponse.SearchResult(),],
+                next_page_token="ghi",
+            ),
+            search_service.SearchResponse(
+                results=[
+                    search_service.SearchResponse.SearchResult(),
+                    search_service.SearchResponse.SearchResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("placement", ""),)),
+        )
+        pager = client.search(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(
+            isinstance(i, search_service.SearchResponse.SearchResult) for i in results
+        )
+
+
+def test_search_pages():
+    client = SearchServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            search_service.SearchResponse(
+                results=[
+                    search_service.SearchResponse.SearchResult(),
+                    search_service.SearchResponse.SearchResult(),
+                    search_service.SearchResponse.SearchResult(),
+                ],
+                next_page_token="abc",
+            ),
+            search_service.SearchResponse(results=[], next_page_token="def",),
+            search_service.SearchResponse(
+                results=[search_service.SearchResponse.SearchResult(),],
+                next_page_token="ghi",
+            ),
+            search_service.SearchResponse(
+                results=[
+                    search_service.SearchResponse.SearchResult(),
+                    search_service.SearchResponse.SearchResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.search(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_search_async_pager():
+    client = SearchServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            search_service.SearchResponse(
+                results=[
+                    search_service.SearchResponse.SearchResult(),
+                    search_service.SearchResponse.SearchResult(),
+                    search_service.SearchResponse.SearchResult(),
+                ],
+                next_page_token="abc",
+            ),
+            search_service.SearchResponse(results=[], next_page_token="def",),
+            search_service.SearchResponse(
+                results=[search_service.SearchResponse.SearchResult(),],
+                next_page_token="ghi",
+            ),
+            search_service.SearchResponse(
+                results=[
+                    search_service.SearchResponse.SearchResult(),
+                    search_service.SearchResponse.SearchResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.search(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, search_service.SearchResponse.SearchResult) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_async_pages():
+    client = SearchServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            search_service.SearchResponse(
+                results=[
+                    search_service.SearchResponse.SearchResult(),
+                    search_service.SearchResponse.SearchResult(),
+                    search_service.SearchResponse.SearchResult(),
+                ],
+                next_page_token="abc",
+            ),
+            search_service.SearchResponse(results=[], next_page_token="def",),
+            search_service.SearchResponse(
+                results=[search_service.SearchResponse.SearchResult(),],
+                next_page_token="ghi",
+            ),
+            search_service.SearchResponse(
+                results=[
+                    search_service.SearchResponse.SearchResult(),
+                    search_service.SearchResponse.SearchResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.search(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.PredictionServiceGrpcTransport(
+    transport = transports.SearchServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = PredictionServiceClient(
+        client = SearchServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.PredictionServiceGrpcTransport(
+    transport = transports.SearchServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = PredictionServiceClient(
+        client = SearchServiceClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.PredictionServiceGrpcTransport(
+    transport = transports.SearchServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = PredictionServiceClient(
+        client = SearchServiceClient(
             client_options={"scopes": ["1", "2"]}, transport=transport,
         )
 
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.PredictionServiceGrpcTransport(
+    transport = transports.SearchServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = PredictionServiceClient(transport=transport)
+    client = SearchServiceClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.PredictionServiceGrpcTransport(
+    transport = transports.SearchServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.PredictionServiceGrpcAsyncIOTransport(
+    transport = transports.SearchServiceGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -717,8 +862,8 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.PredictionServiceGrpcTransport,
-        transports.PredictionServiceGrpcAsyncIOTransport,
+        transports.SearchServiceGrpcTransport,
+        transports.SearchServiceGrpcAsyncIOTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -731,48 +876,48 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = PredictionServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.PredictionServiceGrpcTransport,)
+    client = SearchServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    assert isinstance(client.transport, transports.SearchServiceGrpcTransport,)
 
 
-def test_prediction_service_base_transport_error():
+def test_search_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.PredictionServiceTransport(
+        transport = transports.SearchServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_prediction_service_base_transport():
+def test_search_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.retail_v2.services.prediction_service.transports.PredictionServiceTransport.__init__"
+        "google.cloud.retail_v2.services.search_service.transports.SearchServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.PredictionServiceTransport(
+        transport = transports.SearchServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
-    methods = ("predict",)
+    methods = ("search",)
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
 
 
 @requires_google_auth_gte_1_25_0
-def test_prediction_service_base_transport_with_credentials_file():
+def test_search_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.retail_v2.services.prediction_service.transports.PredictionServiceTransport._prep_wrapped_messages"
+        "google.cloud.retail_v2.services.search_service.transports.SearchServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.PredictionServiceTransport(
+        transport = transports.SearchServiceTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
@@ -784,16 +929,16 @@ def test_prediction_service_base_transport_with_credentials_file():
 
 
 @requires_google_auth_lt_1_25_0
-def test_prediction_service_base_transport_with_credentials_file_old_google_auth():
+def test_search_service_base_transport_with_credentials_file_old_google_auth():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.retail_v2.services.prediction_service.transports.PredictionServiceTransport._prep_wrapped_messages"
+        "google.cloud.retail_v2.services.search_service.transports.SearchServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.PredictionServiceTransport(
+        transport = transports.SearchServiceTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
@@ -803,23 +948,23 @@ def test_prediction_service_base_transport_with_credentials_file_old_google_auth
         )
 
 
-def test_prediction_service_base_transport_with_adc():
+def test_search_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.retail_v2.services.prediction_service.transports.PredictionServiceTransport._prep_wrapped_messages"
+        "google.cloud.retail_v2.services.search_service.transports.SearchServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.PredictionServiceTransport()
+        transport = transports.SearchServiceTransport()
         adc.assert_called_once()
 
 
 @requires_google_auth_gte_1_25_0
-def test_prediction_service_auth_adc():
+def test_search_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        PredictionServiceClient()
+        SearchServiceClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
@@ -828,11 +973,11 @@ def test_prediction_service_auth_adc():
 
 
 @requires_google_auth_lt_1_25_0
-def test_prediction_service_auth_adc_old_google_auth():
+def test_search_service_auth_adc_old_google_auth():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        PredictionServiceClient()
+        SearchServiceClient()
         adc.assert_called_once_with(
             scopes=("https://www.googleapis.com/auth/cloud-platform",),
             quota_project_id=None,
@@ -842,12 +987,12 @@ def test_prediction_service_auth_adc_old_google_auth():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.PredictionServiceGrpcTransport,
-        transports.PredictionServiceGrpcAsyncIOTransport,
+        transports.SearchServiceGrpcTransport,
+        transports.SearchServiceGrpcAsyncIOTransport,
     ],
 )
 @requires_google_auth_gte_1_25_0
-def test_prediction_service_transport_auth_adc(transport_class):
+def test_search_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -863,12 +1008,12 @@ def test_prediction_service_transport_auth_adc(transport_class):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.PredictionServiceGrpcTransport,
-        transports.PredictionServiceGrpcAsyncIOTransport,
+        transports.SearchServiceGrpcTransport,
+        transports.SearchServiceGrpcAsyncIOTransport,
     ],
 )
 @requires_google_auth_lt_1_25_0
-def test_prediction_service_transport_auth_adc_old_google_auth(transport_class):
+def test_search_service_transport_auth_adc_old_google_auth(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -883,11 +1028,11 @@ def test_prediction_service_transport_auth_adc_old_google_auth(transport_class):
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.PredictionServiceGrpcTransport, grpc_helpers),
-        (transports.PredictionServiceGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.SearchServiceGrpcTransport, grpc_helpers),
+        (transports.SearchServiceGrpcAsyncIOTransport, grpc_helpers_async),
     ],
 )
-def test_prediction_service_transport_create_channel(transport_class, grpc_helpers):
+def test_search_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(
@@ -918,11 +1063,11 @@ def test_prediction_service_transport_create_channel(transport_class, grpc_helpe
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.PredictionServiceGrpcTransport,
-        transports.PredictionServiceGrpcAsyncIOTransport,
+        transports.SearchServiceGrpcTransport,
+        transports.SearchServiceGrpcAsyncIOTransport,
     ],
 )
-def test_prediction_service_grpc_transport_client_cert_source_for_mtls(transport_class):
+def test_search_service_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
@@ -960,8 +1105,8 @@ def test_prediction_service_grpc_transport_client_cert_source_for_mtls(transport
             )
 
 
-def test_prediction_service_host_no_port():
-    client = PredictionServiceClient(
+def test_search_service_host_no_port():
+    client = SearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="retail.googleapis.com"
@@ -970,8 +1115,8 @@ def test_prediction_service_host_no_port():
     assert client.transport._host == "retail.googleapis.com:443"
 
 
-def test_prediction_service_host_with_port():
-    client = PredictionServiceClient(
+def test_search_service_host_with_port():
+    client = SearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="retail.googleapis.com:8000"
@@ -980,11 +1125,11 @@ def test_prediction_service_host_with_port():
     assert client.transport._host == "retail.googleapis.com:8000"
 
 
-def test_prediction_service_grpc_transport_channel():
+def test_search_service_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.PredictionServiceGrpcTransport(
+    transport = transports.SearchServiceGrpcTransport(
         host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
@@ -992,11 +1137,11 @@ def test_prediction_service_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_prediction_service_grpc_asyncio_transport_channel():
+def test_search_service_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.PredictionServiceGrpcAsyncIOTransport(
+    transport = transports.SearchServiceGrpcAsyncIOTransport(
         host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
@@ -1009,13 +1154,11 @@ def test_prediction_service_grpc_asyncio_transport_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.PredictionServiceGrpcTransport,
-        transports.PredictionServiceGrpcAsyncIOTransport,
+        transports.SearchServiceGrpcTransport,
+        transports.SearchServiceGrpcAsyncIOTransport,
     ],
 )
-def test_prediction_service_transport_channel_mtls_with_client_cert_source(
-    transport_class,
-):
+def test_search_service_transport_channel_mtls_with_client_cert_source(transport_class):
     with mock.patch(
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
@@ -1063,11 +1206,11 @@ def test_prediction_service_transport_channel_mtls_with_client_cert_source(
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.PredictionServiceGrpcTransport,
-        transports.PredictionServiceGrpcAsyncIOTransport,
+        transports.SearchServiceGrpcTransport,
+        transports.SearchServiceGrpcAsyncIOTransport,
     ],
 )
-def test_prediction_service_transport_channel_mtls_with_adc(transport_class):
+def test_search_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -1104,12 +1247,38 @@ def test_prediction_service_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_product_path():
+def test_branch_path():
     project = "squid"
     location = "clam"
     catalog = "whelk"
     branch = "octopus"
-    product = "oyster"
+    expected = "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}".format(
+        project=project, location=location, catalog=catalog, branch=branch,
+    )
+    actual = SearchServiceClient.branch_path(project, location, catalog, branch)
+    assert expected == actual
+
+
+def test_parse_branch_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "catalog": "cuttlefish",
+        "branch": "mussel",
+    }
+    path = SearchServiceClient.branch_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SearchServiceClient.parse_branch_path(path)
+    assert expected == actual
+
+
+def test_product_path():
+    project = "winkle"
+    location = "nautilus"
+    catalog = "scallop"
+    branch = "abalone"
+    product = "squid"
     expected = "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}/products/{product}".format(
         project=project,
         location=location,
@@ -1117,7 +1286,7 @@ def test_product_path():
         branch=branch,
         product=product,
     )
-    actual = PredictionServiceClient.product_path(
+    actual = SearchServiceClient.product_path(
         project, location, catalog, branch, product
     )
     assert expected == actual
@@ -1125,112 +1294,112 @@ def test_product_path():
 
 def test_parse_product_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "catalog": "mussel",
-        "branch": "winkle",
-        "product": "nautilus",
+        "project": "clam",
+        "location": "whelk",
+        "catalog": "octopus",
+        "branch": "oyster",
+        "product": "nudibranch",
     }
-    path = PredictionServiceClient.product_path(**expected)
+    path = SearchServiceClient.product_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = PredictionServiceClient.parse_product_path(path)
+    actual = SearchServiceClient.parse_product_path(path)
     assert expected == actual
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = PredictionServiceClient.common_billing_account_path(billing_account)
+    actual = SearchServiceClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "mussel",
     }
-    path = PredictionServiceClient.common_billing_account_path(**expected)
+    path = SearchServiceClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = PredictionServiceClient.parse_common_billing_account_path(path)
+    actual = SearchServiceClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "winkle"
     expected = "folders/{folder}".format(folder=folder,)
-    actual = PredictionServiceClient.common_folder_path(folder)
+    actual = SearchServiceClient.common_folder_path(folder)
     assert expected == actual
 
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "nautilus",
     }
-    path = PredictionServiceClient.common_folder_path(**expected)
+    path = SearchServiceClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = PredictionServiceClient.parse_common_folder_path(path)
+    actual = SearchServiceClient.parse_common_folder_path(path)
     assert expected == actual
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "scallop"
     expected = "organizations/{organization}".format(organization=organization,)
-    actual = PredictionServiceClient.common_organization_path(organization)
+    actual = SearchServiceClient.common_organization_path(organization)
     assert expected == actual
 
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "abalone",
     }
-    path = PredictionServiceClient.common_organization_path(**expected)
+    path = SearchServiceClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = PredictionServiceClient.parse_common_organization_path(path)
+    actual = SearchServiceClient.parse_common_organization_path(path)
     assert expected == actual
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "squid"
     expected = "projects/{project}".format(project=project,)
-    actual = PredictionServiceClient.common_project_path(project)
+    actual = SearchServiceClient.common_project_path(project)
     assert expected == actual
 
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "clam",
     }
-    path = PredictionServiceClient.common_project_path(**expected)
+    path = SearchServiceClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = PredictionServiceClient.parse_common_project_path(path)
+    actual = SearchServiceClient.parse_common_project_path(path)
     assert expected == actual
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
-    actual = PredictionServiceClient.common_location_path(project, location)
+    actual = SearchServiceClient.common_location_path(project, location)
     assert expected == actual
 
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "oyster",
+        "location": "nudibranch",
     }
-    path = PredictionServiceClient.common_location_path(**expected)
+    path = SearchServiceClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = PredictionServiceClient.parse_common_location_path(path)
+    actual = SearchServiceClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -1238,17 +1407,17 @@ def test_client_withDEFAULT_CLIENT_INFO():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.PredictionServiceTransport, "_prep_wrapped_messages"
+        transports.SearchServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = PredictionServiceClient(
+        client = SearchServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.PredictionServiceTransport, "_prep_wrapped_messages"
+        transports.SearchServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = PredictionServiceClient.get_transport_class()
+        transport_class = SearchServiceClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )

@@ -27,12 +27,9 @@ from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.retail_v2.types import completion_service
 from google.cloud.retail_v2.types import import_config
-from google.cloud.retail_v2.types import product
-from google.cloud.retail_v2.types import product as gcr_product
-from google.cloud.retail_v2.types import product_service
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -51,8 +48,8 @@ except AttributeError:
         _GOOGLE_AUTH_VERSION = None
 
 
-class ProductServiceTransport(abc.ABC):
-    """Abstract transport class for ProductService."""
+class CompletionServiceTransport(abc.ABC):
+    """Abstract transport class for CompletionService."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
@@ -158,34 +155,11 @@ class ProductServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.create_product: gapic_v1.method.wrap_method(
-                self.create_product, default_timeout=None, client_info=client_info,
+            self.complete_query: gapic_v1.method.wrap_method(
+                self.complete_query, default_timeout=None, client_info=client_info,
             ),
-            self.get_product: gapic_v1.method.wrap_method(
-                self.get_product, default_timeout=None, client_info=client_info,
-            ),
-            self.list_products: gapic_v1.method.wrap_method(
-                self.list_products, default_timeout=None, client_info=client_info,
-            ),
-            self.update_product: gapic_v1.method.wrap_method(
-                self.update_product, default_timeout=None, client_info=client_info,
-            ),
-            self.delete_product: gapic_v1.method.wrap_method(
-                self.delete_product, default_timeout=None, client_info=client_info,
-            ),
-            self.import_products: gapic_v1.method.wrap_method(
-                self.import_products, default_timeout=None, client_info=client_info,
-            ),
-            self.set_inventory: gapic_v1.method.wrap_method(
-                self.set_inventory, default_timeout=None, client_info=client_info,
-            ),
-            self.add_fulfillment_places: gapic_v1.method.wrap_method(
-                self.add_fulfillment_places,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.remove_fulfillment_places: gapic_v1.method.wrap_method(
-                self.remove_fulfillment_places,
+            self.import_completion_data: gapic_v1.method.wrap_method(
+                self.import_completion_data,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -197,88 +171,25 @@ class ProductServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_product(
+    def complete_query(
         self,
     ) -> Callable[
-        [product_service.CreateProductRequest],
-        Union[gcr_product.Product, Awaitable[gcr_product.Product]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_product(
-        self,
-    ) -> Callable[
-        [product_service.GetProductRequest],
-        Union[product.Product, Awaitable[product.Product]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_products(
-        self,
-    ) -> Callable[
-        [product_service.ListProductsRequest],
+        [completion_service.CompleteQueryRequest],
         Union[
-            product_service.ListProductsResponse,
-            Awaitable[product_service.ListProductsResponse],
+            completion_service.CompleteQueryResponse,
+            Awaitable[completion_service.CompleteQueryResponse],
         ],
     ]:
         raise NotImplementedError()
 
     @property
-    def update_product(
+    def import_completion_data(
         self,
     ) -> Callable[
-        [product_service.UpdateProductRequest],
-        Union[gcr_product.Product, Awaitable[gcr_product.Product]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_product(
-        self,
-    ) -> Callable[
-        [product_service.DeleteProductRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def import_products(
-        self,
-    ) -> Callable[
-        [import_config.ImportProductsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def set_inventory(
-        self,
-    ) -> Callable[
-        [product_service.SetInventoryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def add_fulfillment_places(
-        self,
-    ) -> Callable[
-        [product_service.AddFulfillmentPlacesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def remove_fulfillment_places(
-        self,
-    ) -> Callable[
-        [product_service.RemoveFulfillmentPlacesRequest],
+        [import_config.ImportCompletionDataRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
 
-__all__ = ("ProductServiceTransport",)
+__all__ = ("CompletionServiceTransport",)

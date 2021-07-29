@@ -25,6 +25,20 @@ common = gcp.CommonTemplates()
 default_version = "v2"
 
 for library in s.get_staging_dirs(default_version):
+    # Work around sphinx docs issue
+    s.replace(
+      library / f"google/cloud/retail_{library.name}/types/*.py",
+      "a-zA-Z0-9_",
+      "a-zA-Z0-9\_"
+    )
+
+    # Work around sphinx docs issue
+    s.replace(
+      library / f"google/cloud/retail_{library.name}/types/completion_service.py",
+      "A customized string starts with OTHER_",
+      "A customized string starts with OTHER\_",
+    )
+
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
 s.remove_staging_dirs()

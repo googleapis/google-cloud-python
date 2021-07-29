@@ -24,7 +24,6 @@ import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 
-from google.api import httpbody_pb2  # type: ignore
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import future
@@ -35,27 +34,18 @@ from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.retail_v2.services.user_event_service import (
-    UserEventServiceAsyncClient,
+from google.cloud.retail_v2.services.completion_service import (
+    CompletionServiceAsyncClient,
 )
-from google.cloud.retail_v2.services.user_event_service import UserEventServiceClient
-from google.cloud.retail_v2.services.user_event_service import transports
-from google.cloud.retail_v2.services.user_event_service.transports.base import (
+from google.cloud.retail_v2.services.completion_service import CompletionServiceClient
+from google.cloud.retail_v2.services.completion_service import transports
+from google.cloud.retail_v2.services.completion_service.transports.base import (
     _GOOGLE_AUTH_VERSION,
 )
-from google.cloud.retail_v2.types import common
+from google.cloud.retail_v2.types import completion_service
 from google.cloud.retail_v2.types import import_config
-from google.cloud.retail_v2.types import product
-from google.cloud.retail_v2.types import purge_config
-from google.cloud.retail_v2.types import user_event
-from google.cloud.retail_v2.types import user_event_service
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 import google.auth
 
@@ -96,33 +86,33 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert UserEventServiceClient._get_default_mtls_endpoint(None) is None
+    assert CompletionServiceClient._get_default_mtls_endpoint(None) is None
     assert (
-        UserEventServiceClient._get_default_mtls_endpoint(api_endpoint)
+        CompletionServiceClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        UserEventServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        CompletionServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        UserEventServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
+        CompletionServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        UserEventServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        CompletionServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        UserEventServiceClient._get_default_mtls_endpoint(non_googleapi)
+        CompletionServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
     )
 
 
 @pytest.mark.parametrize(
-    "client_class", [UserEventServiceClient, UserEventServiceAsyncClient,]
+    "client_class", [CompletionServiceClient, CompletionServiceAsyncClient,]
 )
-def test_user_event_service_client_from_service_account_info(client_class):
+def test_completion_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
@@ -139,11 +129,11 @@ def test_user_event_service_client_from_service_account_info(client_class):
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.UserEventServiceGrpcTransport, "grpc"),
-        (transports.UserEventServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.CompletionServiceGrpcTransport, "grpc"),
+        (transports.CompletionServiceGrpcAsyncIOTransport, "grpc_asyncio"),
     ],
 )
-def test_user_event_service_client_service_account_always_use_jwt(
+def test_completion_service_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -162,9 +152,9 @@ def test_user_event_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [UserEventServiceClient, UserEventServiceAsyncClient,]
+    "client_class", [CompletionServiceClient, CompletionServiceAsyncClient,]
 )
-def test_user_event_service_client_from_service_account_file(client_class):
+def test_completion_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
@@ -181,49 +171,49 @@ def test_user_event_service_client_from_service_account_file(client_class):
         assert client.transport._host == "retail.googleapis.com:443"
 
 
-def test_user_event_service_client_get_transport_class():
-    transport = UserEventServiceClient.get_transport_class()
+def test_completion_service_client_get_transport_class():
+    transport = CompletionServiceClient.get_transport_class()
     available_transports = [
-        transports.UserEventServiceGrpcTransport,
+        transports.CompletionServiceGrpcTransport,
     ]
     assert transport in available_transports
 
-    transport = UserEventServiceClient.get_transport_class("grpc")
-    assert transport == transports.UserEventServiceGrpcTransport
+    transport = CompletionServiceClient.get_transport_class("grpc")
+    assert transport == transports.CompletionServiceGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (UserEventServiceClient, transports.UserEventServiceGrpcTransport, "grpc"),
+        (CompletionServiceClient, transports.CompletionServiceGrpcTransport, "grpc"),
         (
-            UserEventServiceAsyncClient,
-            transports.UserEventServiceGrpcAsyncIOTransport,
+            CompletionServiceAsyncClient,
+            transports.CompletionServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
     ],
 )
 @mock.patch.object(
-    UserEventServiceClient,
+    CompletionServiceClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(UserEventServiceClient),
+    modify_default_endpoint(CompletionServiceClient),
 )
 @mock.patch.object(
-    UserEventServiceAsyncClient,
+    CompletionServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(UserEventServiceAsyncClient),
+    modify_default_endpoint(CompletionServiceAsyncClient),
 )
-def test_user_event_service_client_client_options(
+def test_completion_service_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(UserEventServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(CompletionServiceClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(UserEventServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(CompletionServiceClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -311,43 +301,43 @@ def test_user_event_service_client_client_options(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
         (
-            UserEventServiceClient,
-            transports.UserEventServiceGrpcTransport,
+            CompletionServiceClient,
+            transports.CompletionServiceGrpcTransport,
             "grpc",
             "true",
         ),
         (
-            UserEventServiceAsyncClient,
-            transports.UserEventServiceGrpcAsyncIOTransport,
+            CompletionServiceAsyncClient,
+            transports.CompletionServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
         (
-            UserEventServiceClient,
-            transports.UserEventServiceGrpcTransport,
+            CompletionServiceClient,
+            transports.CompletionServiceGrpcTransport,
             "grpc",
             "false",
         ),
         (
-            UserEventServiceAsyncClient,
-            transports.UserEventServiceGrpcAsyncIOTransport,
+            CompletionServiceAsyncClient,
+            transports.CompletionServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
     ],
 )
 @mock.patch.object(
-    UserEventServiceClient,
+    CompletionServiceClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(UserEventServiceClient),
+    modify_default_endpoint(CompletionServiceClient),
 )
 @mock.patch.object(
-    UserEventServiceAsyncClient,
+    CompletionServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(UserEventServiceAsyncClient),
+    modify_default_endpoint(CompletionServiceAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_user_event_service_client_mtls_env_auto(
+def test_completion_service_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -443,15 +433,15 @@ def test_user_event_service_client_mtls_env_auto(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (UserEventServiceClient, transports.UserEventServiceGrpcTransport, "grpc"),
+        (CompletionServiceClient, transports.CompletionServiceGrpcTransport, "grpc"),
         (
-            UserEventServiceAsyncClient,
-            transports.UserEventServiceGrpcAsyncIOTransport,
+            CompletionServiceAsyncClient,
+            transports.CompletionServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
     ],
 )
-def test_user_event_service_client_client_options_scopes(
+def test_completion_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -474,15 +464,15 @@ def test_user_event_service_client_client_options_scopes(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (UserEventServiceClient, transports.UserEventServiceGrpcTransport, "grpc"),
+        (CompletionServiceClient, transports.CompletionServiceGrpcTransport, "grpc"),
         (
-            UserEventServiceAsyncClient,
-            transports.UserEventServiceGrpcAsyncIOTransport,
+            CompletionServiceAsyncClient,
+            transports.CompletionServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
     ],
 )
-def test_user_event_service_client_client_options_credentials_file(
+def test_completion_service_client_client_options_credentials_file(
     client_class, transport_class, transport_name
 ):
     # Check the case credentials file is provided.
@@ -502,12 +492,12 @@ def test_user_event_service_client_client_options_credentials_file(
         )
 
 
-def test_user_event_service_client_client_options_from_dict():
+def test_completion_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.retail_v2.services.user_event_service.transports.UserEventServiceGrpcTransport.__init__"
+        "google.cloud.retail_v2.services.completion_service.transports.CompletionServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = UserEventServiceClient(
+        client = CompletionServiceClient(
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
         grpc_transport.assert_called_once_with(
@@ -522,10 +512,10 @@ def test_user_event_service_client_client_options_from_dict():
         )
 
 
-def test_write_user_event(
-    transport: str = "grpc", request_type=user_event_service.WriteUserEventRequest
+def test_complete_query(
+    transport: str = "grpc", request_type=completion_service.CompleteQueryRequest
 ):
-    client = UserEventServiceClient(
+    client = CompletionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -534,74 +524,48 @@ def test_write_user_event(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
+    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = user_event.UserEvent(
-            event_type="event_type_value",
-            visitor_id="visitor_id_value",
-            session_id="session_id_value",
-            experiment_ids=["experiment_ids_value"],
+        call.return_value = completion_service.CompleteQueryResponse(
             attribution_token="attribution_token_value",
-            cart_id="cart_id_value",
-            search_query="search_query_value",
-            filter="filter_value",
-            order_by="order_by_value",
-            offset=647,
-            page_categories=["page_categories_value"],
-            uri="uri_value",
-            referrer_uri="referrer_uri_value",
-            page_view_id="page_view_id_value",
         )
-        response = client.write_user_event(request)
+        response = client.complete_query(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.WriteUserEventRequest()
+        assert args[0] == completion_service.CompleteQueryRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, user_event.UserEvent)
-    assert response.event_type == "event_type_value"
-    assert response.visitor_id == "visitor_id_value"
-    assert response.session_id == "session_id_value"
-    assert response.experiment_ids == ["experiment_ids_value"]
+    assert isinstance(response, completion_service.CompleteQueryResponse)
     assert response.attribution_token == "attribution_token_value"
-    assert response.cart_id == "cart_id_value"
-    assert response.search_query == "search_query_value"
-    assert response.filter == "filter_value"
-    assert response.order_by == "order_by_value"
-    assert response.offset == 647
-    assert response.page_categories == ["page_categories_value"]
-    assert response.uri == "uri_value"
-    assert response.referrer_uri == "referrer_uri_value"
-    assert response.page_view_id == "page_view_id_value"
 
 
-def test_write_user_event_from_dict():
-    test_write_user_event(request_type=dict)
+def test_complete_query_from_dict():
+    test_complete_query(request_type=dict)
 
 
-def test_write_user_event_empty_call():
+def test_complete_query_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceClient(
+    client = CompletionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
-        client.write_user_event()
+    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
+        client.complete_query()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.WriteUserEventRequest()
+        assert args[0] == completion_service.CompleteQueryRequest()
 
 
 @pytest.mark.asyncio
-async def test_write_user_event_async(
+async def test_complete_query_async(
     transport: str = "grpc_asyncio",
-    request_type=user_event_service.WriteUserEventRequest,
+    request_type=completion_service.CompleteQueryRequest,
 ):
-    client = UserEventServiceAsyncClient(
+    client = CompletionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -610,69 +574,43 @@ async def test_write_user_event_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
+    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            user_event.UserEvent(
-                event_type="event_type_value",
-                visitor_id="visitor_id_value",
-                session_id="session_id_value",
-                experiment_ids=["experiment_ids_value"],
+            completion_service.CompleteQueryResponse(
                 attribution_token="attribution_token_value",
-                cart_id="cart_id_value",
-                search_query="search_query_value",
-                filter="filter_value",
-                order_by="order_by_value",
-                offset=647,
-                page_categories=["page_categories_value"],
-                uri="uri_value",
-                referrer_uri="referrer_uri_value",
-                page_view_id="page_view_id_value",
             )
         )
-        response = await client.write_user_event(request)
+        response = await client.complete_query(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.WriteUserEventRequest()
+        assert args[0] == completion_service.CompleteQueryRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, user_event.UserEvent)
-    assert response.event_type == "event_type_value"
-    assert response.visitor_id == "visitor_id_value"
-    assert response.session_id == "session_id_value"
-    assert response.experiment_ids == ["experiment_ids_value"]
+    assert isinstance(response, completion_service.CompleteQueryResponse)
     assert response.attribution_token == "attribution_token_value"
-    assert response.cart_id == "cart_id_value"
-    assert response.search_query == "search_query_value"
-    assert response.filter == "filter_value"
-    assert response.order_by == "order_by_value"
-    assert response.offset == 647
-    assert response.page_categories == ["page_categories_value"]
-    assert response.uri == "uri_value"
-    assert response.referrer_uri == "referrer_uri_value"
-    assert response.page_view_id == "page_view_id_value"
 
 
 @pytest.mark.asyncio
-async def test_write_user_event_async_from_dict():
-    await test_write_user_event_async(request_type=dict)
+async def test_complete_query_async_from_dict():
+    await test_complete_query_async(request_type=dict)
 
 
-def test_write_user_event_field_headers():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_complete_query_field_headers():
+    client = CompletionServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = user_event_service.WriteUserEventRequest()
+    request = completion_service.CompleteQueryRequest()
 
-    request.parent = "parent/value"
+    request.catalog = "catalog/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
-        call.return_value = user_event.UserEvent()
-        client.write_user_event(request)
+    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
+        call.return_value = completion_service.CompleteQueryResponse()
+        client.complete_query(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -681,27 +619,27 @@ def test_write_user_event_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert ("x-goog-request-params", "catalog=catalog/value",) in kw["metadata"]
 
 
 @pytest.mark.asyncio
-async def test_write_user_event_field_headers_async():
-    client = UserEventServiceAsyncClient(
+async def test_complete_query_field_headers_async():
+    client = CompletionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = user_event_service.WriteUserEventRequest()
+    request = completion_service.CompleteQueryRequest()
 
-    request.parent = "parent/value"
+    request.catalog = "catalog/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
+    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            user_event.UserEvent()
+            completion_service.CompleteQueryResponse()
         )
-        await client.write_user_event(request)
+        await client.complete_query(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -710,13 +648,13 @@ async def test_write_user_event_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert ("x-goog-request-params", "catalog=catalog/value",) in kw["metadata"]
 
 
-def test_collect_user_event(
-    transport: str = "grpc", request_type=user_event_service.CollectUserEventRequest
+def test_import_completion_data(
+    transport: str = "grpc", request_type=import_config.ImportCompletionDataRequest
 ):
-    client = UserEventServiceClient(
+    client = CompletionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -726,52 +664,48 @@ def test_collect_user_event(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.collect_user_event), "__call__"
+        type(client.transport.import_completion_data), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = httpbody_pb2.HttpBody(
-            content_type="content_type_value", data=b"data_blob",
-        )
-        response = client.collect_user_event(request)
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.import_completion_data(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.CollectUserEventRequest()
+        assert args[0] == import_config.ImportCompletionDataRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, httpbody_pb2.HttpBody)
-    assert response.content_type == "content_type_value"
-    assert response.data == b"data_blob"
+    assert isinstance(response, future.Future)
 
 
-def test_collect_user_event_from_dict():
-    test_collect_user_event(request_type=dict)
+def test_import_completion_data_from_dict():
+    test_import_completion_data(request_type=dict)
 
 
-def test_collect_user_event_empty_call():
+def test_import_completion_data_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceClient(
+    client = CompletionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.collect_user_event), "__call__"
+        type(client.transport.import_completion_data), "__call__"
     ) as call:
-        client.collect_user_event()
+        client.import_completion_data()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.CollectUserEventRequest()
+        assert args[0] == import_config.ImportCompletionDataRequest()
 
 
 @pytest.mark.asyncio
-async def test_collect_user_event_async(
+async def test_import_completion_data_async(
     transport: str = "grpc_asyncio",
-    request_type=user_event_service.CollectUserEventRequest,
+    request_type=import_config.ImportCompletionDataRequest,
 ):
-    client = UserEventServiceAsyncClient(
+    client = CompletionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -781,187 +715,43 @@ async def test_collect_user_event_async(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.collect_user_event), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody(content_type="content_type_value", data=b"data_blob",)
-        )
-        response = await client.collect_user_event(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.CollectUserEventRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, httpbody_pb2.HttpBody)
-    assert response.content_type == "content_type_value"
-    assert response.data == b"data_blob"
-
-
-@pytest.mark.asyncio
-async def test_collect_user_event_async_from_dict():
-    await test_collect_user_event_async(request_type=dict)
-
-
-def test_collect_user_event_field_headers():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = user_event_service.CollectUserEventRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.collect_user_event), "__call__"
-    ) as call:
-        call.return_value = httpbody_pb2.HttpBody()
-        client.collect_user_event(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_collect_user_event_field_headers_async():
-    client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = user_event_service.CollectUserEventRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.collect_user_event), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody()
-        )
-        await client.collect_user_event(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-def test_purge_user_events(
-    transport: str = "grpc", request_type=purge_config.PurgeUserEventsRequest
-):
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.purge_user_events), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.purge_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == purge_config.PurgeUserEventsRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-def test_purge_user_events_from_dict():
-    test_purge_user_events(request_type=dict)
-
-
-def test_purge_user_events_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.purge_user_events), "__call__"
-    ) as call:
-        client.purge_user_events()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == purge_config.PurgeUserEventsRequest()
-
-
-@pytest.mark.asyncio
-async def test_purge_user_events_async(
-    transport: str = "grpc_asyncio", request_type=purge_config.PurgeUserEventsRequest
-):
-    client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.purge_user_events), "__call__"
+        type(client.transport.import_completion_data), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-        response = await client.purge_user_events(request)
+        response = await client.import_completion_data(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == purge_config.PurgeUserEventsRequest()
+        assert args[0] == import_config.ImportCompletionDataRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
 @pytest.mark.asyncio
-async def test_purge_user_events_async_from_dict():
-    await test_purge_user_events_async(request_type=dict)
+async def test_import_completion_data_async_from_dict():
+    await test_import_completion_data_async(request_type=dict)
 
 
-def test_purge_user_events_field_headers():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_import_completion_data_field_headers():
+    client = CompletionServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = purge_config.PurgeUserEventsRequest()
+    request = import_config.ImportCompletionDataRequest()
 
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.purge_user_events), "__call__"
+        type(client.transport.import_completion_data), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-        client.purge_user_events(request)
+        client.import_completion_data(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -974,310 +764,25 @@ def test_purge_user_events_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_purge_user_events_field_headers_async():
-    client = UserEventServiceAsyncClient(
+async def test_import_completion_data_field_headers_async():
+    client = CompletionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = purge_config.PurgeUserEventsRequest()
+    request = import_config.ImportCompletionDataRequest()
 
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.purge_user_events), "__call__"
+        type(client.transport.import_completion_data), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-        await client.purge_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-def test_import_user_events(
-    transport: str = "grpc", request_type=import_config.ImportUserEventsRequest
-):
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.import_user_events), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.import_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == import_config.ImportUserEventsRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-def test_import_user_events_from_dict():
-    test_import_user_events(request_type=dict)
-
-
-def test_import_user_events_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.import_user_events), "__call__"
-    ) as call:
-        client.import_user_events()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == import_config.ImportUserEventsRequest()
-
-
-@pytest.mark.asyncio
-async def test_import_user_events_async(
-    transport: str = "grpc_asyncio", request_type=import_config.ImportUserEventsRequest
-):
-    client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.import_user_events), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.import_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == import_config.ImportUserEventsRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_import_user_events_async_from_dict():
-    await test_import_user_events_async(request_type=dict)
-
-
-def test_import_user_events_field_headers():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = import_config.ImportUserEventsRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.import_user_events), "__call__"
-    ) as call:
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        client.import_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_import_user_events_field_headers_async():
-    client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = import_config.ImportUserEventsRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.import_user_events), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
-        await client.import_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-def test_rejoin_user_events(
-    transport: str = "grpc", request_type=user_event_service.RejoinUserEventsRequest
-):
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rejoin_user_events), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.rejoin_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.RejoinUserEventsRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-def test_rejoin_user_events_from_dict():
-    test_rejoin_user_events(request_type=dict)
-
-
-def test_rejoin_user_events_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rejoin_user_events), "__call__"
-    ) as call:
-        client.rejoin_user_events()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.RejoinUserEventsRequest()
-
-
-@pytest.mark.asyncio
-async def test_rejoin_user_events_async(
-    transport: str = "grpc_asyncio",
-    request_type=user_event_service.RejoinUserEventsRequest,
-):
-    client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rejoin_user_events), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.rejoin_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == user_event_service.RejoinUserEventsRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_rejoin_user_events_async_from_dict():
-    await test_rejoin_user_events_async(request_type=dict)
-
-
-def test_rejoin_user_events_field_headers():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = user_event_service.RejoinUserEventsRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rejoin_user_events), "__call__"
-    ) as call:
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        client.rejoin_user_events(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_rejoin_user_events_field_headers_async():
-    client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = user_event_service.RejoinUserEventsRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rejoin_user_events), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
-        await client.rejoin_user_events(request)
+        await client.import_completion_data(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -1291,52 +796,52 @@ async def test_rejoin_user_events_field_headers_async():
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.UserEventServiceGrpcTransport(
+    transport = transports.CompletionServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = UserEventServiceClient(
+        client = CompletionServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.UserEventServiceGrpcTransport(
+    transport = transports.CompletionServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = UserEventServiceClient(
+        client = CompletionServiceClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.UserEventServiceGrpcTransport(
+    transport = transports.CompletionServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = UserEventServiceClient(
+        client = CompletionServiceClient(
             client_options={"scopes": ["1", "2"]}, transport=transport,
         )
 
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.UserEventServiceGrpcTransport(
+    transport = transports.CompletionServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = UserEventServiceClient(transport=transport)
+    client = CompletionServiceClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.UserEventServiceGrpcTransport(
+    transport = transports.CompletionServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.UserEventServiceGrpcAsyncIOTransport(
+    transport = transports.CompletionServiceGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -1346,8 +851,8 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.UserEventServiceGrpcTransport,
-        transports.UserEventServiceGrpcAsyncIOTransport,
+        transports.CompletionServiceGrpcTransport,
+        transports.CompletionServiceGrpcAsyncIOTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1360,37 +865,34 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.UserEventServiceGrpcTransport,)
+    client = CompletionServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    assert isinstance(client.transport, transports.CompletionServiceGrpcTransport,)
 
 
-def test_user_event_service_base_transport_error():
+def test_completion_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.UserEventServiceTransport(
+        transport = transports.CompletionServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_user_event_service_base_transport():
+def test_completion_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.retail_v2.services.user_event_service.transports.UserEventServiceTransport.__init__"
+        "google.cloud.retail_v2.services.completion_service.transports.CompletionServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.UserEventServiceTransport(
+        transport = transports.CompletionServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        "write_user_event",
-        "collect_user_event",
-        "purge_user_events",
-        "import_user_events",
-        "rejoin_user_events",
+        "complete_query",
+        "import_completion_data",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -1403,16 +905,16 @@ def test_user_event_service_base_transport():
 
 
 @requires_google_auth_gte_1_25_0
-def test_user_event_service_base_transport_with_credentials_file():
+def test_completion_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.retail_v2.services.user_event_service.transports.UserEventServiceTransport._prep_wrapped_messages"
+        "google.cloud.retail_v2.services.completion_service.transports.CompletionServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.UserEventServiceTransport(
+        transport = transports.CompletionServiceTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
@@ -1424,16 +926,16 @@ def test_user_event_service_base_transport_with_credentials_file():
 
 
 @requires_google_auth_lt_1_25_0
-def test_user_event_service_base_transport_with_credentials_file_old_google_auth():
+def test_completion_service_base_transport_with_credentials_file_old_google_auth():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.retail_v2.services.user_event_service.transports.UserEventServiceTransport._prep_wrapped_messages"
+        "google.cloud.retail_v2.services.completion_service.transports.CompletionServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.UserEventServiceTransport(
+        transport = transports.CompletionServiceTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
@@ -1443,23 +945,23 @@ def test_user_event_service_base_transport_with_credentials_file_old_google_auth
         )
 
 
-def test_user_event_service_base_transport_with_adc():
+def test_completion_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.retail_v2.services.user_event_service.transports.UserEventServiceTransport._prep_wrapped_messages"
+        "google.cloud.retail_v2.services.completion_service.transports.CompletionServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.UserEventServiceTransport()
+        transport = transports.CompletionServiceTransport()
         adc.assert_called_once()
 
 
 @requires_google_auth_gte_1_25_0
-def test_user_event_service_auth_adc():
+def test_completion_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        UserEventServiceClient()
+        CompletionServiceClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
@@ -1468,11 +970,11 @@ def test_user_event_service_auth_adc():
 
 
 @requires_google_auth_lt_1_25_0
-def test_user_event_service_auth_adc_old_google_auth():
+def test_completion_service_auth_adc_old_google_auth():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        UserEventServiceClient()
+        CompletionServiceClient()
         adc.assert_called_once_with(
             scopes=("https://www.googleapis.com/auth/cloud-platform",),
             quota_project_id=None,
@@ -1482,12 +984,12 @@ def test_user_event_service_auth_adc_old_google_auth():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.UserEventServiceGrpcTransport,
-        transports.UserEventServiceGrpcAsyncIOTransport,
+        transports.CompletionServiceGrpcTransport,
+        transports.CompletionServiceGrpcAsyncIOTransport,
     ],
 )
 @requires_google_auth_gte_1_25_0
-def test_user_event_service_transport_auth_adc(transport_class):
+def test_completion_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -1503,12 +1005,12 @@ def test_user_event_service_transport_auth_adc(transport_class):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.UserEventServiceGrpcTransport,
-        transports.UserEventServiceGrpcAsyncIOTransport,
+        transports.CompletionServiceGrpcTransport,
+        transports.CompletionServiceGrpcAsyncIOTransport,
     ],
 )
 @requires_google_auth_lt_1_25_0
-def test_user_event_service_transport_auth_adc_old_google_auth(transport_class):
+def test_completion_service_transport_auth_adc_old_google_auth(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -1523,11 +1025,11 @@ def test_user_event_service_transport_auth_adc_old_google_auth(transport_class):
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.UserEventServiceGrpcTransport, grpc_helpers),
-        (transports.UserEventServiceGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.CompletionServiceGrpcTransport, grpc_helpers),
+        (transports.CompletionServiceGrpcAsyncIOTransport, grpc_helpers_async),
     ],
 )
-def test_user_event_service_transport_create_channel(transport_class, grpc_helpers):
+def test_completion_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(
@@ -1558,11 +1060,11 @@ def test_user_event_service_transport_create_channel(transport_class, grpc_helpe
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.UserEventServiceGrpcTransport,
-        transports.UserEventServiceGrpcAsyncIOTransport,
+        transports.CompletionServiceGrpcTransport,
+        transports.CompletionServiceGrpcAsyncIOTransport,
     ],
 )
-def test_user_event_service_grpc_transport_client_cert_source_for_mtls(transport_class):
+def test_completion_service_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
@@ -1600,8 +1102,8 @@ def test_user_event_service_grpc_transport_client_cert_source_for_mtls(transport
             )
 
 
-def test_user_event_service_host_no_port():
-    client = UserEventServiceClient(
+def test_completion_service_host_no_port():
+    client = CompletionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="retail.googleapis.com"
@@ -1610,8 +1112,8 @@ def test_user_event_service_host_no_port():
     assert client.transport._host == "retail.googleapis.com:443"
 
 
-def test_user_event_service_host_with_port():
-    client = UserEventServiceClient(
+def test_completion_service_host_with_port():
+    client = CompletionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="retail.googleapis.com:8000"
@@ -1620,11 +1122,11 @@ def test_user_event_service_host_with_port():
     assert client.transport._host == "retail.googleapis.com:8000"
 
 
-def test_user_event_service_grpc_transport_channel():
+def test_completion_service_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.UserEventServiceGrpcTransport(
+    transport = transports.CompletionServiceGrpcTransport(
         host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
@@ -1632,11 +1134,11 @@ def test_user_event_service_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_user_event_service_grpc_asyncio_transport_channel():
+def test_completion_service_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.UserEventServiceGrpcAsyncIOTransport(
+    transport = transports.CompletionServiceGrpcAsyncIOTransport(
         host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
@@ -1649,11 +1151,11 @@ def test_user_event_service_grpc_asyncio_transport_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.UserEventServiceGrpcTransport,
-        transports.UserEventServiceGrpcAsyncIOTransport,
+        transports.CompletionServiceGrpcTransport,
+        transports.CompletionServiceGrpcAsyncIOTransport,
     ],
 )
-def test_user_event_service_transport_channel_mtls_with_client_cert_source(
+def test_completion_service_transport_channel_mtls_with_client_cert_source(
     transport_class,
 ):
     with mock.patch(
@@ -1703,11 +1205,11 @@ def test_user_event_service_transport_channel_mtls_with_client_cert_source(
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.UserEventServiceGrpcTransport,
-        transports.UserEventServiceGrpcAsyncIOTransport,
+        transports.CompletionServiceGrpcTransport,
+        transports.CompletionServiceGrpcAsyncIOTransport,
     ],
 )
-def test_user_event_service_transport_channel_mtls_with_adc(transport_class):
+def test_completion_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -1744,8 +1246,8 @@ def test_user_event_service_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_user_event_service_grpc_lro_client():
-    client = UserEventServiceClient(
+def test_completion_service_grpc_lro_client():
+    client = CompletionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
     transport = client.transport
@@ -1757,8 +1259,8 @@ def test_user_event_service_grpc_lro_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_user_event_service_grpc_lro_async_client():
-    client = UserEventServiceAsyncClient(
+def test_completion_service_grpc_lro_async_client():
+    client = CompletionServiceAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
     )
     transport = client.transport
@@ -1777,7 +1279,7 @@ def test_catalog_path():
     expected = "projects/{project}/locations/{location}/catalogs/{catalog}".format(
         project=project, location=location, catalog=catalog,
     )
-    actual = UserEventServiceClient.catalog_path(project, location, catalog)
+    actual = CompletionServiceClient.catalog_path(project, location, catalog)
     assert expected == actual
 
 
@@ -1787,140 +1289,106 @@ def test_parse_catalog_path():
         "location": "oyster",
         "catalog": "nudibranch",
     }
-    path = UserEventServiceClient.catalog_path(**expected)
+    path = CompletionServiceClient.catalog_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = UserEventServiceClient.parse_catalog_path(path)
-    assert expected == actual
-
-
-def test_product_path():
-    project = "cuttlefish"
-    location = "mussel"
-    catalog = "winkle"
-    branch = "nautilus"
-    product = "scallop"
-    expected = "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}/products/{product}".format(
-        project=project,
-        location=location,
-        catalog=catalog,
-        branch=branch,
-        product=product,
-    )
-    actual = UserEventServiceClient.product_path(
-        project, location, catalog, branch, product
-    )
-    assert expected == actual
-
-
-def test_parse_product_path():
-    expected = {
-        "project": "abalone",
-        "location": "squid",
-        "catalog": "clam",
-        "branch": "whelk",
-        "product": "octopus",
-    }
-    path = UserEventServiceClient.product_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = UserEventServiceClient.parse_product_path(path)
+    actual = CompletionServiceClient.parse_catalog_path(path)
     assert expected == actual
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = UserEventServiceClient.common_billing_account_path(billing_account)
+    actual = CompletionServiceClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "mussel",
     }
-    path = UserEventServiceClient.common_billing_account_path(**expected)
+    path = CompletionServiceClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = UserEventServiceClient.parse_common_billing_account_path(path)
+    actual = CompletionServiceClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "winkle"
     expected = "folders/{folder}".format(folder=folder,)
-    actual = UserEventServiceClient.common_folder_path(folder)
+    actual = CompletionServiceClient.common_folder_path(folder)
     assert expected == actual
 
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "nautilus",
     }
-    path = UserEventServiceClient.common_folder_path(**expected)
+    path = CompletionServiceClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = UserEventServiceClient.parse_common_folder_path(path)
+    actual = CompletionServiceClient.parse_common_folder_path(path)
     assert expected == actual
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "scallop"
     expected = "organizations/{organization}".format(organization=organization,)
-    actual = UserEventServiceClient.common_organization_path(organization)
+    actual = CompletionServiceClient.common_organization_path(organization)
     assert expected == actual
 
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "abalone",
     }
-    path = UserEventServiceClient.common_organization_path(**expected)
+    path = CompletionServiceClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = UserEventServiceClient.parse_common_organization_path(path)
+    actual = CompletionServiceClient.parse_common_organization_path(path)
     assert expected == actual
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "squid"
     expected = "projects/{project}".format(project=project,)
-    actual = UserEventServiceClient.common_project_path(project)
+    actual = CompletionServiceClient.common_project_path(project)
     assert expected == actual
 
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "clam",
     }
-    path = UserEventServiceClient.common_project_path(**expected)
+    path = CompletionServiceClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = UserEventServiceClient.parse_common_project_path(path)
+    actual = CompletionServiceClient.parse_common_project_path(path)
     assert expected == actual
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
-    actual = UserEventServiceClient.common_location_path(project, location)
+    actual = CompletionServiceClient.common_location_path(project, location)
     assert expected == actual
 
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "oyster",
+        "location": "nudibranch",
     }
-    path = UserEventServiceClient.common_location_path(**expected)
+    path = CompletionServiceClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = UserEventServiceClient.parse_common_location_path(path)
+    actual = CompletionServiceClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -1928,17 +1396,17 @@ def test_client_withDEFAULT_CLIENT_INFO():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.UserEventServiceTransport, "_prep_wrapped_messages"
+        transports.CompletionServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = UserEventServiceClient(
+        client = CompletionServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.UserEventServiceTransport, "_prep_wrapped_messages"
+        transports.CompletionServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = UserEventServiceClient.get_transport_class()
+        transport_class = CompletionServiceClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
