@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-retail/compare/v0.3.1...v0.4.0) (2021-07-29)
+
+
+### Features
+
+* Add restricted Retail Search features for Retail API v2. ([#68](https://www.github.com/googleapis/python-retail/issues/68)) ([84ba173](https://www.github.com/googleapis/python-retail/commit/84ba173d4eadd75cc5289ce76ee800909b20a5ff))
+
 ### [0.3.1](https://www.github.com/googleapis/python-retail/compare/v0.3.0...v0.3.1) (2021-07-26)
 
 
