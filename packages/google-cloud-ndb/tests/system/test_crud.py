@@ -1165,6 +1165,33 @@ def test_legacy_repeated_structured_property_w_expando(
 
 
 @pytest.mark.usefixtures("client_context")
+def test_legacy_repeated_structured_property_w_expando_empty(
+    ds_client, dispose_of, client_context
+):
+    """Regression test for #669
+
+    https://github.com/googleapis/python-ndb/issues/669
+    """
+
+    class OtherKind(ndb.Expando):
+        one = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind, repeated=True)
+
+    entity = SomeKind(foo=42, bar=[])
+
+    with client_context.new(legacy_data=True).use():
+        key = entity.put()
+        dispose_of(key._key)
+
+        retrieved = key.get()
+        assert retrieved.foo == 42
+        assert retrieved.bar == []
+
+
+@pytest.mark.usefixtures("client_context")
 def test_insert_expando(dispose_of):
     class SomeKind(ndb.Expando):
         foo = ndb.IntegerProperty()

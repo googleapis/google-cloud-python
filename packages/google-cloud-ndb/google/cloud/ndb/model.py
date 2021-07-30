@@ -4302,23 +4302,24 @@ class StructuredProperty(Property):
         if not self._repeated:
             values = (values,)
 
-        props = tuple(_properties_of(*values))
+        if values:
+            props = tuple(_properties_of(*values))
 
-        for value in values:
-            if value is None:
-                keys.extend(
-                    super(StructuredProperty, self)._to_datastore(
-                        entity, data, prefix=prefix, repeated=repeated
+            for value in values:
+                if value is None:
+                    keys.extend(
+                        super(StructuredProperty, self)._to_datastore(
+                            entity, data, prefix=prefix, repeated=repeated
+                        )
                     )
-                )
-                continue
+                    continue
 
-            for prop in props:
-                keys.extend(
-                    prop._to_datastore(
-                        value, data, prefix=next_prefix, repeated=next_repeated
+                for prop in props:
+                    keys.extend(
+                        prop._to_datastore(
+                            value, data, prefix=next_prefix, repeated=next_repeated
+                        )
                     )
-                )
 
         return set(keys)
 

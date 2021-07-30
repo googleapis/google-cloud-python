@@ -3525,6 +3525,20 @@ class TestStructuredProperty:
             assert data == {"foo.bar": ["baz", "boz"]}
 
     @staticmethod
+    def test__to_datastore_legacy_repeated_empty_value(in_context):
+        class SubKind(model.Model):
+            bar = model.Property()
+
+        class SomeKind(model.Model):
+            foo = model.StructuredProperty(SubKind, repeated=True)
+
+        with in_context.new(legacy_data=True).use():
+            entity = SomeKind(foo=[])
+            data = {}
+            assert SomeKind.foo._to_datastore(entity, data) == set()
+            assert data == {}
+
+    @staticmethod
     def test__prepare_for_put():
         class SubKind(model.Model):
             bar = model.Property()
