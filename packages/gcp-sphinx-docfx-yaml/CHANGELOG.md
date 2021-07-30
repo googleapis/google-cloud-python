@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.5.2](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.5.1...v0.5.2) (2021-07-30)
+
+
+### Bug Fixes
+
+* parse xrefs differently with new xref format ([#90](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/90)) ([22485e8](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/22485e82b1e4c3be2f7589434d53c75b28921266))
+
 ### [0.5.1](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.5.0...v0.5.1) (2021-07-29)
 
 
