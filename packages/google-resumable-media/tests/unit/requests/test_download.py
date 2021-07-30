@@ -275,26 +275,6 @@ class TestDownload(object):
         # Make sure the headers have been modified.
         assert headers == {u"range": range_bytes}
 
-    def test_consume_with_retries(self):
-        download = download_mod.Download(EXAMPLE_URL)
-        transport = mock.Mock(spec=["request"])
-        response = _mock_response()
-        transport.request.return_value = response
-        ret_val = download._consume_with_retries(
-            func=download._consume,
-            transport=transport,
-            timeout=EXPECTED_TIMEOUT,
-        )
-
-        assert ret_val is response
-        transport.request.assert_called_once_with(
-            u"GET",
-            EXAMPLE_URL,
-            data=None,
-            headers={},
-            timeout=EXPECTED_TIMEOUT,
-        )
-
 
 class TestRawDownload(object):
     def test__write_to_stream_no_hash_check(self):
@@ -548,27 +528,6 @@ class TestRawDownload(object):
         # Make sure the headers have been modified.
         assert headers == {u"range": range_bytes}
 
-    def test_consume_with_retries(self):
-        download = download_mod.RawDownload(EXAMPLE_URL)
-        transport = mock.Mock(spec=["request"])
-        response = _mock_response()
-        transport.request.return_value = response
-        ret_val = download._consume_with_retries(
-            func=download._consume,
-            transport=transport,
-            timeout=EXPECTED_TIMEOUT,
-        )
-
-        assert ret_val is response
-        transport.request.assert_called_once_with(
-            u"GET",
-            EXAMPLE_URL,
-            data=None,
-            headers={},
-            stream=True,
-            timeout=EXPECTED_TIMEOUT,
-        )
-
 
 class TestChunkedDownload(object):
     @staticmethod
@@ -668,33 +627,6 @@ class TestChunkedDownload(object):
             data=None,
             headers=download_headers,
             timeout=14.7,
-        )
-
-    def test_consume_with_retries(self):
-        start = 1536
-        stream = io.BytesIO()
-        data = b"Just one chunk."
-        chunk_size = len(data)
-        download = download_mod.ChunkedDownload(
-            EXAMPLE_URL, chunk_size, stream, start=start
-        )
-        total_bytes = 16384
-        transport = self._mock_transport(start, chunk_size, total_bytes, content=data)
-
-        download._consume_with_retries(
-            func=download._consume_next_chunk,
-            transport=transport,
-            timeout=EXPECTED_TIMEOUT,
-        )
-
-        range_bytes = u"bytes={:d}-{:d}".format(start, start + chunk_size - 1)
-        download_headers = {u"range": range_bytes}
-        transport.request.assert_called_once_with(
-            u"GET",
-            EXAMPLE_URL,
-            data=None,
-            headers=download_headers,
-            timeout=EXPECTED_TIMEOUT,
         )
 
 
@@ -804,34 +736,6 @@ class TestRawChunkedDownload(object):
         assert not download.finished
         assert download.bytes_downloaded == chunk_size
         assert download.total_bytes == total_bytes
-
-    def test_consume_with_retries(self):
-        start = 1536
-        stream = io.BytesIO()
-        data = b"Just one chunk."
-        chunk_size = len(data)
-        download = download_mod.RawChunkedDownload(
-            EXAMPLE_URL, chunk_size, stream, start=start
-        )
-        total_bytes = 16384
-        transport = self._mock_transport(start, chunk_size, total_bytes, content=data)
-
-        download._consume_with_retries(
-            func=download._consume_next_chunk,
-            transport=transport,
-            timeout=EXPECTED_TIMEOUT,
-        )
-
-        range_bytes = u"bytes={:d}-{:d}".format(start, start + chunk_size - 1)
-        download_headers = {u"range": range_bytes}
-        transport.request.assert_called_once_with(
-            u"GET",
-            EXAMPLE_URL,
-            data=None,
-            headers=download_headers,
-            stream=True,
-            timeout=EXPECTED_TIMEOUT,
-        )
 
 
 class Test__add_decoder(object):

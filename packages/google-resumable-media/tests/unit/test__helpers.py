@@ -270,34 +270,6 @@ class Test_wait_and_retry(object):
 
     @mock.patch(u"time.sleep")
     @mock.patch(u"random.randint")
-    def test_success_with_retry_chunked_encoding_error(self, randint_mock, sleep_mock):
-        randint_mock.side_effect = [125, 625, 375]
-
-        response = _make_response(http_client.NOT_FOUND)
-        responses = [
-            requests.exceptions.ChunkedEncodingError,
-            requests.exceptions.ChunkedEncodingError,
-            response,
-        ]
-        func = mock.Mock(side_effect=responses, spec=[])
-
-        retry_strategy = common.RetryStrategy()
-        ret_val = _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
-
-        assert ret_val == responses[-1]
-
-        assert func.call_count == 3
-        assert func.mock_calls == [mock.call()] * 3
-
-        assert randint_mock.call_count == 2
-        assert randint_mock.mock_calls == [mock.call(0, 1000)] * 2
-
-        assert sleep_mock.call_count == 2
-        sleep_mock.assert_any_call(1.125)
-        sleep_mock.assert_any_call(2.625)
-
-    @mock.patch(u"time.sleep")
-    @mock.patch(u"random.randint")
     def test_connection_import_error_failure(self, randint_mock, sleep_mock):
         randint_mock.side_effect = [125, 625, 375]
 
