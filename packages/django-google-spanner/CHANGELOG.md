@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.2.1b3 (2021-07-30)
+
+### Miscellaneous Chores
+- release 2.2.1b3 ([de23f65](https://www.github.com/googleapis/python-spanner-django/commit/de23f65))
+- Update repo to say beta release instead of alpha ([#691](https://www.github.com/googleapis/python-spanner-django/issues/691)) ([2144d09](https://www.github.com/googleapis/python-spanner-django/commit/2144d09))
+
+
 ## 2.2.1b2 (2021-07-27)
 
 
