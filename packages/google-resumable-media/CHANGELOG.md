@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+### [1.3.3](https://www.github.com/googleapis/google-resumable-media-python/compare/v1.3.2...v1.3.3) (2021-07-30)
+
+
+### Reverts
+
+* revert "fix: add retry coverage to the streaming portion of a download" ([#245](https://www.github.com/googleapis/google-resumable-media-python/issues/245)) ([98673d0](https://www.github.com/googleapis/google-resumable-media-python/commit/98673d01e90de8ea8fb101348dd9d15ae4e0531d))
+
 ### [1.3.2](https://www.github.com/googleapis/google-resumable-media-python/compare/v1.3.1...v1.3.2) (2021-07-27)
 
 
