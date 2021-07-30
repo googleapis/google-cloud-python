@@ -327,24 +327,37 @@ def _extract_docstring_info(summary_info, summary, name):
     }
     
     initial_index = -1
+    front_tag = '<xref'
+    end_tag = '/xref>'
+    end_len = len(end_tag)
         
     # Prevent GoogleDocstring crashing on custom types and parse all xrefs to normal
-    if '<xref:' in parsed_text:
+    if front_tag in parsed_text:
         type_pairs = []
-        initial_index = max(0, parsed_text.find('<xref'))
+        # Constant length for end of xref tag
+        initial_index = max(0, parsed_text.find(front_tag))
 
         summary_part = parsed_text[initial_index:]
        
-        # Remove all occurrences of "<xref:type>"
-        while "<xref:" in summary_part:
+        # Remove all occurrences of "<xref uid="uid">text</xref>"
+        while front_tag in summary_part:
 
-            # Expecting format of "<xref:type>:"
-            if "<xref:" in summary_part:
-                initial_index += summary_part.find("<xref")
-                original_type = parsed_text[initial_index:initial_index+(parsed_text[initial_index:].find('>'))+1]
+            # Expecting format of "<xref uid="uid">text</xref>"
+            if front_tag in summary_part:
+                # Retrieve the index for starting position of xref tag
+                initial_index += summary_part.find(front_tag)
+
+                # Find the index of the end of xref tag, relative to the start of xref tag
+                end_tag_index = initial_index + parsed_text[initial_index:].find(end_tag) + end_len
+
+                # Retrieve the entire xref tag
+                original_type = parsed_text[initial_index:end_tag_index]
                 initial_index += len(original_type)
                 original_type = " ".join(filter(None, re.split(r'\n|  |\|\s|\t', original_type)))
-                safe_type = 'xref_' + original_type[6:-1]
+
+                # Extract text from "<xref uid="uid">text</xref>"
+                index = original_type.find(">")
+                safe_type = 'xref_' + original_type[index+1:index+(original_type[index:].find("<"))]
             else:
                 raise ValueError("Encountered unexpected type in Exception docstring.")
 
@@ -451,10 +464,20 @@ def _extract_docstring_info(summary_info, summary, name):
             cur_type = word
             if cur_type in [':type', ':param', ':raises', ':raises:']:
                 index += 1
-                arg_name = parsed_text[index][:-1]
-                # Initialize empty dictionary if it doesn't exist already
-                if arg_name not in summary_info[var_types[cur_type]] and ':raises' not in cur_type:
-                    summary_info[var_types[cur_type]][arg_name] = {}
+                # Exception that's not xref should be treated same as other names
+                if ':raises' not in cur_type or 'xref' not in parsed_text[index]:
+                    arg_name = parsed_text[index][:-1]
+                # xrefs are treated by taking its second half and combining the two
+                elif ':raises' in cur_type and 'xref' in parsed_text[index]:
+                    arg_name = f'{parsed_text[index]} {parsed_text[index+1][:-1]}'
+                    index += 1
+
+                try:
+                    # Initialize empty dictionary if it doesn't exist already
+                    if arg_name not in summary_info[var_types[cur_type]] and ':raises' not in cur_type:
+                        summary_info[var_types[cur_type]][arg_name] = {}
+                except KeyError:
+                    raise KeyError(f"Encountered wrong formatting, please check docstring for {name}")
 
             # Empty target string
             words = []

@@ -335,13 +335,22 @@ Description of docstring which should fail.
         with self.assertRaises(ValueError):
             _extract_docstring_info({}, summary4, "error string")
 
+        summary5 = """
+Description of malformed docstring.
+
+Raises:
+    Error that should fail: if condition `x`.
+"""
+        with self.assertRaises(KeyError):
+            _extract_docstring_info({}, summary5, "malformed docstring")
+
 
     def test_extract_docstring_info_with_xref(self):
         ## Test with xref included in the summary, ensure they're processed as-is
         summary_info_want = {
             'variables': {
                 'arg1': {
-                    'var_type': '<xref:google.spanner_v1.type.Type>',
+                    'var_type': '<xref uid="google.spanner_v1.type.Type">Type</xref>',
                     'description': 'simple description.'
                 },
                 'arg2': {
@@ -351,13 +360,13 @@ Description of docstring which should fail.
             },
             'returns': [
                 {
-                    'var_type': '<xref:Pair>', 
+                    'var_type': '<xref uid="Pair">Pair</xref>', 
                     'description': 'simple description for return value.'
                 }
             ],
             'exceptions': [
                 {
-                    'var_type': '<xref:SpannerException>', 
+                    'var_type': '<xref uid="SpannerException">SpannerException</xref>', 
                     'description': 'if `condition x`.'
                 }
             ]
@@ -366,15 +375,15 @@ Description of docstring which should fail.
         summary = """
 Simple test for docstring.
 
-:type arg1: <xref:google.spanner_v1.type.Type>
+:type arg1: <xref uid="google.spanner_v1.type.Type">Type</xref>
 :param arg1: simple description.
 :param arg2: simple description for `arg2`.
 :type arg2: ~google.spanner_v1.type.dict
 
-:rtype: <xref:Pair>
+:rtype: <xref uid="Pair">Pair</xref>
 :returns: simple description for return value.
 
-:raises <xref:SpannerException>: if `condition x`. 
+:raises <xref uid="SpannerException">SpannerException</xref>: if `condition x`. 
 """
 
         summary_info_got = {
@@ -384,10 +393,10 @@ Simple test for docstring.
         }
 
         top_summary_got = _extract_docstring_info(summary_info_got, summary, "")
-
+        self.maxDiff = None
         # Same as the top summary from previous example, compare with that
         self.assertEqual(top_summary_got, self.top_summary1_want)
-        self.assertEqual(summary_info_got, summary_info_want)
+        self.assertDictEqual(summary_info_got, summary_info_want)
 
 if __name__ == '__main__':
     unittest.main()
