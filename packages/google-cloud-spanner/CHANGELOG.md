@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.7.0](https://www.github.com/googleapis/python-spanner/compare/v3.6.0...v3.7.0) (2021-07-29)
+
+
+### Features
+
+* add always_use_jwt_access ([#381](https://www.github.com/googleapis/python-spanner/issues/381)) ([0f1a5de](https://www.github.com/googleapis/python-spanner/commit/0f1a5ded572685a96d29a60c959cb00a48f7a87f))
+* add configurable leader placement support ([#399](https://www.github.com/googleapis/python-spanner/issues/399)) ([7f1b120](https://www.github.com/googleapis/python-spanner/commit/7f1b1209e62062014545cf959d41f04184552eec))
+* add sample for low cost instances ([#392](https://www.github.com/googleapis/python-spanner/issues/392)) ([3f4f93f](https://www.github.com/googleapis/python-spanner/commit/3f4f93f75f5585a82047bf8d83a24622ad776ecb))
+
+
+### Bug Fixes
+
+* avoid bad version of `opentelemetry-instrumentation` ([#429](https://www.github.com/googleapis/python-spanner/issues/429)) ([1620c12](https://www.github.com/googleapis/python-spanner/commit/1620c12a56e0d007cf010690bab303db06d0c914))
+* **deps:** pin 'google-{api,cloud}-core' to allow 2.x versions ([#415](https://www.github.com/googleapis/python-spanner/issues/415)) ([b0455d0](https://www.github.com/googleapis/python-spanner/commit/b0455d0ab657cd053a7527e99bdbfadc4de23b30))
+* disable always_use_jwt_access ([c37bf21](https://www.github.com/googleapis/python-spanner/commit/c37bf21afdf417757eff67fe8500aa65f49fd5ad))
+* disable always_use_jwt_access ([#395](https://www.github.com/googleapis/python-spanner/issues/395)) ([c37bf21](https://www.github.com/googleapis/python-spanner/commit/c37bf21afdf417757eff67fe8500aa65f49fd5ad))
+* enable self signed jwt for grpc ([#427](https://www.github.com/googleapis/python-spanner/issues/427)) ([2487800](https://www.github.com/googleapis/python-spanner/commit/2487800e31842a44dcc37937c325e130c8c926b0))
+* support merging for NUMERIC values ([#434](https://www.github.com/googleapis/python-spanner/issues/434)) ([06b4215](https://www.github.com/googleapis/python-spanner/commit/06b4215f76ae806eba1d0d07115c8c90b8c7482d)), closes [#433](https://www.github.com/googleapis/python-spanner/issues/433)
+
+
+### Documentation
+
+* fix docstring for session.py ([#387](https://www.github.com/googleapis/python-spanner/issues/387)) ([3132587](https://www.github.com/googleapis/python-spanner/commit/3132587453f7bd0be72ebc393626b5c8b1bab982))
+
 ## [3.6.0](https://www.github.com/googleapis/python-spanner/compare/v3.5.0...v3.6.0) (2021-06-23)
 
 
