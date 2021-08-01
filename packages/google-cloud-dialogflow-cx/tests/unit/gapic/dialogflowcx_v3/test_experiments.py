@@ -840,6 +840,7 @@ def test_get_experiment(
             display_name="display_name_value",
             description="description_value",
             state=experiment.Experiment.State.DRAFT,
+            rollout_failure_reason="rollout_failure_reason_value",
         )
         response = client.get_experiment(request)
 
@@ -854,6 +855,7 @@ def test_get_experiment(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == experiment.Experiment.State.DRAFT
+    assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
 def test_get_experiment_from_dict():
@@ -896,6 +898,7 @@ async def test_get_experiment_async(
                 display_name="display_name_value",
                 description="description_value",
                 state=experiment.Experiment.State.DRAFT,
+                rollout_failure_reason="rollout_failure_reason_value",
             )
         )
         response = await client.get_experiment(request)
@@ -911,6 +914,7 @@ async def test_get_experiment_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == experiment.Experiment.State.DRAFT
+    assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
 @pytest.mark.asyncio
@@ -1054,6 +1058,7 @@ def test_create_experiment(
             display_name="display_name_value",
             description="description_value",
             state=gcdc_experiment.Experiment.State.DRAFT,
+            rollout_failure_reason="rollout_failure_reason_value",
         )
         response = client.create_experiment(request)
 
@@ -1068,6 +1073,7 @@ def test_create_experiment(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == gcdc_experiment.Experiment.State.DRAFT
+    assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
 def test_create_experiment_from_dict():
@@ -1115,6 +1121,7 @@ async def test_create_experiment_async(
                 display_name="display_name_value",
                 description="description_value",
                 state=gcdc_experiment.Experiment.State.DRAFT,
+                rollout_failure_reason="rollout_failure_reason_value",
             )
         )
         response = await client.create_experiment(request)
@@ -1130,6 +1137,7 @@ async def test_create_experiment_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == gcdc_experiment.Experiment.State.DRAFT
+    assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
 @pytest.mark.asyncio
@@ -1293,6 +1301,7 @@ def test_update_experiment(
             display_name="display_name_value",
             description="description_value",
             state=gcdc_experiment.Experiment.State.DRAFT,
+            rollout_failure_reason="rollout_failure_reason_value",
         )
         response = client.update_experiment(request)
 
@@ -1307,6 +1316,7 @@ def test_update_experiment(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == gcdc_experiment.Experiment.State.DRAFT
+    assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
 def test_update_experiment_from_dict():
@@ -1354,6 +1364,7 @@ async def test_update_experiment_async(
                 display_name="display_name_value",
                 description="description_value",
                 state=gcdc_experiment.Experiment.State.DRAFT,
+                rollout_failure_reason="rollout_failure_reason_value",
             )
         )
         response = await client.update_experiment(request)
@@ -1369,6 +1380,7 @@ async def test_update_experiment_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == gcdc_experiment.Experiment.State.DRAFT
+    assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
 @pytest.mark.asyncio
@@ -1736,6 +1748,7 @@ def test_start_experiment(
             display_name="display_name_value",
             description="description_value",
             state=experiment.Experiment.State.DRAFT,
+            rollout_failure_reason="rollout_failure_reason_value",
         )
         response = client.start_experiment(request)
 
@@ -1750,6 +1763,7 @@ def test_start_experiment(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == experiment.Experiment.State.DRAFT
+    assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
 def test_start_experiment_from_dict():
@@ -1792,6 +1806,7 @@ async def test_start_experiment_async(
                 display_name="display_name_value",
                 description="description_value",
                 state=experiment.Experiment.State.DRAFT,
+                rollout_failure_reason="rollout_failure_reason_value",
             )
         )
         response = await client.start_experiment(request)
@@ -1807,6 +1822,7 @@ async def test_start_experiment_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == experiment.Experiment.State.DRAFT
+    assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
 @pytest.mark.asyncio
@@ -1948,6 +1964,7 @@ def test_stop_experiment(
             display_name="display_name_value",
             description="description_value",
             state=experiment.Experiment.State.DRAFT,
+            rollout_failure_reason="rollout_failure_reason_value",
         )
         response = client.stop_experiment(request)
 
@@ -1962,6 +1979,7 @@ def test_stop_experiment(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == experiment.Experiment.State.DRAFT
+    assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
 def test_stop_experiment_from_dict():
@@ -2004,6 +2022,7 @@ async def test_stop_experiment_async(
                 display_name="display_name_value",
                 description="description_value",
                 state=experiment.Experiment.State.DRAFT,
+                rollout_failure_reason="rollout_failure_reason_value",
             )
         )
         response = await client.stop_experiment(request)
@@ -2019,6 +2038,7 @@ async def test_stop_experiment_async(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.state == experiment.Experiment.State.DRAFT
+    assert response.rollout_failure_reason == "rollout_failure_reason_value"
 
 
 @pytest.mark.asyncio

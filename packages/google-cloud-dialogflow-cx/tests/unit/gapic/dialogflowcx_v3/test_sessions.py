@@ -1614,11 +1614,39 @@ def test_parse_transition_route_group_path():
     assert expected == actual
 
 
-def test_webhook_path():
+def test_version_path():
     project = "whelk"
     location = "octopus"
     agent = "oyster"
-    webhook = "nudibranch"
+    flow = "nudibranch"
+    version = "cuttlefish"
+    expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/versions/{version}".format(
+        project=project, location=location, agent=agent, flow=flow, version=version,
+    )
+    actual = SessionsClient.version_path(project, location, agent, flow, version)
+    assert expected == actual
+
+
+def test_parse_version_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "agent": "nautilus",
+        "flow": "scallop",
+        "version": "abalone",
+    }
+    path = SessionsClient.version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SessionsClient.parse_version_path(path)
+    assert expected == actual
+
+
+def test_webhook_path():
+    project = "squid"
+    location = "clam"
+    agent = "whelk"
+    webhook = "octopus"
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
         project=project, location=location, agent=agent, webhook=webhook,
     )
@@ -1628,10 +1656,10 @@ def test_webhook_path():
 
 def test_parse_webhook_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "agent": "winkle",
-        "webhook": "nautilus",
+        "project": "oyster",
+        "location": "nudibranch",
+        "agent": "cuttlefish",
+        "webhook": "mussel",
     }
     path = SessionsClient.webhook_path(**expected)
 
@@ -1641,7 +1669,7 @@ def test_parse_webhook_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -1651,7 +1679,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "nautilus",
     }
     path = SessionsClient.common_billing_account_path(**expected)
 
@@ -1661,7 +1689,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "scallop"
     expected = "folders/{folder}".format(folder=folder,)
     actual = SessionsClient.common_folder_path(folder)
     assert expected == actual
@@ -1669,7 +1697,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "abalone",
     }
     path = SessionsClient.common_folder_path(**expected)
 
@@ -1679,7 +1707,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "squid"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = SessionsClient.common_organization_path(organization)
     assert expected == actual
@@ -1687,7 +1715,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "clam",
     }
     path = SessionsClient.common_organization_path(**expected)
 
@@ -1697,7 +1725,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "whelk"
     expected = "projects/{project}".format(project=project,)
     actual = SessionsClient.common_project_path(project)
     assert expected == actual
@@ -1705,7 +1733,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "octopus",
     }
     path = SessionsClient.common_project_path(**expected)
 
@@ -1715,8 +1743,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -1726,8 +1754,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = SessionsClient.common_location_path(**expected)
 

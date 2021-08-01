@@ -43,6 +43,7 @@ from .services.versions import VersionsAsyncClient
 from .services.webhooks import WebhooksClient
 from .services.webhooks import WebhooksAsyncClient
 
+from .types.advanced_settings import AdvancedSettings
 from .types.agent import Agent
 from .types.agent import AgentValidationResult
 from .types.agent import CreateAgentRequest
@@ -94,6 +95,8 @@ from .types.experiment import Experiment
 from .types.experiment import GetExperimentRequest
 from .types.experiment import ListExperimentsRequest
 from .types.experiment import ListExperimentsResponse
+from .types.experiment import RolloutConfig
+from .types.experiment import RolloutState
 from .types.experiment import StartExperimentRequest
 from .types.experiment import StopExperimentRequest
 from .types.experiment import UpdateExperimentRequest
@@ -247,6 +250,7 @@ __all__ = (
     "TransitionRouteGroupsAsyncClient",
     "VersionsAsyncClient",
     "WebhooksAsyncClient",
+    "AdvancedSettings",
     "Agent",
     "AgentValidationResult",
     "AgentsClient",
@@ -386,6 +390,8 @@ __all__ = (
     "ResourceName",
     "ResponseMessage",
     "RestoreAgentRequest",
+    "RolloutConfig",
+    "RolloutState",
     "RunContinuousTestMetadata",
     "RunContinuousTestRequest",
     "RunContinuousTestResponse",

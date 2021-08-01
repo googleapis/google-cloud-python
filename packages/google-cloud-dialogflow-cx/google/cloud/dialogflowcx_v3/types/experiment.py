@@ -26,6 +26,8 @@ __protobuf__ = proto.module(
         "Experiment",
         "VersionVariants",
         "VariantsHistory",
+        "RolloutConfig",
+        "RolloutState",
         "ListExperimentsRequest",
         "ListExperimentsResponse",
         "GetExperimentRequest",
@@ -57,12 +59,26 @@ class Experiment(proto.Message):
         state (google.cloud.dialogflowcx_v3.types.Experiment.State):
             The current state of the experiment.
             Transition triggered by
-            Expriments.StartExperiment: PENDING->RUNNING.
+            Experiments.StartExperiment: DRAFT->RUNNING.
             Transition triggered by
-            Expriments.CancelExperiment: PENDING->CANCELLED
-            or RUNNING->CANCELLED.
+            Experiments.CancelExperiment: DRAFT->DONE or
+            RUNNING->DONE.
         definition (google.cloud.dialogflowcx_v3.types.Experiment.Definition):
             The definition of the experiment.
+        rollout_config (google.cloud.dialogflowcx_v3.types.RolloutConfig):
+            The configuration for auto rollout. If set,
+            there should be exactly two variants in the
+            experiment (control variant being the default
+            version of the flow), the traffic allocation for
+            the non-control variant will gradually increase
+            to 100% when conditions are met, and eventually
+            replace the control variant to become the
+            default version of the flow.
+        rollout_state (google.cloud.dialogflowcx_v3.types.RolloutState):
+            State of the auto rollout process.
+        rollout_failure_reason (str):
+            The reason why rollout has failed. Should only be set when
+            state is ROLLOUT_FAILED.
         result (google.cloud.dialogflowcx_v3.types.Experiment.Result):
             Inference result of the experiment.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -90,6 +106,7 @@ class Experiment(proto.Message):
         DRAFT = 1
         RUNNING = 2
         DONE = 3
+        ROLLOUT_FAILED = 4
 
     class Definition(proto.Message):
         r"""Definition of the experiment.
@@ -225,6 +242,9 @@ class Experiment(proto.Message):
     description = proto.Field(proto.STRING, number=3,)
     state = proto.Field(proto.ENUM, number=4, enum=State,)
     definition = proto.Field(proto.MESSAGE, number=5, message=Definition,)
+    rollout_config = proto.Field(proto.MESSAGE, number=14, message="RolloutConfig",)
+    rollout_state = proto.Field(proto.MESSAGE, number=15, message="RolloutState",)
+    rollout_failure_reason = proto.Field(proto.STRING, number=16,)
     result = proto.Field(proto.MESSAGE, number=6, message=Result,)
     create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
     start_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
@@ -281,6 +301,72 @@ class VariantsHistory(proto.Message):
         proto.MESSAGE, number=1, oneof="variants", message="VersionVariants",
     )
     update_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+
+
+class RolloutConfig(proto.Message):
+    r"""The configuration for auto rollout.
+    Attributes:
+        rollout_steps (Sequence[google.cloud.dialogflowcx_v3.types.RolloutConfig.RolloutStep]):
+            Steps to roll out a flow version. Steps
+            should be sorted by percentage in ascending
+            order.
+        rollout_condition (str):
+            The conditions that are used to evaluate the success of a
+            rollout step. If not specified, all rollout steps will
+            proceed to the next one unless failure conditions are met.
+            E.g. "containment_rate > 60% AND callback_rate < 20%". See
+            the `conditions
+            reference <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
+        failure_condition (str):
+            The conditions that are used to evaluate the failure of a
+            rollout step. If not specified, no rollout steps will fail.
+            E.g. "containment_rate < 10% OR average_turn_count < 3". See
+            the `conditions
+            reference <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
+    """
+
+    class RolloutStep(proto.Message):
+        r"""A single rollout step with specified traffic allocation.
+        Attributes:
+            display_name (str):
+                The name of the rollout step;
+            traffic_percent (int):
+                The percentage of traffic allocated to the flow version of
+                this rollout step. (0%, 100%].
+            min_duration (google.protobuf.duration_pb2.Duration):
+                The minimum time that this step should last.
+                Should be longer than 1 hour. If not set, the
+                default minimum duration for each step will be 1
+                hour.
+        """
+
+        display_name = proto.Field(proto.STRING, number=1,)
+        traffic_percent = proto.Field(proto.INT32, number=2,)
+        min_duration = proto.Field(
+            proto.MESSAGE, number=3, message=duration_pb2.Duration,
+        )
+
+    rollout_steps = proto.RepeatedField(proto.MESSAGE, number=1, message=RolloutStep,)
+    rollout_condition = proto.Field(proto.STRING, number=2,)
+    failure_condition = proto.Field(proto.STRING, number=3,)
+
+
+class RolloutState(proto.Message):
+    r"""State of the auto-rollout process.
+    Attributes:
+        step (str):
+            Display name of the current auto rollout
+            step.
+        step_index (int):
+            Index of the current step in the auto rollout
+            steps list.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Start time of the current step.
+    """
+
+    step = proto.Field(proto.STRING, number=1,)
+    step_index = proto.Field(proto.INT32, number=3,)
+    start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
 
 
 class ListExperimentsRequest(proto.Message):
