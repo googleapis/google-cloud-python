@@ -94,8 +94,7 @@ class SearchRequest(proto.Message):
             The filter syntax consists of an expression language for
             constructing a predicate from one or more fields of the
             products being filtered. Filter expression is
-            case-sensitive. See more details at this `user
-            guide </retail/private/docs/filter-and-order#filter>`__.
+            case-sensitive.
 
             If this field is unrecognizable, an INVALID_ARGUMENT is
             returned.
@@ -117,8 +116,7 @@ class SearchRequest(proto.Message):
             ordered by a field in an
             [Product][google.cloud.retail.v2.Product] object. Leave it
             unset if ordered by relevance. OrderBy expression is
-            case-sensitive. See more details at this `user
-            guide </retail/private/docs/filter-and-order#order>`__.
+            case-sensitive.
 
             If this field is unrecognizable, an INVALID_ARGUMENT is
             returned.
@@ -137,14 +135,12 @@ class SearchRequest(proto.Message):
             support@google.com) if you are interested in
             using dynamic facet feature.
         boost_spec (google.cloud.retail_v2.types.SearchRequest.BoostSpec):
-            Boost specification to boost certain products. See more
-            details at this `user
-            guide </retail/private/docs/boosting>`__.
+            Boost specification to boost certain
+            products.
         query_expansion_spec (google.cloud.retail_v2.types.SearchRequest.QueryExpansionSpec):
-            The query expansion specification that specifies the
-            conditions under which query expansion will occur. See more
-            details at this `user
-            guide </retail/private/docs/result-size#query_expansion>`__.
+            The query expansion specification that
+            specifies the conditions under which query
+            expansion will occur.
         variant_rollup_keys (Sequence[str]):
             The keys to fetch and rollup the matching
             [variant][google.cloud.retail.v2.Product.Type.VARIANT]
