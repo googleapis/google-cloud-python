@@ -294,67 +294,37 @@ class SearchRequest(proto.Message):
                     [FacetKey.query][google.cloud.retail.v2.SearchRequest.FacetSpec.FacetKey.query]
                     is not specified:
 
-                    -  textual_field = *# The
-                       [Product.brands][google.cloud.retail.v2.Product.brands].*
-                       "brands"; *# The
-                       [Product.categories][google.cloud.retail.v2.Product.categories].*
-                       "categories"; *# The
-                       [Audience.genders][google.cloud.retail.v2.Audience.genders].*
-                       \| "genders"; *# The
-                       [Audience.age_groups][google.cloud.retail.v2.Audience.age_groups].*
-                       \| "ageGroups"; *# The
-                       [Product.availability][google.cloud.retail.v2.Product.availability].
-                       Value is one of* *# "IN_STOCK", "OUT_OF_STOCK",
-                       PREORDER", "BACKORDER".* \| "availability"; *# The
-                       [ColorInfo.color_families][google.cloud.retail.v2.ColorInfo.color_families].*
-                       \| "colorFamilies"; *# The
-                       [ColorInfo.colors][google.cloud.retail.v2.ColorInfo.colors].*
-                       \| "colors"; *# The
-                       [Product.sizes][google.cloud.retail.v2.Product.sizes].*
-                       \| "sizes"; *# The
-                       [Product.materials][google.cloud.retail.v2.Product.materials].*
-                       \| "materials"; *# The
-                       [Product.patterns][google.cloud.retail.v2.Product.patterns].*
-                       \| "patterns"; *# The
-                       [Product.conditions][google.cloud.retail.v2.Product.conditions].*
-                       \| "conditions"; *# The textual custom attribute in
-                       [Product][google.cloud.retail.v2.Product] object. Key
-                       can* *# be any key in the
-                       [Product.attributes][google.cloud.retail.v2.Product.attributes]
-                       map* *# if the attribute values are textual.* *# map.* \|
-                       "attributes.key"; \*# The [FulfillmentInfo.ids][] for
-                       type *# [FulfillmentInfo.Type.PICKUP_IN_STORE][].* \|
-                       "pickupInStore"; \*# The [FulfillmentInfo.ids][] for type
-                       *# [FulfillmentInfo.Type.SHIP_TO_STORE][].* \|
-                       "shipToStore"; \*# The [FulfillmentInfo.ids][] for type
-                       *# [FulfillmentInfo.Type.SAME_DAY_DELIVERY][].* \|
-                       "sameDayDelivery"; \*# The [FulfillmentInfo.ids][] for
-                       type *# [FulfillmentInfo.Type.NEXT_DAY_DELIVERY][].* \|
-                       "nextDayDelivery"; \*# The [FulfillmentInfo.ids][] for
-                       type *# [FulfillmentInfo.Type.CUSTOM_TYPE_1][].* \|
-                       "customFulfillment1"; \*# The [FulfillmentInfo.ids][] for
-                       type *# [FulfillmentInfo.Type.CUSTOM_TYPE_2][].* \|
-                       "customFulfillment2"; \*# The [FulfillmentInfo.ids][] for
-                       type *# [FulfillmentInfo.Type.CUSTOM_TYPE_3][].* \|
-                       "customFulfillment3"; \*# The [FulfillmentInfo.ids][] for
-                       type *# [FulfillmentInfo.Type.CUSTOM_TYPE_4][].* \|
-                       "customFulfillment4"; \*# The [FulfillmentInfo.ids][] for
-                       type *# [FulfillmentInfo.Type.CUSTOM_TYPE_5][].* \|
-                       "customFulfillment5";
+                    Textual facet keys:
 
-                    -  numerical_field = *# The
-                       [PriceInfo.price][google.cloud.retail.v2.PriceInfo.price].*
-                       "price"; *# The discount. Computed by
-                       (original_price-price)/price * "discount"; *# The
-                       [Rating.average_rating][google.cloud.retail.v2.Rating.average_rating].*
-                       "rating"; *# The
-                       [Rating.rating_count][google.cloud.retail.v2.Rating.rating_count].*
-                       "ratingCount"; *# The numerical custom attribute in
-                       [Product][google.cloud.retail.v2.Product] object. Key
-                       can* *# be any key in the
-                       [Product.attributes][google.cloud.retail.v2.Product.attributes]
-                       map* *# if the attribute values are numerical.* \|
-                       "attributes.key";
+                    -  brands
+                    -  categories
+                    -  genders
+                    -  ageGroups
+                    -  availability
+                    -  colorFamilies
+                    -  colors
+                    -  sizes
+                    -  materials
+                    -  patterns
+                    -  conditions
+                    -  attributes.key
+                    -  pickupInStore
+                    -  shipToStore
+                    -  sameDayDelivery
+                    -  nextDayDelivery
+                    -  customFulfillment1
+                    -  customFulfillment2
+                    -  customFulfillment3
+                    -  customFulfillment4
+                    -  customFulfillment5
+
+                    Numeric facet keys:
+
+                    -  price
+                    -  discount
+                    -  rating
+                    -  ratingCount
+                    -  attributes.key
                 intervals (Sequence[google.cloud.retail_v2.types.Interval]):
                     Set only if values should be bucketized into
                     intervals. Must be set for facets with numerical
@@ -507,9 +477,12 @@ class SearchRequest(proto.Message):
                     Examples:
 
                     -  To boost products with product ID "product_1" or
-                       "product_2", and color "Red" or "Blue": *(id:
-                       ANY("product_1", "product_2"))* *AND* *(colorFamilies:
-                       ANY("Red", "Blue"))*
+                       "product_2", and color "Red" or "Blue":
+                       ::
+
+                          (id: ANY("product_1", "product_2"))
+                          AND
+                          (colorFamilies: ANY("Red", "Blue"))
                 boost (float):
                     Strength of the condition boost, which should be in [-1, 1].
                     Negative boost means demotion. Default is 0.0.
