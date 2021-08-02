@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.1](https://www.github.com/googleapis/python-orchestration-airflow/compare/v0.1.0...v0.1.1) (2021-07-28)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#9](https://www.github.com/googleapis/python-orchestration-airflow/issues/9)) ([b4ef804](https://www.github.com/googleapis/python-orchestration-airflow/commit/b4ef804d16f4b312e0485e9107f32ef3ee0a7a97))
+
 ## 0.1.0 (2021-07-28)
 
 
