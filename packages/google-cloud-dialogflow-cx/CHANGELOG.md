@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.1.1...v1.2.0) (2021-08-02)
+
+
+### Features
+
+* **v3:** add advanced settings for agent level ([#137](https://www.github.com/googleapis/python-dialogflow-cx/issues/137)) ([24ef477](https://www.github.com/googleapis/python-dialogflow-cx/commit/24ef4773d4f6392ff39e7cdf70ff67b64ee50449))
+* **v3:** add insights export settings for security setting ([24ef477](https://www.github.com/googleapis/python-dialogflow-cx/commit/24ef4773d4f6392ff39e7cdf70ff67b64ee50449))
+* **v3:** add language code for streaming recognition result and flow versions for query parameters ([24ef477](https://www.github.com/googleapis/python-dialogflow-cx/commit/24ef4773d4f6392ff39e7cdf70ff67b64ee50449))
+* **v3:** add rollout config, state and failure reason for experiment ([24ef477](https://www.github.com/googleapis/python-dialogflow-cx/commit/24ef4773d4f6392ff39e7cdf70ff67b64ee50449))
+* **v3beta1:** add advanced settings for agent level ([#138](https://www.github.com/googleapis/python-dialogflow-cx/issues/138)) ([96141a1](https://www.github.com/googleapis/python-dialogflow-cx/commit/96141a11fdba3dcb2a77a261505583bba75fcc77))
+* **v3beta1:** add insights export settings for security setting ([96141a1](https://www.github.com/googleapis/python-dialogflow-cx/commit/96141a11fdba3dcb2a77a261505583bba75fcc77))
+* **v3beta1:** add language code for streaming recognition result and flow versions for query parameters ([96141a1](https://www.github.com/googleapis/python-dialogflow-cx/commit/96141a11fdba3dcb2a77a261505583bba75fcc77))
+* **v3beta1:** add rollout config, state and failure reason for experiment ([96141a1](https://www.github.com/googleapis/python-dialogflow-cx/commit/96141a11fdba3dcb2a77a261505583bba75fcc77))
+
+
+### Documentation
+
+* **v3beta1:** deprecate legacy logging settings ([96141a1](https://www.github.com/googleapis/python-dialogflow-cx/commit/96141a11fdba3dcb2a77a261505583bba75fcc77))
+* **v3:** deprecate legacy logging settings ([24ef477](https://www.github.com/googleapis/python-dialogflow-cx/commit/24ef4773d4f6392ff39e7cdf70ff67b64ee50449))
+
 ### [1.1.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.1.0...v1.1.1) (2021-07-24)
 
 
