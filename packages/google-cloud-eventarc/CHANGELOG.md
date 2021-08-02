@@ -1,5 +1,22 @@
 # Changelog
 
+### [0.2.2](https://www.github.com/googleapis/python-eventarc/compare/v0.2.1...v0.2.2) (2021-07-30)
+
+
+### Features
+
+* add Samples section to CONTRIBUTING.rst ([#17](https://www.github.com/googleapis/python-eventarc/issues/17)) ([7e2cd4a](https://www.github.com/googleapis/python-eventarc/commit/7e2cd4a1fb857e9992425726bbc93ff2827fea49))
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#21](https://www.github.com/googleapis/python-eventarc/issues/21)) ([c9af910](https://www.github.com/googleapis/python-eventarc/commit/c9af9101a3d16395b6ccdecdfd6676394741f686))
+
+
+### Miscellaneous Chores
+
+* release as 0.2.2 ([#22](https://www.github.com/googleapis/python-eventarc/issues/22)) ([0b26e99](https://www.github.com/googleapis/python-eventarc/commit/0b26e9953c2690f2c71d87681523afd6299af638))
+
 ### [0.2.1](https://www.github.com/googleapis/python-eventarc/compare/v0.2.0...v0.2.1) (2021-07-21)
 
 
