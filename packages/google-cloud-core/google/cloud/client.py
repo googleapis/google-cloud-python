@@ -19,8 +19,6 @@ import json
 import os
 from pickle import PicklingError
 
-import six
-
 import google.api_core.client_options
 import google.api_core.exceptions
 import google.auth
@@ -271,10 +269,10 @@ class _ClientProjectMixin(object):
                 "determined from the environment."
             )
 
-        if isinstance(project, six.binary_type):
+        if isinstance(project, bytes):
             project = project.decode("utf-8")
 
-        if not isinstance(project, six.string_types):
+        if not isinstance(project, str):
             raise ValueError("Project must be a string.")
 
         self.project = project

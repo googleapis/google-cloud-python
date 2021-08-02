@@ -191,7 +191,7 @@ class TestOperation(unittest.TestCase):
         type_url_map = {type_url: Struct}
 
         client = _Client()
-        meta = Struct(fields={"foo": Value(string_value=u"Bar")})
+        meta = Struct(fields={"foo": Value(string_value="Bar")})
         metadata_pb = Any(type_url=type_url, value=meta.SerializeToString())
         operation_pb = operations_pb2.Operation(
             name=self.OPERATION_NAME, metadata=metadata_pb

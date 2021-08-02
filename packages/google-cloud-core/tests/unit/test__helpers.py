@@ -13,8 +13,7 @@
 # limitations under the License.
 
 import unittest
-
-import mock
+from unittest import mock
 
 
 class Test__LocalStack(unittest.TestCase):
@@ -43,69 +42,6 @@ class Test__LocalStack(unittest.TestCase):
         popped = batches.pop()
         self.assertIsNone(batches.top)
         self.assertEqual(list(batches), [])
-
-
-class Test__UTC(unittest.TestCase):
-    @staticmethod
-    def _get_target_class():
-        from google.cloud._helpers import _UTC
-
-        return _UTC
-
-    def _make_one(self):
-        return self._get_target_class()()
-
-    def test_module_property(self):
-        from google.cloud import _helpers as MUT
-
-        klass = self._get_target_class()
-        try:
-            import pytz
-        except ImportError:  # pragma: NO COVER
-            self.assertIsInstance(MUT.UTC, klass)
-        else:
-            self.assertIs(MUT.UTC, pytz.UTC)
-
-    def test_dst(self):
-        import datetime
-
-        tz = self._make_one()
-        self.assertEqual(tz.dst(None), datetime.timedelta(0))
-
-    def test_fromutc(self):
-        import datetime
-
-        naive_epoch = datetime.datetime(1970, 1, 1, 0, 0, 1, tzinfo=None)
-        self.assertIsNone(naive_epoch.tzinfo)
-        tz = self._make_one()
-        epoch = tz.fromutc(naive_epoch)
-        self.assertEqual(epoch.tzinfo, tz)
-
-    def test_fromutc_with_tz(self):
-        import datetime
-
-        tz = self._make_one()
-        epoch_with_tz = datetime.datetime(1970, 1, 1, 0, 0, 1, tzinfo=tz)
-        epoch = tz.fromutc(epoch_with_tz)
-        self.assertEqual(epoch.tzinfo, tz)
-
-    def test_tzname(self):
-        tz = self._make_one()
-        self.assertEqual(tz.tzname(None), "UTC")
-
-    def test_utcoffset(self):
-        import datetime
-
-        tz = self._make_one()
-        self.assertEqual(tz.utcoffset(None), datetime.timedelta(0))
-
-    def test___repr__(self):
-        tz = self._make_one()
-        self.assertEqual(repr(tz), "<UTC>")
-
-    def test___str__(self):
-        tz = self._make_one()
-        self.assertEqual(str(tz), "UTC")
 
 
 class Test__ensure_tuple_or_list(unittest.TestCase):
@@ -199,7 +135,6 @@ class Test__millis_from_datetime(unittest.TestCase):
 
     def test_w_utc_datetime(self):
         import datetime
-        import six
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _microseconds_from_datetime
 
@@ -207,30 +142,24 @@ class Test__millis_from_datetime(unittest.TestCase):
         NOW_MICROS = _microseconds_from_datetime(NOW)
         MILLIS = NOW_MICROS // 1000
         result = self._call_fut(NOW)
-        self.assertIsInstance(result, six.integer_types)
+        self.assertIsInstance(result, int)
         self.assertEqual(result, MILLIS)
 
     def test_w_non_utc_datetime(self):
         import datetime
-        import six
-        from google.cloud._helpers import _UTC
         from google.cloud._helpers import _microseconds_from_datetime
 
-        class CET(_UTC):
-            _tzname = "CET"
-            _utcoffset = datetime.timedelta(hours=-1)
-
-        zone = CET()
+        offset = datetime.timedelta(hours=-1)
+        zone = datetime.timezone(offset=offset, name="CET")
         NOW = datetime.datetime(2015, 7, 28, 16, 34, 47, tzinfo=zone)
         NOW_MICROS = _microseconds_from_datetime(NOW)
         MILLIS = NOW_MICROS // 1000
         result = self._call_fut(NOW)
-        self.assertIsInstance(result, six.integer_types)
+        self.assertIsInstance(result, int)
         self.assertEqual(result, MILLIS)
 
     def test_w_naive_datetime(self):
         import datetime
-        import six
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _microseconds_from_datetime
 
@@ -239,7 +168,7 @@ class Test__millis_from_datetime(unittest.TestCase):
         UTC_NOW_MICROS = _microseconds_from_datetime(UTC_NOW)
         MILLIS = UTC_NOW_MICROS // 1000
         result = self._call_fut(NOW)
-        self.assertIsInstance(result, six.integer_types)
+        self.assertIsInstance(result, int)
         self.assertEqual(result, MILLIS)
 
 
@@ -497,13 +426,9 @@ class Test__datetime_to_rfc3339(unittest.TestCase):
 
     @staticmethod
     def _make_timezone(offset):
-        from google.cloud._helpers import _UTC
+        import datetime
 
-        class CET(_UTC):
-            _tzname = "CET"
-            _utcoffset = offset
-
-        return CET()
+        return datetime.timezone(offset=offset, name="CET")
 
     def test_w_utc_datetime(self):
         import datetime
@@ -548,12 +473,12 @@ class Test__to_bytes(unittest.TestCase):
         self.assertEqual(self._call_fut(value), value)
 
     def test_with_unicode(self):
-        value = u"string-val"
+        value = "string-val"
         encoded_value = b"string-val"
         self.assertEqual(self._call_fut(value), encoded_value)
 
     def test_unicode_non_ascii(self):
-        value = u"\u2013"  # Long hyphen
+        value = "\u2013"  # Long hyphen
         encoded_value = b"\xe2\x80\x93"
         self.assertRaises(UnicodeEncodeError, self._call_fut, value)
         self.assertEqual(self._call_fut(value, encoding="utf-8"), encoded_value)
@@ -575,7 +500,7 @@ class Test__bytes_to_unicode(unittest.TestCase):
         self.assertEqual(self._call_fut(value), encoded_value)
 
     def test_with_unicode(self):
-        value = u"string-val"
+        value = "string-val"
         encoded_value = "string-val"
         self.assertEqual(self._call_fut(value), encoded_value)
 
@@ -795,7 +720,7 @@ class Test_make_secure_channel(unittest.TestCase):
         return make_secure_channel(*args, **kwargs)
 
     def test_it(self):
-        from six.moves import http_client
+        import http.client
 
         credentials = object()
         host = "HOST"
@@ -810,7 +735,7 @@ class Test_make_secure_channel(unittest.TestCase):
 
         self.assertIs(result, secure_authorized_channel.return_value)
 
-        expected_target = "%s:%d" % (host, http_client.HTTPS_PORT)
+        expected_target = "%s:%d" % (host, http.client.HTTPS_PORT)
         expected_options = (("grpc.primary_user_agent", user_agent),)
 
         secure_authorized_channel.assert_called_once_with(
@@ -818,7 +743,7 @@ class Test_make_secure_channel(unittest.TestCase):
         )
 
     def test_extra_options(self):
-        from six.moves import http_client
+        import http.client
 
         credentials = object()
         host = "HOST"
@@ -834,7 +759,7 @@ class Test_make_secure_channel(unittest.TestCase):
 
         self.assertIs(result, secure_authorized_channel.return_value)
 
-        expected_target = "%s:%d" % (host, http_client.HTTPS_PORT)
+        expected_target = "%s:%d" % (host, http.client.HTTPS_PORT)
         expected_options = (("grpc.primary_user_agent", user_agent), extra_options[0])
 
         secure_authorized_channel.assert_called_once_with(

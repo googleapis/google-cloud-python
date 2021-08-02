@@ -34,6 +34,7 @@ Supported Python Versions
 -------------------------
 Python >= 3.6
 
-Deprecated Python Versions
---------------------------
-Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
+Unsupported Python Versions
+---------------------------
+Python == 2.7: the last version of this library which supported Python 2.7
+is ``google.cloud.core 1.7.2``.

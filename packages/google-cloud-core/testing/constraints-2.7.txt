@@ -1,3 +1,0 @@
-google-api-core==1.21.0
-googleapis-common-protos<1.53.0
-six==1.12.0

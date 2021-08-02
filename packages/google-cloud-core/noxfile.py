@@ -60,9 +60,7 @@ def default(session):
     )
 
     # Install all test dependencies, then install local packages in-place.
-    session.install(
-        "mock", "pytest", "pytest-cov", "grpcio >= 1.0.2", "-c", constraints_path
-    )
+    session.install("pytest", "pytest-cov", "grpcio >= 1.0.2", "-c", constraints_path)
     session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the unit tests.
@@ -80,7 +78,7 @@ def default(session):
     )
 
 
-@nox.session(python=["2.7", "3.6", "3.7", "3.8", "3.9"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 def unit(session):
     """Default unit test session."""
     default(session)

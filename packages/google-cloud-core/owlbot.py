@@ -14,8 +14,6 @@
 
 """This script is used to synthesize generated parts of this library."""
 
-import re
-
 import synthtool as s
 from synthtool import gcp
 
@@ -24,7 +22,7 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=100)
+templated_files = common.py_library(microgenerator=True, cov_level=100)
 s.move(
     templated_files,
     excludes=[

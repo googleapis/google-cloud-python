@@ -22,7 +22,7 @@ In order to add a feature:
   documentation.
 
 - The feature must work fully on the following CPython versions:
-  2.7, 3.6, 3.7, 3.8 and 3.9 on both UNIX and Windows.
+  3.6, 3.7, 3.8 and 3.9 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -148,7 +148,7 @@ Running System Tests
 
   .. note::
 
-      System tests are only configured to run under Python 2.7 and 3.8.
+      System tests are only configured to run under Python 3.8.
       For expediency, we do not run them in older versions of Python 3.
 
   This alone will not run the tests. You'll need to change some local
@@ -221,13 +221,11 @@ Supported Python Versions
 
 We support:
 
--  `Python 2.7`_
 -  `Python 3.6`_
 -  `Python 3.7`_
 -  `Python 3.8`_
 -  `Python 3.9`_
 
-.. _Python 2.7: https://docs.python.org/2.7/
 .. _Python 3.6: https://docs.python.org/3.6/
 .. _Python 3.7: https://docs.python.org/3.7/
 .. _Python 3.8: https://docs.python.org/3.8/
@@ -239,7 +237,7 @@ Supported versions can be found in our ``noxfile.py`` `config`_.
 .. _config: https://github.com/googleapis/python-cloud-core/blob/master/noxfile.py
 
 
-We also explicitly decided to support Python 3 beginning with version 2.7.
+We also explicitly decided to support Python 3 beginning with version 3.6.
 Reasons for this include:
 
 -  Encouraging use of newest versions of Python 3

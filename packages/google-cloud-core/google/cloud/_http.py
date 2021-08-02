@@ -15,17 +15,12 @@
 """Shared implementation of connections to API servers."""
 
 import collections
-
-try:
-    import collections.abc as collections_abc
-except ImportError:  # Python2
-    import collections as collections_abc
+import collections.abc
 import json
 import os
 import platform
+from urllib.parse import urlencode
 import warnings
-
-from six.moves.urllib.parse import urlencode
 
 from google.api_core.client_info import ClientInfo
 from google.cloud import exceptions
@@ -263,7 +258,7 @@ class JSONConnection(Connection):
 
         query_params = query_params or {}
 
-        if isinstance(query_params, collections_abc.Mapping):
+        if isinstance(query_params, collections.abc.Mapping):
             query_params = query_params.copy()
         else:
             query_params_dict = collections.defaultdict(list)

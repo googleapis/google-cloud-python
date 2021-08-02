@@ -21,12 +21,10 @@ from __future__ import absolute_import
 
 import calendar
 import datetime
+import http.client
 import os
 import re
 from threading import local as Local
-
-import six
-from six.moves import http_client
 
 import google.auth
 import google.auth.transport.requests
@@ -41,6 +39,9 @@ except ImportError:  # pragma: NO COVER
 
 
 _NOW = datetime.datetime.utcnow  # To be replaced by tests.
+UTC = datetime.timezone.utc  # Singleton instance to be used throughout.
+_EPOCH = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
+
 _RFC3339_MICROS = "%Y-%m-%dT%H:%M:%S.%fZ"
 _RFC3339_NO_FRACTION = "%Y-%m-%dT%H:%M:%S"
 _TIMEONLY_W_MICROS = "%H:%M:%S.%f"
@@ -109,41 +110,6 @@ class _LocalStack(Local):
         """
         if self._stack:
             return self._stack[-1]
-
-
-class _UTC(datetime.tzinfo):
-    """Basic UTC implementation.
-
-    Implementing a small surface area to avoid depending on ``pytz``.
-    """
-
-    _dst = datetime.timedelta(0)
-    _tzname = "UTC"
-    _utcoffset = _dst
-
-    def dst(self, dt):  # pylint: disable=unused-argument
-        """Daylight savings time offset."""
-        return self._dst
-
-    def fromutc(self, dt):
-        """Convert a timestamp from (naive) UTC to this timezone."""
-        if dt.tzinfo is None:
-            return dt.replace(tzinfo=self)
-        return super(_UTC, self).fromutc(dt)
-
-    def tzname(self, dt):  # pylint: disable=unused-argument
-        """Get the name of this timezone."""
-        return self._tzname
-
-    def utcoffset(self, dt):  # pylint: disable=unused-argument
-        """UTC offset of this timezone."""
-        return self._utcoffset
-
-    def __repr__(self):
-        return "<%s>" % (self._tzname,)
-
-    def __str__(self):
-        return self._tzname
 
 
 def _ensure_tuple_or_list(arg_name, tuple_or_list):
@@ -344,9 +310,6 @@ def _datetime_to_rfc3339(value, ignore_zone=True):
 def _to_bytes(value, encoding="ascii"):
     """Converts a string value to bytes, if necessary.
 
-    Unfortunately, ``six.b`` is insufficient for this task since in
-    Python2 it does not modify ``unicode`` objects.
-
     :type value: str / bytes or unicode
     :param value: The string/bytes value to be converted.
 
@@ -363,8 +326,8 @@ def _to_bytes(value, encoding="ascii"):
               in if it started out as bytes.
     :raises TypeError: if the value could not be converted to bytes.
     """
-    result = value.encode(encoding) if isinstance(value, six.text_type) else value
-    if isinstance(result, six.binary_type):
+    result = value.encode(encoding) if isinstance(value, str) else value
+    if isinstance(result, bytes):
         return result
     else:
         raise TypeError("%r could not be converted to bytes" % (value,))
@@ -382,8 +345,8 @@ def _bytes_to_unicode(value):
 
     :raises ValueError: if the value could not be converted to unicode.
     """
-    result = value.decode("utf-8") if isinstance(value, six.binary_type) else value
-    if isinstance(result, six.text_type):
+    result = value.decode("utf-8") if isinstance(value, bytes) else value
+    if isinstance(result, str):
         return result
     else:
         raise ValueError("%r could not be converted to unicode" % (value,))
@@ -559,7 +522,7 @@ def make_secure_channel(credentials, user_agent, host, extra_options=()):
     :rtype: :class:`grpc._channel.Channel`
     :returns: gRPC secure channel with credentials attached.
     """
-    target = "%s:%d" % (host, http_client.HTTPS_PORT)
+    target = "%s:%d" % (host, http.client.HTTPS_PORT)
     http_request = google.auth.transport.requests.Request()
 
     user_agent_option = ("grpc.primary_user_agent", user_agent)
@@ -621,16 +584,7 @@ def make_insecure_stub(stub_class, host, port=None):
     if port is None:
         target = host
     else:
-        # NOTE: This assumes port != http_client.HTTPS_PORT:
+        # NOTE: This assumes port != http.client.HTTPS_PORT:
         target = "%s:%d" % (host, port)
     channel = grpc.insecure_channel(target)
     return stub_class(channel)
-
-
-try:
-    from pytz import UTC  # pylint: disable=unused-import,wrong-import-order
-except ImportError:  # pragma: NO COVER
-    UTC = _UTC()  # Singleton instance to be used throughout.
-
-# Need to define _EPOCH at the end of module since it relies on UTC.
-_EPOCH = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=UTC)

@@ -15,8 +15,7 @@
 import io
 import json
 import unittest
-
-import mock
+from unittest import mock
 
 
 def _make_credentials():
@@ -393,8 +392,6 @@ class TestClientWithProject(unittest.TestCase):
             self._make_one(project=object(), credentials=CREDENTIALS, _http=HTTP)
 
     def _explicit_ctor_helper(self, project):
-        import six
-
         CREDENTIALS = _make_credentials()
         HTTP = object()
 
@@ -402,7 +399,7 @@ class TestClientWithProject(unittest.TestCase):
             project=project, credentials=CREDENTIALS, _http=HTTP
         )
 
-        if isinstance(project, six.binary_type):
+        if isinstance(project, bytes):
             self.assertEqual(client_obj.project, project.decode("utf-8"))
         else:
             self.assertEqual(client_obj.project, project)
@@ -413,8 +410,8 @@ class TestClientWithProject(unittest.TestCase):
         PROJECT = b"PROJECT"
         self._explicit_ctor_helper(PROJECT)
 
-    def test_constructor_explicit_unicode(self):
-        PROJECT = u"PROJECT"
+    def test_constructor_explicit_text(self):
+        PROJECT = "PROJECT"
         self._explicit_ctor_helper(PROJECT)
 
     def _from_service_account_info_helper(self, project=None):
