@@ -21,43 +21,40 @@ Supported here are:
 * resumable uploads (with metadata as well)
 """
 
-
+import http.client
 import json
 import os
 import random
 import re
 import sys
 
-import six
-from six.moves import http_client
-
 from google import resumable_media
 from google.resumable_media import _helpers
 from google.resumable_media import common
 
 
-_CONTENT_TYPE_HEADER = u"content-type"
-_CONTENT_RANGE_TEMPLATE = u"bytes {:d}-{:d}/{:d}"
-_RANGE_UNKNOWN_TEMPLATE = u"bytes {:d}-{:d}/*"
-_EMPTY_RANGE_TEMPLATE = u"bytes */{:d}"
+_CONTENT_TYPE_HEADER = "content-type"
+_CONTENT_RANGE_TEMPLATE = "bytes {:d}-{:d}/{:d}"
+_RANGE_UNKNOWN_TEMPLATE = "bytes {:d}-{:d}/*"
+_EMPTY_RANGE_TEMPLATE = "bytes */{:d}"
 _BOUNDARY_WIDTH = len(str(sys.maxsize - 1))
-_BOUNDARY_FORMAT = u"==============={{:0{:d}d}}==".format(_BOUNDARY_WIDTH)
+_BOUNDARY_FORMAT = "==============={{:0{:d}d}}==".format(_BOUNDARY_WIDTH)
 _MULTIPART_SEP = b"--"
 _CRLF = b"\r\n"
 _MULTIPART_BEGIN = b"\r\ncontent-type: application/json; charset=UTF-8\r\n\r\n"
 _RELATED_HEADER = b'multipart/related; boundary="'
 _BYTES_RANGE_RE = re.compile(r"bytes=0-(?P<end_byte>\d+)", flags=re.IGNORECASE)
 _STREAM_ERROR_TEMPLATE = (
-    u"Bytes stream is in unexpected state. "
-    u"The local stream has had {:d} bytes read from it while "
-    u"{:d} bytes have already been updated (they should match)."
+    "Bytes stream is in unexpected state. "
+    "The local stream has had {:d} bytes read from it while "
+    "{:d} bytes have already been updated (they should match)."
 )
 _STREAM_READ_PAST_TEMPLATE = (
-    u"{:d} bytes have been read from the stream, which exceeds "
-    u"the expected total {:d}."
+    "{:d} bytes have been read from the stream, which exceeds "
+    "the expected total {:d}."
 )
-_POST = u"POST"
-_PUT = u"PUT"
+_POST = "POST"
+_PUT = "PUT"
 _UPLOAD_CHECKSUM_MISMATCH_MESSAGE = (
     "The computed ``{}`` checksum, ``{}``, and the checksum reported by the "
     "remote host, ``{}``, did not match."
@@ -113,7 +110,7 @@ class UploadBase(object):
         # Tombstone the current upload so it cannot be used again (in either
         # failure or success).
         self._finished = True
-        _helpers.require_status_code(response, (http_client.OK,), self._get_status_code)
+        _helpers.require_status_code(response, (http.client.OK,), self._get_status_code)
 
     @staticmethod
     def _get_status_code(response):
@@ -125,7 +122,7 @@ class UploadBase(object):
         Raises:
             NotImplementedError: Always, since virtual.
         """
-        raise NotImplementedError(u"This implementation is virtual.")
+        raise NotImplementedError("This implementation is virtual.")
 
     @staticmethod
     def _get_headers(response):
@@ -137,7 +134,7 @@ class UploadBase(object):
         Raises:
             NotImplementedError: Always, since virtual.
         """
-        raise NotImplementedError(u"This implementation is virtual.")
+        raise NotImplementedError("This implementation is virtual.")
 
     @staticmethod
     def _get_body(response):
@@ -149,7 +146,7 @@ class UploadBase(object):
         Raises:
             NotImplementedError: Always, since virtual.
         """
-        raise NotImplementedError(u"This implementation is virtual.")
+        raise NotImplementedError("This implementation is virtual.")
 
 
 class SimpleUpload(UploadBase):
@@ -198,10 +195,10 @@ class SimpleUpload(UploadBase):
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         if self.finished:
-            raise ValueError(u"An upload can only be used once.")
+            raise ValueError("An upload can only be used once.")
 
-        if not isinstance(data, six.binary_type):
-            raise TypeError(u"`data` must be bytes, received", type(data))
+        if not isinstance(data, bytes):
+            raise TypeError("`data` must be bytes, received", type(data))
         self._headers[_CONTENT_TYPE_HEADER] = content_type
         return _POST, self.upload_url, data, self._headers
 
@@ -225,7 +222,7 @@ class SimpleUpload(UploadBase):
         Raises:
             NotImplementedError: Always, since virtual.
         """
-        raise NotImplementedError(u"This implementation is virtual.")
+        raise NotImplementedError("This implementation is virtual.")
 
 
 class MultipartUpload(UploadBase):
@@ -286,10 +283,10 @@ class MultipartUpload(UploadBase):
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         if self.finished:
-            raise ValueError(u"An upload can only be used once.")
+            raise ValueError("An upload can only be used once.")
 
-        if not isinstance(data, six.binary_type):
-            raise TypeError(u"`data` must be bytes, received", type(data))
+        if not isinstance(data, bytes):
+            raise TypeError("`data` must be bytes, received", type(data))
 
         checksum_object = _helpers._get_checksum_object(self._checksum_type)
         if checksum_object:
@@ -328,7 +325,7 @@ class MultipartUpload(UploadBase):
         Raises:
             NotImplementedError: Always, since virtual.
         """
-        raise NotImplementedError(u"This implementation is virtual.")
+        raise NotImplementedError("This implementation is virtual.")
 
 
 class ResumableUpload(UploadBase):
@@ -366,7 +363,7 @@ class ResumableUpload(UploadBase):
         super(ResumableUpload, self).__init__(upload_url, headers=headers)
         if chunk_size % resumable_media.UPLOAD_CHUNK_SIZE != 0:
             raise ValueError(
-                u"{} KB must divide chunk size".format(
+                "{} KB must divide chunk size".format(
                     resumable_media.UPLOAD_CHUNK_SIZE / 1024
                 )
             )
@@ -459,15 +456,15 @@ class ResumableUpload(UploadBase):
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         if self.resumable_url is not None:
-            raise ValueError(u"This upload has already been initiated.")
+            raise ValueError("This upload has already been initiated.")
         if stream.tell() != 0:
-            raise ValueError(u"Stream must be at beginning.")
+            raise ValueError("Stream must be at beginning.")
 
         self._stream = stream
         self._content_type = content_type
         headers = {
-            _CONTENT_TYPE_HEADER: u"application/json; charset=UTF-8",
-            u"x-upload-content-type": content_type,
+            _CONTENT_TYPE_HEADER: "application/json; charset=UTF-8",
+            "x-upload-content-type": content_type,
         }
         # Set the total bytes if possible.
         if total_bytes is not None:
@@ -476,11 +473,11 @@ class ResumableUpload(UploadBase):
             self._total_bytes = get_total_bytes(stream)
         # Add the total bytes to the headers if set.
         if self._total_bytes is not None:
-            content_length = u"{:d}".format(self._total_bytes)
-            headers[u"x-upload-content-length"] = content_length
+            content_length = "{:d}".format(self._total_bytes)
+            headers["x-upload-content-length"] = content_length
 
         headers.update(self._headers)
-        payload = json.dumps(metadata).encode(u"utf-8")
+        payload = json.dumps(metadata).encode("utf-8")
         return _POST, self.upload_url, payload, headers
 
     def _process_initiate_response(self, response):
@@ -501,12 +498,12 @@ class ResumableUpload(UploadBase):
         """
         _helpers.require_status_code(
             response,
-            (http_client.OK, http_client.CREATED),
+            (http.client.OK, http.client.CREATED),
             self._get_status_code,
             callback=self._make_invalid,
         )
         self._resumable_url = _helpers.header_required(
-            response, u"location", self._get_headers
+            response, "location", self._get_headers
         )
 
     def initiate(
@@ -560,7 +557,7 @@ class ResumableUpload(UploadBase):
         Raises:
             NotImplementedError: Always, since virtual.
         """
-        raise NotImplementedError(u"This implementation is virtual.")
+        raise NotImplementedError("This implementation is virtual.")
 
     def _prepare_request(self):
         """Prepare the contents of HTTP request to upload a chunk.
@@ -593,15 +590,15 @@ class ResumableUpload(UploadBase):
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         if self.finished:
-            raise ValueError(u"Upload has finished.")
+            raise ValueError("Upload has finished.")
         if self.invalid:
             raise ValueError(
-                u"Upload is in an invalid state. To recover call `recover()`."
+                "Upload is in an invalid state. To recover call `recover()`."
             )
         if self.resumable_url is None:
             raise ValueError(
-                u"This upload has not been initiated. Please call "
-                u"initiate() before beginning to transmit chunks."
+                "This upload has not been initiated. Please call "
+                "initiate() before beginning to transmit chunks."
             )
 
         start_byte, payload, content_range = get_next_chunk(
@@ -673,11 +670,11 @@ class ResumableUpload(UploadBase):
         """
         status_code = _helpers.require_status_code(
             response,
-            (http_client.OK, resumable_media.PERMANENT_REDIRECT),
+            (http.client.OK, resumable_media.PERMANENT_REDIRECT),
             self._get_status_code,
             callback=self._make_invalid,
         )
-        if status_code == http_client.OK:
+        if status_code == http.client.OK:
             # NOTE: We use the "local" information of ``bytes_sent`` to update
             #       ``bytes_uploaded``, but do not verify this against other
             #       state. However, there may be some other information:
@@ -703,11 +700,11 @@ class ResumableUpload(UploadBase):
                 self._make_invalid()
                 raise common.InvalidResponse(
                     response,
-                    u'Unexpected "range" header',
+                    'Unexpected "range" header',
                     bytes_range,
-                    u'Expected to be of the form "bytes=0-{end}"',
+                    'Expected to be of the form "bytes=0-{end}"',
                 )
-            self._bytes_uploaded = int(match.group(u"end_byte")) + 1
+            self._bytes_uploaded = int(match.group("end_byte")) + 1
 
     def _validate_checksum(self, response):
         """Check the computed checksum, if any, against the response headers.
@@ -764,7 +761,7 @@ class ResumableUpload(UploadBase):
         Raises:
             NotImplementedError: Always, since virtual.
         """
-        raise NotImplementedError(u"This implementation is virtual.")
+        raise NotImplementedError("This implementation is virtual.")
 
     def _prepare_recover_request(self):
         """Prepare the contents of HTTP request to recover from failure.
@@ -792,9 +789,9 @@ class ResumableUpload(UploadBase):
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         if not self.invalid:
-            raise ValueError(u"Upload is not in invalid state, no need to recover.")
+            raise ValueError("Upload is not in invalid state, no need to recover.")
 
-        headers = {_helpers.CONTENT_RANGE_HEADER: u"bytes */*"}
+        headers = {_helpers.CONTENT_RANGE_HEADER: "bytes */*"}
         return _PUT, self.resumable_url, None, headers
 
     def _process_recover_response(self, response):
@@ -826,11 +823,11 @@ class ResumableUpload(UploadBase):
             if match is None:
                 raise common.InvalidResponse(
                     response,
-                    u'Unexpected "range" header',
+                    'Unexpected "range" header',
                     bytes_range,
-                    u'Expected to be of the form "bytes=0-{end}"',
+                    'Expected to be of the form "bytes=0-{end}"',
                 )
-            self._bytes_uploaded = int(match.group(u"end_byte")) + 1
+            self._bytes_uploaded = int(match.group("end_byte")) + 1
         else:
             # In this case, the upload has not "begun".
             self._bytes_uploaded = 0
@@ -855,7 +852,7 @@ class ResumableUpload(UploadBase):
         Raises:
             NotImplementedError: Always, since virtual.
         """
-        raise NotImplementedError(u"This implementation is virtual.")
+        raise NotImplementedError("This implementation is virtual.")
 
 
 def get_boundary():
@@ -868,7 +865,7 @@ def get_boundary():
     boundary = _BOUNDARY_FORMAT.format(random_int)
     # NOTE: Neither % formatting nor .format() are available for byte strings
     #       in Python 3.4, so we must use unicode strings as templates.
-    return boundary.encode(u"utf-8")
+    return boundary.encode("utf-8")
 
 
 def construct_multipart_request(data, metadata, content_type):
@@ -887,8 +884,8 @@ def construct_multipart_request(data, metadata, content_type):
         between each part.
     """
     multipart_boundary = get_boundary()
-    json_bytes = json.dumps(metadata).encode(u"utf-8")
-    content_type = content_type.encode(u"utf-8")
+    json_bytes = json.dumps(metadata).encode("utf-8")
+    content_type = content_type.encode("utf-8")
     # Combine the two parts into a multipart payload.
     # NOTE: We'd prefer a bytes template but are restricted by Python 3.4.
     boundary_sep = _MULTIPART_SEP + multipart_boundary
@@ -977,12 +974,12 @@ def get_next_chunk(stream, chunk_size, total_bytes):
         #       stream to be at the beginning.
         if num_bytes_read != 0:
             raise ValueError(
-                u"Stream specified as empty, but produced non-empty content."
+                "Stream specified as empty, but produced non-empty content."
             )
     else:
         if num_bytes_read == 0:
             raise ValueError(
-                u"Stream is already exhausted. There is no content remaining."
+                "Stream is already exhausted. There is no content remaining."
             )
 
     content_range = get_content_range(start_byte, end_byte, total_bytes)

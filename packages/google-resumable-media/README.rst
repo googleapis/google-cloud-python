@@ -16,11 +16,15 @@ support at `google._async_resumable_media`.
 
 Supported Python Versions
 -------------------------
-Python >= 3.5
+Python >= 3.6
 
-Deprecated Python Versions
---------------------------
-Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
+Unsupported Python Versions
+---------------------------
+
+Python == 2.7, Python == 3.5.
+
+The last version of this library compatible with Python 2.7 and 3.5 is
+`google-resumable-media==1.3.3`.
 
 License
 -------

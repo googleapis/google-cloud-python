@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import http.client
 import io
 
 import aiohttp
 import mock
 import pytest
-from six.moves import http_client
 
 
 from google.resumable_media import common
@@ -55,7 +55,7 @@ class TestDownload(object):
         chunk1 = b"first chunk, count starting at 0. "
         chunk2 = b"second chunk, or chunk 1, which is better? "
         chunk3 = b"ordinals and numerals and stuff."
-        header_value = u"crc32c=qmNCyg==,md5=fPAJHnnoi/+NadyNxT2c2w=="
+        header_value = "crc32c=qmNCyg==,md5=fPAJHnnoi/+NadyNxT2c2w=="
         headers = {_helpers._HASH_HEADER: header_value}
         response = _mock_response(chunks=[chunk1, chunk2, chunk3], headers=headers)
 
@@ -75,8 +75,8 @@ class TestDownload(object):
         chunk1 = b"first chunk, count starting at 0. "
         chunk2 = b"second chunk, or chunk 1, which is better? "
         chunk3 = b"ordinals and numerals and stuff."
-        bad_checksum = u"d3JvbmcgbiBtYWRlIHVwIQ=="
-        header_value = u"crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        bad_checksum = "d3JvbmcgbiBtYWRlIHVwIQ=="
+        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
         headers = {_helpers._HASH_HEADER: header_value}
         response = _mock_response(chunks=[chunk1, chunk2, chunk3], headers=headers)
 
@@ -88,10 +88,10 @@ class TestDownload(object):
         error = exc_info.value
         assert error.response is response
         assert len(error.args) == 1
-        if checksum == u"md5":
-            good_checksum = u"fPAJHnnoi/+NadyNxT2c2w=="
+        if checksum == "md5":
+            good_checksum = "fPAJHnnoi/+NadyNxT2c2w=="
         else:
-            good_checksum = u"qmNCyg=="
+            good_checksum = "qmNCyg=="
         msg = download_mod._CHECKSUM_MISMATCH.format(
             sync_test.EXAMPLE_URL,
             bad_checksum,
@@ -112,8 +112,8 @@ class TestDownload(object):
         chunk1 = b"first chunk, count starting at 0. "
         chunk2 = b"second chunk, or chunk 1, which is better? "
         chunk3 = b"ordinals and numerals and stuff."
-        bad_checksum = u"d3JvbmcgbiBtYWRlIHVwIQ=="
-        header_value = u"crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        bad_checksum = "d3JvbmcgbiBtYWRlIHVwIQ=="
+        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
         headers = {_helpers._HASH_HEADER: header_value}
         response = _mock_response(chunks=[chunk1, chunk2, chunk3], headers=headers)
 
@@ -153,20 +153,20 @@ class TestDownload(object):
         assert ret_val is transport.request.return_value
 
         called_kwargs = {
-            u"data": None,
-            u"headers": download._headers,
-            u"timeout": EXPECTED_TIMEOUT if timeout is None else timeout,
+            "data": None,
+            "headers": download._headers,
+            "timeout": EXPECTED_TIMEOUT if timeout is None else timeout,
         }
 
         if chunks:
             assert stream is not None
-            called_kwargs[u"stream"] = True
+            called_kwargs["stream"] = True
         transport.request.assert_called_once_with(
-            u"GET", sync_test.EXAMPLE_URL, **called_kwargs
+            "GET", sync_test.EXAMPLE_URL, **called_kwargs
         )
 
-        range_bytes = u"bytes={:d}-{:d}".format(0, end)
-        assert download._headers[u"range"] == range_bytes
+        range_bytes = "bytes={:d}-{:d}".format(0, end)
+        assert download._headers["range"] == range_bytes
         assert download.finished
 
         return transport
@@ -194,7 +194,7 @@ class TestDownload(object):
     async def test_consume_with_stream_hash_check_success(self, checksum):
         stream = io.BytesIO()
         chunks = (b"up down ", b"charlie ", b"brown")
-        header_value = u"crc32c=UNIQxg==,md5=JvS1wjMvfbCXgEGeaJJLDQ=="
+        header_value = "crc32c=UNIQxg==,md5=JvS1wjMvfbCXgEGeaJJLDQ=="
         headers = {_helpers._HASH_HEADER: header_value}
         await self._consume_helper(
             stream=stream, chunks=chunks, response_headers=headers, checksum=checksum
@@ -211,8 +211,8 @@ class TestDownload(object):
         )
 
         chunks = (b"zero zero", b"niner tango")
-        bad_checksum = u"anVzdCBub3QgdGhpcyAxLA=="
-        header_value = u"crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        bad_checksum = "anVzdCBub3QgdGhpcyAxLA=="
+        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
         headers = {_helpers._HASH_HEADER: header_value}
 
         transport = mock.AsyncMock(spec=["request"])
@@ -230,10 +230,10 @@ class TestDownload(object):
         error = exc_info.value
         assert error.response is transport.request.return_value
         assert len(error.args) == 1
-        if checksum == u"md5":
-            good_checksum = u"1A/dxEpys717C6FH7FIWDw=="
+        if checksum == "md5":
+            good_checksum = "1A/dxEpys717C6FH7FIWDw=="
         else:
-            good_checksum = u"GvNZlg=="
+            good_checksum = "GvNZlg=="
         msg = download_mod._CHECKSUM_MISMATCH.format(
             sync_test.EXAMPLE_URL,
             bad_checksum,
@@ -244,7 +244,7 @@ class TestDownload(object):
 
         # Check mocks.
         transport.request.assert_called_once_with(
-            u"GET",
+            "GET",
             sync_test.EXAMPLE_URL,
             data=None,
             headers={},
@@ -257,9 +257,9 @@ class TestDownload(object):
         headers = {}  # Empty headers
         end = 16383
         await self._consume_helper(end=end, headers=headers)
-        range_bytes = u"bytes={:d}-{:d}".format(0, end)
+        range_bytes = "bytes={:d}-{:d}".format(0, end)
         # Make sure the headers have been modified.
-        assert headers == {u"range": range_bytes}
+        assert headers == {"range": range_bytes}
 
 
 class TestRawDownload(object):
@@ -287,7 +287,7 @@ class TestRawDownload(object):
         chunk1 = b"first chunk, count starting at 0. "
         chunk2 = b"second chunk, or chunk 1, which is better? "
         chunk3 = b"ordinals and numerals and stuff."
-        header_value = u"crc32c=qmNCyg==,md5=fPAJHnnoi/+NadyNxT2c2w=="
+        header_value = "crc32c=qmNCyg==,md5=fPAJHnnoi/+NadyNxT2c2w=="
         headers = {_helpers._HASH_HEADER: header_value}
         response = _mock_raw_response(chunks=[chunk1, chunk2, chunk3], headers=headers)
 
@@ -307,8 +307,8 @@ class TestRawDownload(object):
         chunk1 = b"first chunk, count starting at 0. "
         chunk2 = b"second chunk, or chunk 1, which is better? "
         chunk3 = b"ordinals and numerals and stuff."
-        bad_checksum = u"d3JvbmcgbiBtYWRlIHVwIQ=="
-        header_value = u"crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        bad_checksum = "d3JvbmcgbiBtYWRlIHVwIQ=="
+        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
         headers = {_helpers._HASH_HEADER: header_value}
         response = _mock_raw_response(chunks=[chunk1, chunk2, chunk3], headers=headers)
 
@@ -320,10 +320,10 @@ class TestRawDownload(object):
         error = exc_info.value
         assert error.response is response
         assert len(error.args) == 1
-        if checksum == u"md5":
-            good_checksum = u"fPAJHnnoi/+NadyNxT2c2w=="
+        if checksum == "md5":
+            good_checksum = "fPAJHnnoi/+NadyNxT2c2w=="
         else:
-            good_checksum = u"qmNCyg=="
+            good_checksum = "qmNCyg=="
         msg = download_mod._CHECKSUM_MISMATCH.format(
             sync_test.EXAMPLE_URL,
             bad_checksum,
@@ -344,8 +344,8 @@ class TestRawDownload(object):
         chunk1 = b"first chunk, count starting at 0. "
         chunk2 = b"second chunk, or chunk 1, which is better? "
         chunk3 = b"ordinals and numerals and stuff."
-        bad_checksum = u"d3JvbmcgbiBtYWRlIHVwIQ=="
-        header_value = u"crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        bad_checksum = "d3JvbmcgbiBtYWRlIHVwIQ=="
+        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
         headers = {_helpers._HASH_HEADER: header_value}
         response = _mock_response(chunks=[chunk1, chunk2, chunk3], headers=headers)
 
@@ -382,15 +382,15 @@ class TestRawDownload(object):
         if chunks:
             assert stream is not None
         transport.request.assert_called_once_with(
-            u"GET",
+            "GET",
             sync_test.EXAMPLE_URL,
             data=None,
             headers=download._headers,
             timeout=EXPECTED_TIMEOUT,
         )
 
-        range_bytes = u"bytes={:d}-{:d}".format(0, end)
-        assert download._headers[u"range"] == range_bytes
+        range_bytes = "bytes={:d}-{:d}".format(0, end)
+        assert download._headers["range"] == range_bytes
         assert download.finished
 
         return transport
@@ -413,7 +413,7 @@ class TestRawDownload(object):
     async def test_consume_with_stream_hash_check_success(self, checksum):
         stream = io.BytesIO()
         chunks = (b"up down ", b"charlie ", b"brown")
-        header_value = u"crc32c=UNIQxg==,md5=JvS1wjMvfbCXgEGeaJJLDQ=="
+        header_value = "crc32c=UNIQxg==,md5=JvS1wjMvfbCXgEGeaJJLDQ=="
         headers = {_helpers._HASH_HEADER: header_value}
 
         await self._consume_helper(
@@ -431,8 +431,8 @@ class TestRawDownload(object):
         )
 
         chunks = (b"zero zero", b"niner tango")
-        bad_checksum = u"anVzdCBub3QgdGhpcyAxLA=="
-        header_value = u"crc32c={bad},md5={bad}".format(bad=bad_checksum)
+        bad_checksum = "anVzdCBub3QgdGhpcyAxLA=="
+        header_value = "crc32c={bad},md5={bad}".format(bad=bad_checksum)
         headers = {_helpers._HASH_HEADER: header_value}
         transport = mock.AsyncMock(spec=["request"])
         mockResponse = _mock_raw_response(chunks=chunks, headers=headers)
@@ -449,10 +449,10 @@ class TestRawDownload(object):
         error = exc_info.value
         assert error.response is transport.request.return_value
         assert len(error.args) == 1
-        if checksum == u"md5":
-            good_checksum = u"1A/dxEpys717C6FH7FIWDw=="
+        if checksum == "md5":
+            good_checksum = "1A/dxEpys717C6FH7FIWDw=="
         else:
-            good_checksum = u"GvNZlg=="
+            good_checksum = "GvNZlg=="
         msg = download_mod._CHECKSUM_MISMATCH.format(
             sync_test.EXAMPLE_URL,
             bad_checksum,
@@ -463,7 +463,7 @@ class TestRawDownload(object):
 
         # Check mocks.
         transport.request.assert_called_once_with(
-            u"GET",
+            "GET",
             sync_test.EXAMPLE_URL,
             data=None,
             headers={},
@@ -475,22 +475,22 @@ class TestRawDownload(object):
         headers = {}  # Empty headers
         end = 16383
         await self._consume_helper(end=end, headers=headers)
-        range_bytes = u"bytes={:d}-{:d}".format(0, end)
+        range_bytes = "bytes={:d}-{:d}".format(0, end)
         # Make sure the headers have been modified.
-        assert headers == {u"range": range_bytes}
+        assert headers == {"range": range_bytes}
 
 
 class TestChunkedDownload(object):
     @staticmethod
     def _response_content_range(start_byte, end_byte, total_bytes):
-        return u"bytes {:d}-{:d}/{:d}".format(start_byte, end_byte, total_bytes)
+        return "bytes {:d}-{:d}/{:d}".format(start_byte, end_byte, total_bytes)
 
     def _response_headers(self, start_byte, end_byte, total_bytes):
         content_length = end_byte - start_byte + 1
         resp_range = self._response_content_range(start_byte, end_byte, total_bytes)
         return {
-            u"content-length": u"{:d}".format(content_length),
-            u"content-range": resp_range,
+            "content-length": "{:d}".format(content_length),
+            "content-range": resp_range,
         }
 
     def _mock_response(
@@ -522,7 +522,7 @@ class TestChunkedDownload(object):
             start + chunk_size - 1,
             total_bytes,
             content=content,
-            status_code=int(http_client.OK),
+            status_code=int(http.client.OK),
         )
         transport.request = mock.AsyncMock(spec=["__call__"], return_value=mockResponse)
 
@@ -547,10 +547,10 @@ class TestChunkedDownload(object):
         # Actually consume the chunk and check the output.
         ret_val = await download.consume_next_chunk(transport)
         assert ret_val is transport.request.return_value
-        range_bytes = u"bytes={:d}-{:d}".format(start, start + chunk_size - 1)
-        download_headers = {u"range": range_bytes}
+        range_bytes = "bytes={:d}-{:d}".format(start, start + chunk_size - 1)
+        download_headers = {"range": range_bytes}
         transport.request.assert_called_once_with(
-            u"GET",
+            "GET",
             sync_test.EXAMPLE_URL,
             data=None,
             headers=download_headers,
@@ -577,10 +577,10 @@ class TestChunkedDownload(object):
         # Actually consume the chunk and check the output.
         await download.consume_next_chunk(transport, timeout=14.7)
 
-        range_bytes = u"bytes={:d}-{:d}".format(start, start + chunk_size - 1)
-        download_headers = {u"range": range_bytes}
+        range_bytes = "bytes={:d}-{:d}".format(start, start + chunk_size - 1)
+        download_headers = {"range": range_bytes}
         transport.request.assert_called_once_with(
-            u"GET",
+            "GET",
             sync_test.EXAMPLE_URL,
             data=None,
             headers=download_headers,
@@ -591,14 +591,14 @@ class TestChunkedDownload(object):
 class TestRawChunkedDownload(object):
     @staticmethod
     def _response_content_range(start_byte, end_byte, total_bytes):
-        return u"bytes {:d}-{:d}/{:d}".format(start_byte, end_byte, total_bytes)
+        return "bytes {:d}-{:d}/{:d}".format(start_byte, end_byte, total_bytes)
 
     def _response_headers(self, start_byte, end_byte, total_bytes):
         content_length = end_byte - start_byte + 1
         resp_range = self._response_content_range(start_byte, end_byte, total_bytes)
         return {
-            u"content-length": u"{:d}".format(content_length),
-            u"content-range": resp_range,
+            "content-length": "{:d}".format(content_length),
+            "content-range": resp_range,
         }
 
     def _mock_response(
@@ -630,7 +630,7 @@ class TestRawChunkedDownload(object):
             start + chunk_size - 1,
             total_bytes,
             content=content,
-            status_code=int(http_client.OK),
+            status_code=int(http.client.OK),
         )
         transport.request = mock.AsyncMock(spec=["__call__"], return_value=mockResponse)
 
@@ -655,10 +655,10 @@ class TestRawChunkedDownload(object):
         # Actually consume the chunk and check the output.
         ret_val = await download.consume_next_chunk(transport)
         assert ret_val is transport.request.return_value
-        range_bytes = u"bytes={:d}-{:d}".format(start, start + chunk_size - 1)
-        download_headers = {u"range": range_bytes}
+        range_bytes = "bytes={:d}-{:d}".format(start, start + chunk_size - 1)
+        download_headers = {"range": range_bytes}
         transport.request.assert_called_once_with(
-            u"GET",
+            "GET",
             sync_test.EXAMPLE_URL,
             data=None,
             headers=download_headers,
@@ -686,10 +686,10 @@ class TestRawChunkedDownload(object):
         # Actually consume the chunk and check the output.
         await download.consume_next_chunk(transport, timeout=14.7)
 
-        range_bytes = u"bytes={:d}-{:d}".format(start, start + chunk_size - 1)
-        download_headers = {u"range": range_bytes}
+        range_bytes = "bytes={:d}-{:d}".format(start, start + chunk_size - 1)
+        download_headers = {"range": range_bytes}
         transport.request.assert_called_once_with(
-            u"GET",
+            "GET",
             sync_test.EXAMPLE_URL,
             data=None,
             headers=download_headers,
@@ -712,7 +712,7 @@ class Test__add_decoder(object):
         assert md5_hash is mock.sentinel.md5_hash
 
     def test_gzipped(self):
-        headers = {u"content-encoding": u"gzip"}
+        headers = {"content-encoding": "gzip"}
         response_raw = mock.AsyncMock(headers=headers, spec=["headers", "_decoder"])
         md5_hash = download_mod._add_decoder(response_raw, mock.sentinel.md5_hash)
 
@@ -748,7 +748,7 @@ class AsyncIter:
             yield item
 
 
-def _mock_response(status=http_client.OK, chunks=(), headers=None):
+def _mock_response(status=http.client.OK, chunks=(), headers=None):
     if headers is None:
         headers = {}
 
@@ -765,14 +765,14 @@ def _mock_response(status=http_client.OK, chunks=(), headers=None):
             raw=mock_raw,
             content=stream_content,
             spec=[
-                u"__aenter__",
-                u"__aexit__",
-                u"_headers",
-                u"iter_chunked",
-                u"status",
-                u"headers",
-                u"raw",
-                u"content",
+                "__aenter__",
+                "__aexit__",
+                "_headers",
+                "iter_chunked",
+                "status",
+                "headers",
+                "raw",
+                "content",
             ],
         )
         # i.e. context manager returns ``self``.
@@ -788,7 +788,7 @@ def _mock_response(status=http_client.OK, chunks=(), headers=None):
         )
 
 
-def _mock_raw_response(status_code=http_client.OK, chunks=(), headers=None):
+def _mock_raw_response(status_code=http.client.OK, chunks=(), headers=None):
     if headers is None:
         headers = {}
     chunklist = b"".join(chunks)
@@ -803,14 +803,14 @@ def _mock_raw_response(status_code=http_client.OK, chunks=(), headers=None):
         raw=mock_raw,
         content=stream_content,
         spec=[
-            u"__aenter__",
-            u"__aexit__",
-            u"_headers",
-            u"iter_chunked",
-            u"status",
-            u"headers",
-            u"raw",
-            u"content",
+            "__aenter__",
+            "__aexit__",
+            "_headers",
+            "iter_chunked",
+            "status",
+            "headers",
+            "raw",
+            "content",
         ],
     )
     # i.e. context manager returns ``self``.

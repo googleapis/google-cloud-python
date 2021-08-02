@@ -24,21 +24,18 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 
 
 REQUIREMENTS = [
-    'six>=1.4.0',
-    'google-crc32c >= 1.0, < 2.0dev; python_version>="3.5"',
-    'crcmod >= 1.7; python_version=="2.7"',
-
+    'google-crc32c >= 1.0, < 2.0dev',
 ]
 EXTRAS_REQUIRE = {
     'requests': [
         'requests >= 2.18.0, < 3.0.0dev',
     ],
-    'aiohttp': 'aiohttp >= 3.6.2, < 4.0.0dev; python_version>="3.6"'
+    'aiohttp': 'aiohttp >= 3.6.2, < 4.0.0dev'
 }
 
 setuptools.setup(
     name='google-resumable-media',
-    version = "1.3.3",
+    version = "2.0.0b1",
     description='Utilities for Google Media Downloads and Resumable Uploads',
     author='Google Cloud Platform',
     author_email='googleapis-publisher@google.com',
@@ -53,14 +50,12 @@ setuptools.setup(
     zip_safe=False,
     install_requires=REQUIREMENTS,
     extras_require=EXTRAS_REQUIRE,
-    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*',
+    python_requires='>= 3.6',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',

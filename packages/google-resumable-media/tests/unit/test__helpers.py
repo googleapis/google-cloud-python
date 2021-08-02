@@ -15,10 +15,11 @@
 from __future__ import absolute_import
 
 import hashlib
+import http.client
+
 import mock
 import pytest
 import requests.exceptions
-from six.moves import http_client
 
 from google.resumable_media import _helpers
 from google.resumable_media import common
@@ -31,9 +32,9 @@ def test_do_nothing():
 
 class Test_header_required(object):
     def _success_helper(self, **kwargs):
-        name = u"some-header"
-        value = u"The Right Hand Side"
-        headers = {name: value, u"other-name": u"other-value"}
+        name = "some-header"
+        value = "The Right Hand Side"
+        headers = {name: value, "other-name": "other-value"}
         response = mock.Mock(headers=headers, spec=["headers"])
         result = _helpers.header_required(response, name, _get_headers, **kwargs)
         assert result == value
@@ -48,7 +49,7 @@ class Test_header_required(object):
 
     def _failure_helper(self, **kwargs):
         response = mock.Mock(headers={}, spec=["headers"])
-        name = u"any-name"
+        name = "any-name"
         with pytest.raises(common.InvalidResponse) as exc_info:
             _helpers.header_required(response, name, _get_headers, **kwargs)
 
@@ -72,12 +73,12 @@ class Test_require_status_code(object):
         return response.status_code
 
     def test_success(self):
-        status_codes = (http_client.OK, http_client.CREATED)
+        status_codes = (http.client.OK, http.client.CREATED)
         acceptable = (
-            http_client.OK,
-            int(http_client.OK),
-            http_client.CREATED,
-            int(http_client.CREATED),
+            http.client.OK,
+            int(http.client.OK),
+            http.client.CREATED,
+            int(http.client.CREATED),
         )
         for value in acceptable:
             response = _make_response(value)
@@ -87,18 +88,18 @@ class Test_require_status_code(object):
             assert value == status_code
 
     def test_success_with_callback(self):
-        status_codes = (http_client.OK,)
-        response = _make_response(http_client.OK)
+        status_codes = (http.client.OK,)
+        response = _make_response(http.client.OK)
         callback = mock.Mock(spec=[])
         status_code = _helpers.require_status_code(
             response, status_codes, self._get_status_code, callback=callback
         )
-        assert status_code == http_client.OK
+        assert status_code == http.client.OK
         callback.assert_not_called()
 
     def test_failure(self):
-        status_codes = (http_client.CREATED, http_client.NO_CONTENT)
-        response = _make_response(http_client.OK)
+        status_codes = (http.client.CREATED, http.client.NO_CONTENT)
+        response = _make_response(http.client.OK)
         with pytest.raises(common.InvalidResponse) as exc_info:
             _helpers.require_status_code(response, status_codes, self._get_status_code)
 
@@ -109,8 +110,8 @@ class Test_require_status_code(object):
         assert error.args[3:] == status_codes
 
     def test_failure_with_callback(self):
-        status_codes = (http_client.OK,)
-        response = _make_response(http_client.NOT_FOUND)
+        status_codes = (http.client.OK,)
+        response = _make_response(http.client.NOT_FOUND)
         callback = mock.Mock(spec=[])
         with pytest.raises(common.InvalidResponse) as exc_info:
             _helpers.require_status_code(
@@ -126,7 +127,7 @@ class Test_require_status_code(object):
 
 
 class Test_calculate_retry_wait(object):
-    @mock.patch(u"random.randint", return_value=125)
+    @mock.patch("random.randint", return_value=125)
     def test_past_limit(self, randint_mock):
         base_wait, wait_time = _helpers.calculate_retry_wait(70.0, 64.0)
 
@@ -134,7 +135,7 @@ class Test_calculate_retry_wait(object):
         assert wait_time == 64.125
         randint_mock.assert_called_once_with(0, 1000)
 
-    @mock.patch(u"random.randint", return_value=250)
+    @mock.patch("random.randint", return_value=250)
     def test_at_limit(self, randint_mock):
         base_wait, wait_time = _helpers.calculate_retry_wait(50.0, 50.0)
 
@@ -142,7 +143,7 @@ class Test_calculate_retry_wait(object):
         assert wait_time == 50.25
         randint_mock.assert_called_once_with(0, 1000)
 
-    @mock.patch(u"random.randint", return_value=875)
+    @mock.patch("random.randint", return_value=875)
     def test_under_limit(self, randint_mock):
         base_wait, wait_time = _helpers.calculate_retry_wait(16.0, 33.0)
 
@@ -150,7 +151,7 @@ class Test_calculate_retry_wait(object):
         assert wait_time == 32.875
         randint_mock.assert_called_once_with(0, 1000)
 
-    @mock.patch(u"random.randint", return_value=875)
+    @mock.patch("random.randint", return_value=875)
     def test_custom_multiplier(self, randint_mock):
         base_wait, wait_time = _helpers.calculate_retry_wait(16.0, 64.0, 3)
 
@@ -161,7 +162,7 @@ class Test_calculate_retry_wait(object):
 
 class Test_wait_and_retry(object):
     def test_success_no_retry(self):
-        truthy = http_client.OK
+        truthy = http.client.OK
         assert truthy not in common.RETRYABLE
         response = _make_response(truthy)
 
@@ -172,16 +173,16 @@ class Test_wait_and_retry(object):
         assert ret_val is response
         func.assert_called_once_with()
 
-    @mock.patch(u"time.sleep")
-    @mock.patch(u"random.randint")
+    @mock.patch("time.sleep")
+    @mock.patch("random.randint")
     def test_success_with_retry(self, randint_mock, sleep_mock):
         randint_mock.side_effect = [125, 625, 375]
 
         status_codes = (
-            http_client.INTERNAL_SERVER_ERROR,
-            http_client.BAD_GATEWAY,
-            http_client.SERVICE_UNAVAILABLE,
-            http_client.NOT_FOUND,
+            http.client.INTERNAL_SERVER_ERROR,
+            http.client.BAD_GATEWAY,
+            http.client.SERVICE_UNAVAILABLE,
+            http.client.NOT_FOUND,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
         func = mock.Mock(side_effect=responses, spec=[])
@@ -203,16 +204,16 @@ class Test_wait_and_retry(object):
         sleep_mock.assert_any_call(2.625)
         sleep_mock.assert_any_call(4.375)
 
-    @mock.patch(u"time.sleep")
-    @mock.patch(u"random.randint")
+    @mock.patch("time.sleep")
+    @mock.patch("random.randint")
     def test_success_with_retry_custom_delay(self, randint_mock, sleep_mock):
         randint_mock.side_effect = [125, 625, 375]
 
         status_codes = (
-            http_client.INTERNAL_SERVER_ERROR,
-            http_client.BAD_GATEWAY,
-            http_client.SERVICE_UNAVAILABLE,
-            http_client.NOT_FOUND,
+            http.client.INTERNAL_SERVER_ERROR,
+            http.client.BAD_GATEWAY,
+            http.client.SERVICE_UNAVAILABLE,
+            http.client.NOT_FOUND,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
         func = mock.Mock(side_effect=responses, spec=[])
@@ -238,12 +239,12 @@ class Test_wait_and_retry(object):
             48.375
         )  # previous delay 12 * multiplier 4 + jitter 0.375
 
-    @mock.patch(u"time.sleep")
-    @mock.patch(u"random.randint")
+    @mock.patch("time.sleep")
+    @mock.patch("random.randint")
     def test_success_with_retry_connection_error(self, randint_mock, sleep_mock):
         randint_mock.side_effect = [125, 625, 375]
 
-        response = _make_response(http_client.NOT_FOUND)
+        response = _make_response(http.client.NOT_FOUND)
         responses = [
             requests.exceptions.ConnectionError,
             requests.exceptions.ConnectionError,
@@ -270,10 +271,38 @@ class Test_wait_and_retry(object):
 
     @mock.patch(u"time.sleep")
     @mock.patch(u"random.randint")
+    def test_success_with_retry_chunked_encoding_error(self, randint_mock, sleep_mock):
+        randint_mock.side_effect = [125, 625, 375]
+
+        response = _make_response(http.client.NOT_FOUND)
+        responses = [
+            requests.exceptions.ChunkedEncodingError,
+            requests.exceptions.ChunkedEncodingError,
+            response,
+        ]
+        func = mock.Mock(side_effect=responses, spec=[])
+
+        retry_strategy = common.RetryStrategy()
+        ret_val = _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
+
+        assert ret_val == responses[-1]
+
+        assert func.call_count == 3
+        assert func.mock_calls == [mock.call()] * 3
+
+        assert randint_mock.call_count == 2
+        assert randint_mock.mock_calls == [mock.call(0, 1000)] * 2
+
+        assert sleep_mock.call_count == 2
+        sleep_mock.assert_any_call(1.125)
+        sleep_mock.assert_any_call(2.625)
+
+    @mock.patch(u"time.sleep")
+    @mock.patch(u"random.randint")
     def test_connection_import_error_failure(self, randint_mock, sleep_mock):
         randint_mock.side_effect = [125, 625, 375]
 
-        response = _make_response(http_client.NOT_FOUND)
+        response = _make_response(http.client.NOT_FOUND)
         responses = [
             requests.exceptions.ConnectionError,
             requests.exceptions.ConnectionError,
@@ -291,19 +320,19 @@ class Test_wait_and_retry(object):
                 retry_strategy = common.RetryStrategy()
                 _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
 
-    @mock.patch(u"time.sleep")
-    @mock.patch(u"random.randint")
+    @mock.patch("time.sleep")
+    @mock.patch("random.randint")
     def test_retry_exceeds_max_cumulative(self, randint_mock, sleep_mock):
         randint_mock.side_effect = [875, 0, 375, 500, 500, 250, 125]
 
         status_codes = (
-            http_client.SERVICE_UNAVAILABLE,
-            http_client.GATEWAY_TIMEOUT,
+            http.client.SERVICE_UNAVAILABLE,
+            http.client.GATEWAY_TIMEOUT,
             common.TOO_MANY_REQUESTS,
-            http_client.INTERNAL_SERVER_ERROR,
-            http_client.SERVICE_UNAVAILABLE,
-            http_client.BAD_GATEWAY,
-            http_client.GATEWAY_TIMEOUT,
+            http.client.INTERNAL_SERVER_ERROR,
+            http.client.SERVICE_UNAVAILABLE,
+            http.client.BAD_GATEWAY,
+            http.client.GATEWAY_TIMEOUT,
             common.TOO_MANY_REQUESTS,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
@@ -330,8 +359,8 @@ class Test_wait_and_retry(object):
         sleep_mock.assert_any_call(32.25)
         sleep_mock.assert_any_call(64.125)
 
-    @mock.patch(u"time.sleep")
-    @mock.patch(u"random.randint")
+    @mock.patch("time.sleep")
+    @mock.patch("random.randint")
     def test_retry_exceeded_reraises_connection_error(self, randint_mock, sleep_mock):
         randint_mock.side_effect = [875, 0, 375, 500, 500, 250, 125]
 
@@ -387,47 +416,80 @@ def test__get_checksum_object_invalid():
         _helpers._get_checksum_object("invalid")
 
 
-def test_crc32c_throws_import_error():
-    try:
-        import builtins
-    except ImportError:
-        import __builtin__ as builtins
-    orig_import = builtins.__import__
+@mock.patch("builtins.__import__")
+def test__get_crc32_object_wo_google_crc32c_wo_crcmod(mock_import):
+    mock_import.side_effect = ImportError("testing")
 
-    # Raises ImportError for name == "crc32c" or name == "crcmod"
-    def mock_import(name, globals, locals, fromlist, level=None):
-        raise ImportError
+    with pytest.raises(ImportError):
+        _helpers._get_crc32c_object()
 
-    builtins.__import__ = mock_import
+    expected_calls = [
+        mock.call("google_crc32c", mock.ANY, None, None, 0),
+        mock.call("crcmod", mock.ANY, None, None, 0),
+    ]
+    mock_import.assert_has_calls(expected_calls)
 
-    try:
-        with pytest.raises(ImportError):
-            _helpers._get_crc32c_object()
-    finally:
-        builtins.__import__ = orig_import
+
+@mock.patch("builtins.__import__")
+def test__get_crc32_object_w_google_crc32c(mock_import):
+    google_crc32c = mock.Mock(spec=["Checksum"])
+    mock_import.return_value = google_crc32c
+
+    found = _helpers._get_crc32c_object()
+
+    assert found is google_crc32c.Checksum.return_value
+    google_crc32c.Checksum.assert_called_once_with()
+
+    mock_import.assert_called_once_with("google_crc32c", mock.ANY, None, None, 0)
+
+
+@mock.patch("builtins.__import__")
+def test__get_crc32_object_wo_google_crc32c_w_crcmod(mock_import):
+    crcmod = mock.Mock(spec=["predefined", "crcmod"])
+    crcmod.predefined = mock.Mock(spec=["Crc"])
+    crcmod.crcmod = mock.Mock(spec=["_usingExtension"])
+    mock_import.side_effect = [ImportError("testing"), crcmod, crcmod.crcmod]
+
+    found = _helpers._get_crc32c_object()
+
+    assert found is crcmod.predefined.Crc.return_value
+    crcmod.predefined.Crc.assert_called_once_with("crc-32c")
+
+    expected_calls = [
+        mock.call("google_crc32c", mock.ANY, None, None, 0),
+        mock.call("crcmod", mock.ANY, None, None, 0),
+        mock.call("crcmod.crcmod", mock.ANY, {}, ["_usingExtension"], 0),
+    ]
+    mock_import.assert_has_calls(expected_calls)
 
 
 @pytest.mark.filterwarnings("ignore::RuntimeWarning")
-def test_crc32c_warning_on_slow_crcmod():
-    try:
-        import builtins
-    except ImportError:
-        import __builtin__ as builtins
+@mock.patch("builtins.__import__")
+def test__is_fast_crcmod_wo_extension_warning(mock_import):
+    crcmod = mock.Mock(spec=["crcmod"])
+    crcmod.crcmod = mock.Mock(spec=["_usingExtension"])
+    crcmod.crcmod._usingExtension = False
+    mock_import.return_value = crcmod.crcmod
 
-    orig_import = builtins.__import__
+    assert not _helpers._is_fast_crcmod()
 
-    # crcmod.crcmod is the only import.
-    def mock_import(name, globals, locals, fromlist, level):
-        crcmod = mock.MagicMock()
-        crcmod._usingExtension = False
-        return crcmod
+    mock_import.assert_called_once_with(
+        "crcmod.crcmod",
+        mock.ANY,
+        {},
+        ["_usingExtension"],
+        0,
+    )
 
-    builtins.__import__ = mock_import
 
-    try:
-        assert not _helpers._is_fast_crcmod()
-    finally:
-        builtins.__import__ = orig_import
+@mock.patch("builtins.__import__")
+def test__is_fast_crcmod_w_extension(mock_import):
+    crcmod = mock.Mock(spec=["crcmod"])
+    crcmod.crcmod = mock.Mock(spec=["_usingExtension"])
+    crcmod.crcmod._usingExtension = True
+    mock_import.return_value = crcmod.crcmod
+
+    assert _helpers._is_fast_crcmod()
 
 
 def test__DoNothingHash():
@@ -437,11 +499,11 @@ def test__DoNothingHash():
 
 
 class Test__get_expected_checksum(object):
-    @pytest.mark.parametrize("template", [u"crc32c={},md5={}", u"crc32c={}, md5={}"])
+    @pytest.mark.parametrize("template", ["crc32c={},md5={}", "crc32c={}, md5={}"])
     @pytest.mark.parametrize("checksum", ["md5", "crc32c"])
     @mock.patch("google.resumable_media._helpers._LOGGER")
     def test__w_header_present(self, _LOGGER, template, checksum):
-        checksums = {"md5": u"b2twdXNodGhpc2J1dHRvbg==", "crc32c": u"3q2+7w=="}
+        checksums = {"md5": "b2twdXNodGhpc2J1dHRvbg==", "crc32c": "3q2+7w=="}
         header_value = template.format(checksums["crc32c"], checksums["md5"])
         headers = {_helpers._HASH_HEADER: header_value}
         response = _mock_response(headers=headers)
@@ -486,8 +548,8 @@ class Test__get_expected_checksum(object):
 
 class Test__parse_checksum_header(object):
 
-    CRC32C_CHECKSUM = u"3q2+7w=="
-    MD5_CHECKSUM = u"c2l4dGVlbmJ5dGVzbG9uZw=="
+    CRC32C_CHECKSUM = "3q2+7w=="
+    MD5_CHECKSUM = "c2l4dGVlbmJ5dGVzbG9uZw=="
 
     def test_empty_value(self):
         header_value = None
@@ -502,7 +564,7 @@ class Test__parse_checksum_header(object):
         assert crc32c_header is None
 
     def test_crc32c_only(self):
-        header_value = u"crc32c={}".format(self.CRC32C_CHECKSUM)
+        header_value = "crc32c={}".format(self.CRC32C_CHECKSUM)
         response = None
         md5_header = _helpers._parse_checksum_header(
             header_value, response, checksum_label="md5"
@@ -514,7 +576,7 @@ class Test__parse_checksum_header(object):
         assert crc32c_header == self.CRC32C_CHECKSUM
 
     def test_md5_only(self):
-        header_value = u"md5={}".format(self.MD5_CHECKSUM)
+        header_value = "md5={}".format(self.MD5_CHECKSUM)
         response = None
         md5_header = _helpers._parse_checksum_header(
             header_value, response, checksum_label="md5"
@@ -526,7 +588,7 @@ class Test__parse_checksum_header(object):
         assert crc32c_header is None
 
     def test_both_crc32c_and_md5(self):
-        header_value = u"crc32c={},md5={}".format(
+        header_value = "crc32c={},md5={}".format(
             self.CRC32C_CHECKSUM, self.MD5_CHECKSUM
         )
         response = None
@@ -540,8 +602,8 @@ class Test__parse_checksum_header(object):
         assert crc32c_header == self.CRC32C_CHECKSUM
 
     def test_md5_multiple_matches(self):
-        another_checksum = u"eW91IGRpZCBXQVQgbm93Pw=="
-        header_value = u"md5={},md5={}".format(self.MD5_CHECKSUM, another_checksum)
+        another_checksum = "eW91IGRpZCBXQVQgbm93Pw=="
+        header_value = "md5={},md5={}".format(self.MD5_CHECKSUM, another_checksum)
         response = mock.sentinel.response
 
         with pytest.raises(common.InvalidResponse) as exc_info:

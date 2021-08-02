@@ -17,10 +17,10 @@
 Includes custom exception types, useful constants and shared helpers.
 """
 
-from six.moves import http_client
+import http.client
 
 _SLEEP_RETRY_ERROR_MSG = (
-    u"At most one of `max_cumulative_retry` and `max_retries` " u"can be specified."
+    "At most one of `max_cumulative_retry` and `max_retries` " "can be specified."
 )
 
 UPLOAD_CHUNK_SIZE = 262144  # 256 * 1024
@@ -63,10 +63,10 @@ exceeds this limit, no more retries will occur.
 
 RETRYABLE = (
     TOO_MANY_REQUESTS,  # 429
-    http_client.INTERNAL_SERVER_ERROR,  # 500
-    http_client.BAD_GATEWAY,  # 502
-    http_client.SERVICE_UNAVAILABLE,  # 503
-    http_client.GATEWAY_TIMEOUT,  # 504
+    http.client.INTERNAL_SERVER_ERROR,  # 500
+    http.client.BAD_GATEWAY,  # 502
+    http.client.SERVICE_UNAVAILABLE,  # 503
+    http.client.GATEWAY_TIMEOUT,  # 504
 )
 """iterable: HTTP status codes that indicate a retryable error.
 

@@ -17,26 +17,26 @@ import hashlib
 import time
 
 
-BUCKET_NAME = u"grpm-systest-{}".format(int(1000 * time.time()))
-BUCKET_POST_URL = u"https://www.googleapis.com/storage/v1/b/"
-BUCKET_URL = u"https://www.googleapis.com/storage/v1/b/{}".format(BUCKET_NAME)
+BUCKET_NAME = "grpm-systest-{}".format(int(1000 * time.time()))
+BUCKET_POST_URL = "https://www.googleapis.com/storage/v1/b/"
+BUCKET_URL = "https://www.googleapis.com/storage/v1/b/{}".format(BUCKET_NAME)
 
-_DOWNLOAD_BASE = u"https://www.googleapis.com/download/storage/v1/b/{}".format(
+_DOWNLOAD_BASE = "https://www.googleapis.com/download/storage/v1/b/{}".format(
     BUCKET_NAME
 )
-DOWNLOAD_URL_TEMPLATE = _DOWNLOAD_BASE + u"/o/{blob_name}?alt=media"
+DOWNLOAD_URL_TEMPLATE = _DOWNLOAD_BASE + "/o/{blob_name}?alt=media"
 
 _UPLOAD_BASE = (
-    u"https://www.googleapis.com/upload/storage/v1/b/{}".format(BUCKET_NAME)
-    + u"/o?uploadType="
+    "https://www.googleapis.com/upload/storage/v1/b/{}".format(BUCKET_NAME)
+    + "/o?uploadType="
 )
-SIMPLE_UPLOAD_TEMPLATE = _UPLOAD_BASE + u"media&name={blob_name}"
-MULTIPART_UPLOAD = _UPLOAD_BASE + u"multipart"
-RESUMABLE_UPLOAD = _UPLOAD_BASE + u"resumable"
+SIMPLE_UPLOAD_TEMPLATE = _UPLOAD_BASE + "media&name={blob_name}"
+MULTIPART_UPLOAD = _UPLOAD_BASE + "multipart"
+RESUMABLE_UPLOAD = _UPLOAD_BASE + "resumable"
 
-METADATA_URL_TEMPLATE = BUCKET_URL + u"/o/{blob_name}"
+METADATA_URL_TEMPLATE = BUCKET_URL + "/o/{blob_name}"
 
-GCS_RW_SCOPE = u"https://www.googleapis.com/auth/devstorage.read_write"
+GCS_RW_SCOPE = "https://www.googleapis.com/auth/devstorage.read_write"
 # Generated using random.choice() with all 256 byte choices.
 ENCRYPTION_KEY = (
     b"R\xb8\x1b\x94T\xea_\xa8\x93\xae\xd1\xf6\xfca\x15\x0ekA"
@@ -63,7 +63,7 @@ def get_encryption_headers(key=ENCRYPTION_KEY):
     key_b64 = base64.b64encode(key)
 
     return {
-        u"x-goog-encryption-algorithm": u"AES256",
-        u"x-goog-encryption-key": key_b64.decode(u"utf-8"),
-        u"x-goog-encryption-key-sha256": key_hash_b64.decode(u"utf-8"),
+        "x-goog-encryption-algorithm": "AES256",
+        "x-goog-encryption-key": key_b64.decode("utf-8"),
+        "x-goog-encryption-key-sha256": key_hash_b64.decode("utf-8"),
     }

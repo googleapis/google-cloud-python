@@ -47,13 +47,13 @@ def _get_authorized_transport():
     return tr_requests.AuthorizedSession(credentials)
 
 
-@pytest.fixture(scope=u"module")
+@pytest.fixture(scope="module")
 async def authorized_transport():
     credentials, project_id = default_async(scopes=(utils.GCS_RW_SCOPE,))
     yield _get_authorized_transport()
 
 
-@pytest.fixture(scope=u"session")
+@pytest.fixture(scope="session")
 async def bucket():
     authorized_transport = _get_authorized_transport()
     await ensure_bucket(authorized_transport)

@@ -26,9 +26,8 @@ BLACK_VERSION = "black==20.8b1"
 GOOGLE_AUTH = "google-auth >= 1.22.0, < 2.0dev"
 
 DEFAULT_PYTHON_VERSION = "3.8"
-SYSTEM_TEST_PYTHON_VERSIONS = ["2.7", "3.8"]
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
-UNIT_TEST_SYNC_PYTHON_VERSIONS = ["2.7"]
 
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
@@ -59,35 +58,6 @@ def unit(session):
         line_coverage,
         os.path.join("tests", "unit"),
         os.path.join("tests_async", "unit"),
-        *session.posargs
-    )
-
-
-@nox.session(python=UNIT_TEST_SYNC_PYTHON_VERSIONS)
-def unit_2(session):
-    """Run the unit test suite."""
-
-    constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
-    )
-
-    # Install all test dependencies, then install this package in-place.
-    session.install("mock", "pytest", "pytest-cov")
-    session.install("-e", ".[requests]", "-c", constraints_path)    
-
-    # Run py.test against the unit tests.
-    # NOTE: We don't require 100% line coverage for unit test runs since
-    #       some have branches that are Py2/Py3 specific.
-    line_coverage = "--cov-fail-under=0"
-    session.run(
-        "py.test",
-        "--cov=google.resumable_media",
-        "--cov=tests.unit",
-        "--cov-append",
-        "--cov-config=.coveragerc",
-        "--cov-report=",
-        line_coverage,
-        os.path.join("tests", "unit"),
         *session.posargs
     )
 

@@ -15,9 +15,8 @@
 """Virtual bases classes for downloading media from Google APIs."""
 
 
+import http.client
 import re
-
-from six.moves import http_client
 
 from google.resumable_media import _helpers
 from google.resumable_media import common
@@ -27,9 +26,9 @@ _CONTENT_RANGE_RE = re.compile(
     r"bytes (?P<start_byte>\d+)-(?P<end_byte>\d+)/(?P<total_bytes>\d+)",
     flags=re.IGNORECASE,
 )
-_ACCEPTABLE_STATUS_CODES = (http_client.OK, http_client.PARTIAL_CONTENT)
-_GET = u"GET"
-_ZERO_CONTENT_RANGE_HEADER = u"bytes */0"
+_ACCEPTABLE_STATUS_CODES = (http.client.OK, http.client.PARTIAL_CONTENT)
+_GET = "GET"
+_ZERO_CONTENT_RANGE_HEADER = "bytes */0"
 
 
 class DownloadBase(object):
@@ -78,7 +77,7 @@ class DownloadBase(object):
         Raises:
             NotImplementedError: Always, since virtual.
         """
-        raise NotImplementedError(u"This implementation is virtual.")
+        raise NotImplementedError("This implementation is virtual.")
 
     @staticmethod
     def _get_headers(response):
@@ -90,7 +89,7 @@ class DownloadBase(object):
         Raises:
             NotImplementedError: Always, since virtual.
         """
-        raise NotImplementedError(u"This implementation is virtual.")
+        raise NotImplementedError("This implementation is virtual.")
 
     @staticmethod
     def _get_body(response):
@@ -102,7 +101,7 @@ class DownloadBase(object):
         Raises:
             NotImplementedError: Always, since virtual.
         """
-        raise NotImplementedError(u"This implementation is virtual.")
+        raise NotImplementedError("This implementation is virtual.")
 
 
 class Download(DownloadBase):
@@ -163,7 +162,7 @@ class Download(DownloadBase):
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         if self.finished:
-            raise ValueError(u"A download can only be used once.")
+            raise ValueError("A download can only be used once.")
 
         add_bytes_range(self.start, self.end, self._headers)
         return _GET, self.media_url, None, self._headers
@@ -206,7 +205,7 @@ class Download(DownloadBase):
         Raises:
             NotImplementedError: Always, since virtual.
         """
-        raise NotImplementedError(u"This implementation is virtual.")
+        raise NotImplementedError("This implementation is virtual.")
 
 
 class ChunkedDownload(DownloadBase):
@@ -240,7 +239,7 @@ class ChunkedDownload(DownloadBase):
     def __init__(self, media_url, chunk_size, stream, start=0, end=None, headers=None):
         if start < 0:
             raise ValueError(
-                u"On a chunked download the starting " u"value cannot be negative."
+                "On a chunked download the starting " "value cannot be negative."
             )
         super(ChunkedDownload, self).__init__(
             media_url, stream=stream, start=start, end=end, headers=headers
@@ -313,9 +312,9 @@ class ChunkedDownload(DownloadBase):
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         if self.finished:
-            raise ValueError(u"Download has finished.")
+            raise ValueError("Download has finished.")
         if self.invalid:
-            raise ValueError(u"Download is invalid and cannot be re-used.")
+            raise ValueError("Download is invalid and cannot be re-used.")
 
         curr_start, curr_end = self._get_byte_range()
         add_bytes_range(curr_start, curr_end, self._headers)
@@ -383,12 +382,12 @@ class ChunkedDownload(DownloadBase):
             response, self._get_headers, callback=self._make_invalid
         )
 
-        transfer_encoding = headers.get(u"transfer-encoding")
+        transfer_encoding = headers.get("transfer-encoding")
 
         if transfer_encoding is None:
             content_length = _helpers.header_required(
                 response,
-                u"content-length",
+                "content-length",
                 self._get_headers,
                 callback=self._make_invalid,
             )
@@ -397,10 +396,10 @@ class ChunkedDownload(DownloadBase):
                 self._make_invalid()
                 raise common.InvalidResponse(
                     response,
-                    u"Response is different size than content-length",
-                    u"Expected",
+                    "Response is different size than content-length",
+                    "Expected",
                     num_bytes,
-                    u"Received",
+                    "Received",
                     len(response_body),
                 )
         else:
@@ -437,7 +436,7 @@ class ChunkedDownload(DownloadBase):
         Raises:
             NotImplementedError: Always, since virtual.
         """
-        raise NotImplementedError(u"This implementation is virtual.")
+        raise NotImplementedError("This implementation is virtual.")
 
 
 def add_bytes_range(start, end, headers):
@@ -477,18 +476,18 @@ def add_bytes_range(start, end, headers):
             return
         else:
             # NOTE: This assumes ``end`` is non-negative.
-            bytes_range = u"0-{:d}".format(end)
+            bytes_range = "0-{:d}".format(end)
     else:
         if end is None:
             if start < 0:
-                bytes_range = u"{:d}".format(start)
+                bytes_range = "{:d}".format(start)
             else:
-                bytes_range = u"{:d}-".format(start)
+                bytes_range = "{:d}-".format(start)
         else:
             # NOTE: This is invalid if ``start < 0``.
-            bytes_range = u"{:d}-{:d}".format(start, end)
+            bytes_range = "{:d}-{:d}".format(start, end)
 
-    headers[_helpers.RANGE_HEADER] = u"bytes=" + bytes_range
+    headers[_helpers.RANGE_HEADER] = "bytes=" + bytes_range
 
 
 def get_range_info(response, get_headers, callback=_helpers.do_nothing):
@@ -517,15 +516,15 @@ def get_range_info(response, get_headers, callback=_helpers.do_nothing):
         callback()
         raise common.InvalidResponse(
             response,
-            u"Unexpected content-range header",
+            "Unexpected content-range header",
             content_range,
-            u'Expected to be of the form "bytes {start}-{end}/{total}"',
+            'Expected to be of the form "bytes {start}-{end}/{total}"',
         )
 
     return (
-        int(match.group(u"start_byte")),
-        int(match.group(u"end_byte")),
-        int(match.group(u"total_bytes")),
+        int(match.group("start_byte")),
+        int(match.group("end_byte")),
+        int(match.group("total_bytes")),
     )
 
 
@@ -544,7 +543,7 @@ def _check_for_zero_content_range(response, get_status_code, get_headers):
     Returns:
         bool: True if content range total bytes is zero, false otherwise.
     """
-    if get_status_code(response) == http_client.REQUESTED_RANGE_NOT_SATISFIABLE:
+    if get_status_code(response) == http.client.REQUESTED_RANGE_NOT_SATISFIABLE:
         content_range = _helpers.header_required(
             response,
             _helpers.CONTENT_RANGE_HEADER,

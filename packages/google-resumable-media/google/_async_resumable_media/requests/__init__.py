@@ -36,7 +36,7 @@ that has read-only access to Google Cloud Storage (GCS):
 
    def mock_default(scopes=None):
        credentials = mock.Mock(spec=creds_mod.Credentials)
-       return credentials, u'mock-project'
+       return credentials, 'mock-project'
 
    # Patch the ``default`` function on the module.
    original_default = google.auth.default
@@ -47,7 +47,7 @@ that has read-only access to Google Cloud Storage (GCS):
    >>> import google.auth
    >>> import google.auth.transport.requests as tr_requests
    >>>
-   >>> ro_scope = u'https://www.googleapis.com/auth/devstorage.read_only'
+   >>> ro_scope = 'https://www.googleapis.com/auth/devstorage.read_only'
    >>> credentials, _ = google.auth.default(scopes=(ro_scope,))
    >>> transport = tr_requests.AuthorizedSession(credentials)
    >>> transport
@@ -70,14 +70,14 @@ access to the resource:
 
    import mock
    import requests
-   from six.moves import http_client
+   import http.client
 
-   bucket = u'bucket-foo'
-   blob_name = u'file.txt'
+   bucket = 'bucket-foo'
+   blob_name = 'file.txt'
 
    fake_response = requests.Response()
-   fake_response.status_code = int(http_client.OK)
-   fake_response.headers[u'Content-Length'] = u'1364156'
+   fake_response.status_code = int(http.client.OK)
+   fake_response.headers['Content-Length'] = '1364156'
    fake_content = mock.MagicMock(spec=['__len__'])
    fake_content.__len__.return_value = 1364156
    fake_response._content = fake_content
@@ -90,8 +90,8 @@ access to the resource:
    >>> from google.resumable_media.requests import Download
    >>>
    >>> url_template = (
-   ...     u'https://www.googleapis.com/download/storage/v1/b/'
-   ...     u'{bucket}/o/{blob_name}?alt=media')
+   ...     'https://www.googleapis.com/download/storage/v1/b/'
+   ...     '{bucket}/o/{blob_name}?alt=media')
    >>> media_url = url_template.format(
    ...     bucket=bucket, blob_name=blob_name)
    >>>
@@ -101,7 +101,7 @@ access to the resource:
    True
    >>> response
    <Response [200]>
-   >>> response.headers[u'Content-Length']
+   >>> response.headers['Content-Length']
    '1364156'
    >>> len(response.content)
    1364156
@@ -113,20 +113,20 @@ specify ``start`` and ``end`` byte positions (both optional):
 
    import mock
    import requests
-   from six.moves import http_client
+   import http.client
 
    from google.resumable_media.requests import Download
 
-   media_url = u'http://test.invalid'
+   media_url = 'http://test.invalid'
    start = 4096
    end = 8191
    slice_size = end - start + 1
 
    fake_response = requests.Response()
-   fake_response.status_code = int(http_client.PARTIAL_CONTENT)
-   fake_response.headers[u'Content-Length'] = u'{:d}'.format(slice_size)
-   content_range = u'bytes {:d}-{:d}/1364156'.format(start, end)
-   fake_response.headers[u'Content-Range'] = content_range
+   fake_response.status_code = int(http.client.PARTIAL_CONTENT)
+   fake_response.headers['Content-Length'] = '{:d}'.format(slice_size)
+   content_range = 'bytes {:d}-{:d}/1364156'.format(start, end)
+   fake_response.headers['Content-Range'] = content_range
    fake_content = mock.MagicMock(spec=['__len__'])
    fake_content.__len__.return_value = slice_size
    fake_response._content = fake_content
@@ -142,9 +142,9 @@ specify ``start`` and ``end`` byte positions (both optional):
    True
    >>> response
    <Response [206]>
-   >>> response.headers[u'Content-Length']
+   >>> response.headers['Content-Length']
    '4096'
-   >>> response.headers[u'Content-Range']
+   >>> response.headers['Content-Range']
    'bytes 4096-8191/1364156'
    >>> len(response.content)
    4096
@@ -172,17 +172,17 @@ having to fit in memory all at once.
 
    import mock
    import requests
-   from six.moves import http_client
+   import http.client
 
-   media_url = u'http://test.invalid'
+   media_url = 'http://test.invalid'
 
    fifty_mb = 50 * 1024 * 1024
    one_gb = 1024 * 1024 * 1024
    fake_response = requests.Response()
-   fake_response.status_code = int(http_client.PARTIAL_CONTENT)
-   fake_response.headers[u'Content-Length'] = u'{:d}'.format(fifty_mb)
-   content_range = u'bytes 0-{:d}/{:d}'.format(fifty_mb - 1, one_gb)
-   fake_response.headers[u'Content-Range'] = content_range
+   fake_response.status_code = int(http.client.PARTIAL_CONTENT)
+   fake_response.headers['Content-Length'] = '{:d}'.format(fifty_mb)
+   content_range = 'bytes 0-{:d}/{:d}'.format(fifty_mb - 1, one_gb)
+   fake_response.headers['Content-Range'] = content_range
    fake_content_begin = b'The beginning of the chunk...'
    fake_content = fake_content_begin + b'1' * (fifty_mb - 29)
    fake_response._content = fake_content
@@ -213,9 +213,9 @@ having to fit in memory all at once.
    1073741824
    >>> response
    <Response [206]>
-   >>> response.headers[u'Content-Length']
+   >>> response.headers['Content-Length']
    '52428800'
-   >>> response.headers[u'Content-Range']
+   >>> response.headers['Content-Range']
    'bytes 0-52428799/1073741824'
    >>> len(response.content) == chunk_size
    True
@@ -232,11 +232,11 @@ not be the same size as the other chunks:
 
    import mock
    import requests
-   from six.moves import http_client
+   import http.client
 
    from google.resumable_media.requests import ChunkedDownload
 
-   media_url = u'http://test.invalid'
+   media_url = 'http://test.invalid'
 
    fifty_mb = 50 * 1024 * 1024
    one_gb = 1024 * 1024 * 1024
@@ -246,12 +246,12 @@ not be the same size as the other chunks:
    download._total_bytes = one_gb
 
    fake_response = requests.Response()
-   fake_response.status_code = int(http_client.PARTIAL_CONTENT)
+   fake_response.status_code = int(http.client.PARTIAL_CONTENT)
    slice_size = one_gb - 20 * fifty_mb
-   fake_response.headers[u'Content-Length'] = u'{:d}'.format(slice_size)
-   content_range = u'bytes {:d}-{:d}/{:d}'.format(
+   fake_response.headers['Content-Length'] = '{:d}'.format(slice_size)
+   content_range = 'bytes {:d}-{:d}/{:d}'.format(
        20 * fifty_mb, one_gb - 1, one_gb)
-   fake_response.headers[u'Content-Range'] = content_range
+   fake_response.headers['Content-Range'] = content_range
    fake_content = mock.MagicMock(spec=['__len__'])
    fake_content.__len__.return_value = slice_size
    fake_response._content = fake_content
@@ -276,9 +276,9 @@ not be the same size as the other chunks:
    True
    >>> response
    <Response [206]>
-   >>> response.headers[u'Content-Length']
+   >>> response.headers['Content-Length']
    '25165824'
-   >>> response.headers[u'Content-Range']
+   >>> response.headers['Content-Range']
    'bytes 1048576000-1073741823/1073741824'
    >>> len(response.content) < download.chunk_size
    True
@@ -301,21 +301,21 @@ associated with the resource.
 
    import mock
    import requests
-   from six.moves import http_client
+   import http.client
 
-   bucket = u'some-bucket'
-   blob_name = u'file.txt'
+   bucket = 'some-bucket'
+   blob_name = 'file.txt'
 
    fake_response = requests.Response()
-   fake_response.status_code = int(http_client.OK)
+   fake_response.status_code = int(http.client.OK)
    payload = {
-       u'bucket': bucket,
-       u'contentType': u'text/plain',
-       u'md5Hash': u'M0XLEsX9/sMdiI+4pB4CAQ==',
-       u'name': blob_name,
-       u'size': u'27',
+       'bucket': bucket,
+       'contentType': 'text/plain',
+       'md5Hash': 'M0XLEsX9/sMdiI+4pB4CAQ==',
+       'name': blob_name,
+       'size': '27',
    }
-   fake_response._content = json.dumps(payload).encode(u'utf-8')
+   fake_response._content = json.dumps(payload).encode('utf-8')
 
    post_method = mock.Mock(return_value=fake_response, spec=[])
    transport = mock.Mock(request=post_method, spec=['request'])
@@ -326,30 +326,30 @@ associated with the resource.
    >>> from google.resumable_media.requests import SimpleUpload
    >>>
    >>> url_template = (
-   ...     u'https://www.googleapis.com/upload/storage/v1/b/{bucket}/o?'
-   ...     u'uploadType=media&'
-   ...     u'name={blob_name}')
+   ...     'https://www.googleapis.com/upload/storage/v1/b/{bucket}/o?'
+   ...     'uploadType=media&'
+   ...     'name={blob_name}')
    >>> upload_url = url_template.format(
    ...     bucket=bucket, blob_name=blob_name)
    >>>
    >>> upload = SimpleUpload(upload_url)
    >>> data = b'Some not too large content.'
-   >>> content_type = u'text/plain'
+   >>> content_type = 'text/plain'
    >>> response = upload.transmit(transport, data, content_type)
    >>> upload.finished
    True
    >>> response
    <Response [200]>
    >>> json_response = response.json()
-   >>> json_response[u'bucket'] == bucket
+   >>> json_response['bucket'] == bucket
    True
-   >>> json_response[u'name'] == blob_name
+   >>> json_response['name'] == blob_name
    True
-   >>> json_response[u'contentType'] == content_type
+   >>> json_response['contentType'] == content_type
    True
-   >>> json_response[u'md5Hash']
+   >>> json_response['md5Hash']
    'M0XLEsX9/sMdiI+4pB4CAQ=='
-   >>> int(json_response[u'size']) == len(data)
+   >>> int(json_response['size']) == len(data)
    True
 
 In the rare case that an upload fails, an :exc:`.InvalidResponse`
@@ -361,25 +361,25 @@ will be raised:
 
    import mock
    import requests
-   from six.moves import http_client
+   import http.client
 
    from google import resumable_media
    from google.resumable_media import _helpers
    from google.resumable_media.requests import SimpleUpload as constructor
 
-   upload_url = u'http://test.invalid'
+   upload_url = 'http://test.invalid'
    data = b'Some not too large content.'
-   content_type = u'text/plain'
+   content_type = 'text/plain'
 
    fake_response = requests.Response()
-   fake_response.status_code = int(http_client.SERVICE_UNAVAILABLE)
+   fake_response.status_code = int(http.client.SERVICE_UNAVAILABLE)
 
    post_method = mock.Mock(return_value=fake_response, spec=[])
    transport = mock.Mock(request=post_method, spec=['request'])
 
    time_sleep = time.sleep
    def dont_sleep(seconds):
-       raise RuntimeError(u'No sleep', seconds)
+       raise RuntimeError('No sleep', seconds)
 
    def SimpleUpload(*args, **kwargs):
        upload = constructor(*args, **kwargs)
@@ -436,21 +436,21 @@ accepts an extra required argument: ``metadata``.
 
    import mock
    import requests
-   from six.moves import http_client
+   import http.client
 
-   bucket = u'some-bucket'
-   blob_name = u'file.txt'
+   bucket = 'some-bucket'
+   blob_name = 'file.txt'
    data = b'Some not too large content.'
-   content_type = u'text/plain'
+   content_type = 'text/plain'
 
    fake_response = requests.Response()
-   fake_response.status_code = int(http_client.OK)
+   fake_response.status_code = int(http.client.OK)
    payload = {
-       u'bucket': bucket,
-       u'name': blob_name,
-       u'metadata': {u'color': u'grurple'},
+       'bucket': bucket,
+       'name': blob_name,
+       'metadata': {'color': 'grurple'},
    }
-   fake_response._content = json.dumps(payload).encode(u'utf-8')
+   fake_response._content = json.dumps(payload).encode('utf-8')
 
    post_method = mock.Mock(return_value=fake_response, spec=[])
    transport = mock.Mock(request=post_method, spec=['request'])
@@ -460,15 +460,15 @@ accepts an extra required argument: ``metadata``.
    >>> from google.resumable_media.requests import MultipartUpload
    >>>
    >>> url_template = (
-   ...     u'https://www.googleapis.com/upload/storage/v1/b/{bucket}/o?'
-   ...     u'uploadType=multipart')
+   ...     'https://www.googleapis.com/upload/storage/v1/b/{bucket}/o?'
+   ...     'uploadType=multipart')
    >>> upload_url = url_template.format(bucket=bucket)
    >>>
    >>> upload = MultipartUpload(upload_url)
    >>> metadata = {
-   ...     u'name': blob_name,
-   ...     u'metadata': {
-   ...         u'color': u'grurple',
+   ...     'name': blob_name,
+   ...     'metadata': {
+   ...         'color': 'grurple',
    ...     },
    ... }
    >>> response = upload.transmit(transport, data, metadata, content_type)
@@ -477,11 +477,11 @@ accepts an extra required argument: ``metadata``.
    >>> response
    <Response [200]>
    >>> json_response = response.json()
-   >>> json_response[u'bucket'] == bucket
+   >>> json_response['bucket'] == bucket
    True
-   >>> json_response[u'name'] == blob_name
+   >>> json_response['name'] == blob_name
    True
-   >>> json_response[u'metadata'] == metadata[u'metadata']
+   >>> json_response['metadata'] == metadata['metadata']
    True
 
 As with the simple upload, in the case of failure an :exc:`.InvalidResponse`
@@ -522,24 +522,24 @@ object or any other stream implementing the same interface.
 
    import mock
    import requests
-   from six.moves import http_client
+   import http.client
 
-   bucket = u'some-bucket'
-   blob_name = u'file.txt'
+   bucket = 'some-bucket'
+   blob_name = 'file.txt'
    data = b'Some resumable bytes.'
-   content_type = u'text/plain'
+   content_type = 'text/plain'
 
    fake_response = requests.Response()
-   fake_response.status_code = int(http_client.OK)
+   fake_response.status_code = int(http.client.OK)
    fake_response._content = b''
-   upload_id = u'ABCdef189XY_super_serious'
+   upload_id = 'ABCdef189XY_super_serious'
    resumable_url_template = (
-       u'https://www.googleapis.com/upload/storage/v1/b/{bucket}'
-       u'/o?uploadType=resumable&upload_id={upload_id}')
+       'https://www.googleapis.com/upload/storage/v1/b/{bucket}'
+       '/o?uploadType=resumable&upload_id={upload_id}')
    resumable_url = resumable_url_template.format(
        bucket=bucket, upload_id=upload_id)
-   fake_response.headers[u'location'] = resumable_url
-   fake_response.headers[u'x-guploader-uploadid'] = upload_id
+   fake_response.headers['location'] = resumable_url
+   fake_response.headers['x-guploader-uploadid'] = upload_id
 
    post_method = mock.Mock(return_value=fake_response, spec=[])
    transport = mock.Mock(request=post_method, spec=['request'])
@@ -549,8 +549,8 @@ object or any other stream implementing the same interface.
    >>> from google.resumable_media.requests import ResumableUpload
    >>>
    >>> url_template = (
-   ...     u'https://www.googleapis.com/upload/storage/v1/b/{bucket}/o?'
-   ...     u'uploadType=resumable')
+   ...     'https://www.googleapis.com/upload/storage/v1/b/{bucket}/o?'
+   ...     'uploadType=resumable')
    >>> upload_url = url_template.format(bucket=bucket)
    >>>
    >>> chunk_size = 1024 * 1024  # 1MB
@@ -559,18 +559,18 @@ object or any other stream implementing the same interface.
    >>> # The upload doesn't know how "big" it is until seeing a stream.
    >>> upload.total_bytes is None
    True
-   >>> metadata = {u'name': blob_name}
+   >>> metadata = {'name': blob_name}
    >>> response = upload.initiate(transport, stream, metadata, content_type)
    >>> response
    <Response [200]>
-   >>> upload.resumable_url == response.headers[u'Location']
+   >>> upload.resumable_url == response.headers['Location']
    True
    >>> upload.total_bytes == len(data)
    True
-   >>> upload_id = response.headers[u'X-GUploader-UploadID']
+   >>> upload_id = response.headers['X-GUploader-UploadID']
    >>> upload_id
    'ABCdef189XY_super_serious'
-   >>> upload.resumable_url == upload_url + u'&upload_id=' + upload_id
+   >>> upload.resumable_url == upload_url + '&upload_id=' + upload_id
    True
 
 Once a :class:`.ResumableUpload` has been initiated, the resource is
@@ -583,7 +583,7 @@ transmitted in chunks until completion:
 
    import mock
    import requests
-   from six.moves import http_client
+   import http.client
 
    from google import resumable_media
    import google.resumable_media.requests.upload as upload_mod
@@ -591,12 +591,12 @@ transmitted in chunks until completion:
    data = b'01234567891'
    stream = io.BytesIO(data)
    # Create an "already initiated" upload.
-   upload_url = u'http://test.invalid'
+   upload_url = 'http://test.invalid'
    chunk_size = 256 * 1024  # 256KB
    upload = upload_mod.ResumableUpload(upload_url, chunk_size)
-   upload._resumable_url = u'http://test.invalid?upload_id=mocked'
+   upload._resumable_url = 'http://test.invalid?upload_id=mocked'
    upload._stream = stream
-   upload._content_type = u'text/plain'
+   upload._content_type = 'text/plain'
    upload._total_bytes = len(data)
 
    # After-the-fact update the chunk size so that len(data)
@@ -605,22 +605,22 @@ transmitted in chunks until completion:
    # Make three fake responses.
    fake_response0 = requests.Response()
    fake_response0.status_code = resumable_media.PERMANENT_REDIRECT
-   fake_response0.headers[u'range'] = u'bytes=0-3'
+   fake_response0.headers['range'] = 'bytes=0-3'
 
    fake_response1 = requests.Response()
    fake_response1.status_code = resumable_media.PERMANENT_REDIRECT
-   fake_response1.headers[u'range'] = u'bytes=0-7'
+   fake_response1.headers['range'] = 'bytes=0-7'
 
    fake_response2 = requests.Response()
-   fake_response2.status_code = int(http_client.OK)
-   bucket = u'some-bucket'
-   blob_name = u'file.txt'
+   fake_response2.status_code = int(http.client.OK)
+   bucket = 'some-bucket'
+   blob_name = 'file.txt'
    payload = {
-       u'bucket': bucket,
-       u'name': blob_name,
-       u'size': u'{:d}'.format(len(data)),
+       'bucket': bucket,
+       'name': blob_name,
+       'size': '{:d}'.format(len(data)),
    }
-   fake_response2._content = json.dumps(payload).encode(u'utf-8')
+   fake_response2._content = json.dumps(payload).encode('utf-8')
 
    # Use the fake responses to mock a transport.
    responses = [fake_response0, fake_response1, fake_response2]
@@ -653,9 +653,9 @@ transmitted in chunks until completion:
    >>> upload.bytes_uploaded == upload.total_bytes
    True
    >>> json_response = response2.json()
-   >>> json_response[u'bucket'] == bucket
+   >>> json_response['bucket'] == bucket
    True
-   >>> json_response[u'name'] == blob_name
+   >>> json_response['name'] == blob_name
    True
 """
 from google._async_resumable_media.requests.download import ChunkedDownload
@@ -668,11 +668,11 @@ from google._async_resumable_media.requests.upload import SimpleUpload
 
 
 __all__ = [
-    u"ChunkedDownload",
-    u"Download",
-    u"MultipartUpload",
-    u"RawChunkedDownload",
-    u"RawDownload",
-    u"ResumableUpload",
-    u"SimpleUpload",
+    "ChunkedDownload",
+    "Download",
+    "MultipartUpload",
+    "RawChunkedDownload",
+    "RawDownload",
+    "ResumableUpload",
+    "SimpleUpload",
 ]

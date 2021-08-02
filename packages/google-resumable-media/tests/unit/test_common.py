@@ -21,10 +21,10 @@ from google.resumable_media import common
 class TestInvalidResponse(object):
     def test_constructor(self):
         response = mock.sentinel.response
-        error = common.InvalidResponse(response, 1, u"a", [b"m"], True)
+        error = common.InvalidResponse(response, 1, "a", [b"m"], True)
 
         assert error.response is response
-        assert error.args == (1, u"a", [b"m"], True)
+        assert error.args == (1, "a", [b"m"], True)
 
 
 class TestRetryStrategy(object):

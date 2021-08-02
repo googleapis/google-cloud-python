@@ -53,9 +53,9 @@ class TestSimpleUpload(object):
 
         assert ret_val is transport.request.return_value
 
-        upload_headers = {u"content-type": content_type}
+        upload_headers = {"content-type": content_type}
         transport.request.assert_called_once_with(
-            u"POST",
+            "POST",
             SIMPLE_URL,
             data=data,
             headers=upload_headers,
@@ -81,9 +81,9 @@ class TestSimpleUpload(object):
 
         assert ret_val is transport.request.return_value
 
-        upload_headers = {u"content-type": content_type}
+        upload_headers = {"content-type": content_type}
         transport.request.assert_called_once_with(
-            u"POST",
+            "POST",
             SIMPLE_URL,
             data=data,
             headers=upload_headers,
@@ -95,12 +95,12 @@ class TestSimpleUpload(object):
 
 class TestMultipartUpload(object):
     @mock.patch(
-        u"google._async_resumable_media._upload.get_boundary", return_value=b"==4=="
+        "google._async_resumable_media._upload.get_boundary", return_value=b"==4=="
     )
     @pytest.mark.asyncio
     async def test_transmit(self, mock_get_boundary):
         data = b"Mock data here and there."
-        metadata = {u"Hey": u"You", u"Guys": u"90909"}
+        metadata = {"Hey": "You", "Guys": "90909"}
         content_type = BASIC_CONTENT
         upload = upload_mod.MultipartUpload(MULTIPART_URL)
 
@@ -119,7 +119,7 @@ class TestMultipartUpload(object):
             b"--==4==\r\n"
             + JSON_TYPE_LINE
             + b"\r\n"
-            + json.dumps(metadata).encode(u"utf-8")
+            + json.dumps(metadata).encode("utf-8")
             + b"\r\n"
             + b"--==4==\r\n"
             b"content-type: text/plain\r\n"
@@ -128,9 +128,9 @@ class TestMultipartUpload(object):
             b"--==4==--"
         )
         multipart_type = b'multipart/related; boundary="==4=="'
-        upload_headers = {u"content-type": multipart_type}
+        upload_headers = {"content-type": multipart_type}
         transport.request.assert_called_once_with(
-            u"POST",
+            "POST",
             MULTIPART_URL,
             data=expected_payload,
             headers=upload_headers,
@@ -140,12 +140,12 @@ class TestMultipartUpload(object):
         mock_get_boundary.assert_called_once_with()
 
     @mock.patch(
-        u"google._async_resumable_media._upload.get_boundary", return_value=b"==4=="
+        "google._async_resumable_media._upload.get_boundary", return_value=b"==4=="
     )
     @pytest.mark.asyncio
     async def test_transmit_w_custom_timeout(self, mock_get_boundary):
         data = b"Mock data here and there."
-        metadata = {u"Hey": u"You", u"Guys": u"90909"}
+        metadata = {"Hey": "You", "Guys": "90909"}
         content_type = BASIC_CONTENT
         upload = upload_mod.MultipartUpload(MULTIPART_URL)
 
@@ -160,7 +160,7 @@ class TestMultipartUpload(object):
             b"--==4==\r\n"
             + JSON_TYPE_LINE
             + b"\r\n"
-            + json.dumps(metadata).encode(u"utf-8")
+            + json.dumps(metadata).encode("utf-8")
             + b"\r\n"
             + b"--==4==\r\n"
             b"content-type: text/plain\r\n"
@@ -169,10 +169,10 @@ class TestMultipartUpload(object):
             b"--==4==--"
         )
         multipart_type = b'multipart/related; boundary="==4=="'
-        upload_headers = {u"content-type": multipart_type}
+        upload_headers = {"content-type": multipart_type}
 
         transport.request.assert_called_once_with(
-            u"POST",
+            "POST",
             MULTIPART_URL,
             data=expected_payload,
             headers=upload_headers,
@@ -188,11 +188,11 @@ class TestResumableUpload(object):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         data = b"Knock knock who is there"
         stream = io.BytesIO(data)
-        metadata = {u"name": u"got-jokes.txt"}
+        metadata = {"name": "got-jokes.txt"}
 
         transport = mock.AsyncMock(spec=["request"])
-        location = (u"http://test.invalid?upload_id=AACODBBBxuw9u3AA",)
-        response_headers = {u"location": location}
+        location = ("http://test.invalid?upload_id=AACODBBBxuw9u3AA",)
+        response_headers = {"location": location}
         transport.request = mock.AsyncMock(
             spec=["__call__"], return_value=_make_response(headers=response_headers)
         )
@@ -216,12 +216,12 @@ class TestResumableUpload(object):
         # Make sure the mock was called as expected.
         json_bytes = b'{"name": "got-jokes.txt"}'
         expected_headers = {
-            u"content-type": JSON_TYPE,
-            u"x-upload-content-type": BASIC_CONTENT,
-            u"x-upload-content-length": u"{:d}".format(total_bytes),
+            "content-type": JSON_TYPE,
+            "x-upload-content-type": BASIC_CONTENT,
+            "x-upload-content-length": "{:d}".format(total_bytes),
         }
         transport.request.assert_called_once_with(
-            u"POST",
+            "POST",
             RESUMABLE_URL,
             data=json_bytes,
             headers=expected_headers,
@@ -233,11 +233,11 @@ class TestResumableUpload(object):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         data = b"Knock knock who is there"
         stream = io.BytesIO(data)
-        metadata = {u"name": u"got-jokes.txt"}
+        metadata = {"name": "got-jokes.txt"}
 
         transport = mock.AsyncMock(spec=["request"])
-        location = (u"http://test.invalid?upload_id=AACODBBBxuw9u3AA",)
-        response_headers = {u"location": location}
+        location = ("http://test.invalid?upload_id=AACODBBBxuw9u3AA",)
+        response_headers = {"location": location}
         transport.request = mock.AsyncMock(
             spec=["__call__"], return_value=_make_response(headers=response_headers)
         )
@@ -262,12 +262,12 @@ class TestResumableUpload(object):
         # Make sure the mock was called as expected.
         json_bytes = b'{"name": "got-jokes.txt"}'
         expected_headers = {
-            u"content-type": JSON_TYPE,
-            u"x-upload-content-type": BASIC_CONTENT,
-            u"x-upload-content-length": u"{:d}".format(total_bytes),
+            "content-type": JSON_TYPE,
+            "x-upload-content-type": BASIC_CONTENT,
+            "x-upload-content-length": "{:d}".format(total_bytes),
         }
         transport.request.assert_called_once_with(
-            u"POST",
+            "POST",
             RESUMABLE_URL,
             data=json_bytes,
             headers=expected_headers,
@@ -280,7 +280,7 @@ class TestResumableUpload(object):
         upload._stream = io.BytesIO(data)
         upload._content_type = BASIC_CONTENT
         upload._total_bytes = len(data)
-        upload._resumable_url = u"http://test.invalid?upload_id=not-none"
+        upload._resumable_url = "http://test.invalid?upload_id=not-none"
         return upload
 
     @staticmethod
@@ -300,7 +300,7 @@ class TestResumableUpload(object):
         assert chunk_size < len(data)
         upload._chunk_size = chunk_size
         # Make a fake 308 response.
-        response_headers = {u"range": u"bytes=0-{:d}".format(chunk_size - 1)}
+        response_headers = {"range": "bytes=0-{:d}".format(chunk_size - 1)}
         transport = self._chunk_mock(
             _async_resumable_media.PERMANENT_REDIRECT, response_headers
         )
@@ -314,13 +314,13 @@ class TestResumableUpload(object):
         assert upload._bytes_uploaded == chunk_size
         # Make sure the mock was called as expected.
         payload = data[:chunk_size]
-        content_range = u"bytes 0-{:d}/{:d}".format(chunk_size - 1, len(data))
+        content_range = "bytes 0-{:d}/{:d}".format(chunk_size - 1, len(data))
         expected_headers = {
-            u"content-range": content_range,
-            u"content-type": BASIC_CONTENT,
+            "content-range": content_range,
+            "content-type": BASIC_CONTENT,
         }
         transport.request.assert_called_once_with(
-            u"PUT",
+            "PUT",
             upload.resumable_url,
             data=payload,
             headers=expected_headers,
@@ -336,7 +336,7 @@ class TestResumableUpload(object):
         assert chunk_size < len(data)
         upload._chunk_size = chunk_size
         # Make a fake 308 response.
-        response_headers = {u"range": u"bytes=0-{:d}".format(chunk_size - 1)}
+        response_headers = {"range": "bytes=0-{:d}".format(chunk_size - 1)}
         transport = self._chunk_mock(
             _async_resumable_media.PERMANENT_REDIRECT, response_headers
         )
@@ -350,13 +350,13 @@ class TestResumableUpload(object):
         assert upload._bytes_uploaded == chunk_size
         # Make sure the mock was called as expected.
         payload = data[:chunk_size]
-        content_range = u"bytes 0-{:d}/{:d}".format(chunk_size - 1, len(data))
+        content_range = "bytes 0-{:d}/{:d}".format(chunk_size - 1, len(data))
         expected_headers = {
-            u"content-range": content_range,
-            u"content-type": BASIC_CONTENT,
+            "content-range": content_range,
+            "content-type": BASIC_CONTENT,
         }
         transport.request.assert_called_once_with(
-            u"PUT",
+            "PUT",
             upload.resumable_url,
             data=payload,
             headers=expected_headers,
@@ -368,10 +368,10 @@ class TestResumableUpload(object):
         upload = upload_mod.ResumableUpload(RESUMABLE_URL, ONE_MB)
         upload._invalid = True  # Make sure invalid.
         upload._stream = mock.Mock(spec=["seek"])
-        upload._resumable_url = u"http://test.invalid?upload_id=big-deal"
+        upload._resumable_url = "http://test.invalid?upload_id=big-deal"
 
         end = 55555
-        headers = {u"range": u"bytes=0-{:d}".format(end)}
+        headers = {"range": "bytes=0-{:d}".format(end)}
         transport = self._chunk_mock(_async_resumable_media.PERMANENT_REDIRECT, headers)
 
         ret_val = await upload.recover(transport)
@@ -380,9 +380,9 @@ class TestResumableUpload(object):
         assert upload.bytes_uploaded == end + 1
         assert not upload.invalid
         upload._stream.seek.assert_called_once_with(end + 1)
-        expected_headers = {u"content-range": u"bytes */*"}
+        expected_headers = {"content-range": "bytes */*"}
         transport.request.assert_called_once_with(
-            u"PUT",
+            "PUT",
             upload.resumable_url,
             data=None,
             headers=expected_headers,

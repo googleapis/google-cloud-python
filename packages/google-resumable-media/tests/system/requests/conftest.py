@@ -43,13 +43,13 @@ def cleanup_bucket(transport):
         raise ValueError("{}: {}".format(del_response.status_code, del_response.reason))
 
 
-@pytest.fixture(scope=u"session")
+@pytest.fixture(scope="session")
 def authorized_transport():
     credentials, _ = google.auth.default(scopes=(utils.GCS_RW_SCOPE,))
     yield tr_requests.AuthorizedSession(credentials)
 
 
-@pytest.fixture(scope=u"session")
+@pytest.fixture(scope="session")
 def bucket(authorized_transport):
     ensure_bucket(authorized_transport)
 

@@ -133,14 +133,14 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
         method, url, payload, headers = self._prepare_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
         request_kwargs = {
-            u"data": payload,
-            u"headers": headers,
-            u"retry_strategy": self._retry_strategy,
-            u"timeout": timeout,
+            "data": payload,
+            "headers": headers,
+            "retry_strategy": self._retry_strategy,
+            "timeout": timeout,
         }
 
         if self._stream is not None:
-            request_kwargs[u"stream"] = True
+            request_kwargs["stream"] = True
 
         result = await _request_helpers.http_request(
             transport, method, url, **request_kwargs
@@ -425,8 +425,8 @@ def _add_decoder(response_raw, checksum):
         caller will no longer need to hash to decoded bytes.
     """
 
-    encoding = response_raw.headers.get(u"content-encoding", u"").lower()
-    if encoding != u"gzip":
+    encoding = response_raw.headers.get("content-encoding", "").lower()
+    if encoding != "gzip":
         return checksum
 
     response_raw._decoder = _GzipDecoder(checksum)

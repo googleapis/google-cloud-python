@@ -52,10 +52,10 @@ from google.resumable_media.common import UPLOAD_CHUNK_SIZE
 
 
 __all__ = [
-    u"DataCorruption",
-    u"InvalidResponse",
-    u"PERMANENT_REDIRECT",
-    u"RetryStrategy",
-    u"TOO_MANY_REQUESTS",
-    u"UPLOAD_CHUNK_SIZE",
+    "DataCorruption",
+    "InvalidResponse",
+    "PERMANENT_REDIRECT",
+    "RetryStrategy",
+    "TOO_MANY_REQUESTS",
+    "UPLOAD_CHUNK_SIZE",
 ]

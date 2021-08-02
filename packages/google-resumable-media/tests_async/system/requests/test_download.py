@@ -15,16 +15,15 @@
 import base64
 import copy
 import hashlib
+import http.client
 import io
 import os
 
+import asyncio
 from google.auth._default_async import default_async
 import google.auth.transport._aiohttp_requests as tr_requests
-import pytest
-from six.moves import http_client
-
-import asyncio
 import multidict
+import pytest
 
 import google._async_resumable_media.requests as resumable_requests
 from google.resumable_media import _helpers
@@ -34,18 +33,18 @@ from tests.system import utils
 
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
-DATA_DIR = os.path.join(CURR_DIR, u"..", u"..", u"data")
-PLAIN_TEXT = u"text/plain"
-IMAGE_JPEG = u"image/jpeg"
+DATA_DIR = os.path.join(CURR_DIR, "..", "..", "data")
+PLAIN_TEXT = "text/plain"
+IMAGE_JPEG = "image/jpeg"
 ENCRYPTED_ERR = b"The target object is encrypted by a customer-supplied encryption key."
-NO_BODY_ERR = u"The content for this response was already consumed"
+NO_BODY_ERR = "The content for this response was already consumed"
 NOT_FOUND_ERR = (
     b"No such object: " + utils.BUCKET_NAME.encode("utf-8") + b"/does-not-exist.txt"
 )
 SIMPLE_DOWNLOADS = (resumable_requests.Download, resumable_requests.RawDownload)
 
 
-@pytest.fixture(scope=u"session")
+@pytest.fixture(scope="session")
 def event_loop(request):
     """Create an instance of the default event loop for each test session."""
     loop = asyncio.get_event_loop_policy().new_event_loop()
@@ -70,10 +69,10 @@ class CorruptingAuthorizedSession(tr_requests.AuthorizedSession):
             constructor.
     """
 
-    EMPTY_MD5 = base64.b64encode(hashlib.md5(b"").digest()).decode(u"utf-8")
+    EMPTY_MD5 = base64.b64encode(hashlib.md5(b"").digest()).decode("utf-8")
     crc32c = _helpers._get_crc32c_object()
     crc32c.update(b"")
-    EMPTY_CRC32C = base64.b64encode(crc32c.digest()).decode(u"utf-8")
+    EMPTY_CRC32C = base64.b64encode(crc32c.digest()).decode("utf-8")
 
     async def request(self, method, url, data=None, headers=None, **kwargs):
         """Implementation of Requests' request."""
@@ -82,7 +81,7 @@ class CorruptingAuthorizedSession(tr_requests.AuthorizedSession):
         )
 
         temp = multidict.CIMultiDict(response.headers)
-        temp[_helpers._HASH_HEADER] = u"crc32c={},md5={}".format(
+        temp[_helpers._HASH_HEADER] = "crc32c={},md5={}".format(
             self.EMPTY_CRC32C, self.EMPTY_MD5
         )
         response._headers = temp
@@ -96,11 +95,11 @@ def get_path(filename):
 
 ALL_FILES = (
     {
-        u"path": get_path(u"image1.jpg"),
-        u"content_type": IMAGE_JPEG,
-        u"md5": u"1bsd83IYNug8hd+V1ING3Q==",
-        u"crc32c": u"YQGPxA==",
-        u"slices": (
+        "path": get_path("image1.jpg"),
+        "content_type": IMAGE_JPEG,
+        "md5": "1bsd83IYNug8hd+V1ING3Q==",
+        "crc32c": "YQGPxA==",
+        "slices": (
             slice(1024, 16386, None),  # obj[1024:16386]
             slice(None, 8192, None),  # obj[:8192]
             slice(-256, None, None),  # obj[-256:]
@@ -108,11 +107,11 @@ ALL_FILES = (
         ),
     },
     {
-        u"path": get_path(u"image2.jpg"),
-        u"content_type": IMAGE_JPEG,
-        u"md5": u"gdLXJltiYAMP9WZZFEQI1Q==",
-        u"crc32c": u"sxxEFQ==",
-        u"slices": (
+        "path": get_path("image2.jpg"),
+        "content_type": IMAGE_JPEG,
+        "md5": "gdLXJltiYAMP9WZZFEQI1Q==",
+        "crc32c": "sxxEFQ==",
+        "slices": (
             slice(1024, 16386, None),  # obj[1024:16386]
             slice(None, 8192, None),  # obj[:8192]
             slice(-256, None, None),  # obj[-256:]
@@ -120,62 +119,62 @@ ALL_FILES = (
         ),
     },
     {
-        u"path": get_path(u"file.txt"),
-        u"content_type": PLAIN_TEXT,
-        u"md5": u"XHSHAr/SpIeZtZbjgQ4nGw==",
-        u"crc32c": u"MeMHoQ==",
-        u"slices": (),
+        "path": get_path("file.txt"),
+        "content_type": PLAIN_TEXT,
+        "md5": "XHSHAr/SpIeZtZbjgQ4nGw==",
+        "crc32c": "MeMHoQ==",
+        "slices": (),
     },
     {
-        u"path": get_path(u"gzipped.txt.gz"),
-        u"uncompressed": get_path(u"gzipped.txt"),
-        u"content_type": PLAIN_TEXT,
-        u"md5": u"KHRs/+ZSrc/FuuR4qz/PZQ==",
-        u"crc32c": u"/LIRNg==",
-        u"slices": (),
-        u"metadata": {u"contentEncoding": u"gzip"},
+        "path": get_path("gzipped.txt.gz"),
+        "uncompressed": get_path("gzipped.txt"),
+        "content_type": PLAIN_TEXT,
+        "md5": "KHRs/+ZSrc/FuuR4qz/PZQ==",
+        "crc32c": "/LIRNg==",
+        "slices": (),
+        "metadata": {"contentEncoding": "gzip"},
     },
 )
 
 
 def get_contents_for_upload(info):
-    with open(info[u"path"], u"rb") as file_obj:
+    with open(info["path"], "rb") as file_obj:
         return file_obj.read()
 
 
 def get_contents(info):
-    full_path = info.get(u"uncompressed", info[u"path"])
-    with open(full_path, u"rb") as file_obj:
+    full_path = info.get("uncompressed", info["path"])
+    with open(full_path, "rb") as file_obj:
         return file_obj.read()
 
 
 def get_raw_contents(info):
-    full_path = info[u"path"]
-    with open(full_path, u"rb") as file_obj:
+    full_path = info["path"]
+    with open(full_path, "rb") as file_obj:
         return file_obj.read()
 
 
 def get_blob_name(info):
-    full_path = info.get(u"uncompressed", info[u"path"])
+    full_path = info.get("uncompressed", info["path"])
     return os.path.basename(full_path)
 
 
 async def delete_blob(transport, blob_name):
     metadata_url = utils.METADATA_URL_TEMPLATE.format(blob_name=blob_name)
     response = await transport.request("DELETE", metadata_url)
-    assert response.status == http_client.NO_CONTENT
+    assert response.status == http.client.NO_CONTENT
 
 
-@pytest.fixture(scope=u"module")
+@pytest.fixture(scope="module")
 async def secret_file(authorized_transport, bucket):
-    blob_name = u"super-seekrit.txt"
+    blob_name = "super-seekrit.txt"
     data = b"Please do not tell anyone my encrypted seekrit."
 
     upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
     headers = utils.get_encryption_headers()
     upload = resumable_requests.SimpleUpload(upload_url, headers=headers)
     response = await upload.transmit(authorized_transport, data, PLAIN_TEXT)
-    assert response.status == http_client.OK
+    assert response.status == http.client.OK
 
     yield blob_name, data, headers
 
@@ -183,27 +182,27 @@ async def secret_file(authorized_transport, bucket):
 
 
 # Transport that returns corrupt data, so we can exercise checksum handling.
-@pytest.fixture(scope=u"module")
+@pytest.fixture(scope="module")
 async def corrupting_transport():
     credentials, _ = default_async(scopes=(utils.GCS_RW_SCOPE,))
     yield CorruptingAuthorizedSession(credentials)
 
 
-@pytest.fixture(scope=u"module")
+@pytest.fixture(scope="module")
 async def simple_file(authorized_transport, bucket):
-    blob_name = u"basic-file.txt"
+    blob_name = "basic-file.txt"
     upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
     upload = resumable_requests.SimpleUpload(upload_url)
     data = b"Simple contents"
     response = await upload.transmit(authorized_transport, data, PLAIN_TEXT)
-    assert response.status == http_client.OK
+    assert response.status == http.client.OK
 
     yield blob_name, data
 
     await delete_blob(authorized_transport, blob_name)
 
 
-@pytest.fixture(scope=u"module")
+@pytest.fixture(scope="module")
 async def add_files(authorized_transport, bucket):
     blob_names = []
     for info in ALL_FILES:
@@ -211,21 +210,21 @@ async def add_files(authorized_transport, bucket):
         blob_name = get_blob_name(info)
 
         blob_names.append(blob_name)
-        if u"metadata" in info:
+        if "metadata" in info:
             upload = resumable_requests.MultipartUpload(utils.MULTIPART_UPLOAD)
-            metadata = copy.deepcopy(info[u"metadata"])
-            metadata[u"name"] = blob_name
+            metadata = copy.deepcopy(info["metadata"])
+            metadata["name"] = blob_name
             response = await upload.transmit(
-                authorized_transport, to_upload, metadata, info[u"content_type"]
+                authorized_transport, to_upload, metadata, info["content_type"]
             )
         else:
             upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
             upload = resumable_requests.SimpleUpload(upload_url)
             response = await upload.transmit(
-                authorized_transport, to_upload, info[u"content_type"]
+                authorized_transport, to_upload, info["content_type"]
             )
 
-        assert response.status == http_client.OK
+        assert response.status == http.client.OK
 
     yield
 
@@ -239,11 +238,11 @@ async def check_tombstoned(download, transport):
     if isinstance(download, SIMPLE_DOWNLOADS):
         with pytest.raises(ValueError) as exc_info:
             await download.consume(transport)
-        assert exc_info.match(u"A download can only be used once.")
+        assert exc_info.match("A download can only be used once.")
     else:
         with pytest.raises(ValueError) as exc_info:
             await download.consume_next_chunk(transport)
-        assert exc_info.match(u"Download has finished.")
+        assert exc_info.match("Download has finished.")
 
 
 async def check_error_response(exc_info, status_code, message):
@@ -254,8 +253,8 @@ async def check_error_response(exc_info, status_code, message):
     assert content.startswith(message)
     assert len(error.args) == 5
     assert error.args[1] == status_code
-    assert error.args[3] == http_client.OK
-    assert error.args[4] == http_client.PARTIAL_CONTENT
+    assert error.args[3] == http.client.OK
+    assert error.args[4] == http.client.PARTIAL_CONTENT
 
 
 class TestDownload(object):
@@ -288,7 +287,7 @@ class TestDownload(object):
             # Consume the resource.
             response = await download.consume(authorized_transport)
             response = tr_requests._CombinedResponse(response)
-            assert response.status == http_client.OK
+            assert response.status == http.client.OK
             content = await self._read_response_content(response)
             assert content == actual_contents
             await check_tombstoned(download, authorized_transport)
@@ -301,7 +300,7 @@ class TestDownload(object):
         download = self._make_one(media_url, headers=headers)
         # Consume the resource.
         response = await download.consume(authorized_transport)
-        assert response.status == http_client.OK
+        assert response.status == http.client.OK
         content = await response.content.read()
         assert content == data
         await check_tombstoned(download, authorized_transport)
@@ -313,19 +312,19 @@ class TestDownload(object):
         with pytest.raises(common.InvalidResponse) as exc_info:
             await download_wo.consume(authorized_transport)
 
-        await check_error_response(exc_info, http_client.BAD_REQUEST, ENCRYPTED_ERR)
+        await check_error_response(exc_info, http.client.BAD_REQUEST, ENCRYPTED_ERR)
         await check_tombstoned(download_wo, authorized_transport)
 
     @pytest.mark.asyncio
     async def test_non_existent_file(self, authorized_transport, bucket):
-        blob_name = u"does-not-exist.txt"
+        blob_name = "does-not-exist.txt"
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
         download = self._make_one(media_url)
 
         # Try to consume the resource and fail.
         with pytest.raises(common.InvalidResponse) as exc_info:
             await download.consume(authorized_transport)
-        await check_error_response(exc_info, http_client.NOT_FOUND, NOT_FOUND_ERR)
+        await check_error_response(exc_info, http.client.NOT_FOUND, NOT_FOUND_ERR)
         await check_tombstoned(download, authorized_transport)
 
     @pytest.mark.asyncio
@@ -345,7 +344,7 @@ class TestDownload(object):
 
         await check_error_response(
             exc_info,
-            http_client.REQUESTED_RANGE_NOT_SATISFIABLE,
+            http.client.REQUESTED_RANGE_NOT_SATISFIABLE,
             b"Request range not satisfiable",
         )
         await check_tombstoned(download, authorized_transport)
@@ -366,10 +365,10 @@ class TestDownload(object):
             blob_name = get_blob_name(info)
 
             media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-            for slice_ in info[u"slices"]:
+            for slice_ in info["slices"]:
                 download = self._download_slice(media_url, slice_)
                 response = await download.consume(authorized_transport)
-                assert response.status == http_client.PARTIAL_CONTENT
+                assert response.status == http.client.PARTIAL_CONTENT
                 content = await response.content.read()
                 assert content == actual_contents[slice_]
                 with pytest.raises(ValueError):
@@ -465,7 +464,7 @@ async def consume_chunks(download, authorized_transport, total_bytes, actual_con
         next_byte = min(start_byte + download.chunk_size, end_byte + 1)
         assert download.bytes_downloaded == next_byte - download.start
         assert download.total_bytes == total_bytes
-        assert response.status == http_client.PARTIAL_CONTENT
+        assert response.status == http.client.PARTIAL_CONTENT
         # NOTE: Due to the consumption of the stream in the respone, the
         # response object for async requests will be EOF at this point. In
         # sync versions we could compare the content with the range of
@@ -497,7 +496,7 @@ class TestChunkedDownload(object):
             blob_name = get_blob_name(info)
 
             media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-            for slice_ in info[u"slices"]:
+            for slice_ in info["slices"]:
                 # Manually replace a missing start with 0.
                 start = 0 if slice_.start is None else slice_.start
                 # Chunked downloads don't support a negative index.
@@ -569,7 +568,7 @@ class TestChunkedDownload(object):
             await download_wo.consume_next_chunk(authorized_transport)
 
         assert stream_wo.tell() == 0
-        await check_error_response(exc_info, http_client.BAD_REQUEST, ENCRYPTED_ERR)
+        await check_error_response(exc_info, http.client.BAD_REQUEST, ENCRYPTED_ERR)
         assert download_wo.invalid
 
 

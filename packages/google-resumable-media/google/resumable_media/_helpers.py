@@ -26,16 +26,16 @@ import warnings
 from google.resumable_media import common
 
 
-RANGE_HEADER = u"range"
-CONTENT_RANGE_HEADER = u"content-range"
+RANGE_HEADER = "range"
+CONTENT_RANGE_HEADER = "content-range"
 
 _SLOW_CRC32C_WARNING = (
     "Currently using crcmod in pure python form. This is a slow "
     "implementation. Python 3 has a faster implementation, `google-crc32c`, "
     "which will be used if it is installed."
 )
-_HASH_HEADER = u"x-goog-hash"
-_MISSING_CHECKSUM = u"""\
+_HASH_HEADER = "x-goog-hash"
+_MISSING_CHECKSUM = """\
 No {checksum_type} checksum was returned from the service while downloading {}
 (which happens for composite objects), so client-side content integrity
 checking is not being performed."""
@@ -69,7 +69,7 @@ def header_required(response, name, get_headers, callback=do_nothing):
     if name not in headers:
         callback()
         raise common.InvalidResponse(
-            response, u"Response headers must contain header", name
+            response, "Response headers must contain header", name
         )
 
     return headers[name]
@@ -98,9 +98,9 @@ def require_status_code(response, status_codes, get_status_code, callback=do_not
         callback()
         raise common.InvalidResponse(
             response,
-            u"Request failed with status code",
+            "Request failed with status code",
             status_code,
-            u"Expected one of",
+            "Expected one of",
             *status_codes
         )
     return status_code
@@ -253,7 +253,7 @@ def prepare_checksum_digest(digest_bytestring):
     """
     encoded_digest = base64.b64encode(digest_bytestring)
     # NOTE: ``b64encode`` returns ``bytes``, but HTTP headers expect ``str``.
-    return encoded_digest.decode(u"utf-8")
+    return encoded_digest.decode("utf-8")
 
 
 def _get_expected_checksum(response, get_headers, media_url, checksum_type):
@@ -332,8 +332,8 @@ def _parse_checksum_header(header_value, response, checksum_label):
         return None
 
     matches = []
-    for checksum in header_value.split(u","):
-        name, value = checksum.split(u"=", 1)
+    for checksum in header_value.split(","):
+        name, value = checksum.split("=", 1)
         # Official docs say "," is the separator, but real-world responses have encountered ", "
         if name.lstrip() == checksum_label:
             matches.append(value)
@@ -345,7 +345,7 @@ def _parse_checksum_header(header_value, response, checksum_label):
     else:
         raise common.InvalidResponse(
             response,
-            u"X-Goog-Hash header had multiple ``{}`` values.".format(checksum_label),
+            "X-Goog-Hash header had multiple ``{}`` values.".format(checksum_label),
             header_value,
             matches,
         )
