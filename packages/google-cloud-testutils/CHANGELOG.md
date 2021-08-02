@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-test-utils/compare/v0.3.0...v1.0.0) (2021-08-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop support for Python 2.7 ([#43](https://www.github.com/googleapis/python-test-utils/issues/43)) ([f5e9c65](https://www.github.com/googleapis/python-test-utils/commit/f5e9c6535481e1ed70fa5e356668e5b0695481e0))
+
 ## [0.3.0](https://www.github.com/googleapis/python-test-utils/compare/v0.2.1...v0.3.0) (2021-07-07)
 
 
