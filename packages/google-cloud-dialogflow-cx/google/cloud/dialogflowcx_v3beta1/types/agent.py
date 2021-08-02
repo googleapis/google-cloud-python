@@ -15,6 +15,9 @@
 #
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3beta1.types import (
+    advanced_settings as gcdc_advanced_settings,
+)
 from google.cloud.dialogflowcx_v3beta1.types import flow
 from google.protobuf import field_mask_pb2  # type: ignore
 
@@ -114,11 +117,18 @@ class Agent(proto.Message):
             reference for the agent. Format:
             ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
         enable_stackdriver_logging (bool):
-            Indicates if stackdriver logging is enabled
-            for the agent.
+            Indicates if stackdriver logging is enabled for the agent.
+            Please use
+            [agent.advanced_settings][google.cloud.dialogflow.cx.v3beta1.AdvancedSettings.LoggingSettings]
+            instead.
         enable_spell_correction (bool):
             Indicates if automatic spell correction is
             enabled in detect intent requests.
+        advanced_settings (google.cloud.dialogflowcx_v3beta1.types.AdvancedSettings):
+            Hierarchical advanced settings for this
+            agent. The settings exposed at the lower level
+            overrides the settings exposed at the higher
+            level.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -135,6 +145,9 @@ class Agent(proto.Message):
     security_settings = proto.Field(proto.STRING, number=17,)
     enable_stackdriver_logging = proto.Field(proto.BOOL, number=18,)
     enable_spell_correction = proto.Field(proto.BOOL, number=20,)
+    advanced_settings = proto.Field(
+        proto.MESSAGE, number=22, message=gcdc_advanced_settings.AdvancedSettings,
+    )
 
 
 class ListAgentsRequest(proto.Message):

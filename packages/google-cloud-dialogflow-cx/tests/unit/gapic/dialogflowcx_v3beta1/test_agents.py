@@ -41,6 +41,7 @@ from google.cloud.dialogflowcx_v3beta1.services.agents import transports
 from google.cloud.dialogflowcx_v3beta1.services.agents.transports.base import (
     _GOOGLE_AUTH_VERSION,
 )
+from google.cloud.dialogflowcx_v3beta1.types import advanced_settings
 from google.cloud.dialogflowcx_v3beta1.types import agent
 from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
 from google.cloud.dialogflowcx_v3beta1.types import flow

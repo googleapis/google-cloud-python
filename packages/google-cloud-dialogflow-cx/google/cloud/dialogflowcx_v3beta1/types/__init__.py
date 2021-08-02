@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .advanced_settings import AdvancedSettings
 from .agent import (
     Agent,
     AgentValidationResult,
@@ -73,6 +74,8 @@ from .experiment import (
     GetExperimentRequest,
     ListExperimentsRequest,
     ListExperimentsResponse,
+    RolloutConfig,
+    RolloutState,
     StartExperimentRequest,
     StopExperimentRequest,
     UpdateExperimentRequest,
@@ -235,6 +238,7 @@ from .webhook import (
 )
 
 __all__ = (
+    "AdvancedSettings",
     "Agent",
     "AgentValidationResult",
     "CreateAgentRequest",
@@ -286,6 +290,8 @@ __all__ = (
     "GetExperimentRequest",
     "ListExperimentsRequest",
     "ListExperimentsResponse",
+    "RolloutConfig",
+    "RolloutState",
     "StartExperimentRequest",
     "StopExperimentRequest",
     "UpdateExperimentRequest",

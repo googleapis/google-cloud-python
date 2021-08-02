@@ -75,6 +75,8 @@ class SessionsAsyncClient:
     parse_transition_route_group_path = staticmethod(
         SessionsClient.parse_transition_route_group_path
     )
+    version_path = staticmethod(SessionsClient.version_path)
+    parse_version_path = staticmethod(SessionsClient.parse_version_path)
     webhook_path = staticmethod(SessionsClient.webhook_path)
     parse_webhook_path = staticmethod(SessionsClient.parse_webhook_path)
     common_billing_account_path = staticmethod(

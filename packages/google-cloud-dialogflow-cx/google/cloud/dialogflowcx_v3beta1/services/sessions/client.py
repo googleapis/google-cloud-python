@@ -297,6 +297,24 @@ class SessionsClient(metaclass=SessionsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def version_path(
+        project: str, location: str, agent: str, flow: str, version: str,
+    ) -> str:
+        """Returns a fully-qualified version string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/versions/{version}".format(
+            project=project, location=location, agent=agent, flow=flow, version=version,
+        )
+
+    @staticmethod
+    def parse_version_path(path: str) -> Dict[str, str]:
+        """Parses a version path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/flows/(?P<flow>.+?)/versions/(?P<version>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def webhook_path(project: str, location: str, agent: str, webhook: str,) -> str:
         """Returns a fully-qualified webhook string."""
         return "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(

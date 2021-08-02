@@ -29,6 +29,7 @@ from google.oauth2 import service_account  # type: ignore
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.dialogflowcx_v3beta1.services.agents import pagers
+from google.cloud.dialogflowcx_v3beta1.types import advanced_settings
 from google.cloud.dialogflowcx_v3beta1.types import agent
 from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
 from google.cloud.dialogflowcx_v3beta1.types import flow

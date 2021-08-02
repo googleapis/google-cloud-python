@@ -331,6 +331,8 @@ class StreamingRecognitionResult(proto.Message):
             Time offset of the end of this Speech recognition result
             relative to the beginning of the audio. Only populated for
             ``message_type`` = ``TRANSCRIPT``.
+        language_code (str):
+            Detected language code for the transcript.
     """
 
     class MessageType(proto.Enum):
@@ -350,6 +352,7 @@ class StreamingRecognitionResult(proto.Message):
     speech_end_offset = proto.Field(
         proto.MESSAGE, number=8, message=duration_pb2.Duration,
     )
+    language_code = proto.Field(proto.STRING, number=10,)
 
 
 class QueryParameters(proto.Message):
@@ -447,6 +450,14 @@ class QueryParameters(proto.Message):
             Length", "Connection", "From", "User-Agent",
             "Accept-Encoding", "If-Modified-Since", "If-
             None-Match", "X-Forwarded-For", etc.
+        flow_versions (Sequence[str]):
+            A list of flow versions to override for the request. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+
+            If version 1 of flow X is included in this list, the traffic
+            of flow X will go through version 1 regardless of the
+            version configuration in the environment. Each flow can have
+            at most one version specified in this list.
     """
 
     time_zone = proto.Field(proto.STRING, number=1,)
@@ -460,6 +471,7 @@ class QueryParameters(proto.Message):
     disable_webhook = proto.Field(proto.BOOL, number=7,)
     analyze_query_text_sentiment = proto.Field(proto.BOOL, number=8,)
     webhook_headers = proto.MapField(proto.STRING, proto.STRING, number=10,)
+    flow_versions = proto.RepeatedField(proto.STRING, number=14,)
 
 
 class QueryInput(proto.Message):
