@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import mock
-import six
+import builtins
+from unittest import mock
 
 
 def maybe_fail_import(predicate):
@@ -28,11 +28,11 @@ def maybe_fail_import(predicate):
     Returns:
         A mock patcher object that can be used to enable patched import behavior.
     """
-    orig_import = six.moves.builtins.__import__
+    orig_import = builtins.__import__
 
     def custom_import(name, globals=None, locals=None, fromlist=(), level=0):
         if predicate(name, globals, locals, fromlist, level):
             raise ImportError
         return orig_import(name, globals, locals, fromlist, level)
 
-    return mock.patch.object(six.moves.builtins, "__import__", new=custom_import)
+    return mock.patch.object(builtins, "__import__", new=custom_import)

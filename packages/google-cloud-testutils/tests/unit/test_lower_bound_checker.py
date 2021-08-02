@@ -88,7 +88,7 @@ def test_update_constraints():
     
         output = constraints_path.read_text().split("\n")
 
-        assert output == ["click==7.0.0", "grpcio==1.0.0", "packaging==14.0", "requests==1.0.0", "six==1.0.0",]
+        assert output == ["click==7.0.0", "grpcio==1.0.0", "packaging==14.0", "requests==1.0.0", "wheel==0.35.0",]
 
 
 
@@ -96,7 +96,7 @@ def test_update_constraints_overwrites_existing_file():
     constraints = [
         "requests==1.0.0",
         "packaging==13.0",
-        "six==1.6.0",
+        "wheel==0.36.0",
         "click==5.0.0",
     ]
     with constraints_file(constraints) as c:
@@ -107,14 +107,14 @@ def test_update_constraints_overwrites_existing_file():
         assert result.exit_code == 0
 
         output = c.read_text().split("\n")
-        assert output == ["click==7.0.0", "grpcio==1.0.0", "packaging==14.0", "requests==1.0.0", "six==1.0.0",
+        assert output == ["click==7.0.0", "grpcio==1.0.0", "packaging==14.0", "requests==1.0.0", "wheel==0.35.0",
         ]
 
 def test_update_constraints_with_setup_py_missing_lower_bounds():
     constraints = [
         "requests==1.0.0",
         "packaging==14.0",
-        "six==1.0.0",
+        "wheel==0.35.0",
         "click==7.0.0",
     ]
     with constraints_file(constraints) as c:
@@ -126,7 +126,7 @@ def test_update_constraints_with_setup_py_missing_lower_bounds():
     assert "setup.py is missing explicit lower bounds" in result.output
 
     invalid_pkg_list = parse_error_msg(result.output)
-    assert set(invalid_pkg_list) == {"requests", "packaging", "six"}
+    assert set(invalid_pkg_list) == {"requests", "packaging", "wheel"}
 
 
 
@@ -134,7 +134,7 @@ def test_check():
     constraints = [
         "requests==1.0.0",
         "packaging==14.0",
-        "six==1.0.0",
+        "wheel==0.35.0",
         "click==7.0.0",
         "grpcio==1.0.0"
     ]
@@ -150,7 +150,7 @@ def test_update_constraints_with_extra_constraints():
     constraints = [
         "requests==1.0.0",
         "packaging==14.0",
-        "six==1.0.0",
+        "wheel==0.35.0",
         "click==7.0.0",
         "grpcio==1.0.0",
         "pytest==6.0.0",  # additional requirement
@@ -182,7 +182,7 @@ def test_check_with_constraints_file_invalid_pins():
     constraints = [
         "requests==1.0.0",
         "packaging==14.0",
-        "six==1.0.0, <2.0.0dev",  # should be ==
+        "wheel==1.0.0, <2.0.0dev",  # should be ==
         "click>=7.0.0",  # should be ==
     ]
     with constraints_file(constraints) as c:
@@ -194,14 +194,14 @@ def test_check_with_constraints_file_invalid_pins():
 
     invalid_pkg_list = parse_error_msg(result.output)
 
-    assert set(invalid_pkg_list) == {"six", "click"}
+    assert set(invalid_pkg_list) == {"wheel", "click"}
 
 
 def test_check_with_constraints_file_missing_packages():
     constraints = [
         "requests==1.0.0",
         "packaging==14.0",
-        # missing 'six' and 'click' and extra 'grpcio'
+        # missing 'wheel' and 'click' and extra 'grpcio'
     ]
     with constraints_file(constraints) as c:
         result = RUNNER.invoke(
@@ -211,14 +211,14 @@ def test_check_with_constraints_file_missing_packages():
     assert result.exit_code == 2
 
     invalid_pkg_list = parse_error_msg(result.output)
-    assert set(invalid_pkg_list) == {"six", "click", "grpcio"}
+    assert set(invalid_pkg_list) == {"wheel", "click", "grpcio"}
 
 
 def test_check_with_constraints_file_different_versions():
     constraints = [
         "requests==1.2.0",  # setup.py has 1.0.0
         "packaging==14.1",  # setup.py has 14.0
-        "six==1.4.0",  # setup.py has 1.0.0
+        "wheel==0.36.0",  # setup.py has 0.35.0
         "click==7.0.0",
         "grpcio==1.0.0"
     ]
@@ -230,14 +230,14 @@ def test_check_with_constraints_file_different_versions():
     assert result.exit_code == 2
 
     invalid_pkg_list = parse_diff_versions_error_msg(result.output)
-    assert set(invalid_pkg_list) == {"requests", "packaging", "six"}
+    assert set(invalid_pkg_list) == {"requests", "packaging", "wheel"}
 
 
 def test_check_with_setup_py_missing_lower_bounds():
     constraints = [
         "requests==1.0.0",
         "packaging==14.0",
-        "six==1.0.0",
+        "wheel==1.0.0",
         "click==7.0.0",
     ]
     with constraints_file(constraints) as c:
@@ -248,4 +248,4 @@ def test_check_with_setup_py_missing_lower_bounds():
     assert result.exit_code == 2
 
     invalid_pkg_list = parse_error_msg(result.output)
-    assert set(invalid_pkg_list) == {"requests", "packaging", "six"}
+    assert set(invalid_pkg_list) == {"requests", "packaging", "wheel"}

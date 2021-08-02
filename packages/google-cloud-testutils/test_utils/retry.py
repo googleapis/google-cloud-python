@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
 import time
-
-import six
 
 MAX_TRIES = 4
 DELAY = 1
@@ -51,7 +50,7 @@ class RetryBase(object):
         self.max_tries = max_tries
         self.delay = delay
         self.backoff = backoff
-        self.logger = logger.warning if logger else six.print_
+        self.logger = logger.warning if logger else print
 
 
 class RetryErrors(RetryBase):
@@ -93,7 +92,7 @@ class RetryErrors(RetryBase):
         self.error_predicate = error_predicate
 
     def __call__(self, to_wrap):
-        @six.wraps(to_wrap)
+        @functools.wraps(to_wrap)
         def wrapped_function(*args, **kwargs):
             tries = 0
             while tries < self.max_tries:
@@ -151,7 +150,7 @@ class RetryResult(RetryBase):
         self.result_predicate = result_predicate
 
     def __call__(self, to_wrap):
-        @six.wraps(to_wrap)
+        @functools.wraps(to_wrap)
         def wrapped_function(*args, **kwargs):
             tries = 0
             while tries < self.max_tries:
@@ -208,7 +207,7 @@ class RetryInstanceState(RetryBase):
     def __call__(self, to_wrap):
         instance = to_wrap.__self__  # only instance methods allowed
 
-        @six.wraps(to_wrap)
+        @functools.wraps(to_wrap)
         def wrapped_function(*args, **kwargs):
             tries = 0
             while tries < self.max_tries:

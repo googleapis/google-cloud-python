@@ -21,7 +21,7 @@ import setuptools
 requirements = [
     "requests>=1.0.0",
     "packaging>=14.0, <22.0.0",
-    "six<2.0.0, >=1.0.0",
+    "wheel<0.36.0, >=0.35.0",
     "click==7.0.0",
 ]
 
