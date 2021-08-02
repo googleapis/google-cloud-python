@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-retail/compare/v0.4.0...v0.4.1) (2021-08-01)
+
+
+### Documentation
+
+* Remove HTML tags from Cloud Retail API library docs ([#73](https://www.github.com/googleapis/python-retail/issues/73)) ([00e0a53](https://www.github.com/googleapis/python-retail/commit/00e0a53b77ba75d2a05c4d72242a6323ed32dfa1))
+* remove remaining private links ([#72](https://www.github.com/googleapis/python-retail/issues/72)) ([e2ca897](https://www.github.com/googleapis/python-retail/commit/e2ca897a71fba760d5b838a5fc15307a44024683))
+
 ## [0.4.0](https://www.github.com/googleapis/python-retail/compare/v0.3.1...v0.4.0) (2021-07-29)
 
 
