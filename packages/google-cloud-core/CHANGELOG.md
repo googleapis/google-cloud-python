@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## [2.0.0b1](https://www.github.com/googleapis/python-cloud-core/compare/v1.7.2...v2.0.0b1) (2021-08-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* drop python 2.7 support ([#103](https://www.github.com/googleapis/python-cloud-core/issues/103)) ([181d706](https://www.github.com/googleapis/python-cloud-core/commit/181d706e5b44d9d4189c21782551ce85c720d733)), closes [#102](https://www.github.com/googleapis/python-cloud-core/issues/102)
+
 ### [1.7.2](https://www.github.com/googleapis/python-cloud-core/compare/v1.7.1...v1.7.2) (2021-07-27)
 
 
