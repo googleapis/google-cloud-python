@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-tpu/compare/v0.2.2...v1.0.0) (2021-08-03)
+
+
+### Features
+
+* bump release level to production/stable ([#28](https://www.github.com/googleapis/python-tpu/issues/28)) ([64818bf](https://www.github.com/googleapis/python-tpu/commit/64818bfa56c89569bb961c3463872404cee990cf))
+
 ### [0.2.2](https://www.github.com/googleapis/python-tpu/compare/v0.2.1...v0.2.2) (2021-07-29)
 
 
