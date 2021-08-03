@@ -1,7 +1,7 @@
 Python Client for Resource Settings
 =================================================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Resource Settings`_:  The Resource Settings API allows users to control and
 modify the behavior of their GCP resources (e.g., VM, firewall, Project, etc.)
@@ -10,8 +10,8 @@ across the Cloud Resource Hierarchy.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-resource-settings.svg
    :target: https://pypi.org/project/google-cloud-resource-settings/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-resource-settings.svg
