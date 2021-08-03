@@ -103,25 +103,6 @@ After creation, you can pass it directly to a :class:`Client <google.cloud.clien
 
 .. _google-auth-guide: https://googleapis.dev/python/google-auth/latest/user-guide.html#service-account-private-key-files
 
-
-Google App Engine Standard First Generation Environment
--------------------------------------------------------
-
-These credentials are used only in the legacy Python 2.7
-`First Generation Standard Environment`_. All other App Engine
-runtimes use Compute Engine credentials.
-
-.. _First Generation Standard Environment: https://cloud.google.com/appengine/docs/standard/runtimes
-
-To create
-:class:`credentials <google.auth.app_engine.Credentials>`
-just for Google App Engine:
-
-.. code:: python
-
-    from google.auth import app_engine
-    credentials = app_engine.Credentials()
-
 Google Compute Engine Environment
 ---------------------------------
 

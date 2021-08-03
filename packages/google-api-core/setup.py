@@ -31,12 +31,9 @@ release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "googleapis-common-protos >= 1.6.0, < 2.0dev",
     "protobuf >= 3.12.0",
-    "google-auth >= 1.25.0, < 2.0dev",
+    "google-auth >= 1.25.0, < 3.0dev",
     "requests >= 2.18.0, < 3.0.0dev",
     "setuptools >= 40.3.0",
-    "packaging >= 14.3",
-    "six >= 1.13.0",
-    "pytz",
     'futures >= 3.2.0; python_version < "3.2"',
 ]
 extras = {
@@ -86,10 +83,7 @@ setuptools.setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
@@ -102,7 +96,7 @@ setuptools.setup(
     namespace_packages=namespaces,
     install_requires=dependencies,
     extras_require=extras,
-    python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*",
+    python_requires=">=3.6",
     include_package_data=True,
     zip_safe=False,
 )

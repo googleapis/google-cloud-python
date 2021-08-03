@@ -63,11 +63,9 @@ import random
 import time
 
 import requests.exceptions
-import six
 
 from google.api_core import datetime_helpers
 from google.api_core import exceptions
-from google.api_core import general_helpers
 from google.auth import exceptions as auth_exceptions
 
 _LOGGER = logging.getLogger(__name__)
@@ -201,15 +199,12 @@ def retry_target(target, predicate, sleep_generator, deadline, on_error=None):
 
         if deadline_datetime is not None:
             if deadline_datetime <= now:
-                six.raise_from(
-                    exceptions.RetryError(
-                        "Deadline of {:.1f}s exceeded while calling {}".format(
-                            deadline, target
-                        ),
-                        last_exc,
+                raise exceptions.RetryError(
+                    "Deadline of {:.1f}s exceeded while calling {}".format(
+                        deadline, target
                     ),
                     last_exc,
-                )
+                ) from last_exc
             else:
                 time_to_deadline = (deadline_datetime - now).total_seconds()
                 sleep = min(time_to_deadline, sleep)
@@ -222,7 +217,6 @@ def retry_target(target, predicate, sleep_generator, deadline, on_error=None):
     raise ValueError("Sleep generator stopped yielding sleep values.")
 
 
-@six.python_2_unicode_compatible
 class Retry(object):
     """Exponential retry decorator.
 
@@ -276,7 +270,7 @@ class Retry(object):
         if self._on_error is not None:
             on_error = self._on_error
 
-        @general_helpers.wraps(func)
+        @functools.wraps(func)
         def retry_wrapped_func(*args, **kwargs):
             """A wrapper that calls target function with retry."""
             target = functools.partial(func, *args, **kwargs)

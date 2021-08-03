@@ -14,12 +14,12 @@
 
 import datetime
 import logging
+import queue
 import threading
 
 import grpc
 import mock
 import pytest
-from six.moves import queue
 
 from google.api_core import bidi
 from google.api_core import exceptions
@@ -221,17 +221,11 @@ def make_rpc():
 
 
 class ClosedCall(object):
-    # NOTE: This is needed because defining `.next` on an **instance**
-    #       rather than the **class** will not be iterable in Python 2.
-    #       This is problematic since a `Mock` just sets members.
-
     def __init__(self, exception):
         self.exception = exception
 
     def __next__(self):
         raise self.exception
-
-    next = __next__  # Python 2
 
     def is_active(self):
         return False
@@ -353,8 +347,6 @@ class CallStub(object):
             self._is_active = False
             raise item
         return item
-
-    next = __next__  # Python 2
 
     def is_active(self):
         return self._is_active

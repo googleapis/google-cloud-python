@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import http.client
 import json
 
 import grpc
 import mock
 import requests
-from six.moves import http_client
 
 from google.api_core import exceptions
 
@@ -50,8 +50,8 @@ def test_create_google_cloud_error_with_args():
 
 def test_from_http_status():
     message = "message"
-    exception = exceptions.from_http_status(http_client.NOT_FOUND, message)
-    assert exception.code == http_client.NOT_FOUND
+    exception = exceptions.from_http_status(http.client.NOT_FOUND, message)
+    assert exception.code == http.client.NOT_FOUND
     assert exception.message == message
     assert exception.errors == []
 
@@ -61,11 +61,11 @@ def test_from_http_status_with_errors_and_response():
     errors = ["1", "2"]
     response = mock.sentinel.response
     exception = exceptions.from_http_status(
-        http_client.NOT_FOUND, message, errors=errors, response=response
+        http.client.NOT_FOUND, message, errors=errors, response=response
     )
 
     assert isinstance(exception, exceptions.NotFound)
-    assert exception.code == http_client.NOT_FOUND
+    assert exception.code == http.client.NOT_FOUND
     assert exception.message == message
     assert exception.errors == errors
     assert exception.response == response
@@ -82,7 +82,7 @@ def test_from_http_status_unknown_code():
 def make_response(content):
     response = requests.Response()
     response._content = content
-    response.status_code = http_client.NOT_FOUND
+    response.status_code = http.client.NOT_FOUND
     response.request = requests.Request(
         method="POST", url="https://example.com"
     ).prepare()
@@ -95,7 +95,7 @@ def test_from_http_response_no_content():
     exception = exceptions.from_http_response(response)
 
     assert isinstance(exception, exceptions.NotFound)
-    assert exception.code == http_client.NOT_FOUND
+    assert exception.code == http.client.NOT_FOUND
     assert exception.message == "POST https://example.com/: unknown error"
     assert exception.response == response
 
@@ -106,7 +106,7 @@ def test_from_http_response_text_content():
     exception = exceptions.from_http_response(response)
 
     assert isinstance(exception, exceptions.NotFound)
-    assert exception.code == http_client.NOT_FOUND
+    assert exception.code == http.client.NOT_FOUND
     assert exception.message == "POST https://example.com/: message"
 
 
@@ -120,7 +120,7 @@ def test_from_http_response_json_content():
     exception = exceptions.from_http_response(response)
 
     assert isinstance(exception, exceptions.NotFound)
-    assert exception.code == http_client.NOT_FOUND
+    assert exception.code == http.client.NOT_FOUND
     assert exception.message == "POST https://example.com/: json message"
     assert exception.errors == ["1", "2"]
 
@@ -131,22 +131,22 @@ def test_from_http_response_bad_json_content():
     exception = exceptions.from_http_response(response)
 
     assert isinstance(exception, exceptions.NotFound)
-    assert exception.code == http_client.NOT_FOUND
+    assert exception.code == http.client.NOT_FOUND
     assert exception.message == "POST https://example.com/: unknown error"
 
 
 def test_from_http_response_json_unicode_content():
     response = make_response(
         json.dumps(
-            {"error": {"message": u"\u2019 message", "errors": ["1", "2"]}}
+            {"error": {"message": "\u2019 message", "errors": ["1", "2"]}}
         ).encode("utf-8")
     )
 
     exception = exceptions.from_http_response(response)
 
     assert isinstance(exception, exceptions.NotFound)
-    assert exception.code == http_client.NOT_FOUND
-    assert exception.message == u"POST https://example.com/: \u2019 message"
+    assert exception.code == http.client.NOT_FOUND
+    assert exception.message == "POST https://example.com/: \u2019 message"
     assert exception.errors == ["1", "2"]
 
 
@@ -155,7 +155,7 @@ def test_from_grpc_status():
     exception = exceptions.from_grpc_status(grpc.StatusCode.OUT_OF_RANGE, message)
     assert isinstance(exception, exceptions.BadRequest)
     assert isinstance(exception, exceptions.OutOfRange)
-    assert exception.code == http_client.BAD_REQUEST
+    assert exception.code == http.client.BAD_REQUEST
     assert exception.grpc_status_code == grpc.StatusCode.OUT_OF_RANGE
     assert exception.message == message
     assert exception.errors == []
@@ -166,7 +166,7 @@ def test_from_grpc_status_as_int():
     exception = exceptions.from_grpc_status(11, message)
     assert isinstance(exception, exceptions.BadRequest)
     assert isinstance(exception, exceptions.OutOfRange)
-    assert exception.code == http_client.BAD_REQUEST
+    assert exception.code == http.client.BAD_REQUEST
     assert exception.grpc_status_code == grpc.StatusCode.OUT_OF_RANGE
     assert exception.message == message
     assert exception.errors == []
@@ -203,7 +203,7 @@ def test_from_grpc_error():
 
     assert isinstance(exception, exceptions.BadRequest)
     assert isinstance(exception, exceptions.InvalidArgument)
-    assert exception.code == http_client.BAD_REQUEST
+    assert exception.code == http.client.BAD_REQUEST
     assert exception.grpc_status_code == grpc.StatusCode.INVALID_ARGUMENT
     assert exception.message == message
     assert exception.errors == [error]

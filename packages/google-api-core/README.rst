@@ -1,7 +1,7 @@
 Core Library for Google Client Libraries
 ========================================
 
-|pypi| |versions| 
+|pypi| |versions|
 
 This library is not meant to stand-alone. Instead it defines
 common helpers used by all Google API clients. For more information, see the
@@ -16,8 +16,13 @@ common helpers used by all Google API clients. For more information, see the
 
 Supported Python Versions
 -------------------------
-Python >= 3.5
+Python >= 3.6
 
-Deprecated Python Versions
---------------------------
-Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
+
+Unsupported Python Versions
+---------------------------
+
+Python == 2.7, Python == 3.5.
+
+The last version of this library compatible with Python 2.7 and 3.5 is
+`google-api_core==1.31.1`.

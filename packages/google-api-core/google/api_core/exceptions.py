@@ -21,8 +21,7 @@ on :mod:`google.api_core`, including both HTTP and gRPC clients.
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-import six
-from six.moves import http_client
+import http.client
 
 try:
     import grpc
@@ -56,7 +55,6 @@ class DuplicateCredentialArgs(GoogleAPIError):
     pass
 
 
-@six.python_2_unicode_compatible
 class RetryError(GoogleAPIError):
     """Raised when a function has exhausted all of its available retries.
 
@@ -92,9 +90,7 @@ class _GoogleAPICallErrorMeta(type):
         return cls
 
 
-@six.python_2_unicode_compatible
-@six.add_metaclass(_GoogleAPICallErrorMeta)
-class GoogleAPICallError(GoogleAPIError):
+class GoogleAPICallError(GoogleAPIError, metaclass=_GoogleAPICallErrorMeta):
     """Base class for exceptions raised by calling API methods.
 
     Args:
@@ -153,25 +149,25 @@ class Redirection(GoogleAPICallError):
 class MovedPermanently(Redirection):
     """Exception mapping a ``301 Moved Permanently`` response."""
 
-    code = http_client.MOVED_PERMANENTLY
+    code = http.client.MOVED_PERMANENTLY
 
 
 class NotModified(Redirection):
     """Exception mapping a ``304 Not Modified`` response."""
 
-    code = http_client.NOT_MODIFIED
+    code = http.client.NOT_MODIFIED
 
 
 class TemporaryRedirect(Redirection):
     """Exception mapping a ``307 Temporary Redirect`` response."""
 
-    code = http_client.TEMPORARY_REDIRECT
+    code = http.client.TEMPORARY_REDIRECT
 
 
 class ResumeIncomplete(Redirection):
     """Exception mapping a ``308 Resume Incomplete`` response.
 
-    .. note:: :attr:`http_client.PERMANENT_REDIRECT` is ``308``, but Google
+    .. note:: :attr:`http.client.PERMANENT_REDIRECT` is ``308``, but Google
         APIs differ in their use of this status code.
     """
 
@@ -185,7 +181,7 @@ class ClientError(GoogleAPICallError):
 class BadRequest(ClientError):
     """Exception mapping a ``400 Bad Request`` response."""
 
-    code = http_client.BAD_REQUEST
+    code = http.client.BAD_REQUEST
 
 
 class InvalidArgument(BadRequest):
@@ -210,7 +206,7 @@ class OutOfRange(BadRequest):
 class Unauthorized(ClientError):
     """Exception mapping a ``401 Unauthorized`` response."""
 
-    code = http_client.UNAUTHORIZED
+    code = http.client.UNAUTHORIZED
 
 
 class Unauthenticated(Unauthorized):
@@ -222,7 +218,7 @@ class Unauthenticated(Unauthorized):
 class Forbidden(ClientError):
     """Exception mapping a ``403 Forbidden`` response."""
 
-    code = http_client.FORBIDDEN
+    code = http.client.FORBIDDEN
 
 
 class PermissionDenied(Forbidden):
@@ -235,20 +231,20 @@ class NotFound(ClientError):
     """Exception mapping a ``404 Not Found`` response or a
     :attr:`grpc.StatusCode.NOT_FOUND` error."""
 
-    code = http_client.NOT_FOUND
+    code = http.client.NOT_FOUND
     grpc_status_code = grpc.StatusCode.NOT_FOUND if grpc is not None else None
 
 
 class MethodNotAllowed(ClientError):
     """Exception mapping a ``405 Method Not Allowed`` response."""
 
-    code = http_client.METHOD_NOT_ALLOWED
+    code = http.client.METHOD_NOT_ALLOWED
 
 
 class Conflict(ClientError):
     """Exception mapping a ``409 Conflict`` response."""
 
-    code = http_client.CONFLICT
+    code = http.client.CONFLICT
 
 
 class AlreadyExists(Conflict):
@@ -266,26 +262,25 @@ class Aborted(Conflict):
 class LengthRequired(ClientError):
     """Exception mapping a ``411 Length Required`` response."""
 
-    code = http_client.LENGTH_REQUIRED
+    code = http.client.LENGTH_REQUIRED
 
 
 class PreconditionFailed(ClientError):
     """Exception mapping a ``412 Precondition Failed`` response."""
 
-    code = http_client.PRECONDITION_FAILED
+    code = http.client.PRECONDITION_FAILED
 
 
 class RequestRangeNotSatisfiable(ClientError):
     """Exception mapping a ``416 Request Range Not Satisfiable`` response."""
 
-    code = http_client.REQUESTED_RANGE_NOT_SATISFIABLE
+    code = http.client.REQUESTED_RANGE_NOT_SATISFIABLE
 
 
 class TooManyRequests(ClientError):
     """Exception mapping a ``429 Too Many Requests`` response."""
 
-    # http_client does not define a constant for this in Python 2.
-    code = 429
+    code = http.client.TOO_MANY_REQUESTS
 
 
 class ResourceExhausted(TooManyRequests):
@@ -312,7 +307,7 @@ class InternalServerError(ServerError):
     """Exception mapping a ``500 Internal Server Error`` response. or a
     :attr:`grpc.StatusCode.INTERNAL` error."""
 
-    code = http_client.INTERNAL_SERVER_ERROR
+    code = http.client.INTERNAL_SERVER_ERROR
     grpc_status_code = grpc.StatusCode.INTERNAL if grpc is not None else None
 
 
@@ -332,28 +327,28 @@ class MethodNotImplemented(ServerError):
     """Exception mapping a ``501 Not Implemented`` response or a
     :attr:`grpc.StatusCode.UNIMPLEMENTED` error."""
 
-    code = http_client.NOT_IMPLEMENTED
+    code = http.client.NOT_IMPLEMENTED
     grpc_status_code = grpc.StatusCode.UNIMPLEMENTED if grpc is not None else None
 
 
 class BadGateway(ServerError):
     """Exception mapping a ``502 Bad Gateway`` response."""
 
-    code = http_client.BAD_GATEWAY
+    code = http.client.BAD_GATEWAY
 
 
 class ServiceUnavailable(ServerError):
     """Exception mapping a ``503 Service Unavailable`` response or a
     :attr:`grpc.StatusCode.UNAVAILABLE` error."""
 
-    code = http_client.SERVICE_UNAVAILABLE
+    code = http.client.SERVICE_UNAVAILABLE
     grpc_status_code = grpc.StatusCode.UNAVAILABLE if grpc is not None else None
 
 
 class GatewayTimeout(ServerError):
     """Exception mapping a ``504 Gateway Timeout`` response."""
 
-    code = http_client.GATEWAY_TIMEOUT
+    code = http.client.GATEWAY_TIMEOUT
 
 
 class DeadlineExceeded(GatewayTimeout):

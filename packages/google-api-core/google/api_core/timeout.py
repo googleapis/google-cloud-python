@@ -54,11 +54,9 @@ matches ``api_method(request, timeout=None, retry=None)``.
 from __future__ import unicode_literals
 
 import datetime
-
-import six
+import functools
 
 from google.api_core import datetime_helpers
-from google.api_core import general_helpers
 
 _DEFAULT_INITIAL_TIMEOUT = 5.0  # seconds
 _DEFAULT_MAXIMUM_TIMEOUT = 30.0  # seconds
@@ -68,7 +66,6 @@ _DEFAULT_TIMEOUT_MULTIPLIER = 2.0
 _DEFAULT_DEADLINE = None
 
 
-@six.python_2_unicode_compatible
 class ConstantTimeout(object):
     """A decorator that adds a constant timeout argument.
 
@@ -95,7 +92,7 @@ class ConstantTimeout(object):
             Callable: The wrapped function.
         """
 
-        @general_helpers.wraps(func)
+        @functools.wraps(func)
         def func_with_timeout(*args, **kwargs):
             """Wrapped function that adds timeout."""
             kwargs["timeout"] = self._timeout
@@ -140,7 +137,6 @@ def _exponential_timeout_generator(initial, maximum, multiplier, deadline):
         timeout = timeout * multiplier
 
 
-@six.python_2_unicode_compatible
 class ExponentialTimeout(object):
     """A decorator that adds an exponentially increasing timeout argument.
 
@@ -207,7 +203,7 @@ class ExponentialTimeout(object):
             self._initial, self._maximum, self._multiplier, self._deadline
         )
 
-        @general_helpers.wraps(func)
+        @functools.wraps(func)
         def func_with_timeout(*args, **kwargs):
             """Wrapped function that adds timeout."""
             kwargs["timeout"] = next(timeouts)

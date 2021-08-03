@@ -18,12 +18,10 @@ import calendar
 import datetime
 import re
 
-import pytz
-
 from google.protobuf import timestamp_pb2
 
 
-_UTC_EPOCH = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=pytz.utc)
+_UTC_EPOCH = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
 _RFC3339_MICROS = "%Y-%m-%dT%H:%M:%S.%fZ"
 _RFC3339_NO_FRACTION = "%Y-%m-%dT%H:%M:%S"
 # datetime.strptime cannot handle nanosecond precision:  parse w/ regex
@@ -83,9 +81,9 @@ def to_microseconds(value):
         int: Microseconds since the unix epoch.
     """
     if not value.tzinfo:
-        value = value.replace(tzinfo=pytz.utc)
+        value = value.replace(tzinfo=datetime.timezone.utc)
     # Regardless of what timezone is on the value, convert it to UTC.
-    value = value.astimezone(pytz.utc)
+    value = value.astimezone(datetime.timezone.utc)
     # Convert the datetime to a microsecond timestamp.
     return int(calendar.timegm(value.timetuple()) * 1e6) + value.microsecond
 
@@ -156,7 +154,7 @@ def from_rfc3339(value):
         nanos = int(fraction) * (10 ** scale)
         micros = nanos // 1000
 
-    return bare_seconds.replace(microsecond=micros, tzinfo=pytz.utc)
+    return bare_seconds.replace(microsecond=micros, tzinfo=datetime.timezone.utc)
 
 
 from_rfc3339_nanos = from_rfc3339  # from_rfc3339_nanos method was deprecated.
@@ -256,7 +254,7 @@ class DatetimeWithNanoseconds(datetime.datetime):
             bare.minute,
             bare.second,
             nanosecond=nanos,
-            tzinfo=pytz.UTC,
+            tzinfo=datetime.timezone.utc,
         )
 
     def timestamp_pb(self):
@@ -265,7 +263,11 @@ class DatetimeWithNanoseconds(datetime.datetime):
         Returns:
             (:class:`~google.protobuf.timestamp_pb2.Timestamp`): Timestamp message
         """
-        inst = self if self.tzinfo is not None else self.replace(tzinfo=pytz.UTC)
+        inst = (
+            self
+            if self.tzinfo is not None
+            else self.replace(tzinfo=datetime.timezone.utc)
+        )
         delta = inst - _UTC_EPOCH
         seconds = int(delta.total_seconds())
         nanos = self._nanosecond or self.microsecond * 1000
@@ -292,5 +294,5 @@ class DatetimeWithNanoseconds(datetime.datetime):
             bare.minute,
             bare.second,
             nanosecond=stamp.nanos,
-            tzinfo=pytz.UTC,
+            tzinfo=datetime.timezone.utc,
         )

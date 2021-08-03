@@ -12,22 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Helpers for general Python functionality."""
-
-import functools
-
-import six
-
-
-# functools.partial objects lack several attributes present on real function
-# objects. In Python 2 wraps fails on this so use a restricted set instead.
-_PARTIAL_VALID_ASSIGNMENTS = ("__doc__",)
-
-
-def wraps(wrapped):
-    """A functools.wraps helper that handles partial objects on Python 2."""
-    # https://github.com/google/pytype/issues/322
-    if isinstance(wrapped, functools.partial):  # pytype: disable=wrong-arg-types
-        return six.wraps(wrapped, assigned=_PARTIAL_VALID_ASSIGNMENTS)
-    else:
-        return six.wraps(wrapped)
+# This import for backward compatibiltiy only.
+from functools import wraps  # noqa: F401 pragma: NO COVER

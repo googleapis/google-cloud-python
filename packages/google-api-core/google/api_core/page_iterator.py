@@ -81,8 +81,6 @@ through it or using :func:`list`::
 
 import abc
 
-import six
-
 
 class Page(object):
     """Single page of results in an iterator.
@@ -127,17 +125,14 @@ class Page(object):
         """The :class:`Page` is an iterator of items."""
         return self
 
-    def next(self):
+    def __next__(self):
         """Get the next value in the page."""
-        item = six.next(self._item_iter)
+        item = next(self._item_iter)
         result = self._item_to_value(self._parent, item)
         # Since we've successfully got the next value from the
         # iterator, we update the number of remaining.
         self._remaining -= 1
         return result
-
-    # Alias needed for Python 2/3 support.
-    __next__ = next
 
 
 def _item_to_value_identity(iterator, item):
@@ -147,8 +142,7 @@ def _item_to_value_identity(iterator, item):
     return item
 
 
-@six.add_metaclass(abc.ABCMeta)
-class Iterator(object):
+class Iterator(object, metaclass=abc.ABCMeta):
     """A generic class for iterating through API list responses.
 
     Args:
@@ -234,9 +228,6 @@ class Iterator(object):
         if self.__active_iterator is None:
             self.__active_iterator = iter(self)
         return next(self.__active_iterator)
-
-    # Preserve Python 2 compatibility.
-    next = __next__
 
     def _page_iter(self, increment):
         """Generator of pages of API responses.
@@ -484,7 +475,7 @@ class _GAXIterator(Iterator):
                   there are no pages left.
         """
         try:
-            items = six.next(self._gax_page_iter)
+            items = next(self._gax_page_iter)
             page = Page(self, items, self.item_to_value)
             self.next_page_token = self._gax_page_iter.page_token or None
             return page

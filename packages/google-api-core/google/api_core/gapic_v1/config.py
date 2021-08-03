@@ -21,7 +21,6 @@ method to tell the client library how to deal with retries and timeouts.
 import collections
 
 import grpc
-import six
 
 from google.api_core import exceptions
 from google.api_core import retry
@@ -130,24 +129,20 @@ def parse_method_configs(interface_config, retry_impl=retry.Retry):
     # Grab all the retry codes
     retry_codes_map = {
         name: retry_codes
-        for name, retry_codes in six.iteritems(interface_config.get("retry_codes", {}))
+        for name, retry_codes in interface_config.get("retry_codes", {}).items()
     }
 
     # Grab all of the retry params
     retry_params_map = {
         name: retry_params
-        for name, retry_params in six.iteritems(
-            interface_config.get("retry_params", {})
-        )
+        for name, retry_params in interface_config.get("retry_params", {}).items()
     }
 
     # Iterate through all the API methods and create a flat MethodConfig
     # instance for each one.
     method_configs = {}
 
-    for method_name, method_params in six.iteritems(
-        interface_config.get("methods", {})
-    ):
+    for method_name, method_params in interface_config.get("methods", {}).items():
         retry_params_name = method_params.get("retry_params_name")
 
         if retry_params_name is not None:

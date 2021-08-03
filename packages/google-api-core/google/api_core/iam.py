@@ -52,13 +52,9 @@ Example usage:
 """
 
 import collections
+import collections.abc
 import operator
 import warnings
-
-try:
-    from collections import abc as collections_abc
-except ImportError:  # Python 2.7
-    import collections as collections_abc
 
 # Generic IAM roles
 
@@ -84,7 +80,7 @@ class InvalidOperationException(Exception):
     pass
 
 
-class Policy(collections_abc.MutableMapping):
+class Policy(collections.abc.MutableMapping):
     """IAM Policy
 
     Args:

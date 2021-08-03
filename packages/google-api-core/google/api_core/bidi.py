@@ -17,10 +17,9 @@
 import collections
 import datetime
 import logging
+import queue as queue_module
 import threading
 import time
-
-from six.moves import queue
 
 from google.api_core import exceptions
 
@@ -71,7 +70,7 @@ class _RequestQueueGenerator(object):
     CPU consumed by spinning is pretty minuscule.
 
     Args:
-        queue (queue.Queue): The request queue.
+        queue (queue_module.Queue): The request queue.
         period (float): The number of seconds to wait for items from the queue
             before checking if the RPC is cancelled. In practice, this
             determines the maximum amount of time the request consumption
@@ -108,7 +107,7 @@ class _RequestQueueGenerator(object):
         while True:
             try:
                 item = self._queue.get(timeout=self._period)
-            except queue.Empty:
+            except queue_module.Empty:
                 if not self._is_active():
                     _LOGGER.debug(
                         "Empty queue and inactive call, exiting request " "generator."
@@ -247,7 +246,7 @@ class BidiRpc(object):
         self._start_rpc = start_rpc
         self._initial_request = initial_request
         self._rpc_metadata = metadata
-        self._request_queue = queue.Queue()
+        self._request_queue = queue_module.Queue()
         self._request_generator = None
         self._is_active = False
         self._callbacks = []
@@ -645,6 +644,7 @@ class BackgroundConsumer(object):
                 # Keeping the lock throughout avoids that.
                 # In the future, we could use `Condition.wait_for` if we drop
                 # Python 2.7.
+                # See: https://github.com/googleapis/python-api-core/issues/211
                 with self._wake:
                     while self._paused:
                         _LOGGER.debug("paused, waiting for waking.")

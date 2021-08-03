@@ -15,13 +15,12 @@
 """Helpers for :mod:`grpc`."""
 
 import collections
+import functools
 
 import grpc
 import pkg_resources
-import six
 
 from google.api_core import exceptions
-from google.api_core import general_helpers
 import google.auth
 import google.auth.credentials
 import google.auth.transport.grpc
@@ -61,12 +60,12 @@ def _wrap_unary_errors(callable_):
     """Map errors for Unary-Unary and Stream-Unary gRPC callables."""
     _patch_callable_name(callable_)
 
-    @six.wraps(callable_)
+    @functools.wraps(callable_)
     def error_remapped_callable(*args, **kwargs):
         try:
             return callable_(*args, **kwargs)
         except grpc.RpcError as exc:
-            six.raise_from(exceptions.from_grpc_error(exc), exc)
+            raise exceptions.from_grpc_error(exc) from exc
 
     return error_remapped_callable
 
@@ -80,7 +79,7 @@ class _StreamingResponseIterator(grpc.Call):
         # to retrieve the first result, in order to fail, in order to trigger a retry.
         try:
             if prefetch_first_result:
-                self._stored_first_result = six.next(self._wrapped)
+                self._stored_first_result = next(self._wrapped)
         except TypeError:
             # It is possible the wrapped method isn't an iterable (a grpc.Call
             # for instance). If this happens don't store the first result.
@@ -93,7 +92,7 @@ class _StreamingResponseIterator(grpc.Call):
         """This iterator is also an iterable that returns itself."""
         return self
 
-    def next(self):
+    def __next__(self):
         """Get the next response from the stream.
 
         Returns:
@@ -104,13 +103,10 @@ class _StreamingResponseIterator(grpc.Call):
                 result = self._stored_first_result
                 del self._stored_first_result
                 return result
-            return six.next(self._wrapped)
+            return next(self._wrapped)
         except grpc.RpcError as exc:
             # If the stream has already returned data, we cannot recover here.
-            six.raise_from(exceptions.from_grpc_error(exc), exc)
-
-    # Alias needed for Python 2/3 support.
-    __next__ = next
+            raise exceptions.from_grpc_error(exc) from exc
 
     # grpc.Call & grpc.RpcContext interface
 
@@ -148,7 +144,7 @@ def _wrap_stream_errors(callable_):
     """
     _patch_callable_name(callable_)
 
-    @general_helpers.wraps(callable_)
+    @functools.wraps(callable_)
     def error_remapped_callable(*args, **kwargs):
         try:
             result = callable_(*args, **kwargs)
@@ -161,7 +157,7 @@ def _wrap_stream_errors(callable_):
                 result, prefetch_first_result=prefetch_first
             )
         except grpc.RpcError as exc:
-            six.raise_from(exceptions.from_grpc_error(exc), exc)
+            raise exceptions.from_grpc_error(exc) from exc
 
     return error_remapped_callable
 

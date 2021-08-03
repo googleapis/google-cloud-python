@@ -22,8 +22,15 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=100)
-s.move(templated_files, excludes=["noxfile.py", ".flake8", ".coveragerc", "setup.cfg"])
+excludes = [
+    "noxfile.py",  # pytype
+    "setup.cfg",  # pytype
+    ".flake8",  # flake8-import-order, layout
+    ".coveragerc",  # layout
+    "CONTRIBUTING.rst",  # no systests
+]
+templated_files = common.py_library(microgenerator=True, cov_level=100)
+s.move(templated_files, excludes=excludes)
 
 # Add pytype support
 s.replace(

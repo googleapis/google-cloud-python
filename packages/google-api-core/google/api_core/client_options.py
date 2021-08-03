@@ -101,7 +101,7 @@ def from_dict(options):
     """Construct a client options object from a mapping object.
 
     Args:
-        options (six.moves.collections_abc.Mapping): A mapping object with client options.
+        options (collections.abc.Mapping): A mapping object with client options.
             See the docstring for ClientOptions for details on valid arguments.
     """
 

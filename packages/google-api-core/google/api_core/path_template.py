@@ -28,8 +28,6 @@ from __future__ import unicode_literals
 import functools
 import re
 
-import six
-
 # Regular expression for extracting variable parts from a path template.
 # The variables can be expressed as:
 #
@@ -83,7 +81,7 @@ def _expand_variable_match(positional_vars, named_vars, match):
     name = match.group("name")
     if name is not None:
         try:
-            return six.text_type(named_vars[name])
+            return str(named_vars[name])
         except KeyError:
             raise ValueError(
                 "Named variable '{}' not specified and needed by template "
@@ -91,7 +89,7 @@ def _expand_variable_match(positional_vars, named_vars, match):
             )
     elif positional is not None:
         try:
-            return six.text_type(positional_vars.pop(0))
+            return str(positional_vars.pop(0))
         except IndexError:
             raise ValueError(
                 "Positional variable not specified and needed by template "

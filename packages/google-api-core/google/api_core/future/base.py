@@ -16,11 +16,8 @@
 
 import abc
 
-import six
 
-
-@six.add_metaclass(abc.ABCMeta)
-class Future(object):
+class Future(object, metaclass=abc.ABCMeta):
     # pylint: disable=missing-docstring
     # We inherit the interfaces here from concurrent.futures.
 

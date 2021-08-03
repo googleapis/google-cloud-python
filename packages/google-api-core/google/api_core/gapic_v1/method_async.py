@@ -17,7 +17,9 @@ This is used by gapic clients to provide common error mapping, retry, timeout,
 pagination, and long-running operations to gRPC methods.
 """
 
-from google.api_core import general_helpers, grpc_helpers_async
+import functools
+
+from google.api_core import grpc_helpers_async
 from google.api_core.gapic_v1 import client_info
 from google.api_core.gapic_v1.method import _GapicCallable
 from google.api_core.gapic_v1.method import DEFAULT  # noqa: F401
@@ -41,6 +43,6 @@ def wrap_method(
 
     metadata = [client_info.to_grpc_metadata()] if client_info is not None else None
 
-    return general_helpers.wraps(func)(
+    return functools.wraps(func)(
         _GapicCallable(func, default_retry, default_timeout, metadata=metadata)
     )
