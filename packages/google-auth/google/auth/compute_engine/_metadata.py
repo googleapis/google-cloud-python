@@ -95,7 +95,7 @@ def ping(request, timeout=_METADATA_DEFAULT_TIMEOUT, retry_count=3):
 
         except exceptions.TransportError as e:
             _LOGGER.warning(
-                "Compute Engine Metadata server unavailable on"
+                "Compute Engine Metadata server unavailable on "
                 "attempt %s of %s. Reason: %s",
                 retries + 1,
                 retry_count,
@@ -150,7 +150,7 @@ def get(
 
         except exceptions.TransportError as e:
             _LOGGER.warning(
-                "Compute Engine Metadata server unavailable on"
+                "Compute Engine Metadata server unavailable on "
                 "attempt %s of %s. Reason: %s",
                 retries + 1,
                 retry_count,
