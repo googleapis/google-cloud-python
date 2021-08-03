@@ -22,7 +22,7 @@ import setuptools  # type: ignore
 name = "google-cloud-dataproc-metastore"
 version = "0.3.1"
 description = "Dataproc Metastore API client library"
-release_status = "Development Status :: 4 - Beta"
+release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-dataproc-metastore"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
