@@ -1,7 +1,7 @@
 Python Client for Cloud TPU
 ===========================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Cloud TPU`_: Cloud Tensor Processing Units (TPUs) are Google's custom-developed application-specific 
 integrated circuits (ASICs) used to accelerate machine learning workloads. 
@@ -9,8 +9,8 @@ integrated circuits (ASICs) used to accelerate machine learning workloads.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-tpu.svg
    :target: https://pypi.org/project/google-cloud-tpu/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-tpu.svg
