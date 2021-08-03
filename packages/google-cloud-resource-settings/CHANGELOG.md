@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-resource-settings/compare/v0.3.2...v1.0.0) (2021-08-03)
+
+
+### Features
+
+* bump release level to production/stable ([#27](https://www.github.com/googleapis/python-resource-settings/issues/27)) ([ea55c97](https://www.github.com/googleapis/python-resource-settings/commit/ea55c97e88fc4222d0287d989c96f8f30426ce95))
+
 ### [0.3.2](https://www.github.com/googleapis/python-resource-settings/compare/v0.3.1...v0.3.2) (2021-07-29)
 
 
