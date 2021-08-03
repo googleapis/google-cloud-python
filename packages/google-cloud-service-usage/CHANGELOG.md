@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-service-usage/compare/v0.2.2...v1.0.0) (2021-08-03)
+
+
+### Features
+
+* bump release level to production/stable ([#28](https://www.github.com/googleapis/python-service-usage/issues/28)) ([6627d2d](https://www.github.com/googleapis/python-service-usage/commit/6627d2dddf686a6ecc355891989928ca33003f00))
+
 ### [0.2.2](https://www.github.com/googleapis/python-service-usage/compare/v0.2.1...v0.2.2) (2021-07-29)
 
 
