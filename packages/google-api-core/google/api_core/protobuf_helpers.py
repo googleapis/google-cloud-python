@@ -357,6 +357,13 @@ def _field_mask_helper(original, modified, current=""):
 
 
 def _get_path(current, name):
+    # gapic-generator-python appends underscores to field names
+    # that collide with python keywords.
+    # `_` is stripped away as it is not possible to
+    # natively define a field with a trailing underscore in protobuf.
+    # APIs will reject field masks if fields have trailing underscores.
+    # See https://github.com/googleapis/python-api-core/issues/227
+    name = name.rstrip("_")
     if not current:
         return name
     return "%s.%s" % (current, name)

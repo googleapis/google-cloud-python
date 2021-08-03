@@ -98,9 +98,10 @@ def default(session):
     ]
     pytest_args.extend(session.posargs)
 
-    # Inject AsyncIO content, if version >= 3.6.
+    # Inject AsyncIO content and proto-plus, if version >= 3.6.
+    # proto-plus is needed for a field mask test in test_protobuf_helpers.py
     if _greater_or_equal_than_36(session.python):
-        session.install("asyncmock", "pytest-asyncio")
+        session.install("asyncmock", "pytest-asyncio", "proto-plus")
 
         pytest_args.append("--cov=tests.asyncio")
         pytest_args.append(os.path.join("tests", "asyncio"))

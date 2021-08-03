@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
+
 import pytest
 
 from google.api import http_pb2
@@ -471,4 +473,46 @@ def test_field_mask_different_level_diffs():
     assert sorted(protobuf_helpers.field_mask(original, modified).paths) == [
         "alpha",
         "red",
+    ]
+
+
+@pytest.mark.skipif(
+    sys.version_info.major == 2,
+    reason="Field names with trailing underscores can only be created"
+    "through proto-plus, which is Python 3 only.",
+)
+def test_field_mask_ignore_trailing_underscore():
+    import proto
+
+    class Foo(proto.Message):
+        type_ = proto.Field(proto.STRING, number=1)
+        input_config = proto.Field(proto.STRING, number=2)
+
+    modified = Foo(type_="bar", input_config="baz")
+
+    assert sorted(protobuf_helpers.field_mask(None, Foo.pb(modified)).paths) == [
+        "input_config",
+        "type",
+    ]
+
+
+@pytest.mark.skipif(
+    sys.version_info.major == 2,
+    reason="Field names with trailing underscores can only be created"
+    "through proto-plus, which is Python 3 only.",
+)
+def test_field_mask_ignore_trailing_underscore_with_nesting():
+    import proto
+
+    class Bar(proto.Message):
+        class Baz(proto.Message):
+            input_config = proto.Field(proto.STRING, number=1)
+
+        type_ = proto.Field(Baz, number=1)
+
+    modified = Bar()
+    modified.type_.input_config = "foo"
+
+    assert sorted(protobuf_helpers.field_mask(None, Bar.pb(modified)).paths) == [
+        "type.input_config",
     ]
