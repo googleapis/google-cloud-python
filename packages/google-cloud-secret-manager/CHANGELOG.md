@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.7.0](https://www.github.com/googleapis/python-secret-manager/compare/v2.6.0...v2.7.0) (2021-08-03)
+
+
+### Features
+
+* add filter to customize the output of ListSecrets/ListSecretVersions calls ([#161](https://www.github.com/googleapis/python-secret-manager/issues/161)) ([c09615c](https://www.github.com/googleapis/python-secret-manager/commit/c09615c328782f0a15201cb4f2c7387b0a6ce51d))
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#153](https://www.github.com/googleapis/python-secret-manager/issues/153)) ([1e8a4aa](https://www.github.com/googleapis/python-secret-manager/commit/1e8a4aae06badda947717217c224366963664bdc))
+* enable self signed jwt for grpc ([#158](https://www.github.com/googleapis/python-secret-manager/issues/158)) ([9ebe2b3](https://www.github.com/googleapis/python-secret-manager/commit/9ebe2b3a683de1d710ec3e91b444eb71b2ef0f6b))
+
+
+### Documentation
+
+* **secretmanager:** add sample code for receiving a Pub/Sub message ([#138](https://www.github.com/googleapis/python-secret-manager/issues/138)) ([51f743d](https://www.github.com/googleapis/python-secret-manager/commit/51f743dfe2de41ef0378fff08c92c506dd11fc2b))
+
+
+### Miscellaneous Chores
+
+* release as 2.6.1 ([#159](https://www.github.com/googleapis/python-secret-manager/issues/159)) ([b686310](https://www.github.com/googleapis/python-secret-manager/commit/b686310643ec5fbd090a5d58d8a7694bdc6eebb9))
+* release as 2.7.0 ([#163](https://www.github.com/googleapis/python-secret-manager/issues/163)) ([b1c148b](https://www.github.com/googleapis/python-secret-manager/commit/b1c148bba25374bd9a62a6b823bf10ffd6215e9e))
+
 ## [2.6.0](https://www.github.com/googleapis/python-secret-manager/compare/v2.5.0...v2.6.0) (2021-07-09)
 
 
