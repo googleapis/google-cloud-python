@@ -1,7 +1,7 @@
 Python Client for Virtual Private Cloud
 =======================================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Google Cloud Virtual Private Cloud (VPC)`_: provides networking functionality to Compute Engine 
 virtual machine (VM) instances, Google Kubernetes Engine (GKE) containers, and the App Engine 
@@ -11,8 +11,8 @@ and flexible.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-vpc-access.svg
    :target: https://pypi.org/project/google-cloud-vpc-access/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vpc-access.svg
