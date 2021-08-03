@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-dataproc-metastore/compare/v0.3.1...v1.0.0) (2021-08-03)
+
+
+### Features
+
+* bump release level to production/stable ([#59](https://www.github.com/googleapis/python-dataproc-metastore/issues/59)) ([434ca20](https://www.github.com/googleapis/python-dataproc-metastore/commit/434ca203c9ffad48f96d6a8c45de81a5ec74bd2b))
+
 ### [0.3.1](https://www.github.com/googleapis/python-dataproc-metastore/compare/v0.3.0...v0.3.1) (2021-07-26)
 
 
