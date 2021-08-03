@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-vpc-access/compare/v0.2.1...v1.0.0) (2021-08-03)
+
+
+### Features
+
+* bump release level to production/stable ([#29](https://www.github.com/googleapis/python-vpc-access/issues/29)) ([6e8f2b1](https://www.github.com/googleapis/python-vpc-access/commit/6e8f2b1a5abd697da122854f8fee4c8d3cb00383))
+
 ### [0.2.1](https://www.github.com/googleapis/python-vpc-access/compare/v0.2.0...v0.2.1) (2021-07-26)
 
 
