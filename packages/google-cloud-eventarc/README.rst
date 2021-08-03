@@ -1,6 +1,6 @@
 Python Client for Eventarc
 ==========================
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Eventarc`_: lets you asynchronously deliver events from Google services, SaaS, and your own apps
 using loosely coupled services that react to state changes. Eventarc requires no infrastructure 
@@ -9,8 +9,8 @@ management — you can optimize productivity and costs while building a modern, 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-eventarc.svg
    :target: https://pypi.org/project/google-cloud-eventarc/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-eventarc.svg
