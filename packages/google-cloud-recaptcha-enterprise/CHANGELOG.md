@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.4.2...v1.0.0) (2021-08-03)
+
+
+### Features
+
+* bump release level to production/stable ([#105](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/105)) ([fab3e48](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/fab3e48b6ddc31bed65e9bedfd9f06aa33fd2c02))
+
 ### [0.4.2](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.4.1...v0.4.2) (2021-07-28)
 
 
