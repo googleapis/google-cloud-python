@@ -1,15 +1,15 @@
 Python Client for Network Management API
 ========================================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Network Management API`_
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-network-management.svg
    :target: https://pypi.org/project/google-cloud-network-management/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-network-management.svg
