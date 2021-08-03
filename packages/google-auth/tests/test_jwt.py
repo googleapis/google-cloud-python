@@ -258,9 +258,9 @@ def test_decode_no_key_id(token_factory):
 
 
 def test_decode_unknown_alg():
-    headers = json.dumps({u"kid": u"1", u"alg": u"fakealg"})
+    headers = json.dumps({"kid": "1", "alg": "fakealg"})
     token = b".".join(
-        map(lambda seg: base64.b64encode(seg.encode("utf-8")), [headers, u"{}", u"sig"])
+        map(lambda seg: base64.b64encode(seg.encode("utf-8")), [headers, "{}", "sig"])
     )
 
     with pytest.raises(ValueError) as excinfo:
@@ -270,9 +270,9 @@ def test_decode_unknown_alg():
 
 def test_decode_missing_crytography_alg(monkeypatch):
     monkeypatch.delitem(jwt._ALGORITHM_TO_VERIFIER_CLASS, "ES256")
-    headers = json.dumps({u"kid": u"1", u"alg": u"ES256"})
+    headers = json.dumps({"kid": "1", "alg": "ES256"})
     token = b".".join(
-        map(lambda seg: base64.b64encode(seg.encode("utf-8")), [headers, u"{}", u"sig"])
+        map(lambda seg: base64.b64encode(seg.encode("utf-8")), [headers, "{}", "sig"])
     )
 
     with pytest.raises(ValueError) as excinfo:

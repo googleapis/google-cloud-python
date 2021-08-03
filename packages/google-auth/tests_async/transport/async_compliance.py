@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import http.client
 import time
 
 import flask
 import pytest
 from pytest_localserver.http import WSGIServer
-from six.moves import http_client
 
 from google.auth import exceptions
 from tests.transport import compliance
@@ -41,11 +41,11 @@ class RequestResponseTests(object):
         def index():
             header_value = flask.request.headers.get("x-test-header", "value")
             headers = {"X-Test-Header": header_value}
-            return "Basic Content", http_client.OK, headers
+            return "Basic Content", http.client.OK, headers
 
         @app.route("/server_error")
         def server_error():
-            return "Error", http_client.INTERNAL_SERVER_ERROR
+            return "Error", http.client.INTERNAL_SERVER_ERROR
 
         @app.route("/wait")
         def wait():
@@ -63,7 +63,7 @@ class RequestResponseTests(object):
     async def test_request_basic(self, server):
         request = self.make_request()
         response = await request(url=server.url + "/basic", method="GET")
-        assert response.status == http_client.OK
+        assert response.status == http.client.OK
         assert response.headers["x-test-header"] == "value"
 
         # Use 13 as this is the length of the data written into the stream.
@@ -75,7 +75,7 @@ class RequestResponseTests(object):
     async def test_request_basic_with_http(self, server):
         request = self.make_with_parameter_request()
         response = await request(url=server.url + "/basic", method="GET")
-        assert response.status == http_client.OK
+        assert response.status == http.client.OK
         assert response.headers["x-test-header"] == "value"
 
         # Use 13 as this is the length of the data written into the stream.
@@ -88,7 +88,7 @@ class RequestResponseTests(object):
         request = self.make_request()
         response = await request(url=server.url + "/basic", method="GET", timeout=2)
 
-        assert response.status == http_client.OK
+        assert response.status == http.client.OK
         assert response.headers["x-test-header"] == "value"
 
         data = await response.data.read(13)
@@ -110,7 +110,7 @@ class RequestResponseTests(object):
             headers={"x-test-header": "hello world"},
         )
 
-        assert response.status == http_client.OK
+        assert response.status == http.client.OK
         assert response.headers["x-test-header"] == "hello world"
 
         data = await response.data.read(13)
@@ -121,7 +121,7 @@ class RequestResponseTests(object):
         request = self.make_request()
 
         response = await request(url=server.url + "/server_error", method="GET")
-        assert response.status == http_client.INTERNAL_SERVER_ERROR
+        assert response.status == http.client.INTERNAL_SERVER_ERROR
         data = await response.data.read(5)
         assert data == b"Error"
 

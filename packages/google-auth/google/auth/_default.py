@@ -23,8 +23,6 @@ import logging
 import os
 import warnings
 
-import six
-
 from google.auth import environment_vars
 from google.auth import exceptions
 import google.auth.transport._http_client
@@ -115,7 +113,7 @@ def load_credentials_from_file(
             new_exc = exceptions.DefaultCredentialsError(
                 "File {} is not a valid json file.".format(filename), caught_exc
             )
-            six.raise_from(new_exc, caught_exc)
+            raise new_exc from caught_exc
 
     # The type key should indicate that the file is either a service account
     # credentials file or an authorized user credentials file.
@@ -131,7 +129,7 @@ def load_credentials_from_file(
         except ValueError as caught_exc:
             msg = "Failed to load authorized user credentials from {}".format(filename)
             new_exc = exceptions.DefaultCredentialsError(msg, caught_exc)
-            six.raise_from(new_exc, caught_exc)
+            raise new_exc from caught_exc
         if quota_project_id:
             credentials = credentials.with_quota_project(quota_project_id)
         if not credentials.quota_project_id:
@@ -148,7 +146,7 @@ def load_credentials_from_file(
         except ValueError as caught_exc:
             msg = "Failed to load service account credentials from {}".format(filename)
             new_exc = exceptions.DefaultCredentialsError(msg, caught_exc)
-            six.raise_from(new_exc, caught_exc)
+            raise new_exc from caught_exc
         if quota_project_id:
             credentials = credentials.with_quota_project(quota_project_id)
         return credentials, info.get("project_id")

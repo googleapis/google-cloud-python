@@ -39,13 +39,12 @@ via the GCP STS endpoint.
 
 import hashlib
 import hmac
+import http.client
 import io
 import json
 import os
 import re
-
-from six.moves import http_client
-from six.moves import urllib
+import urllib
 
 from google.auth import _helpers
 from google.auth import environment_vars
@@ -627,7 +626,7 @@ class Credentials(external_account.Credentials):
             else response.data
         )
 
-        if response.status != http_client.OK:
+        if response.status != http.client.OK:
             raise exceptions.RefreshError(
                 "Unable to retrieve AWS security credentials", response_body
             )
@@ -666,7 +665,7 @@ class Credentials(external_account.Credentials):
             else response.data
         )
 
-        if response.status != http_client.OK:
+        if response.status != http.client.OK:
             raise exceptions.RefreshError(
                 "Unable to retrieve AWS role name", response_body
             )

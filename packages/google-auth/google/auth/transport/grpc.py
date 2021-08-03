@@ -19,8 +19,6 @@ from __future__ import absolute_import
 import logging
 import os
 
-import six
-
 from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
@@ -29,13 +27,11 @@ from google.oauth2 import service_account
 try:
     import grpc
 except ImportError as caught_exc:  # pragma: NO COVER
-    six.raise_from(
-        ImportError(
-            "gRPC is not installed, please install the grpcio package "
-            "to use the gRPC transport."
-        ),
-        caught_exc,
+    new_exc = ImportError(
+        "gRPC is not installed, please install the grpcio package "
+        "to use the gRPC transport."
     )
+    raise new_exc from caught_exc
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -88,7 +84,7 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
             self._request, context.method_name, context.service_url, headers
         )
 
-        return list(six.iteritems(headers))
+        return list(headers.items())
 
     def __call__(self, context, callback):
         """Passes authorization metadata into the given callback.
@@ -337,7 +333,7 @@ class SslCredentials:
                 )
             except exceptions.ClientCertError as caught_exc:
                 new_exc = exceptions.MutualTLSChannelError(caught_exc)
-                six.raise_from(new_exc, caught_exc)
+                raise new_exc from caught_exc
         else:
             self._ssl_credentials = grpc.ssl_channel_credentials()
 

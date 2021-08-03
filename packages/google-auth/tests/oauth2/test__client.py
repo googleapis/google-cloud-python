@@ -13,14 +13,13 @@
 # limitations under the License.
 
 import datetime
+import http.client
 import json
 import os
+import urllib
 
 import mock
 import pytest
-import six
-from six.moves import http_client
-from six.moves import urllib
 
 from google.auth import _helpers
 from google.auth import crypt
@@ -75,7 +74,7 @@ def test__parse_expiry_none():
     assert _client._parse_expiry({}) is None
 
 
-def make_request(response_data, status=http_client.OK):
+def make_request(response_data, status=http.client.OK):
     response = mock.create_autospec(transport.Response, instance=True)
     response.status = status
     response.data = json.dumps(response_data).encode("utf-8")
@@ -130,7 +129,7 @@ def test__token_endpoint_request_use_json():
 
 
 def test__token_endpoint_request_error():
-    request = make_request({}, status=http_client.BAD_REQUEST)
+    request = make_request({}, status=http.client.BAD_REQUEST)
 
     with pytest.raises(exceptions.RefreshError):
         _client._token_endpoint_request(request, "http://example.com", {})
@@ -138,7 +137,7 @@ def test__token_endpoint_request_error():
 
 def test__token_endpoint_request_internal_failure_error():
     request = make_request(
-        {"error_description": "internal_failure"}, status=http_client.BAD_REQUEST
+        {"error_description": "internal_failure"}, status=http.client.BAD_REQUEST
     )
 
     with pytest.raises(exceptions.RefreshError):
@@ -147,7 +146,7 @@ def test__token_endpoint_request_internal_failure_error():
         )
 
     request = make_request(
-        {"error": "internal_failure"}, status=http_client.BAD_REQUEST
+        {"error": "internal_failure"}, status=http.client.BAD_REQUEST
     )
 
     with pytest.raises(exceptions.RefreshError):
@@ -160,7 +159,7 @@ def verify_request_params(request, params):
     request_body = request.call_args[1]["body"].decode("utf-8")
     request_params = urllib.parse.parse_qs(request_body)
 
-    for key, value in six.iteritems(params):
+    for key, value in params.items():
         assert request_params[key][0] == value
 
 

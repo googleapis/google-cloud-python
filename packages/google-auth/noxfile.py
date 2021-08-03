@@ -58,7 +58,7 @@ BLACK_PATHS = [
 @nox.session(python="3.7")
 def lint(session):
     session.install("flake8", "flake8-import-order", "docutils", BLACK_VERSION)
-    session.install(".")
+    session.install("-e", ".")
     session.run("black", "--check", *BLACK_PATHS)
     session.run(
         "flake8",
@@ -94,7 +94,7 @@ def unit(session):
     add_constraints = ["-c", constraints_path]
     session.install(*(TEST_DEPENDENCIES + add_constraints))
     session.install(*(ASYNC_DEPENDENCIES + add_constraints))
-    session.install(".", *add_constraints)
+    session.install("-e", ".", *add_constraints)
     session.run(
         "pytest",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
@@ -107,25 +107,11 @@ def unit(session):
     )
 
 
-@nox.session(python=["2.7"])
-def unit_prev_versions(session):
-    session.install(".")
-    session.install(*TEST_DEPENDENCIES)
-    session.run(
-        "pytest",
-        f"--junitxml=unit_{session.python}_sponge_log.xml",
-        "--cov=google.auth",
-        "--cov=google.oauth2",
-        "--cov=tests",
-        "tests",
-    )
-
-
 @nox.session(python="3.7")
 def cover(session):
     session.install(*TEST_DEPENDENCIES)
     session.install(*(ASYNC_DEPENDENCIES))
-    session.install(".")
+    session.install("-e", ".")
     session.run(
         "pytest",
         "--cov=google.auth",
@@ -144,7 +130,7 @@ def docgen(session):
     session.env["SPHINX_APIDOC_OPTIONS"] = "members,inherited-members,show-inheritance"
     session.install(*TEST_DEPENDENCIES)
     session.install("sphinx")
-    session.install(".")
+    session.install("-e", ".")
     session.run("rm", "-r", "docs/reference")
     session.run(
         "sphinx-apidoc",
@@ -184,7 +170,7 @@ def docs(session):
 def pypy(session):
     session.install(*TEST_DEPENDENCIES)
     session.install(*ASYNC_DEPENDENCIES)
-    session.install(".")
+    session.install("-e", ".")
     session.run(
         "pytest",
         f"--junitxml=unit_{session.python}_sponge_log.xml",

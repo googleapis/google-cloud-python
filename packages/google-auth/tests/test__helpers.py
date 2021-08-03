@@ -13,9 +13,9 @@
 # limitations under the License.
 
 import datetime
+import urllib
 
 import pytest
-from six.moves import urllib
 
 from google.auth import _helpers
 
@@ -65,8 +65,8 @@ def test_to_bytes_with_bytes():
     assert _helpers.to_bytes(value) == value
 
 
-def test_to_bytes_with_unicode():
-    value = u"string-val"
+def test_to_bytes_with_text():
+    value = "string-val"
     encoded_value = b"string-val"
     assert _helpers.to_bytes(value) == encoded_value
 
@@ -76,14 +76,14 @@ def test_to_bytes_with_nonstring_type():
         _helpers.to_bytes(object())
 
 
-def test_from_bytes_with_unicode():
-    value = u"bytes-val"
+def test_from_bytes_with_text():
+    value = "bytes-val"
     assert _helpers.from_bytes(value) == value
 
 
 def test_from_bytes_with_bytes():
     value = b"string-val"
-    decoded_value = u"string-val"
+    decoded_value = "string-val"
     assert _helpers.from_bytes(value) == decoded_value
 
 

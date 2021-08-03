@@ -35,8 +35,6 @@ from datetime import datetime
 import io
 import json
 
-import six
-
 from google.auth import _cloud_sdk
 from google.auth import _helpers
 from google.auth import credentials
@@ -336,7 +334,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             ValueError: If the info is not in the expected format.
         """
         keys_needed = set(("refresh_token", "client_id", "client_secret"))
-        missing = keys_needed.difference(six.iterkeys(info))
+        missing = keys_needed.difference(info)
 
         if missing:
             raise ValueError(

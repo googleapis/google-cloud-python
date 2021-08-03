@@ -34,8 +34,6 @@ Those steps are:
 
 import sys
 
-from six.moves import range
-
 from google.auth import exceptions
 from google.oauth2 import _client
 from google.oauth2 import _client_async

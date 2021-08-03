@@ -50,7 +50,7 @@ with open(SERVICE_ACCOUNT_JSON_FILE, "r") as fh:
 
 
 class TestES256Verifier(object):
-    def test_verify_success(self):
+    def test_verify_bytes_success(self):
         to_sign = b"foo"
         signer = es256.ES256Signer.from_string(PRIVATE_KEY_BYTES)
         actual_signature = signer.sign(to_sign)
@@ -58,8 +58,8 @@ class TestES256Verifier(object):
         verifier = es256.ES256Verifier.from_string(PUBLIC_KEY_BYTES)
         assert verifier.verify(to_sign, actual_signature)
 
-    def test_verify_unicode_success(self):
-        to_sign = u"foo"
+    def test_verify_text_success(self):
+        to_sign = "foo"
         signer = es256.ES256Signer.from_string(PRIVATE_KEY_BYTES)
         actual_signature = signer.sign(to_sign)
 

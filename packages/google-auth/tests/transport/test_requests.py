@@ -14,6 +14,7 @@
 
 import datetime
 import functools
+import http.client
 import os
 import sys
 
@@ -23,7 +24,6 @@ import OpenSSL
 import pytest
 import requests
 import requests.adapters
-from six.moves import http_client
 
 from google.auth import environment_vars
 from google.auth import exceptions
@@ -188,7 +188,7 @@ class TestMutualTlsAdapter(object):
             )
 
 
-def make_response(status=http_client.OK, data=None):
+def make_response(status=http.client.OK, data=None):
     response = requests.Response()
     response.status_code = status
     response._content = data
@@ -249,10 +249,10 @@ class TestAuthorizedSession(object):
 
     def test_request_refresh(self):
         credentials = mock.Mock(wraps=CredentialsStub())
-        final_response = make_response(status=http_client.OK)
+        final_response = make_response(status=http.client.OK)
         # First request will 401, second request will succeed.
         adapter = AdapterStub(
-            [make_response(status=http_client.UNAUTHORIZED), final_response]
+            [make_response(status=http.client.UNAUTHORIZED), final_response]
         )
 
         authed_session = google.auth.transport.requests.AuthorizedSession(
@@ -282,7 +282,7 @@ class TestAuthorizedSession(object):
             wraps=TimeTickCredentialsStub(time_tick=tick_one_second)
         )
         adapter = TimeTickAdapterStub(
-            time_tick=tick_one_second, responses=[make_response(status=http_client.OK)]
+            time_tick=tick_one_second, responses=[make_response(status=http.client.OK)]
         )
 
         authed_session = google.auth.transport.requests.AuthorizedSession(credentials)
@@ -304,8 +304,8 @@ class TestAuthorizedSession(object):
         adapter = TimeTickAdapterStub(
             time_tick=tick_one_second,
             responses=[
-                make_response(status=http_client.UNAUTHORIZED),
-                make_response(status=http_client.OK),
+                make_response(status=http.client.UNAUTHORIZED),
+                make_response(status=http.client.OK),
             ],
         )
 
@@ -328,8 +328,8 @@ class TestAuthorizedSession(object):
         adapter = TimeTickAdapterStub(
             time_tick=tick_one_second,
             responses=[
-                make_response(status=http_client.UNAUTHORIZED),
-                make_response(status=http_client.OK),
+                make_response(status=http.client.UNAUTHORIZED),
+                make_response(status=http.client.OK),
             ],
         )
 
@@ -355,8 +355,8 @@ class TestAuthorizedSession(object):
         adapter = TimeTickAdapterStub(
             time_tick=tick_one_second,
             responses=[
-                make_response(status=http_client.UNAUTHORIZED),
-                make_response(status=http_client.OK),
+                make_response(status=http.client.UNAUTHORIZED),
+                make_response(status=http.client.OK),
             ],
         )
 

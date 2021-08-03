@@ -40,18 +40,13 @@ You can also skip verification::
 
 """
 
-try:
-    from collections.abc import Mapping
-# Python 2.7 compatibility
-except ImportError:  # pragma: NO COVER
-    from collections import Mapping
+from collections.abc import Mapping
 import copy
 import datetime
 import json
+import urllib
 
 import cachetools
-import six
-from six.moves import urllib
 
 from google.auth import _helpers
 from google.auth import _service_account_info
@@ -123,7 +118,7 @@ def _decode_jwt_segment(encoded_section):
         return json.loads(section_bytes.decode("utf-8"))
     except ValueError as caught_exc:
         new_exc = ValueError("Can't parse segment: {0}".format(section_bytes))
-        six.raise_from(new_exc, caught_exc)
+        raise new_exc from caught_exc
 
 
 def _unverified_decode(token):
@@ -241,19 +236,16 @@ def decode(token, certs=None, verify=True, audience=None):
 
     try:
         verifier_cls = _ALGORITHM_TO_VERIFIER_CLASS[key_alg]
-    except KeyError as exc:
+    except KeyError as caught_exc:
         if key_alg in _CRYPTOGRAPHY_BASED_ALGORITHMS:
-            six.raise_from(
-                ValueError(
-                    "The key algorithm {} requires the cryptography package "
-                    "to be installed.".format(key_alg)
-                ),
-                exc,
+            msg = (
+                "The key algorithm {} requires the cryptography package "
+                "to be installed."
             )
         else:
-            six.raise_from(
-                ValueError("Unsupported signature algorithm {}".format(key_alg)), exc
-            )
+            msg = "Unsupported signature algorithm {}"
+        new_exc = ValueError(msg.format(key_alg))
+        raise new_exc from caught_exc
 
     # If certs is specified as a dictionary of key IDs to certificates, then
     # use the certificate identified by the key ID in the token header.

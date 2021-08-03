@@ -13,13 +13,13 @@
 # limitations under the License.
 
 import datetime
+import http.client
+import importlib
 import json
 import os
 
 import mock
 import pytest
-from six.moves import http_client
-from six.moves import reload_module
 
 from google.auth import _helpers
 from google.auth import environment_vars
@@ -30,7 +30,7 @@ from google.auth.compute_engine import _metadata
 PATH = "instance/service-accounts/default"
 
 
-def make_request(data, status=http_client.OK, headers=None, retry=False):
+def make_request(data, status=http.client.OK, headers=None, retry=False):
     response = mock.create_autospec(transport.Response, instance=True)
     response.status = status
     response.data = _helpers.to_bytes(data)
@@ -90,13 +90,13 @@ def test_ping_success_custom_root():
 
     fake_ip = "1.2.3.4"
     os.environ[environment_vars.GCE_METADATA_IP] = fake_ip
-    reload_module(_metadata)
+    importlib.reload(_metadata)
 
     try:
         assert _metadata.ping(request)
     finally:
         del os.environ[environment_vars.GCE_METADATA_IP]
-        reload_module(_metadata)
+        importlib.reload(_metadata)
 
     request.assert_called_once_with(
         method="GET",
@@ -203,13 +203,13 @@ def test_get_success_custom_root_new_variable():
 
     fake_root = "another.metadata.service"
     os.environ[environment_vars.GCE_METADATA_HOST] = fake_root
-    reload_module(_metadata)
+    importlib.reload(_metadata)
 
     try:
         _metadata.get(request, PATH)
     finally:
         del os.environ[environment_vars.GCE_METADATA_HOST]
-        reload_module(_metadata)
+        importlib.reload(_metadata)
 
     request.assert_called_once_with(
         method="GET",
@@ -223,13 +223,13 @@ def test_get_success_custom_root_old_variable():
 
     fake_root = "another.metadata.service"
     os.environ[environment_vars.GCE_METADATA_ROOT] = fake_root
-    reload_module(_metadata)
+    importlib.reload(_metadata)
 
     try:
         _metadata.get(request, PATH)
     finally:
         del os.environ[environment_vars.GCE_METADATA_ROOT]
-        reload_module(_metadata)
+        importlib.reload(_metadata)
 
     request.assert_called_once_with(
         method="GET",
@@ -239,7 +239,7 @@ def test_get_success_custom_root_old_variable():
 
 
 def test_get_failure():
-    request = make_request("Metadata error", status=http_client.NOT_FOUND)
+    request = make_request("Metadata error", status=http.client.NOT_FOUND)
 
     with pytest.raises(exceptions.TransportError) as excinfo:
         _metadata.get(request, PATH)

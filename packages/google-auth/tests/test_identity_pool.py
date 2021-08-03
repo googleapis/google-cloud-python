@@ -13,13 +13,13 @@
 # limitations under the License.
 
 import datetime
+import http.client
 import json
 import os
+import urllib
 
 import mock
 import pytest
-from six.moves import http_client
-from six.moves import urllib
 
 from google.auth import _helpers
 from google.auth import exceptions
@@ -87,7 +87,7 @@ class TestCredentials(object):
 
     @classmethod
     def make_mock_request(
-        cls, token_status=http_client.OK, token_data=None, *extra_requests
+        cls, token_status=http.client.OK, token_data=None, *extra_requests
     ):
         responses = []
         responses.append(cls.make_mock_response(token_status, token_data))
@@ -208,14 +208,14 @@ class TestCredentials(object):
         # service account impersonation request.
         requests = []
         if credential_data:
-            requests.append((http_client.OK, credential_data))
+            requests.append((http.client.OK, credential_data))
 
         token_request_index = len(requests)
-        requests.append((http_client.OK, token_response))
+        requests.append((http.client.OK, token_response))
 
         if service_account_impersonation_url:
             impersonation_request_index = len(requests)
-            requests.append((http_client.OK, impersonation_response))
+            requests.append((http.client.OK, impersonation_response))
 
         request = cls.make_mock_request(*[el for req in requests for el in req])
 

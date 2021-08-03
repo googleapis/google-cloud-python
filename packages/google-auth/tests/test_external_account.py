@@ -13,12 +13,12 @@
 # limitations under the License.
 
 import datetime
+import http.client
 import json
+import urllib
 
 import mock
 import pytest
-from six.moves import http_client
-from six.moves import urllib
 
 from google.auth import _helpers
 from google.auth import exceptions
@@ -149,7 +149,7 @@ class TestCredentials(object):
     @classmethod
     def make_mock_request(
         cls,
-        status=http_client.OK,
+        status=http.client.OK,
         data=None,
         impersonation_status=None,
         impersonation_data=None,
@@ -474,7 +474,7 @@ class TestCredentials(object):
             "subject_token": "subject_token_0",
             "subject_token_type": self.SUBJECT_TOKEN_TYPE,
         }
-        request = self.make_mock_request(status=http_client.OK, data=response)
+        request = self.make_mock_request(status=http.client.OK, data=response)
         credentials = self.make_credentials()
 
         credentials.refresh(request)
@@ -519,9 +519,9 @@ class TestCredentials(object):
         # Initialize mock request to handle token exchange and service account
         # impersonation request.
         request = self.make_mock_request(
-            status=http_client.OK,
+            status=http.client.OK,
             data=token_response,
-            impersonation_status=http_client.OK,
+            impersonation_status=http.client.OK,
             impersonation_data=impersonation_response,
         )
         # Initialize credentials with service account impersonation.
@@ -562,7 +562,7 @@ class TestCredentials(object):
             "subject_token_type": self.SUBJECT_TOKEN_TYPE,
         }
         request = self.make_mock_request(
-            status=http_client.OK, data=self.SUCCESS_RESPONSE
+            status=http.client.OK, data=self.SUCCESS_RESPONSE
         )
         credentials = self.make_credentials(
             scopes=["scope1", "scope2"],
@@ -590,7 +590,7 @@ class TestCredentials(object):
             "subject_token_type": self.SUBJECT_TOKEN_TYPE,
         }
         request = self.make_mock_request(
-            status=http_client.OK, data=self.SUCCESS_RESPONSE
+            status=http.client.OK, data=self.SUCCESS_RESPONSE
         )
         credentials = self.make_credentials(
             scopes=None,
@@ -608,7 +608,7 @@ class TestCredentials(object):
 
     def test_refresh_without_client_auth_error(self):
         request = self.make_mock_request(
-            status=http_client.BAD_REQUEST, data=self.ERROR_RESPONSE
+            status=http.client.BAD_REQUEST, data=self.ERROR_RESPONSE
         )
         credentials = self.make_credentials()
 
@@ -623,9 +623,9 @@ class TestCredentials(object):
 
     def test_refresh_impersonation_without_client_auth_error(self):
         request = self.make_mock_request(
-            status=http_client.OK,
+            status=http.client.OK,
             data=self.SUCCESS_RESPONSE,
-            impersonation_status=http_client.BAD_REQUEST,
+            impersonation_status=http.client.BAD_REQUEST,
             impersonation_data=self.IMPERSONATION_ERROR_RESPONSE,
         )
         credentials = self.make_credentials(
@@ -653,7 +653,7 @@ class TestCredentials(object):
             "subject_token_type": self.SUBJECT_TOKEN_TYPE,
         }
         request = self.make_mock_request(
-            status=http_client.OK, data=self.SUCCESS_RESPONSE
+            status=http.client.OK, data=self.SUCCESS_RESPONSE
         )
         credentials = self.make_credentials(
             client_id=CLIENT_ID, client_secret=CLIENT_SECRET
@@ -703,9 +703,9 @@ class TestCredentials(object):
         # Initialize mock request to handle token exchange and service account
         # impersonation request.
         request = self.make_mock_request(
-            status=http_client.OK,
+            status=http.client.OK,
             data=token_response,
-            impersonation_status=http_client.OK,
+            impersonation_status=http.client.OK,
             impersonation_data=impersonation_response,
         )
         # Initialize credentials with service account impersonation and basic auth.
@@ -774,9 +774,9 @@ class TestCredentials(object):
         # Initialize mock request to handle token exchange and service account
         # impersonation request.
         request = self.make_mock_request(
-            status=http_client.OK,
+            status=http.client.OK,
             data=token_response,
-            impersonation_status=http_client.OK,
+            impersonation_status=http.client.OK,
             impersonation_data=impersonation_response,
         )
         # Initialize credentials with service account impersonation and basic auth.
@@ -811,7 +811,7 @@ class TestCredentials(object):
     def test_apply_without_quota_project_id(self):
         headers = {}
         request = self.make_mock_request(
-            status=http_client.OK, data=self.SUCCESS_RESPONSE
+            status=http.client.OK, data=self.SUCCESS_RESPONSE
         )
         credentials = self.make_credentials()
 
@@ -834,9 +834,9 @@ class TestCredentials(object):
         # Initialize mock request to handle token exchange and service account
         # impersonation request.
         request = self.make_mock_request(
-            status=http_client.OK,
+            status=http.client.OK,
             data=self.SUCCESS_RESPONSE.copy(),
-            impersonation_status=http_client.OK,
+            impersonation_status=http.client.OK,
             impersonation_data=impersonation_response,
         )
         # Initialize credentials with service account impersonation.
@@ -856,7 +856,7 @@ class TestCredentials(object):
     def test_apply_with_quota_project_id(self):
         headers = {"other": "header-value"}
         request = self.make_mock_request(
-            status=http_client.OK, data=self.SUCCESS_RESPONSE
+            status=http.client.OK, data=self.SUCCESS_RESPONSE
         )
         credentials = self.make_credentials(quota_project_id=self.QUOTA_PROJECT_ID)
 
@@ -881,9 +881,9 @@ class TestCredentials(object):
         # Initialize mock request to handle token exchange and service account
         # impersonation request.
         request = self.make_mock_request(
-            status=http_client.OK,
+            status=http.client.OK,
             data=self.SUCCESS_RESPONSE.copy(),
-            impersonation_status=http_client.OK,
+            impersonation_status=http.client.OK,
             impersonation_data=impersonation_response,
         )
         # Initialize credentials with service account impersonation.
@@ -906,7 +906,7 @@ class TestCredentials(object):
     def test_before_request(self):
         headers = {"other": "header-value"}
         request = self.make_mock_request(
-            status=http_client.OK, data=self.SUCCESS_RESPONSE
+            status=http.client.OK, data=self.SUCCESS_RESPONSE
         )
         credentials = self.make_credentials()
 
@@ -938,9 +938,9 @@ class TestCredentials(object):
         # Initialize mock request to handle token exchange and service account
         # impersonation request.
         request = self.make_mock_request(
-            status=http_client.OK,
+            status=http.client.OK,
             data=self.SUCCESS_RESPONSE.copy(),
-            impersonation_status=http_client.OK,
+            impersonation_status=http.client.OK,
             impersonation_data=impersonation_response,
         )
         headers = {"other": "header-value"}
@@ -968,7 +968,7 @@ class TestCredentials(object):
     def test_before_request_expired(self, utcnow):
         headers = {}
         request = self.make_mock_request(
-            status=http_client.OK, data=self.SUCCESS_RESPONSE
+            status=http.client.OK, data=self.SUCCESS_RESPONSE
         )
         credentials = self.make_credentials()
         credentials.token = "token"
@@ -1014,9 +1014,9 @@ class TestCredentials(object):
         # Initialize mock request to handle token exchange and service account
         # impersonation request.
         request = self.make_mock_request(
-            status=http_client.OK,
+            status=http.client.OK,
             data=self.SUCCESS_RESPONSE.copy(),
-            impersonation_status=http_client.OK,
+            impersonation_status=http.client.OK,
             impersonation_data=impersonation_response,
         )
         credentials = self.make_credentials(
@@ -1132,11 +1132,11 @@ class TestCredentials(object):
         # Initialize mock request to handle token exchange, service account
         # impersonation and cloud resource manager request.
         request = self.make_mock_request(
-            status=http_client.OK,
+            status=http.client.OK,
             data=self.SUCCESS_RESPONSE.copy(),
-            impersonation_status=http_client.OK,
+            impersonation_status=http.client.OK,
             impersonation_data=impersonation_response,
-            cloud_resource_manager_status=http_client.OK,
+            cloud_resource_manager_status=http.client.OK,
             cloud_resource_manager_data=self.CLOUD_RESOURCE_MANAGER_SUCCESS_RESPONSE,
         )
         credentials = self.make_credentials(
@@ -1190,9 +1190,9 @@ class TestCredentials(object):
         # Simulate resource doesn't have sufficient permissions to access
         # cloud resource manager.
         request = self.make_mock_request(
-            status=http_client.OK,
+            status=http.client.OK,
             data=self.SUCCESS_RESPONSE.copy(),
-            cloud_resource_manager_status=http_client.UNAUTHORIZED,
+            cloud_resource_manager_status=http.client.UNAUTHORIZED,
         )
         credentials = self.make_credentials(scopes=self.SCOPES)
 

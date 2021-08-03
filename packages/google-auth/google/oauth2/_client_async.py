@@ -24,11 +24,9 @@ For more information about the token endpoint, see
 """
 
 import datetime
+import http.client
 import json
-
-import six
-from six.moves import http_client
-from six.moves import urllib
+import urllib
 
 from google.auth import exceptions
 from google.auth import jwt
@@ -85,7 +83,7 @@ async def _token_endpoint_request_no_throw(
 
         response_data = json.loads(response_body)
 
-        if response.status == http_client.OK:
+        if response.status == http.client.OK:
             break
         else:
             error_desc = response_data.get("error_description") or ""
@@ -96,9 +94,9 @@ async def _token_endpoint_request_no_throw(
             ):
                 retry += 1
                 continue
-            return response.status == http_client.OK, response_data
+            return response.status == http.client.OK, response_data
 
-    return response.status == http_client.OK, response_data
+    return response.status == http.client.OK, response_data
 
 
 async def _token_endpoint_request(
@@ -161,7 +159,7 @@ async def jwt_grant(request, token_uri, assertion):
         access_token = response_data["access_token"]
     except KeyError as caught_exc:
         new_exc = exceptions.RefreshError("No access token in response.", response_data)
-        six.raise_from(new_exc, caught_exc)
+        raise new_exc from caught_exc
 
     expiry = client._parse_expiry(response_data)
 
@@ -201,7 +199,7 @@ async def id_token_jwt_grant(request, token_uri, assertion):
         id_token = response_data["id_token"]
     except KeyError as caught_exc:
         new_exc = exceptions.RefreshError("No ID token in response.", response_data)
-        six.raise_from(new_exc, caught_exc)
+        raise new_exc from caught_exc
 
     payload = jwt.decode(id_token, verify=False)
     expiry = datetime.datetime.utcfromtimestamp(payload["exp"])

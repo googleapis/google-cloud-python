@@ -171,7 +171,7 @@ def configure_cloud_sdk(session, application_default_credentials, project=False)
 TEST_DEPENDENCIES_ASYNC = ["aiohttp", "pytest-asyncio", "nest-asyncio"]
 TEST_DEPENDENCIES_SYNC = ["pytest", "requests", "mock"]
 PYTHON_VERSIONS_ASYNC = ["3.7"]
-PYTHON_VERSIONS_SYNC = ["2.7", "3.7"]
+PYTHON_VERSIONS_SYNC = ["3.7"]
 
 
 def default(session, *test_paths):
@@ -284,50 +284,6 @@ def compute_engine(session):
         session,
         "system_tests_sync/test_compute_engine.py",
         *session.posargs,
-    )
-
-
-@nox.session(python=["2.7"])
-def app_engine(session):
-    if SKIP_GAE_TEST_ENV in os.environ:
-        session.log("Skipping App Engine tests.")
-        return
-
-    session.install(LIBRARY_DIR)
-    # Unlike the default tests above, the App Engine system test require a
-    # 'real' gcloud sdk installation that is configured to deploy to an
-    # app engine project.
-    # Grab the project ID from the cloud sdk.
-    project_id = (
-        subprocess.check_output(
-            ["gcloud", "config", "list", "project", "--format", "value(core.project)"]
-        )
-        .decode("utf-8")
-        .strip()
-    )
-
-    if not project_id:
-        session.error(
-            "The Cloud SDK must be installed and configured to deploy to App " "Engine."
-        )
-
-    application_url = GAE_APP_URL_TMPL.format(GAE_TEST_APP_SERVICE, project_id)
-
-    # Vendor in the test application's dependencies
-    session.chdir(os.path.join(HERE, "system_tests_sync/app_engine_test_app"))
-    session.install(*TEST_DEPENDENCIES_SYNC)
-    session.run(
-        "pip", "install", "--target", "lib", "-r", "requirements.txt", silent=True
-    )
-
-    # Deploy the application.
-    session.run("gcloud", "app", "deploy", "-q", "app.yaml")
-
-    # Run the tests
-    session.env["TEST_APP_URL"] = application_url
-    session.chdir(HERE)
-    default(
-        session, "system_tests_sync/test_app_engine.py",
     )
 
 

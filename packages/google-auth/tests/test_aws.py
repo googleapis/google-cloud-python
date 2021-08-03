@@ -13,12 +13,12 @@
 # limitations under the License.
 
 import datetime
+import http.client
 import json
+import urllib
 
 import mock
 import pytest
-from six.moves import http_client
-from six.moves import urllib
 
 from google.auth import _helpers
 from google.auth import aws
@@ -952,11 +952,11 @@ class TestCredentials(object):
             self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
         )
         request = self.make_mock_request(
-            region_status=http_client.OK,
+            region_status=http.client.OK,
             region_name=self.AWS_REGION,
-            role_status=http_client.OK,
+            role_status=http.client.OK,
             role_name=self.AWS_ROLE,
-            security_credentials_status=http_client.OK,
+            security_credentials_status=http.client.OK,
             security_credentials_data=self.AWS_SECURITY_CREDENTIALS_RESPONSE,
         )
         credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
@@ -987,9 +987,9 @@ class TestCredentials(object):
 
         # Retrieve subject_token again. Region should not be queried again.
         new_request = self.make_mock_request(
-            role_status=http_client.OK,
+            role_status=http.client.OK,
             role_name=self.AWS_ROLE,
-            security_credentials_status=http_client.OK,
+            security_credentials_status=http.client.OK,
             security_credentials_data=self.AWS_SECURITY_CREDENTIALS_RESPONSE,
         )
 
@@ -1020,11 +1020,11 @@ class TestCredentials(object):
             self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
         )
         request = self.make_mock_request(
-            region_status=http_client.OK,
+            region_status=http.client.OK,
             region_name=self.AWS_REGION,
-            role_status=http_client.OK,
+            role_status=http.client.OK,
             role_name=self.AWS_ROLE,
-            security_credentials_status=http_client.OK,
+            security_credentials_status=http.client.OK,
             security_credentials_data=security_creds_response,
         )
         credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
@@ -1136,7 +1136,7 @@ class TestCredentials(object):
         )
         # Region will be queried since it is not found in envvars.
         request = self.make_mock_request(
-            region_status=http_client.OK, region_name=self.AWS_REGION
+            region_status=http.client.OK, region_name=self.AWS_REGION
         )
         credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
 
@@ -1152,7 +1152,7 @@ class TestCredentials(object):
 
     def test_retrieve_subject_token_error_determining_aws_region(self):
         # Simulate error in retrieving the AWS region.
-        request = self.make_mock_request(region_status=http_client.BAD_REQUEST)
+        request = self.make_mock_request(region_status=http.client.BAD_REQUEST)
         credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
 
         with pytest.raises(exceptions.RefreshError) as excinfo:
@@ -1163,9 +1163,9 @@ class TestCredentials(object):
     def test_retrieve_subject_token_error_determining_aws_role(self):
         # Simulate error in retrieving the AWS role name.
         request = self.make_mock_request(
-            region_status=http_client.OK,
+            region_status=http.client.OK,
             region_name=self.AWS_REGION,
-            role_status=http_client.BAD_REQUEST,
+            role_status=http.client.BAD_REQUEST,
         )
         credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
 
@@ -1180,7 +1180,7 @@ class TestCredentials(object):
         credential_source = self.CREDENTIAL_SOURCE.copy()
         credential_source.pop("url")
         request = self.make_mock_request(
-            region_status=http_client.OK, region_name=self.AWS_REGION
+            region_status=http.client.OK, region_name=self.AWS_REGION
         )
         credentials = self.make_credentials(credential_source=credential_source)
 
@@ -1194,11 +1194,11 @@ class TestCredentials(object):
     def test_retrieve_subject_token_error_determining_aws_security_creds(self):
         # Simulate error in retrieving the AWS security credentials.
         request = self.make_mock_request(
-            region_status=http_client.OK,
+            region_status=http.client.OK,
             region_name=self.AWS_REGION,
-            role_status=http_client.OK,
+            role_status=http.client.OK,
             role_name=self.AWS_ROLE,
-            security_credentials_status=http_client.BAD_REQUEST,
+            security_credentials_status=http.client.BAD_REQUEST,
         )
         credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
 
@@ -1232,13 +1232,13 @@ class TestCredentials(object):
             "subject_token_type": SUBJECT_TOKEN_TYPE,
         }
         request = self.make_mock_request(
-            region_status=http_client.OK,
+            region_status=http.client.OK,
             region_name=self.AWS_REGION,
-            role_status=http_client.OK,
+            role_status=http.client.OK,
             role_name=self.AWS_ROLE,
-            security_credentials_status=http_client.OK,
+            security_credentials_status=http.client.OK,
             security_credentials_data=self.AWS_SECURITY_CREDENTIALS_RESPONSE,
-            token_status=http_client.OK,
+            token_status=http.client.OK,
             token_data=self.SUCCESS_RESPONSE,
         )
         credentials = self.make_credentials(
@@ -1288,13 +1288,13 @@ class TestCredentials(object):
             "subject_token_type": SUBJECT_TOKEN_TYPE,
         }
         request = self.make_mock_request(
-            region_status=http_client.OK,
+            region_status=http.client.OK,
             region_name=self.AWS_REGION,
-            role_status=http_client.OK,
+            role_status=http.client.OK,
             role_name=self.AWS_ROLE,
-            security_credentials_status=http_client.OK,
+            security_credentials_status=http.client.OK,
             security_credentials_data=self.AWS_SECURITY_CREDENTIALS_RESPONSE,
-            token_status=http_client.OK,
+            token_status=http.client.OK,
             token_data=self.SUCCESS_RESPONSE,
         )
         credentials = self.make_credentials(
@@ -1362,15 +1362,15 @@ class TestCredentials(object):
             "lifetime": "3600s",
         }
         request = self.make_mock_request(
-            region_status=http_client.OK,
+            region_status=http.client.OK,
             region_name=self.AWS_REGION,
-            role_status=http_client.OK,
+            role_status=http.client.OK,
             role_name=self.AWS_ROLE,
-            security_credentials_status=http_client.OK,
+            security_credentials_status=http.client.OK,
             security_credentials_data=self.AWS_SECURITY_CREDENTIALS_RESPONSE,
-            token_status=http_client.OK,
+            token_status=http.client.OK,
             token_data=self.SUCCESS_RESPONSE,
-            impersonation_status=http_client.OK,
+            impersonation_status=http.client.OK,
             impersonation_data=impersonation_response,
         )
         credentials = self.make_credentials(
@@ -1446,15 +1446,15 @@ class TestCredentials(object):
             "lifetime": "3600s",
         }
         request = self.make_mock_request(
-            region_status=http_client.OK,
+            region_status=http.client.OK,
             region_name=self.AWS_REGION,
-            role_status=http_client.OK,
+            role_status=http.client.OK,
             role_name=self.AWS_ROLE,
-            security_credentials_status=http_client.OK,
+            security_credentials_status=http.client.OK,
             security_credentials_data=self.AWS_SECURITY_CREDENTIALS_RESPONSE,
-            token_status=http_client.OK,
+            token_status=http.client.OK,
             token_data=self.SUCCESS_RESPONSE,
-            impersonation_status=http_client.OK,
+            impersonation_status=http.client.OK,
             impersonation_data=impersonation_response,
         )
         credentials = self.make_credentials(
@@ -1488,7 +1488,7 @@ class TestCredentials(object):
         assert credentials.default_scopes == SCOPES
 
     def test_refresh_with_retrieve_subject_token_error(self):
-        request = self.make_mock_request(region_status=http_client.BAD_REQUEST)
+        request = self.make_mock_request(region_status=http.client.BAD_REQUEST)
         credentials = self.make_credentials(credential_source=self.CREDENTIAL_SOURCE)
 
         with pytest.raises(exceptions.RefreshError) as excinfo:

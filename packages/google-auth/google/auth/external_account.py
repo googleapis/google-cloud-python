@@ -33,8 +33,6 @@ import datetime
 import json
 import re
 
-import six
-
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
@@ -52,8 +50,9 @@ _STS_REQUESTED_TOKEN_TYPE = "urn:ietf:params:oauth:token-type:access_token"
 _CLOUD_RESOURCE_MANAGER = "https://cloudresourcemanager.googleapis.com/v1/projects/"
 
 
-@six.add_metaclass(abc.ABCMeta)
-class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
+class Credentials(
+    credentials.Scoped, credentials.CredentialsWithQuotaProject, metaclass=abc.ABCMeta
+):
     """Base class for all external account credentials.
 
     This is used to instantiate Credentials for exchanging external account

@@ -20,8 +20,6 @@ from os import path
 import re
 import subprocess
 
-import six
-
 from google.auth import exceptions
 
 CONTEXT_AWARE_METADATA_PATH = "~/.secureConnect/context_aware_metadata.json"
@@ -82,7 +80,7 @@ def _read_dca_metadata_file(metadata_path):
             metadata = json.load(f)
     except ValueError as caught_exc:
         new_exc = exceptions.ClientCertError(caught_exc)
-        six.raise_from(new_exc, caught_exc)
+        raise new_exc from caught_exc
 
     return metadata
 
@@ -110,7 +108,7 @@ def _run_cert_provider_command(command, expect_encrypted_key=False):
         stdout, stderr = process.communicate()
     except OSError as caught_exc:
         new_exc = exceptions.ClientCertError(caught_exc)
-        six.raise_from(new_exc, caught_exc)
+        raise new_exc from caught_exc
 
     # Check cert provider command execution error.
     if process.returncode != 0:

@@ -25,11 +25,9 @@ for the return value of :class:`Request`.
 """
 
 import abc
+import http.client
 
-import six
-from six.moves import http_client
-
-DEFAULT_REFRESH_STATUS_CODES = (http_client.UNAUTHORIZED,)
+DEFAULT_REFRESH_STATUS_CODES = (http.client.UNAUTHORIZED,)
 """Sequence[int]:  Which HTTP status code indicate that credentials should be
 refreshed and a request should be retried.
 """
@@ -38,8 +36,7 @@ DEFAULT_MAX_REFRESH_ATTEMPTS = 2
 """int: How many times to refresh the credentials and retry a request."""
 
 
-@six.add_metaclass(abc.ABCMeta)
-class Response(object):
+class Response(object, metaclass=abc.ABCMeta):
     """HTTP Response data."""
 
     @abc.abstractproperty
@@ -58,8 +55,7 @@ class Response(object):
         raise NotImplementedError("data must be implemented.")
 
 
-@six.add_metaclass(abc.ABCMeta)
-class Request(object):
+class Request(object, metaclass=abc.ABCMeta):
     """Interface for a callable that makes HTTP requests.
 
     Specific transport implementations should provide an implementation of

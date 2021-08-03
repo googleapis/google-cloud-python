@@ -24,11 +24,15 @@ For more information on setting up your Python development environment, please r
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.5
+Python >= 3.6
 
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7. Python 2.7 support will be removed on January 1, 2020.
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- Python == 2.7:  The last version of this library with support for Python 2.7
+  was `google.auth == 1.34.0`.
+
+- Python 3.5:   The last version of this library with support for Python 3.5
+  was `google.auth == 1.23.0`.
 
 Documentation
 -------------

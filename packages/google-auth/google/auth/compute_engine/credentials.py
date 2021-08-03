@@ -21,8 +21,6 @@ Compute Engine using the Compute Engine metadata server.
 
 import datetime
 
-import six
-
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
@@ -38,7 +36,7 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
     These credentials use the Google Compute Engine metadata server to obtain
     OAuth 2.0 access tokens associated with the instance's service account,
     and are also used for Cloud Run, Flex and App Engine (except for the Python
-    2.7 runtime).
+    2.7 runtime, which is supported only on older versions of this library).
 
     For more information about Compute Engine authentication, including how
     to configure scopes, see the `Compute Engine authentication
@@ -114,7 +112,7 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
             )
         except exceptions.TransportError as caught_exc:
             new_exc = exceptions.RefreshError(caught_exc)
-            six.raise_from(new_exc, caught_exc)
+            raise new_exc from caught_exc
 
     @property
     def service_account_email(self):
@@ -352,7 +350,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject, credentials.Si
             id_token = _metadata.get(request, path, params=params)
         except exceptions.TransportError as caught_exc:
             new_exc = exceptions.RefreshError(caught_exc)
-            six.raise_from(new_exc, caught_exc)
+            raise new_exc from caught_exc
 
         _, payload, _, _ = jwt._unverified_decode(id_token)
         return id_token, datetime.datetime.fromtimestamp(payload["exp"])

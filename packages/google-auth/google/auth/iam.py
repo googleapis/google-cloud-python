@@ -20,9 +20,8 @@ API`_'s auth-related functionality.
 """
 
 import base64
+import http.client
 import json
-
-from six.moves import http_client
 
 from google.auth import _helpers
 from google.auth import crypt
@@ -77,7 +76,7 @@ class Signer(crypt.Signer):
         self._credentials.before_request(self._request, method, url, headers)
         response = self._request(url=url, method=method, body=body, headers=headers)
 
-        if response.status != http_client.OK:
+        if response.status != http.client.OK:
             raise exceptions.TransportError(
                 "Error calling the IAM signBlob API: {}".format(response.data)
             )

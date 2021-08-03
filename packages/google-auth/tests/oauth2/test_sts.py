@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import http.client
 import json
+import urllib
 
 import mock
 import pytest
-from six.moves import http_client
-from six.moves import urllib
 
 from google.auth import exceptions
 from google.auth import transport
@@ -67,7 +67,7 @@ class TestStsClient(object):
         return sts.Client(cls.TOKEN_EXCHANGE_ENDPOINT, client_auth)
 
     @classmethod
-    def make_mock_request(cls, data, status=http_client.OK):
+    def make_mock_request(cls, data, status=http.client.OK):
         response = mock.create_autospec(transport.Response, instance=True)
         response.status = status
         response.data = json.dumps(data).encode("utf-8")
@@ -110,7 +110,7 @@ class TestStsClient(object):
             "options": urllib.parse.quote(json.dumps(self.ADDON_OPTIONS)),
         }
         request = self.make_mock_request(
-            status=http_client.OK, data=self.SUCCESS_RESPONSE
+            status=http.client.OK, data=self.SUCCESS_RESPONSE
         )
 
         response = client.exchange_token(
@@ -145,7 +145,7 @@ class TestStsClient(object):
             "subject_token_type": self.SUBJECT_TOKEN_TYPE,
         }
         request = self.make_mock_request(
-            status=http_client.OK, data=self.SUCCESS_RESPONSE
+            status=http.client.OK, data=self.SUCCESS_RESPONSE
         )
 
         response = client.exchange_token(
@@ -165,7 +165,7 @@ class TestStsClient(object):
         """
         client = self.make_client()
         request = self.make_mock_request(
-            status=http_client.BAD_REQUEST, data=self.ERROR_RESPONSE
+            status=http.client.BAD_REQUEST, data=self.ERROR_RESPONSE
         )
 
         with pytest.raises(exceptions.OAuthError) as excinfo:
@@ -209,7 +209,7 @@ class TestStsClient(object):
             "options": urllib.parse.quote(json.dumps(self.ADDON_OPTIONS)),
         }
         request = self.make_mock_request(
-            status=http_client.OK, data=self.SUCCESS_RESPONSE
+            status=http.client.OK, data=self.SUCCESS_RESPONSE
         )
 
         response = client.exchange_token(
@@ -247,7 +247,7 @@ class TestStsClient(object):
             "subject_token_type": self.SUBJECT_TOKEN_TYPE,
         }
         request = self.make_mock_request(
-            status=http_client.OK, data=self.SUCCESS_RESPONSE
+            status=http.client.OK, data=self.SUCCESS_RESPONSE
         )
 
         response = client.exchange_token(
@@ -268,7 +268,7 @@ class TestStsClient(object):
         """
         client = self.make_client(self.CLIENT_AUTH_BASIC)
         request = self.make_mock_request(
-            status=http_client.BAD_REQUEST, data=self.ERROR_RESPONSE
+            status=http.client.BAD_REQUEST, data=self.ERROR_RESPONSE
         )
 
         with pytest.raises(exceptions.OAuthError) as excinfo:
@@ -313,7 +313,7 @@ class TestStsClient(object):
             "client_secret": CLIENT_SECRET,
         }
         request = self.make_mock_request(
-            status=http_client.OK, data=self.SUCCESS_RESPONSE
+            status=http.client.OK, data=self.SUCCESS_RESPONSE
         )
 
         response = client.exchange_token(
@@ -350,7 +350,7 @@ class TestStsClient(object):
             "client_secret": CLIENT_SECRET,
         }
         request = self.make_mock_request(
-            status=http_client.OK, data=self.SUCCESS_RESPONSE
+            status=http.client.OK, data=self.SUCCESS_RESPONSE
         )
 
         response = client.exchange_token(
@@ -371,7 +371,7 @@ class TestStsClient(object):
         """
         client = self.make_client(self.CLIENT_AUTH_REQUEST_BODY)
         request = self.make_mock_request(
-            status=http_client.BAD_REQUEST, data=self.ERROR_RESPONSE
+            status=http.client.BAD_REQUEST, data=self.ERROR_RESPONSE
         )
 
         with pytest.raises(exceptions.OAuthError) as excinfo:

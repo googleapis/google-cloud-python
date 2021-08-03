@@ -18,8 +18,8 @@ A few notes on making changes to ``google-auth-library-python``.
   documentation (in ``docs/``). You can re-generate the reference documentation
   using ``nox -s docgen``.
 
-- The change must work fully on the following CPython versions: 2.7,
-  3.5, 3.6, 3.7, 3.8 across macOS, Linux, and Windows.
+- The change must work fully on the following CPython versions:
+  3.6, 3.7, 3.8, 3.9 across macOS, Linux, and Windows.
 
 - The codebase *must* have 100% test statement coverage after each commit.
   You can test coverage via ``nox -e cover``.

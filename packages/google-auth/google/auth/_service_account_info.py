@@ -17,8 +17,6 @@
 import io
 import json
 
-import six
-
 from google.auth import crypt
 
 
@@ -43,7 +41,7 @@ def from_dict(data, require=None):
     """
     keys_needed = set(require if require is not None else [])
 
-    missing = keys_needed.difference(six.iterkeys(data))
+    missing = keys_needed.difference(data)
 
     if missing:
         raise ValueError(

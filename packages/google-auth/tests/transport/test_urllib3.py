@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import http.client
 import os
 import sys
 
 import mock
 import OpenSSL
 import pytest
-from six.moves import http_client
 import urllib3
 
 from google.auth import environment_vars
@@ -84,7 +84,7 @@ class HttpStub(object):
 
 
 class ResponseStub(object):
-    def __init__(self, status=http_client.OK, data=None):
+    def __init__(self, status=http.client.OK, data=None):
         self.status = status
         self.data = data
 
@@ -141,12 +141,12 @@ class TestAuthorizedHttp(object):
 
     def test_urlopen_refresh(self):
         credentials = mock.Mock(wraps=CredentialsStub())
-        final_response = ResponseStub(status=http_client.OK)
+        final_response = ResponseStub(status=http.client.OK)
         # First request will 401, second request will succeed.
-        http = HttpStub([ResponseStub(status=http_client.UNAUTHORIZED), final_response])
+        stub = HttpStub([ResponseStub(status=http.client.UNAUTHORIZED), final_response])
 
         authed_http = google.auth.transport.urllib3.AuthorizedHttp(
-            credentials, http=http
+            credentials, http=stub
         )
 
         authed_http = authed_http.urlopen("GET", "http://example.com")
@@ -154,7 +154,7 @@ class TestAuthorizedHttp(object):
         assert authed_http == final_response
         assert credentials.before_request.call_count == 2
         assert credentials.refresh.called
-        assert http.requests == [
+        assert stub.requests == [
             ("GET", self.TEST_URL, None, {"authorization": "token"}, {}),
             ("GET", self.TEST_URL, None, {"authorization": "token1"}, {}),
         ]
