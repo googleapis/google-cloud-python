@@ -1,7 +1,7 @@
 Python Client for Cloud Shell
 =============================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Cloud Shell`_: is an interactive shell environment for Google Cloud that makes it easy 
 for you to learn and experiment with Google Cloud and manage your projects and resources 
@@ -10,8 +10,8 @@ from your web browser.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-shell.svg
    :target: https://pypi.org/project/google-cloud-shell/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-shell.svg
