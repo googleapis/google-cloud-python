@@ -1,15 +1,15 @@
 Python Client for Cloud Database Migration Service
 ==================================================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Cloud Database Migration Service`_: simplifies migrations to Cloud SQL.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-dms.svg
    :target: https://pypi.org/project/google-cloud-dms/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dms.svg
