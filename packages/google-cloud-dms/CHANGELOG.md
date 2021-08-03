@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-dms/compare/v0.2.2...v1.0.0) (2021-08-03)
+
+
+### Features
+
+* bump release level to production/stable ([#28](https://www.github.com/googleapis/python-dms/issues/28)) ([a2490a1](https://www.github.com/googleapis/python-dms/commit/a2490a18ec60a6eeb30d2e0da5a690d39256fcc3))
+
 ### [0.2.2](https://www.github.com/googleapis/python-dms/compare/v0.2.1...v0.2.2) (2021-07-29)
 
 

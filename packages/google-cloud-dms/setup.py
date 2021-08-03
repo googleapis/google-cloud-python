@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-dms"
 description = "Cloud Database Migration Service client library"
-version = "0.2.2"
+version = "1.0.0"
 release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-dms"
 dependencies = [
