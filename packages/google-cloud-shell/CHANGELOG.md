@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-shell/compare/v0.2.2...v1.0.0) (2021-08-03)
+
+
+### Features
+
+* bump release level to production/stable ([#25](https://www.github.com/googleapis/python-shell/issues/25)) ([9a1a44e](https://www.github.com/googleapis/python-shell/commit/9a1a44e65f4c9adc16bce134046752e10d04ce4b))
+
 ### [0.2.2](https://www.github.com/googleapis/python-shell/compare/v0.2.1...v0.2.2) (2021-07-30)
 
 
