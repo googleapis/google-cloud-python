@@ -24,28 +24,28 @@ datastore_default_version = "v1"
 datastore_admin_default_version = "v1"
 
 for library in s.get_staging_dirs(datastore_default_version):
-    if library.parent.absolute() == 'datastore':
+    if library.parent.absolute() == "datastore":
         s.move(library / f"google/cloud/datastore_{library.name}")
-        s.move(library / f"tests/")
+        s.move(library / "tests/")
         s.move(library / "scripts")
 
 for library in s.get_staging_dirs(datastore_admin_default_version):
-    if library.parent.absolute() == 'datastore_admin':
+    if library.parent.absolute() == "datastore_admin":
         s.replace(
             library / "google/**/datastore_admin_client.py",
             "google-cloud-datastore-admin",
-            "google-cloud-datstore"
+            "google-cloud-datstore",
         )
 
         # Remove spurious markup
         s.replace(
             "google/**/datastore_admin/client.py",
-            "\s+---------------------------------(-)+",
-            ""
+            r"\s+---------------------------------(-)+",
+            "",
         )
 
         s.move(library / f"google/cloud/datastore_admin_{library.name}")
-        s.move(library / f"tests")
+        s.move(library / "tests")
         s.move(library / "scripts")
 
 s.remove_staging_dirs()
@@ -53,16 +53,14 @@ s.remove_staging_dirs()
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(
-    microgenerator=True,
-)
+templated_files = common.py_library(microgenerator=True, split_system_tests=True,)
 s.move(templated_files, excludes=["docs/multiprocessing.rst", ".coveragerc"])
 
 
 # Preserve system tests w/ GOOGLE_DISABLE_GRPC set (#133, PR #136)
-s.replace(
+assert 1 == s.replace(
     "noxfile.py",
-    """\
+    r"""\
 @nox.session\(python=SYSTEM_TEST_PYTHON_VERSIONS\)
 def system\(session\):
 """,
@@ -73,7 +71,7 @@ def system(session, disable_grpc):
 """,
 )
 
-s.replace(
+assert 1 == s.replace(
     "noxfile.py",
     """\
     # Run py.test against the system tests.
@@ -83,62 +81,42 @@ s.replace(
     if disable_grpc:
         env["GOOGLE_CLOUD_DISABLE_GRPC"] = "True"
 
-    # Run py.test against the system tests.
+# Run py.test against the system tests.
 """,
 )
 
-s.replace(
+assert 1 == s.replace(
     "noxfile.py",
-    """session\.run\(
-            "py\.test",
-            "--quiet",
-            f"--junitxml=system_\{session\.python\}_sponge_log\.xml",
-            system_test_path,
-            \*session\.posargs
-        \)""",
-    """session.run(
-            "py.test",
-            "--quiet",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_path,
-            env=env,
-            *session.posargs
-        )
+    """\
+    system_test_path,
+""",
+    """\
+    system_test_path,
+    env=env,
 """,
 )
 
-s.replace(
+assert 1 == s.replace(
     "noxfile.py",
-    """session\.run\(
-            "py\.test",
-            "--quiet",
-            f"--junitxml=system_\{session\.python\}_sponge_log\.xml",
-            system_test_folder_path,
-            \*session\.posargs
-        \)""",
-    """session.run(
-            "py.test",
-            "--quiet",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_folder_path,
-            env=env,
-            *session.posargs
-        )
+    """\
+    system_test_folder_path,
+""",
+    """\
+    system_test_folder_path,
+    env=env,
 """,
 )
-
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 
 # Add documentation about creating indexes and populating data for system
 # tests.
-num = s.replace(
+assert 1 == s.replace(
     "CONTRIBUTING.rst",
-    """\
+    r"""
 \*\*\*\*\*\*\*\*\*\*\*\*\*
 Test Coverage
 \*\*\*\*\*\*\*\*\*\*\*\*\*
 """,
-    """\
+    """
 - You'll need to create composite
   `indexes <https://cloud.google.com/datastore/docs/tools/indexconfig>`__
   with the ``gcloud`` command line
@@ -168,7 +146,7 @@ Test Coverage
 *************
 Test Coverage
 *************
-""")
+""",
+)
 
-if num != 1:
-    raise Exception("Required replacement not made.")
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)

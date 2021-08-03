@@ -157,7 +157,6 @@ def system(session, disable_grpc):
             env=env,
             *session.posargs,
         )
-
     if system_test_folder_exists:
         session.run(
             "py.test",
