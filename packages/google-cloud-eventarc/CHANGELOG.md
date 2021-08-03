@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-eventarc/compare/v0.2.2...v1.0.0) (2021-08-03)
+
+
+### Features
+
+* bump release level to production/stable ([#25](https://www.github.com/googleapis/python-eventarc/issues/25)) ([bf70c36](https://www.github.com/googleapis/python-eventarc/commit/bf70c364be632440d3af774e7ddbdf83661a9432))
+
 ### [0.2.2](https://www.github.com/googleapis/python-eventarc/compare/v0.2.1...v0.2.2) (2021-07-30)
 
 
