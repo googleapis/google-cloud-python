@@ -1,7 +1,7 @@
 Python Client for Service Usage API
 ===================================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Service Usage`_: is an infrastructure service of Google Cloud that lets you list and manage other APIs 
 and services in your Cloud projects. You can list and manage Google Cloud services and their APIs, as 
@@ -10,8 +10,8 @@ well as services created using Cloud Endpoints.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-service-usage.svg
    :target: https://pypi.org/project/google-cloud-service-usage/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-service-usage.svg
