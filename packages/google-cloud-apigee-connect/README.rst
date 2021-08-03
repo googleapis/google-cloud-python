@@ -1,7 +1,7 @@
 Python Client for Apigee Connect
 ================================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Apigee Connect`_: allows the Apigee hybrid management plane to connect securely to the MART 
 service in the runtime plane without requiring you to expose the MART endpoint on the internet. 
@@ -11,8 +11,8 @@ and an authorized DNS certificate.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-apigee-connect.svg
    :target: https://pypi.org/project/google-cloud-apigee-connect/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-apigee-connect.svg
