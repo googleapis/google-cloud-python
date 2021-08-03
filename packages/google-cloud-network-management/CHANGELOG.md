@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-network-management/compare/v0.1.1...v1.0.0) (2021-08-03)
+
+
+### Features
+
+* bump release level to production/stable ([#16](https://www.github.com/googleapis/python-network-management/issues/16)) ([4c156cf](https://www.github.com/googleapis/python-network-management/commit/4c156cff255b33fe89637d7106a61ea9113cac26))
+
 ### [0.1.1](https://www.github.com/googleapis/python-network-management/compare/v0.1.0...v0.1.1) (2021-07-26)
 
 
