@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-apigee-connect/compare/v0.2.2...v1.0.0) (2021-08-03)
+
+
+### Features
+
+* bump release level to production/stable ([#28](https://www.github.com/googleapis/python-apigee-connect/issues/28)) ([65803db](https://www.github.com/googleapis/python-apigee-connect/commit/65803db4821b594124bfb88012ba4f954568a895))
+
 ### [0.2.2](https://www.github.com/googleapis/python-apigee-connect/compare/v0.2.1...v0.2.2) (2021-07-29)
 
 
