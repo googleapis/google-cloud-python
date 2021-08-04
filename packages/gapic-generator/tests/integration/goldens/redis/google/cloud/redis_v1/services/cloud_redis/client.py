@@ -362,7 +362,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             )
 
     def list_instances(self,
-            request: cloud_redis.ListInstancesRequest = None,
+            request: Union[cloud_redis.ListInstancesRequest, dict] = None,
             *,
             parent: str = None,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -381,7 +381,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         are aggregated.
 
         Args:
-            request (google.cloud.redis_v1.types.ListInstancesRequest):
+            request (Union[google.cloud.redis_v1.types.ListInstancesRequest, dict]):
                 The request object. Request for
                 [ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances].
             parent (str):
@@ -460,7 +460,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def get_instance(self,
-            request: cloud_redis.GetInstanceRequest = None,
+            request: Union[cloud_redis.GetInstanceRequest, dict] = None,
             *,
             name: str = None,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -470,7 +470,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         r"""Gets the details of a specific Redis instance.
 
         Args:
-            request (google.cloud.redis_v1.types.GetInstanceRequest):
+            request (Union[google.cloud.redis_v1.types.GetInstanceRequest, dict]):
                 The request object. Request for
                 [GetInstance][google.cloud.redis.v1.CloudRedis.GetInstance].
             name (str):
@@ -534,7 +534,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def create_instance(self,
-            request: cloud_redis.CreateInstanceRequest = None,
+            request: Union[cloud_redis.CreateInstanceRequest, dict] = None,
             *,
             parent: str = None,
             instance_id: str = None,
@@ -559,7 +559,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         hours, so there is no need to call DeleteOperation.
 
         Args:
-            request (google.cloud.redis_v1.types.CreateInstanceRequest):
+            request (Union[google.cloud.redis_v1.types.CreateInstanceRequest, dict]):
                 The request object. Request for
                 [CreateInstance][google.cloud.redis.v1.CloudRedis.CreateInstance].
             parent (str):
@@ -660,7 +660,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def update_instance(self,
-            request: cloud_redis.UpdateInstanceRequest = None,
+            request: Union[cloud_redis.UpdateInstanceRequest, dict] = None,
             *,
             update_mask: field_mask_pb2.FieldMask = None,
             instance: cloud_redis.Instance = None,
@@ -676,7 +676,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         there is no need to call DeleteOperation.
 
         Args:
-            request (google.cloud.redis_v1.types.UpdateInstanceRequest):
+            request (Union[google.cloud.redis_v1.types.UpdateInstanceRequest, dict]):
                 The request object. Request for
                 [UpdateInstance][google.cloud.redis.v1.CloudRedis.UpdateInstance].
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -768,7 +768,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def upgrade_instance(self,
-            request: cloud_redis.UpgradeInstanceRequest = None,
+            request: Union[cloud_redis.UpgradeInstanceRequest, dict] = None,
             *,
             name: str = None,
             redis_version: str = None,
@@ -780,7 +780,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         specified in the request.
 
         Args:
-            request (google.cloud.redis_v1.types.UpgradeInstanceRequest):
+            request (Union[google.cloud.redis_v1.types.UpgradeInstanceRequest, dict]):
                 The request object. Request for
                 [UpgradeInstance][google.cloud.redis.v1.CloudRedis.UpgradeInstance].
             name (str):
@@ -866,7 +866,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def import_instance(self,
-            request: cloud_redis.ImportInstanceRequest = None,
+            request: Union[cloud_redis.ImportInstanceRequest, dict] = None,
             *,
             name: str = None,
             input_config: cloud_redis.InputConfig = None,
@@ -885,7 +885,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         few hours, so there is no need to call DeleteOperation.
 
         Args:
-            request (google.cloud.redis_v1.types.ImportInstanceRequest):
+            request (Union[google.cloud.redis_v1.types.ImportInstanceRequest, dict]):
                 The request object. Request for
                 [Import][google.cloud.redis.v1.CloudRedis.ImportInstance].
             name (str):
@@ -971,7 +971,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def export_instance(self,
-            request: cloud_redis.ExportInstanceRequest = None,
+            request: Union[cloud_redis.ExportInstanceRequest, dict] = None,
             *,
             name: str = None,
             output_config: cloud_redis.OutputConfig = None,
@@ -986,7 +986,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         few hours, so there is no need to call DeleteOperation.
 
         Args:
-            request (google.cloud.redis_v1.types.ExportInstanceRequest):
+            request (Union[google.cloud.redis_v1.types.ExportInstanceRequest, dict]):
                 The request object. Request for
                 [Export][google.cloud.redis.v1.CloudRedis.ExportInstance].
             name (str):
@@ -1072,7 +1072,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def failover_instance(self,
-            request: cloud_redis.FailoverInstanceRequest = None,
+            request: Union[cloud_redis.FailoverInstanceRequest, dict] = None,
             *,
             name: str = None,
             data_protection_mode: cloud_redis.FailoverInstanceRequest.DataProtectionMode = None,
@@ -1085,7 +1085,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         Memorystore for Redis instance.
 
         Args:
-            request (google.cloud.redis_v1.types.FailoverInstanceRequest):
+            request (Union[google.cloud.redis_v1.types.FailoverInstanceRequest, dict]):
                 The request object. Request for
                 [Failover][google.cloud.redis.v1.CloudRedis.FailoverInstance].
             name (str):
@@ -1172,7 +1172,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         return response
 
     def delete_instance(self,
-            request: cloud_redis.DeleteInstanceRequest = None,
+            request: Union[cloud_redis.DeleteInstanceRequest, dict] = None,
             *,
             name: str = None,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1183,7 +1183,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         serving and data is deleted.
 
         Args:
-            request (google.cloud.redis_v1.types.DeleteInstanceRequest):
+            request (Union[google.cloud.redis_v1.types.DeleteInstanceRequest, dict]):
                 The request object. Request for
                 [DeleteInstance][google.cloud.redis.v1.CloudRedis.DeleteInstance].
             name (str):

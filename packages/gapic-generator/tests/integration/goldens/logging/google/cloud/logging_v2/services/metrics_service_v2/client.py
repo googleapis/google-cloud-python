@@ -339,7 +339,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             )
 
     def list_log_metrics(self,
-            request: logging_metrics.ListLogMetricsRequest = None,
+            request: Union[logging_metrics.ListLogMetricsRequest, dict] = None,
             *,
             parent: str = None,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -349,7 +349,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         r"""Lists logs-based metrics.
 
         Args:
-            request (google.cloud.logging_v2.types.ListLogMetricsRequest):
+            request (Union[google.cloud.logging_v2.types.ListLogMetricsRequest, dict]):
                 The request object. The parameters to ListLogMetrics.
             parent (str):
                 Required. The name of the project containing the
@@ -428,7 +428,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         return response
 
     def get_log_metric(self,
-            request: logging_metrics.GetLogMetricRequest = None,
+            request: Union[logging_metrics.GetLogMetricRequest, dict] = None,
             *,
             metric_name: str = None,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -438,7 +438,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         r"""Gets a logs-based metric.
 
         Args:
-            request (google.cloud.logging_v2.types.GetLogMetricRequest):
+            request (Union[google.cloud.logging_v2.types.GetLogMetricRequest, dict]):
                 The request object. The parameters to GetLogMetric.
             metric_name (str):
                 Required. The resource name of the desired metric:
@@ -514,7 +514,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         return response
 
     def create_log_metric(self,
-            request: logging_metrics.CreateLogMetricRequest = None,
+            request: Union[logging_metrics.CreateLogMetricRequest, dict] = None,
             *,
             parent: str = None,
             metric: logging_metrics.LogMetric = None,
@@ -525,7 +525,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         r"""Creates a logs-based metric.
 
         Args:
-            request (google.cloud.logging_v2.types.CreateLogMetricRequest):
+            request (Union[google.cloud.logging_v2.types.CreateLogMetricRequest, dict]):
                 The request object. The parameters to CreateLogMetric.
             parent (str):
                 Required. The resource name of the project in which to
@@ -614,7 +614,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         return response
 
     def update_log_metric(self,
-            request: logging_metrics.UpdateLogMetricRequest = None,
+            request: Union[logging_metrics.UpdateLogMetricRequest, dict] = None,
             *,
             metric_name: str = None,
             metric: logging_metrics.LogMetric = None,
@@ -625,7 +625,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         r"""Creates or updates a logs-based metric.
 
         Args:
-            request (google.cloud.logging_v2.types.UpdateLogMetricRequest):
+            request (Union[google.cloud.logging_v2.types.UpdateLogMetricRequest, dict]):
                 The request object. The parameters to UpdateLogMetric.
             metric_name (str):
                 Required. The resource name of the metric to update:
@@ -713,7 +713,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         return response
 
     def delete_log_metric(self,
-            request: logging_metrics.DeleteLogMetricRequest = None,
+            request: Union[logging_metrics.DeleteLogMetricRequest, dict] = None,
             *,
             metric_name: str = None,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -723,7 +723,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         r"""Deletes a logs-based metric.
 
         Args:
-            request (google.cloud.logging_v2.types.DeleteLogMetricRequest):
+            request (Union[google.cloud.logging_v2.types.DeleteLogMetricRequest, dict]):
                 The request object. The parameters to DeleteLogMetric.
             metric_name (str):
                 Required. The resource name of the metric to delete:

@@ -285,7 +285,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     {% for method in service.methods.values() %}
     def {{ method.name|snake_case }}(self,
             {% if not method.client_streaming %}
-            request: {{ method.input.ident }} = None,
+            request: Union[{{ method.input.ident }}, dict] = None,
             *,
             {% for field in method.flattened_fields.values() %}
             {{ field.name }}: {{ field.ident }} = None,
@@ -306,7 +306,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         Args:
             {% if not method.client_streaming %}
-            request (:class:`{{ method.input.ident.sphinx }}`):
+            request (Union[{{ method.input.ident.sphinx }}, dict]):
                 The request object.{{ ' ' }}
                 {{- method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
             {% for key, field in method.flattened_fields.items() %}

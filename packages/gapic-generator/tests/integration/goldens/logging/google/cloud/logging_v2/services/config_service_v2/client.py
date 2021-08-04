@@ -382,7 +382,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             )
 
     def list_buckets(self,
-            request: logging_config.ListBucketsRequest = None,
+            request: Union[logging_config.ListBucketsRequest, dict] = None,
             *,
             parent: str = None,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -392,7 +392,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Lists buckets.
 
         Args:
-            request (google.cloud.logging_v2.types.ListBucketsRequest):
+            request (Union[google.cloud.logging_v2.types.ListBucketsRequest, dict]):
                 The request object. The parameters to `ListBuckets`.
             parent (str):
                 Required. The parent resource whose buckets are to be
@@ -478,7 +478,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def get_bucket(self,
-            request: logging_config.GetBucketRequest = None,
+            request: Union[logging_config.GetBucketRequest, dict] = None,
             *,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -487,7 +487,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Gets a bucket.
 
         Args:
-            request (google.cloud.logging_v2.types.GetBucketRequest):
+            request (Union[google.cloud.logging_v2.types.GetBucketRequest, dict]):
                 The request object. The parameters to `GetBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -531,7 +531,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def create_bucket(self,
-            request: logging_config.CreateBucketRequest = None,
+            request: Union[logging_config.CreateBucketRequest, dict] = None,
             *,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -542,7 +542,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         cannot be changed.
 
         Args:
-            request (google.cloud.logging_v2.types.CreateBucketRequest):
+            request (Union[google.cloud.logging_v2.types.CreateBucketRequest, dict]):
                 The request object. The parameters to `CreateBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -586,7 +586,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def update_bucket(self,
-            request: logging_config.UpdateBucketRequest = None,
+            request: Union[logging_config.UpdateBucketRequest, dict] = None,
             *,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -605,7 +605,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         A buckets region may not be modified after it is created.
 
         Args:
-            request (google.cloud.logging_v2.types.UpdateBucketRequest):
+            request (Union[google.cloud.logging_v2.types.UpdateBucketRequest, dict]):
                 The request object. The parameters to `UpdateBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -649,7 +649,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def delete_bucket(self,
-            request: logging_config.DeleteBucketRequest = None,
+            request: Union[logging_config.DeleteBucketRequest, dict] = None,
             *,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -660,7 +660,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         the bucket will be permanently deleted.
 
         Args:
-            request (google.cloud.logging_v2.types.DeleteBucketRequest):
+            request (Union[google.cloud.logging_v2.types.DeleteBucketRequest, dict]):
                 The request object. The parameters to `DeleteBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -697,7 +697,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
     def undelete_bucket(self,
-            request: logging_config.UndeleteBucketRequest = None,
+            request: Union[logging_config.UndeleteBucketRequest, dict] = None,
             *,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -707,7 +707,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         may be undeleted within the grace period of 7 days.
 
         Args:
-            request (google.cloud.logging_v2.types.UndeleteBucketRequest):
+            request (Union[google.cloud.logging_v2.types.UndeleteBucketRequest, dict]):
                 The request object. The parameters to `UndeleteBucket`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -744,7 +744,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
     def list_views(self,
-            request: logging_config.ListViewsRequest = None,
+            request: Union[logging_config.ListViewsRequest, dict] = None,
             *,
             parent: str = None,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -754,7 +754,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Lists views on a bucket.
 
         Args:
-            request (google.cloud.logging_v2.types.ListViewsRequest):
+            request (Union[google.cloud.logging_v2.types.ListViewsRequest, dict]):
                 The request object. The parameters to `ListViews`.
             parent (str):
                 Required. The bucket whose views are to be listed:
@@ -832,7 +832,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def get_view(self,
-            request: logging_config.GetViewRequest = None,
+            request: Union[logging_config.GetViewRequest, dict] = None,
             *,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -841,7 +841,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Gets a view.
 
         Args:
-            request (google.cloud.logging_v2.types.GetViewRequest):
+            request (Union[google.cloud.logging_v2.types.GetViewRequest, dict]):
                 The request object. The parameters to `GetView`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -887,7 +887,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def create_view(self,
-            request: logging_config.CreateViewRequest = None,
+            request: Union[logging_config.CreateViewRequest, dict] = None,
             *,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -897,7 +897,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         contain a maximum of 50 views.
 
         Args:
-            request (google.cloud.logging_v2.types.CreateViewRequest):
+            request (Union[google.cloud.logging_v2.types.CreateViewRequest, dict]):
                 The request object. The parameters to `CreateView`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -943,7 +943,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def update_view(self,
-            request: logging_config.UpdateViewRequest = None,
+            request: Union[logging_config.UpdateViewRequest, dict] = None,
             *,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -953,7 +953,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         existing view with values from the new view: ``filter``.
 
         Args:
-            request (google.cloud.logging_v2.types.UpdateViewRequest):
+            request (Union[google.cloud.logging_v2.types.UpdateViewRequest, dict]):
                 The request object. The parameters to `UpdateView`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -999,7 +999,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def delete_view(self,
-            request: logging_config.DeleteViewRequest = None,
+            request: Union[logging_config.DeleteViewRequest, dict] = None,
             *,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -1008,7 +1008,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Deletes a view from a bucket.
 
         Args:
-            request (google.cloud.logging_v2.types.DeleteViewRequest):
+            request (Union[google.cloud.logging_v2.types.DeleteViewRequest, dict]):
                 The request object. The parameters to `DeleteView`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1045,7 +1045,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
     def list_sinks(self,
-            request: logging_config.ListSinksRequest = None,
+            request: Union[logging_config.ListSinksRequest, dict] = None,
             *,
             parent: str = None,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1055,7 +1055,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Lists sinks.
 
         Args:
-            request (google.cloud.logging_v2.types.ListSinksRequest):
+            request (Union[google.cloud.logging_v2.types.ListSinksRequest, dict]):
                 The request object. The parameters to `ListSinks`.
             parent (str):
                 Required. The parent resource whose sinks are to be
@@ -1137,7 +1137,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def get_sink(self,
-            request: logging_config.GetSinkRequest = None,
+            request: Union[logging_config.GetSinkRequest, dict] = None,
             *,
             sink_name: str = None,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1147,7 +1147,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Gets a sink.
 
         Args:
-            request (google.cloud.logging_v2.types.GetSinkRequest):
+            request (Union[google.cloud.logging_v2.types.GetSinkRequest, dict]):
                 The request object. The parameters to `GetSink`.
             sink_name (str):
                 Required. The resource name of the sink:
@@ -1226,7 +1226,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def create_sink(self,
-            request: logging_config.CreateSinkRequest = None,
+            request: Union[logging_config.CreateSinkRequest, dict] = None,
             *,
             parent: str = None,
             sink: logging_config.LogSink = None,
@@ -1241,7 +1241,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         entries only from the resource owning the sink.
 
         Args:
-            request (google.cloud.logging_v2.types.CreateSinkRequest):
+            request (Union[google.cloud.logging_v2.types.CreateSinkRequest, dict]):
                 The request object. The parameters to `CreateSink`.
             parent (str):
                 Required. The resource in which to create the sink:
@@ -1330,7 +1330,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def update_sink(self,
-            request: logging_config.UpdateSinkRequest = None,
+            request: Union[logging_config.UpdateSinkRequest, dict] = None,
             *,
             sink_name: str = None,
             sink: logging_config.LogSink = None,
@@ -1347,7 +1347,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         the ``unique_writer_identity`` field.
 
         Args:
-            request (google.cloud.logging_v2.types.UpdateSinkRequest):
+            request (Union[google.cloud.logging_v2.types.UpdateSinkRequest, dict]):
                 The request object. The parameters to `UpdateSink`.
             sink_name (str):
                 Required. The full resource name of the sink to update,
@@ -1458,7 +1458,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def delete_sink(self,
-            request: logging_config.DeleteSinkRequest = None,
+            request: Union[logging_config.DeleteSinkRequest, dict] = None,
             *,
             sink_name: str = None,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1469,7 +1469,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         then that service account is also deleted.
 
         Args:
-            request (google.cloud.logging_v2.types.DeleteSinkRequest):
+            request (Union[google.cloud.logging_v2.types.DeleteSinkRequest, dict]):
                 The request object. The parameters to `DeleteSink`.
             sink_name (str):
                 Required. The full resource name of the sink to delete,
@@ -1533,7 +1533,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
     def list_exclusions(self,
-            request: logging_config.ListExclusionsRequest = None,
+            request: Union[logging_config.ListExclusionsRequest, dict] = None,
             *,
             parent: str = None,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1543,7 +1543,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Lists all the exclusions in a parent resource.
 
         Args:
-            request (google.cloud.logging_v2.types.ListExclusionsRequest):
+            request (Union[google.cloud.logging_v2.types.ListExclusionsRequest, dict]):
                 The request object. The parameters to `ListExclusions`.
             parent (str):
                 Required. The parent resource whose exclusions are to be
@@ -1625,7 +1625,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def get_exclusion(self,
-            request: logging_config.GetExclusionRequest = None,
+            request: Union[logging_config.GetExclusionRequest, dict] = None,
             *,
             name: str = None,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1635,7 +1635,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Gets the description of an exclusion.
 
         Args:
-            request (google.cloud.logging_v2.types.GetExclusionRequest):
+            request (Union[google.cloud.logging_v2.types.GetExclusionRequest, dict]):
                 The request object. The parameters to `GetExclusion`.
             name (str):
                 Required. The resource name of an existing exclusion:
@@ -1717,7 +1717,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def create_exclusion(self,
-            request: logging_config.CreateExclusionRequest = None,
+            request: Union[logging_config.CreateExclusionRequest, dict] = None,
             *,
             parent: str = None,
             exclusion: logging_config.LogExclusion = None,
@@ -1731,7 +1731,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         resource.
 
         Args:
-            request (google.cloud.logging_v2.types.CreateExclusionRequest):
+            request (Union[google.cloud.logging_v2.types.CreateExclusionRequest, dict]):
                 The request object. The parameters to `CreateExclusion`.
             parent (str):
                 Required. The parent resource in which to create the
@@ -1824,7 +1824,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def update_exclusion(self,
-            request: logging_config.UpdateExclusionRequest = None,
+            request: Union[logging_config.UpdateExclusionRequest, dict] = None,
             *,
             name: str = None,
             exclusion: logging_config.LogExclusion = None,
@@ -1837,7 +1837,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         exclusion.
 
         Args:
-            request (google.cloud.logging_v2.types.UpdateExclusionRequest):
+            request (Union[google.cloud.logging_v2.types.UpdateExclusionRequest, dict]):
                 The request object. The parameters to `UpdateExclusion`.
             name (str):
                 Required. The resource name of the exclusion to update:
@@ -1945,7 +1945,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def delete_exclusion(self,
-            request: logging_config.DeleteExclusionRequest = None,
+            request: Union[logging_config.DeleteExclusionRequest, dict] = None,
             *,
             name: str = None,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1955,7 +1955,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Deletes an exclusion.
 
         Args:
-            request (google.cloud.logging_v2.types.DeleteExclusionRequest):
+            request (Union[google.cloud.logging_v2.types.DeleteExclusionRequest, dict]):
                 The request object. The parameters to `DeleteExclusion`.
             name (str):
                 Required. The resource name of an existing exclusion to
@@ -2020,7 +2020,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
     def get_cmek_settings(self,
-            request: logging_config.GetCmekSettingsRequest = None,
+            request: Union[logging_config.GetCmekSettingsRequest, dict] = None,
             *,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -2037,7 +2037,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         for more information.
 
         Args:
-            request (google.cloud.logging_v2.types.GetCmekSettingsRequest):
+            request (Union[google.cloud.logging_v2.types.GetCmekSettingsRequest, dict]):
                 The request object. The parameters to
                 [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings].
                 See [Enabling CMEK for Logs
@@ -2097,7 +2097,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return response
 
     def update_cmek_settings(self,
-            request: logging_config.UpdateCmekSettingsRequest = None,
+            request: Union[logging_config.UpdateCmekSettingsRequest, dict] = None,
             *,
             retry: retries.Retry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -2120,7 +2120,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         for more information.
 
         Args:
-            request (google.cloud.logging_v2.types.UpdateCmekSettingsRequest):
+            request (Union[google.cloud.logging_v2.types.UpdateCmekSettingsRequest, dict]):
                 The request object. The parameters to
                 [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings].
                 See [Enabling CMEK for Logs
