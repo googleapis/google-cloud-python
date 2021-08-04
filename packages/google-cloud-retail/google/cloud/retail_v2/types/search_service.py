@@ -660,15 +660,24 @@ class SearchResponse(proto.Message):
                 list of string or double values with type
                 [google.protobuf.ListValue][google.protobuf.ListValue]. For
                 example, if there are two variants with colors "red" and
-                "blue", the rollup values are { key: "colorFamilies" value {
-                list_value { values { string_value: "red" } values {
-                string_value: "blue" } } } }
+                "blue", the rollup values are
+
+                ::
+
+                    { key: "colorFamilies"
+                      value {
+                        list_value {
+                          values { string_value: "red" }
+                          values { string_value: "blue" }
+                         }
+                      }
+                    }
 
                 For
                 [Product.fulfillment_info][google.cloud.retail.v2.Product.fulfillment_info],
                 the rollup values is a double value with type
-                [google.protobuf.Value][google.protobuf.Value]. For example,
-                {key: "pickupInStore.store1" value { number_value: 10 }}
+                [google.protobuf.Value][google.protobuf.Value]. For example:
+                ``{key: "pickupInStore.store1" value { number_value: 10 }}``
                 means a there are 10 variants in this product are available
                 in the store "store1".
         """
