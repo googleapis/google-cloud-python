@@ -9,4 +9,4 @@
 *               @googleapis/api-pubsub
 
 # The python-samples-reviewers team is the default owner for samples changes
-/samples/   @googleapis/python-samples-owners
+/samples/   @googleapis/api-pubsub @googleapis/python-samples-owners
