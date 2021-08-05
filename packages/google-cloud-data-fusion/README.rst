@@ -1,7 +1,7 @@
 Python Client for Cloud Data Fusion
 ===================================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Cloud Data Fusion`_: helps users build scalable, distributed data lakes on Google Cloud by integrating 
 data from siloed on-premises platforms. 
@@ -9,7 +9,7 @@ data from siloed on-premises platforms.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-gold.svg
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-data-fusion.svg
    :target: https://pypi.org/project/google-cloud-data-fusion/
