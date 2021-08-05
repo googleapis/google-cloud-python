@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/pybigquery/#history
 
+### [0.10.1](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.10.0...v0.10.1) (2021-07-30)
+
+
+### Bug Fixes
+
+* **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#220](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/220)) ([bf1f47c](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/bf1f47c794e747a2ea878347322c040636e8c2d4))
+
 ## [0.10.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.9.1...v0.10.0) (2021-07-06)
 
 
