@@ -136,6 +136,7 @@ templated_files = common.py_library(
     system_test_external_dependencies=["pytest-asyncio"],
     microgenerator=True,
     cov_level=100,
+    split_system_tests=True,
 )
 
 s.move(templated_files)
