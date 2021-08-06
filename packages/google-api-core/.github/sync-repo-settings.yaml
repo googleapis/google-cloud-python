@@ -1,12 +1,3 @@
-rebaseMergeAllowed: true
-squashMergeAllowed: true
-mergeCommitAllowed: false
-branchProtectionRules:
-- pattern: master
-  isAdminEnforced: true
-  requiredApprovingReviewCount: 1
-  requiresCodeOwnerReviews: true
-  requiresStrictStatusChecks: true
 permissionRules:
   - team: actools-python
     permission: admin
