@@ -417,6 +417,138 @@ In the example above `source_credentials` does not have direct access to list bu
 in the target project.  Using `ImpersonatedCredentials` will allow the source_credentials
 to assume the identity of a target_principal that does have access.
 
+
+Downscoped credentials
+++++++++++++++++++++++
+
+`Downscoping with Credential Access Boundaries`_ is used to restrict the
+Identity and Access Management (IAM) permissions that a short-lived credential
+can use.
+
+To downscope permissions of a source credential, a `Credential Access Boundary`
+that specifies which resources the new credential can access, as well as
+an upper bound on the permissions that are available on each resource, has to
+be defined. A downscoped credential can then be instantiated using the
+`source_credential` and the `Credential Access Boundary`.
+
+The common pattern of usage is to have a token broker with elevated access
+generate these downscoped credentials from higher access source credentials and
+pass the downscoped short-lived access tokens to a token consumer via some
+secure authenticated channel for limited access to Google Cloud Storage
+resources.
+
+.. _Downscoping with Credential Access Boundaries: https://cloud.google.com/iam/docs/downscoping-short-lived-credentials
+
+Token broker ::
+
+    import google.auth
+
+    from google.auth import downscoped
+    from google.auth.transport import requests
+
+    # Initialize the credential access boundary rules.
+    available_resource = '//storage.googleapis.com/projects/_/buckets/bucket-123'
+    available_permissions = ['inRole:roles/storage.objectViewer']
+    availability_expression = (
+        "resource.name.startsWith('projects/_/buckets/bucket-123/objects/customer-a')"
+    )
+
+    availability_condition = downscoped.AvailabilityCondition(
+        availability_expression)
+    rule = downscoped.AccessBoundaryRule(
+        available_resource=available_resource,
+        available_permissions=available_permissions,
+        availability_condition=availability_condition)
+    credential_access_boundary = downscoped.CredentialAccessBoundary(
+        rules=[rule])
+
+    # Retrieve the source credentials via ADC. 
+    source_credentials, _ = google.auth.default()
+
+    # Create the downscoped credentials.
+    downscoped_credentials = downscoped.Credentials(
+        source_credentials=source_credentials,
+        credential_access_boundary=credential_access_boundary)
+
+    # Refresh the tokens.
+    downscoped_credentials.refresh(requests.Request())
+
+    # These values will need to be passed to the Token Consumer.
+    access_token = downscoped_credentials.token
+    expiry = downscoped_credentials.expiry
+
+
+For example, a token broker can be set up on a server in a private network.
+Various workloads (token consumers) in the same network will send authenticated
+requests to that broker for downscoped tokens to access or modify specific google
+cloud storage buckets.
+
+The broker will instantiate downscoped credentials instances that can be used to
+generate short lived downscoped access tokens that can be passed to the token
+consumer. These downscoped access tokens can be injected by the consumer into
+`google.oauth2.Credentials` and used to initialize a storage client instance to
+access Google Cloud Storage resources with restricted access.
+
+Token Consumer ::
+
+    import google.oauth2
+
+    from google.auth.transport import requests
+    from google.cloud import storage
+
+    # Downscoped token retrieved from token broker.
+    # The `get_token_from_broker` callable requests a token and an expiry
+    # from the token broker.
+    downscoped_token, expiry = get_token_from_broker(
+        requests.Request(),
+        scopes=['https://www.googleapis.com/auth/cloud-platform'])
+
+    # Create the OAuth credentials from the downscoped token and pass a
+    # refresh handler to handle token expiration. Passing the original
+    # downscoped token or the expiry here is optional, as the refresh_handler
+    # will generate the downscoped token on demand.
+    credentials = google.oauth2.Credentials(
+        downscoped_token,
+        expiry=expiry,
+        scopes=['https://www.googleapis.com/auth/cloud-platform'],
+        refresh_handler=get_token_from_broker)
+
+    # Initialize a storage client with the oauth2 credentials.
+    storage_client = storage.Client(
+        project='my_project_id', credentials=credentials)
+    # Call GCS APIs.
+    # The token broker has readonly access to objects starting with "customer-a"
+    # in bucket "bucket-123".
+    bucket = storage_client.bucket('bucket-123')
+    blob = bucket.blob('customer-a-data.txt')
+    print(blob.download_as_string())
+
+
+Another reason to use downscoped credentials is to ensure tokens in flight
+always have the least privileges, e.g. Principle of Least Privilege. ::
+
+    # Create the downscoped credentials.
+    downscoped_credentials = downscoped.Credentials(
+        # source_credentials have elevated access but only a subset of
+        # these permissions are needed here.
+        source_credentials=source_credentials,
+        credential_access_boundary=credential_access_boundary)
+
+    # Pass the token directly.
+    storage_client = storage.Client(
+        project='my_project_id', credentials=downscoped_credentials)
+    # If the source credentials have elevated levels of access, the
+    # token in flight here will have limited readonly access to objects
+    # starting with "customer-a" in bucket "bucket-123".
+    bucket = storage_client.bucket('bucket-123')
+    blob = bucket.blob('customer-a-data.txt')
+    print(blob.download_as_string())
+
+
+Note: Only Cloud Storage supports Credential Access Boundaries. Other Google
+Cloud services do not support this feature.
+
+
 Identity Tokens
 +++++++++++++++
 

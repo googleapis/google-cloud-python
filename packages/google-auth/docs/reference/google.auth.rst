@@ -26,6 +26,7 @@ Submodules
    google.auth.aws
    google.auth.credentials
    google.auth._credentials_async
+   google.auth.downscoped
    google.auth.environment_vars
    google.auth.exceptions
    google.auth.external_account
