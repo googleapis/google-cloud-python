@@ -39,7 +39,12 @@ except ImportError:  # pragma: NO COVER
     pyarrow = None
 
 
-_STREAM_RESUMPTION_EXCEPTIONS = (google.api_core.exceptions.ServiceUnavailable,)
+_STREAM_RESUMPTION_EXCEPTIONS = (
+    google.api_core.exceptions.ServiceUnavailable,
+    # Caused by transport-level error. No status code was received.
+    # https://github.com/googleapis/python-bigquery-storage/issues/262
+    google.api_core.exceptions.Unknown,
+)
 
 # The Google API endpoint can unexpectedly close long-running HTTP/2 streams.
 # Unfortunately, this condition is surfaced to the caller as an internal error
