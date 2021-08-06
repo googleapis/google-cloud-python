@@ -47,7 +47,7 @@ def _should_retry(exc):
     return reason in _RETRYABLE_REASONS
 
 
-DEFAULT_RETRY = retry.Retry(predicate=_should_retry)
+DEFAULT_RETRY = retry.Retry(predicate=_should_retry, deadline=600.0)
 """The default retry object.
 
 Any method with a ``retry`` parameter will be retried automatically,
