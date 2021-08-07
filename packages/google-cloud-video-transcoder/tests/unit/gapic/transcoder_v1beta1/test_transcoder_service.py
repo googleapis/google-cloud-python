@@ -531,6 +531,7 @@ def test_create_job(transport: str = "grpc", request_type=services.CreateJobRequ
             priority=898,
             state=resources.Job.ProcessingState.PENDING,
             failure_reason="failure_reason_value",
+            ttl_after_completion_days=2670,
             template_id="template_id_value",
         )
         response = client.create_job(request)
@@ -548,6 +549,7 @@ def test_create_job(transport: str = "grpc", request_type=services.CreateJobRequ
     assert response.priority == 898
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.failure_reason == "failure_reason_value"
+    assert response.ttl_after_completion_days == 2670
 
 
 def test_create_job_from_dict():
@@ -592,6 +594,7 @@ async def test_create_job_async(
                 priority=898,
                 state=resources.Job.ProcessingState.PENDING,
                 failure_reason="failure_reason_value",
+                ttl_after_completion_days=2670,
             )
         )
         response = await client.create_job(request)
@@ -609,6 +612,7 @@ async def test_create_job_async(
     assert response.priority == 898
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.failure_reason == "failure_reason_value"
+    assert response.ttl_after_completion_days == 2670
 
 
 @pytest.mark.asyncio
@@ -1074,6 +1078,7 @@ def test_get_job(transport: str = "grpc", request_type=services.GetJobRequest):
             priority=898,
             state=resources.Job.ProcessingState.PENDING,
             failure_reason="failure_reason_value",
+            ttl_after_completion_days=2670,
             template_id="template_id_value",
         )
         response = client.get_job(request)
@@ -1091,6 +1096,7 @@ def test_get_job(transport: str = "grpc", request_type=services.GetJobRequest):
     assert response.priority == 898
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.failure_reason == "failure_reason_value"
+    assert response.ttl_after_completion_days == 2670
 
 
 def test_get_job_from_dict():
@@ -1135,6 +1141,7 @@ async def test_get_job_async(
                 priority=898,
                 state=resources.Job.ProcessingState.PENDING,
                 failure_reason="failure_reason_value",
+                ttl_after_completion_days=2670,
             )
         )
         response = await client.get_job(request)
@@ -1152,6 +1159,7 @@ async def test_get_job_async(
     assert response.priority == 898
     assert response.state == resources.Job.ProcessingState.PENDING
     assert response.failure_reason == "failure_reason_value"
+    assert response.ttl_after_completion_days == 2670
 
 
 @pytest.mark.asyncio

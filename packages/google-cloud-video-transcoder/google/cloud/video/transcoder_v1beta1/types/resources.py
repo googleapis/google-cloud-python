@@ -57,8 +57,9 @@ class Job(proto.Message):
             Input only. Specify the ``input_uri`` to populate empty
             ``uri`` fields in each element of ``Job.config.inputs`` or
             ``JobTemplate.config.inputs`` when using template. URI of
-            the media. It must be stored in Cloud Storage. For example,
-            ``gs://bucket/inputs/file.mp4``.
+            the media. Input files must be at least 5 seconds in
+            duration and stored in Cloud Storage (for example,
+            ``gs://bucket/inputs/file.mp4``).
         output_uri (str):
             Input only. Specify the ``output_uri`` to populate an empty
             ``Job.config.output.uri`` or
@@ -83,11 +84,17 @@ class Job(proto.Message):
             default is 0.
         origin_uri (google.cloud.video.transcoder_v1beta1.types.Job.OriginUri):
             Output only. The origin URI.
+            <aside class="note"><b>Note</b>: This feature is
+            not yet available.</aside>
         state (google.cloud.video.transcoder_v1beta1.types.Job.ProcessingState):
             Output only. The current state of the job.
         progress (google.cloud.video.transcoder_v1beta1.types.Progress):
             Output only. Estimated fractional progress, from ``0`` to
             ``1`` for each step.
+
+            .. raw:: html
+
+                <aside class="note"><b>Note</b>: This feature is not yet available.</aside>
         failure_reason (str):
             Output only. A description of the reason for the failure.
             This property is always present when ``state`` is
@@ -96,6 +103,10 @@ class Job(proto.Message):
             Output only. List of failure details. This property may
             contain additional information about the failure when
             ``failure_reason`` is present.
+
+            .. raw:: html
+
+                <aside class="note"><b>Note</b>: This feature is not yet available.</aside>
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the job was created.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -104,6 +115,11 @@ class Job(proto.Message):
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the transcoding
             finished.
+        ttl_after_completion_days (int):
+            Job time to live value in days, which will be
+            effective after job completion. Job should be
+            deleted automatically after the given TTL. Enter
+            a value between 1 and 90. The default is 30.
     """
 
     class ProcessingState(proto.Enum):
@@ -118,9 +134,10 @@ class Job(proto.Message):
         r"""The origin URI.
         Attributes:
             hls (str):
-                HLS master manifest URI. If multiple HLS
-                master manifests are created only first one is
-                listed.
+                HLS manifest URI per
+                https://tools.ietf.org/html/rfc8216#section-4.3.4.
+                If multiple HLS manifests are created, only the
+                first one is listed.
             dash (str):
                 Dash manifest URI. If multiple Dash manifests
                 are created, only the first one is listed.
@@ -149,6 +166,7 @@ class Job(proto.Message):
     )
     start_time = proto.Field(proto.MESSAGE, number=13, message=timestamp_pb2.Timestamp,)
     end_time = proto.Field(proto.MESSAGE, number=14, message=timestamp_pb2.Timestamp,)
+    ttl_after_completion_days = proto.Field(proto.INT32, number=15,)
 
 
 class JobTemplate(proto.Message):
@@ -218,9 +236,10 @@ class Input(proto.Message):
             specified when using advanced mapping and edit
             lists.
         uri (str):
-            URI of the media. It must be stored in Cloud Storage.
-            Example ``gs://bucket/inputs/file.mp4``. If empty the value
-            will be populated from ``Job.input_uri``.
+            URI of the media. Input files must be at least 5 seconds in
+            duration and stored in Cloud Storage (for example,
+            ``gs://bucket/inputs/file.mp4``). If empty, the value will
+            be populated from ``Job.input_uri``.
         preprocessing_config (google.cloud.video.transcoder_v1beta1.types.PreprocessingConfig):
             Preprocessing configurations.
     """
@@ -415,11 +434,21 @@ class SpriteSheet(proto.Message):
             suffix starting from 0 before the extension, such as
             ``"sprite_sheet0000000123.jpeg"``.
         sprite_width_pixels (int):
-            Required. The width of sprite in pixels. Must
-            be an even integer.
+            Required. The width of sprite in pixels. Must be an even
+            integer. To preserve the source aspect ratio, set the
+            [SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1beta1.SpriteSheet.sprite_width_pixels]
+            field or the
+            [SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1beta1.SpriteSheet.sprite_height_pixels]
+            field, but not both (the API will automatically calculate
+            the missing field).
         sprite_height_pixels (int):
-            Required. The height of sprite in pixels.
-            Must be an even integer.
+            Required. The height of sprite in pixels. Must be an even
+            integer. To preserve the source aspect ratio, set the
+            [SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1beta1.SpriteSheet.sprite_height_pixels]
+            field or the
+            [SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1beta1.SpriteSheet.sprite_width_pixels]
+            field, but not both (the API will automatically calculate
+            the missing field).
         column_count (int):
             The maximum number of sprites per row in a
             sprite sheet. The default is 0, which indicates
@@ -444,6 +473,13 @@ class SpriteSheet(proto.Message):
         interval (google.protobuf.duration_pb2.Duration):
             Starting from ``0s``, create sprites at regular intervals.
             Specify the interval value in seconds.
+        quality (int):
+            The quality of the generated sprite sheet.
+            Enter a value between 1 and 100, where 1 is the
+            lowest quality and 100 is the highest quality.
+            The default is 100. A high quality value
+            corresponds to a low image data compression
+            ratio.
     """
 
     format_ = proto.Field(proto.STRING, number=1,)
@@ -465,6 +501,7 @@ class SpriteSheet(proto.Message):
         oneof="extraction_strategy",
         message=duration_pb2.Duration,
     )
+    quality = proto.Field(proto.INT32, number=11,)
 
 
 class Overlay(proto.Message):
@@ -499,8 +536,9 @@ class Overlay(proto.Message):
         r"""Overlaid jpeg image.
         Attributes:
             uri (str):
-                Required. URI of the image in Cloud Storage. For example,
-                ``gs://bucket/inputs/image.jpeg``.
+                Required. URI of the JPEG image in Cloud Storage. For
+                example, ``gs://bucket/inputs/image.jpeg``. JPEG is the only
+                supported image type.
             resolution (google.cloud.video.transcoder_v1beta1.types.Overlay.NormalizedCoordinate):
                 Normalized image resolution, based on output video
                 resolution. Valid values: ``0.0``–``1.0``. To respect the
@@ -508,8 +546,9 @@ class Overlay(proto.Message):
                 ``0.0``. To use the original image resolution, set both
                 ``x`` and ``y`` to ``0.0``.
             alpha (float):
-                Target image opacity. Valid values: ``1`` (solid, default),
-                ``0`` (transparent).
+                Target image opacity. Valid values are from ``1.0`` (solid,
+                default) to ``0.0`` (transparent), exclusive. Set this to a
+                value greater than ``0.0``.
         """
 
         uri = proto.Field(proto.STRING, number=1,)
@@ -524,7 +563,10 @@ class Overlay(proto.Message):
             xy (google.cloud.video.transcoder_v1beta1.types.Overlay.NormalizedCoordinate):
                 Normalized coordinates based on output video resolution.
                 Valid values: ``0.0``–``1.0``. ``xy`` is the upper-left
-                coordinate of the overlay object.
+                coordinate of the overlay object. For example, use the x and
+                y coordinates {0,0} to position the top-left corner of the
+                overlay animation in the top-left corner of the output
+                video.
             start_time_offset (google.protobuf.duration_pb2.Duration):
                 The time to start displaying the overlay
                 object, in seconds. Default: 0
@@ -546,7 +588,10 @@ class Overlay(proto.Message):
             xy (google.cloud.video.transcoder_v1beta1.types.Overlay.NormalizedCoordinate):
                 Normalized coordinates based on output video resolution.
                 Valid values: ``0.0``–``1.0``. ``xy`` is the upper-left
-                coordinate of the overlay object.
+                coordinate of the overlay object. For example, use the x and
+                y coordinates {0,0} to position the top-left corner of the
+                overlay animation in the top-left corner of the output
+                video.
             start_time_offset (google.protobuf.duration_pb2.Duration):
                 The time to start the fade animation, in
                 seconds. Default: 0
@@ -626,6 +671,10 @@ class PreprocessingConfig(proto.Message):
             Deblock preprocessing configuration.
         audio (google.cloud.video.transcoder_v1beta1.types.PreprocessingConfig.Audio):
             Audio preprocessing configuration.
+        crop (google.cloud.video.transcoder_v1beta1.types.PreprocessingConfig.Crop):
+            Specify the video cropping configuration.
+        pad (google.cloud.video.transcoder_v1beta1.types.PreprocessingConfig.Pad):
+            Specify the video pad filter configuration.
     """
 
     class Color(proto.Message):
@@ -691,17 +740,19 @@ class PreprocessingConfig(proto.Message):
         r"""Audio preprocessing configuration.
         Attributes:
             lufs (float):
-                Specify audio loudness normalization in
-                loudness units relative to full scale (LUFS).
-                Enter a value between -24 and 0, where -24 is
-                the Advanced Television Systems Committee (ATSC
-                A/85), -23 is the EU R128 broadcast standard,
-                -19 is the prior standard for online mono audio,
-                -18 is the ReplayGain standard, -16 is the prior
-                standard for stereo audio, -14 is the new online
-                audio standard recommended by Spotify, as well
-                as Amazon Echo, and 0 disables normalization.
-                The default is 0.
+                Specify audio loudness normalization in loudness units
+                relative to full scale (LUFS). Enter a value between -24 and
+                0 (the default), where:
+
+                -  -24 is the Advanced Television Systems Committee (ATSC
+                   A/85) standard
+                -  -23 is the EU R128 broadcast standard
+                -  -19 is the prior standard for online mono audio
+                -  -18 is the ReplayGain standard
+                -  -16 is the prior standard for stereo audio
+                -  -14 is the new online audio standard recommended by
+                   Spotify, as well as Amazon Echo
+                -  0 disables normalization
             high_boost (bool):
                 Enable boosting high frequency components. The default is
                 ``false``.
@@ -714,36 +765,95 @@ class PreprocessingConfig(proto.Message):
         high_boost = proto.Field(proto.BOOL, number=2,)
         low_boost = proto.Field(proto.BOOL, number=3,)
 
+    class Crop(proto.Message):
+        r"""Video cropping configuration for the input video. The cropped
+        input video is scaled to match the output resolution.
+
+        Attributes:
+            top_pixels (int):
+                The number of pixels to crop from the top.
+                The default is 0.
+            bottom_pixels (int):
+                The number of pixels to crop from the bottom.
+                The default is 0.
+            left_pixels (int):
+                The number of pixels to crop from the left.
+                The default is 0.
+            right_pixels (int):
+                The number of pixels to crop from the right.
+                The default is 0.
+        """
+
+        top_pixels = proto.Field(proto.INT32, number=1,)
+        bottom_pixels = proto.Field(proto.INT32, number=2,)
+        left_pixels = proto.Field(proto.INT32, number=3,)
+        right_pixels = proto.Field(proto.INT32, number=4,)
+
+    class Pad(proto.Message):
+        r"""Pad filter configuration for the input video. The padded
+        input video is scaled after padding with black to match the
+        output resolution.
+
+        Attributes:
+            top_pixels (int):
+                The number of pixels to add to the top. The
+                default is 0.
+            bottom_pixels (int):
+                The number of pixels to add to the bottom.
+                The default is 0.
+            left_pixels (int):
+                The number of pixels to add to the left. The
+                default is 0.
+            right_pixels (int):
+                The number of pixels to add to the right. The
+                default is 0.
+        """
+
+        top_pixels = proto.Field(proto.INT32, number=1,)
+        bottom_pixels = proto.Field(proto.INT32, number=2,)
+        left_pixels = proto.Field(proto.INT32, number=3,)
+        right_pixels = proto.Field(proto.INT32, number=4,)
+
     color = proto.Field(proto.MESSAGE, number=1, message=Color,)
     denoise = proto.Field(proto.MESSAGE, number=2, message=Denoise,)
     deblock = proto.Field(proto.MESSAGE, number=3, message=Deblock,)
     audio = proto.Field(proto.MESSAGE, number=4, message=Audio,)
+    crop = proto.Field(proto.MESSAGE, number=5, message=Crop,)
+    pad = proto.Field(proto.MESSAGE, number=6, message=Pad,)
 
 
 class VideoStream(proto.Message):
     r"""Video stream resource.
     Attributes:
         codec (str):
-            Codec type. The default is ``"h264"``.
+            Codec type. The following codecs are supported:
 
-            Supported codecs:
-
-            -  'h264'
-            -  'h265'
-            -  'vp9'
+            -  ``h264`` (default)
+            -  ``h265``
+            -  ``vp9``
         profile (str):
-            Enforce specified codec profile. The default is ``"high"``.
+            Enforces the specified codec profile. The following profiles
+            are supported:
 
-            Supported codec profiles:
+            -  ``baseline``
+            -  ``main``
+            -  ``high`` (default)
 
-            -  'baseline'
-            -  'main'
-            -  'high'
+            The available options are FFmpeg-compatible. Note that
+            certain values for this field may cause the transcoder to
+            override other fields you set in the ``VideoStream``
+            message.
         tune (str):
-            Enforce specified codec tune.
+            Enforces the specified codec tune. The available options are
+            FFmpeg-compatible. Note that certain values for this field
+            may cause the transcoder to override other fields you set in
+            the ``VideoStream`` message.
         preset (str):
-            Enforce specified codec preset. The default is
-            ``"veryfast"``.
+            Enforces the specified codec preset. The default is
+            ``veryfast``. The available options are FFmpeg-compatible.
+            Note that certain values for this field may cause the
+            transcoder to override other fields you set in the
+            ``VideoStream`` message.
         height_pixels (int):
             The height of the video in pixels. Must be an
             even integer. When not specified, the height is
@@ -772,7 +882,9 @@ class VideoStream(proto.Message):
             -  'yuv444p12' 12-bit HDR pixel format.
         bitrate_bps (int):
             Required. The video bitrate in bits per
-            second. Must be between 1 and 1,000,000,000.
+            second. The minimum value is 1,000. The maximum
+            value for H264/H265 is 800,000,000. The maximum
+            value for VP9 is 480,000,000.
         rate_control_mode (str):
             Specify the ``rate_control_mode``. The default is ``"vbr"``.
 
@@ -804,7 +916,10 @@ class VideoStream(proto.Message):
             frame count. Must be greater than zero.
         gop_duration (google.protobuf.duration_pb2.Duration):
             Select the GOP size based on the specified duration. The
-            default is ``"3s"``.
+            default is ``"3s"``. Note that ``gopDuration`` must be less
+            than or equal to ```segmentDuration`` <#SegmentSettings>`__,
+            and ```segmentDuration`` <#SegmentSettings>`__ must be
+            divisible by ``gopDuration``.
         entropy_coder (str):
             The entropy coder to use. The default is ``"cabac"``.
 
@@ -824,30 +939,10 @@ class VideoStream(proto.Message):
             (FPS). Must be less than or equal to 120. Will default to
             the input frame rate if larger than the input frame rate.
             The API will generate an output FPS that is divisible by the
-            input FPS, and smaller or equal to the target FPS.
-
-            The following table shows the computed video FPS given the
-            target FPS (in parenthesis) and input FPS (in the first
-            column):
-
-            ::
-
-               |        | (30)   | (60)   | (25) | (50) |
-               |--------|--------|--------|------|------|
-               | 240    | Fail   | Fail   | Fail | Fail |
-               | 120    | 30     | 60     | 20   | 30   |
-               | 100    | 25     | 50     | 20   | 30   |
-               | 50     | 25     | 50     | 20   | 30   |
-               | 60     | 30     | 60     | 20   | 30   |
-               | 59.94  | 29.97  | 59.94  | 20   | 30   |
-               | 48     | 24     | 48     | 20   | 30   |
-               | 30     | 30     | 30     | 20   | 30   |
-               | 25     | 25     | 25     | 20   | 30   |
-               | 24     | 24     | 24     | 20   | 30   |
-               | 23.976 | 23.976 | 23.976 | 20   | 30   |
-               | 15     | 15     | 15     | 20   | 30   |
-               | 12     | 12     | 12     | 20   | 30   |
-               | 10     | 10     | 10     | 20   | 30   |
+            input FPS, and smaller or equal to the target FPS. See
+            `Calculate frame
+            rate <https://cloud.google.com/transcoder/docs/concepts/frame-rate>`__
+            for more information.
         aq_strength (float):
             Specify the intensity of the adaptive
             quantizer (AQ). Must be between 0 and 1, where 0
@@ -1051,7 +1146,10 @@ class SegmentSettings(proto.Message):
     Attributes:
         segment_duration (google.protobuf.duration_pb2.Duration):
             Duration of the segments in seconds. The default is
-            ``"6.0s"``.
+            ``"6.0s"``. Note that ``segmentDuration`` must be greater
+            than or equal to ```gopDuration`` <#videostream>`__, and
+            ``segmentDuration`` must be divisible by
+            ```gopDuration`` <#videostream>`__.
         individual_segments (bool):
             Required. Create an individual segment file. The default is
             ``false``.
