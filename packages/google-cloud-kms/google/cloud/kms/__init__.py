@@ -44,6 +44,8 @@ from google.cloud.kms_v1.types.service import DestroyCryptoKeyVersionRequest
 from google.cloud.kms_v1.types.service import Digest
 from google.cloud.kms_v1.types.service import EncryptRequest
 from google.cloud.kms_v1.types.service import EncryptResponse
+from google.cloud.kms_v1.types.service import GenerateRandomBytesRequest
+from google.cloud.kms_v1.types.service import GenerateRandomBytesResponse
 from google.cloud.kms_v1.types.service import GetCryptoKeyRequest
 from google.cloud.kms_v1.types.service import GetCryptoKeyVersionRequest
 from google.cloud.kms_v1.types.service import GetImportJobRequest
@@ -59,6 +61,10 @@ from google.cloud.kms_v1.types.service import ListImportJobsResponse
 from google.cloud.kms_v1.types.service import ListKeyRingsRequest
 from google.cloud.kms_v1.types.service import ListKeyRingsResponse
 from google.cloud.kms_v1.types.service import LocationMetadata
+from google.cloud.kms_v1.types.service import MacSignRequest
+from google.cloud.kms_v1.types.service import MacSignResponse
+from google.cloud.kms_v1.types.service import MacVerifyRequest
+from google.cloud.kms_v1.types.service import MacVerifyResponse
 from google.cloud.kms_v1.types.service import RestoreCryptoKeyVersionRequest
 from google.cloud.kms_v1.types.service import UpdateCryptoKeyPrimaryVersionRequest
 from google.cloud.kms_v1.types.service import UpdateCryptoKeyRequest
@@ -90,6 +96,8 @@ __all__ = (
     "Digest",
     "EncryptRequest",
     "EncryptResponse",
+    "GenerateRandomBytesRequest",
+    "GenerateRandomBytesResponse",
     "GetCryptoKeyRequest",
     "GetCryptoKeyVersionRequest",
     "GetImportJobRequest",
@@ -105,6 +113,10 @@ __all__ = (
     "ListKeyRingsRequest",
     "ListKeyRingsResponse",
     "LocationMetadata",
+    "MacSignRequest",
+    "MacSignResponse",
+    "MacVerifyRequest",
+    "MacVerifyResponse",
     "RestoreCryptoKeyVersionRequest",
     "UpdateCryptoKeyPrimaryVersionRequest",
     "UpdateCryptoKeyRequest",

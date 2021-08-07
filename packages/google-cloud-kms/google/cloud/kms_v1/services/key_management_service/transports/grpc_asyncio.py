@@ -724,6 +724,129 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["update_crypto_key_version"]
 
     @property
+    def update_crypto_key_primary_version(
+        self,
+    ) -> Callable[
+        [service.UpdateCryptoKeyPrimaryVersionRequest], Awaitable[resources.CryptoKey]
+    ]:
+        r"""Return a callable for the update crypto key primary
+        version method over gRPC.
+
+        Update the version of a
+        [CryptoKey][google.cloud.kms.v1.CryptoKey] that will be used in
+        [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
+
+        Returns an error if called on a key whose purpose is not
+        [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
+
+        Returns:
+            Callable[[~.UpdateCryptoKeyPrimaryVersionRequest],
+                    Awaitable[~.CryptoKey]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_crypto_key_primary_version" not in self._stubs:
+            self._stubs[
+                "update_crypto_key_primary_version"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.kms.v1.KeyManagementService/UpdateCryptoKeyPrimaryVersion",
+                request_serializer=service.UpdateCryptoKeyPrimaryVersionRequest.serialize,
+                response_deserializer=resources.CryptoKey.deserialize,
+            )
+        return self._stubs["update_crypto_key_primary_version"]
+
+    @property
+    def destroy_crypto_key_version(
+        self,
+    ) -> Callable[
+        [service.DestroyCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]
+    ]:
+        r"""Return a callable for the destroy crypto key version method over gRPC.
+
+        Schedule a
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] for
+        destruction.
+
+        Upon calling this method,
+        [CryptoKeyVersion.state][google.cloud.kms.v1.CryptoKeyVersion.state]
+        will be set to
+        [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED]
+        and
+        [destroy_time][google.cloud.kms.v1.CryptoKeyVersion.destroy_time]
+        will be set to a time 24 hours in the future, at which point the
+        [state][google.cloud.kms.v1.CryptoKeyVersion.state] will be
+        changed to
+        [DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED],
+        and the key material will be irrevocably destroyed.
+
+        Before the
+        [destroy_time][google.cloud.kms.v1.CryptoKeyVersion.destroy_time]
+        is reached,
+        [RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion]
+        may be called to reverse the process.
+
+        Returns:
+            Callable[[~.DestroyCryptoKeyVersionRequest],
+                    Awaitable[~.CryptoKeyVersion]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "destroy_crypto_key_version" not in self._stubs:
+            self._stubs["destroy_crypto_key_version"] = self.grpc_channel.unary_unary(
+                "/google.cloud.kms.v1.KeyManagementService/DestroyCryptoKeyVersion",
+                request_serializer=service.DestroyCryptoKeyVersionRequest.serialize,
+                response_deserializer=resources.CryptoKeyVersion.deserialize,
+            )
+        return self._stubs["destroy_crypto_key_version"]
+
+    @property
+    def restore_crypto_key_version(
+        self,
+    ) -> Callable[
+        [service.RestoreCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]
+    ]:
+        r"""Return a callable for the restore crypto key version method over gRPC.
+
+        Restore a
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] in the
+        [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED]
+        state.
+
+        Upon restoration of the CryptoKeyVersion,
+        [state][google.cloud.kms.v1.CryptoKeyVersion.state] will be set
+        to
+        [DISABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DISABLED],
+        and
+        [destroy_time][google.cloud.kms.v1.CryptoKeyVersion.destroy_time]
+        will be cleared.
+
+        Returns:
+            Callable[[~.RestoreCryptoKeyVersionRequest],
+                    Awaitable[~.CryptoKeyVersion]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "restore_crypto_key_version" not in self._stubs:
+            self._stubs["restore_crypto_key_version"] = self.grpc_channel.unary_unary(
+                "/google.cloud.kms.v1.KeyManagementService/RestoreCryptoKeyVersion",
+                request_serializer=service.RestoreCryptoKeyVersionRequest.serialize,
+                response_deserializer=resources.CryptoKeyVersion.deserialize,
+            )
+        return self._stubs["restore_crypto_key_version"]
+
+    @property
     def encrypt(
         self,
     ) -> Callable[[service.EncryptRequest], Awaitable[service.EncryptResponse]]:
@@ -851,24 +974,20 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["asymmetric_decrypt"]
 
     @property
-    def update_crypto_key_primary_version(
+    def mac_sign(
         self,
-    ) -> Callable[
-        [service.UpdateCryptoKeyPrimaryVersionRequest], Awaitable[resources.CryptoKey]
-    ]:
-        r"""Return a callable for the update crypto key primary
-        version method over gRPC.
+    ) -> Callable[[service.MacSignRequest], Awaitable[service.MacSignResponse]]:
+        r"""Return a callable for the mac sign method over gRPC.
 
-        Update the version of a
-        [CryptoKey][google.cloud.kms.v1.CryptoKey] that will be used in
-        [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
-
-        Returns an error if called on a key whose purpose is not
-        [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
+        Signs data using a
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with
+        [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] MAC,
+        producing a tag that can be verified by another source with the
+        same key.
 
         Returns:
-            Callable[[~.UpdateCryptoKeyPrimaryVersionRequest],
-                    Awaitable[~.CryptoKey]]:
+            Callable[[~.MacSignRequest],
+                    Awaitable[~.MacSignResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -876,49 +995,29 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_crypto_key_primary_version" not in self._stubs:
-            self._stubs[
-                "update_crypto_key_primary_version"
-            ] = self.grpc_channel.unary_unary(
-                "/google.cloud.kms.v1.KeyManagementService/UpdateCryptoKeyPrimaryVersion",
-                request_serializer=service.UpdateCryptoKeyPrimaryVersionRequest.serialize,
-                response_deserializer=resources.CryptoKey.deserialize,
+        if "mac_sign" not in self._stubs:
+            self._stubs["mac_sign"] = self.grpc_channel.unary_unary(
+                "/google.cloud.kms.v1.KeyManagementService/MacSign",
+                request_serializer=service.MacSignRequest.serialize,
+                response_deserializer=service.MacSignResponse.deserialize,
             )
-        return self._stubs["update_crypto_key_primary_version"]
+        return self._stubs["mac_sign"]
 
     @property
-    def destroy_crypto_key_version(
+    def mac_verify(
         self,
-    ) -> Callable[
-        [service.DestroyCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]
-    ]:
-        r"""Return a callable for the destroy crypto key version method over gRPC.
+    ) -> Callable[[service.MacVerifyRequest], Awaitable[service.MacVerifyResponse]]:
+        r"""Return a callable for the mac verify method over gRPC.
 
-        Schedule a
-        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] for
-        destruction.
-
-        Upon calling this method,
-        [CryptoKeyVersion.state][google.cloud.kms.v1.CryptoKeyVersion.state]
-        will be set to
-        [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED]
-        and
-        [destroy_time][google.cloud.kms.v1.CryptoKeyVersion.destroy_time]
-        will be set to a time 24 hours in the future, at which point the
-        [state][google.cloud.kms.v1.CryptoKeyVersion.state] will be
-        changed to
-        [DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED],
-        and the key material will be irrevocably destroyed.
-
-        Before the
-        [destroy_time][google.cloud.kms.v1.CryptoKeyVersion.destroy_time]
-        is reached,
-        [RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion]
-        may be called to reverse the process.
+        Verifies MAC tag using a
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with
+        [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] MAC,
+        and returns a response that indicates whether or not the
+        verification was successful.
 
         Returns:
-            Callable[[~.DestroyCryptoKeyVersionRequest],
-                    Awaitable[~.CryptoKeyVersion]]:
+            Callable[[~.MacVerifyRequest],
+                    Awaitable[~.MacVerifyResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -926,38 +1025,29 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "destroy_crypto_key_version" not in self._stubs:
-            self._stubs["destroy_crypto_key_version"] = self.grpc_channel.unary_unary(
-                "/google.cloud.kms.v1.KeyManagementService/DestroyCryptoKeyVersion",
-                request_serializer=service.DestroyCryptoKeyVersionRequest.serialize,
-                response_deserializer=resources.CryptoKeyVersion.deserialize,
+        if "mac_verify" not in self._stubs:
+            self._stubs["mac_verify"] = self.grpc_channel.unary_unary(
+                "/google.cloud.kms.v1.KeyManagementService/MacVerify",
+                request_serializer=service.MacVerifyRequest.serialize,
+                response_deserializer=service.MacVerifyResponse.deserialize,
             )
-        return self._stubs["destroy_crypto_key_version"]
+        return self._stubs["mac_verify"]
 
     @property
-    def restore_crypto_key_version(
+    def generate_random_bytes(
         self,
     ) -> Callable[
-        [service.RestoreCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]
+        [service.GenerateRandomBytesRequest],
+        Awaitable[service.GenerateRandomBytesResponse],
     ]:
-        r"""Return a callable for the restore crypto key version method over gRPC.
+        r"""Return a callable for the generate random bytes method over gRPC.
 
-        Restore a
-        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] in the
-        [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED]
-        state.
-
-        Upon restoration of the CryptoKeyVersion,
-        [state][google.cloud.kms.v1.CryptoKeyVersion.state] will be set
-        to
-        [DISABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DISABLED],
-        and
-        [destroy_time][google.cloud.kms.v1.CryptoKeyVersion.destroy_time]
-        will be cleared.
+        Generate random bytes using the Cloud KMS randomness
+        source in the provided location.
 
         Returns:
-            Callable[[~.RestoreCryptoKeyVersionRequest],
-                    Awaitable[~.CryptoKeyVersion]]:
+            Callable[[~.GenerateRandomBytesRequest],
+                    Awaitable[~.GenerateRandomBytesResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -965,13 +1055,13 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "restore_crypto_key_version" not in self._stubs:
-            self._stubs["restore_crypto_key_version"] = self.grpc_channel.unary_unary(
-                "/google.cloud.kms.v1.KeyManagementService/RestoreCryptoKeyVersion",
-                request_serializer=service.RestoreCryptoKeyVersionRequest.serialize,
-                response_deserializer=resources.CryptoKeyVersion.deserialize,
+        if "generate_random_bytes" not in self._stubs:
+            self._stubs["generate_random_bytes"] = self.grpc_channel.unary_unary(
+                "/google.cloud.kms.v1.KeyManagementService/GenerateRandomBytes",
+                request_serializer=service.GenerateRandomBytesRequest.serialize,
+                response_deserializer=service.GenerateRandomBytesResponse.deserialize,
             )
-        return self._stubs["restore_crypto_key_version"]
+        return self._stubs["generate_random_bytes"]
 
     @property
     def set_iam_policy(

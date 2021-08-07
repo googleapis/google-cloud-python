@@ -55,6 +55,11 @@
                 "encrypt"
               ]
             },
+            "GenerateRandomBytes": {
+              "methods": [
+                "generate_random_bytes"
+              ]
+            },
             "GetCryptoKey": {
               "methods": [
                 "get_crypto_key"
@@ -103,6 +108,16 @@
             "ListKeyRings": {
               "methods": [
                 "list_key_rings"
+              ]
+            },
+            "MacSign": {
+              "methods": [
+                "mac_sign"
+              ]
+            },
+            "MacVerify": {
+              "methods": [
+                "mac_verify"
               ]
             },
             "RestoreCryptoKeyVersion": {
@@ -175,6 +190,11 @@
                 "encrypt"
               ]
             },
+            "GenerateRandomBytes": {
+              "methods": [
+                "generate_random_bytes"
+              ]
+            },
             "GetCryptoKey": {
               "methods": [
                 "get_crypto_key"
@@ -223,6 +243,16 @@
             "ListKeyRings": {
               "methods": [
                 "list_key_rings"
+              ]
+            },
+            "MacSign": {
+              "methods": [
+                "mac_sign"
+              ]
+            },
+            "MacVerify": {
+              "methods": [
+                "mac_verify"
               ]
             },
             "RestoreCryptoKeyVersion": {

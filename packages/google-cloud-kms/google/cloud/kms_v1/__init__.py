@@ -40,6 +40,8 @@ from .types.service import DestroyCryptoKeyVersionRequest
 from .types.service import Digest
 from .types.service import EncryptRequest
 from .types.service import EncryptResponse
+from .types.service import GenerateRandomBytesRequest
+from .types.service import GenerateRandomBytesResponse
 from .types.service import GetCryptoKeyRequest
 from .types.service import GetCryptoKeyVersionRequest
 from .types.service import GetImportJobRequest
@@ -55,6 +57,10 @@ from .types.service import ListImportJobsResponse
 from .types.service import ListKeyRingsRequest
 from .types.service import ListKeyRingsResponse
 from .types.service import LocationMetadata
+from .types.service import MacSignRequest
+from .types.service import MacSignResponse
+from .types.service import MacVerifyRequest
+from .types.service import MacVerifyResponse
 from .types.service import RestoreCryptoKeyVersionRequest
 from .types.service import UpdateCryptoKeyPrimaryVersionRequest
 from .types.service import UpdateCryptoKeyRequest
@@ -80,6 +86,8 @@ __all__ = (
     "EncryptRequest",
     "EncryptResponse",
     "ExternalProtectionLevelOptions",
+    "GenerateRandomBytesRequest",
+    "GenerateRandomBytesResponse",
     "GetCryptoKeyRequest",
     "GetCryptoKeyVersionRequest",
     "GetImportJobRequest",
@@ -99,6 +107,10 @@ __all__ = (
     "ListKeyRingsRequest",
     "ListKeyRingsResponse",
     "LocationMetadata",
+    "MacSignRequest",
+    "MacSignResponse",
+    "MacVerifyRequest",
+    "MacVerifyResponse",
     "ProtectionLevel",
     "PublicKey",
     "RestoreCryptoKeyVersionRequest",

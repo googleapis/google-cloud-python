@@ -27,7 +27,7 @@ default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
     # Escape single '_' which RST treats as target names
-    s.replace(library / "google/**/resources.py", '''"(.*?)_((SIGN)|(DECRYPT))_"''', '''"\g<1>_\g<2>\_"''')
+    s.replace(library / "google/**/resources.py", '''"(.*?)((SIGN)|(DECRYPT)|(HMAC))_"''', '''"\g<1>\g<2>\_"''')
 
     # Docstrings of *_iam_policy() methods are formatted poorly and must be fixed
     # in order to avoid docstring format warnings in docs.

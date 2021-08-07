@@ -378,6 +378,51 @@ class KeyManagementServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.update_crypto_key_primary_version: gapic_v1.method.wrap_method(
+                self.update_crypto_key_primary_version,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.destroy_crypto_key_version: gapic_v1.method.wrap_method(
+                self.destroy_crypto_key_version,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.restore_crypto_key_version: gapic_v1.method.wrap_method(
+                self.restore_crypto_key_version,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.encrypt: gapic_v1.method.wrap_method(
                 self.encrypt,
                 default_retry=retries.Retry(
@@ -438,49 +483,15 @@ class KeyManagementServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_crypto_key_primary_version: gapic_v1.method.wrap_method(
-                self.update_crypto_key_primary_version,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
+            self.mac_sign: gapic_v1.method.wrap_method(
+                self.mac_sign, default_timeout=None, client_info=client_info,
             ),
-            self.destroy_crypto_key_version: gapic_v1.method.wrap_method(
-                self.destroy_crypto_key_version,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
-                client_info=client_info,
+            self.mac_verify: gapic_v1.method.wrap_method(
+                self.mac_verify, default_timeout=None, client_info=client_info,
             ),
-            self.restore_crypto_key_version: gapic_v1.method.wrap_method(
-                self.restore_crypto_key_version,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=60.0,
-                ),
-                default_timeout=60.0,
+            self.generate_random_bytes: gapic_v1.method.wrap_method(
+                self.generate_random_bytes,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
@@ -637,6 +648,33 @@ class KeyManagementServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def update_crypto_key_primary_version(
+        self,
+    ) -> Callable[
+        [service.UpdateCryptoKeyPrimaryVersionRequest],
+        Union[resources.CryptoKey, Awaitable[resources.CryptoKey]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def destroy_crypto_key_version(
+        self,
+    ) -> Callable[
+        [service.DestroyCryptoKeyVersionRequest],
+        Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def restore_crypto_key_version(
+        self,
+    ) -> Callable[
+        [service.RestoreCryptoKeyVersionRequest],
+        Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def encrypt(
         self,
     ) -> Callable[
@@ -678,29 +716,32 @@ class KeyManagementServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def update_crypto_key_primary_version(
+    def mac_sign(
         self,
     ) -> Callable[
-        [service.UpdateCryptoKeyPrimaryVersionRequest],
-        Union[resources.CryptoKey, Awaitable[resources.CryptoKey]],
+        [service.MacSignRequest],
+        Union[service.MacSignResponse, Awaitable[service.MacSignResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def destroy_crypto_key_version(
+    def mac_verify(
         self,
     ) -> Callable[
-        [service.DestroyCryptoKeyVersionRequest],
-        Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]],
+        [service.MacVerifyRequest],
+        Union[service.MacVerifyResponse, Awaitable[service.MacVerifyResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def restore_crypto_key_version(
+    def generate_random_bytes(
         self,
     ) -> Callable[
-        [service.RestoreCryptoKeyVersionRequest],
-        Union[resources.CryptoKeyVersion, Awaitable[resources.CryptoKeyVersion]],
+        [service.GenerateRandomBytesRequest],
+        Union[
+            service.GenerateRandomBytesResponse,
+            Awaitable[service.GenerateRandomBytesResponse],
+        ],
     ]:
         raise NotImplementedError()
 

@@ -1818,6 +1818,329 @@ class KeyManagementServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def update_crypto_key_primary_version(
+        self,
+        request: service.UpdateCryptoKeyPrimaryVersionRequest = None,
+        *,
+        name: str = None,
+        crypto_key_version_id: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.CryptoKey:
+        r"""Update the version of a
+        [CryptoKey][google.cloud.kms.v1.CryptoKey] that will be used in
+        [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
+
+        Returns an error if called on a key whose purpose is not
+        [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
+
+
+        Args:
+            request (:class:`google.cloud.kms_v1.types.UpdateCryptoKeyPrimaryVersionRequest`):
+                The request object. Request message for
+                [KeyManagementService.UpdateCryptoKeyPrimaryVersion][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryVersion].
+            name (:class:`str`):
+                Required. The resource name of the
+                [CryptoKey][google.cloud.kms.v1.CryptoKey] to update.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            crypto_key_version_id (:class:`str`):
+                Required. The id of the child
+                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                to use as primary.
+
+                This corresponds to the ``crypto_key_version_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.kms_v1.types.CryptoKey:
+                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a logical key that can be used for cryptographic
+                   operations.
+
+                   A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made
+                   up of zero or more
+                   [versions][google.cloud.kms.v1.CryptoKeyVersion],
+                   which represent the actual key material used in
+                   cryptographic operations.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, crypto_key_version_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.UpdateCryptoKeyPrimaryVersionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if crypto_key_version_id is not None:
+            request.crypto_key_version_id = crypto_key_version_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_crypto_key_primary_version,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def destroy_crypto_key_version(
+        self,
+        request: service.DestroyCryptoKeyVersionRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.CryptoKeyVersion:
+        r"""Schedule a
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] for
+        destruction.
+
+        Upon calling this method,
+        [CryptoKeyVersion.state][google.cloud.kms.v1.CryptoKeyVersion.state]
+        will be set to
+        [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED]
+        and
+        [destroy_time][google.cloud.kms.v1.CryptoKeyVersion.destroy_time]
+        will be set to a time 24 hours in the future, at which point the
+        [state][google.cloud.kms.v1.CryptoKeyVersion.state] will be
+        changed to
+        [DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED],
+        and the key material will be irrevocably destroyed.
+
+        Before the
+        [destroy_time][google.cloud.kms.v1.CryptoKeyVersion.destroy_time]
+        is reached,
+        [RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion]
+        may be called to reverse the process.
+
+
+        Args:
+            request (:class:`google.cloud.kms_v1.types.DestroyCryptoKeyVersionRequest`):
+                The request object. Request message for
+                [KeyManagementService.DestroyCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.DestroyCryptoKeyVersion].
+            name (:class:`str`):
+                Required. The resource name of the
+                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                to destroy.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.kms_v1.types.CryptoKeyVersion:
+                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
+                   associated key material.
+
+                   An
+                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                   version can be used for cryptographic operations.
+
+                   For security reasons, the raw cryptographic key
+                   material represented by a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   can never be viewed or exported. It can only be used
+                   to encrypt, decrypt, or sign data when an authorized
+                   user or application invokes Cloud KMS.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.DestroyCryptoKeyVersionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.destroy_crypto_key_version,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def restore_crypto_key_version(
+        self,
+        request: service.RestoreCryptoKeyVersionRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.CryptoKeyVersion:
+        r"""Restore a
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] in the
+        [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED]
+        state.
+
+        Upon restoration of the CryptoKeyVersion,
+        [state][google.cloud.kms.v1.CryptoKeyVersion.state] will be set
+        to
+        [DISABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DISABLED],
+        and
+        [destroy_time][google.cloud.kms.v1.CryptoKeyVersion.destroy_time]
+        will be cleared.
+
+
+        Args:
+            request (:class:`google.cloud.kms_v1.types.RestoreCryptoKeyVersionRequest`):
+                The request object. Request message for
+                [KeyManagementService.RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion].
+            name (:class:`str`):
+                Required. The resource name of the
+                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                to restore.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.kms_v1.types.CryptoKeyVersion:
+                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
+                   associated key material.
+
+                   An
+                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                   version can be used for cryptographic operations.
+
+                   For security reasons, the raw cryptographic key
+                   material represented by a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   can never be viewed or exported. It can only be used
+                   to encrypt, decrypt, or sign data when an authorized
+                   user or application invokes Cloud KMS.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.RestoreCryptoKeyVersionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.restore_crypto_key_version,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
     async def encrypt(
         self,
         request: service.EncryptRequest = None,
@@ -2228,41 +2551,41 @@ class KeyManagementServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def update_crypto_key_primary_version(
+    async def mac_sign(
         self,
-        request: service.UpdateCryptoKeyPrimaryVersionRequest = None,
+        request: service.MacSignRequest = None,
         *,
         name: str = None,
-        crypto_key_version_id: str = None,
+        data: bytes = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.CryptoKey:
-        r"""Update the version of a
-        [CryptoKey][google.cloud.kms.v1.CryptoKey] that will be used in
-        [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
-
-        Returns an error if called on a key whose purpose is not
-        [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
+    ) -> service.MacSignResponse:
+        r"""Signs data using a
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with
+        [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] MAC,
+        producing a tag that can be verified by another source with the
+        same key.
 
 
         Args:
-            request (:class:`google.cloud.kms_v1.types.UpdateCryptoKeyPrimaryVersionRequest`):
+            request (:class:`google.cloud.kms_v1.types.MacSignRequest`):
                 The request object. Request message for
-                [KeyManagementService.UpdateCryptoKeyPrimaryVersion][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryVersion].
+                [KeyManagementService.MacSign][google.cloud.kms.v1.KeyManagementService.MacSign].
             name (:class:`str`):
                 Required. The resource name of the
-                [CryptoKey][google.cloud.kms.v1.CryptoKey] to update.
+                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                to use for signing.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            crypto_key_version_id (:class:`str`):
-                Required. The id of the child
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                to use as primary.
+            data (:class:`bytes`):
+                Required. The data to sign. The MAC
+                tag is computed over this data field
+                based on the specific algorithm.
 
-                This corresponds to the ``crypto_key_version_id`` field
+                This corresponds to the ``data`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2272,51 +2595,35 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.kms_v1.types.CryptoKey:
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a logical key that can be used for cryptographic
-                   operations.
-
-                   A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made
-                   up of zero or more
-                   [versions][google.cloud.kms.v1.CryptoKeyVersion],
-                   which represent the actual key material used in
-                   cryptographic operations.
+            google.cloud.kms_v1.types.MacSignResponse:
+                Response message for
+                [KeyManagementService.MacSign][google.cloud.kms.v1.KeyManagementService.MacSign].
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name, crypto_key_version_id])
+        has_flattened_params = any([name, data])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.UpdateCryptoKeyPrimaryVersionRequest(request)
+        request = service.MacSignRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         if name is not None:
             request.name = name
-        if crypto_key_version_id is not None:
-            request.crypto_key_version_id = crypto_key_version_id
+        if data is not None:
+            request.data = data
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_crypto_key_primary_version,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
+            self._client._transport.mac_sign,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2332,48 +2639,47 @@ class KeyManagementServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def destroy_crypto_key_version(
+    async def mac_verify(
         self,
-        request: service.DestroyCryptoKeyVersionRequest = None,
+        request: service.MacVerifyRequest = None,
         *,
         name: str = None,
+        data: bytes = None,
+        mac: bytes = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.CryptoKeyVersion:
-        r"""Schedule a
-        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] for
-        destruction.
-
-        Upon calling this method,
-        [CryptoKeyVersion.state][google.cloud.kms.v1.CryptoKeyVersion.state]
-        will be set to
-        [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED]
-        and
-        [destroy_time][google.cloud.kms.v1.CryptoKeyVersion.destroy_time]
-        will be set to a time 24 hours in the future, at which point the
-        [state][google.cloud.kms.v1.CryptoKeyVersion.state] will be
-        changed to
-        [DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED],
-        and the key material will be irrevocably destroyed.
-
-        Before the
-        [destroy_time][google.cloud.kms.v1.CryptoKeyVersion.destroy_time]
-        is reached,
-        [RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion]
-        may be called to reverse the process.
+    ) -> service.MacVerifyResponse:
+        r"""Verifies MAC tag using a
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with
+        [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] MAC,
+        and returns a response that indicates whether or not the
+        verification was successful.
 
 
         Args:
-            request (:class:`google.cloud.kms_v1.types.DestroyCryptoKeyVersionRequest`):
+            request (:class:`google.cloud.kms_v1.types.MacVerifyRequest`):
                 The request object. Request message for
-                [KeyManagementService.DestroyCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.DestroyCryptoKeyVersion].
+                [KeyManagementService.MacVerify][google.cloud.kms.v1.KeyManagementService.MacVerify].
             name (:class:`str`):
                 Required. The resource name of the
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                to destroy.
+                to use for verification.
 
                 This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            data (:class:`bytes`):
+                Required. The data used previously as a
+                [MacSignRequest.data][google.cloud.kms.v1.MacSignRequest.data]
+                to generate the MAC tag.
+
+                This corresponds to the ``data`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            mac (:class:`bytes`):
+                Required. The signature to verify.
+                This corresponds to the ``mac`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2383,54 +2689,37 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.kms_v1.types.CryptoKeyVersion:
-                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
-                   associated key material.
-
-                   An
-                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
-                   version can be used for cryptographic operations.
-
-                   For security reasons, the raw cryptographic key
-                   material represented by a
-                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                   can never be viewed or exported. It can only be used
-                   to encrypt, decrypt, or sign data when an authorized
-                   user or application invokes Cloud KMS.
+            google.cloud.kms_v1.types.MacVerifyResponse:
+                Response message for
+                [KeyManagementService.MacVerify][google.cloud.kms.v1.KeyManagementService.MacVerify].
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        has_flattened_params = any([name, data, mac])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.DestroyCryptoKeyVersionRequest(request)
+        request = service.MacVerifyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         if name is not None:
             request.name = name
+        if data is not None:
+            request.data = data
+        if mac is not None:
+            request.mac = mac
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.destroy_crypto_key_version,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
+            self._client._transport.mac_verify,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2446,39 +2735,49 @@ class KeyManagementServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def restore_crypto_key_version(
+    async def generate_random_bytes(
         self,
-        request: service.RestoreCryptoKeyVersionRequest = None,
+        request: service.GenerateRandomBytesRequest = None,
         *,
-        name: str = None,
+        location: str = None,
+        length_bytes: int = None,
+        protection_level: resources.ProtectionLevel = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.CryptoKeyVersion:
-        r"""Restore a
-        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] in the
-        [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED]
-        state.
-
-        Upon restoration of the CryptoKeyVersion,
-        [state][google.cloud.kms.v1.CryptoKeyVersion.state] will be set
-        to
-        [DISABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DISABLED],
-        and
-        [destroy_time][google.cloud.kms.v1.CryptoKeyVersion.destroy_time]
-        will be cleared.
+    ) -> service.GenerateRandomBytesResponse:
+        r"""Generate random bytes using the Cloud KMS randomness
+        source in the provided location.
 
 
         Args:
-            request (:class:`google.cloud.kms_v1.types.RestoreCryptoKeyVersionRequest`):
+            request (:class:`google.cloud.kms_v1.types.GenerateRandomBytesRequest`):
                 The request object. Request message for
-                [KeyManagementService.RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion].
-            name (:class:`str`):
-                Required. The resource name of the
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                to restore.
+                [KeyManagementService.GenerateRandomBytes][google.cloud.kms.v1.KeyManagementService.GenerateRandomBytes].
+            location (:class:`str`):
+                The project-specific location in
+                which to generate random bytes. For
+                example, "projects/my-
+                project/locations/us-central1".
 
-                This corresponds to the ``name`` field
+                This corresponds to the ``location`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            length_bytes (:class:`int`):
+                The length in bytes of the amount of
+                randomness to retrieve.  Minimum 8
+                bytes, maximum 1024 bytes.
+
+                This corresponds to the ``length_bytes`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            protection_level (:class:`google.cloud.kms_v1.types.ProtectionLevel`):
+                The
+                [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
+                to use when generating the random data. Defaults to
+                [SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE].
+
+                This corresponds to the ``protection_level`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2488,61 +2787,44 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.kms_v1.types.CryptoKeyVersion:
-                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
-                   associated key material.
-
-                   An
-                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
-                   version can be used for cryptographic operations.
-
-                   For security reasons, the raw cryptographic key
-                   material represented by a
-                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                   can never be viewed or exported. It can only be used
-                   to encrypt, decrypt, or sign data when an authorized
-                   user or application invokes Cloud KMS.
+            google.cloud.kms_v1.types.GenerateRandomBytesResponse:
+                Response message for
+                [KeyManagementService.GenerateRandomBytes][google.cloud.kms.v1.KeyManagementService.GenerateRandomBytes].
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        has_flattened_params = any([location, length_bytes, protection_level])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = service.RestoreCryptoKeyVersionRequest(request)
+        request = service.GenerateRandomBytesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-        if name is not None:
-            request.name = name
+        if location is not None:
+            request.location = location
+        if length_bytes is not None:
+            request.length_bytes = length_bytes
+        if protection_level is not None:
+            request.protection_level = protection_level
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.restore_crypto_key_version,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=60.0,
-            ),
-            default_timeout=60.0,
+            self._client._transport.generate_random_bytes,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("location", request.location),)),
         )
 
         # Send the request.
