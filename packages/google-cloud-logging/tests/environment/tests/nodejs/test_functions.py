@@ -19,9 +19,10 @@ import inspect
 import google.cloud.logging
 
 from ..common.common import Common
+from ..common.stdout import CommonStdout
 
 
-class TestCloudFunctions(Common, unittest.TestCase):
+class TestCloudFunctions(Common, CommonStdout, unittest.TestCase):
 
     environment = "functions"
     language = "nodejs"
@@ -32,3 +33,34 @@ class TestCloudFunctions(Common, unittest.TestCase):
         "function_name",
         "project_id",
     ]
+
+    request_props = [
+        "requestMethod",
+        "requestUrl",
+        "protocol",
+    ]
+
+    stdout_payload_props = [
+        "message",
+        "resource",
+        "timestamp",
+        "logName",
+    ]
+    stdout_severity = "WARNING"
+    stdout_request_props = request_props
+    stdout_labels = [
+        "foo",
+        # Nicely inserted by the agent
+        "execution_id",
+    ]
+    # Randomly dropped by Functions agent:
+    # stdout_insert_id = '42'
+    # stdout_trace = /traces/0679686673a'
+    # stdout_span_id = '000000000000004a'
+    # stdout_trace_sampled = 'true'
+    # =============================
+    # Not lifted and just left in JSONPayload:
+    # stdout_resource_type
+    # stdout_resource_labels
+    # stdout_log_name
+    # stdout_timestamp

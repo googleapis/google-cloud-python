@@ -79,6 +79,7 @@ class Common:
         self._trigger(snippet, log_text=log_text, **kwargs)
         sleep(2)
         filter_str = self._add_time_condition_to_filter(log_text)
+        print(filter_str)
         # give the command time to be received
         tries = 0
         while tries < max_tries:
@@ -171,6 +172,21 @@ class Common:
         for label in self.monitored_resource_labels:
             self.assertTrue(found_resource.labels[label],
                 f'resource.labels[{label}] is not set')
+
+    def test_request_log(self):
+        if self.language not in ["nodejs"]:
+            return True
+        log_text = f"{inspect.currentframe().f_code.co_name}"
+        log_list = self.trigger_and_retrieve(log_text, "requestlog")
+        # Note: 2 logs are spawned, only one containing http_request prop.
+        log_entry = log_list[-1]
+        if log_entry.http_request is None:
+          log_entry = log_list[-2]
+        found_request = log_entry.http_request
+        if hasattr(self, 'request_props'):
+            for prop in self.request_props:
+                self.assertTrue(found_request[prop],
+                f'{prop} is not set')
 
     def test_severity(self):
         if self.language != "python":

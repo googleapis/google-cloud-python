@@ -70,4 +70,6 @@ Test files in `tests/<language>` can inherit from any file in `tests/common` log
 
 | Test Name      | Optional Input       | Description                      |
 | -------------- | ----------------     | -------------------------------- |
-| `simplelog`    | `log_name`, `log_text` |  Logs a simple text payload      |
+| `simplelog`    | `log_name`, `log_text` |  Logs a simple text payload    |
+| `requestlog`   | `log_name`, `log_text` |  Logs an http request object   |
+| `stdoutlog`    | `log_name`, `log_text` |  Logs to standard out          |

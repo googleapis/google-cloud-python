@@ -17,7 +17,7 @@ set -e # exit on any failure
 set -o pipefail # any step in pipe caused failure
 set -u # undefined variables cause exit
 
-SERVICE_NAME="logging-py-gke-$(echo $ENVCTL_ID | head -c 10)"
+SERVICE_NAME="log-java-gke-$(echo $ENVCTL_ID | head -c 8)"
 ZONE=us-central1-a
 
 destroy() {
@@ -65,8 +65,6 @@ attach_or_create_gke_cluster(){
 }
 
 deploy() {
-  local SCRIPT="${1:-router.py}"
-
   attach_or_create_gke_cluster
   build_container
   cat <<EOF > $TMP_DIR/gke.yaml
@@ -86,11 +84,14 @@ deploy() {
           containers:
           - name: $SERVICE_NAME
             image:  $GCR_PATH
+            imagePullPolicy: Always
             env:
             - name: PUBSUB_TOPIC
               value: $SERVICE_NAME
             - name: ENABLE_SUBSCRIBER
               value: "true"
+            - name: RUNSERVER
+              value: "false"
 EOF
   # clean cluster
   set +e
@@ -115,4 +116,3 @@ EOF
 filter-string() {
   echo "resource.type=\"k8s_container\" AND resource.labels.cluster_name=\"$SERVICE_NAME\""
 }
-

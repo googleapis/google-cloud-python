@@ -1,4 +1,5 @@
 node_modules
 nodejs-logging
+_library
 *.tar
 package-lock.json

@@ -11,27 +11,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-FROM python:3.7-slim
-
-# This Dockerfile must be built at the repo root
-
-# show python logs as they occur
-ENV PYTHONUNBUFFERED=0
-
-# Install test code dependencies.
-COPY requirements.txt /app/
-RUN pip install -r /app/requirements.txt
-
-# Add test scripts.
-COPY router.py /app/
-COPY snippets.py /app/
-
-# install logging from local directory.
-WORKDIR /app
-ENV PATH="/app:${PATH}"
-COPY _library /app/python-logging
-RUN pip install -e /app/python-logging
-
-# Start script
-CMD python router.py

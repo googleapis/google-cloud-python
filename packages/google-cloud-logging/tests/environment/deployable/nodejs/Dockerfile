@@ -24,7 +24,7 @@ COPY package*.json ./
 COPY app.js ./
 COPY tests.js ./
 # Assumption: local file is already built
-COPY nodejs-logging ./nodejs-logging
+COPY _library ./nodejs-logging
 
 # Install test app's dependencies.
 RUN npm install --production

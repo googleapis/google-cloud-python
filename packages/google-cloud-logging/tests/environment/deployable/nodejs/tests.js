@@ -14,6 +14,14 @@
 
 const {Logging} = require('@google-cloud/logging');
 const logging = new Logging();
+const defaultRequest = {
+  method: 'POST',
+  httpVersion: 'HTTP/1.1',
+  url: 'https://google.com',
+  headers: {'x-cloud-trace-context': '1/1;o=1'},
+  rawHeaders: ['X-Cloud-Trace-Context'],
+  statusCode: 200,
+}
 
 /**
  * The following are test functions that can be triggered in each service.
@@ -27,5 +35,53 @@ var simplelog = function(logname = "my-log", logtext = "hello world" ) {
   log.write(text_entry).then(r => console.log(r));
 }
 
-module.exports={ 'simplelog': simplelog }
+/**
+ * envctl nodejs <env> trigger requestlog log_name=foo,log_text=bar
+ */
+var requestlog = function(logname = 'my-log', logtext = 'hello world', request) {
+  if (!request) request = defaultRequest;
+  const log = logging.log(logname);
+  const entry = log.entry({httpRequest: request}, logtext);
+  log.write(entry).then(r => console.log(r));
+}
+
+/**
+ * envctl nodejs <env> trigger stdoutlog log_name=foo,log_text=bar
+ */
+var stdoutlog = function(logname = 'my-log', logtext = 'hello world', request) {
+  if (!request) request = defaultRequest;
+  logging.setProjectId().then( res => {
+    logging.setDetectedResource().then( res => {
+      const log = logging.logSync(logname);
+      const meta = {
+        // Fields all agents lift:
+        severity: 'WARNING',
+        httpRequest: request,
+        labels: {foo: 'bar'},
+        // Fields not lifted by all agents, e.g. GCF:
+        insertId: '42',
+        timestamp: new Date(2021,1,1,1,1,1,1),
+        resource: {
+          type: 'global',
+          labels: {
+            region: 'my-backyard',
+            zone: 'twilight',
+          }
+        },
+        // Note: explicit trace declarations override httpRequest header context
+        trace: 'projects/my-projectid/traces/0679686673a',
+        spanId: '000000000000004a',
+        traceSampled: false,
+      }
+      const entry = log.entry(meta, logtext);
+      log.write(entry);
+    });
+  });
+}
+
+module.exports={
+  'simplelog': simplelog,
+  'stdoutlog': stdoutlog,
+  'requestlog': requestlog,
+}
 

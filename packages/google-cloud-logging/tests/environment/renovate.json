@@ -1,4 +1,10 @@
 {
+  "prConcurrentLimit": 2,
+  "timezone": "America/Los_Angeles",
+  "schedule": [
+    "after 9am and before 3pm every tuesday"
+  ],
+  "semanticCommits" : "enabled",
   "extends": [
     "config:base"
   ]

@@ -108,12 +108,12 @@ async function listenForMessages(pubSubClient, subscriptionName) {
     message.ack();
   };
 
-  // Listen for new messages until timeout is hit or test is done.
+  // Listen for new messages until timeout is hit or test destroy the resource.
   subscription.on('message', messageHandler);
 
   setTimeout(() => {
     subscription.removeListener('message', messageHandler);
-  }, 600000); // max 10 minutes timeout
+  }, 3600000); // max 1 hour timeout
 }
 
 function triggerTest(message) {

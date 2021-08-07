@@ -18,12 +18,42 @@ import unittest
 import google.cloud.logging
 
 from ..common.common import Common
+from ..common.stdout import CommonStdout
 
 
-class TestAppEngineStandard(Common, unittest.TestCase):
+class TestAppEngineStandard(Common, CommonStdout, unittest.TestCase):
 
     environment = "appengine_standard"
     language = "nodejs"
 
     monitored_resource_name = "gae_app"
     monitored_resource_labels = ["project_id", "module_id", "version_id", "zone"]
+
+    request_props = [
+        "requestMethod",
+        "requestUrl",
+        "protocol",
+    ]
+
+    stdout_payload_props = [
+        "message",
+        "resource",
+        "timestamp",
+        "logName",
+    ]
+    stdout_severity = "WARNING"
+    stdout_request_props = request_props
+    stdout_labels = [
+        "foo",
+    ]
+    # substring to test for
+    stdout_trace = "/traces/0679686673a"
+    stdout_span_id = "000000000000004a"
+
+    # Not lifted properly
+    # stdout_trace_sampled = "true"
+    # stdout_insert_id
+    # stdout_resource_type
+    # stdout_timestamp
+    # stdout_log_name: its /logs/stdout
+
