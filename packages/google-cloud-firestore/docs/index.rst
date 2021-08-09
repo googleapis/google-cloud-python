@@ -14,6 +14,7 @@ API Reference
   field_path
   query
   batch
+  bundles
   transaction
   transforms
   types

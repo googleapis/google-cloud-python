@@ -51,20 +51,22 @@ class FirestoreBundle:
 
     Usage:
 
-        from google.cloud.firestore import Client
+    .. code-block:: python
+
+        from google.cloud.firestore import Client, _helpers
         from google.cloud.firestore_bundle import FirestoreBundle
-        from google.cloud.firestore import _helpers
 
         db = Client()
         bundle = FirestoreBundle('my-bundle')
         bundle.add_named_query('all-users', db.collection('users')._query())
         bundle.add_named_query(
             'top-ten-hamburgers',
-            db.collection('hamburgers').limit(limit=10)._query(),
+            db.collection('hamburgers').limit(limit=10),
         )
         serialized: str = bundle.build()
 
-        # Store somewhere like your GCS for retrieval by a client SDK.
+        # Store somewhere like a Google Cloud Storage bucket for retrieval by
+        # a client SDK.
 
     Args:
         name (str): The Id of the bundle.
@@ -87,6 +89,8 @@ class FirestoreBundle:
                 be preserved.
 
         Example:
+
+        .. code-block:: python
 
             from google.cloud import firestore
 
@@ -141,6 +145,8 @@ class FirestoreBundle:
                 the bundle for future access.
 
         Example:
+
+        .. code-block:: python
 
             from google.cloud import firestore
 
@@ -292,6 +298,8 @@ class FirestoreBundle:
         a single length-prefixed json string suitable for long-term storage.
 
         Example:
+
+        .. code-block:: python
 
             from google.cloud import firestore
 
