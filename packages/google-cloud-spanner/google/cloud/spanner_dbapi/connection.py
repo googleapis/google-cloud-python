@@ -32,6 +32,8 @@ from google.cloud.spanner_dbapi.exceptions import InterfaceError
 from google.cloud.spanner_dbapi.version import DEFAULT_USER_AGENT
 from google.cloud.spanner_dbapi.version import PY_VERSION
 
+from google.rpc.code_pb2 import ABORTED
+
 
 AUTOCOMMIT_MODE_WARNING = "This method is non-operational in autocommit mode"
 MAX_INTERNAL_RETRIES = 50
@@ -175,25 +177,41 @@ class Connection:
         from the last transaction.
         """
         for statement in self._statements:
-            res_iter, retried_checksum = self.run_statement(statement, retried=True)
-            # executing all the completed statements
-            if statement != self._statements[-1]:
-                for res in res_iter:
-                    retried_checksum.consume_result(res)
+            if isinstance(statement, list):
+                statements, checksum = statement
 
-                _compare_checksums(statement.checksum, retried_checksum)
-            # executing the failed statement
+                transaction = self.transaction_checkout()
+                status, res = transaction.batch_update(statements)
+
+                if status.code == ABORTED:
+                    self.connection._transaction = None
+                    raise Aborted(status.details)
+
+                retried_checksum = ResultsChecksum()
+                retried_checksum.consume_result(res)
+                retried_checksum.consume_result(status.code)
+
+                _compare_checksums(checksum, retried_checksum)
             else:
-                # streaming up to the failed result or
-                # to the end of the streaming iterator
-                while len(retried_checksum) < len(statement.checksum):
-                    try:
-                        res = next(iter(res_iter))
+                res_iter, retried_checksum = self.run_statement(statement, retried=True)
+                # executing all the completed statements
+                if statement != self._statements[-1]:
+                    for res in res_iter:
                         retried_checksum.consume_result(res)
-                    except StopIteration:
-                        break
 
-                _compare_checksums(statement.checksum, retried_checksum)
+                    _compare_checksums(statement.checksum, retried_checksum)
+                # executing the failed statement
+                else:
+                    # streaming up to the failed result or
+                    # to the end of the streaming iterator
+                    while len(retried_checksum) < len(statement.checksum):
+                        try:
+                            res = next(iter(res_iter))
+                            retried_checksum.consume_result(res)
+                        except StopIteration:
+                            break
+
+                    _compare_checksums(statement.checksum, retried_checksum)
 
     def transaction_checkout(self):
         """Get a Cloud Spanner transaction.

@@ -343,20 +343,20 @@ VALUES
         conn = Connection(Config.INSTANCE, self._db)
         cursor = conn.cursor()
 
-        cursor.execute(
+        cursor.executemany(
             """
 INSERT INTO contacts (contact_id, first_name, last_name, email)
-VALUES (1, 'first-name', 'last-name', 'test.email@example.com'),
-       (2, 'first-name2', 'last-name2', 'test.email2@example.com')
-        """
+VALUES (%s, %s, %s, %s)
+        """,
+            [
+                (1, "first-name", "last-name", "test.email@example.com"),
+                (2, "first-name2", "last-name2", "test.email2@example.com"),
+            ],
         )
         conn.commit()
 
         cursor.executemany(
-            """
-SELECT * FROM contacts WHERE contact_id = @a1
-""",
-            ({"a1": 1}, {"a1": 2}),
+            """SELECT * FROM contacts WHERE contact_id = @a1""", ({"a1": 1}, {"a1": 2}),
         )
         res = cursor.fetchall()
         conn.commit()

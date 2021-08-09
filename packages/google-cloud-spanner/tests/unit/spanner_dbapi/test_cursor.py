@@ -37,6 +37,13 @@ class TestCursor(unittest.TestCase):
 
         return Connection(*args, **kwargs)
 
+    def _transaction_mock(self):
+        from google.rpc.code_pb2 import OK
+
+        transaction = mock.Mock(committed=False, rolled_back=False)
+        transaction.batch_update = mock.Mock(return_value=[mock.Mock(code=OK), []])
+        return transaction
+
     def test_property_connection(self):
         connection = self._make_connection(self.INSTANCE, self.DATABASE)
         cursor = self._make_one(connection)
@@ -317,6 +324,297 @@ class TestCursor(unittest.TestCase):
         execute_mock.assert_has_calls(
             (mock.call(operation, (1,)), mock.call(operation, (2,)))
         )
+
+    def test_executemany_delete_batch_autocommit(self):
+        from google.cloud.spanner_dbapi import connect
+        from google.cloud.spanner_v1.param_types import INT64
+        from google.cloud.spanner_v1.types.spanner import Session
+
+        sql = "DELETE FROM table WHERE col1 = %s"
+
+        with mock.patch(
+            "google.cloud.spanner_v1.instance.Instance.exists", return_value=True
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.database.Database.exists", return_value=True,
+            ):
+                connection = connect("test-instance", "test-database")
+
+        connection.autocommit = True
+        transaction = self._transaction_mock()
+        cursor = connection.cursor()
+
+        with mock.patch(
+            "google.cloud.spanner_v1.services.spanner.client.SpannerClient.create_session",
+            return_value=Session(),
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.session.Session.transaction",
+                return_value=transaction,
+            ):
+                cursor.executemany(sql, [(1,), (2,), (3,)])
+
+        transaction.batch_update.assert_called_once_with(
+            [
+                ("DELETE FROM table WHERE col1 = @a0", {"a0": 1}, {"a0": INT64}),
+                ("DELETE FROM table WHERE col1 = @a0", {"a0": 2}, {"a0": INT64}),
+                ("DELETE FROM table WHERE col1 = @a0", {"a0": 3}, {"a0": INT64}),
+            ]
+        )
+
+    def test_executemany_update_batch_autocommit(self):
+        from google.cloud.spanner_dbapi import connect
+        from google.cloud.spanner_v1.param_types import INT64, STRING
+        from google.cloud.spanner_v1.types.spanner import Session
+
+        sql = "UPDATE table SET col1 = %s WHERE col2 = %s"
+
+        with mock.patch(
+            "google.cloud.spanner_v1.instance.Instance.exists", return_value=True
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.database.Database.exists", return_value=True,
+            ):
+                connection = connect("test-instance", "test-database")
+
+        connection.autocommit = True
+        transaction = self._transaction_mock()
+        cursor = connection.cursor()
+
+        with mock.patch(
+            "google.cloud.spanner_v1.services.spanner.client.SpannerClient.create_session",
+            return_value=Session(),
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.session.Session.transaction",
+                return_value=transaction,
+            ):
+                cursor.executemany(sql, [(1, "a"), (2, "b"), (3, "c")])
+
+        transaction.batch_update.assert_called_once_with(
+            [
+                (
+                    "UPDATE table SET col1 = @a0 WHERE col2 = @a1",
+                    {"a0": 1, "a1": "a"},
+                    {"a0": INT64, "a1": STRING},
+                ),
+                (
+                    "UPDATE table SET col1 = @a0 WHERE col2 = @a1",
+                    {"a0": 2, "a1": "b"},
+                    {"a0": INT64, "a1": STRING},
+                ),
+                (
+                    "UPDATE table SET col1 = @a0 WHERE col2 = @a1",
+                    {"a0": 3, "a1": "c"},
+                    {"a0": INT64, "a1": STRING},
+                ),
+            ]
+        )
+
+    def test_executemany_insert_batch_non_autocommit(self):
+        from google.cloud.spanner_dbapi import connect
+        from google.cloud.spanner_v1.param_types import INT64
+        from google.cloud.spanner_v1.types.spanner import Session
+
+        sql = """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (%s, %s, %s, %s)"""
+
+        with mock.patch(
+            "google.cloud.spanner_v1.instance.Instance.exists", return_value=True
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.database.Database.exists", return_value=True,
+            ):
+                connection = connect("test-instance", "test-database")
+
+        transaction = self._transaction_mock()
+
+        cursor = connection.cursor()
+        with mock.patch(
+            "google.cloud.spanner_v1.services.spanner.client.SpannerClient.create_session",
+            return_value=Session(),
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.session.Session.transaction",
+                return_value=transaction,
+            ):
+                cursor.executemany(sql, [(1, 2, 3, 4), (5, 6, 7, 8)])
+
+        transaction.batch_update.assert_called_once_with(
+            [
+                (
+                    """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (@a0, @a1, @a2, @a3)""",
+                    {"a0": 1, "a1": 2, "a2": 3, "a3": 4},
+                    {"a0": INT64, "a1": INT64, "a2": INT64, "a3": INT64},
+                ),
+                (
+                    """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (@a0, @a1, @a2, @a3)""",
+                    {"a0": 5, "a1": 6, "a2": 7, "a3": 8},
+                    {"a0": INT64, "a1": INT64, "a2": INT64, "a3": INT64},
+                ),
+            ]
+        )
+
+    def test_executemany_insert_batch_autocommit(self):
+        from google.cloud.spanner_dbapi import connect
+        from google.cloud.spanner_v1.param_types import INT64
+        from google.cloud.spanner_v1.types.spanner import Session
+
+        sql = """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (%s, %s, %s, %s)"""
+
+        with mock.patch(
+            "google.cloud.spanner_v1.instance.Instance.exists", return_value=True
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.database.Database.exists", return_value=True,
+            ):
+                connection = connect("test-instance", "test-database")
+
+        connection.autocommit = True
+
+        transaction = self._transaction_mock()
+        transaction.commit = mock.Mock()
+
+        cursor = connection.cursor()
+        with mock.patch(
+            "google.cloud.spanner_v1.services.spanner.client.SpannerClient.create_session",
+            return_value=Session(),
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.session.Session.transaction",
+                return_value=transaction,
+            ):
+                cursor.executemany(sql, [(1, 2, 3, 4), (5, 6, 7, 8)])
+
+        transaction.batch_update.assert_called_once_with(
+            [
+                (
+                    """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (@a0, @a1, @a2, @a3)""",
+                    {"a0": 1, "a1": 2, "a2": 3, "a3": 4},
+                    {"a0": INT64, "a1": INT64, "a2": INT64, "a3": INT64},
+                ),
+                (
+                    """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (@a0, @a1, @a2, @a3)""",
+                    {"a0": 5, "a1": 6, "a2": 7, "a3": 8},
+                    {"a0": INT64, "a1": INT64, "a2": INT64, "a3": INT64},
+                ),
+            ]
+        )
+        transaction.commit.assert_called_once()
+
+    def test_executemany_insert_batch_failed(self):
+        from google.cloud.spanner_dbapi import connect
+        from google.cloud.spanner_dbapi.exceptions import OperationalError
+        from google.cloud.spanner_v1.types.spanner import Session
+        from google.rpc.code_pb2 import UNKNOWN
+
+        sql = """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (%s, %s, %s, %s)"""
+        err_details = "Details here"
+
+        with mock.patch(
+            "google.cloud.spanner_v1.instance.Instance.exists", return_value=True
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.database.Database.exists", return_value=True,
+            ):
+                connection = connect("test-instance", "test-database")
+
+        connection.autocommit = True
+        cursor = connection.cursor()
+
+        transaction = mock.Mock(committed=False, rolled_back=False)
+        transaction.batch_update = mock.Mock(
+            return_value=(mock.Mock(code=UNKNOWN, details=err_details), [])
+        )
+
+        with mock.patch(
+            "google.cloud.spanner_v1.services.spanner.client.SpannerClient.create_session",
+            return_value=Session(),
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.session.Session.transaction",
+                return_value=transaction,
+            ):
+                with self.assertRaisesRegex(OperationalError, err_details):
+                    cursor.executemany(sql, [(1, 2, 3, 4), (5, 6, 7, 8)])
+
+    def test_executemany_insert_batch_aborted(self):
+        from google.cloud.spanner_dbapi import connect
+        from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+        from google.cloud.spanner_v1.param_types import INT64
+        from google.rpc.code_pb2 import ABORTED
+
+        sql = """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (%s, %s, %s, %s)"""
+        err_details = "Aborted details here"
+
+        with mock.patch(
+            "google.cloud.spanner_v1.instance.Instance.exists", return_value=True
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.database.Database.exists", return_value=True,
+            ):
+                connection = connect("test-instance", "test-database")
+
+        transaction1 = mock.Mock(committed=False, rolled_back=False)
+        transaction1.batch_update = mock.Mock(
+            side_effect=[(mock.Mock(code=ABORTED, details=err_details), [])]
+        )
+
+        transaction2 = self._transaction_mock()
+
+        connection.transaction_checkout = mock.Mock(
+            side_effect=[transaction1, transaction2]
+        )
+        connection.retry_transaction = mock.Mock()
+
+        cursor = connection.cursor()
+        cursor.executemany(sql, [(1, 2, 3, 4), (5, 6, 7, 8)])
+
+        transaction1.batch_update.assert_called_with(
+            [
+                (
+                    """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (@a0, @a1, @a2, @a3)""",
+                    {"a0": 1, "a1": 2, "a2": 3, "a3": 4},
+                    {"a0": INT64, "a1": INT64, "a2": INT64, "a3": INT64},
+                ),
+                (
+                    """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (@a0, @a1, @a2, @a3)""",
+                    {"a0": 5, "a1": 6, "a2": 7, "a3": 8},
+                    {"a0": INT64, "a1": INT64, "a2": INT64, "a3": INT64},
+                ),
+            ]
+        )
+        transaction2.batch_update.assert_called_with(
+            [
+                (
+                    """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (@a0, @a1, @a2, @a3)""",
+                    {"a0": 1, "a1": 2, "a2": 3, "a3": 4},
+                    {"a0": INT64, "a1": INT64, "a2": INT64, "a3": INT64},
+                ),
+                (
+                    """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (@a0, @a1, @a2, @a3)""",
+                    {"a0": 5, "a1": 6, "a2": 7, "a3": 8},
+                    {"a0": INT64, "a1": INT64, "a2": INT64, "a3": INT64},
+                ),
+            ]
+        )
+        connection.retry_transaction.assert_called_once()
+
+        self.assertEqual(
+            connection._statements[0][0],
+            [
+                (
+                    """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (@a0, @a1, @a2, @a3)""",
+                    {"a0": 1, "a1": 2, "a2": 3, "a3": 4},
+                    {"a0": INT64, "a1": INT64, "a2": INT64, "a3": INT64},
+                ),
+                (
+                    """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (@a0, @a1, @a2, @a3)""",
+                    {"a0": 5, "a1": 6, "a2": 7, "a3": 8},
+                    {"a0": INT64, "a1": INT64, "a2": INT64, "a3": INT64},
+                ),
+            ],
+        )
+        self.assertIsInstance(connection._statements[0][1], ResultsChecksum)
 
     @unittest.skipIf(
         sys.version_info[0] < 3, "Python 2 has an outdated iterator definition"
