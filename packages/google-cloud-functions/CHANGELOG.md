@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.3](https://www.github.com/googleapis/python-functions/compare/v1.0.2...v1.0.3) (2021-08-07)
+
+
+### Bug Fixes
+
+* Updating behavior of source_upload_url during Get/List function calls ([#93](https://www.github.com/googleapis/python-functions/issues/93)) ([264984c](https://www.github.com/googleapis/python-functions/commit/264984cda2a6a1b75a4e5d78268b35d247ebdd99))
+
 ### [1.0.2](https://www.github.com/googleapis/python-functions/compare/v1.0.1...v1.0.2) (2021-07-28)
 
 
