@@ -75,9 +75,22 @@ def instance_id():
 
 
 @pytest.fixture(scope="module")
+def multi_region_instance_id():
+    """Unique id for the multi-region instance used in samples."""
+    return f"multi-instance-{uuid.uuid4().hex[:10]}"
+
+
+@pytest.fixture(scope="module")
 def instance_config(spanner_client):
     return "{}/instanceConfigs/{}".format(
         spanner_client.project_name, "regional-us-central1"
+    )
+
+
+@pytest.fixture(scope="module")
+def multi_region_instance_config(spanner_client):
+    return "{}/instanceConfigs/{}".format(
+        spanner_client.project_name, "nam3"
     )
 
 
@@ -111,6 +124,42 @@ def sample_instance(
         backup.Backup.from_pb(backup_pb, sample_instance).delete()
 
     sample_instance.delete()
+
+
+@pytest.fixture(scope="module")
+def multi_region_instance(
+    spanner_client,
+    cleanup_old_instances,
+    multi_region_instance_id,
+    multi_region_instance_config,
+    sample_name,
+):
+    multi_region_instance = spanner_client.instance(
+        multi_region_instance_id,
+        multi_region_instance_config,
+        labels={
+            "cloud_spanner_samples": "true",
+            "sample_name": sample_name,
+            "created": str(int(time.time()))
+        },
+    )
+    retry_429 = retry.RetryErrors(exceptions.ResourceExhausted, delay=15)
+    op = retry_429(multi_region_instance.create)()
+    op.result(120)  # block until completion
+
+    # Eventual consistency check
+    retry_found = retry.RetryResult(bool)
+    retry_found(multi_region_instance.exists)()
+
+    yield multi_region_instance
+
+    for database_pb in multi_region_instance.list_databases():
+        database.Database.from_pb(database_pb, multi_region_instance).drop()
+
+    for backup_pb in multi_region_instance.list_backups():
+        backup.Backup.from_pb(backup_pb, multi_region_instance).delete()
+
+    multi_region_instance.delete()
 
 
 @pytest.fixture(scope="module")

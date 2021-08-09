@@ -74,12 +74,23 @@ def cmek_database_id():
 
 
 @pytest.fixture(scope="module")
+def default_leader_database_id():
+    return f"leader_db_{uuid.uuid4().hex[:10]}"
+
+
+@pytest.fixture(scope="module")
 def database_ddl():
     """Sequence of DDL statements used to set up the database.
 
     Sample testcase modules can override as needed.
     """
     return [CREATE_TABLE_SINGERS, CREATE_TABLE_ALBUMS]
+
+
+@pytest.fixture(scope="module")
+def default_leader():
+    """ Default leader for multi-region instances. """
+    return "us-east4"
 
 
 def test_create_instance_explicit(spanner_client, create_instance_id):
@@ -117,6 +128,59 @@ def test_create_database_with_encryption_config(capsys, instance_id, cmek_databa
     out, _ = capsys.readouterr()
     assert cmek_database_id in out
     assert kms_key_name in out
+
+
+def test_get_instance_config(capsys):
+    instance_config = "nam6"
+    snippets.get_instance_config(instance_config)
+    out, _ = capsys.readouterr()
+    assert instance_config in out
+
+
+def test_list_instance_config(capsys):
+    snippets.list_instance_config()
+    out, _ = capsys.readouterr()
+    assert "regional-us-central1" in out
+
+
+def test_list_databases(capsys, instance_id):
+    snippets.list_databases(instance_id)
+    out, _ = capsys.readouterr()
+    assert "has default leader" in out
+
+
+def test_create_database_with_default_leader(capsys, multi_region_instance, multi_region_instance_id, default_leader_database_id, default_leader):
+    retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
+    retry_429(snippets.create_database_with_default_leader)(
+        multi_region_instance_id, default_leader_database_id, default_leader
+    )
+    out, _ = capsys.readouterr()
+    assert default_leader_database_id in out
+    assert default_leader in out
+
+
+def test_update_database_with_default_leader(capsys, multi_region_instance, multi_region_instance_id, default_leader_database_id, default_leader):
+    retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
+    retry_429(snippets.update_database_with_default_leader)(
+        multi_region_instance_id, default_leader_database_id, default_leader
+    )
+    out, _ = capsys.readouterr()
+    assert default_leader_database_id in out
+    assert default_leader in out
+
+
+def test_get_database_ddl(capsys, instance_id, sample_database):
+    snippets.get_database_ddl(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert sample_database.database_id in out
+
+
+def test_query_information_schema_database_options(capsys, multi_region_instance, multi_region_instance_id, default_leader_database_id, default_leader):
+    snippets.query_information_schema_database_options(
+        multi_region_instance_id, default_leader_database_id
+    )
+    out, _ = capsys.readouterr()
+    assert default_leader in out
 
 
 @pytest.mark.dependency(name="insert_data")
