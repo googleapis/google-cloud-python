@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-talent/compare/v2.2.1...v2.3.0) (2021-08-09)
+
+
+### Features
+
+* bump release level to production/stable ([#102](https://www.github.com/googleapis/python-talent/issues/102)) ([2e63f9b](https://www.github.com/googleapis/python-talent/commit/2e63f9bf6aa2275fdf4d44c4ec8e7135add8df66))
+
 ### [2.2.1](https://www.github.com/googleapis/python-talent/compare/v2.2.0...v2.2.1) (2021-07-28)
 
 
