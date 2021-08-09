@@ -89,9 +89,6 @@ templated_files = common.py_library(
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
-# Don't treat docs (sphinx) warnings as errors.
-s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
-
 # ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------
