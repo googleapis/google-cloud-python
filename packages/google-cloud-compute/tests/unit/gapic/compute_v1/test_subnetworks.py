@@ -114,6 +114,27 @@ def test_subnetworks_client_from_service_account_info(client_class):
         assert client.transport._host == "compute.googleapis.com:443"
 
 
+@pytest.mark.parametrize(
+    "transport_class,transport_name", [(transports.SubnetworksRestTransport, "rest"),]
+)
+def test_subnetworks_client_service_account_always_use_jwt(
+    transport_class, transport_name
+):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
+
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=False)
+        use_jwt.assert_not_called()
+
+
 @pytest.mark.parametrize("client_class", [SubnetworksClient,])
 def test_subnetworks_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -472,7 +493,8 @@ def test_aggregated_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
 
 
 def test_aggregated_list_rest_flattened_error():
@@ -571,7 +593,7 @@ def test_delete_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -583,7 +605,7 @@ def test_delete_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -607,7 +629,7 @@ def test_delete_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -619,7 +641,7 @@ def test_delete_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -660,9 +682,10 @@ def test_delete_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "region_value" in http_call[1] + str(body)
-        assert "subnetwork_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "region_value" in http_call[1] + str(body) + str(params)
+        assert "subnetwork_value" in http_call[1] + str(body) + str(params)
 
 
 def test_delete_rest_flattened_error():
@@ -701,7 +724,7 @@ def test_expand_ip_cidr_range_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -713,7 +736,7 @@ def test_expand_ip_cidr_range_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -737,7 +760,7 @@ def test_expand_ip_cidr_range_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -749,7 +772,7 @@ def test_expand_ip_cidr_range_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -794,14 +817,15 @@ def test_expand_ip_cidr_range_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "region_value" in http_call[1] + str(body)
-        assert "subnetwork_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "region_value" in http_call[1] + str(body) + str(params)
+        assert "subnetwork_value" in http_call[1] + str(body) + str(params)
         assert compute.SubnetworksExpandIpCidrRangeRequest.to_json(
             subnetworks_expand_ip_cidr_range_request_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_expand_ip_cidr_range_rest_flattened_error():
@@ -839,7 +863,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetSubnetworkReq
             enable_flow_logs=True,
             fingerprint="fingerprint_value",
             gateway_address="gateway_address_value",
-            id="id_value",
+            id=205,
             ip_cidr_range="ip_cidr_range_value",
             ipv6_cidr_range="ipv6_cidr_range_value",
             kind="kind_value",
@@ -875,7 +899,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetSubnetworkReq
     assert response.enable_flow_logs is True
     assert response.fingerprint == "fingerprint_value"
     assert response.gateway_address == "gateway_address_value"
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.ip_cidr_range == "ip_cidr_range_value"
     assert response.ipv6_cidr_range == "ipv6_cidr_range_value"
     assert response.kind == "kind_value"
@@ -931,9 +955,10 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "region_value" in http_call[1] + str(body)
-        assert "subnetwork_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "region_value" in http_call[1] + str(body) + str(params)
+        assert "subnetwork_value" in http_call[1] + str(body) + str(params)
 
 
 def test_get_rest_flattened_error():
@@ -1035,9 +1060,10 @@ def test_get_iam_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "region_value" in http_call[1] + str(body)
-        assert "resource_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "region_value" in http_call[1] + str(body) + str(params)
+        assert "resource_value" in http_call[1] + str(body) + str(params)
 
 
 def test_get_iam_policy_rest_flattened_error():
@@ -1076,7 +1102,7 @@ def test_insert_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -1088,7 +1114,7 @@ def test_insert_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -1112,7 +1138,7 @@ def test_insert_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -1124,7 +1150,7 @@ def test_insert_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -1168,13 +1194,14 @@ def test_insert_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "region_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "region_value" in http_call[1] + str(body) + str(params)
         assert compute.Subnetwork.to_json(
             subnetwork_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_insert_rest_flattened_error():
@@ -1266,8 +1293,9 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "region_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "region_value" in http_call[1] + str(body) + str(params)
 
 
 def test_list_rest_flattened_error():
@@ -1406,7 +1434,8 @@ def test_list_usable_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
 
 
 def test_list_usable_rest_flattened_error():
@@ -1492,7 +1521,7 @@ def test_patch_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -1504,7 +1533,7 @@ def test_patch_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -1528,7 +1557,7 @@ def test_patch_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -1540,7 +1569,7 @@ def test_patch_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -1585,14 +1614,15 @@ def test_patch_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "region_value" in http_call[1] + str(body)
-        assert "subnetwork_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "region_value" in http_call[1] + str(body) + str(params)
+        assert "subnetwork_value" in http_call[1] + str(body) + str(params)
         assert compute.Subnetwork.to_json(
             subnetwork_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_patch_rest_flattened_error():
@@ -1703,14 +1733,15 @@ def test_set_iam_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "region_value" in http_call[1] + str(body)
-        assert "resource_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "region_value" in http_call[1] + str(body) + str(params)
+        assert "resource_value" in http_call[1] + str(body) + str(params)
         assert compute.RegionSetPolicyRequest.to_json(
             region_set_policy_request_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_set_iam_policy_rest_flattened_error():
@@ -1753,7 +1784,7 @@ def test_set_private_ip_google_access_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -1765,7 +1796,7 @@ def test_set_private_ip_google_access_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -1789,7 +1820,7 @@ def test_set_private_ip_google_access_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -1801,7 +1832,7 @@ def test_set_private_ip_google_access_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -1846,14 +1877,15 @@ def test_set_private_ip_google_access_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "region_value" in http_call[1] + str(body)
-        assert "subnetwork_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "region_value" in http_call[1] + str(body) + str(params)
+        assert "subnetwork_value" in http_call[1] + str(body) + str(params)
         assert compute.SubnetworksSetPrivateIpGoogleAccessRequest.to_json(
             subnetworks_set_private_ip_google_access_request_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_set_private_ip_google_access_rest_flattened_error():
@@ -1940,14 +1972,15 @@ def test_test_iam_permissions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "region_value" in http_call[1] + str(body)
-        assert "resource_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "region_value" in http_call[1] + str(body) + str(params)
+        assert "resource_value" in http_call[1] + str(body) + str(params)
         assert compute.TestPermissionsRequest.to_json(
             test_permissions_request_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_test_iam_permissions_rest_flattened_error():

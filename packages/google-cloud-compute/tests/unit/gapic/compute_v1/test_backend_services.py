@@ -117,6 +117,28 @@ def test_backend_services_client_from_service_account_info(client_class):
         assert client.transport._host == "compute.googleapis.com:443"
 
 
+@pytest.mark.parametrize(
+    "transport_class,transport_name",
+    [(transports.BackendServicesRestTransport, "rest"),],
+)
+def test_backend_services_client_service_account_always_use_jwt(
+    transport_class, transport_name
+):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
+
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=False)
+        use_jwt.assert_not_called()
+
+
 @pytest.mark.parametrize("client_class", [BackendServicesClient,])
 def test_backend_services_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -426,7 +448,7 @@ def test_add_signed_url_key_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -438,7 +460,7 @@ def test_add_signed_url_key_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -462,7 +484,7 @@ def test_add_signed_url_key_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -474,7 +496,7 @@ def test_add_signed_url_key_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -516,13 +538,14 @@ def test_add_signed_url_key_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "backend_service_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "backend_service_value" in http_call[1] + str(body) + str(params)
         assert compute.SignedUrlKey.to_json(
             signed_url_key_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_add_signed_url_key_rest_flattened_error():
@@ -620,7 +643,8 @@ def test_aggregated_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
 
 
 def test_aggregated_list_rest_flattened_error():
@@ -722,7 +746,7 @@ def test_delete_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -734,7 +758,7 @@ def test_delete_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -758,7 +782,7 @@ def test_delete_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -770,7 +794,7 @@ def test_delete_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -809,8 +833,9 @@ def test_delete_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "backend_service_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "backend_service_value" in http_call[1] + str(body) + str(params)
 
 
 def test_delete_rest_flattened_error():
@@ -849,7 +874,7 @@ def test_delete_signed_url_key_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -861,7 +886,7 @@ def test_delete_signed_url_key_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -885,7 +910,7 @@ def test_delete_signed_url_key_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -897,7 +922,7 @@ def test_delete_signed_url_key_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -938,9 +963,10 @@ def test_delete_signed_url_key_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "backend_service_value" in http_call[1] + str(body)
-        assert "key_name_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "backend_service_value" in http_call[1] + str(body) + str(params)
+        assert "key_name_value" in http_call[1] + str(body) + str(params)
 
 
 def test_delete_signed_url_key_rest_flattened_error():
@@ -1001,7 +1027,7 @@ def test_get_rest(
             fingerprint="fingerprint_value",
             health_checks=["health_checks_value"],
             iap=compute.BackendServiceIAP(enabled=True),
-            id="id_value",
+            id=205,
             kind="kind_value",
             load_balancing_scheme=compute.BackendService.LoadBalancingScheme.EXTERNAL,
             locality_lb_policy=compute.BackendService.LocalityLbPolicy.INVALID_LB_POLICY,
@@ -1066,7 +1092,7 @@ def test_get_rest(
     assert response.fingerprint == "fingerprint_value"
     assert response.health_checks == ["health_checks_value"]
     assert response.iap == compute.BackendServiceIAP(enabled=True)
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.kind == "kind_value"
     assert (
         response.load_balancing_scheme
@@ -1126,8 +1152,9 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "backend_service_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "backend_service_value" in http_call[1] + str(body) + str(params)
 
 
 def test_get_rest_flattened_error():
@@ -1217,13 +1244,14 @@ def test_get_health_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "backend_service_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "backend_service_value" in http_call[1] + str(body) + str(params)
         assert compute.ResourceGroupReference.to_json(
             resource_group_reference_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_get_health_rest_flattened_error():
@@ -1264,7 +1292,7 @@ def test_insert_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -1276,7 +1304,7 @@ def test_insert_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -1300,7 +1328,7 @@ def test_insert_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -1312,7 +1340,7 @@ def test_insert_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -1352,12 +1380,13 @@ def test_insert_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
         assert compute.BackendService.to_json(
             backend_service_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_insert_rest_flattened_error():
@@ -1444,7 +1473,8 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
 
 
 def test_list_rest_flattened_error():
@@ -1528,7 +1558,7 @@ def test_patch_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -1540,7 +1570,7 @@ def test_patch_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -1564,7 +1594,7 @@ def test_patch_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -1576,7 +1606,7 @@ def test_patch_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -1618,13 +1648,14 @@ def test_patch_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "backend_service_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "backend_service_value" in http_call[1] + str(body) + str(params)
         assert compute.BackendService.to_json(
             backend_service_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_patch_rest_flattened_error():
@@ -1665,7 +1696,7 @@ def test_set_security_policy_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -1677,7 +1708,7 @@ def test_set_security_policy_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -1701,7 +1732,7 @@ def test_set_security_policy_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -1713,7 +1744,7 @@ def test_set_security_policy_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -1757,13 +1788,14 @@ def test_set_security_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "backend_service_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "backend_service_value" in http_call[1] + str(body) + str(params)
         assert compute.SecurityPolicyReference.to_json(
             security_policy_reference_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_set_security_policy_rest_flattened_error():
@@ -1804,7 +1836,7 @@ def test_update_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -1816,7 +1848,7 @@ def test_update_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -1840,7 +1872,7 @@ def test_update_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -1852,7 +1884,7 @@ def test_update_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -1894,13 +1926,14 @@ def test_update_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "backend_service_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "backend_service_value" in http_call[1] + str(body) + str(params)
         assert compute.BackendService.to_json(
             backend_service_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_update_rest_flattened_error():

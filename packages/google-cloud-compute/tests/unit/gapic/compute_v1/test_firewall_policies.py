@@ -118,6 +118,28 @@ def test_firewall_policies_client_from_service_account_info(client_class):
         assert client.transport._host == "compute.googleapis.com:443"
 
 
+@pytest.mark.parametrize(
+    "transport_class,transport_name",
+    [(transports.FirewallPoliciesRestTransport, "rest"),],
+)
+def test_firewall_policies_client_service_account_always_use_jwt(
+    transport_class, transport_name
+):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
+
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=False)
+        use_jwt.assert_not_called()
+
+
 @pytest.mark.parametrize("client_class", [FirewallPoliciesClient,])
 def test_firewall_policies_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -427,7 +449,7 @@ def test_add_association_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -439,7 +461,7 @@ def test_add_association_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -463,7 +485,7 @@ def test_add_association_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -475,7 +497,7 @@ def test_add_association_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -518,12 +540,13 @@ def test_add_association_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "firewall_policy_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "firewall_policy_value" in http_call[1] + str(body) + str(params)
         assert compute.FirewallPolicyAssociation.to_json(
             firewall_policy_association_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_add_association_rest_flattened_error():
@@ -563,7 +586,7 @@ def test_add_rule_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -575,7 +598,7 @@ def test_add_rule_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -599,7 +622,7 @@ def test_add_rule_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -611,7 +634,7 @@ def test_add_rule_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -654,12 +677,13 @@ def test_add_rule_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "firewall_policy_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "firewall_policy_value" in http_call[1] + str(body) + str(params)
         assert compute.FirewallPolicyRule.to_json(
             firewall_policy_rule_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_add_rule_rest_flattened_error():
@@ -699,7 +723,7 @@ def test_clone_rules_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -711,7 +735,7 @@ def test_clone_rules_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -735,7 +759,7 @@ def test_clone_rules_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -747,7 +771,7 @@ def test_clone_rules_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -784,7 +808,8 @@ def test_clone_rules_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "firewall_policy_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "firewall_policy_value" in http_call[1] + str(body) + str(params)
 
 
 def test_clone_rules_rest_flattened_error():
@@ -821,7 +846,7 @@ def test_delete_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -833,7 +858,7 @@ def test_delete_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -857,7 +882,7 @@ def test_delete_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -869,7 +894,7 @@ def test_delete_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -906,7 +931,8 @@ def test_delete_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "firewall_policy_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "firewall_policy_value" in http_call[1] + str(body) + str(params)
 
 
 def test_delete_rest_flattened_error():
@@ -945,7 +971,7 @@ def test_get_rest(
             description="description_value",
             display_name="display_name_value",
             fingerprint="fingerprint_value",
-            id="id_value",
+            id=205,
             kind="kind_value",
             name="name_value",
             parent="parent_value",
@@ -973,7 +999,7 @@ def test_get_rest(
     assert response.description == "description_value"
     assert response.display_name == "display_name_value"
     assert response.fingerprint == "fingerprint_value"
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.parent == "parent_value"
@@ -1012,7 +1038,8 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "firewall_policy_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "firewall_policy_value" in http_call[1] + str(body) + str(params)
 
 
 def test_get_rest_flattened_error():
@@ -1093,7 +1120,8 @@ def test_get_association_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "firewall_policy_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "firewall_policy_value" in http_call[1] + str(body) + str(params)
 
 
 def test_get_association_rest_flattened_error():
@@ -1191,7 +1219,8 @@ def test_get_iam_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "resource_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "resource_value" in http_call[1] + str(body) + str(params)
 
 
 def test_get_iam_policy_rest_flattened_error():
@@ -1288,7 +1317,8 @@ def test_get_rule_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "firewall_policy_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "firewall_policy_value" in http_call[1] + str(body) + str(params)
 
 
 def test_get_rule_rest_flattened_error():
@@ -1325,7 +1355,7 @@ def test_insert_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -1337,7 +1367,7 @@ def test_insert_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -1361,7 +1391,7 @@ def test_insert_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -1373,7 +1403,7 @@ def test_insert_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -1417,11 +1447,12 @@ def test_insert_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
+        params = http_params.get("params")
         assert compute.FirewallPolicy.to_json(
             firewall_policy_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_insert_rest_flattened_error():
@@ -1525,6 +1556,7 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
+        params = http_params.get("params")
 
 
 def test_list_rest_flattened_error():
@@ -1655,6 +1687,7 @@ def test_list_associations_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
+        params = http_params.get("params")
 
 
 def test_list_associations_rest_flattened_error():
@@ -1688,7 +1721,7 @@ def test_move_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -1700,7 +1733,7 @@ def test_move_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -1724,7 +1757,7 @@ def test_move_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -1736,7 +1769,7 @@ def test_move_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -1773,7 +1806,8 @@ def test_move_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "firewall_policy_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "firewall_policy_value" in http_call[1] + str(body) + str(params)
 
 
 def test_move_rest_flattened_error():
@@ -1810,7 +1844,7 @@ def test_patch_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -1822,7 +1856,7 @@ def test_patch_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -1846,7 +1880,7 @@ def test_patch_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -1858,7 +1892,7 @@ def test_patch_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -1905,12 +1939,13 @@ def test_patch_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "firewall_policy_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "firewall_policy_value" in http_call[1] + str(body) + str(params)
         assert compute.FirewallPolicy.to_json(
             firewall_policy_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_patch_rest_flattened_error():
@@ -1954,7 +1989,7 @@ def test_patch_rule_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -1966,7 +2001,7 @@ def test_patch_rule_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -1990,7 +2025,7 @@ def test_patch_rule_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -2002,7 +2037,7 @@ def test_patch_rule_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -2045,12 +2080,13 @@ def test_patch_rule_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "firewall_policy_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "firewall_policy_value" in http_call[1] + str(body) + str(params)
         assert compute.FirewallPolicyRule.to_json(
             firewall_policy_rule_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_patch_rule_rest_flattened_error():
@@ -2090,7 +2126,7 @@ def test_remove_association_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -2102,7 +2138,7 @@ def test_remove_association_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -2126,7 +2162,7 @@ def test_remove_association_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -2138,7 +2174,7 @@ def test_remove_association_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -2175,7 +2211,8 @@ def test_remove_association_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "firewall_policy_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "firewall_policy_value" in http_call[1] + str(body) + str(params)
 
 
 def test_remove_association_rest_flattened_error():
@@ -2212,7 +2249,7 @@ def test_remove_rule_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -2224,7 +2261,7 @@ def test_remove_rule_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -2248,7 +2285,7 @@ def test_remove_rule_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -2260,7 +2297,7 @@ def test_remove_rule_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -2297,7 +2334,8 @@ def test_remove_rule_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "firewall_policy_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "firewall_policy_value" in http_call[1] + str(body) + str(params)
 
 
 def test_remove_rule_rest_flattened_error():
@@ -2401,12 +2439,13 @@ def test_set_iam_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "resource_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "resource_value" in http_call[1] + str(body) + str(params)
         assert compute.GlobalOrganizationSetPolicyRequest.to_json(
             global_organization_set_policy_request_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_set_iam_policy_rest_flattened_error():
@@ -2490,12 +2529,13 @@ def test_test_iam_permissions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "resource_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "resource_value" in http_call[1] + str(body) + str(params)
         assert compute.TestPermissionsRequest.to_json(
             test_permissions_request_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_test_iam_permissions_rest_flattened_error():

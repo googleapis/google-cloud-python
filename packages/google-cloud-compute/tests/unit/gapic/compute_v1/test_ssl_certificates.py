@@ -117,6 +117,28 @@ def test_ssl_certificates_client_from_service_account_info(client_class):
         assert client.transport._host == "compute.googleapis.com:443"
 
 
+@pytest.mark.parametrize(
+    "transport_class,transport_name",
+    [(transports.SslCertificatesRestTransport, "rest"),],
+)
+def test_ssl_certificates_client_service_account_always_use_jwt(
+    transport_class, transport_name
+):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
+
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=False)
+        use_jwt.assert_not_called()
+
+
 @pytest.mark.parametrize("client_class", [SslCertificatesClient,])
 def test_ssl_certificates_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -485,7 +507,8 @@ def test_aggregated_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
 
 
 def test_aggregated_list_rest_flattened_error():
@@ -587,7 +610,7 @@ def test_delete_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -599,7 +622,7 @@ def test_delete_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -623,7 +646,7 @@ def test_delete_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -635,7 +658,7 @@ def test_delete_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -674,8 +697,9 @@ def test_delete_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "ssl_certificate_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "ssl_certificate_value" in http_call[1] + str(body) + str(params)
 
 
 def test_delete_rest_flattened_error():
@@ -710,7 +734,7 @@ def test_get_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             expire_time="expire_time_value",
-            id="id_value",
+            id=205,
             kind="kind_value",
             managed=compute.SslCertificateManagedSslCertificate(
                 domain_status={"key_value": "value_value"}
@@ -740,7 +764,7 @@ def test_get_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.expire_time == "expire_time_value"
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.kind == "kind_value"
     assert response.managed == compute.SslCertificateManagedSslCertificate(
         domain_status={"key_value": "value_value"}
@@ -786,8 +810,9 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "ssl_certificate_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "ssl_certificate_value" in http_call[1] + str(body) + str(params)
 
 
 def test_get_rest_flattened_error():
@@ -825,7 +850,7 @@ def test_insert_rest(
             error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
-            id="id_value",
+            id=205,
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
@@ -837,7 +862,7 @@ def test_insert_rest(
             start_time="start_time_value",
             status=compute.Operation.Status.DONE,
             status_message="status_message_value",
-            target_id="target_id_value",
+            target_id=947,
             target_link="target_link_value",
             user="user_value",
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -861,7 +886,7 @@ def test_insert_rest(
     assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -873,7 +898,7 @@ def test_insert_rest(
     assert response.start_time == "start_time_value"
     assert response.status == compute.Operation.Status.DONE
     assert response.status_message == "status_message_value"
-    assert response.target_id == "target_id_value"
+    assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
     assert response.warnings == [
@@ -915,12 +940,13 @@ def test_insert_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
         assert compute.SslCertificate.to_json(
             ssl_certificate_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_insert_rest_flattened_error():
@@ -1007,7 +1033,8 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
 
 
 def test_list_rest_flattened_error():

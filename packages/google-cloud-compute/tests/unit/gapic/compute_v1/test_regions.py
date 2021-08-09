@@ -111,6 +111,25 @@ def test_regions_client_from_service_account_info(client_class):
         assert client.transport._host == "compute.googleapis.com:443"
 
 
+@pytest.mark.parametrize(
+    "transport_class,transport_name", [(transports.RegionsRestTransport, "rest"),]
+)
+def test_regions_client_service_account_always_use_jwt(transport_class, transport_name):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
+
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=False)
+        use_jwt.assert_not_called()
+
+
 @pytest.mark.parametrize("client_class", [RegionsClient,])
 def test_regions_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -398,7 +417,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetRegionRequest
             creation_timestamp="creation_timestamp_value",
             deprecated=compute.DeprecationStatus(deleted="deleted_value"),
             description="description_value",
-            id="id_value",
+            id=205,
             kind="kind_value",
             name="name_value",
             quotas=[compute.Quota(limit=0.543)],
@@ -421,7 +440,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetRegionRequest
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.deprecated == compute.DeprecationStatus(deleted="deleted_value")
     assert response.description == "description_value"
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.quotas == [compute.Quota(limit=0.543)]
@@ -461,8 +480,9 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "region_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "region_value" in http_call[1] + str(body) + str(params)
 
 
 def test_get_rest_flattened_error():
@@ -545,7 +565,8 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
 
 
 def test_list_rest_flattened_error():

@@ -114,6 +114,27 @@ def test_machine_types_client_from_service_account_info(client_class):
         assert client.transport._host == "compute.googleapis.com:443"
 
 
+@pytest.mark.parametrize(
+    "transport_class,transport_name", [(transports.MachineTypesRestTransport, "rest"),]
+)
+def test_machine_types_client_service_account_always_use_jwt(
+    transport_class, transport_name
+):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
+
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=False)
+        use_jwt.assert_not_called()
+
+
 @pytest.mark.parametrize("client_class", [MachineTypesClient,])
 def test_machine_types_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -476,7 +497,8 @@ def test_aggregated_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
 
 
 def test_aggregated_list_rest_flattened_error():
@@ -571,12 +593,12 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetMachineTypeRe
             deprecated=compute.DeprecationStatus(deleted="deleted_value"),
             description="description_value",
             guest_cpus=1090,
-            id="id_value",
+            id=205,
             image_space_gb=1430,
             is_shared_cpu=True,
             kind="kind_value",
             maximum_persistent_disks=2603,
-            maximum_persistent_disks_size_gb="maximum_persistent_disks_size_gb_value",
+            maximum_persistent_disks_size_gb=3437,
             memory_mb=967,
             name="name_value",
             scratch_disks=[compute.ScratchDisks(disk_gb=723)],
@@ -599,15 +621,12 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetMachineTypeRe
     assert response.deprecated == compute.DeprecationStatus(deleted="deleted_value")
     assert response.description == "description_value"
     assert response.guest_cpus == 1090
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.image_space_gb == 1430
     assert response.is_shared_cpu is True
     assert response.kind == "kind_value"
     assert response.maximum_persistent_disks == 2603
-    assert (
-        response.maximum_persistent_disks_size_gb
-        == "maximum_persistent_disks_size_gb_value"
-    )
+    assert response.maximum_persistent_disks_size_gb == 3437
     assert response.memory_mb == 967
     assert response.name == "name_value"
     assert response.scratch_disks == [compute.ScratchDisks(disk_gb=723)]
@@ -647,9 +666,10 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "zone_value" in http_call[1] + str(body)
-        assert "machine_type_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "zone_value" in http_call[1] + str(body) + str(params)
+        assert "machine_type_value" in http_call[1] + str(body) + str(params)
 
 
 def test_get_rest_flattened_error():
@@ -745,8 +765,9 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "zone_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "zone_value" in http_call[1] + str(body) + str(params)
 
 
 def test_list_rest_flattened_error():

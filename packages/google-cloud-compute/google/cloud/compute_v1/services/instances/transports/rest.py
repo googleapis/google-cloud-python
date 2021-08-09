@@ -52,6 +52,7 @@ class InstancesRestTransport(InstancesTransport):
         client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
     ) -> None:
         """Instantiate the transport.
 
@@ -85,7 +86,10 @@ class InstancesRestTransport(InstancesTransport):
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
         super().__init__(
-            host=host, credentials=credentials, client_info=client_info,
+            host=host,
+            credentials=credentials,
+            client_info=client_info,
+            always_use_jwt_access=always_use_jwt_access,
         )
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST
@@ -163,21 +167,16 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {}
-        if request.network_interface:
-            query_params["networkInterface"] = request.network_interface
+        query_params["networkInterface"] = request.network_interface
         if compute.AddAccessConfigInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
-
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -259,16 +258,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.AddResourcePoliciesInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -322,16 +317,10 @@ class InstancesRestTransport(InstancesTransport):
         if compute.AggregatedListInstancesRequest.return_partial_success in request:
             query_params["returnPartialSuccess"] = request.return_partial_success
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers,)
+        response = self._session.get(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -417,16 +406,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.AttachDiskInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -505,16 +490,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.BulkInsertInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -589,16 +570,10 @@ class InstancesRestTransport(InstancesTransport):
         if compute.DeleteInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.delete(url, headers=headers,)
+        response = self._session.delete(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -670,23 +645,15 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {}
-        if request.access_config:
-            query_params["accessConfig"] = request.access_config
-        if request.network_interface:
-            query_params["networkInterface"] = request.network_interface
+        query_params["accessConfig"] = request.access_config
+        query_params["networkInterface"] = request.network_interface
         if compute.DeleteAccessConfigInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
-
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers,)
+        response = self._session.post(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -758,21 +725,14 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {}
-        if request.device_name:
-            query_params["deviceName"] = request.device_name
+        query_params["deviceName"] = request.device_name
         if compute.DetachDiskInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
-
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers,)
+        response = self._session.post(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -822,16 +782,10 @@ class InstancesRestTransport(InstancesTransport):
         #               not required for GCE
         query_params = {}
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers,)
+        response = self._session.get(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -875,19 +829,12 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {}
-        if request.network_interface:
-            query_params["networkInterface"] = request.network_interface
-
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
+        query_params["networkInterface"] = request.network_interface
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers,)
+        response = self._session.get(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -938,16 +885,10 @@ class InstancesRestTransport(InstancesTransport):
         if compute.GetGuestAttributesInstanceRequest.variable_key in request:
             query_params["variableKey"] = request.variable_key
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers,)
+        response = self._session.get(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1051,16 +992,10 @@ class InstancesRestTransport(InstancesTransport):
                 "optionsRequestedPolicyVersion"
             ] = request.options_requested_policy_version
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers,)
+        response = self._session.get(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1105,16 +1040,10 @@ class InstancesRestTransport(InstancesTransport):
         #               not required for GCE
         query_params = {}
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers,)
+        response = self._session.get(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1165,16 +1094,10 @@ class InstancesRestTransport(InstancesTransport):
         if compute.GetSerialPortOutputInstanceRequest.start in request:
             query_params["start"] = request.start
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers,)
+        response = self._session.get(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1222,16 +1145,10 @@ class InstancesRestTransport(InstancesTransport):
         #               not required for GCE
         query_params = {}
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers,)
+        response = self._session.get(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1314,16 +1231,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.InsertInstanceRequest.source_instance_template in request:
             query_params["sourceInstanceTemplate"] = request.source_instance_template
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1374,16 +1287,10 @@ class InstancesRestTransport(InstancesTransport):
         if compute.ListInstancesRequest.return_partial_success in request:
             query_params["returnPartialSuccess"] = request.return_partial_success
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers,)
+        response = self._session.get(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1442,16 +1349,10 @@ class InstancesRestTransport(InstancesTransport):
         if compute.ListReferrersInstancesRequest.return_partial_success in request:
             query_params["returnPartialSuccess"] = request.return_partial_success
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers,)
+        response = self._session.get(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1535,16 +1436,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.RemoveResourcePoliciesInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1619,16 +1516,10 @@ class InstancesRestTransport(InstancesTransport):
         if compute.ResetInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers,)
+        response = self._session.post(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1705,16 +1596,10 @@ class InstancesRestTransport(InstancesTransport):
         if compute.SetDeletionProtectionInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers,)
+        response = self._session.post(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1786,23 +1671,15 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {}
-        if request.auto_delete:
-            query_params["autoDelete"] = request.auto_delete
-        if request.device_name:
-            query_params["deviceName"] = request.device_name
+        query_params["autoDelete"] = request.auto_delete
+        query_params["deviceName"] = request.device_name
         if compute.SetDiskAutoDeleteInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
-
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers,)
+        response = self._session.post(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1904,16 +1781,12 @@ class InstancesRestTransport(InstancesTransport):
         #               not required for GCE
         query_params = {}
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1995,16 +1868,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.SetLabelsInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -2086,16 +1955,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.SetMachineResourcesInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -2177,16 +2042,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.SetMachineTypeInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -2268,16 +2129,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.SetMetadataInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -2359,16 +2216,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.SetMinCpuPlatformInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -2450,16 +2303,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.SetSchedulingInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -2541,16 +2390,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.SetServiceAccountInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -2636,16 +2481,12 @@ class InstancesRestTransport(InstancesTransport):
         ):
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.patch(url, headers=headers, data=body,)
+        response = self._session.patch(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -2727,16 +2568,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.SetTagsInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -2810,16 +2647,10 @@ class InstancesRestTransport(InstancesTransport):
         #               not required for GCE
         query_params = {}
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers,)
+        response = self._session.post(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -2894,16 +2725,10 @@ class InstancesRestTransport(InstancesTransport):
         if compute.StartInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers,)
+        response = self._session.post(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -2985,16 +2810,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.StartWithEncryptionKeyInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -3068,16 +2889,10 @@ class InstancesRestTransport(InstancesTransport):
         if compute.StopInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers,)
+        response = self._session.post(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -3129,16 +2944,12 @@ class InstancesRestTransport(InstancesTransport):
         #               not required for GCE
         query_params = {}
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -3228,16 +3039,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.UpdateInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.put(url, headers=headers, data=body,)
+        response = self._session.put(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -3316,21 +3123,16 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {}
-        if request.network_interface:
-            query_params["networkInterface"] = request.network_interface
+        query_params["networkInterface"] = request.network_interface
         if compute.UpdateAccessConfigInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
-
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -3412,16 +3214,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.UpdateDisplayDeviceInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.patch(url, headers=headers, data=body,)
+        response = self._session.patch(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -3500,21 +3298,16 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {}
-        if request.network_interface:
-            query_params["networkInterface"] = request.network_interface
+        query_params["networkInterface"] = request.network_interface
         if compute.UpdateNetworkInterfaceInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
-
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.patch(url, headers=headers, data=body,)
+        response = self._session.patch(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -3597,16 +3390,12 @@ class InstancesRestTransport(InstancesTransport):
         if compute.UpdateShieldedInstanceConfigInstanceRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.patch(url, headers=headers, data=body,)
+        response = self._session.patch(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.

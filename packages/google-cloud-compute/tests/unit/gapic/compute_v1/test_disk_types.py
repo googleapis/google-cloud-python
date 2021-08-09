@@ -112,6 +112,27 @@ def test_disk_types_client_from_service_account_info(client_class):
         assert client.transport._host == "compute.googleapis.com:443"
 
 
+@pytest.mark.parametrize(
+    "transport_class,transport_name", [(transports.DiskTypesRestTransport, "rest"),]
+)
+def test_disk_types_client_service_account_always_use_jwt(
+    transport_class, transport_name
+):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
+
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=False)
+        use_jwt.assert_not_called()
+
+
 @pytest.mark.parametrize("client_class", [DiskTypesClient,])
 def test_disk_types_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -466,7 +487,8 @@ def test_aggregated_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
 
 
 def test_aggregated_list_rest_flattened_error():
@@ -554,10 +576,10 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetDiskTypeReque
         # Designate an appropriate value for the returned response.
         return_value = compute.DiskType(
             creation_timestamp="creation_timestamp_value",
-            default_disk_size_gb="default_disk_size_gb_value",
+            default_disk_size_gb=2097,
             deprecated=compute.DeprecationStatus(deleted="deleted_value"),
             description="description_value",
-            id="id_value",
+            id=205,
             kind="kind_value",
             name="name_value",
             region="region_value",
@@ -577,10 +599,10 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetDiskTypeReque
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.DiskType)
     assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.default_disk_size_gb == "default_disk_size_gb_value"
+    assert response.default_disk_size_gb == 2097
     assert response.deprecated == compute.DeprecationStatus(deleted="deleted_value")
     assert response.description == "description_value"
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.region == "region_value"
@@ -619,9 +641,10 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "zone_value" in http_call[1] + str(body)
-        assert "disk_type_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "zone_value" in http_call[1] + str(body) + str(params)
+        assert "disk_type_value" in http_call[1] + str(body) + str(params)
 
 
 def test_get_rest_flattened_error():
@@ -709,8 +732,9 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "zone_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "zone_value" in http_call[1] + str(body) + str(params)
 
 
 def test_list_rest_flattened_error():

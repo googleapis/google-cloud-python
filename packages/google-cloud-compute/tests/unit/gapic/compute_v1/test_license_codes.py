@@ -113,6 +113,27 @@ def test_license_codes_client_from_service_account_info(client_class):
         assert client.transport._host == "compute.googleapis.com:443"
 
 
+@pytest.mark.parametrize(
+    "transport_class,transport_name", [(transports.LicenseCodesRestTransport, "rest"),]
+)
+def test_license_codes_client_service_account_always_use_jwt(
+    transport_class, transport_name
+):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
+
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=False)
+        use_jwt.assert_not_called()
+
+
 @pytest.mark.parametrize("client_class", [LicenseCodesClient,])
 def test_license_codes_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -401,7 +422,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetLicenseCodeRe
         return_value = compute.LicenseCode(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
-            id="id_value",
+            id=205,
             kind="kind_value",
             license_alias=[
                 compute.LicenseCodeLicenseAlias(description="description_value")
@@ -424,7 +445,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetLicenseCodeRe
     assert isinstance(response, compute.LicenseCode)
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
-    assert response.id == "id_value"
+    assert response.id == 205
     assert response.kind == "kind_value"
     assert response.license_alias == [
         compute.LicenseCodeLicenseAlias(description="description_value")
@@ -465,8 +486,9 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "license_code_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "license_code_value" in http_call[1] + str(body) + str(params)
 
 
 def test_get_rest_flattened_error():
@@ -548,13 +570,14 @@ def test_test_iam_permissions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-        assert "project_value" in http_call[1] + str(body)
-        assert "resource_value" in http_call[1] + str(body)
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "resource_value" in http_call[1] + str(body) + str(params)
         assert compute.TestPermissionsRequest.to_json(
             test_permissions_request_resource,
             including_default_value_fields=False,
             use_integers_for_enums=False,
-        ) in http_call[1] + str(body)
+        ) in http_call[1] + str(body) + str(params)
 
 
 def test_test_iam_permissions_rest_flattened_error():

@@ -52,6 +52,7 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
     ) -> None:
         """Instantiate the transport.
 
@@ -85,7 +86,10 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
         super().__init__(
-            host=host, credentials=credentials, client_info=client_info,
+            host=host,
+            credentials=credentials,
+            client_info=client_info,
+            always_use_jwt_access=always_use_jwt_access,
         )
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST
@@ -141,16 +145,10 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         ):
             query_params["returnPartialSuccess"] = request.return_partial_success
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers,)
+        response = self._session.get(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -226,16 +224,10 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         if compute.DeleteTargetHttpProxyRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.delete(url, headers=headers,)
+        response = self._session.delete(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -302,16 +294,10 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         #               not required for GCE
         query_params = {}
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers,)
+        response = self._session.get(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -392,16 +378,12 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         if compute.InsertTargetHttpProxyRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -453,16 +435,10 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         if compute.ListTargetHttpProxiesRequest.return_partial_success in request:
             query_params["returnPartialSuccess"] = request.return_partial_success
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers,)
+        response = self._session.get(url, headers=headers, params=query_params,)
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -545,16 +521,12 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         if compute.PatchTargetHttpProxyRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.patch(url, headers=headers, data=body,)
+        response = self._session.patch(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -635,16 +607,12 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         if compute.SetUrlMapTargetHttpProxyRequest.request_id in request:
             query_params["requestId"] = request.request_id
 
-        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
-        #               discards default values
-        # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
-        url += "?{}".format("&".join(query_params)).replace(" ", "+")
-
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, data=body,)
+        response = self._session.post(
+            url, headers=headers, params=query_params, data=body,
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.

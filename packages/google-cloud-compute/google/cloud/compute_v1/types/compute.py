@@ -1257,7 +1257,7 @@ class AcceleratorType(proto.Message):
         description (str):
             [Output Only] An optional textual description of the
             resource.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -1283,7 +1283,7 @@ class AcceleratorType(proto.Message):
         proto.MESSAGE, number=515138995, optional=True, message="DeprecationStatus",
     )
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     maximum_cards_per_instance = proto.Field(
         proto.INT32, number=263814482, optional=True,
@@ -1590,7 +1590,7 @@ class Address(proto.Message):
         description (str):
             An optional description of this resource.
             Provide this field when you create the resource.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         ip_version (google.cloud.compute_v1.types.Address.IpVersion):
@@ -1748,7 +1748,7 @@ class Address(proto.Message):
     )
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     ip_version = proto.Field(
         proto.ENUM, number=294959552, optional=True, enum=IpVersion,
     )
@@ -1921,7 +1921,7 @@ class AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk(
 ):
     r"""
     Attributes:
-        disk_size_gb (str):
+        disk_size_gb (int):
             Specifies the size of the disk in base-2 GB.
         interface (google.cloud.compute_v1.types.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk.Interface):
             Specifies the disk interface to use for
@@ -1941,7 +1941,7 @@ class AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk(
         NVME = 2408800
         SCSI = 2539686
 
-    disk_size_gb = proto.Field(proto.STRING, number=316263735, optional=True,)
+    disk_size_gb = proto.Field(proto.INT64, number=316263735, optional=True,)
     interface = proto.Field(
         proto.ENUM, number=502623545, optional=True, enum=Interface,
     )
@@ -1987,17 +1987,17 @@ class AllocationSpecificSKUReservation(proto.Message):
     instance configuration.
 
     Attributes:
-        count (str):
+        count (int):
             Specifies the number of resources that are
             allocated.
-        in_use_count (str):
+        in_use_count (int):
             [Output Only] Indicates how many instances are in use.
         instance_properties (google.cloud.compute_v1.types.AllocationSpecificSKUAllocationReservedInstanceProperties):
             The instance properties for the reservation.
     """
 
-    count = proto.Field(proto.STRING, number=94851343, optional=True,)
-    in_use_count = proto.Field(proto.STRING, number=493458877, optional=True,)
+    count = proto.Field(proto.INT64, number=94851343, optional=True,)
+    in_use_count = proto.Field(proto.INT64, number=493458877, optional=True,)
     instance_properties = proto.Field(
         proto.MESSAGE,
         number=215355165,
@@ -2080,7 +2080,7 @@ class AttachedDiskInitializeParams(proto.Message):
             the given region, the existing disk is attached
             to the new instance and the new disk is not
             created.
-        disk_size_gb (str):
+        disk_size_gb (int):
             Specifies the size of the disk in base-2 GB.
             The size must be at least 10 GB. If you specify
             a sourceImage, which is required for boot disks,
@@ -2113,7 +2113,7 @@ class AttachedDiskInitializeParams(proto.Message):
             Specifies which action to take on instance
             update with this disk. Default is to use the
             existing disk.
-        provisioned_iops (str):
+        provisioned_iops (int):
             Indicates how many IOPS must be provisioned
             for the disk.
         resource_policies (Sequence[str]):
@@ -2186,13 +2186,13 @@ class AttachedDiskInitializeParams(proto.Message):
 
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     disk_name = proto.Field(proto.STRING, number=92807149, optional=True,)
-    disk_size_gb = proto.Field(proto.STRING, number=316263735, optional=True,)
+    disk_size_gb = proto.Field(proto.INT64, number=316263735, optional=True,)
     disk_type = proto.Field(proto.STRING, number=93009052, optional=True,)
     labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
     on_update_action = proto.Field(
         proto.ENUM, number=202451980, optional=True, enum=OnUpdateAction,
     )
-    provisioned_iops = proto.Field(proto.STRING, number=186769108, optional=True,)
+    provisioned_iops = proto.Field(proto.INT64, number=186769108, optional=True,)
     resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
     source_image = proto.Field(proto.STRING, number=50443319, optional=True,)
     source_image_encryption_key = proto.Field(
@@ -2277,7 +2277,7 @@ class AttachedDisk(proto.Message):
             supplied encryption keys, so you cannot use your
             own keys to encrypt disks in a managed instance
             group.
-        disk_size_gb (str):
+        disk_size_gb (int):
             The size of the disk in GB.
         guest_os_features (Sequence[google.cloud.compute_v1.types.GuestOsFeature]):
             A list of features to enable on the guest
@@ -2370,7 +2370,7 @@ class AttachedDisk(proto.Message):
     disk_encryption_key = proto.Field(
         proto.MESSAGE, number=271660677, optional=True, message="CustomerEncryptionKey",
     )
-    disk_size_gb = proto.Field(proto.STRING, number=316263735, optional=True,)
+    disk_size_gb = proto.Field(proto.INT64, number=316263735, optional=True,)
     guest_os_features = proto.RepeatedField(
         proto.MESSAGE, number=79294545, message="GuestOsFeature",
     )
@@ -2789,7 +2789,7 @@ class Autoscaler(proto.Message):
             An optional description of this resource.
             Provide this property when you create the
             resource.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -2870,7 +2870,7 @@ class Autoscaler(proto.Message):
     )
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     recommended_size = proto.Field(proto.INT32, number=257915749, optional=True,)
@@ -3502,7 +3502,7 @@ class BackendBucketCdnPolicy(proto.Message):
             cached response. The maximum allowed value is
             604800 (1 week). Set this to zero (0) to disable
             serve-while-stale.
-        signed_url_cache_max_age_sec (str):
+        signed_url_cache_max_age_sec (int):
             Maximum number of seconds the response to a signed URL
             request will be considered fresh. After this time period,
             the response will be revalidated before being served.
@@ -3563,7 +3563,7 @@ class BackendBucketCdnPolicy(proto.Message):
     request_coalescing = proto.Field(proto.BOOL, number=532808276, optional=True,)
     serve_while_stale = proto.Field(proto.INT32, number=236682203, optional=True,)
     signed_url_cache_max_age_sec = proto.Field(
-        proto.STRING, number=269374534, optional=True,
+        proto.INT64, number=269374534, optional=True,
     )
     signed_url_key_names = proto.RepeatedField(proto.STRING, number=371848885,)
 
@@ -3591,7 +3591,7 @@ class BackendBucket(proto.Message):
         enable_cdn (bool):
             If true, enable Cloud CDN for this
             BackendBucket.
-        id (str):
+        id (int):
             [Output Only] Unique identifier for the resource; defined by
             the server.
         kind (str):
@@ -3620,7 +3620,7 @@ class BackendBucket(proto.Message):
     custom_response_headers = proto.RepeatedField(proto.STRING, number=387539094,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     enable_cdn = proto.Field(proto.BOOL, number=282942321, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
@@ -3817,7 +3817,7 @@ class BackendServiceCdnPolicy(proto.Message):
             cached response. The maximum allowed value is
             604800 (1 week). Set this to zero (0) to disable
             serve-while-stale.
-        signed_url_cache_max_age_sec (str):
+        signed_url_cache_max_age_sec (int):
             Maximum number of seconds the response to a signed URL
             request will be considered fresh. After this time period,
             the response will be revalidated before being served.
@@ -3881,7 +3881,7 @@ class BackendServiceCdnPolicy(proto.Message):
     request_coalescing = proto.Field(proto.BOOL, number=532808276, optional=True,)
     serve_while_stale = proto.Field(proto.INT32, number=236682203, optional=True,)
     signed_url_cache_max_age_sec = proto.Field(
-        proto.STRING, number=269374534, optional=True,
+        proto.INT64, number=269374534, optional=True,
     )
     signed_url_key_names = proto.RepeatedField(proto.STRING, number=371848885,)
 
@@ -3953,7 +3953,7 @@ class ConsistentHashLoadBalancerSettings(proto.Message):
             The hash based on the value of the specified header field.
             This field is applicable if the sessionAffinity is set to
             HEADER_FIELD.
-        minimum_ring_size (str):
+        minimum_ring_size (int):
             The minimum number of virtual nodes to use
             for the hash ring. Defaults to 1024. Larger ring
             sizes result in more granular load
@@ -3970,7 +3970,7 @@ class ConsistentHashLoadBalancerSettings(proto.Message):
         message="ConsistentHashLoadBalancerSettingsHttpCookie",
     )
     http_header_name = proto.Field(proto.STRING, number=234798022, optional=True,)
-    minimum_ring_size = proto.Field(proto.STRING, number=234380735, optional=True,)
+    minimum_ring_size = proto.Field(proto.INT64, number=234380735, optional=True,)
 
 
 class BackendServiceFailoverPolicy(proto.Message):
@@ -4082,7 +4082,7 @@ class Duration(proto.Message):
             resolution. Durations less than one second are represented
             with a 0 ``seconds`` field and a positive ``nanos`` field.
             Must be from 0 to 999,999,999 inclusive.
-        seconds (str):
+        seconds (int):
             Span of time at a resolution of a second. Must be from 0 to
             315,576,000,000 inclusive. Note: these bounds are computed
             from: 60 sec/min \* 60 min/hr \* 24 hr/day \* 365.25
@@ -4090,7 +4090,7 @@ class Duration(proto.Message):
     """
 
     nanos = proto.Field(proto.INT32, number=104586303, optional=True,)
-    seconds = proto.Field(proto.STRING, number=359484031, optional=True,)
+    seconds = proto.Field(proto.INT64, number=359484031, optional=True,)
 
 
 class OutlierDetection(proto.Message):
@@ -4364,7 +4364,7 @@ class BackendService(proto.Message):
             on this resource. Not available for Internal
             TCP/UDP Load Balancing and Network Load
             Balancing.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -4695,7 +4695,7 @@ class BackendService(proto.Message):
     iap = proto.Field(
         proto.MESSAGE, number=104024, optional=True, message="BackendServiceIAP",
     )
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     load_balancing_scheme = proto.Field(
         proto.ENUM, number=363890244, optional=True, enum=LoadBalancingScheme,
@@ -5318,7 +5318,7 @@ class BulkInsertInstanceResourcePerInstanceProperties(proto.Message):
 class BulkInsertInstanceResource(proto.Message):
     r"""
     Attributes:
-        count (str):
+        count (int):
             The maximum number of instances to create.
         instance_properties (google.cloud.compute_v1.types.InstanceProperties):
             The instance properties defining the VM
@@ -5326,7 +5326,7 @@ class BulkInsertInstanceResource(proto.Message):
             sourceInstanceTemplate is not provided.
         location_policy (google.cloud.compute_v1.types.LocationPolicy):
             Policy for chosing target zone.
-        min_count (str):
+        min_count (int):
             The minimum number of instances to create. If no min_count
             is specified then count is used as the default value. If
             min_count instances cannot be created, then no instances
@@ -5369,14 +5369,14 @@ class BulkInsertInstanceResource(proto.Message):
             This field is optional.
     """
 
-    count = proto.Field(proto.STRING, number=94851343, optional=True,)
+    count = proto.Field(proto.INT64, number=94851343, optional=True,)
     instance_properties = proto.Field(
         proto.MESSAGE, number=215355165, optional=True, message="InstanceProperties",
     )
     location_policy = proto.Field(
         proto.MESSAGE, number=465689852, optional=True, message="LocationPolicy",
     )
-    min_count = proto.Field(proto.STRING, number=523228386, optional=True,)
+    min_count = proto.Field(proto.INT64, number=523228386, optional=True,)
     name_pattern = proto.Field(proto.STRING, number=413815260, optional=True,)
     per_instance_properties = proto.MapField(
         proto.STRING,
@@ -5407,7 +5407,7 @@ class CacheInvalidationRule(proto.Message):
 class LicenseResourceCommitment(proto.Message):
     r"""Commitment for a particular license resource.
     Attributes:
-        amount (str):
+        amount (int):
             The number of licenses purchased.
         cores_per_license (str):
             Specifies the core range of the instance for
@@ -5416,7 +5416,7 @@ class LicenseResourceCommitment(proto.Message):
             Any applicable license URI.
     """
 
-    amount = proto.Field(proto.STRING, number=196759640, optional=True,)
+    amount = proto.Field(proto.INT64, number=196759640, optional=True,)
     cores_per_license = proto.Field(proto.STRING, number=32482324, optional=True,)
     license_ = proto.Field(proto.STRING, number=166757441, optional=True,)
 
@@ -5438,7 +5438,7 @@ class Reservation(proto.Message):
             An optional description of this resource.
             Provide this property when you create the
             resource.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -5487,7 +5487,7 @@ class Reservation(proto.Message):
     commitment = proto.Field(proto.STRING, number=482134805, optional=True,)
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     satisfies_pzs = proto.Field(proto.BOOL, number=480964267, optional=True,)
@@ -5513,7 +5513,7 @@ class ResourceCommitment(proto.Message):
         accelerator_type (str):
             Name of the accelerator type resource.
             Applicable only when the type is ACCELERATOR.
-        amount (str):
+        amount (int):
             The amount of the resource purchased (in a
             type-dependent unit, such as bytes). For vCPUs,
             this can just be an integer. For memory, this
@@ -5537,7 +5537,7 @@ class ResourceCommitment(proto.Message):
         VCPU = 2628978
 
     accelerator_type = proto.Field(proto.STRING, number=138031246, optional=True,)
-    amount = proto.Field(proto.STRING, number=196759640, optional=True,)
+    amount = proto.Field(proto.INT64, number=196759640, optional=True,)
     type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
 
 
@@ -5568,7 +5568,7 @@ class Commitment(proto.Message):
             resource.
         end_timestamp (str):
             [Output Only] Commitment end time in RFC3339 text format.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -5651,7 +5651,7 @@ class Commitment(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     end_timestamp = proto.Field(proto.STRING, number=468096690, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     license_resource = proto.Field(
         proto.MESSAGE,
@@ -5951,7 +5951,7 @@ class Disk(proto.Message):
             operating system. Applicable only for bootable
             images. Read  Enabling guest operating system
             features to see a list of available options.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -5976,7 +5976,7 @@ class Disk(proto.Message):
             [Output Only] Last attach timestamp in RFC3339 text format.
         last_detach_timestamp (str):
             [Output Only] Last detach timestamp in RFC3339 text format.
-        license_codes (Sequence[str]):
+        license_codes (Sequence[int]):
             Integer license codes indicating which
             licenses are attached to this disk.
         licenses (Sequence[str]):
@@ -5997,7 +5997,7 @@ class Disk(proto.Message):
             except the last character, which cannot be a dash.
         options (str):
             Internal use only.
-        physical_block_size_bytes (str):
+        physical_block_size_bytes (int):
             Physical block size of the persistent disk,
             in bytes. If not present in a request, a default
             value is used. The currently supported size is
@@ -6005,7 +6005,7 @@ class Disk(proto.Message):
             an unsupported value is requested, the error
             message will list the supported values for the
             caller's project.
-        provisioned_iops (str):
+        provisioned_iops (int):
             Indicates how many IOPS must be provisioned
             for the disk.
         region (str):
@@ -6025,7 +6025,7 @@ class Disk(proto.Message):
         self_link (str):
             [Output Only] Server-defined fully-qualified URL for this
             resource.
-        size_gb (str):
+        size_gb (int):
             Size, in GB, of the persistent disk. You can
             specify this field when creating a persistent
             disk using the sourceImage, sourceSnapshot, or
@@ -6169,27 +6169,27 @@ class Disk(proto.Message):
     guest_os_features = proto.RepeatedField(
         proto.MESSAGE, number=79294545, message="GuestOsFeature",
     )
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
     labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
     last_attach_timestamp = proto.Field(proto.STRING, number=42159653, optional=True,)
     last_detach_timestamp = proto.Field(proto.STRING, number=56471027, optional=True,)
-    license_codes = proto.RepeatedField(proto.STRING, number=45482664,)
+    license_codes = proto.RepeatedField(proto.INT64, number=45482664,)
     licenses = proto.RepeatedField(proto.STRING, number=337642578,)
     location_hint = proto.Field(proto.STRING, number=350519505, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     options = proto.Field(proto.STRING, number=361137822, optional=True,)
     physical_block_size_bytes = proto.Field(
-        proto.STRING, number=420007943, optional=True,
+        proto.INT64, number=420007943, optional=True,
     )
-    provisioned_iops = proto.Field(proto.STRING, number=186769108, optional=True,)
+    provisioned_iops = proto.Field(proto.INT64, number=186769108, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     replica_zones = proto.RepeatedField(proto.STRING, number=48438272,)
     resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
     satisfies_pzs = proto.Field(proto.BOOL, number=480964267, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
-    size_gb = proto.Field(proto.STRING, number=494929369, optional=True,)
+    size_gb = proto.Field(proto.INT64, number=494929369, optional=True,)
     source_disk = proto.Field(proto.STRING, number=451753793, optional=True,)
     source_disk_id = proto.Field(proto.STRING, number=454190809, optional=True,)
     source_image = proto.Field(proto.STRING, number=50443319, optional=True,)
@@ -6423,14 +6423,14 @@ class DiskType(proto.Message):
     Attributes:
         creation_timestamp (str):
             [Output Only] Creation timestamp in RFC3339 text format.
-        default_disk_size_gb (str):
+        default_disk_size_gb (int):
             [Output Only] Server-defined default disk size in GB.
         deprecated (google.cloud.compute_v1.types.DeprecationStatus):
             [Output Only] The deprecation status associated with this
             disk type.
         description (str):
             [Output Only] An optional description of this resource.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -6455,12 +6455,12 @@ class DiskType(proto.Message):
     """
 
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
-    default_disk_size_gb = proto.Field(proto.STRING, number=270619253, optional=True,)
+    default_disk_size_gb = proto.Field(proto.INT64, number=270619253, optional=True,)
     deprecated = proto.Field(
         proto.MESSAGE, number=515138995, optional=True, message="DeprecationStatus",
     )
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
@@ -6593,12 +6593,12 @@ class DisksRemoveResourcePoliciesRequest(proto.Message):
 class DisksResizeRequest(proto.Message):
     r"""
     Attributes:
-        size_gb (str):
+        size_gb (int):
             The new size of the persistent disk, which is
             specified in GB.
     """
 
-    size_gb = proto.Field(proto.STRING, number=494929369, optional=True,)
+    size_gb = proto.Field(proto.INT64, number=494929369, optional=True,)
 
 
 class DisplayDevice(proto.Message):
@@ -6776,7 +6776,7 @@ class ExternalVpnGateway(proto.Message):
             An optional description of this resource.
             Provide this property when you create the
             resource.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         interfaces (Sequence[google.cloud.compute_v1.types.ExternalVpnGatewayInterface]):
@@ -6830,7 +6830,7 @@ class ExternalVpnGateway(proto.Message):
 
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     interfaces = proto.RepeatedField(
         proto.MESSAGE, number=12073562, message="ExternalVpnGatewayInterface",
     )
@@ -7026,7 +7026,7 @@ class Firewall(proto.Message):
             not enforced and the network behaves as if it
             did not exist. If this is unspecified, the
             firewall rule will be enabled.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -7156,7 +7156,7 @@ class Firewall(proto.Message):
         proto.ENUM, number=111150975, optional=True, enum=Direction,
     )
     disabled = proto.Field(proto.BOOL, number=270940796, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     log_config = proto.Field(
         proto.MESSAGE, number=351299741, optional=True, message="FirewallLogConfig",
@@ -7371,7 +7371,7 @@ class FirewallPolicy(proto.Message):
             fail with error 412 conditionNotMet.  To see the
             latest fingerprint, make get() request to the
             firewall policy.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -7417,7 +7417,7 @@ class FirewallPolicy(proto.Message):
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     display_name = proto.Field(proto.STRING, number=4473832, optional=True,)
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     parent = proto.Field(proto.STRING, number=78317738, optional=True,)
@@ -7713,7 +7713,7 @@ class ForwardingRule(proto.Message):
             from another concurrent request.  To see the
             latest fingerprint, make a get() request to
             retrieve a ForwardingRule.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         ip_version (google.cloud.compute_v1.types.ForwardingRule.IpVersion):
@@ -7858,7 +7858,7 @@ class ForwardingRule(proto.Message):
 
             For more information, see `Port
             specifications </load-balancing/docs/forwarding-rule-concepts#port_specifications>`__.
-        psc_connection_id (str):
+        psc_connection_id (int):
             [Output Only] The PSC connection id of the PSC Forwarding
             Rule.
         region (str):
@@ -7995,7 +7995,7 @@ class ForwardingRule(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     ip_version = proto.Field(
         proto.ENUM, number=294959552, optional=True, enum=IpVersion,
     )
@@ -8016,7 +8016,7 @@ class ForwardingRule(proto.Message):
     )
     port_range = proto.Field(proto.STRING, number=217518079, optional=True,)
     ports = proto.RepeatedField(proto.STRING, number=106854418,)
-    psc_connection_id = proto.Field(proto.STRING, number=292082397, optional=True,)
+    psc_connection_id = proto.Field(proto.UINT64, number=292082397, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     service_directory_registrations = proto.RepeatedField(
@@ -8990,7 +8990,7 @@ class HealthCheck(proto.Message):
 
         https_health_check (google.cloud.compute_v1.types.HTTPSHealthCheck):
 
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -9064,7 +9064,7 @@ class HealthCheck(proto.Message):
     https_health_check = proto.Field(
         proto.MESSAGE, number=436046905, optional=True, message="HTTPSHealthCheck",
     )
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     log_config = proto.Field(
         proto.MESSAGE, number=351299741, optional=True, message="HealthCheckLogConfig",
@@ -9181,7 +9181,7 @@ class HealthCheckService(proto.Message):
                then UNHEALTHY is the HealthState of the entire health
                check service. If all backend's are healthy, the
                HealthState of the health check service is HEALTHY. .
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -9242,7 +9242,7 @@ class HealthCheckService(proto.Message):
     health_status_aggregation_policy = proto.Field(
         proto.ENUM, number=253163129, optional=True, enum=HealthStatusAggregationPolicy,
     )
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     network_endpoint_groups = proto.RepeatedField(proto.STRING, number=29346733,)
@@ -9586,16 +9586,16 @@ class Int64RangeMatch(proto.Message):
     within the specified integer range.
 
     Attributes:
-        range_end (str):
+        range_end (int):
             The end of the range (exclusive) in signed
             long integer format.
-        range_start (str):
+        range_start (int):
             The start of the range (inclusive) in signed
             long integer format.
     """
 
-    range_end = proto.Field(proto.STRING, number=322439897, optional=True,)
-    range_start = proto.Field(proto.STRING, number=103333600, optional=True,)
+    range_end = proto.Field(proto.INT64, number=322439897, optional=True,)
+    range_start = proto.Field(proto.INT64, number=103333600, optional=True,)
 
 
 class HttpHeaderMatch(proto.Message):
@@ -10280,7 +10280,7 @@ class Image(proto.Message):
     {$api_version}.images ==)
 
     Attributes:
-        archive_size_bytes (str):
+        archive_size_bytes (int):
             Size of the image tar.gz archive stored in
             Google Cloud Storage (in bytes).
         creation_timestamp (str):
@@ -10292,7 +10292,7 @@ class Image(proto.Message):
             An optional description of this resource.
             Provide this property when you create the
             resource.
-        disk_size_gb (str):
+        disk_size_gb (int):
             Size of the image when restored onto a
             persistent disk (in GB).
         family (str):
@@ -10307,7 +10307,7 @@ class Image(proto.Message):
             operating system. Applicable only for bootable
             images. Read  Enabling guest operating system
             features to see a list of available options.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         image_encryption_key (google.cloud.compute_v1.types.CustomerEncryptionKey):
@@ -10342,7 +10342,7 @@ class Image(proto.Message):
         labels (Sequence[google.cloud.compute_v1.types.Image.LabelsEntry]):
             Labels to apply to this image. These can be
             later modified by the setLabels method.
-        license_codes (Sequence[str]):
+        license_codes (Sequence[int]):
             Integer license codes indicating which
             licenses are attached to this image.
         licenses (Sequence[str]):
@@ -10454,25 +10454,25 @@ class Image(proto.Message):
         PENDING = 35394935
         READY = 77848963
 
-    archive_size_bytes = proto.Field(proto.STRING, number=381093450, optional=True,)
+    archive_size_bytes = proto.Field(proto.INT64, number=381093450, optional=True,)
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     deprecated = proto.Field(
         proto.MESSAGE, number=515138995, optional=True, message="DeprecationStatus",
     )
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    disk_size_gb = proto.Field(proto.STRING, number=316263735, optional=True,)
+    disk_size_gb = proto.Field(proto.INT64, number=316263735, optional=True,)
     family = proto.Field(proto.STRING, number=328751972, optional=True,)
     guest_os_features = proto.RepeatedField(
         proto.MESSAGE, number=79294545, message="GuestOsFeature",
     )
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     image_encryption_key = proto.Field(
         proto.MESSAGE, number=379512583, optional=True, message="CustomerEncryptionKey",
     )
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
     labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
-    license_codes = proto.RepeatedField(proto.STRING, number=45482664,)
+    license_codes = proto.RepeatedField(proto.INT64, number=45482664,)
     licenses = proto.RepeatedField(proto.STRING, number=337642578,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     raw_disk = proto.Field(
@@ -10892,7 +10892,7 @@ class Instance(proto.Message):
             global DNS, and
             [INSTANCE_NAME].[ZONE].c.[PROJECT_ID].internal when using
             zonal DNS.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -11072,7 +11072,7 @@ class Instance(proto.Message):
         proto.MESSAGE, number=463595119, message="AcceleratorConfig",
     )
     hostname = proto.Field(proto.STRING, number=237067315, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
     labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
@@ -11231,7 +11231,7 @@ class InstanceGroup(proto.Message):
             [Output Only] The fingerprint of the named ports. The system
             uses this fingerprint to detect conflicts when multiple
             users change the named ports concurrently.
-        id (str):
+        id (int):
             [Output Only] A unique identifier for this instance group,
             generated by the server.
         kind (str):
@@ -11280,7 +11280,7 @@ class InstanceGroup(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     named_ports = proto.RepeatedField(
@@ -11719,7 +11719,7 @@ class InstanceGroupManager(proto.Message):
             conditionNotMet.  To see the latest fingerprint,
             make a get() request to retrieve an
             InstanceGroupManager.
-        id (str):
+        id (int):
             [Output Only] A unique identifier for this resource type.
             The server generates this identifier.
         instance_group (str):
@@ -11805,7 +11805,7 @@ class InstanceGroupManager(proto.Message):
         proto.MESSAGE, number=534558541, optional=True, message="DistributionPolicy",
     )
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     instance_group = proto.Field(proto.STRING, number=81095253, optional=True,)
     instance_template = proto.Field(proto.STRING, number=309248228, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
@@ -12228,7 +12228,7 @@ class ManagedInstance(proto.Message):
                list for an instance without stopping that instance.
             -  VERIFYING The managed instance group has created the
                instance and it is in the process of being verified.
-        id (str):
+        id (int):
             [Output only] The unique identifier for this resource. This
             field is empty when instance does not exist.
         instance (str):
@@ -12310,7 +12310,7 @@ class ManagedInstance(proto.Message):
     current_action = proto.Field(
         proto.ENUM, number=178475964, optional=True, enum=CurrentAction,
     )
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     instance = proto.Field(proto.STRING, number=18257045, optional=True,)
     instance_health = proto.RepeatedField(
         proto.MESSAGE, number=382667078, message="ManagedInstanceInstanceHealth",
@@ -12866,7 +12866,7 @@ class InstanceTemplate(proto.Message):
             An optional description of this resource.
             Provide this property when you create the
             resource.
-        id (str):
+        id (int):
             [Output Only] A unique identifier for this instance
             template. The server defines this identifier.
         kind (str):
@@ -12901,7 +12901,7 @@ class InstanceTemplate(proto.Message):
 
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     properties = proto.Field(
@@ -13144,7 +13144,7 @@ class InterconnectOutageNotification(proto.Message):
         description (str):
             A description about the purpose of the
             outage.
-        end_time (str):
+        end_time (int):
             Scheduled end time for the outage
             (milliseconds since Unix epoch).
         issue_type (google.cloud.compute_v1.types.InterconnectOutageNotification.IssueType):
@@ -13167,7 +13167,7 @@ class InterconnectOutageNotification(proto.Message):
             -  GOOGLE: this notification as generated by Google. Note
                that the value of NSRC_GOOGLE has been deprecated in
                favor of GOOGLE.
-        start_time (str):
+        start_time (int):
             Scheduled start time for the outage
             (milliseconds since Unix epoch).
         state (google.cloud.compute_v1.types.InterconnectOutageNotification.State):
@@ -13232,13 +13232,13 @@ class InterconnectOutageNotification(proto.Message):
 
     affected_circuits = proto.RepeatedField(proto.STRING, number=177717013,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    end_time = proto.Field(proto.STRING, number=114938801, optional=True,)
+    end_time = proto.Field(proto.INT64, number=114938801, optional=True,)
     issue_type = proto.Field(
         proto.ENUM, number=369639136, optional=True, enum=IssueType,
     )
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     source = proto.Field(proto.ENUM, number=177235995, optional=True, enum=Source,)
-    start_time = proto.Field(proto.STRING, number=37467274, optional=True,)
+    start_time = proto.Field(proto.INT64, number=37467274, optional=True,)
     state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
 
 
@@ -13281,7 +13281,7 @@ class Interconnect(proto.Message):
             [Output Only] Google reference ID to be used when raising
             support tickets with Google or otherwise to debug backend
             connectivity issues.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         interconnect_attachments (Sequence[str]):
@@ -13437,7 +13437,7 @@ class Interconnect(proto.Message):
     )
     google_ip_address = proto.Field(proto.STRING, number=443105954, optional=True,)
     google_reference_id = proto.Field(proto.STRING, number=534944469, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     interconnect_attachments = proto.RepeatedField(proto.STRING, number=425388415,)
     interconnect_type = proto.Field(
         proto.ENUM, number=515165259, optional=True, enum=InterconnectType,
@@ -13593,7 +13593,7 @@ class InterconnectAttachment(proto.Message):
             [Output Only] Google reference ID, to be used when raising
             support tickets with Google or otherwise to debug backend
             connectivity issues. [Deprecated] This field is not used.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         interconnect (str):
@@ -13654,7 +13654,7 @@ class InterconnectAttachment(proto.Message):
             identifier of an PARTNER attachment used to initiate
             provisioning with a selected partner. Of the form
             "XXXXX/region/domain".
-        partner_asn (str):
+        partner_asn (int):
             Optional BGP ASN for the router supplied by a Layer 3
             Partner if they configured BGP on behalf of the customer.
             Output only for PARTNER type, input only for
@@ -13873,7 +13873,7 @@ class InterconnectAttachment(proto.Message):
         proto.ENUM, number=97980291, optional=True, enum=Encryption,
     )
     google_reference_id = proto.Field(proto.STRING, number=534944469, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     interconnect = proto.Field(proto.STRING, number=224601230, optional=True,)
     ipsec_internal_addresses = proto.RepeatedField(proto.STRING, number=407648565,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
@@ -13883,7 +13883,7 @@ class InterconnectAttachment(proto.Message):
         proto.ENUM, number=201070847, optional=True, enum=OperationalStatus,
     )
     pairing_key = proto.Field(proto.STRING, number=439695464, optional=True,)
-    partner_asn = proto.Field(proto.STRING, number=438166149, optional=True,)
+    partner_asn = proto.Field(proto.INT64, number=438166149, optional=True,)
     partner_metadata = proto.Field(
         proto.MESSAGE,
         number=65908934,
@@ -14239,7 +14239,7 @@ class InterconnectLocationRegionInfo(proto.Message):
     a specific Cloud Region.
 
     Attributes:
-        expected_rtt_ms (str):
+        expected_rtt_ms (int):
             Expected round-trip time in milliseconds,
             from this InterconnectLocation to a VM in this
             region.
@@ -14258,7 +14258,7 @@ class InterconnectLocationRegionInfo(proto.Message):
         LP_GLOBAL = 429584062
         LP_LOCAL_REGION = 488598851
 
-    expected_rtt_ms = proto.Field(proto.STRING, number=422543866, optional=True,)
+    expected_rtt_ms = proto.Field(proto.INT64, number=422543866, optional=True,)
     location_presence = proto.Field(
         proto.ENUM, number=101517893, optional=True, enum=LocationPresence,
     )
@@ -14305,7 +14305,7 @@ class InterconnectLocation(proto.Message):
         facility_provider_facility_id (str):
             [Output Only] A provider-assigned Identifier for this
             facility (e.g., Ashburn-DC1).
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -14380,7 +14380,7 @@ class InterconnectLocation(proto.Message):
     facility_provider_facility_id = proto.Field(
         proto.STRING, number=87269125, optional=True,
     )
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     peeringdb_facility_id = proto.Field(proto.STRING, number=536567094, optional=True,)
@@ -14484,13 +14484,13 @@ class License(proto.Message):
             An optional textual description of the
             resource; provided by the client when the
             resource is created.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
             [Output Only] Type of resource. Always compute#license for
             licenses.
-        license_code (str):
+        license_code (int):
             [Output Only] The unique code used to attach this license to
             images, snapshots, and disks.
         name (str):
@@ -14510,9 +14510,9 @@ class License(proto.Message):
     charges_use_fee = proto.Field(proto.BOOL, number=372412622, optional=True,)
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
-    license_code = proto.Field(proto.STRING, number=1467179, optional=True,)
+    license_code = proto.Field(proto.UINT64, number=1467179, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     resource_requirements = proto.Field(
         proto.MESSAGE,
@@ -14551,7 +14551,7 @@ class LicenseCode(proto.Message):
             [Output Only] Creation timestamp in RFC3339 text format.
         description (str):
             [Output Only] Description of this License Code.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -14584,7 +14584,7 @@ class LicenseCode(proto.Message):
 
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     license_alias = proto.RepeatedField(
         proto.MESSAGE, number=43550930, message="LicenseCodeLicenseAlias",
@@ -14849,7 +14849,7 @@ class MachineType(proto.Message):
         guest_cpus (int):
             [Output Only] The number of virtual CPUs that are available
             to the instance.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         image_space_gb (int):
@@ -14863,7 +14863,7 @@ class MachineType(proto.Message):
             compute#machineType for machine types.
         maximum_persistent_disks (int):
             [Output Only] Maximum persistent disks allowed.
-        maximum_persistent_disks_size_gb (str):
+        maximum_persistent_disks_size_gb (int):
             [Output Only] Maximum total persistent disks size (GB)
             allowed.
         memory_mb (int):
@@ -14890,7 +14890,7 @@ class MachineType(proto.Message):
     )
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     guest_cpus = proto.Field(proto.INT32, number=393356754, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     image_space_gb = proto.Field(proto.INT32, number=75331864, optional=True,)
     is_shared_cpu = proto.Field(proto.BOOL, number=521399555, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
@@ -14898,7 +14898,7 @@ class MachineType(proto.Message):
         proto.INT32, number=496220941, optional=True,
     )
     maximum_persistent_disks_size_gb = proto.Field(
-        proto.STRING, number=154274471, optional=True,
+        proto.INT64, number=154274471, optional=True,
     )
     memory_mb = proto.Field(proto.INT32, number=116001171, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
@@ -15290,7 +15290,7 @@ class Network(proto.Message):
         gateway_i_pv4 (str):
             [Output Only] The gateway address for default routing out of
             the network, selected by GCP.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -15329,7 +15329,7 @@ class Network(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     gateway_i_pv4 = proto.Field(proto.STRING, number=178678877, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     mtu = proto.Field(proto.INT32, number=108462, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
@@ -15487,7 +15487,7 @@ class NetworkEndpointGroup(proto.Message):
             An optional description of this resource.
             Provide this property when you create the
             resource.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -15561,7 +15561,7 @@ class NetworkEndpointGroup(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     default_port = proto.Field(proto.INT32, number=423377855, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     network = proto.Field(proto.STRING, number=232872494, optional=True,)
@@ -16013,7 +16013,7 @@ class NodeGroup(proto.Message):
             resource.
         fingerprint (str):
 
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -16085,7 +16085,7 @@ class NodeGroup(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     location_hint = proto.Field(proto.STRING, number=350519505, optional=True,)
     maintenance_policy = proto.Field(
@@ -16390,7 +16390,7 @@ class NodeTemplate(proto.Message):
             resource.
         disks (Sequence[google.cloud.compute_v1.types.LocalDisk]):
 
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -16468,7 +16468,7 @@ class NodeTemplate(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     disks = proto.RepeatedField(proto.MESSAGE, number=95594102, message="LocalDisk",)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     node_affinity_labels = proto.MapField(proto.STRING, proto.STRING, number=339007161,)
@@ -16618,7 +16618,7 @@ class NodeType(proto.Message):
         guest_cpus (int):
             [Output Only] The number of virtual CPUs that are available
             to the node type.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -16646,7 +16646,7 @@ class NodeType(proto.Message):
     )
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     guest_cpus = proto.Field(proto.INT32, number=393356754, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     local_ssd_gb = proto.Field(proto.INT32, number=329237578, optional=True,)
     memory_mb = proto.Field(proto.INT32, number=116001171, optional=True,)
@@ -16817,7 +16817,7 @@ class NotificationEndpoint(proto.Message):
             Settings of the gRPC notification endpoint
             including the endpoint URL and the retry
             duration.
-        id (str):
+        id (int):
             [Output Only] A unique identifier for this resource type.
             The server generates this identifier.
         kind (str):
@@ -16850,7 +16850,7 @@ class NotificationEndpoint(proto.Message):
         optional=True,
         message="NotificationEndpointGrpcSettings",
     )
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
@@ -17011,7 +17011,7 @@ class Operation(proto.Message):
             [Output Only] If the operation fails, this field contains
             the HTTP error status code that was returned. For example, a
             ``404`` means the resource was not found.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the operation. This
             identifier is defined by the server.
         insert_time (str):
@@ -17051,7 +17051,7 @@ class Operation(proto.Message):
         status_message (str):
             [Output Only] An optional textual description of the current
             status of the operation.
-        target_id (str):
+        target_id (int):
             [Output Only] The unique target ID, which identifies a
             specific incarnation of the target resource.
         target_link (str):
@@ -17087,7 +17087,7 @@ class Operation(proto.Message):
     error = proto.Field(proto.MESSAGE, number=96784904, optional=True, message="Error",)
     http_error_message = proto.Field(proto.STRING, number=202521945, optional=True,)
     http_error_status_code = proto.Field(proto.INT32, number=312345196, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     insert_time = proto.Field(proto.STRING, number=433722515, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
@@ -17099,7 +17099,7 @@ class Operation(proto.Message):
     start_time = proto.Field(proto.STRING, number=37467274, optional=True,)
     status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
     status_message = proto.Field(proto.STRING, number=297428154, optional=True,)
-    target_id = proto.Field(proto.STRING, number=258165385, optional=True,)
+    target_id = proto.Field(proto.UINT64, number=258165385, optional=True,)
     target_link = proto.Field(proto.STRING, number=62671336, optional=True,)
     user = proto.Field(proto.STRING, number=3599307, optional=True,)
     warnings = proto.RepeatedField(proto.MESSAGE, number=498091095, message="Warnings",)
@@ -17343,7 +17343,7 @@ class PacketMirroring(proto.Message):
         filter (google.cloud.compute_v1.types.PacketMirroringFilter):
             Filter for mirrored traffic. If unspecified,
             all traffic is mirrored.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -17406,7 +17406,7 @@ class PacketMirroring(proto.Message):
     filter = proto.Field(
         proto.MESSAGE, number=336120696, optional=True, message="PacketMirroringFilter",
     )
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     mirrored_resources = proto.Field(
         proto.MESSAGE,
@@ -18059,7 +18059,7 @@ class Project(proto.Message):
         enabled_features (Sequence[str]):
             Restricted features enabled for use on this
             project.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server. This is not the project
             ID, and is just a unique ID used by Compute Engine to
@@ -18116,7 +18116,7 @@ class Project(proto.Message):
     )
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     enabled_features = proto.RepeatedField(proto.STRING, number=469017467,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     quotas = proto.RepeatedField(proto.MESSAGE, number=125341947, message="Quota",)
@@ -18296,7 +18296,7 @@ class PublicAdvertisedPrefix(proto.Message):
             conditionNotMet.  To see the latest fingerprint,
             make a get() request to retrieve a
             PublicAdvertisedPrefix.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource type.
             The server generates this identifier.
         ip_cidr_range (str):
@@ -18342,7 +18342,7 @@ class PublicAdvertisedPrefix(proto.Message):
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     dns_verification_ip = proto.Field(proto.STRING, number=241011381, optional=True,)
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     ip_cidr_range = proto.Field(proto.STRING, number=98117322, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
@@ -18463,7 +18463,7 @@ class PublicDelegatedPrefix(proto.Message):
             will fail with error 412 conditionNotMet.  To
             see the latest fingerprint, make a get() request
             to retrieve a PublicDelegatedPrefix.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource type.
             The server generates this identifier.
         ip_cidr_range (str):
@@ -18511,7 +18511,7 @@ class PublicDelegatedPrefix(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     ip_cidr_range = proto.Field(proto.STRING, number=98117322, optional=True,)
     is_live_migration = proto.Field(proto.BOOL, number=511823856, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
@@ -18650,7 +18650,7 @@ class Region(proto.Message):
             region.
         description (str):
             [Output Only] Textual description of the resource.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -18682,7 +18682,7 @@ class Region(proto.Message):
         proto.MESSAGE, number=515138995, optional=True, message="DeprecationStatus",
     )
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     quotas = proto.RepeatedField(proto.MESSAGE, number=125341947, message="Quota",)
@@ -18791,12 +18791,12 @@ class RegionDisksRemoveResourcePoliciesRequest(proto.Message):
 class RegionDisksResizeRequest(proto.Message):
     r"""
     Attributes:
-        size_gb (str):
+        size_gb (int):
             The new size of the regional persistent disk,
             which is specified in GB.
     """
 
-    size_gb = proto.Field(proto.STRING, number=494929369, optional=True,)
+    size_gb = proto.Field(proto.INT64, number=494929369, optional=True,)
 
 
 class RegionInstanceGroupList(proto.Message):
@@ -19409,7 +19409,7 @@ class UrlMap(proto.Message):
             validateForProxyless field set to true.
         host_rules (Sequence[google.cloud.compute_v1.types.HostRule]):
             The list of HostRules to use against the URL.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -19459,7 +19459,7 @@ class UrlMap(proto.Message):
     host_rules = proto.RepeatedField(
         proto.MESSAGE, number=311804832, message="HostRule",
     )
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     path_matchers = proto.RepeatedField(
@@ -19584,12 +19584,12 @@ class ReservationList(proto.Message):
 class ReservationsResizeRequest(proto.Message):
     r"""
     Attributes:
-        specific_sku_count (str):
+        specific_sku_count (int):
             Number of allocated resources can be resized
             with minimum = 1 and maximum = 1000.
     """
 
-    specific_sku_count = proto.Field(proto.STRING, number=13890720, optional=True,)
+    specific_sku_count = proto.Field(proto.INT64, number=13890720, optional=True,)
 
 
 class ResourceGroupReference(proto.Message):
@@ -19619,7 +19619,7 @@ class ResourcePolicy(proto.Message):
         group_placement_policy (google.cloud.compute_v1.types.ResourcePolicyGroupPlacementPolicy):
             Resource policy for instances for placement
             configuration.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         instance_schedule_policy (google.cloud.compute_v1.types.ResourcePolicyInstanceSchedulePolicy):
@@ -19668,7 +19668,7 @@ class ResourcePolicy(proto.Message):
         optional=True,
         message="ResourcePolicyGroupPlacementPolicy",
     )
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     instance_schedule_policy = proto.Field(
         proto.MESSAGE,
         number=344877104,
@@ -20160,7 +20160,7 @@ class Route(proto.Message):
             The destination range of outgoing packets
             that this route applies to. Both IPv4 and IPv6
             are supported.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -20233,7 +20233,7 @@ class Route(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     dest_range = proto.Field(proto.STRING, number=381327712, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     network = proto.Field(proto.STRING, number=232872494, optional=True,)
@@ -20696,7 +20696,7 @@ class Router(proto.Message):
             (IPsec-encrypted Cloud Interconnect feature).
             Not currently available in all Interconnect
             locations.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         interfaces (Sequence[google.cloud.compute_v1.types.RouterInterface]):
@@ -20739,7 +20739,7 @@ class Router(proto.Message):
     encrypted_interconnect_router = proto.Field(
         proto.BOOL, number=297996575, optional=True,
     )
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     interfaces = proto.RepeatedField(
         proto.MESSAGE, number=12073562, message="RouterInterface",
     )
@@ -21232,7 +21232,7 @@ class SecurityPolicy(proto.Message):
             fail with error 412 conditionNotMet.  To see the
             latest fingerprint, make get() request to the
             security policy.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -21260,7 +21260,7 @@ class SecurityPolicy(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     rules = proto.RepeatedField(
@@ -21378,14 +21378,14 @@ class SerialPortOutput(proto.Message):
         kind (str):
             [Output Only] Type of the resource. Always
             compute#serialPortOutput for serial port output.
-        next_ (str):
+        next_ (int):
             [Output Only] The position of the next byte of content,
             regardless of whether the content exists, following the
             output returned in the ``contents`` property. Use this value
             in the next request as the start parameter.
         self_link (str):
             [Output Only] Server-defined URL for this resource.
-        start (str):
+        start (int):
             The starting byte position of the output that was returned.
             This should match the start parameter sent with the request.
             If the serial console output exceeds the size of the buffer
@@ -21397,9 +21397,9 @@ class SerialPortOutput(proto.Message):
 
     contents = proto.Field(proto.STRING, number=506419994, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
-    next_ = proto.Field(proto.STRING, number=3377907, optional=True,)
+    next_ = proto.Field(proto.INT64, number=3377907, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
-    start = proto.Field(proto.STRING, number=109757538, optional=True,)
+    start = proto.Field(proto.INT64, number=109757538, optional=True,)
 
 
 class ShieldedInstanceIdentityEntry(proto.Message):
@@ -21498,12 +21498,12 @@ class Snapshot(proto.Message):
             An optional description of this resource.
             Provide this property when you create the
             resource.
-        disk_size_gb (str):
+        disk_size_gb (int):
             [Output Only] Size of the source disk, specified in GB.
-        download_bytes (str):
+        download_bytes (int):
             [Output Only] Number of bytes downloaded to restore a
             snapshot to a disk.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -21525,7 +21525,7 @@ class Snapshot(proto.Message):
             Labels to apply to this snapshot. These can
             be later modified by the setLabels method. Label
             values may be empty.
-        license_codes (Sequence[str]):
+        license_codes (Sequence[int]):
             [Output Only] Integer license codes indicating which
             licenses are attached to this snapshot.
         licenses (Sequence[str]):
@@ -21580,7 +21580,7 @@ class Snapshot(proto.Message):
         status (google.cloud.compute_v1.types.Snapshot.Status):
             [Output Only] The status of the snapshot. This can be
             CREATING, DELETING, FAILED, READY, or UPLOADING.
-        storage_bytes (str):
+        storage_bytes (int):
             [Output Only] A size of the storage used by the snapshot. As
             snapshots share storage, this number is expected to change
             with snapshot creation/deletion.
@@ -21621,13 +21621,13 @@ class Snapshot(proto.Message):
     chain_name = proto.Field(proto.STRING, number=68644169, optional=True,)
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    disk_size_gb = proto.Field(proto.STRING, number=316263735, optional=True,)
-    download_bytes = proto.Field(proto.STRING, number=435054068, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    disk_size_gb = proto.Field(proto.INT64, number=316263735, optional=True,)
+    download_bytes = proto.Field(proto.INT64, number=435054068, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
     labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
-    license_codes = proto.RepeatedField(proto.STRING, number=45482664,)
+    license_codes = proto.RepeatedField(proto.INT64, number=45482664,)
     licenses = proto.RepeatedField(proto.STRING, number=337642578,)
     location_hint = proto.Field(proto.STRING, number=350519505, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
@@ -21642,7 +21642,7 @@ class Snapshot(proto.Message):
     )
     source_disk_id = proto.Field(proto.STRING, number=454190809, optional=True,)
     status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
-    storage_bytes = proto.Field(proto.STRING, number=424631719, optional=True,)
+    storage_bytes = proto.Field(proto.INT64, number=424631719, optional=True,)
     storage_bytes_status = proto.Field(
         proto.ENUM, number=490739082, optional=True, enum=StorageBytesStatus,
     )
@@ -21773,7 +21773,7 @@ class SslCertificate(proto.Message):
             resource.
         expire_time (str):
             [Output Only] Expire time of the certificate. RFC3339
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -21829,7 +21829,7 @@ class SslCertificate(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     expire_time = proto.Field(proto.STRING, number=440691181, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     managed = proto.Field(
         proto.MESSAGE,
@@ -21991,7 +21991,7 @@ class SslPolicy(proto.Message):
             fail with error 412 conditionNotMet.  To see the
             latest fingerprint, make a get() request to
             retrieve an SslPolicy.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -22052,7 +22052,7 @@ class SslPolicy(proto.Message):
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     enabled_features = proto.RepeatedField(proto.STRING, number=469017467,)
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     min_tls_version = proto.Field(
         proto.ENUM, number=8155943, optional=True, enum=MinTlsVersion,
@@ -22300,7 +22300,7 @@ class Subnetwork(proto.Message):
         gateway_address (str):
             [Output Only] The gateway address for default routes to
             reach destination addresses outside this subnetwork.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         ip_cidr_range (str):
@@ -22449,7 +22449,7 @@ class Subnetwork(proto.Message):
     enable_flow_logs = proto.Field(proto.BOOL, number=151544420, optional=True,)
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
     gateway_address = proto.Field(proto.STRING, number=459867385, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     ip_cidr_range = proto.Field(proto.STRING, number=98117322, optional=True,)
     ipv6_cidr_range = proto.Field(proto.STRING, number=273141258, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
@@ -22627,7 +22627,7 @@ class TargetGrpcProxy(proto.Message):
             conditionNotMet. To see the latest fingerprint,
             make a get() request to retrieve the
             TargetGrpcProxy.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource type.
             The server generates this identifier.
         kind (str):
@@ -22670,7 +22670,7 @@ class TargetGrpcProxy(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
@@ -22758,7 +22758,7 @@ class TargetHttpProxy(proto.Message):
             conditionNotMet. To see the latest fingerprint,
             make a get() request to retrieve the
             TargetHttpProxy.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -22801,7 +22801,7 @@ class TargetHttpProxy(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     proxy_bind = proto.Field(proto.BOOL, number=286025582, optional=True,)
@@ -22962,7 +22962,7 @@ class TargetHttpsProxy(proto.Message):
             conditionNotMet. To see the latest fingerprint,
             make a get() request to retrieve the
             TargetHttpsProxy.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -23059,7 +23059,7 @@ class TargetHttpsProxy(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     proxy_bind = proto.Field(proto.BOOL, number=286025582, optional=True,)
@@ -23231,7 +23231,7 @@ class TargetInstance(proto.Message):
             An optional description of this resource.
             Provide this property when you create the
             resource.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         instance (str):
@@ -23277,7 +23277,7 @@ class TargetInstance(proto.Message):
 
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     instance = proto.Field(proto.STRING, number=18257045, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
@@ -23449,7 +23449,7 @@ class TargetPool(proto.Message):
             healthy if and only if the health checks pass.
             Only legacy HttpHealthChecks are supported. Only
             one health check may be specified.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         instances (Sequence[str]):
@@ -23509,7 +23509,7 @@ class TargetPool(proto.Message):
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     failover_ratio = proto.Field(proto.FLOAT, number=212667006, optional=True,)
     health_checks = proto.RepeatedField(proto.STRING, number=448370606,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     instances = proto.RepeatedField(proto.STRING, number=29097598,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
@@ -23772,7 +23772,7 @@ class TargetSslProxy(proto.Message):
             An optional description of this resource.
             Provide this property when you create the
             resource.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -23818,7 +23818,7 @@ class TargetSslProxy(proto.Message):
 
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     proxy_header = proto.Field(
@@ -23917,7 +23917,7 @@ class TargetTcpProxy(proto.Message):
             An optional description of this resource.
             Provide this property when you create the
             resource.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -23966,7 +23966,7 @@ class TargetTcpProxy(proto.Message):
 
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     proxy_bind = proto.Field(proto.BOOL, number=286025582, optional=True,)
@@ -24035,7 +24035,7 @@ class TargetVpnGateway(proto.Message):
             resources. ForwardingRules are created using
             compute.forwardingRules.insert and associated with a VPN
             gateway.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -24083,7 +24083,7 @@ class TargetVpnGateway(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     forwarding_rules = proto.RepeatedField(proto.STRING, number=315821365,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     network = proto.Field(proto.STRING, number=232872494, optional=True,)
@@ -24727,7 +24727,7 @@ class VpnGateway(proto.Message):
             An optional description of this resource.
             Provide this property when you create the
             resource.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -24774,7 +24774,7 @@ class VpnGateway(proto.Message):
 
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
     labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
@@ -25020,7 +25020,7 @@ class VpnTunnel(proto.Message):
             resource.
         detailed_status (str):
             [Output Only] Detailed status message for the VPN tunnel.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         ike_version (int):
@@ -25190,7 +25190,7 @@ class VpnTunnel(proto.Message):
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     detailed_status = proto.Field(proto.STRING, number=333501025, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     ike_version = proto.Field(proto.INT32, number=218376220, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     local_traffic_selector = proto.RepeatedField(proto.STRING, number=317314613,)
@@ -25387,7 +25387,7 @@ class Zone(proto.Message):
             zone.
         description (str):
             [Output Only] Textual description of the resource.
-        id (str):
+        id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
         kind (str):
@@ -25418,7 +25418,7 @@ class Zone(proto.Message):
         proto.MESSAGE, number=515138995, optional=True, message="DeprecationStatus",
     )
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
@@ -33046,7 +33046,7 @@ class GetSerialPortOutputInstanceRequest(proto.Message):
             retrieve data from.
         project (str):
             Project ID for this request.
-        start (str):
+        start (int):
             Specifies the starting byte position of the output to
             return. To start with the first byte of output to the
             specified port, omit this field or set it to ``0``.
@@ -33071,7 +33071,7 @@ class GetSerialPortOutputInstanceRequest(proto.Message):
     instance = proto.Field(proto.STRING, number=18257045,)
     port = proto.Field(proto.INT32, number=3446913, optional=True,)
     project = proto.Field(proto.STRING, number=227560217,)
-    start = proto.Field(proto.STRING, number=109757538, optional=True,)
+    start = proto.Field(proto.INT64, number=109757538, optional=True,)
     zone = proto.Field(proto.STRING, number=3744684,)
 
 

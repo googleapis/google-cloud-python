@@ -4,14 +4,14 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-compute.git",
-        "sha": "40afb333a963717853f70410a7a08eda5492418c"
+        "sha": "fbc1a2869932883d0e7e8e498e16d2273fb25048"
       }
     },
     {
       "git": {
         "name": "googleapis-discovery",
         "remote": "https://github.com/googleapis/googleapis-discovery.git",
-        "sha": "6b01eb5607e6ba0b3b931905bd779b28dc89b933"
+        "sha": "ac663f7f0afb13e3a8cfd04160d1677655c5c613"
       }
     }
   ],
