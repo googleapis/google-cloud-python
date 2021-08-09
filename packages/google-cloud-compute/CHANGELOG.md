@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/python-compute/compare/v0.4.2...v0.5.0) (2021-08-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* uint64/int64 fields accept ints instead of strings (#92)
+
+### Features
+
+* add always_use_jwt_access ([4d673cf](https://www.github.com/googleapis/python-compute/commit/4d673cf06ea2aa3957a0514fed68885c86a338b0))
+
+
+### Bug Fixes
+
+* fix required query params handling (closes [#12](https://www.github.com/googleapis/python-compute/issues/12)) ([4d673cf](https://www.github.com/googleapis/python-compute/commit/4d673cf06ea2aa3957a0514fed68885c86a338b0))
+* uint64/int64 fields accept ints instead of strings ([#92](https://www.github.com/googleapis/python-compute/issues/92)) ([4d673cf](https://www.github.com/googleapis/python-compute/commit/4d673cf06ea2aa3957a0514fed68885c86a338b0))
+
+### Documentation
+* adding samples to start/stop/reset operations ([#75](https://www.github.com/googleapis/python-compute/issues/75)) ([0df87a9](https://www.github.com/googleapis/python-compute/commit/0df87a9cc65c9a68c2ba6ae6bea2f6906626d488))
+
+
+### Miscellaneous Chores
+
+* release as 0.4.3 ([#89](https://www.github.com/googleapis/python-compute/issues/89)) ([fbc1a28](https://www.github.com/googleapis/python-compute/commit/fbc1a2869932883d0e7e8e498e16d2273fb25048))
+
 ### [0.4.2](https://www.github.com/googleapis/python-compute/compare/v0.4.1...v0.4.2) (2021-07-26)
 
 ### Bug Fixes
@@ -7,7 +32,7 @@
 * **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#81](https://www.github.com/googleapis/python-compute/issues/81)) ([1163f2b](https://www.github.com/googleapis/python-compute/commit/1163f2bb15f0e042bdd9562a31ad2ac7f39e3536))
 
 
-### Documentation
+
 
 * samples docstring and comments update ([#69](https://www.github.com/googleapis/python-compute/issues/69)) ([2d53eb1](https://www.github.com/googleapis/python-compute/commit/2d53eb1839a8751945ba7cdf12991f2970893df2))
 * adding samples for default values ([#64](https://www.github.com/googleapis/python-compute/issues/64)) ([553e389](https://www.github.com/googleapis/python-compute/commit/553e3891179c2719a57d398ffc26c1459945bf4d))
