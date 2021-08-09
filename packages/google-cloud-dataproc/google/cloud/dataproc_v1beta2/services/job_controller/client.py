@@ -752,11 +752,11 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
-        r"""Starts a job cancellation request. To access the job resource
-        after cancellation, call
-        `regions/{region}/jobs.list <https://cloud.google.com/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/list>`__
+        r"""Starts a job cancellation request. To access the job
+        resource after cancellation, call
+        regions/{region}/jobs.list
         or
-        `regions/{region}/jobs.get <https://cloud.google.com/dataproc/docs/reference/rest/v1beta2/projects.regions.jobs/get>`__.
+        regions/{region}/jobs.get.
 
         Args:
             request (google.cloud.dataproc_v1beta2.types.CancelJobRequest):

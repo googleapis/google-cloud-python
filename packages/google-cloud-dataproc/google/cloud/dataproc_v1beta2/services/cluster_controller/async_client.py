@@ -181,8 +181,7 @@ class ClusterControllerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a cluster in a project. The returned
         [Operation.metadata][google.longrunning.Operation.metadata] will
-        be
-        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
+        be ClusterOperationMetadata.
 
         Args:
             request (:class:`google.cloud.dataproc_v1beta2.types.CreateClusterRequest`):
@@ -288,8 +287,7 @@ class ClusterControllerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates a cluster in a project. The returned
         [Operation.metadata][google.longrunning.Operation.metadata] will
-        be
-        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
+        be ClusterOperationMetadata.
 
         Args:
             request (:class:`google.cloud.dataproc_v1beta2.types.UpdateClusterRequest`):
@@ -478,8 +476,7 @@ class ClusterControllerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a cluster in a project. The returned
         [Operation.metadata][google.longrunning.Operation.metadata] will
-        be
-        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
+        be ClusterOperationMetadata.
 
         Args:
             request (:class:`google.cloud.dataproc_v1beta2.types.DeleteClusterRequest`):
@@ -819,9 +816,7 @@ class ClusterControllerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Gets cluster diagnostic information. The returned
         [Operation.metadata][google.longrunning.Operation.metadata] will
-        be
-        `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1beta2#clusteroperationmetadata>`__.
-        After the operation completes,
+        be ClusterOperationMetadata. After the operation completes,
         [Operation.response][google.longrunning.Operation.response]
         contains [Empty][google.protobuf.Empty].
 
