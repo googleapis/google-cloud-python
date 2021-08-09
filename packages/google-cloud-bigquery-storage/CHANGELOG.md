@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+### [2.6.3](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.6.2...v2.6.3) (2021-08-06)
+
+
+### Bug Fixes
+
+* resume read stream on `Unknown` transport-layer exception ([#263](https://www.github.com/googleapis/python-bigquery-storage/issues/263)) ([127caa0](https://www.github.com/googleapis/python-bigquery-storage/commit/127caa06144b9cec04b23914b561be6a264bcb36))
+
 ### [2.6.2](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.6.1...v2.6.2) (2021-07-28)
 
 
