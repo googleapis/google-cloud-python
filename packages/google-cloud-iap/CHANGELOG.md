@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-iap/compare/v0.1.2...v1.0.0) (2021-08-09)
+
+
+### Features
+
+* bump release level to production/stable ([#13](https://www.github.com/googleapis/python-iap/issues/13)) ([9d0a9f8](https://www.github.com/googleapis/python-iap/commit/9d0a9f84554b98fd2b1829532c9c13b16432b0af))
+
 ### [0.1.2](https://www.github.com/googleapis/python-iap/compare/v0.1.1...v0.1.2) (2021-07-29)
 
 
