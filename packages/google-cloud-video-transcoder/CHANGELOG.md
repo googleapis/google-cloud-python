@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/python-video-transcoder/compare/v0.4.1...v0.5.0) (2021-08-07)
+
+
+### Features
+
+* Add ttl_after_completion_days field to Job ([d862900](https://www.github.com/googleapis/python-video-transcoder/commit/d86290047e9464e4026c264a6dfea51936b21c2c))
+* Add video cropping feature ([#81](https://www.github.com/googleapis/python-video-transcoder/issues/81)) ([d862900](https://www.github.com/googleapis/python-video-transcoder/commit/d86290047e9464e4026c264a6dfea51936b21c2c))
+* Add video padding feature ([d862900](https://www.github.com/googleapis/python-video-transcoder/commit/d86290047e9464e4026c264a6dfea51936b21c2c))
+
+
+### Documentation
+
+* Indicate v1beta1 deprecation ([d862900](https://www.github.com/googleapis/python-video-transcoder/commit/d86290047e9464e4026c264a6dfea51936b21c2c))
+* Update proto documentation ([d862900](https://www.github.com/googleapis/python-video-transcoder/commit/d86290047e9464e4026c264a6dfea51936b21c2c))
+
 ### [0.4.1](https://www.github.com/googleapis/python-video-transcoder/compare/v0.4.0...v0.4.1) (2021-07-27)
 
 
