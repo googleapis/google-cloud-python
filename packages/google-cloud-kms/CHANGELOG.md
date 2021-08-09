@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.5.0](https://www.github.com/googleapis/python-kms/compare/v2.4.3...v2.5.0) (2021-08-07)
+
+
+### Features
+
+* add support for HMAC, Variable Key Destruction, and GenerateRandom ([#157](https://www.github.com/googleapis/python-kms/issues/157)) ([4b7c9f9](https://www.github.com/googleapis/python-kms/commit/4b7c9f96a73fba8b825f8c7cfabc748728c0eb62))
+
 ### [2.4.3](https://www.github.com/googleapis/python-kms/compare/v2.4.2...v2.4.3) (2021-07-29)
 
 
