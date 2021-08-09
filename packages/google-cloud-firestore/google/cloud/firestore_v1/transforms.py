@@ -72,7 +72,7 @@ class ArrayUnion(_ValueList):
     """Field transform: appends missing values to an array field.
 
     See:
-    https://cloud.google.com/firestore/docs/reference/rpc/google.cloud.firestore.v1#google.cloud.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.cloud.firestore.v1.ArrayValue.google.cloud.firestore.v1.DocumentTransform.FieldTransform.append_missing_elements
+    https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.append_missing_elements
 
     Args:
         values (List | Tuple): values to append.
@@ -83,7 +83,7 @@ class ArrayRemove(_ValueList):
     """Field transform: remove values from an array field.
 
     See:
-    https://cloud.google.com/firestore/docs/reference/rpc/google.cloud.firestore.v1#google.cloud.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.cloud.firestore.v1.ArrayValue.google.cloud.firestore.v1.DocumentTransform.FieldTransform.remove_all_from_array
+    https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.remove_all_from_array
 
     Args:
         values (List | Tuple): values to remove.
@@ -122,7 +122,7 @@ class Increment(_NumericValue):
     """Field transform: increment a numeric field with specified value.
 
     See:
-    https://cloud.google.com/firestore/docs/reference/rpc/google.cloud.firestore.v1#google.cloud.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.cloud.firestore.v1.ArrayValue.google.cloud.firestore.v1.DocumentTransform.FieldTransform.increment
+    https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.increment
 
     Args:
         value (int | float): value used to increment the field.
@@ -133,7 +133,7 @@ class Maximum(_NumericValue):
     """Field transform: bound numeric field with specified value.
 
     See:
-    https://cloud.google.com/firestore/docs/reference/rpc/google.cloud.firestore.v1#google.cloud.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.cloud.firestore.v1.ArrayValue.google.cloud.firestore.v1.DocumentTransform.FieldTransform.maximum
+    https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.maximum
 
     Args:
         value (int | float): value used to bound the field.
@@ -144,7 +144,7 @@ class Minimum(_NumericValue):
     """Field transform: bound numeric field with specified value.
 
     See:
-    https://cloud.google.com/firestore/docs/reference/rpc/google.cloud.firestore.v1#google.cloud.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.cloud.firestore.v1.ArrayValue.google.cloud.firestore.v1.DocumentTransform.FieldTransform.minimum
+    https://cloud.google.com/firestore/docs/reference/rpc/google.firestore.v1#google.firestore.v1.DocumentTransform.FieldTransform.FIELDS.google.firestore.v1.ArrayValue.google.firestore.v1.DocumentTransform.FieldTransform.minimum
 
     Args:
         value (int | float): value used to bound the field.
