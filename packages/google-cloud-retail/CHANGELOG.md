@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.2](https://www.github.com/googleapis/python-retail/compare/v0.4.1...v0.4.2) (2021-08-04)
+
+
+### Documentation
+
+* **retail:** Quote several literal expressions for better rendering ([#75](https://www.github.com/googleapis/python-retail/issues/75)) ([53ede84](https://www.github.com/googleapis/python-retail/commit/53ede84d0115fc3edfb2deab0203ed9fd9dcbf9d))
+
 ### [0.4.1](https://www.github.com/googleapis/python-retail/compare/v0.4.0...v0.4.1) (2021-08-01)
 
 
