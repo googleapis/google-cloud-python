@@ -121,6 +121,9 @@ s.replace(
     "\n\g<0>",
 )
 
+# Update samples folder in CONTRIBUTING.rst
+s.replace("CONTRIBUTING.rst", "samples/snippets", "samples/samples")
+
 # ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------
