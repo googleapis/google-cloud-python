@@ -22,6 +22,7 @@ from google.cloud.bigquery.job.base import _JobReference
 from google.cloud.bigquery.job.base import ReservationUsage
 from google.cloud.bigquery.job.base import ScriptStatistics
 from google.cloud.bigquery.job.base import ScriptStackFrame
+from google.cloud.bigquery.job.base import TransactionInfo
 from google.cloud.bigquery.job.base import UnknownJob
 from google.cloud.bigquery.job.copy_ import CopyJob
 from google.cloud.bigquery.job.copy_ import CopyJobConfig
@@ -81,5 +82,6 @@ __all__ = [
     "QueryPriority",
     "SchemaUpdateOption",
     "SourceFormat",
+    "TransactionInfo",
     "WriteDisposition",
 ]

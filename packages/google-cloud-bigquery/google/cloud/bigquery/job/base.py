@@ -19,6 +19,7 @@ import copy
 import http
 import threading
 import typing
+from typing import Dict, Optional
 
 from google.api_core import exceptions
 import google.api_core.future.polling
@@ -86,6 +87,22 @@ ReservationUsage.name.__doc__ = (
 ReservationUsage.slot_ms.__doc__ = (
     "Total slot milliseconds used by the reservation for a particular job."
 )
+
+
+class TransactionInfo(typing.NamedTuple):
+    """[Alpha] Information of a multi-statement transaction.
+
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#TransactionInfo
+
+    .. versionadded:: 2.24.0
+    """
+
+    transaction_id: str
+    """Output only. ID of the transaction."""
+
+    @classmethod
+    def from_api_repr(cls, transaction_info: Dict[str, str]) -> "TransactionInfo":
+        return cls(transaction_info["transactionId"])
 
 
 class _JobReference(object):
@@ -335,6 +352,18 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             ReservationUsage(name=usage["name"], slot_ms=int(usage["slotMs"]))
             for usage in usage_stats_raw
         ]
+
+    @property
+    def transaction_info(self) -> Optional[TransactionInfo]:
+        """Information of the multi-statement transaction if this job is part of one.
+
+        .. versionadded:: 2.24.0
+        """
+        info = self._properties.get("statistics", {}).get("transactionInfo")
+        if info is None:
+            return None
+        else:
+            return TransactionInfo.from_api_repr(info)
 
     @property
     def error_result(self):

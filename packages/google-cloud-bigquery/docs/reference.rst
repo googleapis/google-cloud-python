@@ -68,6 +68,7 @@ Job-Related Types
     job.SourceFormat
     job.WriteDisposition
     job.SchemaUpdateOption
+    job.TransactionInfo
 
 
 Dataset

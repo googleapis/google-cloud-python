@@ -162,6 +162,7 @@ class _Base(unittest.TestCase):
         self.assertIsNone(job.created)
         self.assertIsNone(job.started)
         self.assertIsNone(job.ended)
+        self.assertIsNone(job.transaction_info)
 
         # derived from resource['status']
         self.assertIsNone(job.error_result)

@@ -1557,6 +1557,40 @@ class TestBigQuery(unittest.TestCase):
         assert query_job.dml_stats.updated_row_count == 0
         assert query_job.dml_stats.deleted_row_count == 3
 
+    def test_transaction_info(self):
+        table_schema = (
+            bigquery.SchemaField("foo", "STRING"),
+            bigquery.SchemaField("bar", "INTEGER"),
+        )
+
+        dataset_id = _make_dataset_id("bq_system_test")
+        self.temp_dataset(dataset_id)
+        table_id = f"{Config.CLIENT.project}.{dataset_id}.test_dml_statistics"
+
+        # Create the table before loading so that the column order is deterministic.
+        table = helpers.retry_403(Config.CLIENT.create_table)(
+            Table(table_id, schema=table_schema)
+        )
+        self.to_delete.insert(0, table)
+
+        # Insert a few rows and check the stats.
+        sql = f"""
+            BEGIN TRANSACTION;
+              INSERT INTO `{table_id}`
+              VALUES ("one", 1), ("two", 2), ("three", 3), ("four", 4);
+
+              UPDATE `{table_id}`
+              SET bar = bar + 1
+              WHERE bar > 2;
+            COMMIT TRANSACTION;
+        """
+        query_job = Config.CLIENT.query(sql)
+        query_job.result()
+
+        # Transaction ID set by the server should be accessible
+        assert query_job.transaction_info is not None
+        assert query_job.transaction_info.transaction_id != ""
+
     def test_dbapi_w_standard_sql_types(self):
         for sql, expected in helpers.STANDARD_SQL_EXAMPLES:
             Config.CURSOR.execute(sql)
