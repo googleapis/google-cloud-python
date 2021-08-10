@@ -33,7 +33,7 @@ templated_files = common.py_library(
     cov_level=100
 )
 s.move(templated_files, excludes=[
-    # pybigquery was originally licensed MIT
+    # sqlalchemy-bigquery was originally licensed MIT
     "LICENSE"
 ])
 
@@ -44,17 +44,17 @@ s.move(templated_files, excludes=[
 s.replace(
     [".coveragerc"],
     "google/cloud/__init__.py",
-    "pybigquery/requirements.py",
+    "sqlalchemy_bigquery/requirements.py",
     )
 
 s.replace(
     ["noxfile.py"],
     r"[\"']google[\"']",
-    '"pybigquery"',
+    '"sqlalchemy_bigquery"',
 )
 
 s.replace(
-    ["noxfile.py"], "google/cloud", "pybigquery",
+    ["noxfile.py"], "google/cloud", "sqlalchemy_bigquery",
 )
 
 def place_before(path, text, *before_text, escape=None):
@@ -192,7 +192,7 @@ s.replace(
     """universal = 1
 
 [sqla_testing]
-requirement_cls=pybigquery.requirements:Requirements
+requirement_cls=sqlalchemy_bigquery.requirements:Requirements
 profile_file=.sqlalchemy_dialect_compliance-profiles.txt
 
 [tool:pytest]

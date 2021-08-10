@@ -10,12 +10,12 @@ SQLAlchemy Dialect for BigQuery
 
 .. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
-.. |pypi| image:: https://img.shields.io/pypi/v/pybigquery.svg
-   :target: https://pypi.org/project/pybigquery/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/pybigquery.svg
-   :target: https://pypi.org/project/pybigquery/
+.. |pypi| image:: https://img.shields.io/pypi/v/sqlalchemy-bigquery.svg
+   :target: https://pypi.org/project/sqlalchemy-bigquery/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/sqlalchemy-bigquery.svg
+   :target: https://pypi.org/project/sqlalchemy-bigquery/
 .. _SQLAlchemy Dialects: https://docs.sqlalchemy.org/en/14/dialects/
-.. _Dialect Documentation: https://googleapis.dev/python/pybigquery/latest
+.. _Dialect Documentation: https://googleapis.dev/python/sqlalchemy-bigquery/latest
 .. _Product Documentation: https://cloud.google.com/bigquery/docs/
 
 
@@ -65,7 +65,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install pybigquery
+    <your-env>/bin/pip install sqlalchemy-bigquery
 
 
 Windows
@@ -76,7 +76,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install pybigquery
+    <your-env>\Scripts\pip.exe install sqlalchemy-bigquery
 
 Usage
 -----
@@ -92,15 +92,6 @@ SQLAlchemy
     engine = create_engine('bigquery://project')
     table = Table('dataset.table', MetaData(bind=engine), autoload=True)
     print(select([func.count('*')], from_obj=table).scalar())
-
-API Client
-^^^^^^^^^^
-
-.. code-block:: python
-
-    from pybigquery.api import ApiClient
-    api_client = ApiClient()
-    print(api_client.dry_run_query(query=sqlstr).total_bytes_processed)
 
 Project
 ^^^^^^^
@@ -231,3 +222,15 @@ To add metadata to a column:
 .. code-block:: python
 
     Column('mycolumn', doc='my column description')
+
+
+Threading and Multiprocessing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Because this client uses the `grpc` library, it's safe to
+share instances across threads.
+
+In multiprocessing scenarios, the best
+practice is to create client instances *after* the invocation of
+`os.fork` by `multiprocessing.pool.Pool` or
+`multiprocessing.Process`.

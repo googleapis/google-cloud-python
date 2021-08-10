@@ -20,7 +20,7 @@ If you are still having issues, please be sure to include as much information as
   - OS type and version:
   - Python version: `python --version`
   - pip version: `pip --version`
-  - `pybigquery` version: `pip show pybigquery`
+  - `sqlalchemy-bigquery` version: `pip show sqlalchemy-bigquery`
 
 #### Steps to reproduce
 

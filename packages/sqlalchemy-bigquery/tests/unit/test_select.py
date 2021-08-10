@@ -1,4 +1,4 @@
-# Copyright (c) 2021 The PyBigQuery Authors
+# Copyright (c) 2021 The sqlalchemy-bigquery Authors
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -23,7 +23,7 @@ from decimal import Decimal
 import pytest
 import sqlalchemy
 
-import pybigquery.sqlalchemy_bigquery
+import sqlalchemy_bigquery
 
 from conftest import (
     setup_table,
@@ -141,7 +141,7 @@ def test_typed_parameters(faux_conn, type_, val, btype, vrep):
         table.insert()
         .values(**{col_name: sqlalchemy.literal(val, type_)})
         .compile(
-            dialect=pybigquery.sqlalchemy_bigquery.BigQueryDialect(),
+            dialect=sqlalchemy_bigquery.BigQueryDialect(),
             compile_kwargs=dict(literal_binds=True),
         )
     )

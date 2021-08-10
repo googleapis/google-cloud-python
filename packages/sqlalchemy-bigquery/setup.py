@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (c) 2017 The PyBigQuery Authors
+# Copyright (c) 2017 The sqlalchemy-bigquery Authors
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -19,12 +19,13 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import io
+import os
+import re
 from setuptools import setup
 
 # Package metadata.
 
-name = "pybigquery"
-version = "0.10.1"
+name = "sqlalchemy-bigquery"
 description = "SQLAlchemy dialect for BigQuery"
 
 # Should be one of:
@@ -32,6 +33,10 @@ description = "SQLAlchemy dialect for BigQuery"
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 4 - Beta"
+
+package_root = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(package_root, "sqlalchemy_bigquery", "version.py")) as f:
+    version = re.search('__version__ = "([^"]+)"', f.read()).group(1)
 
 
 def readme():
@@ -45,9 +50,9 @@ setup(
     description=description,
     long_description=readme(),
     long_description_content_type="text/x-rst",
-    author="The PyBigQuery Authors",
+    author="The Sqlalchemy-Bigquery Authors",
     author_email="googleapis-packages@google.com",
-    packages=["pybigquery"],
+    packages=["sqlalchemy_bigquery"],
     url="https://github.com/googleapis/python-bigquery-sqlalchemy",
     keywords=["bigquery", "sqlalchemy"],
     classifiers=[
@@ -77,8 +82,10 @@ setup(
     python_requires=">=3.6, <3.10",
     tests_require=["pytz"],
     entry_points={
-        "sqlalchemy.dialects": [
-            "bigquery = pybigquery.sqlalchemy_bigquery:BigQueryDialect"
-        ]
+        "sqlalchemy.dialects": ["bigquery = sqlalchemy_bigquery:BigQueryDialect"]
     },
+    # Document that this replaces pybigquery, however, this isn't
+    # enforced by pip, because doing so would allow rogue packages to
+    # obsolete legitimate ones.
+    obsoletes=["pybigquery"],
 )

@@ -1,20 +1,14 @@
-.. include:: README.rst
 
-.. include:: multiprocessing.rst
-
-.. include:: alembic.rst
-
-API Reference
--------------
 .. toctree::
-    :maxdepth: 2
+   :maxdepth: 2
 
-    pybigquery/api
+   README
+   alembic
 
 Changelog
 ---------
 
-For a list of all ``pybigquery`` releases:
+For a list of all ``sqlalchemy-bigquery`` releases:
 
 .. toctree::
    :maxdepth: 2

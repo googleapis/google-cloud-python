@@ -1,4 +1,4 @@
-# Copyright 2021 The PyBigQuery Authors
+# Copyright 2021 The sqlalchemy-bigquery Authors
 #
 # Use of this source code is governed by an MIT-style
 # license that can be found in the LICENSE file or at
@@ -21,7 +21,7 @@ def mock_bigquery_client():
 
 @pytest.fixture
 def mock_connection(monkeypatch, mock_bigquery_client):
-    from pybigquery import sqlalchemy_bigquery
+    import sqlalchemy_bigquery
 
     def mock_connect_args(*args, **kwargs):
         return ([mock_bigquery_client], {})
@@ -154,7 +154,7 @@ def test_get_view_names(
     ],
 )
 def test__remove_type_from_empty_in(inp, outp):
-    from pybigquery.sqlalchemy_bigquery import BigQueryExecutionContext
+    from sqlalchemy_bigquery.base import BigQueryExecutionContext
 
     r = BigQueryExecutionContext._BigQueryExecutionContext__remove_type_from_empty_in
     assert r(None, inp) == outp

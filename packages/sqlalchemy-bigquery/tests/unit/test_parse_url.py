@@ -1,4 +1,4 @@
-# Copyright (c) 2017 The PyBigQuery Authors
+# Copyright (c) 2017 The sqlalchemy-bigquery Authors
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -23,7 +23,7 @@ from google.cloud.bigquery import QueryJobConfig
 from google.cloud.bigquery.table import EncryptionConfiguration, TableReference
 from google.cloud.bigquery.dataset import DatasetReference
 
-from pybigquery.parse_url import parse_url
+from sqlalchemy_bigquery.parse_url import parse_url
 
 
 @pytest.fixture(scope="session")
@@ -249,7 +249,7 @@ def test_not_implemented(not_implemented_arg):
 
 
 def test_parse_boolean():
-    from pybigquery.parse_url import parse_boolean
+    from sqlalchemy_bigquery.parse_url import parse_boolean
 
     assert parse_boolean("true")
     assert parse_boolean("True")

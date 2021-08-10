@@ -1,4 +1,4 @@
-# Copyright 2021 The PyBigQuery Authors
+# Copyright 2021 The sqlalchemy-bigquery Authors
 #
 # Use of this source code is governed by an MIT-style
 # license that can be found in the LICENSE file or at
@@ -25,7 +25,7 @@ class AnonymousCredentialsWithProject(google.auth.credentials.AnonymousCredentia
 
 @pytest.fixture(scope="session")
 def module_under_test():
-    from pybigquery import _helpers
+    from sqlalchemy_bigquery import _helpers
 
     return _helpers
 

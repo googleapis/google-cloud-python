@@ -212,7 +212,7 @@ instead of
 ``https://github.com/googleapis/python-bigquery-sqlalchemy/blob/master/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
-.. _description on PyPI: https://pypi.org/project/pybigquery
+.. _description on PyPI: https://pypi.org/project/sqlalchemy-bigquery
 
 
 *************************

@@ -20,14 +20,14 @@ functions.
 
 import sqlalchemy.sql.operators
 import sqlalchemy.sql.schema
-import pybigquery.sqlalchemy_bigquery
+import sqlalchemy_bigquery.base
 
 
 def _check(raw, escaped, escape=None, autoescape=True):
 
     col = sqlalchemy.sql.schema.Column()
     op = col.contains(raw, escape=escape, autoescape=autoescape)
-    o2 = pybigquery.sqlalchemy_bigquery.BigQueryCompiler._maybe_reescape(op)
+    o2 = sqlalchemy_bigquery.base.BigQueryCompiler._maybe_reescape(op)
     assert o2.left.__dict__ == op.left.__dict__
     assert not o2.modifiers.get("escape")
 

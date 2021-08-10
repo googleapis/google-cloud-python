@@ -1,31 +1,41 @@
 # Changelog
 
-[PyPI History][1]
+Older versions of this project were distributed as [pybigquery][0].
 
-[1]: https://pypi.org/project/pybigquery/#history
+[0]: https://pypi.org/project/pybigquery
 
-### [0.10.1](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.10.0...v0.10.1) (2021-07-30)
+[sqlalchemy-bigquery PyPI History][1]
+
+[1]: https://pypi.org/project/sqlalchemy-bigquery/#history
+
+
+[pybigquery PyPI History][2]
+
+[2]: https://pypi.org/project/pybigquery/#history
+
+
+## [pybigquery 0.10.1](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.10.0...v0.10.1) (2021-07-30)
 
 
 ### Bug Fixes
 
 * **deps:** pin 'google-{api,cloud}-core', 'google-auth' to allow 2.x versions ([#220](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/220)) ([bf1f47c](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/bf1f47c794e747a2ea878347322c040636e8c2d4))
 
-## [0.10.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.9.1...v0.10.0) (2021-07-06)
+## [pybigquery 0.10.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.9.1...v0.10.0) (2021-07-06)
 
 
 ### Features
 
 * There's a new `page_size` option to control the page size used when listing tables. ([#174](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/174)) ([e0f1496](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/e0f1496c99dd627e0ed04a0c4e89ca5b14611be2))
 
-### [0.9.1](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.9.0...v0.9.1) (2021-06-25)
+## [pybigquery 0.9.1](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.9.0...v0.9.1) (2021-06-25)
 
 
 ### Documentation
 
 * omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([d52334c](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/d52334c3290d8356a26e1c9fc54dae75854410c9))
 
-## [0.9.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.8.0...v0.9.0) (2021-05-25)
+## [pybigquery 0.9.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.8.0...v0.9.0) (2021-05-25)
 
 
 ### Features
@@ -33,14 +43,14 @@
 * Alembic support ([#183](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/183)) ([4d5a17c](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/4d5a17c8f63328d4484ea7b2ccc58334a421ba81))
 * Support parameterized NUMERIC, BIGNUMERIC, STRING, and BYTES types ([#180](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/180)) ([d118238](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/d1182385b9f1551e605acdc7e2dd45dff22c8064))
 
-## [0.8.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.7.0...v0.8.0) (2021-05-21)
+## [pybigquery 0.8.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.7.0...v0.8.0) (2021-05-21)
 
 
 ### Features
 
 * Add support for SQLAlchemy 1.4 ([#177](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/177)) ([b7b6000](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/b7b60007c966cd548448d1d6fd5a14d1f89480cd))
 
-## [0.7.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.6.1...v0.7.0) (2021-05-12)
+## [pybigquery 0.7.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.6.1...v0.7.0) (2021-05-12)
 
 
 ### Features
@@ -64,14 +74,14 @@
   - Get view definitions.
 
 
-### [0.6.1](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.6.0...v0.6.1) (2021-04-12)
+## [pybigquery 0.6.1](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.6.0...v0.6.1) (2021-04-12)
 
 
 ### Bug Fixes
 
 * use `project_id` property from service account credentials ([#120](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/120)) ([ab2051d](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/ab2051de3097adb68503c01a87f9a91092711d2a))
 
-## [0.6.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.5.1...v0.6.0) (2021-04-06)
+## [pybigquery 0.6.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.5.1...v0.6.0) (2021-04-06)
 
 
 ### Features
@@ -83,7 +93,7 @@
 
 * correct classifiers in `setup.py` ([#107](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/107)) ([0cfc5de](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/0cfc5de467823998ba72af1fee1d2a8aa865fabc))
 
-### [0.5.1](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.5.0...v0.5.1) (2021-04-01)
+## [pybigquery 0.5.1](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.5.0...v0.5.1) (2021-04-01)
 
 
 ### Bug Fixes
@@ -96,9 +106,7 @@
 * add templates for move to googleapis/python-bigquery-sqlalchemy repo ([#88](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/88)) ([37e584e](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/37e584e05db6316b4abd41ebc08486047d2c49b8))
 * build documentation with Sphinx ([#97](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/97)) ([1707737](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/1707737c60997e9714387c8077727eb5918626bb))
 
-## 0.5.0
-
-2020-11-18
+## pybigquery 0.5.0 (2020-11-18)
 
 ### ⚠️ Breaking Changes ⚠️ 
 
@@ -118,9 +126,7 @@
 
 - Use flake8 for code style checks. ([#71](https://github.com/mxmzdlv/pybigquery/pull/71))
 
-## 0.4.15
-
-2020-04-23
+## pybigquery 0.4.15 (2020-04-23)
 
 ### Implementation Changes
 

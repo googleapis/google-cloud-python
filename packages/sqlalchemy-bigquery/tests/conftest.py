@@ -1,4 +1,4 @@
-# Copyright (c) 2017 The PyBigQuery Authors
+# Copyright (c) 2017 The sqlalchemy-bigquery Authors
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -19,9 +19,10 @@
 
 from sqlalchemy.dialects import registry
 
-registry.register("bigquery", "pybigquery.sqlalchemy_bigquery", "BigQueryDialect")
+registry.register("bigquery", "sqlalchemy_bigquery", "BigQueryDialect")
 
-# sqlalchemy's dialect-testing machinery wants an entry like this. It is wack. :(
-registry.register(
-    "bigquery.bigquery", "pybigquery.sqlalchemy_bigquery", "BigQueryDialect"
-)
+# sqlalchemy's dialect-testing machinery wants an entry like this.
+# This seems to be based around dialects maybe having multiple drivers
+# and wanting to test drover-specific URLs, but doesn't seem to make
+# much sense for dialects with only one driver. ¯\_(ツ)_/¯
+registry.register("bigquery.bigquery", "sqlalchemy_bigquery", "BigQueryDialect")

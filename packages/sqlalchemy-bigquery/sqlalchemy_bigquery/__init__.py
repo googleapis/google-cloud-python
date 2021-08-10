@@ -1,4 +1,4 @@
-# Copyright (c) 2017 The PyBigQuery Authors
+# Copyright (c) 2017 The sqlalchemy-bigquery Authors
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -16,3 +16,61 @@
 # COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+"""
+SQLAlchemy dialect for Google BigQuery
+"""
+
+from .version import __version__
+
+from .base import BigQueryDialect
+from .base import (
+    STRING,
+    BOOL,
+    BOOLEAN,
+    INT64,
+    INTEGER,
+    FLOAT64,
+    FLOAT,
+    TIMESTAMP,
+    DATETIME,
+    DATE,
+    BYTES,
+    TIME,
+    RECORD,
+    NUMERIC,
+    BIGNUMERIC,
+)
+
+__all__ = [
+    "__version__",
+    "BigQueryDialect",
+    "STRING",
+    "BOOL",
+    "BOOLEAN",
+    "INT64",
+    "INTEGER",
+    "FLOAT64",
+    "FLOAT",
+    "TIMESTAMP",
+    "DATETIME",
+    "DATE",
+    "BYTES",
+    "TIME",
+    "RECORD",
+    "NUMERIC",
+    "BIGNUMERIC",
+]
+
+try:
+    import pybigquery  # noqa
+except ImportError:
+    pass
+else:  # pragma: NO COVER
+    import warnings
+
+    warnings.warn(
+        "Obsolete pybigquery is installed, which is likely to\n"
+        "interfere with sqlalchemy_bigquery.\n"
+        "pybigquery should be uninstalled.",
+        stacklevel=2,
+    )

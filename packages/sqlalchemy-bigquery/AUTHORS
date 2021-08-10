@@ -1,4 +1,4 @@
-# This is the list of pybigquery's significant contributors.
+# This is the list of sqlalchemy-bigquery's significant contributors.
 #
 # This does not necessarily list everyone who has contributed code,
 # especially since many employees of one corporation may be contributing.
@@ -12,6 +12,7 @@ Google LLC
 Harshal Sheth
 Jacob Hayes
 James Campbell
+Jim Fulton
 Joshua Carp
 Kurian (kuriancheeramelil)
 Maksym Voitko

@@ -1,4 +1,4 @@
-# pybigquery release procedure
+# sqlalchemy-bigquery release procedure
 
 *   Checkout master branch
 
@@ -26,7 +26,7 @@
 
 *   Try out test PyPI package
 
-        pip install --upgrade --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple pybigquery
+        pip install --upgrade --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple sqlalchemy-bigquery
 
 *   Upload to PyPI
 

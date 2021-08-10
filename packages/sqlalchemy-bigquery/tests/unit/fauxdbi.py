@@ -1,4 +1,4 @@
-# Copyright (c) 2021 The PyBigQuery Authors
+# Copyright (c) 2021 The sqlalchemy-bigquery Authors
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -30,7 +30,10 @@ import google.cloud.bigquery.schema
 import google.cloud.bigquery.table
 import google.cloud.bigquery.dbapi.cursor
 
-from pybigquery._helpers import substitute_re_method, substitute_string_re_method
+from sqlalchemy_bigquery._helpers import (
+    substitute_re_method,
+    substitute_string_re_method,
+)
 
 
 class Connection:

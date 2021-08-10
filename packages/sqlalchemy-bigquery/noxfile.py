@@ -25,7 +25,7 @@ import nox
 
 
 BLACK_VERSION = "black==19.10b0"
-BLACK_PATHS = ["docs", "pybigquery", "tests", "noxfile.py", "setup.py"]
+BLACK_PATHS = ["docs", "sqlalchemy_bigquery", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
 
@@ -63,7 +63,7 @@ def lint(session):
     session.run(
         "black", "--check", *BLACK_PATHS,
     )
-    session.run("flake8", "pybigquery", "tests")
+    session.run("flake8", "sqlalchemy_bigquery", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -114,7 +114,7 @@ def default(session):
         "py.test",
         "--quiet",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
-        "--cov=pybigquery",
+        "--cov=sqlalchemy_bigquery",
         "--cov=tests/unit",
         "--cov-append",
         "--cov-config=.coveragerc",
