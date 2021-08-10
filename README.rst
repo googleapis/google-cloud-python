@@ -127,6 +127,9 @@ Libraries
    * - `Data Catalog <https://github.com/googleapis/python-datacatalog>`_
      - |ga|
      - |PyPI-google-cloud-datacatalog|
+   * - `Data Fusion <https://github.com/googleapis/python-data-fusion>`_
+     - |ga|
+     - |PyPI-google-cloud-data-fusion|
    * - `Data Loss Prevention <https://github.com/googleapis/python-dlp>`_
      - |ga|
      - |PyPI-google-cloud-dlp|
@@ -175,6 +178,9 @@ Libraries
    * - `Identity and Access Management <https://github.com/googleapis/python-iam>`_
      - |ga|
      - |PyPI-google-cloud-iam|
+   * - `Identity-Aware Proxy <https://github.com/googleapis/python-iap>`_
+     - |ga|
+     - |PyPI-google-cloud-iap|
    * - `Internet of Things (IoT) Core <https://github.com/googleapis/python-iot>`_
      - |ga|
      - |PyPI-google-cloud-iot|
@@ -271,6 +277,9 @@ Libraries
    * - `TPU <https://github.com/googleapis/python-tpu>`_
      - |ga|
      - |PyPI-google-cloud-tpu|
+   * - `Talent Solution <https://github.com/googleapis/python-talent>`_
+     - |ga|
+     - |PyPI-google-cloud-talent|
    * - `Tasks <https://github.com/googleapis/python-tasks>`_
      - |ga|
      - |PyPI-google-cloud-tasks|
@@ -334,9 +343,6 @@ Libraries
    * - `Contact Center AI Insights API <https://github.com/googleapis/python-contact-center-insights>`_
      - |beta|
      - |PyPI-google-cloud-contact-center-insights|
-   * - `Data Fusion <https://github.com/googleapis/python-data-fusion>`_
-     - |beta|
-     - |PyPI-google-cloud-data-fusion|
    * - `Data Labeling <https://github.com/googleapis/python-datalabeling>`_
      - |beta|
      - |PyPI-google-cloud-datalabeling|
@@ -361,9 +367,6 @@ Libraries
    * - `IAM Logging Protos <https://github.com/googleapis/python-iam-logging>`_
      - |beta|
      - |PyPI-google-cloud-iam-logging|
-   * - `Identity-Aware Proxy <https://github.com/googleapis/python-iap>`_
-     - |beta|
-     - |PyPI-google-cloud-iap|
    * - `Life Sciences <https://github.com/googleapis/python-life-sciences>`_
      - |beta|
      - |PyPI-google-cloud-life-sciences|
@@ -403,9 +406,6 @@ Libraries
    * - `Storage Transfer Service <https://github.com/googleapis/python-storage-transfer>`_
      - |beta|
      - |PyPI-google-cloud-storage-transfer|
-   * - `Talent Solution <https://github.com/googleapis/python-talent>`_
-     - |beta|
-     - |PyPI-google-cloud-talent|
    * - `Transcoder <https://github.com/googleapis/python-video-transcoder>`_
      - |beta|
      - |PyPI-google-cloud-video-transcoder|
@@ -466,6 +466,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-containeranalysis
 .. |PyPI-google-cloud-datacatalog| image:: https://img.shields.io/pypi/v/google-cloud-datacatalog.svg
      :target: https://pypi.org/project/google-cloud-datacatalog
+.. |PyPI-google-cloud-data-fusion| image:: https://img.shields.io/pypi/v/google-cloud-data-fusion.svg
+     :target: https://pypi.org/project/google-cloud-data-fusion
 .. |PyPI-google-cloud-dlp| image:: https://img.shields.io/pypi/v/google-cloud-dlp.svg
      :target: https://pypi.org/project/google-cloud-dlp
 .. |PyPI-google-cloud-dms| image:: https://img.shields.io/pypi/v/google-cloud-dms.svg
@@ -498,6 +500,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-policy-troubleshooter
 .. |PyPI-google-cloud-iam| image:: https://img.shields.io/pypi/v/google-cloud-iam.svg
      :target: https://pypi.org/project/google-cloud-iam
+.. |PyPI-google-cloud-iap| image:: https://img.shields.io/pypi/v/google-cloud-iap.svg
+     :target: https://pypi.org/project/google-cloud-iap
 .. |PyPI-google-cloud-iot| image:: https://img.shields.io/pypi/v/google-cloud-iot.svg
      :target: https://pypi.org/project/google-cloud-iot
 .. |PyPI-google-cloud-kms| image:: https://img.shields.io/pypi/v/google-cloud-kms.svg
@@ -562,6 +566,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-storage
 .. |PyPI-google-cloud-tpu| image:: https://img.shields.io/pypi/v/google-cloud-tpu.svg
      :target: https://pypi.org/project/google-cloud-tpu
+.. |PyPI-google-cloud-talent| image:: https://img.shields.io/pypi/v/google-cloud-talent.svg
+     :target: https://pypi.org/project/google-cloud-talent
 .. |PyPI-google-cloud-tasks| image:: https://img.shields.io/pypi/v/google-cloud-tasks.svg
      :target: https://pypi.org/project/google-cloud-tasks
 .. |PyPI-google-cloud-texttospeech| image:: https://img.shields.io/pypi/v/google-cloud-texttospeech.svg
@@ -604,8 +610,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-orchestration-airflow
 .. |PyPI-google-cloud-contact-center-insights| image:: https://img.shields.io/pypi/v/google-cloud-contact-center-insights.svg
      :target: https://pypi.org/project/google-cloud-contact-center-insights
-.. |PyPI-google-cloud-data-fusion| image:: https://img.shields.io/pypi/v/google-cloud-data-fusion.svg
-     :target: https://pypi.org/project/google-cloud-data-fusion
 .. |PyPI-google-cloud-datalabeling| image:: https://img.shields.io/pypi/v/google-cloud-datalabeling.svg
      :target: https://pypi.org/project/google-cloud-datalabeling
 .. |PyPI-google-cloud-dataflow-client| image:: https://img.shields.io/pypi/v/google-cloud-dataflow-client.svg
@@ -622,8 +626,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-gke-hub
 .. |PyPI-google-cloud-iam-logging| image:: https://img.shields.io/pypi/v/google-cloud-iam-logging.svg
      :target: https://pypi.org/project/google-cloud-iam-logging
-.. |PyPI-google-cloud-iap| image:: https://img.shields.io/pypi/v/google-cloud-iap.svg
-     :target: https://pypi.org/project/google-cloud-iap
 .. |PyPI-google-cloud-life-sciences| image:: https://img.shields.io/pypi/v/google-cloud-life-sciences.svg
      :target: https://pypi.org/project/google-cloud-life-sciences
 .. |PyPI-google-cloud-media-translation| image:: https://img.shields.io/pypi/v/google-cloud-media-translation.svg
@@ -650,8 +652,6 @@ Libraries
      :target: https://pypi.org/project/django-google-spanner
 .. |PyPI-google-cloud-storage-transfer| image:: https://img.shields.io/pypi/v/google-cloud-storage-transfer.svg
      :target: https://pypi.org/project/google-cloud-storage-transfer
-.. |PyPI-google-cloud-talent| image:: https://img.shields.io/pypi/v/google-cloud-talent.svg
-     :target: https://pypi.org/project/google-cloud-talent
 .. |PyPI-google-cloud-video-transcoder| image:: https://img.shields.io/pypi/v/google-cloud-video-transcoder.svg
      :target: https://pypi.org/project/google-cloud-video-transcoder
 .. |PyPI-google-analytics-admin| image:: https://img.shields.io/pypi/v/google-analytics-admin.svg
