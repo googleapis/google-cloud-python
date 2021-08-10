@@ -138,6 +138,17 @@ class StreamingRecognitionConfig(proto.Message):
             ``END_OF_SINGLE_UTTERANCE`` event and cease recognition. It
             will return no more than one ``StreamingRecognitionResult``
             with the ``is_final`` flag set to ``true``.
+
+            The ``single_utterance`` field can only be used with
+            specified models, otherwise an error is thrown. The
+            ``model`` field in [``RecognitionConfig``][] must be set to:
+
+            -  ``command_and_search``
+            -  ``phone_call`` AND additional field
+               ``useEnhanced``\ =\ ``true``
+            -  The ``model`` field is left undefined. In this case the
+               API auto-selects a model based on any other parameters
+               that you set in ``RecognitionConfig``.
         interim_results (bool):
             If ``true``, interim results (tentative hypotheses) may be
             returned as they become available (these interim results are
@@ -214,7 +225,7 @@ class RecognitionConfig(proto.Message):
             [SpeechContext][google.cloud.speech.v1.SpeechContext]. A
             means to provide context to assist the speech recognition.
             For more information, see `speech
-            adaptation <https://cloud.google.com/speech-to-text/docs/context-strength>`__.
+            adaptation <https://cloud.google.com/speech-to-text/docs/adaptation>`__.
         enable_word_time_offsets (bool):
             If ``true``, the top result includes a list of words and the
             start and end time offsets (timestamps) for those words. If
@@ -226,11 +237,7 @@ class RecognitionConfig(proto.Message):
             available in select languages. Setting this for
             requests in other languages has no effect at
             all. The default 'false' value does not add
-            punctuation to result hypotheses. Note: This is
-            currently offered as an experimental service,
-            complimentary to all users. In the future this
-            may be exclusively available as a premium
-            feature.
+            punctuation to result hypotheses.
         diarization_config (google.cloud.speech_v1.types.SpeakerDiarizationConfig):
             Config to enable speaker diarization and set
             additional parameters to make diarization better
@@ -270,7 +277,7 @@ class RecognitionConfig(proto.Message):
                   </tr>
                   <tr>
                     <td><code>video</code></td>
-                    <td>Best for audio that originated from from video or includes multiple
+                    <td>Best for audio that originated from video or includes multiple
                         speakers. Ideally the audio is recorded at a 16khz or greater
                         sampling rate. This is a premium model that costs more than the
                         standard rate.</td>
@@ -306,7 +313,7 @@ class RecognitionConfig(proto.Message):
         The accuracy of the speech recognition can be reduced if lossy
         codecs are used to capture or transmit audio, particularly if
         background noise is present. Lossy codecs include ``MULAW``,
-        ``AMR``, ``AMR_WB``, ``OGG_OPUS``, ``SPEEX_WITH_HEADER_BYTE``, and
+        ``AMR``, ``AMR_WB``, ``OGG_OPUS``, ``SPEEX_WITH_HEADER_BYTE``,
         ``MP3``.
 
         The ``FLAC`` and ``WAV`` audio file formats include a header that
@@ -370,7 +377,7 @@ class SpeakerDiarizationConfig(proto.Message):
             automatically determine the correct number of
             speakers. If not set, the default value is 6.
         speaker_tag (int):
-            Unused.
+            Output only. Unused.
     """
 
     enable_speaker_diarization = proto.Field(proto.BOOL, number=1,)
@@ -531,10 +538,16 @@ class RecognizeResponse(proto.Message):
         results (Sequence[google.cloud.speech_v1.types.SpeechRecognitionResult]):
             Sequential list of transcription results
             corresponding to sequential portions of audio.
+        total_billed_time (google.protobuf.duration_pb2.Duration):
+            When available, billed audio seconds for the
+            corresponding request.
     """
 
     results = proto.RepeatedField(
         proto.MESSAGE, number=2, message="SpeechRecognitionResult",
+    )
+    total_billed_time = proto.Field(
+        proto.MESSAGE, number=3, message=duration_pb2.Duration,
     )
 
 
@@ -550,10 +563,16 @@ class LongRunningRecognizeResponse(proto.Message):
         results (Sequence[google.cloud.speech_v1.types.SpeechRecognitionResult]):
             Sequential list of transcription results
             corresponding to sequential portions of audio.
+        total_billed_time (google.protobuf.duration_pb2.Duration):
+            When available, billed audio seconds for the
+            corresponding request.
     """
 
     results = proto.RepeatedField(
         proto.MESSAGE, number=2, message="SpeechRecognitionResult",
+    )
+    total_billed_time = proto.Field(
+        proto.MESSAGE, number=3, message=duration_pb2.Duration,
     )
 
 
@@ -572,6 +591,10 @@ class LongRunningRecognizeMetadata(proto.Message):
             Time when the request was received.
         last_update_time (google.protobuf.timestamp_pb2.Timestamp):
             Time of the most recent processing update.
+        uri (str):
+            Output only. The URI of the audio file being
+            transcribed. Empty if the audio was sent as byte
+            content.
     """
 
     progress_percent = proto.Field(proto.INT32, number=1,)
@@ -579,6 +602,7 @@ class LongRunningRecognizeMetadata(proto.Message):
     last_update_time = proto.Field(
         proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
     )
+    uri = proto.Field(proto.STRING, number=4,)
 
 
 class StreamingRecognizeResponse(proto.Message):
@@ -588,9 +612,8 @@ class StreamingRecognizeResponse(proto.Message):
     client. If there is no recognizable audio, and ``single_utterance``
     is set to false, then no messages are streamed back to the client.
 
-    Here's an example of a series of ten
-    ``StreamingRecognizeResponse``\ s that might be returned while
-    processing audio:
+    Here's an example of a series of ``StreamingRecognizeResponse``\ s
+    that might be returned while processing audio:
 
     1. results { alternatives { transcript: "tube" } stability: 0.01 }
 
@@ -648,6 +671,10 @@ class StreamingRecognizeResponse(proto.Message):
             ``is_final=false`` results (the interim results).
         speech_event_type (google.cloud.speech_v1.types.StreamingRecognizeResponse.SpeechEventType):
             Indicates the type of speech event.
+        total_billed_time (google.protobuf.duration_pb2.Duration):
+            When available, billed audio seconds for the
+            stream. Set only if this is the last response in
+            the stream.
     """
 
     class SpeechEventType(proto.Enum):
@@ -660,6 +687,9 @@ class StreamingRecognizeResponse(proto.Message):
         proto.MESSAGE, number=2, message="StreamingRecognitionResult",
     )
     speech_event_type = proto.Field(proto.ENUM, number=4, enum=SpeechEventType,)
+    total_billed_time = proto.Field(
+        proto.MESSAGE, number=5, message=duration_pb2.Duration,
+    )
 
 
 class StreamingRecognitionResult(proto.Message):
@@ -784,12 +814,12 @@ class WordInfo(proto.Message):
             The word corresponding to this set of
             information.
         speaker_tag (int):
-            A distinct integer value is assigned for every speaker
-            within the audio. This field specifies which one of those
-            speakers was detected to have spoken this word. Value ranges
-            from '1' to diarization_speaker_count. speaker_tag is set if
-            enable_speaker_diarization = 'true' and only in the top
-            alternative.
+            Output only. A distinct integer value is assigned for every
+            speaker within the audio. This field specifies which one of
+            those speakers was detected to have spoken this word. Value
+            ranges from '1' to diarization_speaker_count. speaker_tag is
+            set if enable_speaker_diarization = 'true' and only in the
+            top alternative.
     """
 
     start_time = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
