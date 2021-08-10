@@ -38,6 +38,7 @@ from google.oauth2 import service_account  # type: ignore
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.speech_v1.types import cloud_speech
+from google.protobuf import duration_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from .transports.base import SpeechTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import SpeechGrpcAsyncIOTransport
@@ -379,7 +380,7 @@ class SpeechAsyncClient:
                    single_utterance is set to false, then no messages
                    are streamed back to the client.
 
-                   Here's an example of a series of ten
+                   Here's an example of a series of
                    StreamingRecognizeResponses that might be returned
                    while processing audio:
 
