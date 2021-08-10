@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-compute.git",
-        "sha": "fbc1a2869932883d0e7e8e498e16d2273fb25048"
+        "sha": "ba64ba1a49273aefd2304d8a973a2a41b12f724a"
       }
     },
     {
