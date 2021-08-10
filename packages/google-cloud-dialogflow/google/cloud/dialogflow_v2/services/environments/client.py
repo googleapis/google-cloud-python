@@ -386,8 +386,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEnvironmentsPager:
-        r"""Returns the list of all non-draft environments of the
-        specified agent.
+        r"""Returns the list of all non-default environments of
+        the specified agent.
 
         Args:
             request (google.cloud.dialogflow_v2.types.ListEnvironmentsRequest):
@@ -613,13 +613,14 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         environment. When an environment is pointed to a new agent
         version by setting ``environment.agent_version``, the
         environment is temporarily set to the ``LOADING`` state. During
-        that time, the environment keeps on serving the previous version
-        of the agent. After the new agent version is done loading, the
-        environment is set back to the ``RUNNING`` state. You can use
-        "-" as Environment ID in environment name to update version in
-        "draft" environment. WARNING: this will negate all recent
-        changes to draft and can't be undone. You may want to save the
-        draft to a version before calling this function.
+        that time, the environment continues serving the previous
+        version of the agent. After the new agent version is done
+        loading, the environment is set back to the ``RUNNING`` state.
+        You can use "-" as Environment ID in environment name to update
+        an agent version in the default environment. WARNING: this will
+        negate all recent changes to the draft agent and can't be
+        undone. You may want to save the draft agent to a version before
+        calling this method.
 
         Args:
             request (google.cloud.dialogflow_v2.types.UpdateEnvironmentRequest):

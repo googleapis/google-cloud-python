@@ -63,6 +63,12 @@ class ConversationProfilesAsyncClient:
     parse_conversation_profile_path = staticmethod(
         ConversationProfilesClient.parse_conversation_profile_path
     )
+    cx_security_settings_path = staticmethod(
+        ConversationProfilesClient.cx_security_settings_path
+    )
+    parse_cx_security_settings_path = staticmethod(
+        ConversationProfilesClient.parse_cx_security_settings_path
+    )
     document_path = staticmethod(ConversationProfilesClient.document_path)
     parse_document_path = staticmethod(ConversationProfilesClient.parse_document_path)
     knowledge_base_path = staticmethod(ConversationProfilesClient.knowledge_base_path)

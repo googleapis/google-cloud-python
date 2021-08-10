@@ -82,7 +82,7 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
-                ``client_cert_source`` or application default SSL credentials.
+                ``client_cert_source`` or applicatin default SSL credentials.
             client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]):
                 Deprecated. A callback to provide client SSL certificate bytes and
                 private key bytes, both in PEM format. It is ignored if
@@ -235,8 +235,8 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
     ]:
         r"""Return a callable for the list environments method over gRPC.
 
-        Returns the list of all non-draft environments of the
-        specified agent.
+        Returns the list of all non-default environments of
+        the specified agent.
 
         Returns:
             Callable[[~.ListEnvironmentsRequest],
@@ -320,13 +320,14 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
         environment. When an environment is pointed to a new agent
         version by setting ``environment.agent_version``, the
         environment is temporarily set to the ``LOADING`` state. During
-        that time, the environment keeps on serving the previous version
-        of the agent. After the new agent version is done loading, the
-        environment is set back to the ``RUNNING`` state. You can use
-        "-" as Environment ID in environment name to update version in
-        "draft" environment. WARNING: this will negate all recent
-        changes to draft and can't be undone. You may want to save the
-        draft to a version before calling this function.
+        that time, the environment continues serving the previous
+        version of the agent. After the new agent version is done
+        loading, the environment is set back to the ``RUNNING`` state.
+        You can use "-" as Environment ID in environment name to update
+        an agent version in the default environment. WARNING: this will
+        negate all recent changes to the draft agent and can't be
+        undone. You may want to save the draft agent to a version before
+        calling this method.
 
         Returns:
             Callable[[~.UpdateEnvironmentRequest],

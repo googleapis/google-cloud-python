@@ -375,6 +375,10 @@ class IntentsAsyncClient:
     ) -> gcd_intent.Intent:
         r"""Creates an intent in the specified agent.
 
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+
         Args:
             request (:class:`google.cloud.dialogflow_v2beta1.types.CreateIntentRequest`):
                 The request object. The request message for
@@ -479,6 +483,10 @@ class IntentsAsyncClient:
     ) -> gcd_intent.Intent:
         r"""Updates the specified intent.
 
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+
         Args:
             request (:class:`google.cloud.dialogflow_v2beta1.types.UpdateIntentRequest`):
                 The request object. The request message for
@@ -578,8 +586,12 @@ class IntentsAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes the specified intent and its direct or
-        indirect followup intents.
+        r"""Deletes the specified intent and its direct or indirect followup
+        intents.
+
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
             request (:class:`google.cloud.dialogflow_v2beta1.types.DeleteIntentRequest`):
@@ -653,8 +665,9 @@ class IntentsAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates/Creates multiple intents in the specified agent.
 
-        Operation <response:
-        [BatchUpdateIntentsResponse][google.cloud.dialogflow.v2beta1.BatchUpdateIntentsResponse]>
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
             request (:class:`google.cloud.dialogflow_v2beta1.types.BatchUpdateIntentsRequest`):
@@ -765,8 +778,9 @@ class IntentsAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes intents in the specified agent.
 
-        Operation <response:
-        [google.protobuf.Empty][google.protobuf.Empty]>
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
             request (:class:`google.cloud.dialogflow_v2beta1.types.BatchDeleteIntentsRequest`):

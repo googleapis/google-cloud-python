@@ -133,7 +133,7 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
-                ``client_cert_source`` or application default SSL credentials.
+                ``client_cert_source`` or applicatin default SSL credentials.
             client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]):
                 Deprecated. A callback to provide client SSL certificate bytes and
                 private key bytes, both in PEM format. It is ignored if
@@ -283,6 +283,10 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
 
         Creates/updates the specified agent.
 
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+
         Returns:
             Callable[[~.SetAgentRequest],
                     Awaitable[~.Agent]]:
@@ -366,8 +370,9 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
 
         Trains the specified agent.
 
-        Operation <response:
-        [google.protobuf.Empty][google.protobuf.Empty]>
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Returns:
             Callable[[~.TrainAgentRequest],
@@ -394,9 +399,6 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
         r"""Return a callable for the export agent method over gRPC.
 
         Exports the specified agent to a ZIP file.
-
-        Operation <response:
-        [ExportAgentResponse][google.cloud.dialogflow.v2beta1.ExportAgentResponse]>
 
         Returns:
             Callable[[~.ExportAgentRequest],
@@ -436,10 +438,9 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
         and wait for the operation it returns in order to train
         explicitly.
 
-        Operation <response:
-        [google.protobuf.Empty][google.protobuf.Empty]> An operation
-        which tracks when importing is complete. It only tracks when the
-        draft agent is updated not when it is done training.
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Returns:
             Callable[[~.ImportAgentRequest],
@@ -477,10 +478,9 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
         and wait for the operation it returns in order to train
         explicitly.
 
-        Operation <response:
-        [google.protobuf.Empty][google.protobuf.Empty]> An operation
-        which tracks when restoring is complete. It only tracks when the
-        draft agent is updated not when it is done training.
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Returns:
             Callable[[~.RestoreAgentRequest],

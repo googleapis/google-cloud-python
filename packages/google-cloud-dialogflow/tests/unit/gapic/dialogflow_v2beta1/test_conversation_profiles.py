@@ -961,6 +961,8 @@ def test_get_conversation_profile(
             name="name_value",
             display_name="display_name_value",
             language_code="language_code_value",
+            time_zone="time_zone_value",
+            security_settings="security_settings_value",
         )
         response = client.get_conversation_profile(request)
 
@@ -974,6 +976,8 @@ def test_get_conversation_profile(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.language_code == "language_code_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.security_settings == "security_settings_value"
 
 
 def test_get_conversation_profile_from_dict():
@@ -1020,6 +1024,8 @@ async def test_get_conversation_profile_async(
                 name="name_value",
                 display_name="display_name_value",
                 language_code="language_code_value",
+                time_zone="time_zone_value",
+                security_settings="security_settings_value",
             )
         )
         response = await client.get_conversation_profile(request)
@@ -1034,6 +1040,8 @@ async def test_get_conversation_profile_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.language_code == "language_code_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.security_settings == "security_settings_value"
 
 
 @pytest.mark.asyncio
@@ -1197,6 +1205,8 @@ def test_create_conversation_profile(
             name="name_value",
             display_name="display_name_value",
             language_code="language_code_value",
+            time_zone="time_zone_value",
+            security_settings="security_settings_value",
         )
         response = client.create_conversation_profile(request)
 
@@ -1210,6 +1220,8 @@ def test_create_conversation_profile(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.language_code == "language_code_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.security_settings == "security_settings_value"
 
 
 def test_create_conversation_profile_from_dict():
@@ -1256,6 +1268,8 @@ async def test_create_conversation_profile_async(
                 name="name_value",
                 display_name="display_name_value",
                 language_code="language_code_value",
+                time_zone="time_zone_value",
+                security_settings="security_settings_value",
             )
         )
         response = await client.create_conversation_profile(request)
@@ -1270,6 +1284,8 @@ async def test_create_conversation_profile_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.language_code == "language_code_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.security_settings == "security_settings_value"
 
 
 @pytest.mark.asyncio
@@ -1461,6 +1477,8 @@ def test_update_conversation_profile(
             name="name_value",
             display_name="display_name_value",
             language_code="language_code_value",
+            time_zone="time_zone_value",
+            security_settings="security_settings_value",
         )
         response = client.update_conversation_profile(request)
 
@@ -1474,6 +1492,8 @@ def test_update_conversation_profile(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.language_code == "language_code_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.security_settings == "security_settings_value"
 
 
 def test_update_conversation_profile_from_dict():
@@ -1520,6 +1540,8 @@ async def test_update_conversation_profile_async(
                 name="name_value",
                 display_name="display_name_value",
                 language_code="language_code_value",
+                time_zone="time_zone_value",
+                security_settings="security_settings_value",
             )
         )
         response = await client.update_conversation_profile(request)
@@ -1534,6 +1556,8 @@ async def test_update_conversation_profile_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.language_code == "language_code_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.security_settings == "security_settings_value"
 
 
 @pytest.mark.asyncio
@@ -2469,10 +2493,36 @@ def test_parse_conversation_profile_path():
     assert expected == actual
 
 
-def test_document_path():
+def test_cx_security_settings_path():
     project = "squid"
-    knowledge_base = "clam"
-    document = "whelk"
+    location = "clam"
+    security_settings = "whelk"
+    expected = "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
+        project=project, location=location, security_settings=security_settings,
+    )
+    actual = ConversationProfilesClient.cx_security_settings_path(
+        project, location, security_settings
+    )
+    assert expected == actual
+
+
+def test_parse_cx_security_settings_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "security_settings": "nudibranch",
+    }
+    path = ConversationProfilesClient.cx_security_settings_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationProfilesClient.parse_cx_security_settings_path(path)
+    assert expected == actual
+
+
+def test_document_path():
+    project = "cuttlefish"
+    knowledge_base = "mussel"
+    document = "winkle"
     expected = "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(
         project=project, knowledge_base=knowledge_base, document=document,
     )
@@ -2482,9 +2532,9 @@ def test_document_path():
 
 def test_parse_document_path():
     expected = {
-        "project": "octopus",
-        "knowledge_base": "oyster",
-        "document": "nudibranch",
+        "project": "nautilus",
+        "knowledge_base": "scallop",
+        "document": "abalone",
     }
     path = ConversationProfilesClient.document_path(**expected)
 
@@ -2494,8 +2544,8 @@ def test_parse_document_path():
 
 
 def test_knowledge_base_path():
-    project = "cuttlefish"
-    knowledge_base = "mussel"
+    project = "squid"
+    knowledge_base = "clam"
     expected = "projects/{project}/knowledgeBases/{knowledge_base}".format(
         project=project, knowledge_base=knowledge_base,
     )
@@ -2505,8 +2555,8 @@ def test_knowledge_base_path():
 
 def test_parse_knowledge_base_path():
     expected = {
-        "project": "winkle",
-        "knowledge_base": "nautilus",
+        "project": "whelk",
+        "knowledge_base": "octopus",
     }
     path = ConversationProfilesClient.knowledge_base_path(**expected)
 
@@ -2516,7 +2566,7 @@ def test_parse_knowledge_base_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2526,7 +2576,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "nudibranch",
     }
     path = ConversationProfilesClient.common_billing_account_path(**expected)
 
@@ -2536,7 +2586,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(folder=folder,)
     actual = ConversationProfilesClient.common_folder_path(folder)
     assert expected == actual
@@ -2544,7 +2594,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "mussel",
     }
     path = ConversationProfilesClient.common_folder_path(**expected)
 
@@ -2554,7 +2604,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "winkle"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = ConversationProfilesClient.common_organization_path(organization)
     assert expected == actual
@@ -2562,7 +2612,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "nautilus",
     }
     path = ConversationProfilesClient.common_organization_path(**expected)
 
@@ -2572,7 +2622,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "scallop"
     expected = "projects/{project}".format(project=project,)
     actual = ConversationProfilesClient.common_project_path(project)
     assert expected == actual
@@ -2580,7 +2630,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "abalone",
     }
     path = ConversationProfilesClient.common_project_path(**expected)
 
@@ -2590,8 +2640,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -2601,8 +2651,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = ConversationProfilesClient.common_location_path(**expected)
 

@@ -49,6 +49,8 @@ class EnvironmentsAsyncClient:
     parse_environment_path = staticmethod(EnvironmentsClient.parse_environment_path)
     fulfillment_path = staticmethod(EnvironmentsClient.fulfillment_path)
     parse_fulfillment_path = staticmethod(EnvironmentsClient.parse_fulfillment_path)
+    version_path = staticmethod(EnvironmentsClient.version_path)
+    parse_version_path = staticmethod(EnvironmentsClient.parse_version_path)
     common_billing_account_path = staticmethod(
         EnvironmentsClient.common_billing_account_path
     )

@@ -143,10 +143,10 @@ class Intent(proto.Message):
             responses will be copied from the messages in
             PLATFORM_UNSPECIFIED (i.e. default platform).
         root_followup_intent_name (str):
-            Read-only. The unique identifier of the root intent in the
-            chain of followup intents. It identifies the correct
-            followup intents chain for this intent. We populate this
-            field only in the output.
+            Output only. Read-only. The unique identifier of the root
+            intent in the chain of followup intents. It identifies the
+            correct followup intents chain for this intent. We populate
+            this field only in the output.
 
             Format: ``projects/<Project ID>/agent/intents/<Intent ID>``.
         parent_followup_intent_name (str):
@@ -161,10 +161,10 @@ class Intent(proto.Message):
             It identifies the parent followup intent. Format:
             ``projects/<Project ID>/agent/intents/<Intent ID>``.
         followup_intent_info (Sequence[google.cloud.dialogflow_v2.types.Intent.FollowupIntentInfo]):
-            Read-only. Information about all followup
-            intents that have this intent as a direct or
-            indirect parent. We populate this field only in
-            the output.
+            Output only. Read-only. Information about all
+            followup intents that have this intent as a
+            direct or indirect parent. We populate this
+            field only in the output.
     """
 
     class WebhookState(proto.Enum):

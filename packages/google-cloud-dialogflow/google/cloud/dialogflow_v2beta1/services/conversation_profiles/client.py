@@ -211,6 +211,24 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def cx_security_settings_path(
+        project: str, location: str, security_settings: str,
+    ) -> str:
+        """Returns a fully-qualified cx_security_settings string."""
+        return "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
+            project=project, location=location, security_settings=security_settings,
+        )
+
+    @staticmethod
+    def parse_cx_security_settings_path(path: str) -> Dict[str, str]:
+        """Parses a cx_security_settings path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/securitySettings/(?P<security_settings>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def document_path(project: str, knowledge_base: str, document: str,) -> str:
         """Returns a fully-qualified document string."""
         return "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(

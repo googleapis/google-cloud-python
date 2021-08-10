@@ -80,10 +80,21 @@ class ConversationProfile(proto.Message):
         stt_config (google.cloud.dialogflow_v2beta1.types.SpeechToTextConfig):
             Settings for speech transcription.
         language_code (str):
-            Language code for the conversation profile.
-            If not specified, the language is en-US.
-            Language at ConversationProfile should be set
-            for all non en-us languages.
+            Language code for the conversation profile. If not
+            specified, the language is en-US. Language at
+            ConversationProfile should be set for all non en-us
+            languages. This should be a
+            `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
+            language tag. Example: "en-US".
+        time_zone (str):
+            The time zone of this conversational profile from the `time
+            zone database <https://www.iana.org/time-zones>`__, e.g.,
+            America/New_York, Europe/Paris. Defaults to
+            America/New_York.
+        security_settings (str):
+            Name of the CX SecuritySettings reference for the agent.
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -114,6 +125,8 @@ class ConversationProfile(proto.Message):
         proto.MESSAGE, number=9, message=audio_config.SpeechToTextConfig,
     )
     language_code = proto.Field(proto.STRING, number=10,)
+    time_zone = proto.Field(proto.STRING, number=14,)
+    security_settings = proto.Field(proto.STRING, number=13,)
 
 
 class AutomatedAgentConfig(proto.Message):
