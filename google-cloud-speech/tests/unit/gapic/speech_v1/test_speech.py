@@ -41,6 +41,7 @@ from google.cloud.speech_v1.services.speech.transports.base import _GOOGLE_AUTH_
 from google.cloud.speech_v1.types import cloud_speech
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import google.auth
 
