@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.7.0](https://www.github.com/googleapis/python-speech/compare/v2.6.0...v2.7.0) (2021-08-10)
+
+
+### Features
+
+* add total_billed_time response field ([#224](https://www.github.com/googleapis/python-speech/issues/224)) ([07b5203](https://www.github.com/googleapis/python-speech/commit/07b5203a15a186aab537442a4f4a4071aab3046f))
+
 ## [2.6.0](https://www.github.com/googleapis/python-speech/compare/v2.5.1...v2.6.0) (2021-07-28)
 
 
