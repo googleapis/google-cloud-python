@@ -507,7 +507,7 @@ Token Consumer ::
     # refresh handler to handle token expiration. Passing the original
     # downscoped token or the expiry here is optional, as the refresh_handler
     # will generate the downscoped token on demand.
-    credentials = google.oauth2.Credentials(
+    credentials = google.oauth2.credentials.Credentials(
         downscoped_token,
         expiry=expiry,
         scopes=['https://www.googleapis.com/auth/cloud-platform'],
@@ -521,7 +521,7 @@ Token Consumer ::
     # in bucket "bucket-123".
     bucket = storage_client.bucket('bucket-123')
     blob = bucket.blob('customer-a-data.txt')
-    print(blob.download_as_string())
+    print(blob.download_as_bytes().decode("utf-8"))
 
 
 Another reason to use downscoped credentials is to ensure tokens in flight
