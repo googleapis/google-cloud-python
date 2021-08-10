@@ -9,4 +9,4 @@
 *               @googleapis/api-dataproc @googleapis/yoshi-python 
 
 # The python-samples-reviewers team is the default owner for samples changes
-/samples/**/*.py   @googleapis/api-dataproc @googleapis/python-samples-owners 
+/samples/**/*.py   @loferris @googleapis/api-dataproc @googleapis/python-samples-owners 
