@@ -18,6 +18,8 @@ import mock
 
 
 class TestWriteBatch(unittest.TestCase):
+    """Tests the WriteBatch.commit method"""
+
     @staticmethod
     def _get_target_class():
         from google.cloud.firestore_v1.batch import WriteBatch
@@ -61,6 +63,7 @@ class TestWriteBatch(unittest.TestCase):
         batch.create(document1, {"ten": 10, "buck": "ets"})
         document2 = client.document("c", "d", "e", "f")
         batch.delete(document2)
+        self.assertEqual(len(batch), 2)
         write_pbs = batch._write_pbs[::]
 
         write_results = batch.commit(**kwargs)

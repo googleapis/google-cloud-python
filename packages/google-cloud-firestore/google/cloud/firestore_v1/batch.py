@@ -21,7 +21,9 @@ from google.cloud.firestore_v1.base_batch import BaseWriteBatch
 
 
 class WriteBatch(BaseWriteBatch):
-    """Accumulate write operations to be sent in a batch.
+    """Accumulate write operations to be sent in a batch. Use this over
+    `BulkWriteBatch` for lower volumes or when the order of operations
+    within a given batch is important.
 
     This has the same set of methods for write operations that
     :class:`~google.cloud.firestore_v1.document.DocumentReference` does,

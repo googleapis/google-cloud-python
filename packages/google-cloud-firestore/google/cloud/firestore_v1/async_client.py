@@ -96,6 +96,19 @@ class AsyncClient(BaseClient):
             client_options=client_options,
         )
 
+    def _to_sync_copy(self):
+        from google.cloud.firestore_v1.client import Client
+
+        if not getattr(self, "_sync_copy", None):
+            self._sync_copy = Client(
+                project=self.project,
+                credentials=self._credentials,
+                database=self._database,
+                client_info=self._client_info,
+                client_options=self._client_options,
+            )
+        return self._sync_copy
+
     @property
     def _firestore_api(self):
         """Lazy-loading getter GAPIC Firestore API.

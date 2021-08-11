@@ -37,7 +37,10 @@ from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import __version__
 from google.cloud.firestore_v1 import types
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
-
+from google.cloud.firestore_v1.bulk_writer import (
+    BulkWriter,
+    BulkWriterOptions,
+)
 from google.cloud.firestore_v1.field_path import render_field_path
 from typing import (
     Any,
@@ -277,6 +280,21 @@ class BaseClient(ClientWithProject):
 
     def document(self, *document_path) -> BaseDocumentReference:
         raise NotImplementedError
+
+    def bulk_writer(self, options: Optional[BulkWriterOptions] = None) -> BulkWriter:
+        """Get a BulkWriter instance from this client.
+
+        Args:
+            :class:`@google.cloud.firestore_v1.bulk_writer.BulkWriterOptions`:
+            Optional control parameters for the
+            :class:`@google.cloud.firestore_v1.bulk_writer.BulkWriter` returned.
+
+        Returns:
+            :class:`@google.cloud.firestore_v1.bulk_writer.BulkWriter`:
+            A utility to efficiently create and save many `WriteBatch` instances
+            to the server.
+        """
+        return BulkWriter(client=self, options=options)
 
     def _document_path_helper(self, *document_path) -> List[str]:
         """Standardize the format of path to tuple of path segments and strip the database string from path if present.

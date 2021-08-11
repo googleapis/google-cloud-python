@@ -1075,6 +1075,29 @@ def test_batch(client, cleanup):
     assert not document3.get().exists
 
 
+def test_live_bulk_writer(client, cleanup):
+    from google.cloud.firestore_v1.client import Client
+    from google.cloud.firestore_v1.bulk_writer import BulkWriter
+
+    db: Client = client
+    bw: BulkWriter = db.bulk_writer()
+    col = db.collection(f"bulkitems{UNIQUE_RESOURCE_ID}")
+
+    for index in range(50):
+        doc_ref = col.document(f"id-{index}")
+        bw.create(doc_ref, {"index": index})
+        cleanup(doc_ref.delete)
+
+    bw.close()
+    assert bw._total_batches_sent >= 3  # retries could lead to more than 3 batches
+    assert bw._total_write_operations >= 50  # same retries rule applies again
+    assert bw._in_flight_documents == 0
+    assert len(bw._operations) == 0
+
+    # And now assert that the documents were in fact written to the database
+    assert len(col.get()) == 50
+
+
 def test_watch_document(client, cleanup):
     db = client
     collection_ref = db.collection("wd-users" + UNIQUE_RESOURCE_ID)

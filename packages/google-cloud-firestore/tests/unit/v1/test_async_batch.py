@@ -20,6 +20,8 @@ from tests.unit.v1.test__helpers import AsyncMock
 
 
 class TestAsyncWriteBatch(aiounittest.AsyncTestCase):
+    """Tests the AsyncWriteBatch.commit method"""
+
     @staticmethod
     def _get_target_class():
         from google.cloud.firestore_v1.async_batch import AsyncWriteBatch

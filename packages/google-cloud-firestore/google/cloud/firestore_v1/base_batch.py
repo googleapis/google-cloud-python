@@ -14,16 +14,16 @@
 
 """Helpers for batch requests to the Google Cloud Firestore API."""
 
-
-from google.cloud.firestore_v1 import _helpers
+import abc
+from typing import Dict, Union
 
 # Types needed only for Type Hints
-from google.cloud.firestore_v1.document import DocumentReference
+from google.api_core import retry as retries  # type: ignore
+from google.cloud.firestore_v1 import _helpers
+from google.cloud.firestore_v1.base_document import BaseDocumentReference
 
-from typing import Union
 
-
-class BaseWriteBatch(object):
+class BaseBatch(metaclass=abc.ABCMeta):
     """Accumulate write operations to be sent in a batch.
 
     This has the same set of methods for write operations that
@@ -38,8 +38,15 @@ class BaseWriteBatch(object):
     def __init__(self, client) -> None:
         self._client = client
         self._write_pbs = []
+        self._document_references: Dict[str, BaseDocumentReference] = {}
         self.write_results = None
         self.commit_time = None
+
+    def __len__(self):
+        return len(self._document_references)
+
+    def __contains__(self, reference: BaseDocumentReference):
+        return reference._document_path in self._document_references
 
     def _add_write_pbs(self, write_pbs: list) -> None:
         """Add `Write`` protobufs to this transaction.
@@ -52,7 +59,13 @@ class BaseWriteBatch(object):
         """
         self._write_pbs.extend(write_pbs)
 
-    def create(self, reference: DocumentReference, document_data: dict) -> None:
+    @abc.abstractmethod
+    def commit(self):
+        """Sends all accumulated write operations to the server. The details of this
+        write depend on the implementing class."""
+        raise NotImplementedError()
+
+    def create(self, reference: BaseDocumentReference, document_data: dict) -> None:
         """Add a "change" to this batch to create a document.
 
         If the document given by ``reference`` already exists, then this
@@ -65,11 +78,12 @@ class BaseWriteBatch(object):
                 creating a document.
         """
         write_pbs = _helpers.pbs_for_create(reference._document_path, document_data)
+        self._document_references[reference._document_path] = reference
         self._add_write_pbs(write_pbs)
 
     def set(
         self,
-        reference: DocumentReference,
+        reference: BaseDocumentReference,
         document_data: dict,
         merge: Union[bool, list] = False,
     ) -> None:
@@ -98,11 +112,12 @@ class BaseWriteBatch(object):
                 reference._document_path, document_data
             )
 
+        self._document_references[reference._document_path] = reference
         self._add_write_pbs(write_pbs)
 
     def update(
         self,
-        reference: DocumentReference,
+        reference: BaseDocumentReference,
         field_updates: dict,
         option: _helpers.WriteOption = None,
     ) -> None:
@@ -126,10 +141,11 @@ class BaseWriteBatch(object):
         write_pbs = _helpers.pbs_for_update(
             reference._document_path, field_updates, option
         )
+        self._document_references[reference._document_path] = reference
         self._add_write_pbs(write_pbs)
 
     def delete(
-        self, reference: DocumentReference, option: _helpers.WriteOption = None
+        self, reference: BaseDocumentReference, option: _helpers.WriteOption = None
     ) -> None:
         """Add a "change" to delete a document.
 
@@ -146,9 +162,15 @@ class BaseWriteBatch(object):
                 state of the document before applying changes.
         """
         write_pb = _helpers.pb_for_delete(reference._document_path, option)
+        self._document_references[reference._document_path] = reference
         self._add_write_pbs([write_pb])
 
-    def _prep_commit(self, retry, timeout):
+
+class BaseWriteBatch(BaseBatch):
+    """Base class for a/sync implementations of the `commit` RPC. `commit` is useful
+    for lower volumes or when the order of write operations is important."""
+
+    def _prep_commit(self, retry: retries.Retry, timeout: float):
         """Shared setup for async/sync :meth:`commit`."""
         request = {
             "database": self._client._database_string,

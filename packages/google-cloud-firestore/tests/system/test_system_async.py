@@ -1026,6 +1026,29 @@ async def test_get_all(client, cleanup):
     check_snapshot(snapshot3, document3, restricted3, write_result3)
 
 
+async def test_live_bulk_writer(client, cleanup):
+    from google.cloud.firestore_v1.async_client import AsyncClient
+    from google.cloud.firestore_v1.bulk_writer import BulkWriter
+
+    db: AsyncClient = client
+    bw: BulkWriter = db.bulk_writer()
+    col = db.collection(f"bulkitems-async{UNIQUE_RESOURCE_ID}")
+
+    for index in range(50):
+        doc_ref = col.document(f"id-{index}")
+        bw.create(doc_ref, {"index": index})
+        cleanup(doc_ref.delete)
+
+    bw.close()
+    assert bw._total_batches_sent >= 3  # retries could lead to more than 3 batches
+    assert bw._total_write_operations >= 50  # same retries rule applies again
+    assert bw._in_flight_documents == 0
+    assert len(bw._operations) == 0
+
+    # And now assert that the documents were in fact written to the database
+    assert len(await col.get()) == 50
+
+
 async def test_batch(client, cleanup):
     collection_name = "batch" + UNIQUE_RESOURCE_ID
 

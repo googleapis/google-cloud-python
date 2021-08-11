@@ -13,16 +13,26 @@
 # limitations under the License.
 
 import unittest
+from google.cloud.firestore_v1.base_batch import BaseWriteBatch
 
 import mock
+
+
+class TestableBaseWriteBatch(BaseWriteBatch):
+    def __init__(self, client):
+        super().__init__(client=client)
+
+    """Create a fake subclass of `BaseWriteBatch` for the purposes of
+    evaluating the shared methods."""
+
+    def commit(self):
+        pass  # pragma: NO COVER
 
 
 class TestBaseWriteBatch(unittest.TestCase):
     @staticmethod
     def _get_target_class():
-        from google.cloud.firestore_v1.base_batch import BaseWriteBatch
-
-        return BaseWriteBatch
+        return TestableBaseWriteBatch
 
     def _make_one(self, *args, **kwargs):
         klass = self._get_target_class()

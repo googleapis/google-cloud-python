@@ -369,6 +369,14 @@ class TestClient(unittest.TestCase):
         self.assertIs(batch._client, client)
         self.assertEqual(batch._write_pbs, [])
 
+    def test_bulk_writer(self):
+        from google.cloud.firestore_v1.bulk_writer import BulkWriter
+
+        client = self._make_default_one()
+        bulk_writer = client.bulk_writer()
+        self.assertIsInstance(bulk_writer, BulkWriter)
+        self.assertIs(bulk_writer._client, client)
+
     def test_transaction(self):
         from google.cloud.firestore_v1.transaction import Transaction
 
