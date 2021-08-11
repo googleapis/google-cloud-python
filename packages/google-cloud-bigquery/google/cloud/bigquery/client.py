@@ -86,7 +86,7 @@ from google.cloud.bigquery.model import Model
 from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.model import _model_arg_to_model_ref
 from google.cloud.bigquery.query import _QueryResults
-from google.cloud.bigquery.retry import DEFAULT_RETRY
+from google.cloud.bigquery.retry import DEFAULT_RETRY, DEFAULT_JOB_RETRY
 from google.cloud.bigquery.routine import Routine
 from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
@@ -3163,6 +3163,7 @@ class Client(ClientWithProject):
         project: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: float = None,
+        job_retry: retries.Retry = DEFAULT_JOB_RETRY,
     ) -> job.QueryJob:
         """Run a SQL query.
 
@@ -3192,29 +3193,58 @@ class Client(ClientWithProject):
                 Project ID of the project of where to run the job. Defaults
                 to the client's project.
             retry (Optional[google.api_core.retry.Retry]):
-                How to retry the RPC.
+                How to retry the RPC.  This only applies to making RPC
+                calls.  It isn't used to retry failed jobs.  This has
+                a reasonable default that should only be overridden
+                with care.
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
+            job_retry (Optional[google.api_core.retry.Retry]):
+                How to retry failed jobs.  The default retries
+                rate-limit-exceeded errors.  Passing ``None`` disables
+                job retry.
+
+                Not all jobs can be retried.  If ``job_id`` is
+                provided, then the job returned by the query will not
+                be retryable, and an exception will be raised if a
+                non-``None`` (and non-default) value for ``job_retry``
+                is also provided.
+
+                Note that errors aren't detected until ``result()`` is
+                called on the job returned. The ``job_retry``
+                specified here becomes the default ``job_retry`` for
+                ``result()``, where it can also be specified.
 
         Returns:
             google.cloud.bigquery.job.QueryJob: A new query job instance.
 
         Raises:
             TypeError:
-                If ``job_config`` is not an instance of :class:`~google.cloud.bigquery.job.QueryJobConfig`
-                class.
+                If ``job_config`` is not an instance of
+                :class:`~google.cloud.bigquery.job.QueryJobConfig`
+                class, or if both ``job_id`` and non-``None`` non-default
+                ``job_retry`` are provided.
         """
         job_id_given = job_id is not None
-        job_id = _make_job_id(job_id, job_id_prefix)
+        if (
+            job_id_given
+            and job_retry is not None
+            and job_retry is not DEFAULT_JOB_RETRY
+        ):
+            raise TypeError(
+                "`job_retry` was provided, but the returned job is"
+                " not retryable, because a custom `job_id` was"
+                " provided."
+            )
+
+        job_id_save = job_id
 
         if project is None:
             project = self.project
 
         if location is None:
             location = self.location
-
-        job_config = copy.deepcopy(job_config)
 
         if self._default_query_job_config:
             if job_config:
@@ -3225,6 +3255,8 @@ class Client(ClientWithProject):
                 # that is in the default,
                 # should be filled in with the default
                 # the incoming therefore has precedence
+                #
+                # Note that _fill_from_default doesn't mutate the receiver
                 job_config = job_config._fill_from_default(
                     self._default_query_job_config
                 )
@@ -3233,34 +3265,54 @@ class Client(ClientWithProject):
                     self._default_query_job_config,
                     google.cloud.bigquery.job.QueryJobConfig,
                 )
-                job_config = copy.deepcopy(self._default_query_job_config)
+                job_config = self._default_query_job_config
 
-        job_ref = job._JobReference(job_id, project=project, location=location)
-        query_job = job.QueryJob(job_ref, query, client=self, job_config=job_config)
+        # Note that we haven't modified the original job_config (or
+        # _default_query_job_config) up to this point.
+        job_config_save = job_config
 
-        try:
-            query_job._begin(retry=retry, timeout=timeout)
-        except core_exceptions.Conflict as create_exc:
-            # The thought is if someone is providing their own job IDs and they get
-            # their job ID generation wrong, this could end up returning results for
-            # the wrong query. We thus only try to recover if job ID was not given.
-            if job_id_given:
-                raise create_exc
+        def do_query():
+            # Make a copy now, so that original doesn't get changed by the process
+            # below and to facilitate retry
+            job_config = copy.deepcopy(job_config_save)
+
+            job_id = _make_job_id(job_id_save, job_id_prefix)
+            job_ref = job._JobReference(job_id, project=project, location=location)
+            query_job = job.QueryJob(job_ref, query, client=self, job_config=job_config)
 
             try:
-                query_job = self.get_job(
-                    job_id,
-                    project=project,
-                    location=location,
-                    retry=retry,
-                    timeout=timeout,
-                )
-            except core_exceptions.GoogleAPIError:  # (includes RetryError)
-                raise create_exc
+                query_job._begin(retry=retry, timeout=timeout)
+            except core_exceptions.Conflict as create_exc:
+                # The thought is if someone is providing their own job IDs and they get
+                # their job ID generation wrong, this could end up returning results for
+                # the wrong query. We thus only try to recover if job ID was not given.
+                if job_id_given:
+                    raise create_exc
+
+                try:
+                    query_job = self.get_job(
+                        job_id,
+                        project=project,
+                        location=location,
+                        retry=retry,
+                        timeout=timeout,
+                    )
+                except core_exceptions.GoogleAPIError:  # (includes RetryError)
+                    raise create_exc
+                else:
+                    return query_job
             else:
                 return query_job
-        else:
-            return query_job
+
+        future = do_query()
+        # The future might be in a failed state now, but if it's
+        # unrecoverable, we'll find out when we ask for it's result, at which
+        # point, we may retry.
+        if not job_id_given:
+            future._retry_do_query = do_query  # in case we have to retry later
+            future._job_retry = job_retry
+
+        return future
 
     def insert_rows(
         self,

@@ -36,7 +36,7 @@ from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
-from google.cloud.bigquery.retry import DEFAULT_RETRY
+from google.cloud.bigquery.retry import DEFAULT_RETRY, DEFAULT_JOB_RETRY
 from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.table import _EmptyRowIterator
 from google.cloud.bigquery.table import RangePartitioning
@@ -1260,6 +1260,7 @@ class QueryJob(_AsyncJob):
         retry: "retries.Retry" = DEFAULT_RETRY,
         timeout: float = None,
         start_index: int = None,
+        job_retry: "retries.Retry" = DEFAULT_JOB_RETRY,
     ) -> Union["RowIterator", _EmptyRowIterator]:
         """Start the job and wait for it to complete and get the result.
 
@@ -1270,9 +1271,13 @@ class QueryJob(_AsyncJob):
             max_results (Optional[int]):
                 The maximum total number of rows from this request.
             retry (Optional[google.api_core.retry.Retry]):
-                How to retry the call that retrieves rows. If the job state is
-                ``DONE``, retrying is aborted early even if the results are not
-                available, as this will not change anymore.
+                How to retry the call that retrieves rows.  This only
+                applies to making RPC calls.  It isn't used to retry
+                failed jobs.  This has a reasonable default that
+                should only be overridden with care. If the job state
+                is ``DONE``, retrying is aborted early even if the
+                results are not available, as this will not change
+                anymore.
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
@@ -1280,6 +1285,16 @@ class QueryJob(_AsyncJob):
                 applies to each individual request.
             start_index (Optional[int]):
                 The zero-based index of the starting row to read.
+            job_retry (Optional[google.api_core.retry.Retry]):
+                How to retry failed jobs.  The default retries
+                rate-limit-exceeded errors. Passing ``None`` disables
+                job retry.
+
+                Not all jobs can be retried.  If ``job_id`` was
+                provided to the query that created this job, then the
+                job returned by the query will not be retryable, and
+                an exception will be raised if non-``None``
+                non-default ``job_retry`` is also provided.
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
@@ -1295,17 +1310,66 @@ class QueryJob(_AsyncJob):
 
         Raises:
             google.cloud.exceptions.GoogleAPICallError:
-                If the job failed.
+                If the job failed and retries aren't successful.
             concurrent.futures.TimeoutError:
                 If the job did not complete in the given timeout.
+            TypeError:
+                If Non-``None`` and non-default ``job_retry`` is
+                provided and the job is not retryable.
         """
         try:
-            super(QueryJob, self).result(retry=retry, timeout=timeout)
+            retry_do_query = getattr(self, "_retry_do_query", None)
+            if retry_do_query is not None:
+                if job_retry is DEFAULT_JOB_RETRY:
+                    job_retry = self._job_retry
+            else:
+                if job_retry is not None and job_retry is not DEFAULT_JOB_RETRY:
+                    raise TypeError(
+                        "`job_retry` was provided, but this job is"
+                        " not retryable, because a custom `job_id` was"
+                        " provided to the query that created this job."
+                    )
 
-            # Since the job could already be "done" (e.g. got a finished job
-            # via client.get_job), the superclass call to done() might not
-            # set the self._query_results cache.
-            self._reload_query_results(retry=retry, timeout=timeout)
+            first = True
+
+            def do_get_result():
+                nonlocal first
+
+                if first:
+                    first = False
+                else:
+                    # Note that we won't get here if retry_do_query is
+                    # None, because we won't use a retry.
+
+                    # The orinal job is failed. Create a new one.
+                    job = retry_do_query()
+
+                    # If it's already failed, we might as well stop:
+                    if job.done() and job.exception() is not None:
+                        raise job.exception()
+
+                    # Become the new job:
+                    self.__dict__.clear()
+                    self.__dict__.update(job.__dict__)
+
+                    # This shouldn't be necessary, because once we have a good
+                    # job, it should stay good,and we shouldn't have to retry.
+                    # But let's be paranoid. :)
+                    self._retry_do_query = retry_do_query
+                    self._job_retry = job_retry
+
+                super(QueryJob, self).result(retry=retry, timeout=timeout)
+
+                # Since the job could already be "done" (e.g. got a finished job
+                # via client.get_job), the superclass call to done() might not
+                # set the self._query_results cache.
+                self._reload_query_results(retry=retry, timeout=timeout)
+
+            if retry_do_query is not None and job_retry is not None:
+                do_get_result = job_retry(do_get_result)
+
+            do_get_result()
+
         except exceptions.GoogleAPICallError as exc:
             exc.message += self._format_for_exception(self.query, self.job_id)
             exc.query_job = self

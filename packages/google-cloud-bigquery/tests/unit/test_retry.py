@@ -86,3 +86,27 @@ class Test_should_retry(unittest.TestCase):
 
         exc = BadGateway("testing")
         self.assertTrue(self._call_fut(exc))
+
+
+def test_DEFAULT_JOB_RETRY_predicate():
+    from google.cloud.bigquery.retry import DEFAULT_JOB_RETRY
+    from google.api_core.exceptions import ClientError
+
+    assert not DEFAULT_JOB_RETRY._predicate(TypeError())
+    assert not DEFAULT_JOB_RETRY._predicate(ClientError("fail"))
+    assert not DEFAULT_JOB_RETRY._predicate(
+        ClientError("fail", errors=[dict(reason="idk")])
+    )
+
+    assert DEFAULT_JOB_RETRY._predicate(
+        ClientError("fail", errors=[dict(reason="rateLimitExceeded")])
+    )
+    assert DEFAULT_JOB_RETRY._predicate(
+        ClientError("fail", errors=[dict(reason="backendError")])
+    )
+
+
+def test_DEFAULT_JOB_RETRY_deadline():
+    from google.cloud.bigquery.retry import DEFAULT_JOB_RETRY
+
+    assert DEFAULT_JOB_RETRY._deadline == 600
