@@ -115,8 +115,6 @@ class TestTableReference(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
-        from google.cloud.bigquery.dataset import DatasetReference
-
         dataset_ref = DatasetReference("project_1", "dataset_1")
 
         table_ref = self._make_one(dataset_ref, "table_1")
@@ -124,8 +122,6 @@ class TestTableReference(unittest.TestCase):
         self.assertEqual(table_ref.table_id, "table_1")
 
     def test_to_api_repr(self):
-        from google.cloud.bigquery.dataset import DatasetReference
-
         dataset_ref = DatasetReference("project_1", "dataset_1")
         table_ref = self._make_one(dataset_ref, "table_1")
 
@@ -137,7 +133,6 @@ class TestTableReference(unittest.TestCase):
         )
 
     def test_from_api_repr(self):
-        from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.table import TableReference
 
         dataset_ref = DatasetReference("project_1", "dataset_1")
@@ -204,8 +199,6 @@ class TestTableReference(unittest.TestCase):
         self.assertEqual(got.table_id, "string_table")
 
     def test___eq___wrong_type(self):
-        from google.cloud.bigquery.dataset import DatasetReference
-
         dataset_ref = DatasetReference("project_1", "dataset_1")
         table = self._make_one(dataset_ref, "table_1")
         other = object()
@@ -213,8 +206,6 @@ class TestTableReference(unittest.TestCase):
         self.assertEqual(table, mock.ANY)
 
     def test___eq___project_mismatch(self):
-        from google.cloud.bigquery.dataset import DatasetReference
-
         dataset = DatasetReference("project_1", "dataset_1")
         other_dataset = DatasetReference("project_2", "dataset_1")
         table = self._make_one(dataset, "table_1")
@@ -222,8 +213,6 @@ class TestTableReference(unittest.TestCase):
         self.assertNotEqual(table, other)
 
     def test___eq___dataset_mismatch(self):
-        from google.cloud.bigquery.dataset import DatasetReference
-
         dataset = DatasetReference("project_1", "dataset_1")
         other_dataset = DatasetReference("project_1", "dataset_2")
         table = self._make_one(dataset, "table_1")
@@ -231,24 +220,18 @@ class TestTableReference(unittest.TestCase):
         self.assertNotEqual(table, other)
 
     def test___eq___table_mismatch(self):
-        from google.cloud.bigquery.dataset import DatasetReference
-
         dataset = DatasetReference("project_1", "dataset_1")
         table = self._make_one(dataset, "table_1")
         other = self._make_one(dataset, "table_2")
         self.assertNotEqual(table, other)
 
     def test___eq___equality(self):
-        from google.cloud.bigquery.dataset import DatasetReference
-
         dataset = DatasetReference("project_1", "dataset_1")
         table = self._make_one(dataset, "table_1")
         other = self._make_one(dataset, "table_1")
         self.assertEqual(table, other)
 
     def test___hash__set_equality(self):
-        from google.cloud.bigquery.dataset import DatasetReference
-
         dataset = DatasetReference("project_1", "dataset_1")
         table1 = self._make_one(dataset, "table1")
         table2 = self._make_one(dataset, "table2")
@@ -257,8 +240,6 @@ class TestTableReference(unittest.TestCase):
         self.assertEqual(set_one, set_two)
 
     def test___hash__not_equals(self):
-        from google.cloud.bigquery.dataset import DatasetReference
-
         dataset = DatasetReference("project_1", "dataset_1")
         table1 = self._make_one(dataset, "table1")
         table2 = self._make_one(dataset, "table2")
@@ -294,8 +275,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         return Table
 
     def _make_one(self, *args, **kw):
-        from google.cloud.bigquery.dataset import DatasetReference
-
         if len(args) == 0:
             dataset = DatasetReference(self.PROJECT, self.DS_ID)
             table_ref = dataset.table(self.TABLE_NAME)
@@ -580,6 +559,68 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table._properties = {"numRows": "x"}
         with self.assertRaises(ValueError):
             getattr(table, "num_rows")
+
+    def test__eq__wrong_type(self):
+        table = self._make_one("project_foo.dataset_bar.table_baz")
+
+        class TableWannabe:
+            pass
+
+        not_a_table = TableWannabe()
+        not_a_table._properties = table._properties
+
+        assert table != not_a_table  # Can't fake it.
+
+    def test__eq__same_table_basic(self):
+        table_1 = self._make_one("project_foo.dataset_bar.table_baz")
+        table_2 = self._make_one("project_foo.dataset_bar.table_baz")
+        assert table_1 == table_2
+
+    def test__eq__same_table_multiple_properties(self):
+        from google.cloud.bigquery import SchemaField
+
+        table_1 = self._make_one("project_foo.dataset_bar.table_baz")
+        table_1.require_partition_filter = True
+        table_1.labels = {"first": "one", "second": "two"}
+
+        table_1.schema = [
+            SchemaField("name", "STRING", "REQUIRED"),
+            SchemaField("age", "INTEGER", "NULLABLE"),
+        ]
+
+        table_2 = self._make_one("project_foo.dataset_bar.table_baz")
+        table_2.require_partition_filter = True
+        table_2.labels = {"first": "one", "second": "two"}
+        table_2.schema = [
+            SchemaField("name", "STRING", "REQUIRED"),
+            SchemaField("age", "INTEGER", "NULLABLE"),
+        ]
+
+        assert table_1 == table_2
+
+    def test__eq__same_table_property_different(self):
+        table_1 = self._make_one("project_foo.dataset_bar.table_baz")
+        table_1.description = "This is table baz"
+
+        table_2 = self._make_one("project_foo.dataset_bar.table_baz")
+        table_2.description = "This is also table baz"
+
+        assert table_1 == table_2  # Still equal, only table reference is important.
+
+    def test__eq__different_table(self):
+        table_1 = self._make_one("project_foo.dataset_bar.table_baz")
+        table_2 = self._make_one("project_foo.dataset_bar.table_baz_2")
+
+        assert table_1 != table_2
+
+    def test_hashable(self):
+        table_1 = self._make_one("project_foo.dataset_bar.table_baz")
+        table_1.description = "This is a table"
+
+        table_1b = self._make_one("project_foo.dataset_bar.table_baz")
+        table_1b.description = "Metadata is irrelevant for hashes"
+
+        assert hash(table_1) == hash(table_1b)
 
     def test_schema_setter_non_sequence(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -1542,6 +1583,148 @@ class TestTableListItem(unittest.TestCase):
         }
         table = self._make_one(resource)
         self.assertEqual(table.to_api_repr(), resource)
+
+    def test__eq__wrong_type(self):
+        resource = {
+            "tableReference": {
+                "projectId": "project_foo",
+                "datasetId": "dataset_bar",
+                "tableId": "table_baz",
+            }
+        }
+        table = self._make_one(resource)
+
+        class FakeTableListItem:
+            project = "project_foo"
+            dataset_id = "dataset_bar"
+            table_id = "table_baz"
+
+        not_a_table = FakeTableListItem()
+
+        assert table != not_a_table  # Can't fake it.
+
+    def test__eq__same_table(self):
+        resource = {
+            "tableReference": {
+                "projectId": "project_foo",
+                "datasetId": "dataset_bar",
+                "tableId": "table_baz",
+            }
+        }
+        table_1 = self._make_one(resource)
+        table_2 = self._make_one(resource)
+
+        assert table_1 == table_2
+
+    def test__eq__same_table_property_different(self):
+        table_ref_resource = {
+            "projectId": "project_foo",
+            "datasetId": "dataset_bar",
+            "tableId": "table_baz",
+        }
+
+        resource_1 = {"tableReference": table_ref_resource, "friendlyName": "Table One"}
+        table_1 = self._make_one(resource_1)
+
+        resource_2 = {"tableReference": table_ref_resource, "friendlyName": "Table Two"}
+        table_2 = self._make_one(resource_2)
+
+        assert table_1 == table_2  # Still equal, only table reference is important.
+
+    def test__eq__different_table(self):
+        resource_1 = {
+            "tableReference": {
+                "projectId": "project_foo",
+                "datasetId": "dataset_bar",
+                "tableId": "table_baz",
+            }
+        }
+        table_1 = self._make_one(resource_1)
+
+        resource_2 = {
+            "tableReference": {
+                "projectId": "project_foo",
+                "datasetId": "dataset_bar",
+                "tableId": "table_quux",
+            }
+        }
+        table_2 = self._make_one(resource_2)
+
+        assert table_1 != table_2
+
+    def test_hashable(self):
+        resource = {
+            "tableReference": {
+                "projectId": "project_foo",
+                "datasetId": "dataset_bar",
+                "tableId": "table_baz",
+            }
+        }
+        table_item = self._make_one(resource)
+        table_item_2 = self._make_one(resource)
+
+        assert hash(table_item) == hash(table_item_2)
+
+
+class TestTableClassesInterchangeability:
+    @staticmethod
+    def _make_table(*args, **kwargs):
+        from google.cloud.bigquery.table import Table
+
+        return Table(*args, **kwargs)
+
+    @staticmethod
+    def _make_table_ref(*args, **kwargs):
+        from google.cloud.bigquery.table import TableReference
+
+        return TableReference(*args, **kwargs)
+
+    @staticmethod
+    def _make_table_list_item(*args, **kwargs):
+        from google.cloud.bigquery.table import TableListItem
+
+        return TableListItem(*args, **kwargs)
+
+    def test_table_eq_table_ref(self):
+
+        table = self._make_table("project_foo.dataset_bar.table_baz")
+        dataset_ref = DatasetReference("project_foo", "dataset_bar")
+        table_ref = self._make_table_ref(dataset_ref, "table_baz")
+
+        assert table == table_ref
+        assert table_ref == table
+
+    def test_table_eq_table_list_item(self):
+        table = self._make_table("project_foo.dataset_bar.table_baz")
+        table_list_item = self._make_table_list_item(
+            {
+                "tableReference": {
+                    "projectId": "project_foo",
+                    "datasetId": "dataset_bar",
+                    "tableId": "table_baz",
+                }
+            }
+        )
+
+        assert table == table_list_item
+        assert table_list_item == table
+
+    def test_table_ref_eq_table_list_item(self):
+
+        dataset_ref = DatasetReference("project_foo", "dataset_bar")
+        table_ref = self._make_table_ref(dataset_ref, "table_baz")
+        table_list_item = self._make_table_list_item(
+            {
+                "tableReference": {
+                    "projectId": "project_foo",
+                    "datasetId": "dataset_bar",
+                    "tableId": "table_baz",
+                }
+            }
+        )
+
+        assert table_ref == table_list_item
+        assert table_list_item == table_ref
 
 
 class TestSnapshotDefinition:
