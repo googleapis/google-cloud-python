@@ -5,6 +5,21 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [2.24.0](https://www.github.com/googleapis/python-bigquery/compare/v2.23.3...v2.24.0) (2021-08-11)
+
+
+### Features
+
+* add support for transaction statistics ([#849](https://www.github.com/googleapis/python-bigquery/issues/849)) ([7f7b1a8](https://www.github.com/googleapis/python-bigquery/commit/7f7b1a808d50558772a0deb534ca654da65d629e))
+* make the same `Table*` instances equal to each other ([#867](https://www.github.com/googleapis/python-bigquery/issues/867)) ([c1a3d44](https://www.github.com/googleapis/python-bigquery/commit/c1a3d4435739a21d25aa154145e36d3a7c42eeb6))
+* retry failed query jobs in `result()` ([#837](https://www.github.com/googleapis/python-bigquery/issues/837)) ([519d99c](https://www.github.com/googleapis/python-bigquery/commit/519d99c20e7d1101f76981f3de036fdf3c7a4ecc))
+* support `ScalarQueryParameterType` for `type_` argument in `ScalarQueryParameter` constructor ([#850](https://www.github.com/googleapis/python-bigquery/issues/850)) ([93d15e2](https://www.github.com/googleapis/python-bigquery/commit/93d15e2e5405c2cc6d158c4e5737361344193dbc))
+
+
+### Bug Fixes
+
+* make unicode characters working well in load_table_from_json ([#865](https://www.github.com/googleapis/python-bigquery/issues/865)) ([ad9c802](https://www.github.com/googleapis/python-bigquery/commit/ad9c8026f0e667f13dd754279f9dc40d06f4fa78))
+
 ### [2.23.3](https://www.github.com/googleapis/python-bigquery/compare/v2.23.2...v2.23.3) (2021-08-06)
 
 
