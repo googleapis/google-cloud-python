@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.10.1](https://www.github.com/googleapis/python-ndb/compare/v1.10.0...v1.10.1) (2021-08-11)
+
+
+### Bug Fixes
+
+* add rpc request object to debug logging ([#696](https://www.github.com/googleapis/python-ndb/issues/696)) ([45e590a](https://www.github.com/googleapis/python-ndb/commit/45e590a0903e6690a516a1eb35002664eebf540d)), closes [#695](https://www.github.com/googleapis/python-ndb/issues/695)
+* allow for legacy repeated structured properties with empty values ([#702](https://www.github.com/googleapis/python-ndb/issues/702)) ([60c293d](https://www.github.com/googleapis/python-ndb/commit/60c293d039721f7e842ac8973a743642e182e4a5)), closes [#694](https://www.github.com/googleapis/python-ndb/issues/694)
+* fix bug with concurrent writes to global cache ([#705](https://www.github.com/googleapis/python-ndb/issues/705)) ([bb7cadc](https://www.github.com/googleapis/python-ndb/commit/bb7cadc45df92757b0b2d49c8914a10869d64965)), closes [#692](https://www.github.com/googleapis/python-ndb/issues/692)
+
 ## [1.10.0](https://www.github.com/googleapis/python-ndb/compare/v1.9.0...v1.10.0) (2021-07-20)
 
 
