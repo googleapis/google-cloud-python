@@ -7775,6 +7775,42 @@ class TestClientUpload(object):
         err_msg = str(exc.value)
         assert "Expected an instance of LoadJobConfig" in err_msg
 
+    def test_load_table_from_json_unicode_emoji_data_case(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+
+        client = self._make_client()
+
+        emoji = "\U0001F3E6"
+        json_row = {"emoji": emoji}
+        json_rows = [json_row]
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+
+        with load_patch as load_table_from_file:
+            client.load_table_from_json(json_rows, self.TABLE_REF)
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            size=mock.ANY,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=client.location,
+            project=client.project,
+            job_config=mock.ANY,
+            timeout=None,
+        )
+
+        sent_data_file = load_table_from_file.mock_calls[0][1][1]
+
+        # make sure json_row's unicode characters are only encoded one time
+        expected_bytes = b'{"emoji": "' + emoji.encode("utf8") + b'"}'
+        assert sent_data_file.getvalue() == expected_bytes
+
     # Low-level tests
 
     @classmethod

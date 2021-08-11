@@ -2762,7 +2762,7 @@ class Client(ClientWithProject):
 
         destination = _table_arg_to_table_ref(destination, default_project=self.project)
 
-        data_str = "\n".join(json.dumps(item) for item in json_rows)
+        data_str = "\n".join(json.dumps(item, ensure_ascii=False) for item in json_rows)
         encoded_str = data_str.encode()
         data_file = io.BytesIO(encoded_str)
         return self.load_table_from_file(
