@@ -19,6 +19,7 @@ a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
 
+from google.cloud import firestore_v1
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
@@ -34,7 +35,7 @@ from google.cloud.firestore_v1.base_query import (
 
 from google.cloud.firestore_v1 import document
 from google.cloud.firestore_v1.watch import Watch
-from typing import Any, Callable, Generator, List
+from typing import Any, Callable, Generator, List, Type
 
 
 class Query(BaseQuery):
@@ -105,6 +106,7 @@ class Query(BaseQuery):
         start_at=None,
         end_at=None,
         all_descendants=False,
+        recursive=False,
     ) -> None:
         super(Query, self).__init__(
             parent=parent,
@@ -117,6 +119,7 @@ class Query(BaseQuery):
             start_at=start_at,
             end_at=end_at,
             all_descendants=all_descendants,
+            recursive=recursive,
         )
 
     def get(
@@ -254,6 +257,14 @@ class Query(BaseQuery):
             self, callback, document.DocumentSnapshot, document.DocumentReference
         )
 
+    @staticmethod
+    def _get_collection_reference_class() -> Type[
+        "firestore_v1.collection.CollectionReference"
+    ]:
+        from google.cloud.firestore_v1.collection import CollectionReference
+
+        return CollectionReference
+
 
 class CollectionGroup(Query, BaseCollectionGroup):
     """Represents a Collection Group in the Firestore API.
@@ -279,6 +290,7 @@ class CollectionGroup(Query, BaseCollectionGroup):
         start_at=None,
         end_at=None,
         all_descendants=True,
+        recursive=False,
     ) -> None:
         super(CollectionGroup, self).__init__(
             parent=parent,
@@ -291,6 +303,7 @@ class CollectionGroup(Query, BaseCollectionGroup):
             start_at=start_at,
             end_at=end_at,
             all_descendants=all_descendants,
+            recursive=recursive,
         )
 
     @staticmethod

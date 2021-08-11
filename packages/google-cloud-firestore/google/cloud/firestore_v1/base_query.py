@@ -33,7 +33,17 @@ from google.cloud.firestore_v1.types import query
 from google.cloud.firestore_v1.types import Cursor
 from google.cloud.firestore_v1.types import RunQueryResponse
 from google.cloud.firestore_v1.order import Order
-from typing import Any, Dict, Generator, Iterable, NoReturn, Optional, Tuple, Union
+from typing import (
+    Any,
+    Dict,
+    Generator,
+    Iterable,
+    NoReturn,
+    Optional,
+    Tuple,
+    Type,
+    Union,
+)
 
 # Types needed only for Type Hints
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
@@ -144,6 +154,9 @@ class BaseQuery(object):
             When false, selects only collections that are immediate children
             of the `parent` specified in the containing `RunQueryRequest`.
             When true, selects all descendant collections.
+        recursive (Optional[bool]):
+            When true, returns all documents and all documents in any subcollections
+            below them. Defaults to false.
     """
 
     ASCENDING = "ASCENDING"
@@ -163,6 +176,7 @@ class BaseQuery(object):
         start_at=None,
         end_at=None,
         all_descendants=False,
+        recursive=False,
     ) -> None:
         self._parent = parent
         self._projection = projection
@@ -174,6 +188,7 @@ class BaseQuery(object):
         self._start_at = start_at
         self._end_at = end_at
         self._all_descendants = all_descendants
+        self._recursive = recursive
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -247,6 +262,7 @@ class BaseQuery(object):
         start_at: Optional[Tuple[dict, bool]] = _not_passed,
         end_at: Optional[Tuple[dict, bool]] = _not_passed,
         all_descendants: Optional[bool] = _not_passed,
+        recursive: Optional[bool] = _not_passed,
     ) -> "BaseQuery":
         return self.__class__(
             self._parent,
@@ -261,6 +277,7 @@ class BaseQuery(object):
             all_descendants=self._evaluate_param(
                 all_descendants, self._all_descendants
             ),
+            recursive=self._evaluate_param(recursive, self._recursive),
         )
 
     def _evaluate_param(self, value, fallback_value):
@@ -813,6 +830,46 @@ class BaseQuery(object):
     def on_snapshot(self, callback) -> NoReturn:
         raise NotImplementedError
 
+    def recursive(self) -> "BaseQuery":
+        """Returns a copy of this query whose iterator will yield all matching
+        documents as well as each of their descendent subcollections and documents.
+
+        This differs from the `all_descendents` flag, which only returns descendents
+        whose subcollection names match the parent collection's name. To return
+        all descendents, regardless of their subcollection name, use this.
+        """
+        copied = self._copy(recursive=True, all_descendants=True)
+        if copied._parent and copied._parent.id:
+            original_collection_id = "/".join(copied._parent._path)
+
+            # Reset the parent to nothing so we can recurse through the entire
+            # database. This is required to have
+            # `CollectionSelector.collection_id` not override
+            # `CollectionSelector.all_descendants`, which happens if both are
+            # set.
+            copied._parent = copied._get_collection_reference_class()("")
+            copied._parent._client = self._parent._client
+
+            # But wait! We don't want to load the entire database; only the
+            # collection the user originally specified. To accomplish that, we
+            # add the following arcane filters.
+
+            REFERENCE_NAME_MIN_ID = "__id-9223372036854775808__"
+            start_at = f"{original_collection_id}/{REFERENCE_NAME_MIN_ID}"
+
+            # The backend interprets this null character is flipping the filter
+            # to mean the end of the range instead of the beginning.
+            nullChar = "\0"
+            end_at = f"{original_collection_id}{nullChar}/{REFERENCE_NAME_MIN_ID}"
+
+            copied = (
+                copied.order_by(field_path_module.FieldPath.document_id())
+                .start_at({field_path_module.FieldPath.document_id(): start_at})
+                .end_at({field_path_module.FieldPath.document_id(): end_at})
+            )
+
+        return copied
+
     def _comparator(self, doc1, doc2) -> int:
         _orders = self._orders
 
@@ -1073,6 +1130,7 @@ class BaseCollectionGroup(BaseQuery):
         start_at=None,
         end_at=None,
         all_descendants=True,
+        recursive=False,
     ) -> None:
         if not all_descendants:
             raise ValueError("all_descendants must be True for collection group query.")
@@ -1088,6 +1146,7 @@ class BaseCollectionGroup(BaseQuery):
             start_at=start_at,
             end_at=end_at,
             all_descendants=all_descendants,
+            recursive=recursive,
         )
 
     def _validate_partition_query(self):
@@ -1131,6 +1190,10 @@ class BaseCollectionGroup(BaseQuery):
     def get_partitions(
         self, partition_count, retry: retries.Retry = None, timeout: float = None,
     ) -> NoReturn:
+        raise NotImplementedError
+
+    @staticmethod
+    def _get_collection_reference_class() -> Type["BaseCollectionGroup"]:
         raise NotImplementedError
 
 

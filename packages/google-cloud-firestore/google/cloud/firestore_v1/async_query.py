@@ -22,6 +22,7 @@ a more common way to create a query than direct usage of the constructor.
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 
+from google.cloud import firestore_v1
 from google.cloud.firestore_v1.base_query import (
     BaseCollectionGroup,
     BaseQuery,
@@ -32,7 +33,7 @@ from google.cloud.firestore_v1.base_query import (
 )
 
 from google.cloud.firestore_v1 import async_document
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Type
 
 # Types needed only for Type Hints
 from google.cloud.firestore_v1.transaction import Transaction
@@ -92,6 +93,9 @@ class AsyncQuery(BaseQuery):
             When false, selects only collections that are immediate children
             of the `parent` specified in the containing `RunQueryRequest`.
             When true, selects all descendant collections.
+        recursive (Optional[bool]):
+            When true, returns all documents and all documents in any subcollections
+            below them. Defaults to false.
     """
 
     def __init__(
@@ -106,6 +110,7 @@ class AsyncQuery(BaseQuery):
         start_at=None,
         end_at=None,
         all_descendants=False,
+        recursive=False,
     ) -> None:
         super(AsyncQuery, self).__init__(
             parent=parent,
@@ -118,6 +123,7 @@ class AsyncQuery(BaseQuery):
             start_at=start_at,
             end_at=end_at,
             all_descendants=all_descendants,
+            recursive=recursive,
         )
 
     async def get(
@@ -224,6 +230,14 @@ class AsyncQuery(BaseQuery):
             if snapshot is not None:
                 yield snapshot
 
+    @staticmethod
+    def _get_collection_reference_class() -> Type[
+        "firestore_v1.async_collection.AsyncCollectionReference"
+    ]:
+        from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
+
+        return AsyncCollectionReference
+
 
 class AsyncCollectionGroup(AsyncQuery, BaseCollectionGroup):
     """Represents a Collection Group in the Firestore API.
@@ -249,6 +263,7 @@ class AsyncCollectionGroup(AsyncQuery, BaseCollectionGroup):
         start_at=None,
         end_at=None,
         all_descendants=True,
+        recursive=False,
     ) -> None:
         super(AsyncCollectionGroup, self).__init__(
             parent=parent,
@@ -261,6 +276,7 @@ class AsyncCollectionGroup(AsyncQuery, BaseCollectionGroup):
             start_at=start_at,
             end_at=end_at,
             all_descendants=all_descendants,
+            recursive=recursive,
         )
 
     @staticmethod

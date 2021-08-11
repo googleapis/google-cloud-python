@@ -1212,6 +1212,127 @@ def test_array_union(client, cleanup):
     assert doc_ref.get().to_dict() == expected
 
 
+def test_recursive_query(client, cleanup):
+
+    philosophers = [
+        {
+            "data": {"name": "Socrates", "favoriteCity": "Athens"},
+            "subcollections": {
+                "pets": [{"name": "Scruffy"}, {"name": "Snowflake"}],
+                "hobbies": [{"name": "pontificating"}, {"name": "journaling"}],
+                "philosophers": [{"name": "Aristotle"}, {"name": "Plato"}],
+            },
+        },
+        {
+            "data": {"name": "Aristotle", "favoriteCity": "Sparta"},
+            "subcollections": {
+                "pets": [{"name": "Floof-Boy"}, {"name": "Doggy-Dog"}],
+                "hobbies": [{"name": "questioning-stuff"}, {"name": "meditation"}],
+            },
+        },
+        {
+            "data": {"name": "Plato", "favoriteCity": "Corinth"},
+            "subcollections": {
+                "pets": [{"name": "Cuddles"}, {"name": "Sergeant-Puppers"}],
+                "hobbies": [{"name": "abstraction"}, {"name": "hypotheticals"}],
+            },
+        },
+    ]
+
+    db = client
+    collection_ref = db.collection("philosophers")
+    for philosopher in philosophers:
+        ref = collection_ref.document(
+            f"{philosopher['data']['name']}{UNIQUE_RESOURCE_ID}"
+        )
+        ref.set(philosopher["data"])
+        cleanup(ref.delete)
+        for col_name, entries in philosopher["subcollections"].items():
+            sub_col = ref.collection(col_name)
+            for entry in entries:
+                inner_doc_ref = sub_col.document(entry["name"])
+                inner_doc_ref.set(entry)
+                cleanup(inner_doc_ref.delete)
+
+    ids = [doc.id for doc in db.collection_group("philosophers").recursive().get()]
+
+    expected_ids = [
+        # Aristotle doc and subdocs
+        f"Aristotle{UNIQUE_RESOURCE_ID}",
+        "meditation",
+        "questioning-stuff",
+        "Doggy-Dog",
+        "Floof-Boy",
+        # Plato doc and subdocs
+        f"Plato{UNIQUE_RESOURCE_ID}",
+        "abstraction",
+        "hypotheticals",
+        "Cuddles",
+        "Sergeant-Puppers",
+        # Socrates doc and subdocs
+        f"Socrates{UNIQUE_RESOURCE_ID}",
+        "journaling",
+        "pontificating",
+        "Scruffy",
+        "Snowflake",
+        "Aristotle",
+        "Plato",
+    ]
+
+    assert len(ids) == len(expected_ids)
+
+    for index in range(len(ids)):
+        error_msg = (
+            f"Expected '{expected_ids[index]}' at spot {index}, " "got '{ids[index]}'"
+        )
+        assert ids[index] == expected_ids[index], error_msg
+
+
+def test_nested_recursive_query(client, cleanup):
+
+    philosophers = [
+        {
+            "data": {"name": "Aristotle", "favoriteCity": "Sparta"},
+            "subcollections": {
+                "pets": [{"name": "Floof-Boy"}, {"name": "Doggy-Dog"}],
+                "hobbies": [{"name": "questioning-stuff"}, {"name": "meditation"}],
+            },
+        },
+    ]
+
+    db = client
+    collection_ref = db.collection("philosophers")
+    for philosopher in philosophers:
+        ref = collection_ref.document(
+            f"{philosopher['data']['name']}{UNIQUE_RESOURCE_ID}"
+        )
+        ref.set(philosopher["data"])
+        cleanup(ref.delete)
+        for col_name, entries in philosopher["subcollections"].items():
+            sub_col = ref.collection(col_name)
+            for entry in entries:
+                inner_doc_ref = sub_col.document(entry["name"])
+                inner_doc_ref.set(entry)
+                cleanup(inner_doc_ref.delete)
+
+    aristotle = collection_ref.document(f"Aristotle{UNIQUE_RESOURCE_ID}")
+    ids = [doc.id for doc in aristotle.collection("pets")._query().recursive().get()]
+
+    expected_ids = [
+        # Aristotle pets
+        "Doggy-Dog",
+        "Floof-Boy",
+    ]
+
+    assert len(ids) == len(expected_ids)
+
+    for index in range(len(ids)):
+        error_msg = (
+            f"Expected '{expected_ids[index]}' at spot {index}, " "got '{ids[index]}'"
+        )
+        assert ids[index] == expected_ids[index], error_msg
+
+
 def test_watch_query_order(client, cleanup):
     db = client
     collection_ref = db.collection("users")

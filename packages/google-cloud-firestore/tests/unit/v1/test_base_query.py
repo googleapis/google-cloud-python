@@ -1151,6 +1151,12 @@ class TestBaseQuery(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Can only compare fields "):
             query._comparator(doc1, doc2)
 
+    def test_multiple_recursive_calls(self):
+        query = self._make_one(_make_client().collection("asdf"))
+        self.assertIsInstance(
+            query.recursive().recursive(), type(query),
+        )
+
 
 class Test__enum_from_op_string(unittest.TestCase):
     @staticmethod

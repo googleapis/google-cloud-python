@@ -349,3 +349,9 @@ class TestCollectionReference(unittest.TestCase):
         collection = self._make_one("collection")
         collection.on_snapshot(None)
         watch.for_query.assert_called_once()
+
+    def test_recursive(self):
+        from google.cloud.firestore_v1.query import Query
+
+        col = self._make_one("collection")
+        self.assertIsInstance(col.recursive(), Query)

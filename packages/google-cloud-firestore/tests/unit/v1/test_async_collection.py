@@ -375,6 +375,12 @@ class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
         query_instance = query_class.return_value
         query_instance.stream.assert_called_once_with(transaction=transaction)
 
+    def test_recursive(self):
+        from google.cloud.firestore_v1.async_query import AsyncQuery
+
+        col = self._make_one("collection")
+        self.assertIsInstance(col.recursive(), AsyncQuery)
+
 
 def _make_credentials():
     import google.auth.credentials
