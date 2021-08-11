@@ -17,12 +17,41 @@
 
 import collections
 import contextlib
+import itertools
+import os
 import six
 import threading
+import uuid
 
 from google.cloud.ndb import _eventloop
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
+
+
+def _generate_context_ids():
+    """Generate a sequence of context ids.
+
+    Useful for debugging complicated interactions among concurrent processes and
+    threads.
+
+    The return value is a generator for strings that include the machine's "node",
+    acquired via `uuid.getnode()`, the current process id, and a sequence number which
+    increases monotonically starting from one in each process. The combination of all
+    three is sufficient to uniquely identify the context in which a particular piece of
+    code is being run. Each context, as it is created, is assigned the next id in this
+    sequence.  The context id is used by `utils.logging_debug` to grant insight into
+    where a debug logging statement is coming from in a cloud evironment.
+
+    Returns:
+        Generator[str]: Sequence of context ids.
+    """
+    prefix = "{}-{}-".format(uuid.getnode(), os.getpid())
+    for sequence_number in itertools.count(1):  # pragma NO BRANCH
+        # pragma is required because this loop never exits (infinite sequence)
+        yield prefix + str(sequence_number)
+
+
+_context_ids = _generate_context_ids()
 
 
 try:  # pragma: NO PY2 COVER
@@ -199,6 +228,7 @@ See: :meth:`~google.cloud.ndb.context.Context.set_datastore_policy`
 _ContextTuple = collections.namedtuple(
     "_ContextTuple",
     [
+        "id",
         "client",
         "namespace",
         "eventloop",
@@ -234,6 +264,7 @@ class _Context(_ContextTuple):
     def __new__(
         cls,
         client,
+        id=None,
         namespace=key_module.UNDEFINED,
         eventloop=None,
         batches=None,
@@ -255,6 +286,9 @@ class _Context(_ContextTuple):
         # Prevent circular import in Python 2.7
         from google.cloud.ndb import _cache
 
+        if id is None:
+            id = next(_context_ids)
+
         if eventloop is None:
             eventloop = _eventloop.EventLoop()
 
@@ -272,6 +306,7 @@ class _Context(_ContextTuple):
 
         context = super(_Context, cls).__new__(
             cls,
+            id=id,
             client=client,
             namespace=namespace,
             eventloop=eventloop,

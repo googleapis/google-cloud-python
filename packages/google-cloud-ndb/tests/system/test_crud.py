@@ -96,7 +96,6 @@ def test_retrieve_entity_with_global_cache(ds_entity, client_context):
         baz = ndb.StringProperty()
 
     global_cache = global_cache_module._InProcessGlobalCache()
-    cache_dict = global_cache_module._InProcessGlobalCache.cache
     with client_context.new(global_cache=global_cache).use() as context:
         context.set_global_cache_policy(None)  # Use default
 
@@ -108,7 +107,9 @@ def test_retrieve_entity_with_global_cache(ds_entity, client_context):
         assert entity.baz == "night"
 
         cache_key = _cache.global_cache_key(key._key)
-        assert cache_key in cache_dict
+        cache_value = global_cache.get([cache_key])[0]
+        assert cache_value
+        assert not _cache.is_locked_value(cache_value)
 
         patch = mock.patch(
             "google.cloud.ndb._datastore_api._LookupBatch.add",
@@ -140,7 +141,9 @@ def test_retrieve_entity_with_redis_cache(ds_entity, redis_context):
     assert entity.baz == "night"
 
     cache_key = _cache.global_cache_key(key._key)
-    assert redis_context.global_cache.redis.get(cache_key) is not None
+    cache_value = redis_context.global_cache.redis.get(cache_key)
+    assert cache_value
+    assert not _cache.is_locked_value(cache_value)
 
     patch = mock.patch(
         "google.cloud.ndb._datastore_api._LookupBatch.add",
@@ -173,7 +176,9 @@ def test_retrieve_entity_with_memcache(ds_entity, memcache_context):
 
     cache_key = _cache.global_cache_key(key._key)
     cache_key = global_cache_module.MemcacheCache._key(cache_key)
-    assert memcache_context.global_cache.client.get(cache_key) is not None
+    cache_value = memcache_context.global_cache.client.get(cache_key)
+    assert cache_value
+    assert not _cache.is_locked_value(cache_value)
 
     patch = mock.patch(
         "google.cloud.ndb._datastore_api._LookupBatch.add",
@@ -574,7 +579,6 @@ def test_insert_entity_with_global_cache(dispose_of, client_context):
         bar = ndb.StringProperty()
 
     global_cache = global_cache_module._InProcessGlobalCache()
-    cache_dict = global_cache_module._InProcessGlobalCache.cache
     with client_context.new(global_cache=global_cache).use() as context:
         context.set_global_cache_policy(None)  # Use default
 
@@ -582,18 +586,22 @@ def test_insert_entity_with_global_cache(dispose_of, client_context):
         key = entity.put()
         dispose_of(key._key)
         cache_key = _cache.global_cache_key(key._key)
-        assert not cache_dict
+        cache_value = global_cache.get([cache_key])[0]
+        assert not cache_value
 
         retrieved = key.get()
         assert retrieved.foo == 42
         assert retrieved.bar == "none"
 
-        assert cache_key in cache_dict
+        cache_value = global_cache.get([cache_key])[0]
+        assert cache_value
+        assert not _cache.is_locked_value(cache_value)
 
         entity.foo = 43
         entity.put()
 
-        assert cache_key not in cache_dict
+        cache_value = global_cache.get([cache_key])[0]
+        assert not cache_value
 
 
 @pytest.mark.skipif(not USE_REDIS_CACHE, reason="Redis is not configured")
@@ -606,18 +614,22 @@ def test_insert_entity_with_redis_cache(dispose_of, redis_context):
     key = entity.put()
     dispose_of(key._key)
     cache_key = _cache.global_cache_key(key._key)
-    assert redis_context.global_cache.redis.get(cache_key) is None
+    cache_value = redis_context.global_cache.redis.get(cache_key)
+    assert not cache_value
 
     retrieved = key.get()
     assert retrieved.foo == 42
     assert retrieved.bar == "none"
 
-    assert redis_context.global_cache.redis.get(cache_key) is not None
+    cache_value = redis_context.global_cache.redis.get(cache_key)
+    assert cache_value
+    assert not _cache.is_locked_value(cache_value)
 
     entity.foo = 43
     entity.put()
 
-    assert redis_context.global_cache.redis.get(cache_key) is None
+    cache_value = redis_context.global_cache.redis.get(cache_key)
+    assert not cache_value
 
 
 @pytest.mark.skipif(not USE_MEMCACHE, reason="Memcache is not configured")
@@ -631,18 +643,22 @@ def test_insert_entity_with_memcache(dispose_of, memcache_context):
     dispose_of(key._key)
     cache_key = _cache.global_cache_key(key._key)
     cache_key = global_cache_module.MemcacheCache._key(cache_key)
-    assert memcache_context.global_cache.client.get(cache_key) is None
+    cache_value = memcache_context.global_cache.client.get(cache_key)
+    assert not cache_value
 
     retrieved = key.get()
     assert retrieved.foo == 42
     assert retrieved.bar == "none"
 
-    assert memcache_context.global_cache.client.get(cache_key) is not None
+    cache_value = memcache_context.global_cache.client.get(cache_key)
+    assert cache_value
+    assert not _cache.is_locked_value(cache_value)
 
     entity.foo = 43
     entity.put()
 
-    assert memcache_context.global_cache.client.get(cache_key) is None
+    cache_value = memcache_context.global_cache.client.get(cache_key)
+    assert not cache_value
 
 
 @pytest.mark.usefixtures("client_context")
@@ -771,19 +787,22 @@ def test_delete_entity_with_global_cache(ds_entity, client_context):
     key = ndb.Key(KIND, entity_id)
     cache_key = _cache.global_cache_key(key._key)
     global_cache = global_cache_module._InProcessGlobalCache()
-    cache_dict = global_cache_module._InProcessGlobalCache.cache
 
     with client_context.new(global_cache=global_cache).use():
         assert key.get().foo == 42
-        assert cache_key in cache_dict
+        cache_value = global_cache.get([cache_key])[0]
+        assert cache_value
+        assert not _cache.is_locked_value(cache_value)
 
         assert key.delete() is None
-        assert cache_key not in cache_dict
+        cache_value = global_cache.get([cache_key])[0]
+        assert not cache_value
 
         # This is py27 behavior. Not entirely sold on leaving _LOCKED value for
         # Datastore misses.
         assert key.get() is None
-        assert cache_dict[cache_key][0].startswith(b"0-")
+        cache_value = global_cache.get([cache_key])[0]
+        assert _cache.is_locked_value(cache_value)
 
 
 @pytest.mark.skipif(not USE_REDIS_CACHE, reason="Redis is not configured")
@@ -798,15 +817,19 @@ def test_delete_entity_with_redis_cache(ds_entity, redis_context):
     cache_key = _cache.global_cache_key(key._key)
 
     assert key.get().foo == 42
-    assert redis_context.global_cache.redis.get(cache_key) is not None
+    cache_value = redis_context.global_cache.redis.get(cache_key)
+    assert cache_value
+    assert not _cache.is_locked_value(cache_value)
 
     assert key.delete() is None
-    assert redis_context.global_cache.redis.get(cache_key) is None
+    cache_value = redis_context.global_cache.redis.get(cache_key)
+    assert not cache_value
 
     # This is py27 behavior. Not entirely sold on leaving _LOCKED value for
     # Datastore misses.
     assert key.get() is None
-    assert redis_context.global_cache.redis.get(cache_key).startswith(b"0-")
+    cache_value = redis_context.global_cache.redis.get(cache_key)
+    assert _cache.is_locked_value(cache_value)
 
 
 @pytest.mark.skipif(not USE_MEMCACHE, reason="Memcache is not configured")
@@ -822,15 +845,19 @@ def test_delete_entity_with_memcache(ds_entity, memcache_context):
     cache_key = global_cache_module.MemcacheCache._key(cache_key)
 
     assert key.get().foo == 42
-    assert memcache_context.global_cache.client.get(cache_key) is not None
+    cache_value = memcache_context.global_cache.client.get(cache_key)
+    assert cache_value
+    assert not _cache.is_locked_value(cache_value)
 
     assert key.delete() is None
-    assert memcache_context.global_cache.client.get(cache_key) is None
+    cache_value = memcache_context.global_cache.client.get(cache_key)
+    assert not cache_value
 
     # This is py27 behavior. Not entirely sold on leaving _LOCKED value for
     # Datastore misses.
     assert key.get() is None
-    assert memcache_context.global_cache.client.get(cache_key).startswith(b"0-")
+    cache_value = memcache_context.global_cache.client.get(cache_key)
+    assert _cache.is_locked_value(cache_value)
 
 
 @pytest.mark.usefixtures("client_context")

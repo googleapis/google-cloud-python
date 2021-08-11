@@ -827,17 +827,35 @@ class Test_global_lock_for_read:
     @mock.patch("google.cloud.ndb._cache.global_set_if_not_exists")
     def test_lock_acquired(global_set_if_not_exists):
         global_set_if_not_exists.return_value = _future_result(True)
-        assert (
-            _cache.global_lock_for_read(b"key")
-            .result()
-            .startswith(_cache._LOCKED_FOR_READ)
-        )
+        lock = _cache.global_lock_for_read(b"key", None).result()
+        assert lock.startswith(_cache._LOCKED_FOR_READ)
 
     @staticmethod
     @mock.patch("google.cloud.ndb._cache.global_set_if_not_exists")
     def test_lock_not_acquired(global_set_if_not_exists):
         global_set_if_not_exists.return_value = _future_result(False)
-        assert _cache.global_lock_for_read(b"key").result() is None
+        lock = _cache.global_lock_for_read(b"key", None).result()
+        assert lock is None
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache.global_compare_and_swap")
+    @mock.patch("google.cloud.ndb._cache.global_watch")
+    def test_recently_written_and_lock_acquired(global_watch, global_compare_and_swap):
+        global_watch.return_value = _future_result(True)
+        global_compare_and_swap.return_value = _future_result(True)
+        lock = _cache.global_lock_for_read(b"key", _cache._LOCKED_FOR_WRITE).result()
+        assert lock.startswith(_cache._LOCKED_FOR_READ)
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache.global_compare_and_swap")
+    @mock.patch("google.cloud.ndb._cache.global_watch")
+    def test_recently_written_and_lock_not_acquired(
+        global_watch, global_compare_and_swap
+    ):
+        global_watch.return_value = _future_result(True)
+        global_compare_and_swap.return_value = _future_result(False)
+        lock = _cache.global_lock_for_read(b"key", _cache._LOCKED_FOR_WRITE).result()
+        assert lock is None
 
 
 @pytest.mark.usefixtures("in_context")
@@ -914,10 +932,13 @@ class Test_global_lock_for_write:
 class Test_global_unlock_for_write:
     @staticmethod
     @mock.patch("google.cloud.ndb._cache.uuid")
-    @mock.patch("google.cloud.ndb._cache._global_delete")
+    @mock.patch("google.cloud.ndb._cache._global_compare_and_swap")
+    @mock.patch("google.cloud.ndb._cache._global_watch")
     @mock.patch("google.cloud.ndb._cache._global_get")
     @mock.patch("google.cloud.ndb._cache._global_cache")
-    def test_last_time(_global_cache, _global_get, _global_delete, uuid):
+    def test_last_time(
+        _global_cache, _global_get, _global_watch, _global_compare_and_swap, uuid
+    ):
         lock = b".arandomuuid"
 
         _global_cache.return_value = mock.Mock(
@@ -928,18 +949,20 @@ class Test_global_unlock_for_write:
 
         lock_value = _cache._LOCKED_FOR_WRITE + lock
         _global_get.return_value = _future_result(lock_value)
-        _global_delete.return_value = _future_result(None)
+        _global_watch.return_value = _future_result(None)
+        _global_compare_and_swap.return_value = _future_result(True)
 
         assert _cache.global_unlock_for_write(b"key", lock).result() is None
         _global_get.assert_called_once_with(b"key")
-        _global_delete.assert_called_once_with(b"key")
+        _global_watch.assert_called_once_with(b"key", lock_value)
+        _global_compare_and_swap.assert_called_once_with(b"key", b"", expires=32)
 
     @staticmethod
     @mock.patch("google.cloud.ndb._cache.uuid")
-    @mock.patch("google.cloud.ndb._cache._global_delete")
+    @mock.patch("google.cloud.ndb._cache._global_watch")
     @mock.patch("google.cloud.ndb._cache._global_get")
     @mock.patch("google.cloud.ndb._cache._global_cache")
-    def test_transient_error(_global_cache, _global_get, _global_delete, uuid):
+    def test_transient_error(_global_cache, _global_get, _global_watch, uuid):
         class TransientError(Exception):
             pass
 
@@ -953,11 +976,11 @@ class Test_global_unlock_for_write:
 
         lock_value = _cache._LOCKED_FOR_WRITE + lock
         _global_get.return_value = _future_result(lock_value)
-        _global_delete.return_value = _future_exception(TransientError())
+        _global_watch.return_value = _future_exception(TransientError())
 
         assert _cache.global_unlock_for_write(b"key", lock).result() is None
         _global_get.assert_called_once_with(b"key")
-        _global_delete.assert_called_once_with(b"key")
+        _global_watch.assert_called_once_with(b"key", lock_value)
 
     @staticmethod
     @mock.patch("google.cloud.ndb._cache.uuid")
@@ -1009,6 +1032,7 @@ class Test_global_unlock_for_write:
 def test_is_locked_value():
     assert _cache.is_locked_value(_cache._LOCKED_FOR_READ)
     assert _cache.is_locked_value(_cache._LOCKED_FOR_WRITE + b"whatever")
+    assert not _cache.is_locked_value(b"")
     assert not _cache.is_locked_value(b"new db, who dis?")
     assert not _cache.is_locked_value(None)
 

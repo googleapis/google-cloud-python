@@ -87,6 +87,13 @@ def logging_debug(log, message, *args, **kwargs):
         message = str(message)
         if args or kwargs:
             message = message.format(*args, **kwargs)
+
+        from google.cloud.ndb import context as context_module
+
+        context = context_module.get_context(False)
+        if context:
+            message = "{}: {}".format(context.id, message)
+
         log.debug(message)
 
 

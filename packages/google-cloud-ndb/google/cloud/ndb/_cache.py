@@ -14,6 +14,7 @@
 
 import functools
 import itertools
+import logging
 import uuid
 import warnings
 
@@ -22,6 +23,7 @@ from google.api_core import retry as core_retry
 from google.cloud.ndb import _batch
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import tasklets
+from google.cloud.ndb import utils
 
 _LOCKED_FOR_READ = b"0-"
 _LOCKED_FOR_WRITE = b"00"
@@ -29,6 +31,7 @@ _LOCK_TIME = 32
 _PREFIX = b"NDB30"
 
 warnings.filterwarnings("always", module=__name__)
+log = logging.getLogger(__name__)
 
 
 class ContextCache(dict):
@@ -583,20 +586,28 @@ class _GlobalCacheCompareAndSwapBatch(_GlobalCacheSetBatch):
 
 
 @tasklets.tasklet
-def global_lock_for_read(key):
+def global_lock_for_read(key, prev_value):
     """Lock a key for a read (lookup) operation by setting a special value.
 
     Lock may be preempted by a parallel write (put) operation.
 
     Args:
         key (bytes): The key to lock.
+        prev_value (bytes): The cache value previously read from the global cache.
+            Should be either :data:`None` or an empty bytes object if a key was written
+            recently.
 
     Returns:
         tasklets.Future: Eventual result will be lock value (``bytes``) written to
             Datastore for the given key, or :data:`None` if the lock was not acquired.
     """
     lock = _LOCKED_FOR_READ + str(uuid.uuid4()).encode("ascii")
-    lock_acquired = yield global_set_if_not_exists(key, lock, expires=_LOCK_TIME)
+    if prev_value is not None:
+        yield global_watch(key, prev_value)
+        lock_acquired = yield global_compare_and_swap(key, lock, expires=_LOCK_TIME)
+    else:
+        lock_acquired = yield global_set_if_not_exists(key, lock, expires=_LOCK_TIME)
+
     if lock_acquired:
         raise tasklets.Return(lock)
 
@@ -618,6 +629,7 @@ def global_lock_for_write(key):
     """
     lock = "." + str(uuid.uuid4())
     lock = lock.encode("ascii")
+    utils.logging_debug(log, "lock for write: {}", lock)
 
     def new_value(old_value):
         if old_value and old_value.startswith(_LOCKED_FOR_WRITE):
@@ -634,8 +646,7 @@ def global_lock_for_write(key):
 def global_unlock_for_write(key, lock):
     """Remove a lock for key by updating or removing a lock value.
 
-    The lock represented by the ``lock`` argument will be released. If no other locks
-    remain, the key will be deleted.
+    The lock represented by the ``lock`` argument will be released.
 
     Args:
         key (bytes): The key to lock.
@@ -645,9 +656,15 @@ def global_unlock_for_write(key, lock):
     Returns:
         tasklets.Future: Eventual result will be :data:`None`.
     """
+    utils.logging_debug(log, "unlock for write: {}", lock)
 
     def new_value(old_value):
-        return old_value.replace(lock, b"")
+        assert lock in old_value, "attempt to remove lock that isn't present"
+        value = old_value.replace(lock, b"")
+        if value == _LOCKED_FOR_WRITE:
+            value = b""
+
+        return value
 
     cache = _global_cache()
     try:
@@ -663,18 +680,21 @@ def _update_key(key, new_value):
 
     while not success:
         old_value = yield _global_get(key)
-        value = new_value(old_value)
-        if value == _LOCKED_FOR_WRITE:
-            # No more locks for this key, we can delete
-            yield _global_delete(key)
-            break
+        utils.logging_debug(log, "old value: {}", old_value)
 
-        if old_value:
+        value = new_value(old_value)
+        utils.logging_debug(log, "new value: {}", value)
+
+        if old_value is not None:
+            utils.logging_debug(log, "compare and swap")
             yield _global_watch(key, old_value)
             success = yield _global_compare_and_swap(key, value, expires=_LOCK_TIME)
 
         else:
+            utils.logging_debug(log, "set if not exists")
             success = yield global_set_if_not_exists(key, value, expires=_LOCK_TIME)
+
+        utils.logging_debug(log, "success: {}", success)
 
 
 def is_locked_value(value):

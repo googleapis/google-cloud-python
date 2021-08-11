@@ -142,12 +142,12 @@ def lookup(key, options):
         result = yield _cache.global_get(cache_key)
         key_locked = _cache.is_locked_value(result)
         if not key_locked:
-            if result is not None:
+            if result:
                 entity_pb = entity_pb2.Entity()
                 entity_pb.MergeFromString(result)
 
             elif use_datastore:
-                lock = yield _cache.global_lock_for_read(cache_key)
+                lock = yield _cache.global_lock_for_read(cache_key, result)
                 if lock:
                     yield _cache.global_watch(cache_key, lock)
 
