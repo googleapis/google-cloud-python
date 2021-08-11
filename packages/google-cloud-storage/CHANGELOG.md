@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [1.42.0](https://www.github.com/googleapis/python-storage/compare/v1.41.1...v1.42.0) (2021-08-05)
+
+
+### Features
+
+* add 'page_size' parameter to 'Bucket.list_blobs, list_buckets ([#520](https://www.github.com/googleapis/python-storage/issues/520)) ([c5f4ad8](https://www.github.com/googleapis/python-storage/commit/c5f4ad8fddd1849a4229b0126c4c022bccb90128))
+
+
+### Bug Fixes
+
+* **deps:** add explicit ranges for 'google-api-core' and 'google-auth' ([#530](https://www.github.com/googleapis/python-storage/issues/530)) ([310f207](https://www.github.com/googleapis/python-storage/commit/310f207411da0382af310172344f19c644c14e6a))
+* downloading no longer marks metadata fields as 'changed' ([#523](https://www.github.com/googleapis/python-storage/issues/523)) ([160d1ec](https://www.github.com/googleapis/python-storage/commit/160d1ecb41f1f269b25cb68b2d2f7daf418bf01c))
+* make 'requests.exceptions.ChunkedEncodingError retryable by default ([#526](https://www.github.com/googleapis/python-storage/issues/526)) ([4abb403](https://www.github.com/googleapis/python-storage/commit/4abb40310eca7ec45afc4bc5e4dfafbe083e74d2))
+
+
+### Documentation
+
+* update supported / removed Python versions in README ([#519](https://www.github.com/googleapis/python-storage/issues/519)) ([1f1b138](https://www.github.com/googleapis/python-storage/commit/1f1b138865fb171535ee0cf768aff1987ed58914))
+
 ### [1.41.1](https://www.github.com/googleapis/python-storage/compare/v1.41.0...v1.41.1) (2021-07-20)
 
 
