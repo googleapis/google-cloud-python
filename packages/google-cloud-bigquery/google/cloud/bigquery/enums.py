@@ -259,23 +259,23 @@ class SqlTypeNames(str, enum.Enum):
 class SqlParameterScalarTypes:
     """Supported scalar SQL query parameter types as type objects."""
 
-    STRING = ScalarQueryParameterType("STRING")
+    BOOL = ScalarQueryParameterType("BOOL")
+    BOOLEAN = ScalarQueryParameterType("BOOL")
+    BIGDECIMAL = ScalarQueryParameterType("BIGNUMERIC")
+    BIGNUMERIC = ScalarQueryParameterType("BIGNUMERIC")
     BYTES = ScalarQueryParameterType("BYTES")
-    INTEGER = ScalarQueryParameterType("INT64")
-    INT64 = ScalarQueryParameterType("INT64")
+    DATE = ScalarQueryParameterType("DATE")
+    DATETIME = ScalarQueryParameterType("DATETIME")
+    DECIMAL = ScalarQueryParameterType("NUMERIC")
     FLOAT = ScalarQueryParameterType("FLOAT64")
     FLOAT64 = ScalarQueryParameterType("FLOAT64")
-    NUMERIC = ScalarQueryParameterType("NUMERIC")
-    BIGNUMERIC = ScalarQueryParameterType("BIGNUMERIC")
-    DECIMAL = ScalarQueryParameterType("NUMERIC")
-    BIGDECIMAL = ScalarQueryParameterType("BIGNUMERIC")
-    BOOLEAN = ScalarQueryParameterType("BOOL")
-    BOOL = ScalarQueryParameterType("BOOL")
     GEOGRAPHY = ScalarQueryParameterType("GEOGRAPHY")
-    TIMESTAMP = ScalarQueryParameterType("TIMESTAMP")
-    DATE = ScalarQueryParameterType("DATE")
+    INT64 = ScalarQueryParameterType("INT64")
+    INTEGER = ScalarQueryParameterType("INT64")
+    NUMERIC = ScalarQueryParameterType("NUMERIC")
+    STRING = ScalarQueryParameterType("STRING")
     TIME = ScalarQueryParameterType("TIME")
-    DATETIME = ScalarQueryParameterType("DATETIME")
+    TIMESTAMP = ScalarQueryParameterType("TIMESTAMP")
 
 
 class WriteDisposition(object):

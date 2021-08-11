@@ -16,12 +16,19 @@
 
 from collections import OrderedDict
 import copy
-from typing import Union
+import datetime
+import decimal
+from typing import Optional, Union
 
 from google.cloud.bigquery.table import _parse_schema_resource
 from google.cloud.bigquery._helpers import _rows_from_json
 from google.cloud.bigquery._helpers import _QUERY_PARAMS_FROM_JSON
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_PARAM
+
+
+_SCALAR_VALUE_TYPE = Optional[
+    Union[str, int, float, decimal.Decimal, bool, datetime.datetime, datetime.date]
+]
 
 
 class UDFResource(object):
@@ -325,35 +332,46 @@ class ScalarQueryParameter(_AbstractQueryParameter):
     """Named / positional query parameters for scalar values.
 
     Args:
-        name (Optional[str]):
+        name:
             Parameter name, used via ``@foo`` syntax.  If None, the
             parameter can only be addressed via position (``?``).
 
-        type_ (str):
-            Name of parameter type.  One of 'STRING', 'INT64',
-            'FLOAT64', 'NUMERIC', 'BIGNUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
-            'DATE'.
+        type_:
+            Name of parameter type. See
+            :class:`google.cloud.bigquery.enums.SqlTypeNames` and
+            :class:`google.cloud.bigquery.enums.SqlParameterScalarTypes` for
+            supported types.
 
-        value (Union[str, int, float, decimal.Decimal, bool, datetime.datetime, datetime.date]):
+        value:
             The scalar parameter value.
     """
 
-    def __init__(self, name, type_, value):
+    def __init__(
+        self,
+        name: Optional[str],
+        type_: Optional[Union[str, ScalarQueryParameterType]],
+        value: _SCALAR_VALUE_TYPE,
+    ):
         self.name = name
-        self.type_ = type_
+        if isinstance(type_, ScalarQueryParameterType):
+            self.type_ = type_._type
+        else:
+            self.type_ = type_
         self.value = value
 
     @classmethod
-    def positional(cls, type_: str, value) -> "ScalarQueryParameter":
+    def positional(
+        cls, type_: Union[str, ScalarQueryParameterType], value: _SCALAR_VALUE_TYPE
+    ) -> "ScalarQueryParameter":
         """Factory for positional paramater.
 
         Args:
-            type_ (str):
+            type_:
                 Name of parameter type.  One of 'STRING', 'INT64',
                 'FLOAT64', 'NUMERIC', 'BIGNUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
                 'DATE'.
 
-            value (Union[str, int, float, decimal.Decimal, bool, datetime.datetime, datetime.date]):
+            value:
                 The scalar parameter value.
 
         Returns:

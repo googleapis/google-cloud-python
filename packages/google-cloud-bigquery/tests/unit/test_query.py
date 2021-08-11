@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import decimal
 import unittest
 
 import mock
@@ -429,6 +430,18 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         self.assertEqual(param.name, None)
         self.assertEqual(param.type_, "INT64")
         self.assertEqual(param.value, 123)
+
+    def test_ctor_w_scalar_query_parameter_type(self):
+        from google.cloud.bigquery import enums
+
+        param = self._make_one(
+            name="foo",
+            type_=enums.SqlParameterScalarTypes.BIGNUMERIC,
+            value=decimal.Decimal("123.456"),
+        )
+        self.assertEqual(param.name, "foo")
+        self.assertEqual(param.type_, "BIGNUMERIC")
+        self.assertEqual(param.value, decimal.Decimal("123.456"))
 
     def test_from_api_repr_w_name(self):
         RESOURCE = {
