@@ -56,7 +56,7 @@ class DocumentUnderstandingServiceGrpcAsyncIOTransport(
     @classmethod
     def create_channel(
         cls,
-        host: str = "us-documentai.googleapis.com",
+        host: str = "documentai.googleapis.com",
         credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
@@ -99,7 +99,7 @@ class DocumentUnderstandingServiceGrpcAsyncIOTransport(
     def __init__(
         self,
         *,
-        host: str = "us-documentai.googleapis.com",
+        host: str = "documentai.googleapis.com",
         credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,

@@ -55,7 +55,7 @@ class DocumentUnderstandingServiceTransport(abc.ABC):
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
-    DEFAULT_HOST: str = "us-documentai.googleapis.com"
+    DEFAULT_HOST: str = "documentai.googleapis.com"
 
     def __init__(
         self,

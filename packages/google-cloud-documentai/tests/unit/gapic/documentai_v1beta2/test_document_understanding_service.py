@@ -131,7 +131,7 @@ def test_document_understanding_service_client_from_service_account_info(client_
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "us-documentai.googleapis.com:443"
+        assert client.transport._host == "documentai.googleapis.com:443"
 
 
 @pytest.mark.parametrize(
@@ -177,7 +177,7 @@ def test_document_understanding_service_client_from_service_account_file(client_
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "us-documentai.googleapis.com:443"
+        assert client.transport._host == "documentai.googleapis.com:443"
 
 
 def test_document_understanding_service_client_get_transport_class():
@@ -1175,13 +1175,13 @@ def test_document_understanding_service_transport_create_channel(
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
         create_channel.assert_called_with(
-            "us-documentai.googleapis.com:443",
+            "documentai.googleapis.com:443",
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
             default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
             scopes=["1", "2"],
-            default_host="us-documentai.googleapis.com",
+            default_host="documentai.googleapis.com",
             ssl_credentials=None,
             options=[
                 ("grpc.max_send_message_length", -1),
@@ -1241,20 +1241,20 @@ def test_document_understanding_service_host_no_port():
     client = DocumentUnderstandingServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
-            api_endpoint="us-documentai.googleapis.com"
+            api_endpoint="documentai.googleapis.com"
         ),
     )
-    assert client.transport._host == "us-documentai.googleapis.com:443"
+    assert client.transport._host == "documentai.googleapis.com:443"
 
 
 def test_document_understanding_service_host_with_port():
     client = DocumentUnderstandingServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
-            api_endpoint="us-documentai.googleapis.com:8000"
+            api_endpoint="documentai.googleapis.com:8000"
         ),
     )
-    assert client.transport._host == "us-documentai.googleapis.com:8000"
+    assert client.transport._host == "documentai.googleapis.com:8000"
 
 
 def test_document_understanding_service_grpc_transport_channel():

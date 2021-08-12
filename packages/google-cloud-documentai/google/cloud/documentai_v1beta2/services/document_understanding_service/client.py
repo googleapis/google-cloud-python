@@ -115,7 +115,7 @@ class DocumentUnderstandingServiceClient(
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
-    DEFAULT_ENDPOINT = "us-documentai.googleapis.com"
+    DEFAULT_ENDPOINT = "documentai.googleapis.com"
     DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
         DEFAULT_ENDPOINT
     )
