@@ -45,6 +45,18 @@ class SecuritySettingsServiceAsyncClient:
     DEFAULT_ENDPOINT = SecuritySettingsServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = SecuritySettingsServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    deidentify_template_path = staticmethod(
+        SecuritySettingsServiceClient.deidentify_template_path
+    )
+    parse_deidentify_template_path = staticmethod(
+        SecuritySettingsServiceClient.parse_deidentify_template_path
+    )
+    inspect_template_path = staticmethod(
+        SecuritySettingsServiceClient.inspect_template_path
+    )
+    parse_inspect_template_path = staticmethod(
+        SecuritySettingsServiceClient.parse_inspect_template_path
+    )
     security_settings_path = staticmethod(
         SecuritySettingsServiceClient.security_settings_path
     )

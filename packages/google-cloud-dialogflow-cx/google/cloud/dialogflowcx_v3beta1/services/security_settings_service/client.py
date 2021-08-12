@@ -162,6 +162,46 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         return self._transport
 
     @staticmethod
+    def deidentify_template_path(
+        organization: str, location: str, deidentify_template: str,
+    ) -> str:
+        """Returns a fully-qualified deidentify_template string."""
+        return "organizations/{organization}/locations/{location}/deidentifyTemplates/{deidentify_template}".format(
+            organization=organization,
+            location=location,
+            deidentify_template=deidentify_template,
+        )
+
+    @staticmethod
+    def parse_deidentify_template_path(path: str) -> Dict[str, str]:
+        """Parses a deidentify_template path into its component segments."""
+        m = re.match(
+            r"^organizations/(?P<organization>.+?)/locations/(?P<location>.+?)/deidentifyTemplates/(?P<deidentify_template>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def inspect_template_path(
+        organization: str, location: str, inspect_template: str,
+    ) -> str:
+        """Returns a fully-qualified inspect_template string."""
+        return "organizations/{organization}/locations/{location}/inspectTemplates/{inspect_template}".format(
+            organization=organization,
+            location=location,
+            inspect_template=inspect_template,
+        )
+
+    @staticmethod
+    def parse_inspect_template_path(path: str) -> Dict[str, str]:
+        """Parses a inspect_template path into its component segments."""
+        m = re.match(
+            r"^organizations/(?P<organization>.+?)/locations/(?P<location>.+?)/inspectTemplates/(?P<inspect_template>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def security_settings_path(
         project: str, location: str, security_settings: str,
     ) -> str:
