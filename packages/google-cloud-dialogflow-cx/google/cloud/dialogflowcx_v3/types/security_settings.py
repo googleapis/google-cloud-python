@@ -165,10 +165,27 @@ class SecuritySettings(proto.Message):
             If empty, we use the default DLP inspect config.
 
             The template name will have one of the following formats:
-            ``projects/<Project ID>/inspectTemplates/<Template ID>`` OR
             ``projects/<Project ID>/locations/<Location ID>/inspectTemplates/<Template ID>``
             OR
-            ``organizations/<Organization ID>/inspectTemplates/<Template ID>``
+            ``organizations/<Organization ID>/locations/<Location ID>/inspectTemplates/<Template ID>``
+
+            Note: ``inspect_template`` must be located in the same
+            region as the ``SecuritySettings``.
+        deidentify_template (str):
+            `DLP <https://cloud.google.com/dlp/docs>`__ deidentify
+            template name. Use this template to define de-identification
+            configuration for the content.
+
+            If empty, Dialogflow replaces sensitive info with
+            ``[redacted]`` text.
+
+            The template name will have one of the following formats:
+            ``projects/<Project ID>/locations/<Location ID>/deidentifyTemplates/<Template ID>``
+            OR
+            ``organizations/<Organization ID>/locations/<Location ID>/deidentifyTemplates/<Template ID>``
+
+            Note: ``deidentify_template`` must be located in the same
+            region as the ``SecuritySettings``.
         retention_window_days (int):
             Retains data in interaction logging for the
             specified number of days. This does not apply to
@@ -186,8 +203,8 @@ class SecuritySettings(proto.Message):
             List of types of data to remove when
             retention settings triggers purge.
         insights_export_settings (google.cloud.dialogflowcx_v3.types.SecuritySettings.InsightsExportSettings):
-            Optional. Controls conversation exporting settings to
-            Insights after conversation is completed.
+            Controls conversation exporting settings to Insights after
+            conversation is completed.
 
             If
             [retention_strategy][google.cloud.dialogflow.cx.v3.SecuritySettings.retention_strategy]
@@ -230,6 +247,7 @@ class SecuritySettings(proto.Message):
     redaction_strategy = proto.Field(proto.ENUM, number=3, enum=RedactionStrategy,)
     redaction_scope = proto.Field(proto.ENUM, number=4, enum=RedactionScope,)
     inspect_template = proto.Field(proto.STRING, number=9,)
+    deidentify_template = proto.Field(proto.STRING, number=17,)
     retention_window_days = proto.Field(proto.INT32, number=6, oneof="data_retention",)
     purge_data_types = proto.RepeatedField(proto.ENUM, number=8, enum=PurgeDataType,)
     insights_export_settings = proto.Field(
