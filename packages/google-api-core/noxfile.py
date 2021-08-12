@@ -80,8 +80,8 @@ def default(session):
     )
 
     # Install all test dependencies, then install this package in-place.
-    session.install("mock", "pytest", "pytest-cov", "grpcio >= 1.0.2")
-    session.install("-e", ".", "-c", constraints_path)
+    session.install("mock", "pytest", "pytest-cov")
+    session.install("-e", ".[grpc]", "-c", constraints_path)
 
     pytest_args = [
         "python",
@@ -124,7 +124,7 @@ def unit_grpc_gcp(session):
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     # Install grpcio-gcp
-    session.install("grpcio-gcp", "-c", constraints_path)
+    session.install("-e", ".[grpcgcp]", "-c", constraints_path)
 
     default(session)
 
@@ -141,9 +141,7 @@ def lint_setup_py(session):
 @nox.session(python="3.6")
 def pytype(session):
     """Run type-checking."""
-    session.install(
-        ".", "grpcio >= 1.8.2", "grpcio-gcp >= 0.2.2", "pytype >= 2019.3.21"
-    )
+    session.install(".[grpc, grpcgcp]", "pytype >= 2019.3.21")
     session.run("pytype")
 
 
@@ -163,8 +161,7 @@ def cover(session):
 def docs(session):
     """Build the docs for this library."""
 
-    session.install(".", "grpcio >= 1.8.2", "grpcio-gcp >= 0.2.2")
-    session.install("-e", ".")
+    session.install("-e", ".[grpc, grpcgcp]")
     session.install("sphinx==4.0.1", "alabaster", "recommonmark")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
