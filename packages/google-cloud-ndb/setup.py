@@ -28,6 +28,7 @@ def main():
         "google-cloud-datastore >= 1.7.0, < 2.0.0dev",
         "pymemcache",
         "redis",
+        "pytz"
     ]
 
     if sys.version_info.major == 3 and sys.version_info.minor < 7:
