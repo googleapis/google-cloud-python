@@ -34,7 +34,6 @@ dependencies = [
     # https://github.com/googleapis/google-cloud-python/issues/10566
     "google-cloud-core >= 1.4.1, <3.0.0dev",
     "packaging >= 14.3",
-    "pytz",
     "proto-plus >= 1.10.0",
 ]
 extras = {}
