@@ -110,6 +110,7 @@ language = None
 # directories to ignore when looking for source files.
 exclude_patterns = [
     "_build",
+    "**/.nox/**/*",
     "samples/AUTHORING_GUIDE.md",
     "samples/CONTRIBUTING.md",
     "samples/snippets/README.rst",
