@@ -24,6 +24,8 @@ from google.cloud.spanner_v1 import instance
 import pytest
 from test_utils import retry
 
+retry_429 = retry.RetryErrors(exceptions.ResourceExhausted, delay=15)
+
 
 @pytest.fixture(scope="module")
 def sample_name():
@@ -47,7 +49,7 @@ def scrub_instance_ignore_not_found(to_scrub):
         for backup_pb in to_scrub.list_backups():
             backup.Backup.from_pb(backup_pb, to_scrub).delete()
 
-        to_scrub.delete()
+        retry_429(to_scrub.delete)()
     except exceptions.NotFound:
         pass
 
@@ -107,7 +109,6 @@ def sample_instance(
             "created": str(int(time.time())),
         },
     )
-    retry_429 = retry.RetryErrors(exceptions.ResourceExhausted, delay=15)
     op = retry_429(sample_instance.create)()
     op.result(120)  # block until completion
 
@@ -143,7 +144,6 @@ def multi_region_instance(
             "created": str(int(time.time()))
         },
     )
-    retry_429 = retry.RetryErrors(exceptions.ResourceExhausted, delay=15)
     op = retry_429(multi_region_instance.create)()
     op.result(120)  # block until completion
 

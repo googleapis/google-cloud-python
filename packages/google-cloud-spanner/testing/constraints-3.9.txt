@@ -1,0 +1,2 @@
+# Allow prerelease requirements
+--pre

@@ -105,7 +105,11 @@ def default(session):
         *session.posargs,
     )
 
+    # XXX Work around Kokoro image's older pip, which borks the OT install.
+    session.run("pip", "install", "--upgrade", "pip")
     session.install("-e", ".[tracing]", "-c", constraints_path)
+    # XXX: Dump installed versions to debug OT issue
+    session.run("pip", "list")
 
     # Run py.test against the unit tests with OpenTelemetry.
     session.run(

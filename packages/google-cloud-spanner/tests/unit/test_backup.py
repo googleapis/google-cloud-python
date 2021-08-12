@@ -331,7 +331,7 @@ class TestBackup(_BaseTest):
         from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
         from datetime import datetime
         from datetime import timedelta
-        from pytz import UTC
+        from datetime import timezone
 
         op_future = object()
         client = _Client()
@@ -340,7 +340,7 @@ class TestBackup(_BaseTest):
 
         instance = _Instance(self.INSTANCE_NAME, client=client)
         version_timestamp = datetime.utcnow() - timedelta(minutes=5)
-        version_timestamp = version_timestamp.replace(tzinfo=UTC)
+        version_timestamp = version_timestamp.replace(tzinfo=timezone.utc)
         expire_timestamp = self._make_timestamp()
         encryption_config = {"encryption_type": 3, "kms_key_name": "key_name"}
         backup = self._make_one(

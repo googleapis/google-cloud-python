@@ -40,6 +40,8 @@ CREATE TABLE Albums (
 INTERLEAVE IN PARENT Singers ON DELETE CASCADE
 """
 
+retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
+
 
 @pytest.fixture(scope="module")
 def sample_name():
@@ -96,9 +98,9 @@ def default_leader():
 def test_create_instance_explicit(spanner_client, create_instance_id):
     # Rather than re-use 'sample_isntance', we create a new instance, to
     # ensure that the 'create_instance' snippet is tested.
-    snippets.create_instance(create_instance_id)
+    retry_429(snippets.create_instance)(create_instance_id)
     instance = spanner_client.instance(create_instance_id)
-    instance.delete()
+    retry_429(instance.delete)()
 
 
 def test_create_database_explicit(sample_instance, create_database_id):
@@ -111,7 +113,6 @@ def test_create_database_explicit(sample_instance, create_database_id):
 
 def test_create_instance_with_processing_units(capsys, lci_instance_id):
     processing_units = 500
-    retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
     retry_429(snippets.create_instance_with_processing_units)(
         lci_instance_id, processing_units,
     )
@@ -120,7 +121,7 @@ def test_create_instance_with_processing_units(capsys, lci_instance_id):
     assert "{} processing units".format(processing_units) in out
     spanner_client = spanner.Client()
     instance = spanner_client.instance(lci_instance_id)
-    instance.delete()
+    retry_429(instance.delete)()
 
 
 def test_create_database_with_encryption_config(capsys, instance_id, cmek_database_id, kms_key_name):

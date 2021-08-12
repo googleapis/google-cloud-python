@@ -24,8 +24,7 @@ reads as of a given timestamp:
 .. code:: python
 
     import datetime
-    from pytz import UTC
-    TIMESTAMP = datetime.datetime.utcnow().replace(tzinfo=UTC)
+    TIMESTAMP = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
 
     with database.snapshot(read_timestamp=TIMESTAMP) as snapshot:
         ...

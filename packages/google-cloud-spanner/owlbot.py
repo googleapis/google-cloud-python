@@ -23,12 +23,16 @@ from synthtool.languages import python
 
 common = gcp.CommonTemplates()
 
-# This is a customized version of the s.get_staging_dirs() function from synthtool to
-# cater for copying 3 different folders from googleapis-gen
-# which are spanner, spanner/admin/instance and spanner/admin/database.
-# Source https://github.com/googleapis/synthtool/blob/master/synthtool/transforms.py#L280
+
 def get_staging_dirs(
-    default_version: Optional[str] = None, sub_directory: Optional[str] = None
+    # This is a customized version of the s.get_staging_dirs() function
+    # from synthtool to # cater for copying 3 different folders from
+    # googleapis-gen:
+    # spanner, spanner/admin/instance and spanner/admin/database.
+    # Source:
+    # https://github.com/googleapis/synthtool/blob/master/synthtool/transforms.py#L280
+    default_version: Optional[str] = None,
+    sub_directory: Optional[str] = None,
 ) -> List[Path]:
     """Returns the list of directories, one per version, copied from
     https://github.com/googleapis/googleapis-gen. Will return in lexical sorting
@@ -63,46 +67,69 @@ def get_staging_dirs(
     else:
         return []
 
+
 spanner_default_version = "v1"
 spanner_admin_instance_default_version = "v1"
 spanner_admin_database_default_version = "v1"
 
 for library in get_staging_dirs(spanner_default_version, "spanner"):
     # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
-    s.replace(library / f"google/cloud/spanner_{library.name}/types/transaction.py",
-            r""".
+    s.replace(
+        library / f"google/cloud/spanner_{library.name}/types/transaction.py",
+        r""".
         Attributes:""",
-            r""".\n
+        r""".\n
         Attributes:""",
     )
 
     # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
-    s.replace(library / f"google/cloud/spanner_{library.name}/types/transaction.py",
-            r""".
+    s.replace(
+        library / f"google/cloud/spanner_{library.name}/types/transaction.py",
+        r""".
     Attributes:""",
-            r""".\n
+        r""".\n
     Attributes:""",
     )
 
     # Remove headings from docstring. Requested change upstream in cl/377290854 due to https://google.aip.dev/192#formatting.
-    s.replace(library / f"google/cloud/spanner_{library.name}/types/transaction.py",
+    s.replace(
+        library / f"google/cloud/spanner_{library.name}/types/transaction.py",
         """\n    ==.*?==\n""",
         ":",
     )
 
     # Remove headings from docstring. Requested change upstream in cl/377290854 due to https://google.aip.dev/192#formatting.
-    s.replace(library / f"google/cloud/spanner_{library.name}/types/transaction.py",
+    s.replace(
+        library / f"google/cloud/spanner_{library.name}/types/transaction.py",
         """\n    --.*?--\n""",
         ":",
     )
 
-    s.move(library, excludes=["google/cloud/spanner/**", "*.*", "docs/index.rst", "google/cloud/spanner_v1/__init__.py"])
+    s.move(
+        library,
+        excludes=[
+            "google/cloud/spanner/**",
+            "*.*",
+            "docs/index.rst",
+            "google/cloud/spanner_v1/__init__.py",
+        ],
+    )
 
-for library in get_staging_dirs(spanner_admin_instance_default_version, "spanner_admin_instance"):
-    s.move(library, excludes=["google/cloud/spanner_admin_instance/**", "*.*", "docs/index.rst"])
+for library in get_staging_dirs(
+    spanner_admin_instance_default_version, "spanner_admin_instance"
+):
+    s.move(
+        library,
+        excludes=["google/cloud/spanner_admin_instance/**", "*.*", "docs/index.rst"],
+    )
 
-for library in get_staging_dirs(spanner_admin_database_default_version, "spanner_admin_database"):
-    s.move(library, excludes=["google/cloud/spanner_admin_database/**", "*.*", "docs/index.rst"])
+for library in get_staging_dirs(
+    spanner_admin_database_default_version, "spanner_admin_database"
+):
+    s.move(
+        library,
+        excludes=["google/cloud/spanner_admin_database/**", "*.*", "docs/index.rst"],
+    )
 
 s.remove_staging_dirs()
 
@@ -116,9 +143,11 @@ s.move(templated_files, excludes=[".coveragerc"])
 s.replace(
     ".kokoro/build.sh",
     "# Remove old nox",
-    "# Set up creating a new instance for each system test run\n"
-    "export GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE=true\n"
-    "\n\g<0>",
+    """\
+# Set up creating a new instance for each system test run
+export GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE=true
+
+# Remove old nox""",
 )
 
 # Update samples folder in CONTRIBUTING.rst
@@ -134,15 +163,21 @@ python.py_samples()
 # Customize noxfile.py
 # ----------------------------------------------------------------------------
 
+
 def place_before(path, text, *before_text, escape=None):
     replacement = "\n".join(before_text) + "\n" + text
     if escape:
         for c in escape:
-            text = text.replace(c, '\\' + c)
+            text = text.replace(c, "\\" + c)
     s.replace([path], text, replacement)
 
+
 open_telemetry_test = """
+    # XXX Work around Kokoro image's older pip, which borks the OT install.
+    session.run("pip", "install", "--upgrade", "pip")
     session.install("-e", ".[tracing]", "-c", constraints_path)
+    # XXX: Dump installed versions to debug OT issue
+    session.run("pip", "list")
 
     # Run py.test against the unit tests with OpenTelemetry.
     session.run(
@@ -164,10 +199,10 @@ place_before(
     "noxfile.py",
     "@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)",
     open_telemetry_test,
-    escape="()"
+    escape="()",
 )
 
-skip_tests_if_env_var_not_set ="""# Sanity check: Only run tests if the environment variable is set.
+skip_tests_if_env_var_not_set = """# Sanity check: Only run tests if the environment variable is set.
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
         "SPANNER_EMULATOR_HOST", ""
     ):
@@ -180,7 +215,7 @@ place_before(
     "noxfile.py",
     "# Install pyopenssl for mTLS testing.",
     skip_tests_if_env_var_not_set,
-    escape="()"
+    escape="()",
 )
 
 s.replace(
@@ -190,25 +225,25 @@ s.replace(
         "--cov=tests/unit",""",
     """\"--cov=google.cloud.spanner",
         "--cov=google.cloud",
-        "--cov=tests.unit","""
+        "--cov=tests.unit",""",
 )
 
 s.replace(
     "noxfile.py",
-    """session.install\("-e", "."\)""",
-    """session.install("-e", ".[tracing]")"""
+    r"""session.install\("-e", "."\)""",
+    """session.install("-e", ".[tracing]")""",
 )
 
 s.replace(
     "noxfile.py",
-    """# Install all test dependencies, then install this package into the
+    r"""# Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install\("mock", "pytest", "google-cloud-testutils", "-c", constraints_path\)
     session.install\("-e", ".", "-c", constraints_path\)""",
     """# Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install("mock", "pytest", "google-cloud-testutils", "-c", constraints_path)
-    session.install("-e", ".[tracing]", "-c", constraints_path)"""
+    session.install("-e", ".[tracing]", "-c", constraints_path)""",
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
