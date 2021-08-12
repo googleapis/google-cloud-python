@@ -524,6 +524,62 @@ class ContactCenterInsightsGrpcTransport(ContactCenterInsightsTransport):
         return self._stubs["export_insights_data"]
 
     @property
+    def create_issue_model(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateIssueModelRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create issue model method over gRPC.
+
+        Creates an issue model.
+
+        Returns:
+            Callable[[~.CreateIssueModelRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_issue_model" not in self._stubs:
+            self._stubs["create_issue_model"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CreateIssueModel",
+                request_serializer=contact_center_insights.CreateIssueModelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_issue_model"]
+
+    @property
+    def update_issue_model(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdateIssueModelRequest], resources.IssueModel
+    ]:
+        r"""Return a callable for the update issue model method over gRPC.
+
+        Updates an issue model.
+
+        Returns:
+            Callable[[~.UpdateIssueModelRequest],
+                    ~.IssueModel]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_issue_model" not in self._stubs:
+            self._stubs["update_issue_model"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateIssueModel",
+                request_serializer=contact_center_insights.UpdateIssueModelRequest.serialize,
+                response_deserializer=resources.IssueModel.deserialize,
+            )
+        return self._stubs["update_issue_model"]
+
+    @property
     def get_issue_model(
         self,
     ) -> Callable[[contact_center_insights.GetIssueModelRequest], resources.IssueModel]:
@@ -579,6 +635,94 @@ class ContactCenterInsightsGrpcTransport(ContactCenterInsightsTransport):
         return self._stubs["list_issue_models"]
 
     @property
+    def delete_issue_model(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeleteIssueModelRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the delete issue model method over gRPC.
+
+        Deletes an issue model.
+
+        Returns:
+            Callable[[~.DeleteIssueModelRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_issue_model" not in self._stubs:
+            self._stubs["delete_issue_model"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteIssueModel",
+                request_serializer=contact_center_insights.DeleteIssueModelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_issue_model"]
+
+    @property
+    def deploy_issue_model(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeployIssueModelRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the deploy issue model method over gRPC.
+
+        Deploys an issue model. Returns an error if a model
+        is already deployed. An issue model can only be used in
+        analysis after it has been deployed.
+
+        Returns:
+            Callable[[~.DeployIssueModelRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "deploy_issue_model" not in self._stubs:
+            self._stubs["deploy_issue_model"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeployIssueModel",
+                request_serializer=contact_center_insights.DeployIssueModelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["deploy_issue_model"]
+
+    @property
+    def undeploy_issue_model(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UndeployIssueModelRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the undeploy issue model method over gRPC.
+
+        Undeploys an issue model.
+        An issue model can not be used in analysis after it has
+        been undeployed.
+
+        Returns:
+            Callable[[~.UndeployIssueModelRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "undeploy_issue_model" not in self._stubs:
+            self._stubs["undeploy_issue_model"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UndeployIssueModel",
+                request_serializer=contact_center_insights.UndeployIssueModelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["undeploy_issue_model"]
+
+    @property
     def get_issue(
         self,
     ) -> Callable[[contact_center_insights.GetIssueRequest], resources.Issue]:
@@ -632,6 +776,32 @@ class ContactCenterInsightsGrpcTransport(ContactCenterInsightsTransport):
                 response_deserializer=contact_center_insights.ListIssuesResponse.deserialize,
             )
         return self._stubs["list_issues"]
+
+    @property
+    def update_issue(
+        self,
+    ) -> Callable[[contact_center_insights.UpdateIssueRequest], resources.Issue]:
+        r"""Return a callable for the update issue method over gRPC.
+
+        Updates an issue.
+
+        Returns:
+            Callable[[~.UpdateIssueRequest],
+                    ~.Issue]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_issue" not in self._stubs:
+            self._stubs["update_issue"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateIssue",
+                request_serializer=contact_center_insights.UpdateIssueRequest.serialize,
+                response_deserializer=resources.Issue.deserialize,
+            )
+        return self._stubs["update_issue"]
 
     @property
     def calculate_issue_model_stats(

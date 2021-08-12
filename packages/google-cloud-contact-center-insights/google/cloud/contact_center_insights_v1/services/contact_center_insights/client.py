@@ -38,6 +38,7 @@ from google.cloud.contact_center_insights_v1.services.contact_center_insights im
 from google.cloud.contact_center_insights_v1.types import contact_center_insights
 from google.cloud.contact_center_insights_v1.types import resources
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import ContactCenterInsightsTransport, DEFAULT_CLIENT_INFO
@@ -232,6 +233,22 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         """Parses a issue_model path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/issueModels/(?P<issue_model>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def participant_path(project: str, conversation: str, participant: str,) -> str:
+        """Returns a fully-qualified participant string."""
+        return "projects/{project}/conversations/{conversation}/participants/{participant}".format(
+            project=project, conversation=conversation, participant=participant,
+        )
+
+    @staticmethod
+    def parse_participant_path(path: str) -> Dict[str, str]:
+        """Parses a participant path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/conversations/(?P<conversation>.+?)/participants/(?P<participant>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -1211,6 +1228,175 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         # Done; return the response.
         return response
 
+    def create_issue_model(
+        self,
+        request: contact_center_insights.CreateIssueModelRequest = None,
+        *,
+        parent: str = None,
+        issue_model: resources.IssueModel = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Creates an issue model.
+
+        Args:
+            request (google.cloud.contact_center_insights_v1.types.CreateIssueModelRequest):
+                The request object. The request to create an issue
+                model.
+            parent (str):
+                Required. The parent resource of the
+                issue model.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            issue_model (google.cloud.contact_center_insights_v1.types.IssueModel):
+                Required. The issue model to create.
+                This corresponds to the ``issue_model`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.contact_center_insights_v1.types.IssueModel`
+                The issue model resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, issue_model])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a contact_center_insights.CreateIssueModelRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, contact_center_insights.CreateIssueModelRequest):
+            request = contact_center_insights.CreateIssueModelRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if issue_model is not None:
+                request.issue_model = issue_model
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_issue_model]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            resources.IssueModel,
+            metadata_type=contact_center_insights.CreateIssueModelMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_issue_model(
+        self,
+        request: contact_center_insights.UpdateIssueModelRequest = None,
+        *,
+        issue_model: resources.IssueModel = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.IssueModel:
+        r"""Updates an issue model.
+
+        Args:
+            request (google.cloud.contact_center_insights_v1.types.UpdateIssueModelRequest):
+                The request object. The request to update an issue
+                model.
+            issue_model (google.cloud.contact_center_insights_v1.types.IssueModel):
+                Required. The new values for the
+                issue model.
+
+                This corresponds to the ``issue_model`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                The list of fields to be updated.
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.IssueModel:
+                The issue model resource.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([issue_model, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a contact_center_insights.UpdateIssueModelRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, contact_center_insights.UpdateIssueModelRequest):
+            request = contact_center_insights.UpdateIssueModelRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if issue_model is not None:
+                request.issue_model = issue_model
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_issue_model]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("issue_model.name", request.issue_model.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
     def get_issue_model(
         self,
         request: contact_center_insights.GetIssueModelRequest = None,
@@ -1347,6 +1533,264 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         # Done; return the response.
         return response
 
+    def delete_issue_model(
+        self,
+        request: contact_center_insights.DeleteIssueModelRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Deletes an issue model.
+
+        Args:
+            request (google.cloud.contact_center_insights_v1.types.DeleteIssueModelRequest):
+                The request object. The request to delete an issue
+                model.
+            name (str):
+                Required. The name of the issue model
+                to delete.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+                   The JSON representation for Empty is empty JSON
+                   object {}.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a contact_center_insights.DeleteIssueModelRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, contact_center_insights.DeleteIssueModelRequest):
+            request = contact_center_insights.DeleteIssueModelRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_issue_model]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=contact_center_insights.DeleteIssueModelMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def deploy_issue_model(
+        self,
+        request: contact_center_insights.DeployIssueModelRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Deploys an issue model. Returns an error if a model
+        is already deployed. An issue model can only be used in
+        analysis after it has been deployed.
+
+        Args:
+            request (google.cloud.contact_center_insights_v1.types.DeployIssueModelRequest):
+                The request object. The request to deploy an issue
+                model.
+            name (str):
+                Required. The issue model to deploy.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.contact_center_insights_v1.types.DeployIssueModelResponse`
+                The response to deploy an issue model.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a contact_center_insights.DeployIssueModelRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, contact_center_insights.DeployIssueModelRequest):
+            request = contact_center_insights.DeployIssueModelRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.deploy_issue_model]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            contact_center_insights.DeployIssueModelResponse,
+            metadata_type=contact_center_insights.DeployIssueModelMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def undeploy_issue_model(
+        self,
+        request: contact_center_insights.UndeployIssueModelRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Undeploys an issue model.
+        An issue model can not be used in analysis after it has
+        been undeployed.
+
+        Args:
+            request (google.cloud.contact_center_insights_v1.types.UndeployIssueModelRequest):
+                The request object. The request to undeploy an issue
+                model.
+            name (str):
+                Required. The issue model to
+                undeploy.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.contact_center_insights_v1.types.UndeployIssueModelResponse`
+                The response to undeploy an issue model.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a contact_center_insights.UndeployIssueModelRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, contact_center_insights.UndeployIssueModelRequest):
+            request = contact_center_insights.UndeployIssueModelRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.undeploy_issue_model]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            contact_center_insights.UndeployIssueModelResponse,
+            metadata_type=contact_center_insights.UndeployIssueModelMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def get_issue(
         self,
         request: contact_center_insights.GetIssueRequest = None,
@@ -1475,6 +1919,84 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def update_issue(
+        self,
+        request: contact_center_insights.UpdateIssueRequest = None,
+        *,
+        issue: resources.Issue = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.Issue:
+        r"""Updates an issue.
+
+        Args:
+            request (google.cloud.contact_center_insights_v1.types.UpdateIssueRequest):
+                The request object. The request to update an issue.
+            issue (google.cloud.contact_center_insights_v1.types.Issue):
+                Required. The new values for the
+                issue.
+
+                This corresponds to the ``issue`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                The list of fields to be updated.
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.contact_center_insights_v1.types.Issue:
+                The issue resource.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([issue, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a contact_center_insights.UpdateIssueRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, contact_center_insights.UpdateIssueRequest):
+            request = contact_center_insights.UpdateIssueRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if issue is not None:
+                request.issue = issue
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_issue]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("issue.name", request.issue.name),)
+            ),
         )
 
         # Send the request.

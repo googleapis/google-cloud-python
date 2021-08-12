@@ -43,6 +43,12 @@ from google.cloud.contact_center_insights_v1.types.contact_center_insights impor
     CreateConversationRequest,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    CreateIssueModelMetadata,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    CreateIssueModelRequest,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
     CreatePhraseMatcherRequest,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
@@ -52,7 +58,22 @@ from google.cloud.contact_center_insights_v1.types.contact_center_insights impor
     DeleteConversationRequest,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    DeleteIssueModelMetadata,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    DeleteIssueModelRequest,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
     DeletePhraseMatcherRequest,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    DeployIssueModelMetadata,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    DeployIssueModelRequest,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    DeployIssueModelResponse,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
     ExportInsightsDataMetadata,
@@ -112,7 +133,22 @@ from google.cloud.contact_center_insights_v1.types.contact_center_insights impor
     ListPhraseMatchersResponse,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    UndeployIssueModelMetadata,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    UndeployIssueModelRequest,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    UndeployIssueModelResponse,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
     UpdateConversationRequest,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    UpdateIssueModelRequest,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    UpdateIssueRequest,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
     UpdateSettingsRequest,
@@ -183,10 +219,17 @@ __all__ = (
     "CreateAnalysisOperationMetadata",
     "CreateAnalysisRequest",
     "CreateConversationRequest",
+    "CreateIssueModelMetadata",
+    "CreateIssueModelRequest",
     "CreatePhraseMatcherRequest",
     "DeleteAnalysisRequest",
     "DeleteConversationRequest",
+    "DeleteIssueModelMetadata",
+    "DeleteIssueModelRequest",
     "DeletePhraseMatcherRequest",
+    "DeployIssueModelMetadata",
+    "DeployIssueModelRequest",
+    "DeployIssueModelResponse",
     "ExportInsightsDataMetadata",
     "ExportInsightsDataRequest",
     "ExportInsightsDataResponse",
@@ -206,7 +249,12 @@ __all__ = (
     "ListIssuesResponse",
     "ListPhraseMatchersRequest",
     "ListPhraseMatchersResponse",
+    "UndeployIssueModelMetadata",
+    "UndeployIssueModelRequest",
+    "UndeployIssueModelResponse",
     "UpdateConversationRequest",
+    "UpdateIssueModelRequest",
+    "UpdateIssueRequest",
     "UpdateSettingsRequest",
     "ConversationView",
     "Analysis",

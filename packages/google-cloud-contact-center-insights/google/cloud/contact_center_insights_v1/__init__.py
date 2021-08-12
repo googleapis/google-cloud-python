@@ -24,10 +24,17 @@ from .types.contact_center_insights import CalculateStatsResponse
 from .types.contact_center_insights import CreateAnalysisOperationMetadata
 from .types.contact_center_insights import CreateAnalysisRequest
 from .types.contact_center_insights import CreateConversationRequest
+from .types.contact_center_insights import CreateIssueModelMetadata
+from .types.contact_center_insights import CreateIssueModelRequest
 from .types.contact_center_insights import CreatePhraseMatcherRequest
 from .types.contact_center_insights import DeleteAnalysisRequest
 from .types.contact_center_insights import DeleteConversationRequest
+from .types.contact_center_insights import DeleteIssueModelMetadata
+from .types.contact_center_insights import DeleteIssueModelRequest
 from .types.contact_center_insights import DeletePhraseMatcherRequest
+from .types.contact_center_insights import DeployIssueModelMetadata
+from .types.contact_center_insights import DeployIssueModelRequest
+from .types.contact_center_insights import DeployIssueModelResponse
 from .types.contact_center_insights import ExportInsightsDataMetadata
 from .types.contact_center_insights import ExportInsightsDataRequest
 from .types.contact_center_insights import ExportInsightsDataResponse
@@ -47,7 +54,12 @@ from .types.contact_center_insights import ListIssuesRequest
 from .types.contact_center_insights import ListIssuesResponse
 from .types.contact_center_insights import ListPhraseMatchersRequest
 from .types.contact_center_insights import ListPhraseMatchersResponse
+from .types.contact_center_insights import UndeployIssueModelMetadata
+from .types.contact_center_insights import UndeployIssueModelRequest
+from .types.contact_center_insights import UndeployIssueModelResponse
 from .types.contact_center_insights import UpdateConversationRequest
+from .types.contact_center_insights import UpdateIssueModelRequest
+from .types.contact_center_insights import UpdateIssueRequest
 from .types.contact_center_insights import UpdateSettingsRequest
 from .types.contact_center_insights import ConversationView
 from .types.resources import Analysis
@@ -110,10 +122,17 @@ __all__ = (
     "CreateAnalysisOperationMetadata",
     "CreateAnalysisRequest",
     "CreateConversationRequest",
+    "CreateIssueModelMetadata",
+    "CreateIssueModelRequest",
     "CreatePhraseMatcherRequest",
     "DeleteAnalysisRequest",
     "DeleteConversationRequest",
+    "DeleteIssueModelMetadata",
+    "DeleteIssueModelRequest",
     "DeletePhraseMatcherRequest",
+    "DeployIssueModelMetadata",
+    "DeployIssueModelRequest",
+    "DeployIssueModelResponse",
     "DialogflowIntent",
     "DialogflowInteractionData",
     "DialogflowSource",
@@ -161,6 +180,11 @@ __all__ = (
     "SilenceData",
     "SmartComposeSuggestionData",
     "SmartReplyData",
+    "UndeployIssueModelMetadata",
+    "UndeployIssueModelRequest",
+    "UndeployIssueModelResponse",
     "UpdateConversationRequest",
+    "UpdateIssueModelRequest",
+    "UpdateIssueRequest",
     "UpdateSettingsRequest",
 )

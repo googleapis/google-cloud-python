@@ -43,12 +43,24 @@ __protobuf__ = proto.module(
         "ExportInsightsDataRequest",
         "ExportInsightsDataMetadata",
         "ExportInsightsDataResponse",
+        "CreateIssueModelRequest",
+        "CreateIssueModelMetadata",
+        "UpdateIssueModelRequest",
         "ListIssueModelsRequest",
         "ListIssueModelsResponse",
         "GetIssueModelRequest",
+        "DeleteIssueModelRequest",
+        "DeleteIssueModelMetadata",
+        "DeployIssueModelRequest",
+        "DeployIssueModelResponse",
+        "DeployIssueModelMetadata",
+        "UndeployIssueModelRequest",
+        "UndeployIssueModelResponse",
+        "UndeployIssueModelMetadata",
         "GetIssueRequest",
         "ListIssuesRequest",
         "ListIssuesResponse",
+        "UpdateIssueRequest",
         "CalculateIssueModelStatsRequest",
         "CalculateIssueModelStatsResponse",
         "CreatePhraseMatcherRequest",
@@ -484,6 +496,56 @@ class ExportInsightsDataResponse(proto.Message):
     r"""Response for an export insights operation.    """
 
 
+class CreateIssueModelRequest(proto.Message):
+    r"""The request to create an issue model.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource of the issue
+            model.
+        issue_model (google.cloud.contact_center_insights_v1.types.IssueModel):
+            Required. The issue model to create.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    issue_model = proto.Field(proto.MESSAGE, number=2, message=resources.IssueModel,)
+
+
+class CreateIssueModelMetadata(proto.Message):
+    r"""Metadata for creating an issue model.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation was
+            created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished
+            running.
+        request (google.cloud.contact_center_insights_v1.types.CreateIssueModelRequest):
+            The original request for creation.
+    """
+
+    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    request = proto.Field(proto.MESSAGE, number=3, message="CreateIssueModelRequest",)
+
+
+class UpdateIssueModelRequest(proto.Message):
+    r"""The request to update an issue model.
+
+    Attributes:
+        issue_model (google.cloud.contact_center_insights_v1.types.IssueModel):
+            Required. The new values for the issue model.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of fields to be updated.
+    """
+
+    issue_model = proto.Field(proto.MESSAGE, number=1, message=resources.IssueModel,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
+
+
 class ListIssueModelsRequest(proto.Message):
     r"""Request to list issue models.
 
@@ -520,6 +582,105 @@ class GetIssueModelRequest(proto.Message):
     name = proto.Field(proto.STRING, number=1,)
 
 
+class DeleteIssueModelRequest(proto.Message):
+    r"""The request to delete an issue model.
+
+    Attributes:
+        name (str):
+            Required. The name of the issue model to
+            delete.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class DeleteIssueModelMetadata(proto.Message):
+    r"""Metadata for deleting an issue model.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation was
+            created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished
+            running.
+        request (google.cloud.contact_center_insights_v1.types.DeleteIssueModelRequest):
+            The original request for deletion.
+    """
+
+    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    request = proto.Field(proto.MESSAGE, number=3, message="DeleteIssueModelRequest",)
+
+
+class DeployIssueModelRequest(proto.Message):
+    r"""The request to deploy an issue model.
+
+    Attributes:
+        name (str):
+            Required. The issue model to deploy.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class DeployIssueModelResponse(proto.Message):
+    r"""The response to deploy an issue model.    """
+
+
+class DeployIssueModelMetadata(proto.Message):
+    r"""Metadata for deploying an issue model.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation was
+            created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished
+            running.
+        request (google.cloud.contact_center_insights_v1.types.DeployIssueModelRequest):
+            The original request for deployment.
+    """
+
+    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    request = proto.Field(proto.MESSAGE, number=3, message="DeployIssueModelRequest",)
+
+
+class UndeployIssueModelRequest(proto.Message):
+    r"""The request to undeploy an issue model.
+
+    Attributes:
+        name (str):
+            Required. The issue model to undeploy.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class UndeployIssueModelResponse(proto.Message):
+    r"""The response to undeploy an issue model.    """
+
+
+class UndeployIssueModelMetadata(proto.Message):
+    r"""Metadata for undeploying an issue model.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation was
+            created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished
+            running.
+        request (google.cloud.contact_center_insights_v1.types.UndeployIssueModelRequest):
+            The original request for undeployment.
+    """
+
+    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    request = proto.Field(proto.MESSAGE, number=3, message="UndeployIssueModelRequest",)
+
+
 class GetIssueRequest(proto.Message):
     r"""The request to get an issue.
 
@@ -551,6 +712,22 @@ class ListIssuesResponse(proto.Message):
     """
 
     issues = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Issue,)
+
+
+class UpdateIssueRequest(proto.Message):
+    r"""The request to update an issue.
+
+    Attributes:
+        issue (google.cloud.contact_center_insights_v1.types.Issue):
+            Required. The new values for the issue.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of fields to be updated.
+    """
+
+    issue = proto.Field(proto.MESSAGE, number=1, message=resources.Issue,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class CalculateIssueModelStatsRequest(proto.Message):
