@@ -517,22 +517,55 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
     try:
         if _type in [METHOD, FUNCTION]:
             argspec = inspect.getfullargspec(obj) # noqa
+            type_map = {}
+            if argspec.annotations:
+                for annotation in argspec.annotations:
+                    if annotation == "return":
+                        continue
+                    # Extract names for simple types.
+                    try:
+                        type_map[annotation] = (argspec.annotations[annotation]).__name__
+                    # Try to extract names for more complicated types.
+                    except AttributeError:
+                        vartype = argspec.annotations[annotation]
+                        try:
+                            type_map[annotation] = str(vartype._name)
+                            if vartype.__args__:
+                                type_map[annotation] += str(vartype.__args__)[:-2] + ")"
+                        except AttributeError:
+                            print(f"Could not parse argument information for {annotation}.")
+                            continue
+
             for arg in argspec.args:
+                arg_map = {}
                 # Ignore adding in entry for "self"
                 if arg != 'cls':
-                    args.append({'id': arg})
+                    arg_map['id'] = arg
+                    if arg in type_map:
+                        arg_map['var_type'] = type_map[arg]
+                        args.append(arg_map)
             if argspec.varargs:
                 args.append({'id': argspec.varargs})
             if argspec.varkw:
                 args.append({'id': argspec.varkw})
+            # Try to add default values. Currently does not work if there is * argument present.
             if argspec.defaults:
-                for count, default in enumerate(argspec.defaults):
-                    cut_count = len(argspec.defaults)
-                    # Only add defaultValue when str(default) doesn't contain object address string(object at 0x)
-                    # inspect.getargspec method will return wrong defaults which contain object address for some default values, like sys.stdout
-                    # Match the defaults with the count
-                    if 'object at 0x' not in str(default):
-                        args[len(args) - cut_count + count]['defaultValue'] = str(default)
+                # Attempt to add default values to arguments.
+                try:
+                    for count, default in enumerate(argspec.defaults):
+                        # Find the first index which default arguments start at.
+                        # Every argument after this offset_count all have default values.
+                        offset_count = len(argspec.defaults)
+                        # Find the index of the current default value argument
+                        index = len(args) + count - offset_count
+
+                        # Only add defaultValue when str(default) doesn't contain object address string(object at 0x)
+                        # inspect.getargspec method will return wrong defaults which contain object address for some default values, like sys.stdout
+                        if 'object at 0x' not in str(default):
+                            args[index]['defaultValue'] = str(default)
+                # If we cannot find the argument, it is missing a type and was taken out intentionally.
+                except IndexError:
+                    pass
             try:
                 lines = inspect.getdoc(obj)
                 lines = lines.split("\n") if lines else []
@@ -643,12 +676,26 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
 
     if args:
         variables = summary_info['variables']
+        arg_id = []
         for arg in args:
+            arg_id.append(arg['id'])
+
             if arg['id'] in variables:
                 # Retrieve argument info from extracted map of variable info
                 arg_var = variables[arg['id']]
                 arg['var_type'] = arg_var.get('var_type') if arg_var.get('var_type') else ''
                 arg['description'] = arg_var.get('description') if arg_var.get('description') else ''
+
+        # Add any variables we might have missed from extraction.
+        for variable in variables:
+            if variable not in arg_id:
+                new_arg = {
+                    "id": variable,
+                    "var_type": variables[variable].get('var_type'),
+                    "description": variables[variable].get('description')
+                }
+                args.append(new_arg)
+
         datam['syntax']['parameters'] = args
 
     if sig:
