@@ -34,6 +34,10 @@ from sqlalchemy import (
     Table,
 )
 
+PROJECT = "project-id"
+INSTANCE = "instance-id"
+DATABASE = "database-id"
+
 
 def measure_execution_time(function):
     """Decorator to measure a wrapped method execution time."""
@@ -73,13 +77,13 @@ class BenchmarkTestBase:
 
     def _cleanup(self):
         """Drop the test table."""
-        conn = spanner_dbapi.connect("sqlalchemy-dialect-test", "compliance-test")
+        conn = spanner_dbapi.connect(INSTANCE, DATABASE)
         conn.database.update_ddl(["DROP TABLE Singers"])
         conn.close()
 
     def _create_table(self):
         """Create a table for performace testing."""
-        conn = spanner_dbapi.connect("sqlalchemy-dialect-test", "compliance-test")
+        conn = spanner_dbapi.connect(INSTANCE, DATABASE)
         conn.database.update_ddl(
             [
                 """
@@ -118,8 +122,8 @@ class SpannerBenchmarkTest(BenchmarkTestBase):
     def __init__(self):
         super().__init__()
         self._client = Client()
-        self._instance = self._client.instance("sqlalchemy-dialect-test")
-        self._database = self._instance.database("compliance-test")
+        self._instance = self._client.instance(INSTANCE)
+        self._database = self._instance.database(DATABASE)
 
         self._many_rows = []
         self._many_rows2 = []
@@ -177,8 +181,9 @@ class SQLAlchemyBenchmarkTest(BenchmarkTestBase):
     def __init__(self):
         super().__init__()
         self._engine = create_engine(
-            "spanner:///projects/appdev-soda-spanner-staging/instances/"
-            "sqlalchemy-dialect-test/databases/compliance-test"
+            "spanner:///projects/{project}/instances/{instance}/databases/{db}".format(
+                project=PROJECT, instance=INSTANCE, db=DATABASE,
+            )
         )
         metadata = MetaData(bind=self._engine)
         self._table = Table("Singers", metadata, autoload=True)
