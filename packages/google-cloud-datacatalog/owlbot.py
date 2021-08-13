@@ -20,7 +20,7 @@ from synthtool.languages import python
 
 common = gcp.CommonTemplates()
 
-default_version = "v1beta1"
+default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
     s.move(
