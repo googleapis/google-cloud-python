@@ -17,7 +17,6 @@ from __future__ import absolute_import
 import datetime as dt
 import json
 import math
-import pytz
 import time
 
 from google.cloud.pubsub_v1.subscriber._protocol import requests
@@ -110,7 +109,7 @@ class Message(object):
         self._data = message.data
         self._publish_time = dt.datetime.fromtimestamp(
             message.publish_time.seconds + message.publish_time.nanos / 1e9,
-            tz=pytz.UTC,
+            tz=dt.timezone.utc,
         )
         self._ordering_key = message.ordering_key
         self._size = message.ByteSize()

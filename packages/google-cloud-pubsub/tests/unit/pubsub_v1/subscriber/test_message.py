@@ -17,7 +17,6 @@ import queue
 import time
 
 import mock
-import pytz
 
 from google.api_core import datetime_helpers
 from google.cloud.pubsub_v1.subscriber import message
@@ -26,7 +25,7 @@ from google.protobuf import timestamp_pb2
 from google.pubsub_v1 import types as gapic_types
 
 
-RECEIVED = datetime.datetime(2012, 4, 21, 15, 0, tzinfo=pytz.utc)
+RECEIVED = datetime.datetime(2012, 4, 21, 15, 0, tzinfo=datetime.timezone.utc)
 RECEIVED_SECONDS = datetime_helpers.to_milliseconds(RECEIVED) // 1000
 PUBLISHED_MICROS = 123456
 PUBLISHED = RECEIVED + datetime.timedelta(days=1, microseconds=PUBLISHED_MICROS)
