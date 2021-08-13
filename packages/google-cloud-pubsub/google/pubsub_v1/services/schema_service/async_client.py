@@ -509,6 +509,8 @@ class SchemaServiceAsyncClient:
         Returns:
             google.pubsub_v1.types.ValidateSchemaResponse:
                 Response for the ValidateSchema method.
+                   Empty for now.
+
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -572,6 +574,8 @@ class SchemaServiceAsyncClient:
         Returns:
             google.pubsub_v1.types.ValidateMessageResponse:
                 Response for the ValidateMessage method.
+                   Empty for now.
+
         """
         # Create or coerce a protobuf request object.
         request = schema.ValidateMessageRequest(request)
