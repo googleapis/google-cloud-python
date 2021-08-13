@@ -84,9 +84,15 @@ def default(session):
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
-    session.install("asyncmock", "pytest-asyncio", "-c", constraints_path)
-
-    session.install("mock", "pytest", "pytest-cov", "-c", constraints_path)
+    session.install(
+        "mock",
+        "asyncmock",
+        "pytest",
+        "pytest-cov",
+        "pytest-asyncio",
+        "-c",
+        constraints_path,
+    )
 
     session.install("-e", ".", "-c", constraints_path)
 
