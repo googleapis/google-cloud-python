@@ -38,8 +38,6 @@
 import base64
 import datetime
 
-import pytz
-
 from google.api_core import datetime_helpers
 from google.cloud.exceptions import Conflict, NotFound
 from google.cloud.runtimeconfig._helpers import variable_name_from_full_name
@@ -218,7 +216,7 @@ class Variable(object):
                 value = DatetimeNS.from_rfc3339(value)
             naive = value.tzinfo is None or value.tzinfo.utcoffset(value) is None
             if naive:
-                value = pytz.utc.localize(value)
+                value = value.astimezone(tz=datetime.timezone.utc)
         return value
 
     def _require_client(self, client):
