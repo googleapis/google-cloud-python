@@ -2428,54 +2428,6 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(pyarrow.types.is_list(record_col[1].type))
         self.assertTrue(pyarrow.types.is_int64(record_col[1].type.value_type))
 
-    def test_list_rows_empty_table(self):
-        from google.cloud.bigquery.table import RowIterator
-
-        dataset_id = _make_dataset_id("empty_table")
-        dataset = self.temp_dataset(dataset_id)
-        table_ref = dataset.table("empty_table")
-        table = Config.CLIENT.create_table(bigquery.Table(table_ref))
-
-        # It's a bit silly to list rows for an empty table, but this does
-        # happen as the result of a DDL query from an IPython magic command.
-        rows = Config.CLIENT.list_rows(table)
-        self.assertIsInstance(rows, RowIterator)
-        self.assertEqual(tuple(rows), ())
-
-    def test_list_rows_page_size(self):
-        from google.cloud.bigquery.job import SourceFormat
-        from google.cloud.bigquery.job import WriteDisposition
-
-        num_items = 7
-        page_size = 3
-        num_pages, num_last_page = divmod(num_items, page_size)
-
-        SF = bigquery.SchemaField
-        schema = [SF("string_col", "STRING", mode="NULLABLE")]
-        to_insert = [{"string_col": "item%d" % i} for i in range(num_items)]
-        rows = [json.dumps(row) for row in to_insert]
-        body = io.BytesIO("{}\n".format("\n".join(rows)).encode("ascii"))
-
-        table_id = "test_table"
-        dataset = self.temp_dataset(_make_dataset_id("nested_df"))
-        table = dataset.table(table_id)
-        self.to_delete.insert(0, table)
-        job_config = bigquery.LoadJobConfig()
-        job_config.write_disposition = WriteDisposition.WRITE_TRUNCATE
-        job_config.source_format = SourceFormat.NEWLINE_DELIMITED_JSON
-        job_config.schema = schema
-        # Load a table using a local JSON file from memory.
-        Config.CLIENT.load_table_from_file(body, table, job_config=job_config).result()
-
-        df = Config.CLIENT.list_rows(table, selected_fields=schema, page_size=page_size)
-        pages = df.pages
-
-        for i in range(num_pages):
-            page = next(pages)
-            self.assertEqual(page.num_items, page_size)
-        page = next(pages)
-        self.assertEqual(page.num_items, num_last_page)
-
     def temp_dataset(self, dataset_id, location=None):
         project = Config.CLIENT.project
         dataset_ref = bigquery.DatasetReference(project, dataset_id)
