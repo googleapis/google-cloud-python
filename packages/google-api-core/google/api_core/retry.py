@@ -113,8 +113,11 @@ The following server errors are considered transient:
     ``INTERNAL(13)`` and its subclasses.
 - :class:`google.api_core.exceptions.TooManyRequests` - HTTP 429
 - :class:`google.api_core.exceptions.ServiceUnavailable` - HTTP 503
-- :class:`google.api_core.exceptions.ResourceExhausted` - gRPC
-    ``RESOURCE_EXHAUSTED(8)``
+- :class:`requests.exceptions.ConnectionError`
+- :class:`requests.exceptions.ChunkedEncodingError` - The server declared 
+    chunked encoding but sent an invalid chunk.
+- :class:`google.auth.exceptions.TransportError` - Used to indicate an 
+    error occurred during an HTTP request.
 """
 # pylint: enable=invalid-name
 
