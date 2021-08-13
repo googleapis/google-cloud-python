@@ -30,7 +30,6 @@ import mock
 import packaging
 import requests
 import pytest
-import pytz
 import pkg_resources
 
 try:
@@ -5018,16 +5017,24 @@ class TestClient(unittest.TestCase):
                     (
                         12,
                         [
-                            datetime.datetime(2018, 12, 1, 12, 0, 0, tzinfo=pytz.utc),
-                            datetime.datetime(2018, 12, 1, 13, 0, 0, tzinfo=pytz.utc),
+                            datetime.datetime(
+                                2018, 12, 1, 12, 0, 0, tzinfo=datetime.timezone.utc
+                            ),
+                            datetime.datetime(
+                                2018, 12, 1, 13, 0, 0, tzinfo=datetime.timezone.utc
+                            ),
                         ],
                         [1.25, 2.5],
                     ),
                     {
                         "score": 13,
                         "times": [
-                            datetime.datetime(2018, 12, 2, 12, 0, 0, tzinfo=pytz.utc),
-                            datetime.datetime(2018, 12, 2, 13, 0, 0, tzinfo=pytz.utc),
+                            datetime.datetime(
+                                2018, 12, 2, 12, 0, 0, tzinfo=datetime.timezone.utc
+                            ),
+                            datetime.datetime(
+                                2018, 12, 2, 13, 0, 0, tzinfo=datetime.timezone.utc
+                            ),
                         ],
                         "distances": [-1.25, -2.5],
                     },
@@ -6974,7 +6981,7 @@ class TestClientUpload(object):
                             datetime.datetime(2012, 3, 14, 15, 16),
                         ],
                         dtype="datetime64[ns]",
-                    ).dt.tz_localize(pytz.utc),
+                    ).dt.tz_localize(datetime.timezone.utc),
                 ),
             ]
         )
@@ -7306,7 +7313,7 @@ class TestClientUpload(object):
                             datetime.datetime(2012, 3, 14, 15, 16),
                         ],
                         dtype="datetime64[ns]",
-                    ).dt.tz_localize(pytz.utc),
+                    ).dt.tz_localize(datetime.timezone.utc),
                 ),
                 ("string_col", ["abc", None, "def"]),
                 ("bytes_col", [b"abc", b"def", None]),

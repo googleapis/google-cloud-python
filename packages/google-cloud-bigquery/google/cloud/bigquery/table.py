@@ -20,7 +20,6 @@ import copy
 import datetime
 import functools
 import operator
-import pytz
 import typing
 from typing import Any, Dict, Iterable, Iterator, Optional, Tuple
 import warnings
@@ -1969,7 +1968,7 @@ class RowIterator(HTTPIterator):
         # Pandas, we set the timestamp_as_object parameter to True, if necessary.
         types_to_check = {
             pyarrow.timestamp("us"),
-            pyarrow.timestamp("us", tz=pytz.UTC),
+            pyarrow.timestamp("us", tz=datetime.timezone.utc),
         }
 
         for column in record_batch:

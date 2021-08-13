@@ -30,7 +30,6 @@ from typing import Optional
 import psutil
 import pytest
 
-from google.cloud.bigquery._pandas_helpers import _BIGNUMERIC_SUPPORT
 from . import helpers
 
 try:
@@ -1972,15 +1971,12 @@ class TestBigQuery(unittest.TestCase):
                 "expected": {"friends": [phred_name, bharney_name]},
                 "query_parameters": [with_friends_param],
             },
+            {
+                "sql": "SELECT @bignum_param",
+                "expected": bignum,
+                "query_parameters": [bignum_param],
+            },
         ]
-        if _BIGNUMERIC_SUPPORT:
-            examples.append(
-                {
-                    "sql": "SELECT @bignum_param",
-                    "expected": bignum,
-                    "query_parameters": [bignum_param],
-                }
-            )
 
         for example in examples:
             jconfig = QueryJobConfig()

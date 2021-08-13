@@ -295,11 +295,11 @@ class Test_AsyncJob(unittest.TestCase):
     @staticmethod
     def _datetime_and_millis():
         import datetime
-        import pytz
         from google.cloud._helpers import _millis
 
         now = datetime.datetime.utcnow().replace(
-            microsecond=123000, tzinfo=pytz.UTC  # stats timestamps have ms precision
+            microsecond=123000,
+            tzinfo=datetime.timezone.utc,  # stats timestamps have ms precision
         )
         return now, _millis(now)
 
