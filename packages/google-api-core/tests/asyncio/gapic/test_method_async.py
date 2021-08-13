@@ -14,7 +14,7 @@
 
 import datetime
 
-from grpc.experimental import aio
+from grpc import aio
 import mock
 import pytest
 

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import grpc
-from grpc.experimental import aio
+from grpc import aio
 import mock
 import pytest
 
@@ -270,7 +270,7 @@ def test_wrap_errors_streaming(wrap_stream_errors):
     autospec=True,
     return_value=(mock.sentinel.credentials, mock.sentinel.projet),
 )
-@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch("grpc.aio.secure_channel")
 def test_create_channel_implicit(grpc_secure_channel, default, composite_creds_call):
     target = "example.com:443"
     composite_creds = composite_creds_call.return_value
@@ -295,7 +295,7 @@ def test_create_channel_implicit(grpc_secure_channel, default, composite_creds_c
     autospec=True,
     return_value=(mock.sentinel.credentials, mock.sentinel.projet),
 )
-@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch("grpc.aio.secure_channel")
 def test_create_channel_implicit_with_default_host(
     grpc_secure_channel, default, composite_creds_call, request, auth_metadata_plugin
 ):
@@ -319,7 +319,7 @@ def test_create_channel_implicit_with_default_host(
     "google.auth.default",
     return_value=(mock.sentinel.credentials, mock.sentinel.projet),
 )
-@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch("grpc.aio.secure_channel")
 def test_create_channel_implicit_with_ssl_creds(
     grpc_secure_channel, default, composite_creds_call
 ):
@@ -341,7 +341,7 @@ def test_create_channel_implicit_with_ssl_creds(
     autospec=True,
     return_value=(mock.sentinel.credentials, mock.sentinel.projet),
 )
-@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch("grpc.aio.secure_channel")
 def test_create_channel_implicit_with_scopes(
     grpc_secure_channel, default, composite_creds_call
 ):
@@ -362,7 +362,7 @@ def test_create_channel_implicit_with_scopes(
     autospec=True,
     return_value=(mock.sentinel.credentials, mock.sentinel.projet),
 )
-@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch("grpc.aio.secure_channel")
 def test_create_channel_implicit_with_default_scopes(
     grpc_secure_channel, default, composite_creds_call
 ):
@@ -394,7 +394,7 @@ def test_create_channel_explicit_with_duplicate_credentials():
 
 @mock.patch("grpc.composite_channel_credentials")
 @mock.patch("google.auth.credentials.with_scopes_if_required", autospec=True)
-@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch("grpc.aio.secure_channel")
 def test_create_channel_explicit(grpc_secure_channel, auth_creds, composite_creds_call):
     target = "example.com:443"
     composite_creds = composite_creds_call.return_value
@@ -411,7 +411,7 @@ def test_create_channel_explicit(grpc_secure_channel, auth_creds, composite_cred
 
 
 @mock.patch("grpc.composite_channel_credentials")
-@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch("grpc.aio.secure_channel")
 def test_create_channel_explicit_scoped(grpc_secure_channel, composite_creds_call):
     target = "example.com:443"
     scopes = ["1", "2"]
@@ -430,7 +430,7 @@ def test_create_channel_explicit_scoped(grpc_secure_channel, composite_creds_cal
 
 
 @mock.patch("grpc.composite_channel_credentials")
-@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch("grpc.aio.secure_channel")
 def test_create_channel_explicit_default_scopes(
     grpc_secure_channel, composite_creds_call
 ):
@@ -453,7 +453,7 @@ def test_create_channel_explicit_default_scopes(
 
 
 @mock.patch("grpc.composite_channel_credentials")
-@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch("grpc.aio.secure_channel")
 def test_create_channel_explicit_with_quota_project(
     grpc_secure_channel, composite_creds_call
 ):
@@ -474,7 +474,7 @@ def test_create_channel_explicit_with_quota_project(
 
 
 @mock.patch("grpc.composite_channel_credentials")
-@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch("grpc.aio.secure_channel")
 @mock.patch(
     "google.auth.load_credentials_from_file",
     autospec=True,
@@ -500,7 +500,7 @@ def test_create_channnel_with_credentials_file(
 
 
 @mock.patch("grpc.composite_channel_credentials")
-@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch("grpc.aio.secure_channel")
 @mock.patch(
     "google.auth.load_credentials_from_file",
     autospec=True,
@@ -527,7 +527,7 @@ def test_create_channel_with_credentials_file_and_scopes(
 
 
 @mock.patch("grpc.composite_channel_credentials")
-@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch("grpc.aio.secure_channel")
 @mock.patch(
     "google.auth.load_credentials_from_file",
     autospec=True,
@@ -556,7 +556,7 @@ def test_create_channel_with_credentials_file_and_default_scopes(
 @pytest.mark.skipif(
     grpc_helpers_async.HAS_GRPC_GCP, reason="grpc_gcp module not available"
 )
-@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch("grpc.aio.secure_channel")
 def test_create_channel_without_grpc_gcp(grpc_secure_channel):
     target = "example.com:443"
     scopes = ["test_scope"]

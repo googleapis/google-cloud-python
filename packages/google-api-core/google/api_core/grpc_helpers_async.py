@@ -22,7 +22,7 @@ import asyncio
 import functools
 
 import grpc
-from grpc.experimental import aio
+from grpc import aio
 
 from google.api_core import exceptions, grpc_helpers
 
