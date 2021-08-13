@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+### [0.32.4](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.3...v0.32.4) (2021-08-13)
+
+
+### Bug Fixes
+
+* remove pytz dependency ([#78](https://www.github.com/googleapis/python-runtimeconfig/issues/78)) ([89e51b3](https://www.github.com/googleapis/python-runtimeconfig/commit/89e51b3b3bfce9c44ecd1fa214f393a3b6a23bb5))
+
 ### [0.32.3](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.2...v0.32.3) (2021-07-23)
 
 
