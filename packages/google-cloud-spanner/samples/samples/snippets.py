@@ -1511,6 +1511,8 @@ def delete_data_with_partitioned_dml(instance_id, database_id):
 def update_with_batch_dml(instance_id, database_id):
     """Updates sample data in the database using Batch DML. """
     # [START spanner_dml_batch_update]
+    from google.rpc.code_pb2 import OK
+
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
 
@@ -1531,7 +1533,13 @@ def update_with_batch_dml(instance_id, database_id):
     )
 
     def update_albums(transaction):
-        row_cts = transaction.batch_update([insert_statement, update_statement])
+        status, row_cts = transaction.batch_update([insert_statement, update_statement])
+
+        if status.code != OK:
+            # Do handling here.
+            # Note: the exception will still be raised when
+            # `commit` is called by `run_in_transaction`.
+            return
 
         print("Executed {} SQL statements using Batch DML.".format(len(row_cts)))
 
