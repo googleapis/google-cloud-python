@@ -80,6 +80,7 @@ from google.auth import jwt
 from google.oauth2 import _client
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
+_GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
 
 
 class Credentials(
@@ -382,7 +383,7 @@ class Credentials(
             # The issuer must be the service account email.
             "iss": self._service_account_email,
             # The audience must be the auth token endpoint's URI
-            "aud": self._token_uri,
+            "aud": _GOOGLE_OAUTH2_TOKEN_ENDPOINT,
             "scope": _helpers.scopes_to_string(self._scopes or ()),
         }
 
@@ -643,7 +644,7 @@ class IDTokenCredentials(credentials.Signing, credentials.CredentialsWithQuotaPr
             # The issuer must be the service account email.
             "iss": self.service_account_email,
             # The audience must be the auth token endpoint's URI
-            "aud": self._token_uri,
+            "aud": _GOOGLE_OAUTH2_TOKEN_ENDPOINT,
             # The target audience specifies which service the ID token is
             # intended for.
             "target_audience": self._target_audience,
