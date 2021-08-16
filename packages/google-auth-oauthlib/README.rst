@@ -31,6 +31,19 @@ The latest documentation is available at `google-auth-oauthlib.readthedocs.io`_.
 
 .. _google-auth-oauthlib.readthedocs.io: http://google-auth-oauthlib.readthedocs.io/
 
+Supported Python Versions
+-------------------------
+Python >= 3.6
+
+
+Unsupported Python Versions
+---------------------------
+
+Python == 2.7, Python == 3.5.
+
+The last version of this library compatible with Python 2.7 and 3.5 is
+`google-auth-oauthlib==0.4.1`.
+
 License
 -------
 
