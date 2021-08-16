@@ -350,6 +350,20 @@ def external_accounts(session):
     )
 
 
+@nox.session(python=PYTHON_VERSIONS_SYNC)
+def downscoping(session):
+    session.install(
+        *TEST_DEPENDENCIES_SYNC,
+        "google-auth",
+        "google-cloud-storage",
+    )
+    default(
+        session,
+        "system_tests_sync/test_downscoping.py",
+        *session.posargs,
+    )
+
+
 # ASYNC SYSTEM TESTS
 
 @nox.session(python=PYTHON_VERSIONS_ASYNC)

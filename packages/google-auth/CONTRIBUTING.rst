@@ -97,6 +97,7 @@ Grant the account associated with ``service_account.json`` the following roles.
 - Pub/Sub Viewer (for gRPC tests)
 - Storage Object Viewer (for impersonated credentials tests)
 - DNS Viewer (for workload identity federation tests)
+- GCE Storage Bucket Admin (for downscoping tests)
 
 ``impersonated_service_account.json``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
