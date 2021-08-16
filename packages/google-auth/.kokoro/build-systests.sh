@@ -31,10 +31,18 @@ python3 -m pip uninstall --yes --quiet nox-automation
 python3 -m pip install --upgrade --quiet nox
 python3 -m nox --version
 
-# If NOX_SESSION is set, it only runs the specified session,
-# otherwise run all the sessions.
-if [[ -n "${NOX_SESSION:-}" ]]; then
-    python3 -m nox -s ${NOX_SESSION:-}
-else
-    python3 -m nox
-fi
+# Setup service account credentials.
+export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
+
+# Setup project id.
+export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.txt")
+
+# Activate gcloud with service account credentials
+gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+gcloud config set project ${PROJECT_ID}
+
+# Decrypt system test secrets
+./scripts/decrypt-secrets.sh
+
+# Run system tests which use a different noxfile
+python3 -m nox -f system_tests/noxfile.py
