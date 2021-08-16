@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.cloud.firestore_v1.types.document import Document
+from google.cloud.firestore_v1.types.firestore import RunQueryResponse
 import types
 import unittest
 
@@ -459,6 +461,40 @@ class TestQuery(unittest.TestCase):
         query = self._make_one(mock.sentinel.parent)
         query.on_snapshot(None)
         watch.for_query.assert_called_once()
+
+    def test_unnecessary_chunkify(self):
+        client = _make_client()
+
+        firestore_api = mock.Mock(spec=["run_query"])
+        firestore_api.run_query.return_value = iter(
+            [
+                RunQueryResponse(
+                    document=Document(
+                        name=f"projects/project-project/databases/(default)/documents/asdf/{index}",
+                    ),
+                )
+                for index in range(5)
+            ]
+        )
+        client._firestore_api_internal = firestore_api
+
+        query = client.collection("asdf")._query()
+
+        for chunk in query.limit(5)._chunkify(10):
+            self.assertEqual(len(chunk), 5)
+
+    def test__resolve_chunk_size(self):
+        # With a global limit
+        query = _make_client().collection("asdf").limit(5)
+        self.assertEqual(query._resolve_chunk_size(3, 10), 2)
+        self.assertEqual(query._resolve_chunk_size(3, 1), 1)
+        self.assertEqual(query._resolve_chunk_size(3, 2), 2)
+
+        # With no limit
+        query = _make_client().collection("asdf")._query()
+        self.assertEqual(query._resolve_chunk_size(3, 10), 10)
+        self.assertEqual(query._resolve_chunk_size(3, 1), 1)
+        self.assertEqual(query._resolve_chunk_size(3, 2), 2)
 
 
 class TestCollectionGroup(unittest.TestCase):

@@ -315,10 +315,10 @@ class BaseDocumentReference(object):
 
     def collections(
         self, page_size: int = None, retry: retries.Retry = None, timeout: float = None,
-    ) -> NoReturn:
+    ) -> None:
         raise NotImplementedError
 
-    def on_snapshot(self, callback) -> NoReturn:
+    def on_snapshot(self, callback) -> None:
         raise NotImplementedError
 
 

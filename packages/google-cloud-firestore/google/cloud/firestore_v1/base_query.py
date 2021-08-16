@@ -424,6 +424,12 @@ class BaseQuery(object):
         """
         return self._copy(limit=count, limit_to_last=True)
 
+    def _resolve_chunk_size(self, num_loaded: int, chunk_size: int) -> int:
+        """Utility function for chunkify."""
+        if self._limit is not None and (num_loaded + chunk_size) > self._limit:
+            return max(self._limit - num_loaded, 0)
+        return chunk_size
+
     def offset(self, num_to_skip: int) -> "BaseQuery":
         """Skip to an offset in a query.
 

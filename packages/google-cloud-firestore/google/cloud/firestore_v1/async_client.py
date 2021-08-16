@@ -43,13 +43,17 @@ from google.cloud.firestore_v1.async_document import (
     DocumentSnapshot,
 )
 from google.cloud.firestore_v1.async_transaction import AsyncTransaction
+from google.cloud.firestore_v1.field_path import FieldPath
 from google.cloud.firestore_v1.services.firestore import (
     async_client as firestore_client,
 )
 from google.cloud.firestore_v1.services.firestore.transports import (
     grpc_asyncio as firestore_grpc_transport,
 )
-from typing import Any, AsyncGenerator, Iterable, List
+from typing import Any, AsyncGenerator, Iterable, List, Optional, Union, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from google.cloud.firestore_v1.bulk_writer import BulkWriter  # pragma: NO COVER
 
 
 class AsyncClient(BaseClient):
@@ -299,6 +303,84 @@ class AsyncClient(BaseClient):
 
         async for collection_id in iterator:
             yield self.collection(collection_id)
+
+    async def recursive_delete(
+        self,
+        reference: Union[AsyncCollectionReference, AsyncDocumentReference],
+        *,
+        bulk_writer: Optional["BulkWriter"] = None,
+        chunk_size: Optional[int] = 5000,
+    ):
+        """Deletes documents and their subcollections, regardless of collection
+        name.
+
+        Passing an AsyncCollectionReference leads to each document in the
+        collection getting deleted, as well as all of their descendents.
+
+        Passing an AsyncDocumentReference deletes that one document and all of
+        its descendents.
+
+        Args:
+            reference (Union[
+                :class:`@google.cloud.firestore_v1.async_collection.CollectionReference`,
+                :class:`@google.cloud.firestore_v1.async_document.DocumentReference`,
+            ])
+                The reference to be deleted.
+
+            bulk_writer (Optional[:class:`@google.cloud.firestore_v1.bulk_writer.BulkWriter`])
+                The BulkWriter used to delete all matching documents. Supply this
+                if you want to override the default throttling behavior.
+        """
+        return await self._recursive_delete(
+            reference, bulk_writer=bulk_writer, chunk_size=chunk_size,
+        )
+
+    async def _recursive_delete(
+        self,
+        reference: Union[AsyncCollectionReference, AsyncDocumentReference],
+        *,
+        bulk_writer: Optional["BulkWriter"] = None,  # type: ignore
+        chunk_size: Optional[int] = 5000,
+        depth: Optional[int] = 0,
+    ) -> int:
+        """Recursion helper for `recursive_delete."""
+        from google.cloud.firestore_v1.bulk_writer import BulkWriter
+
+        bulk_writer = bulk_writer or BulkWriter()
+
+        num_deleted: int = 0
+
+        if isinstance(reference, AsyncCollectionReference):
+            chunk: List[DocumentSnapshot]
+            async for chunk in reference.recursive().select(
+                [FieldPath.document_id()]
+            )._chunkify(chunk_size):
+                doc_snap: DocumentSnapshot
+                for doc_snap in chunk:
+                    num_deleted += 1
+                    bulk_writer.delete(doc_snap.reference)
+
+        elif isinstance(reference, AsyncDocumentReference):
+            col_ref: AsyncCollectionReference
+            async for col_ref in reference.collections():
+                num_deleted += await self._recursive_delete(
+                    col_ref,
+                    bulk_writer=bulk_writer,
+                    depth=depth + 1,
+                    chunk_size=chunk_size,
+                )
+            num_deleted += 1
+            bulk_writer.delete(reference)
+
+        else:
+            raise TypeError(
+                f"Unexpected type for reference: {reference.__class__.__name__}"
+            )
+
+        if depth == 0:
+            bulk_writer.close()
+
+        return num_deleted
 
     def batch(self) -> AsyncWriteBatch:
         """Get a batch instance from this client.

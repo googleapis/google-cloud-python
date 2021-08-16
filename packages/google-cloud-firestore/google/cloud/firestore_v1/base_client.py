@@ -37,11 +37,9 @@ from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import __version__
 from google.cloud.firestore_v1 import types
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
-from google.cloud.firestore_v1.bulk_writer import (
-    BulkWriter,
-    BulkWriterOptions,
-)
+
 from google.cloud.firestore_v1.field_path import render_field_path
+from google.cloud.firestore_v1.bulk_writer import BulkWriter, BulkWriterOptions
 from typing import (
     Any,
     AsyncGenerator,
@@ -311,6 +309,13 @@ class BaseClient(ClientWithProject):
         if joined_path.startswith(base_path):
             joined_path = joined_path[len(base_path) :]
         return joined_path.split(_helpers.DOCUMENT_PATH_DELIMITER)
+
+    def recursive_delete(
+        self,
+        reference: Union[BaseCollectionReference, BaseDocumentReference],
+        bulk_writer: Optional["BulkWriter"] = None,  # type: ignore
+    ) -> int:
+        raise NotImplementedError
 
     @staticmethod
     def field_path(*field_names: str) -> str:

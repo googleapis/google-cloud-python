@@ -33,7 +33,8 @@ from google.cloud.firestore_v1.base_query import (
 )
 
 from google.cloud.firestore_v1 import async_document
-from typing import AsyncGenerator, Type
+from google.cloud.firestore_v1.base_document import DocumentSnapshot
+from typing import AsyncGenerator, List, Optional, Type
 
 # Types needed only for Type Hints
 from google.cloud.firestore_v1.transaction import Transaction
@@ -125,6 +126,47 @@ class AsyncQuery(BaseQuery):
             all_descendants=all_descendants,
             recursive=recursive,
         )
+
+    async def _chunkify(
+        self, chunk_size: int
+    ) -> AsyncGenerator[List[DocumentSnapshot], None]:
+        # Catch the edge case where a developer writes the following:
+        # `my_query.limit(500)._chunkify(1000)`, which ultimately nullifies any
+        # need to yield chunks.
+        if self._limit and chunk_size > self._limit:
+            yield await self.get()
+            return
+
+        max_to_return: Optional[int] = self._limit
+        num_returned: int = 0
+        original: AsyncQuery = self._copy()
+        last_document: Optional[DocumentSnapshot] = None
+
+        while True:
+            # Optionally trim the `chunk_size` down to honor a previously
+            # applied limit as set by `self.limit()`
+            _chunk_size: int = original._resolve_chunk_size(num_returned, chunk_size)
+
+            # Apply the optionally pruned limit and the cursor, if we are past
+            # the first page.
+            _q = original.limit(_chunk_size)
+            if last_document:
+                _q = _q.start_after(last_document)
+
+            snapshots = await _q.get()
+            last_document = snapshots[-1]
+            num_returned += len(snapshots)
+
+            yield snapshots
+
+            # Terminate the iterator if we have reached either of two end
+            # conditions:
+            #   1. There are no more documents, or
+            #   2. We have reached the desired overall limit
+            if len(snapshots) < _chunk_size or (
+                max_to_return and num_returned >= max_to_return
+            ):
+                return
 
     async def get(
         self,

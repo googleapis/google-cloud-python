@@ -18,6 +18,7 @@ import itertools
 import math
 import pytest
 import operator
+from typing import Callable, Dict, List, Optional
 
 from google.oauth2 import service_account
 
@@ -1094,67 +1095,159 @@ async def test_batch(client, cleanup):
     assert not (await document3.get()).exists
 
 
+async def _persist_documents(
+    client: firestore.AsyncClient,
+    collection_name: str,
+    documents: List[Dict],
+    cleanup: Optional[Callable] = None,
+):
+    """Assuming `documents` is a recursive list of dictionaries representing
+    documents and subcollections, this method writes all of those through
+    `client.collection(...).document(...).create()`.
+
+    `documents` must be of this structure:
+    ```py
+    documents = [
+        {
+            # Required key
+            "data": <dictionary with "name" key>,
+
+            # Optional key
+            "subcollections": <same structure as `documents`>,
+        },
+        ...
+    ]
+    ```
+    """
+    for block in documents:
+        col_ref = client.collection(collection_name)
+        document_id: str = block["data"]["name"]
+        doc_ref = col_ref.document(document_id)
+        await doc_ref.set(block["data"])
+        if cleanup is not None:
+            cleanup(doc_ref.delete)
+
+        if "subcollections" in block:
+            for subcollection_name, inner_blocks in block["subcollections"].items():
+                await _persist_documents(
+                    client,
+                    f"{collection_name}/{document_id}/{subcollection_name}",
+                    inner_blocks,
+                )
+
+
+# documents compatible with `_persist_documents`
+philosophers_data_set = [
+    {
+        "data": {"name": "Socrates", "favoriteCity": "Athens"},
+        "subcollections": {
+            "pets": [{"data": {"name": "Scruffy"}}, {"data": {"name": "Snowflake"}}],
+            "hobbies": [
+                {"data": {"name": "pontificating"}},
+                {"data": {"name": "journaling"}},
+            ],
+            "philosophers": [
+                {"data": {"name": "Aristotle"}},
+                {"data": {"name": "Plato"}},
+            ],
+        },
+    },
+    {
+        "data": {"name": "Aristotle", "favoriteCity": "Sparta"},
+        "subcollections": {
+            "pets": [{"data": {"name": "Floof-Boy"}}, {"data": {"name": "Doggy-Dog"}}],
+            "hobbies": [
+                {"data": {"name": "questioning-stuff"}},
+                {"data": {"name": "meditation"}},
+            ],
+        },
+    },
+    {
+        "data": {"name": "Plato", "favoriteCity": "Corinth"},
+        "subcollections": {
+            "pets": [
+                {"data": {"name": "Cuddles"}},
+                {"data": {"name": "Sergeant-Puppers"}},
+            ],
+            "hobbies": [
+                {"data": {"name": "abstraction"}},
+                {"data": {"name": "hypotheticals"}},
+            ],
+        },
+    },
+]
+
+
+async def _do_recursive_delete_with_bulk_writer(client, bulk_writer):
+    philosophers = [philosophers_data_set[0]]
+    await _persist_documents(
+        client, f"philosophers-async{UNIQUE_RESOURCE_ID}", philosophers
+    )
+
+    doc_paths = [
+        "",
+        "/pets/Scruffy",
+        "/pets/Snowflake",
+        "/hobbies/pontificating",
+        "/hobbies/journaling",
+        "/philosophers/Aristotle",
+        "/philosophers/Plato",
+    ]
+
+    # Assert all documents were created so that when they're missing after the
+    # delete, we're actually testing something.
+    collection_ref = client.collection(f"philosophers-async{UNIQUE_RESOURCE_ID}")
+    for path in doc_paths:
+        snapshot = await collection_ref.document(f"Socrates{path}").get()
+        assert snapshot.exists, f"Snapshot at Socrates{path} should have been created"
+
+    # Now delete.
+    num_deleted = await client.recursive_delete(collection_ref, bulk_writer=bulk_writer)
+    assert num_deleted == len(doc_paths)
+
+    # Now they should all be missing
+    for path in doc_paths:
+        snapshot = await collection_ref.document(f"Socrates{path}").get()
+        assert (
+            not snapshot.exists
+        ), f"Snapshot at Socrates{path} should have been deleted"
+
+
+async def test_async_recursive_delete_parallelized(client, cleanup):
+    from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions, SendMode
+
+    bw = client.bulk_writer(options=BulkWriterOptions(mode=SendMode.parallel))
+    await _do_recursive_delete_with_bulk_writer(client, bw)
+
+
+async def test_async_recursive_delete_serialized(client, cleanup):
+    from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions, SendMode
+
+    bw = client.bulk_writer(options=BulkWriterOptions(mode=SendMode.serial))
+    await _do_recursive_delete_with_bulk_writer(client, bw)
+
+
 async def test_recursive_query(client, cleanup):
+    col_id: str = f"philosophers-recursive-async-query{UNIQUE_RESOURCE_ID}"
+    await _persist_documents(client, col_id, philosophers_data_set, cleanup)
 
-    philosophers = [
-        {
-            "data": {"name": "Socrates", "favoriteCity": "Athens"},
-            "subcollections": {
-                "pets": [{"name": "Scruffy"}, {"name": "Snowflake"}],
-                "hobbies": [{"name": "pontificating"}, {"name": "journaling"}],
-                "philosophers": [{"name": "Aristotle"}, {"name": "Plato"}],
-            },
-        },
-        {
-            "data": {"name": "Aristotle", "favoriteCity": "Sparta"},
-            "subcollections": {
-                "pets": [{"name": "Floof-Boy"}, {"name": "Doggy-Dog"}],
-                "hobbies": [{"name": "questioning-stuff"}, {"name": "meditation"}],
-            },
-        },
-        {
-            "data": {"name": "Plato", "favoriteCity": "Corinth"},
-            "subcollections": {
-                "pets": [{"name": "Cuddles"}, {"name": "Sergeant-Puppers"}],
-                "hobbies": [{"name": "abstraction"}, {"name": "hypotheticals"}],
-            },
-        },
-    ]
-
-    db = client
-    collection_ref = db.collection("philosophers")
-    for philosopher in philosophers:
-        ref = collection_ref.document(
-            f"{philosopher['data']['name']}{UNIQUE_RESOURCE_ID}-async"
-        )
-        await ref.set(philosopher["data"])
-        cleanup(ref.delete)
-        for col_name, entries in philosopher["subcollections"].items():
-            sub_col = ref.collection(col_name)
-            for entry in entries:
-                inner_doc_ref = sub_col.document(entry["name"])
-                await inner_doc_ref.set(entry)
-                cleanup(inner_doc_ref.delete)
-
-    ids = [
-        doc.id for doc in await db.collection_group("philosophers").recursive().get()
-    ]
+    ids = [doc.id for doc in await client.collection_group(col_id).recursive().get()]
 
     expected_ids = [
         # Aristotle doc and subdocs
-        f"Aristotle{UNIQUE_RESOURCE_ID}-async",
+        "Aristotle",
         "meditation",
         "questioning-stuff",
         "Doggy-Dog",
         "Floof-Boy",
         # Plato doc and subdocs
-        f"Plato{UNIQUE_RESOURCE_ID}-async",
+        "Plato",
         "abstraction",
         "hypotheticals",
         "Cuddles",
         "Sergeant-Puppers",
         # Socrates doc and subdocs
-        f"Socrates{UNIQUE_RESOURCE_ID}-async",
+        "Socrates",
         "journaling",
         "pontificating",
         "Scruffy",
@@ -1173,36 +1266,12 @@ async def test_recursive_query(client, cleanup):
 
 
 async def test_nested_recursive_query(client, cleanup):
+    col_id: str = f"philosophers-nested-recursive-async-query{UNIQUE_RESOURCE_ID}"
+    await _persist_documents(client, col_id, philosophers_data_set, cleanup)
 
-    philosophers = [
-        {
-            "data": {"name": "Aristotle", "favoriteCity": "Sparta"},
-            "subcollections": {
-                "pets": [{"name": "Floof-Boy"}, {"name": "Doggy-Dog"}],
-                "hobbies": [{"name": "questioning-stuff"}, {"name": "meditation"}],
-            },
-        },
-    ]
-
-    db = client
-    collection_ref = db.collection("philosophers")
-    for philosopher in philosophers:
-        ref = collection_ref.document(
-            f"{philosopher['data']['name']}{UNIQUE_RESOURCE_ID}-async"
-        )
-        await ref.set(philosopher["data"])
-        cleanup(ref.delete)
-        for col_name, entries in philosopher["subcollections"].items():
-            sub_col = ref.collection(col_name)
-            for entry in entries:
-                inner_doc_ref = sub_col.document(entry["name"])
-                await inner_doc_ref.set(entry)
-                cleanup(inner_doc_ref.delete)
-
-    aristotle = collection_ref.document(f"Aristotle{UNIQUE_RESOURCE_ID}-async")
-    ids = [
-        doc.id for doc in await aristotle.collection("pets")._query().recursive().get()
-    ]
+    collection_ref = client.collection(col_id)
+    aristotle = collection_ref.document("Aristotle")
+    ids = [doc.id for doc in await aristotle.collection("pets").recursive().get()]
 
     expected_ids = [
         # Aristotle pets
@@ -1217,6 +1286,84 @@ async def test_nested_recursive_query(client, cleanup):
             f"Expected '{expected_ids[index]}' at spot {index}, " "got '{ids[index]}'"
         )
         assert ids[index] == expected_ids[index], error_msg
+
+
+async def test_chunked_query(client, cleanup):
+    col = client.collection(f"async-chunked-test{UNIQUE_RESOURCE_ID}")
+    for index in range(10):
+        doc_ref = col.document(f"document-{index + 1}")
+        await doc_ref.set({"index": index})
+        cleanup(doc_ref.delete)
+
+    lengths: List[int] = [len(chunk) async for chunk in col._chunkify(3)]
+    assert len(lengths) == 4
+    assert lengths[0] == 3
+    assert lengths[1] == 3
+    assert lengths[2] == 3
+    assert lengths[3] == 1
+
+
+async def test_chunked_query_smaller_limit(client, cleanup):
+    col = client.collection(f"chunked-test-smaller-limit{UNIQUE_RESOURCE_ID}")
+    for index in range(10):
+        doc_ref = col.document(f"document-{index + 1}")
+        await doc_ref.set({"index": index})
+        cleanup(doc_ref.delete)
+
+    lengths: List[int] = [len(chunk) async for chunk in col.limit(5)._chunkify(9)]
+    assert len(lengths) == 1
+    assert lengths[0] == 5
+
+
+async def test_chunked_and_recursive(client, cleanup):
+    col_id = f"chunked-async-recursive-test{UNIQUE_RESOURCE_ID}"
+    documents = [
+        {
+            "data": {"name": "Root-1"},
+            "subcollections": {
+                "children": [
+                    {"data": {"name": f"Root-1--Child-{index + 1}"}}
+                    for index in range(5)
+                ]
+            },
+        },
+        {
+            "data": {"name": "Root-2"},
+            "subcollections": {
+                "children": [
+                    {"data": {"name": f"Root-2--Child-{index + 1}"}}
+                    for index in range(5)
+                ]
+            },
+        },
+    ]
+    await _persist_documents(client, col_id, documents, cleanup)
+    collection_ref = client.collection(col_id)
+    iter = collection_ref.recursive()._chunkify(5)
+
+    pages = [page async for page in iter]
+    doc_ids = [[doc.id for doc in page] for page in pages]
+
+    page_1_ids = [
+        "Root-1",
+        "Root-1--Child-1",
+        "Root-1--Child-2",
+        "Root-1--Child-3",
+        "Root-1--Child-4",
+    ]
+    assert doc_ids[0] == page_1_ids
+
+    page_2_ids = [
+        "Root-1--Child-5",
+        "Root-2",
+        "Root-2--Child-1",
+        "Root-2--Child-2",
+        "Root-2--Child-3",
+    ]
+    assert doc_ids[1] == page_2_ids
+
+    page_3_ids = ["Root-2--Child-4", "Root-2--Child-5"]
+    assert doc_ids[2] == page_3_ids
 
 
 async def _chain(*iterators):

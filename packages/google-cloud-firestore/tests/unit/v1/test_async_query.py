@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.cloud.firestore_v1.types.document import Document
+from google.cloud.firestore_v1.types.firestore import RunQueryResponse
 import pytest
 import types
 import aiounittest
@@ -468,6 +470,28 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
             },
             metadata=client._rpc_metadata,
         )
+
+    @pytest.mark.asyncio
+    async def test_unnecessary_chunkify(self):
+        client = _make_client()
+
+        firestore_api = AsyncMock(spec=["run_query"])
+        firestore_api.run_query.return_value = AsyncIter(
+            [
+                RunQueryResponse(
+                    document=Document(
+                        name=f"projects/project-project/databases/(default)/documents/asdf/{index}",
+                    ),
+                )
+                for index in range(5)
+            ]
+        )
+        client._firestore_api_internal = firestore_api
+
+        query = client.collection("asdf")._query()
+
+        async for chunk in query.limit(5)._chunkify(10):
+            self.assertEqual(len(chunk), 5)
 
 
 class TestCollectionGroup(aiounittest.AsyncTestCase):

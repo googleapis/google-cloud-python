@@ -17,6 +17,8 @@ import types
 import unittest
 
 import mock
+from google.cloud.firestore_v1.types.document import Document
+from google.cloud.firestore_v1.types.firestore import RunQueryResponse
 
 
 class TestClient(unittest.TestCase):
@@ -359,6 +361,104 @@ class TestClient(unittest.TestCase):
             },
             metadata=client._rpc_metadata,
         )
+
+    def test_recursive_delete(self):
+        client = self._make_default_one()
+        client._firestore_api_internal = mock.Mock(spec=["run_query"])
+        collection_ref = client.collection("my_collection")
+
+        results = []
+        for index in range(10):
+            results.append(
+                RunQueryResponse(document=Document(name=f"{collection_ref.id}/{index}"))
+            )
+
+        chunks = [
+            results[:3],
+            results[3:6],
+            results[6:9],
+            results[9:],
+        ]
+
+        def _get_chunk(*args, **kwargs):
+            return iter(chunks.pop(0))
+
+        client._firestore_api_internal.run_query.side_effect = _get_chunk
+
+        bulk_writer = mock.MagicMock()
+        bulk_writer.mock_add_spec(spec=["delete", "close"])
+
+        num_deleted = client.recursive_delete(
+            collection_ref, bulk_writer=bulk_writer, chunk_size=3
+        )
+        self.assertEqual(num_deleted, len(results))
+
+    def test_recursive_delete_from_document(self):
+        client = self._make_default_one()
+        client._firestore_api_internal = mock.Mock(
+            spec=["run_query", "list_collection_ids"]
+        )
+        collection_ref = client.collection("my_collection")
+
+        collection_1_id: str = "collection_1_id"
+        collection_2_id: str = "collection_2_id"
+
+        parent_doc = collection_ref.document("parent")
+
+        collection_1_results = []
+        collection_2_results = []
+
+        for index in range(10):
+            collection_1_results.append(
+                RunQueryResponse(document=Document(name=f"{collection_1_id}/{index}"),),
+            )
+
+            collection_2_results.append(
+                RunQueryResponse(document=Document(name=f"{collection_2_id}/{index}"),),
+            )
+
+        col_1_chunks = [
+            collection_1_results[:3],
+            collection_1_results[3:6],
+            collection_1_results[6:9],
+            collection_1_results[9:],
+        ]
+
+        col_2_chunks = [
+            collection_2_results[:3],
+            collection_2_results[3:6],
+            collection_2_results[6:9],
+            collection_2_results[9:],
+        ]
+
+        def _get_chunk(*args, **kwargs):
+            start_at = (
+                kwargs["request"]["structured_query"].start_at.values[0].reference_value
+            )
+
+            if collection_1_id in start_at:
+                return iter(col_1_chunks.pop(0))
+            return iter(col_2_chunks.pop(0))
+
+        client._firestore_api_internal.run_query.side_effect = _get_chunk
+        client._firestore_api_internal.list_collection_ids.return_value = [
+            collection_1_id,
+            collection_2_id,
+        ]
+
+        bulk_writer = mock.MagicMock()
+        bulk_writer.mock_add_spec(spec=["delete", "close"])
+
+        num_deleted = client.recursive_delete(
+            parent_doc, bulk_writer=bulk_writer, chunk_size=3
+        )
+
+        expected_len = len(collection_1_results) + len(collection_2_results) + 1
+        self.assertEqual(num_deleted, expected_len)
+
+    def test_recursive_delete_raises(self):
+        client = self._make_default_one()
+        self.assertRaises(TypeError, client.recursive_delete, object())
 
     def test_batch(self):
         from google.cloud.firestore_v1.batch import WriteBatch

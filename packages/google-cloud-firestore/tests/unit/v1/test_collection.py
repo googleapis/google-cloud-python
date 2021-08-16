@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.cloud.firestore_v1.types.document import Document
+from google.cloud.firestore_v1.types.firestore import RunQueryResponse
 import types
 import unittest
 
@@ -355,3 +357,38 @@ class TestCollectionReference(unittest.TestCase):
 
         col = self._make_one("collection")
         self.assertIsInstance(col.recursive(), Query)
+
+    def test_chunkify(self):
+        client = _test_helpers.make_client()
+        col = client.collection("my-collection")
+
+        client._firestore_api_internal = mock.Mock(spec=["run_query"])
+
+        results = []
+        for index in range(10):
+            results.append(
+                RunQueryResponse(
+                    document=Document(
+                        name=f"projects/project-project/databases/(default)/documents/my-collection/{index}",
+                    ),
+                ),
+            )
+
+        chunks = [
+            results[:3],
+            results[3:6],
+            results[6:9],
+            results[9:],
+        ]
+
+        def _get_chunk(*args, **kwargs):
+            return iter(chunks.pop(0))
+
+        client._firestore_api_internal.run_query.side_effect = _get_chunk
+
+        counter = 0
+        expected_lengths = [3, 3, 3, 1]
+        for chunk in col._chunkify(3):
+            msg = f"Expected chunk of length {expected_lengths[counter]} at index {counter}. Saw {len(chunk)}."
+            self.assertEqual(len(chunk), expected_lengths[counter], msg)
+            counter += 1
