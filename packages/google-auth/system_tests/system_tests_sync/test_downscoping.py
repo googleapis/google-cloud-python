@@ -37,21 +37,21 @@ _INACCESSIBLE_CONTENT = "secret content"
 _INACCESSIBLE_OBJECT_NAME = "other-customer-data.txt"
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def temp_bucket():
     """Yields a bucket that is deleted after the test completes."""
     bucket = None
     while bucket is None or bucket.exists():
-        bucket_name = "bucket-downscoping-test-{}".format(uuid.uuid4())
+        bucket_name = "auth-python-downscope-test-{}".format(uuid.uuid4())
         bucket = storage.Client().bucket(bucket_name)
     bucket = storage.Client().create_bucket(bucket.name)
     yield bucket
     bucket.delete(force=True)
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def temp_blobs(temp_bucket):
-    """Yields a blob that is deleted after the test completes."""
+    """Yields two blobs that are deleted after the test completes."""
     bucket = temp_bucket
     # Downscoped tokens will have readonly access to this blob.
     accessible_blob = bucket.blob(_ACCESSIBLE_OBJECT_NAME)
@@ -60,6 +60,7 @@ def temp_blobs(temp_bucket):
     inaccessible_blob = bucket.blob(_INACCESSIBLE_OBJECT_NAME)
     inaccessible_blob.upload_from_string(_INACCESSIBLE_CONTENT)
     yield (accessible_blob, inaccessible_blob)
+    bucket.delete_blobs([accessible_blob, inaccessible_blob])
 
 
 def get_token_from_broker(bucket_name, object_prefix):
@@ -81,9 +82,7 @@ def get_token_from_broker(bucket_name, object_prefix):
     # Only objects starting with the specified prefix string in the object name
     # will be allowed read access.
     availability_expression = (
-        "resource.name.startsWith('projects/_/buckets/{}/objects/{}')".format(
-            bucket_name, object_prefix
-        )
+        f"resource.name.startsWith('projects/_/buckets/{bucket_name}/objects/{object_prefix}')"
     )
     availability_condition = downscoped.AvailabilityCondition(availability_expression)
     # Define the single access boundary rule using the above properties.
@@ -151,13 +150,13 @@ def test_downscoping(temp_blobs):
     assert blob.download_as_bytes().decode("utf-8") == _ACCESSIBLE_CONTENT
 
     # Test write access fails.
-    with pytest.raises(exceptions.GoogleCloudError) as excinfo:
+    with pytest.raises(exceptions.Forbidden) as excinfo:
         blob.upload_from_string("Write operations are not allowed")
 
     assert excinfo.match(r"does not have storage.objects.create access")
 
     # Test read access fails to inaccessible blob.
-    with pytest.raises(exceptions.GoogleCloudError) as excinfo:
+    with pytest.raises(exceptions.Forbidden) as excinfo:
         bucket.blob(inaccessible_blob.name).download_as_bytes()
 
     assert excinfo.match(r"does not have storage.objects.get access")
