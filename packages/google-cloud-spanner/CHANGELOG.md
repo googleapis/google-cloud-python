@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.8.0](https://www.github.com/googleapis/python-spanner/compare/v3.7.0...v3.8.0) (2021-08-15)
+
+
+### Features
+
+* use DML batches in `executemany()` method ([#412](https://www.github.com/googleapis/python-spanner/issues/412)) ([cbb4ee3](https://www.github.com/googleapis/python-spanner/commit/cbb4ee3eca9ac878b4f3cd78cfcfe8fc1acb86f9))
+
+
+### Bug Fixes
+
+* **samples:** batch_update() results processing error ([#484](https://www.github.com/googleapis/python-spanner/issues/484)) ([bdd5f8b](https://www.github.com/googleapis/python-spanner/commit/bdd5f8b201d1b442837d4fca1d631fe171e276b9))
+
 ## [3.7.0](https://www.github.com/googleapis/python-spanner/compare/v3.6.0...v3.7.0) (2021-07-29)
 
 
