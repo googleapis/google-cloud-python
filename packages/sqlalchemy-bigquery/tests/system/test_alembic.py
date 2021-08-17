@@ -22,12 +22,9 @@ import contextlib
 import pytest
 from sqlalchemy import Column, DateTime, Integer, String
 
-try:
-    import alembic  # noqa
-except ImportError:
-    alembic = None
-
 import google.api_core.exceptions
+
+alembic = pytest.importorskip("alembic")
 
 
 @pytest.fixture
@@ -62,7 +59,6 @@ def alembic_table(bigquery_dataset, bigquery_client):
             yield get_table
 
 
-@pytest.mark.skipif(alembic is None, reason="Alembic isn't installed.")
 def test_alembic_scenario(alembic_table):
     """
     Exercise all of the operations we support.

@@ -82,22 +82,6 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-def install_alembic_for_python_38(session, constraints_path):
-    """
-    install alembic for Python 3.8 unit and system tests
-
-    We do not require alembic and most tests should run without it, however
-
-    - We run some unit tests (Python 3.8) to cover the alembic
-      registration that happens when alembic is installed.
-
-    - We have a system test that demonstrates working with alembic and
-      proves that the things we think should work do work. :)
-    """
-    if session.python == "3.8":
-        session.install("alembic", "-c", constraints_path)
-
-
 def default(session):
     # Install all test dependencies, then install this package in-place.
 
@@ -114,8 +98,13 @@ def default(session):
         constraints_path,
     )
 
-    install_alembic_for_python_38(session, constraints_path)
-    session.install("-e", ".", "-c", constraints_path)
+    if session.python == "3.8":
+        extras = "[alembic]"
+    elif session.python == "3.9":
+        extras = "[geography]"
+    else:
+        extras = ""
+    session.install("-e", f".{extras}", "-c", constraints_path)
 
     # Run py.test against the unit tests.
     session.run(
@@ -167,8 +156,13 @@ def system(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install("mock", "pytest", "google-cloud-testutils", "-c", constraints_path)
-    install_alembic_for_python_38(session, constraints_path)
-    session.install("-e", ".", "-c", constraints_path)
+    if session.python == "3.8":
+        extras = "[alembic]"
+    elif session.python == "3.9":
+        extras = "[geography]"
+    else:
+        extras = ""
+    session.install("-e", f".{extras}", "-c", constraints_path)
 
     # Run py.test against the system tests.
     if system_test_exists:
@@ -216,7 +210,13 @@ def compliance(session):
         "-c",
         constraints_path,
     )
-    session.install("-e", ".", "-c", constraints_path)
+    if session.python == "3.8":
+        extras = "[alembic]"
+    elif session.python == "3.9":
+        extras = "[geography]"
+    else:
+        extras = ""
+    session.install("-e", f".{extras}", "-c", constraints_path)
 
     session.run(
         "py.test",
@@ -251,7 +251,9 @@ def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".")
-    session.install("sphinx==4.0.1", "alabaster", "recommonmark")
+    session.install(
+        "sphinx==4.0.1", "alabaster", "geoalchemy2", "shapely", "recommonmark"
+    )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
@@ -274,7 +276,12 @@ def docfx(session):
 
     session.install("-e", ".")
     session.install(
-        "sphinx==4.0.1", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml"
+        "sphinx==4.0.1",
+        "alabaster",
+        "geoalchemy2",
+        "shapely",
+        "recommonmark",
+        "gcp-sphinx-docfx-yaml",
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)

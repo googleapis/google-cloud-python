@@ -55,6 +55,11 @@ import re
 from .parse_url import parse_url
 from sqlalchemy_bigquery import _helpers
 
+try:
+    from .geography import GEOGRAPHY
+except ImportError:
+    pass
+
 FIELD_ILLEGAL_CHARACTERS = re.compile(r"[^\w]+")
 
 
@@ -126,6 +131,7 @@ _type_map = {
     "BIGNUMERIC": types.Numeric,
 }
 
+# By convention, dialect-provided types are spelled with all upper case.
 STRING = _type_map["STRING"]
 BOOL = _type_map["BOOL"]
 BOOLEAN = _type_map["BOOLEAN"]
@@ -141,6 +147,11 @@ TIME = _type_map["TIME"]
 RECORD = _type_map["RECORD"]
 NUMERIC = _type_map["NUMERIC"]
 BIGNUMERIC = _type_map["NUMERIC"]
+
+try:
+    _type_map["GEOGRAPHY"] = GEOGRAPHY
+except NameError:
+    pass
 
 
 class BigQueryExecutionContext(DefaultExecutionContext):
@@ -429,6 +440,7 @@ class BigQueryCompiler(SQLCompiler):
         if bq_type[-1] == ">" and bq_type.startswith("ARRAY<"):
             # Values get arrayified at a lower level.
             bq_type = bq_type[6:-1]
+
         bq_type = self.__remove_type_parameter(bq_type)
 
         assert_(param != "%s", f"Unexpected param: {param}")
@@ -479,7 +491,7 @@ class BigQueryTypeCompiler(GenericTypeCompiler):
             return f"BYTES({type_.length})"
         return "BYTES"
 
-    visit_VARBINARY = visit_BINARY
+    visit_VARBINARY = visit_BLOB = visit_BINARY
 
     def visit_NUMERIC(self, type_, **kw):
         if (type_.precision is not None) and isinstance(

@@ -18,7 +18,7 @@ import pathlib
 
 import synthtool as s
 from synthtool import gcp
-
+from synthtool.languages import python
 
 REPO_ROOT = pathlib.Path(__file__).parent.absolute()
 
@@ -27,10 +27,19 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
+extras = []
+extras_by_python = {
+    "3.8": ["alembic"],
+    "3.9": ["geography"],
+}
 templated_files = common.py_library(
     unit_test_python_versions=["3.6", "3.7", "3.8", "3.9"],
     system_test_python_versions=["3.8", "3.9"],
-    cov_level=100
+    cov_level=100,
+    unit_test_extras=extras,
+    unit_test_extras_by_python=extras_by_python,
+    system_test_extras=extras,
+    system_test_extras_by_python=extras_by_python,
 )
 s.move(templated_files, excludes=[
     # sqlalchemy-bigquery was originally licensed MIT
@@ -77,37 +86,6 @@ place_before(
     "nox.options.stop_on_first_error = True",
 )
 
-install_alembic_for_python_38 = '''
-def install_alembic_for_python_38(session, constraints_path):
-    """
-    install alembic for Python 3.8 unit and system tests
-
-    We do not require alembic and most tests should run without it, however
-
-    - We run some unit tests (Python 3.8) to cover the alembic
-      registration that happens when alembic is installed.
-
-    - We have a system test that demonstrates working with alembic and
-      proves that the things we think should work do work. :)
-    """
-    if session.python == "3.8":
-        session.install("alembic", "-c", constraints_path)
-
-
-'''
-
-place_before(
-    "noxfile.py",
-    "def default",
-    install_alembic_for_python_38,
-    )
-
-place_before(
-    "noxfile.py",
-    '    session.install("-e", ".", ',
-    "    install_alembic_for_python_38(session, constraints_path)",
-    escape='(')
-
 old_sessions = '''
     "unit",
     "system",
@@ -125,6 +103,9 @@ new_sessions = '''
 
 s.replace( ["noxfile.py"], old_sessions, new_sessions)
 
+# Maybe we can get rid of this when we don't need pytest-rerunfailures,
+# which we won't need when BQ retries itself:
+# https://github.com/googleapis/python-bigquery/pull/837
 compliance = '''
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def compliance(session):
@@ -153,7 +134,13 @@ def compliance(session):
         "-c",
         constraints_path,
     )
-    session.install("-e", ".", "-c", constraints_path)
+    if session.python == "3.8":
+        extras = "[alembic]"
+    elif session.python == "3.9":
+        extras = "[geography]"
+    else:
+        extras = ""
+    session.install("-e", f".{extras}", "-c", constraints_path)
 
     session.run(
         "py.test",
@@ -180,6 +167,7 @@ place_before(
      escape="()",
      )
 
+s.replace(["noxfile.py"], '"alabaster"', '"alabaster", "geoalchemy2", "shapely"')
 
 
 
@@ -200,6 +188,12 @@ addopts= --tb native -v -r fxX -p no:warnings
 python_files=tests/*test_*.py
 """
 )
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+
+python.py_samples(skip_readmes=True)
 
 # ----------------------------------------------------------------------------
 # Final cleanup

@@ -1,5 +1,5 @@
 Alembic support
----------------
+^^^^^^^^^^^^^^^
 
 `Alembic <https://alembic.sqlalchemy.org>`_ is a lightweight database
 migration tool for usage with the SQLAlchemy Database Toolkit for

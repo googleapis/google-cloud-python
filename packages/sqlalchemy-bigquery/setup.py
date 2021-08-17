@@ -19,6 +19,7 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import io
+import itertools
 import os
 import re
 from setuptools import setup
@@ -43,6 +44,9 @@ def readme():
     with io.open("README.rst", "r", encoding="utf8") as f:
         return f.read()
 
+
+extras = dict(geography=["GeoAlchemy2", "shapely"], alembic=["alembic"],)
+extras["all"] = set(itertools.chain.from_iterable(extras.values()))
 
 setup(
     name=name,
@@ -79,6 +83,7 @@ setup(
         "sqlalchemy>=1.2.0,<1.5.0dev",
         "future",
     ],
+    extras_require=extras,
     python_requires=">=3.6, <3.10",
     tests_require=["pytz"],
     entry_points={

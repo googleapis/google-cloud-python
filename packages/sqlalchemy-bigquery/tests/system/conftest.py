@@ -122,6 +122,14 @@ def bigquery_regional_dataset(bigquery_client, bigquery_schema):
     bigquery_client.delete_dataset(dataset_id, delete_contents=True)
 
 
+@pytest.fixture(autouse=True)
+def cleanup_extra_tables(bigquery_client, bigquery_dataset):
+    common = "sample", "sample_one_row", "sample_view", "sample_dml_empty"
+    for table in bigquery_client.list_tables(bigquery_dataset):
+        if table.table_id not in common:
+            bigquery_client.delete_table(table)
+
+
 @pytest.fixture(scope="session", autouse=True)
 def cleanup_datasets(bigquery_client: bigquery.Client):
     for dataset in bigquery_client.list_datasets():

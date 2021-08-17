@@ -1,4 +1,4 @@
-# Copyright (c) 2017 The sqlalchemy-bigquery Authors
+# Copyright (c) 2021 The sqlalchemy-bigquery Authors
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -20,63 +20,29 @@
 SQLAlchemy dialect for Google BigQuery
 """
 
-from .version import __version__  # noqa
+from google.cloud import bigquery
+import pytest
+import sqlalchemy
+import test_utils.prefixer
 
-from .base import BigQueryDialect
-from .base import (
-    STRING,
-    BOOL,
-    BOOLEAN,
-    INT64,
-    INTEGER,
-    FLOAT64,
-    FLOAT,
-    TIMESTAMP,
-    DATETIME,
-    DATE,
-    BYTES,
-    TIME,
-    RECORD,
-    NUMERIC,
-    BIGNUMERIC,
-)
+prefixer = test_utils.prefixer.Prefixer("python-bigquery-sqlalchemy", "tests/system")
 
-__all__ = [
-    "BigQueryDialect",
-    "STRING",
-    "BOOL",
-    "BOOLEAN",
-    "INT64",
-    "INTEGER",
-    "FLOAT64",
-    "FLOAT",
-    "TIMESTAMP",
-    "DATETIME",
-    "DATE",
-    "BYTES",
-    "TIME",
-    "RECORD",
-    "NUMERIC",
-    "BIGNUMERIC",
-]
 
-try:
-    from .geography import GEOGRAPHY, WKB, WKT  # noqa
-except ImportError:
-    pass
-else:
-    __all__.extend(["GEOGRAPHY", "WKB", "WKT"])
+@pytest.fixture(scope="session")
+def client():
+    return bigquery.Client()
 
-try:
-    import pybigquery  # noqa
-except ImportError:
-    pass
-else:  # pragma: NO COVER
-    import warnings
 
-    warnings.warn(
-        "Obsolete pybigquery is installed, which is likely to\n"
-        "interfere with sqlalchemy_bigquery.\n"
-        "pybigquery should be uninstalled.",
-        stacklevel=2,
-    )
+@pytest.fixture(scope="session")
+def dataset_id(client: bigquery.Client):
+    project_id = client.project
+    dataset_id = prefixer.create_prefix()
+    dataset = bigquery.Dataset(f"{project_id}.{dataset_id}")
+    dataset = client.create_dataset(dataset)
+    yield dataset_id
+    client.delete_dataset(dataset_id, delete_contents=True)
+
+
+@pytest.fixture(scope="session")
+def engine(dataset_id):
+    return sqlalchemy.create_engine(f"bigquery:///{dataset_id}")

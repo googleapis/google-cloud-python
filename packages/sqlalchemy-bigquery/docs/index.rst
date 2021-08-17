@@ -3,7 +3,9 @@
    :maxdepth: 2
 
    README
+   geography
    alembic
+   reference
 
 Changelog
 ---------
