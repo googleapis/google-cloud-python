@@ -61,6 +61,9 @@ from .types.assets import ConditionEvaluation
 from .types.assets import IamPolicyAnalysisResult
 from .types.assets import IamPolicyAnalysisState
 from .types.assets import IamPolicySearchResult
+from .types.assets import RelatedAsset
+from .types.assets import RelatedAssets
+from .types.assets import RelationshipAttributes
 from .types.assets import Resource
 from .types.assets import ResourceSearchResult
 from .types.assets import TemporalAsset
@@ -109,6 +112,9 @@ __all__ = (
     "OutputResult",
     "PartitionSpec",
     "PubsubDestination",
+    "RelatedAsset",
+    "RelatedAssets",
+    "RelationshipAttributes",
     "Resource",
     "ResourceSearchResult",
     "SearchAllIamPoliciesRequest",

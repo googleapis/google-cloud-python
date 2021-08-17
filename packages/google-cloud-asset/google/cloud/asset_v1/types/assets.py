@@ -33,6 +33,9 @@ __protobuf__ = proto.module(
         "TimeWindow",
         "Asset",
         "Resource",
+        "RelatedAssets",
+        "RelationshipAttributes",
+        "RelatedAsset",
         "ResourceSearchResult",
         "VersionedResource",
         "AttachedResource",
@@ -157,6 +160,10 @@ class Asset(proto.Message):
             `this
             topic <https://cloud.google.com/compute/docs/instances/os-inventory-management>`__
             for more information.
+        related_assets (google.cloud.asset_v1.types.RelatedAssets):
+            The related assets of the asset of one
+            relationship type. One asset only represents one
+            type of relationship.
         ancestors (Sequence[str]):
             The ancestry path of an asset in Google Cloud `resource
             hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
@@ -199,6 +206,7 @@ class Asset(proto.Message):
         message=service_perimeter_pb2.ServicePerimeter,
     )
     os_inventory = proto.Field(proto.MESSAGE, number=12, message=Inventory,)
+    related_assets = proto.Field(proto.MESSAGE, number=13, message="RelatedAssets",)
     ancestors = proto.RepeatedField(proto.STRING, number=10,)
 
 
@@ -257,6 +265,88 @@ class Resource(proto.Message):
     parent = proto.Field(proto.STRING, number=5,)
     data = proto.Field(proto.MESSAGE, number=6, message=struct_pb2.Struct,)
     location = proto.Field(proto.STRING, number=8,)
+
+
+class RelatedAssets(proto.Message):
+    r"""The detailed related assets with the ``relationship_type``.
+    Attributes:
+        relationship_attributes (google.cloud.asset_v1.types.RelationshipAttributes):
+            The detailed relationship attributes.
+        assets (Sequence[google.cloud.asset_v1.types.RelatedAsset]):
+            The peer resources of the relationship.
+    """
+
+    relationship_attributes = proto.Field(
+        proto.MESSAGE, number=1, message="RelationshipAttributes",
+    )
+    assets = proto.RepeatedField(proto.MESSAGE, number=2, message="RelatedAsset",)
+
+
+class RelationshipAttributes(proto.Message):
+    r"""The relationship attributes which include ``type``,
+    ``source_resource_type``, ``target_resource_type`` and ``action``.
+
+    Attributes:
+        type_ (str):
+            The unique identifier of the relationship type. Example:
+            ``INSTANCE_TO_INSTANCEGROUP``
+        source_resource_type (str):
+            The source asset type. Example:
+            ``compute.googleapis.com/Instance``
+        target_resource_type (str):
+            The target asset type. Example:
+            ``compute.googleapis.com/Disk``
+        action (str):
+            The detail of the relationship, e.g. ``contains``,
+            ``attaches``
+    """
+
+    type_ = proto.Field(proto.STRING, number=4,)
+    source_resource_type = proto.Field(proto.STRING, number=1,)
+    target_resource_type = proto.Field(proto.STRING, number=2,)
+    action = proto.Field(proto.STRING, number=3,)
+
+
+class RelatedAsset(proto.Message):
+    r"""An asset identify in Google Cloud which contains its name, type and
+    ancestors. An asset can be any resource in the Google Cloud
+    `resource
+    hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
+    a resource outside the Google Cloud resource hierarchy (such as
+    Google Kubernetes Engine clusters and objects), or a policy (e.g.
+    Cloud IAM policy). See `Supported asset
+    types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
+    for more information.
+
+    Attributes:
+        asset (str):
+            The full name of the asset. Example:
+            ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``
+
+            See `Resource
+            names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
+            for more information.
+        asset_type (str):
+            The type of the asset. Example:
+            ``compute.googleapis.com/Disk``
+
+            See `Supported asset
+            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
+            for more information.
+        ancestors (Sequence[str]):
+            The ancestors of an asset in Google Cloud `resource
+            hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
+            represented as a list of relative resource names. An
+            ancestry path starts with the closest ancestor in the
+            hierarchy and ends at root.
+
+            Example:
+            ``["projects/123456789", "folders/5432", "organizations/1234"]``
+    """
+
+    asset = proto.Field(proto.STRING, number=1,)
+    asset_type = proto.Field(proto.STRING, number=2,)
+    ancestors = proto.RepeatedField(proto.STRING, number=3,)
 
 
 class ResourceSearchResult(proto.Message):

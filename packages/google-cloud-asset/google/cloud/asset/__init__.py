@@ -67,6 +67,9 @@ from google.cloud.asset_v1.types.assets import ConditionEvaluation
 from google.cloud.asset_v1.types.assets import IamPolicyAnalysisResult
 from google.cloud.asset_v1.types.assets import IamPolicyAnalysisState
 from google.cloud.asset_v1.types.assets import IamPolicySearchResult
+from google.cloud.asset_v1.types.assets import RelatedAsset
+from google.cloud.asset_v1.types.assets import RelatedAssets
+from google.cloud.asset_v1.types.assets import RelationshipAttributes
 from google.cloud.asset_v1.types.assets import Resource
 from google.cloud.asset_v1.types.assets import ResourceSearchResult
 from google.cloud.asset_v1.types.assets import TemporalAsset
@@ -120,6 +123,9 @@ __all__ = (
     "IamPolicyAnalysisResult",
     "IamPolicyAnalysisState",
     "IamPolicySearchResult",
+    "RelatedAsset",
+    "RelatedAssets",
+    "RelationshipAttributes",
     "Resource",
     "ResourceSearchResult",
     "TemporalAsset",
