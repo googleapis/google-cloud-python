@@ -146,14 +146,14 @@ else:
 
 
 @pytest.fixture(scope="session")
-def sessions_database(shared_instance, operation_timeout):
+def sessions_database(shared_instance, database_operation_timeout):
     database_name = _helpers.unique_id("test_sessions", separator="_")
     pool = spanner_v1.BurstyPool(labels={"testcase": "session_api"})
     sessions_database = shared_instance.database(
         database_name, ddl_statements=_helpers.DDL_STATEMENTS, pool=pool,
     )
     operation = sessions_database.create()
-    operation.result(operation_timeout)  # raises on failure / timeout.
+    operation.result(database_operation_timeout)  # raises on failure / timeout.
 
     _helpers.retry_has_all_dll(sessions_database.reload)()
     # Some tests expect there to be a session present in the pool.
@@ -1176,7 +1176,7 @@ def test_multiuse_snapshot_read_isolation_exact_staleness(sessions_database):
         sd._check_row_data(after, all_data_rows)
 
 
-def test_read_w_index(shared_instance, operation_timeout, databases_to_delete):
+def test_read_w_index(shared_instance, database_operation_timeout, databases_to_delete):
     # Indexed reads cannot return non-indexed columns
     sd = _sample_data
     row_count = 2000
@@ -1192,7 +1192,7 @@ def test_read_w_index(shared_instance, operation_timeout, databases_to_delete):
     )
     operation = temp_db.create()
     databases_to_delete.append(temp_db)
-    operation.result(operation_timeout)  # raises on failure / timeout.
+    operation.result(database_operation_timeout)  # raises on failure / timeout.
 
     committed = _set_up_table(temp_db, row_count)
 

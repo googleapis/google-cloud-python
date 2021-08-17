@@ -24,6 +24,8 @@ from google.cloud.spanner_v1 import instance
 import pytest
 from test_utils import retry
 
+INSTANCE_CREATION_TIMEOUT = 240  # seconds
+
 retry_429 = retry.RetryErrors(exceptions.ResourceExhausted, delay=15)
 
 
@@ -110,7 +112,7 @@ def sample_instance(
         },
     )
     op = retry_429(sample_instance.create)()
-    op.result(120)  # block until completion
+    op.result(INSTANCE_CREATION_TIMEOUT)  # block until completion
 
     # Eventual consistency check
     retry_found = retry.RetryResult(bool)
@@ -145,7 +147,7 @@ def multi_region_instance(
         },
     )
     op = retry_429(multi_region_instance.create)()
-    op.result(120)  # block until completion
+    op.result(INSTANCE_CREATION_TIMEOUT)  # block until completion
 
     # Eventual consistency check
     retry_found = retry.RetryResult(bool)

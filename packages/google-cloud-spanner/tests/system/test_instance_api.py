@@ -61,7 +61,7 @@ def test_create_instance(
     spanner_client,
     instance_config,
     instances_to_delete,
-    operation_timeout,
+    instance_operation_timeout,
 ):
     alt_instance_id = _helpers.unique_id("new")
     instance = spanner_client.instance(alt_instance_id, instance_config.name)
@@ -70,7 +70,7 @@ def test_create_instance(
     instances_to_delete.append(instance)
 
     # We want to make sure the operation completes.
-    operation.result(operation_timeout)  # raises on failure / timeout.
+    operation.result(instance_operation_timeout)  # raises on failure / timeout.
 
     # Create a new instance instance and make sure it is the same.
     instance_alt = spanner_client.instance(alt_instance_id, instance_config.name)
@@ -86,7 +86,7 @@ def test_create_instance_with_processing_units(
     spanner_client,
     instance_config,
     instances_to_delete,
-    operation_timeout,
+    instance_operation_timeout,
 ):
     alt_instance_id = _helpers.unique_id("wpn")
     processing_units = 5000
@@ -100,7 +100,7 @@ def test_create_instance_with_processing_units(
     instances_to_delete.append(instance)
 
     # We want to make sure the operation completes.
-    operation.result(operation_timeout)  # raises on failure / timeout.
+    operation.result(instance_operation_timeout)  # raises on failure / timeout.
 
     # Create a new instance instance and make sure it is the same.
     instance_alt = spanner_client.instance(alt_instance_id, instance_config.name)
@@ -116,7 +116,7 @@ def test_update_instance(
     spanner_client,
     shared_instance,
     shared_instance_id,
-    operation_timeout,
+    instance_operation_timeout,
 ):
     old_display_name = shared_instance.display_name
     new_display_name = "Foo Bar Baz"
@@ -124,7 +124,7 @@ def test_update_instance(
     operation = shared_instance.update()
 
     # We want to make sure the operation completes.
-    operation.result(operation_timeout)  # raises on failure / timeout.
+    operation.result(instance_operation_timeout)  # raises on failure / timeout.
 
     # Create a new instance instance and reload it.
     instance_alt = spanner_client.instance(shared_instance_id, None)

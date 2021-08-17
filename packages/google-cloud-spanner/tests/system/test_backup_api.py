@@ -33,7 +33,7 @@ pytestmark = [
 
 
 @pytest.fixture(scope="session")
-def same_config_instance(spanner_client, shared_instance, operation_timeout):
+def same_config_instance(spanner_client, shared_instance, instance_operation_timeout):
     current_config = shared_instance.configuration_name
     same_config_instance_id = _helpers.unique_id("same-config")
     create_time = str(int(time.time()))
@@ -42,7 +42,7 @@ def same_config_instance(spanner_client, shared_instance, operation_timeout):
         same_config_instance_id, current_config, labels=labels
     )
     op = same_config_instance.create()
-    op.result(operation_timeout)
+    op.result(instance_operation_timeout)
 
     yield same_config_instance
 
@@ -60,7 +60,7 @@ def diff_config(shared_instance, instance_configs):
 
 @pytest.fixture(scope="session")
 def diff_config_instance(
-    spanner_client, shared_instance, operation_timeout, diff_config,
+    spanner_client, shared_instance, instance_operation_timeout, diff_config,
 ):
     if diff_config is None:
         return None
@@ -72,7 +72,7 @@ def diff_config_instance(
         diff_config_instance_id, diff_config, labels=labels
     )
     op = diff_config_instance.create()
-    op.result(operation_timeout)
+    op.result(instance_operation_timeout)
 
     yield diff_config_instance
 
@@ -85,14 +85,14 @@ def database_version_time():
 
 
 @pytest.fixture(scope="session")
-def second_database(shared_instance, operation_timeout):
+def second_database(shared_instance, database_operation_timeout):
     database_name = _helpers.unique_id("test_database2")
     pool = spanner_v1.BurstyPool(labels={"testcase": "database_api"})
     database = shared_instance.database(
         database_name, ddl_statements=_helpers.DDL_STATEMENTS, pool=pool
     )
     operation = database.create()
-    operation.result(operation_timeout)  # raises on failure / timeout.
+    operation.result(database_operation_timeout)  # raises on failure / timeout.
 
     yield database
 
@@ -319,7 +319,6 @@ def test_multi_create_cancel_update_error_restore_errors(
     diff_config_instance,
     backups_to_delete,
     databases_to_delete,
-    operation_timeout,
 ):
     backup_id_1 = _helpers.unique_id("backup_id1", separator="_")
     backup_id_2 = _helpers.unique_id("backup_id2", separator="_")

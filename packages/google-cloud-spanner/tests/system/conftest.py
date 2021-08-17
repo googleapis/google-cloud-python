@@ -58,8 +58,13 @@ def spanner_client():
 
 
 @pytest.fixture(scope="session")
-def operation_timeout():
-    return _helpers.SPANNER_OPERATION_TIMEOUT_IN_SECONDS
+def instance_operation_timeout():
+    return _helpers.INSTANCE_OPERATION_TIMEOUT_IN_SECONDS
+
+
+@pytest.fixture(scope="session")
+def database_operation_timeout():
+    return _helpers.DATABASE_OPERATION_TIMEOUT_IN_SECONDS
 
 
 @pytest.fixture(scope="session")
@@ -101,7 +106,7 @@ def existing_instances(spanner_client):
 @pytest.fixture(scope="session")
 def shared_instance(
     spanner_client,
-    operation_timeout,
+    instance_operation_timeout,
     shared_instance_id,
     instance_config,
     existing_instances,  # evalutate before creating one
@@ -116,7 +121,7 @@ def shared_instance(
             shared_instance_id, instance_config.name, labels=labels
         )
         created_op = _helpers.retry_429_503(instance.create)()
-        created_op.result(operation_timeout)  # block until completion
+        created_op.result(instance_operation_timeout)  # block until completion
 
     else:  # reuse existing instance
         instance = spanner_client.instance(shared_instance_id)
@@ -129,14 +134,14 @@ def shared_instance(
 
 
 @pytest.fixture(scope="session")
-def shared_database(shared_instance, operation_timeout):
+def shared_database(shared_instance, database_operation_timeout):
     database_name = _helpers.unique_id("test_database")
     pool = spanner_v1.BurstyPool(labels={"testcase": "database_api"})
     database = shared_instance.database(
         database_name, ddl_statements=_helpers.DDL_STATEMENTS, pool=pool
     )
     operation = database.create()
-    operation.result(operation_timeout)  # raises on failure / timeout.
+    operation.result(database_operation_timeout)  # raises on failure / timeout.
 
     yield database
 
