@@ -396,7 +396,7 @@ Libraries
      - |PyPI-google-cloud-runtimeconfig|
    * - `SQLAlchemy dialect for BigQuery <https://github.com/googleapis/python-bigquery-sqlalchemy>`_
      - |beta|
-     - |PyPI-pybigquery|
+     - |PyPI-sqlalchemy-bigquery|
    * - `Source Context <https://github.com/googleapis/python-source-context>`_
      - |beta|
      - |PyPI-google-cloud-source-context|
@@ -644,8 +644,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-resource-manager
 .. |PyPI-google-cloud-runtimeconfig| image:: https://img.shields.io/pypi/v/google-cloud-runtimeconfig.svg
      :target: https://pypi.org/project/google-cloud-runtimeconfig
-.. |PyPI-pybigquery| image:: https://img.shields.io/pypi/v/pybigquery.svg
-     :target: https://pypi.org/project/pybigquery
+.. |PyPI-sqlalchemy-bigquery| image:: https://img.shields.io/pypi/v/sqlalchemy-bigquery.svg
+     :target: https://pypi.org/project/sqlalchemy-bigquery
 .. |PyPI-google-cloud-source-context| image:: https://img.shields.io/pypi/v/google-cloud-source-context.svg
      :target: https://pypi.org/project/google-cloud-source-context
 .. |PyPI-django-google-spanner| image:: https://img.shields.io/pypi/v/django-google-spanner.svg
