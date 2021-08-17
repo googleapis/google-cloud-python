@@ -1204,8 +1204,11 @@ def build_finished(app, exception):
                       'uid': uid
                     })
                 else:
+                    # Extract the file name to use for new entries into the TOC
+                    # to make TOC entries consistent with filenames.
+                    file_name = obj['source']['path'].split("/")[-1][:-3]
                     toc_yaml.append({
-                      'name': node_name, 
+                      'name': file_name, 
                       'uidname': uid, 
                       'uid': uid
                     })
