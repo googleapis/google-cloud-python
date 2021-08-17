@@ -21,9 +21,13 @@ from google.cloud.devtools.cloudbuild_v1.services.cloud_build.async_client impor
     CloudBuildAsyncClient,
 )
 
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import ApprovalConfig
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import ApprovalResult
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import ApproveBuildRequest
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import ArtifactResult
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Artifacts
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Build
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import BuildApproval
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import BuildOperationMetadata
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import BuildOptions
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import BuildStep
@@ -98,9 +102,13 @@ from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import WorkerPool
 __all__ = (
     "CloudBuildClient",
     "CloudBuildAsyncClient",
+    "ApprovalConfig",
+    "ApprovalResult",
+    "ApproveBuildRequest",
     "ArtifactResult",
     "Artifacts",
     "Build",
+    "BuildApproval",
     "BuildOperationMetadata",
     "BuildOptions",
     "BuildStep",

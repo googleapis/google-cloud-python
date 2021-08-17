@@ -661,7 +661,7 @@ def test_get_build(transport: str = "grpc", request_type=cloudbuild.GetBuildRequ
             name="name_value",
             id="id_value",
             project_id="project_id_value",
-            status=cloudbuild.Build.Status.QUEUED,
+            status=cloudbuild.Build.Status.PENDING,
             status_detail="status_detail_value",
             images=["images_value"],
             logs_bucket="logs_bucket_value",
@@ -682,7 +682,7 @@ def test_get_build(transport: str = "grpc", request_type=cloudbuild.GetBuildRequ
     assert response.name == "name_value"
     assert response.id == "id_value"
     assert response.project_id == "project_id_value"
-    assert response.status == cloudbuild.Build.Status.QUEUED
+    assert response.status == cloudbuild.Build.Status.PENDING
     assert response.status_detail == "status_detail_value"
     assert response.images == ["images_value"]
     assert response.logs_bucket == "logs_bucket_value"
@@ -731,7 +731,7 @@ async def test_get_build_async(
                 name="name_value",
                 id="id_value",
                 project_id="project_id_value",
-                status=cloudbuild.Build.Status.QUEUED,
+                status=cloudbuild.Build.Status.PENDING,
                 status_detail="status_detail_value",
                 images=["images_value"],
                 logs_bucket="logs_bucket_value",
@@ -753,7 +753,7 @@ async def test_get_build_async(
     assert response.name == "name_value"
     assert response.id == "id_value"
     assert response.project_id == "project_id_value"
-    assert response.status == cloudbuild.Build.Status.QUEUED
+    assert response.status == cloudbuild.Build.Status.PENDING
     assert response.status_detail == "status_detail_value"
     assert response.images == ["images_value"]
     assert response.logs_bucket == "logs_bucket_value"
@@ -1128,7 +1128,7 @@ def test_cancel_build(
             name="name_value",
             id="id_value",
             project_id="project_id_value",
-            status=cloudbuild.Build.Status.QUEUED,
+            status=cloudbuild.Build.Status.PENDING,
             status_detail="status_detail_value",
             images=["images_value"],
             logs_bucket="logs_bucket_value",
@@ -1149,7 +1149,7 @@ def test_cancel_build(
     assert response.name == "name_value"
     assert response.id == "id_value"
     assert response.project_id == "project_id_value"
-    assert response.status == cloudbuild.Build.Status.QUEUED
+    assert response.status == cloudbuild.Build.Status.PENDING
     assert response.status_detail == "status_detail_value"
     assert response.images == ["images_value"]
     assert response.logs_bucket == "logs_bucket_value"
@@ -1198,7 +1198,7 @@ async def test_cancel_build_async(
                 name="name_value",
                 id="id_value",
                 project_id="project_id_value",
-                status=cloudbuild.Build.Status.QUEUED,
+                status=cloudbuild.Build.Status.PENDING,
                 status_detail="status_detail_value",
                 images=["images_value"],
                 logs_bucket="logs_bucket_value",
@@ -1220,7 +1220,7 @@ async def test_cancel_build_async(
     assert response.name == "name_value"
     assert response.id == "id_value"
     assert response.project_id == "project_id_value"
-    assert response.status == cloudbuild.Build.Status.QUEUED
+    assert response.status == cloudbuild.Build.Status.PENDING
     assert response.status_detail == "status_detail_value"
     assert response.images == ["images_value"]
     assert response.logs_bucket == "logs_bucket_value"
@@ -1457,6 +1457,224 @@ async def test_retry_build_flattened_error_async():
             cloudbuild.RetryBuildRequest(),
             project_id="project_id_value",
             id="id_value",
+        )
+
+
+def test_approve_build(
+    transport: str = "grpc", request_type=cloudbuild.ApproveBuildRequest
+):
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.approve_build), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.approve_build(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudbuild.ApproveBuildRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_approve_build_from_dict():
+    test_approve_build(request_type=dict)
+
+
+def test_approve_build_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudBuildClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.approve_build), "__call__") as call:
+        client.approve_build()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudbuild.ApproveBuildRequest()
+
+
+@pytest.mark.asyncio
+async def test_approve_build_async(
+    transport: str = "grpc_asyncio", request_type=cloudbuild.ApproveBuildRequest
+):
+    client = CloudBuildAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.approve_build), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.approve_build(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudbuild.ApproveBuildRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_approve_build_async_from_dict():
+    await test_approve_build_async(request_type=dict)
+
+
+def test_approve_build_field_headers():
+    client = CloudBuildClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.ApproveBuildRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.approve_build), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.approve_build(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_approve_build_field_headers_async():
+    client = CloudBuildAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudbuild.ApproveBuildRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.approve_build), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.approve_build(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_approve_build_flattened():
+    client = CloudBuildClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.approve_build), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.approve_build(
+            name="name_value",
+            approval_result=cloudbuild.ApprovalResult(
+                approver_account="approver_account_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].name == "name_value"
+        assert args[0].approval_result == cloudbuild.ApprovalResult(
+            approver_account="approver_account_value"
+        )
+
+
+def test_approve_build_flattened_error():
+    client = CloudBuildClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.approve_build(
+            cloudbuild.ApproveBuildRequest(),
+            name="name_value",
+            approval_result=cloudbuild.ApprovalResult(
+                approver_account="approver_account_value"
+            ),
+        )
+
+
+@pytest.mark.asyncio
+async def test_approve_build_flattened_async():
+    client = CloudBuildAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.approve_build), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.approve_build(
+            name="name_value",
+            approval_result=cloudbuild.ApprovalResult(
+                approver_account="approver_account_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].name == "name_value"
+        assert args[0].approval_result == cloudbuild.ApprovalResult(
+            approver_account="approver_account_value"
+        )
+
+
+@pytest.mark.asyncio
+async def test_approve_build_flattened_error_async():
+    client = CloudBuildAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.approve_build(
+            cloudbuild.ApproveBuildRequest(),
+            name="name_value",
+            approval_result=cloudbuild.ApprovalResult(
+                approver_account="approver_account_value"
+            ),
         )
 
 
@@ -4138,6 +4356,7 @@ def test_cloud_build_base_transport():
         "list_builds",
         "cancel_build",
         "retry_build",
+        "approve_build",
         "create_build_trigger",
         "get_build_trigger",
         "list_build_triggers",

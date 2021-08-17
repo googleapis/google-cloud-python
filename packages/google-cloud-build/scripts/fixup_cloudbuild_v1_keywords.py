@@ -39,6 +39,7 @@ def partition(
 class cloudbuildCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+          'approve_build': ('name', 'approval_result', ),
           'cancel_build': ('project_id', 'id', 'name', ),
           'create_build': ('project_id', 'build', 'parent', ),
           'create_build_trigger': ('project_id', 'trigger', 'parent', ),

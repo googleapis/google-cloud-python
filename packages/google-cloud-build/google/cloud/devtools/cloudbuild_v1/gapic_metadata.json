@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "CloudBuildClient",
           "rpcs": {
+            "ApproveBuild": {
+              "methods": [
+                "approve_build"
+              ]
+            },
             "CancelBuild": {
               "methods": [
                 "cancel_build"
@@ -100,6 +105,11 @@
         "grpc-async": {
           "libraryClient": "CloudBuildAsyncClient",
           "rpcs": {
+            "ApproveBuild": {
+              "methods": [
+                "approve_build"
+              ]
+            },
             "CancelBuild": {
               "methods": [
                 "cancel_build"

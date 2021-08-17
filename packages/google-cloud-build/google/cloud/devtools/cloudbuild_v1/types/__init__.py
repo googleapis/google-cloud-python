@@ -14,9 +14,13 @@
 # limitations under the License.
 #
 from .cloudbuild import (
+    ApprovalConfig,
+    ApprovalResult,
+    ApproveBuildRequest,
     ArtifactResult,
     Artifacts,
     Build,
+    BuildApproval,
     BuildOperationMetadata,
     BuildOptions,
     BuildStep,
@@ -70,9 +74,13 @@ from .cloudbuild import (
 )
 
 __all__ = (
+    "ApprovalConfig",
+    "ApprovalResult",
+    "ApproveBuildRequest",
     "ArtifactResult",
     "Artifacts",
     "Build",
+    "BuildApproval",
     "BuildOperationMetadata",
     "BuildOptions",
     "BuildStep",

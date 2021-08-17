@@ -17,9 +17,13 @@
 from .services.cloud_build import CloudBuildClient
 from .services.cloud_build import CloudBuildAsyncClient
 
+from .types.cloudbuild import ApprovalConfig
+from .types.cloudbuild import ApprovalResult
+from .types.cloudbuild import ApproveBuildRequest
 from .types.cloudbuild import ArtifactResult
 from .types.cloudbuild import Artifacts
 from .types.cloudbuild import Build
+from .types.cloudbuild import BuildApproval
 from .types.cloudbuild import BuildOperationMetadata
 from .types.cloudbuild import BuildOptions
 from .types.cloudbuild import BuildStep
@@ -73,9 +77,13 @@ from .types.cloudbuild import WorkerPool
 
 __all__ = (
     "CloudBuildAsyncClient",
+    "ApprovalConfig",
+    "ApprovalResult",
+    "ApproveBuildRequest",
     "ArtifactResult",
     "Artifacts",
     "Build",
+    "BuildApproval",
     "BuildOperationMetadata",
     "BuildOptions",
     "BuildStep",

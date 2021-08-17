@@ -51,6 +51,10 @@ __protobuf__ = proto.module(
         "ListBuildsRequest",
         "ListBuildsResponse",
         "CancelBuildRequest",
+        "ApproveBuildRequest",
+        "BuildApproval",
+        "ApprovalConfig",
+        "ApprovalResult",
         "BuildTrigger",
         "GitHubEventsConfig",
         "PubsubConfig",
@@ -576,6 +580,9 @@ class Build(proto.Message):
 
             If the build does not specify source or images, these keys
             will not be included.
+        approval (google.cloud.devtools.cloudbuild_v1.types.BuildApproval):
+            Output only. Describes this build's approval
+            configuration, status, and result.
         service_account (str):
             IAM service account whose credentials will be used at build
             runtime. Must be of the format
@@ -594,6 +601,7 @@ class Build(proto.Message):
     class Status(proto.Enum):
         r"""Possible status of a build or build step."""
         STATUS_UNKNOWN = 0
+        PENDING = 10
         QUEUED = 1
         WORKING = 2
         SUCCESS = 3
@@ -677,6 +685,7 @@ class Build(proto.Message):
     tags = proto.RepeatedField(proto.STRING, number=31,)
     secrets = proto.RepeatedField(proto.MESSAGE, number=32, message="Secret",)
     timing = proto.MapField(proto.STRING, proto.MESSAGE, number=33, message="TimeSpan",)
+    approval = proto.Field(proto.MESSAGE, number=44, message="BuildApproval",)
     service_account = proto.Field(proto.STRING, number=42,)
     available_secrets = proto.Field(proto.MESSAGE, number=47, message="Secrets",)
     warnings = proto.RepeatedField(proto.MESSAGE, number=49, message=Warning,)
@@ -1035,6 +1044,109 @@ class CancelBuildRequest(proto.Message):
     name = proto.Field(proto.STRING, number=4,)
     project_id = proto.Field(proto.STRING, number=1,)
     id = proto.Field(proto.STRING, number=2,)
+
+
+class ApproveBuildRequest(proto.Message):
+    r"""Request to approve or reject a pending build.
+
+    Attributes:
+        name (str):
+            Required. Name of the target build. For example:
+            "projects/{$project_id}/builds/{$build_id}".
+        approval_result (google.cloud.devtools.cloudbuild_v1.types.ApprovalResult):
+            Approval decision and metadata.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    approval_result = proto.Field(proto.MESSAGE, number=2, message="ApprovalResult",)
+
+
+class BuildApproval(proto.Message):
+    r"""BuildApproval describes a build's approval configuration,
+    state, and result.
+
+    Attributes:
+        state (google.cloud.devtools.cloudbuild_v1.types.BuildApproval.State):
+            Output only. The state of this build's
+            approval.
+        config (google.cloud.devtools.cloudbuild_v1.types.ApprovalConfig):
+            Output only. Configuration for manual
+            approval of this build.
+        result (google.cloud.devtools.cloudbuild_v1.types.ApprovalResult):
+            Output only. Result of manual approval for
+            this Build.
+    """
+
+    class State(proto.Enum):
+        r"""Specifies the current state of a build's approval."""
+        STATE_UNSPECIFIED = 0
+        PENDING = 1
+        APPROVED = 2
+        REJECTED = 3
+        CANCELLED = 5
+
+    state = proto.Field(proto.ENUM, number=1, enum=State,)
+    config = proto.Field(proto.MESSAGE, number=2, message="ApprovalConfig",)
+    result = proto.Field(proto.MESSAGE, number=3, message="ApprovalResult",)
+
+
+class ApprovalConfig(proto.Message):
+    r"""ApprovalConfig describes configuration for manual approval of
+    a build.
+
+    Attributes:
+        approval_required (bool):
+            Whether or not approval is needed. If this is
+            set on a build, it will become pending when
+            created, and will need to be explicitly approved
+            to start.
+    """
+
+    approval_required = proto.Field(proto.BOOL, number=1,)
+
+
+class ApprovalResult(proto.Message):
+    r"""ApprovalResult describes the decision and associated metadata
+    of a manual approval of a build.
+
+    Attributes:
+        approver_account (str):
+            Output only. Email of the user that called
+            the ApproveBuild API to approve or reject a
+            build at the time that the API was called.
+        approval_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time when the approval
+            decision was made.
+        decision (google.cloud.devtools.cloudbuild_v1.types.ApprovalResult.Decision):
+            Required. The decision of this manual
+            approval.
+        comment (str):
+            Optional. An optional comment for this manual
+            approval result.
+        url (str):
+            Optional. An optional URL tied to this manual
+            approval result. This field is essentially the
+            same as comment, except that it will be rendered
+            by the UI differently. An example use case is a
+            link to an external job that approved this
+            Build.
+    """
+
+    class Decision(proto.Enum):
+        r"""Specifies whether or not this manual approval result is to
+        approve or reject a build.
+        """
+        DECISION_UNSPECIFIED = 0
+        APPROVED = 1
+        REJECTED = 2
+
+    approver_account = proto.Field(proto.STRING, number=2,)
+    approval_time = proto.Field(
+        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+    )
+    decision = proto.Field(proto.ENUM, number=4, enum=Decision,)
+    comment = proto.Field(proto.STRING, number=5,)
+    url = proto.Field(proto.STRING, number=6,)
 
 
 class BuildTrigger(proto.Message):

@@ -427,6 +427,38 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         return self._stubs["retry_build"]
 
     @property
+    def approve_build(
+        self,
+    ) -> Callable[
+        [cloudbuild.ApproveBuildRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the approve build method over gRPC.
+
+        Approves or rejects a pending build.
+        If approved, the returned LRO will be analogous to the
+        LRO returned from a CreateBuild call.
+
+        If rejected, the returned LRO will be immediately done.
+
+        Returns:
+            Callable[[~.ApproveBuildRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "approve_build" not in self._stubs:
+            self._stubs["approve_build"] = self.grpc_channel.unary_unary(
+                "/google.devtools.cloudbuild.v1.CloudBuild/ApproveBuild",
+                request_serializer=cloudbuild.ApproveBuildRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["approve_build"]
+
+    @property
     def create_build_trigger(
         self,
     ) -> Callable[
