@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.4.0](https://www.github.com/googleapis/python-asset/compare/v3.3.0...v3.4.0) (2021-08-17)
+
+
+### Features
+
+* Release of relationships in v1, Add content type Relationship to support relationship export  ([#262](https://www.github.com/googleapis/python-asset/issues/262)) ([93c92c1](https://www.github.com/googleapis/python-asset/commit/93c92c150581d22ff2f7b63d7591b3a97191ff20))
+
 ## [3.3.0](https://www.github.com/googleapis/python-asset/compare/v3.2.1...v3.3.0) (2021-07-28)
 
 
