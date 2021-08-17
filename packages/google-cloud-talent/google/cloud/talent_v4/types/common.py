@@ -194,10 +194,15 @@ class HtmlSanitization(proto.Enum):
 
 
 class CommuteMethod(proto.Enum):
-    r"""Method for commute."""
+    r"""Method for commute. Walking, biking and wheelchair accessible
+    transit is still in the Preview stage.
+    """
     COMMUTE_METHOD_UNSPECIFIED = 0
     DRIVING = 1
     TRANSIT = 2
+    WALKING = 3
+    CYCLING = 4
+    TRANSIT_ACCESSIBLE = 5
 
 
 class TimestampRange(proto.Message):

@@ -107,6 +107,17 @@ class Job(proto.Message):
             close to each other in the same job for better search
             experience.
 
+            Jobs with multiple addresses must have their addresses with
+            the same [LocationType][] to allow location filtering to
+            work properly. (For example, a Job with addresses "1600
+            Amphitheatre Parkway, Mountain View, CA, USA" and "London,
+            UK" may not have location filters applied correctly at
+            search time since the first is a
+            [LocationType.STREET_ADDRESS][] and the second is a
+            [LocationType.LOCALITY][].) If a job needs to have multiple
+            addresses, it is suggested to split it into multiple jobs
+            with same LocationTypes.
+
             The maximum number of allowed characters is 500.
         application_info (google.cloud.talent_v4.types.Job.ApplicationInfo):
             Job application information.

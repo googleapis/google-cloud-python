@@ -148,10 +148,13 @@ class ListJobsRequest(proto.Message):
 
             The fields eligible for filtering are:
 
-            -  ``companyName`` (Required)
+            -  ``companyName``
             -  ``requisitionId``
             -  ``status`` Available values: OPEN, EXPIRED, ALL. Defaults
                to OPEN if no value is specified.
+
+            At least one of ``companyName`` and ``requisitionId`` must
+            present or an INVALID_ARGUMENT error is thrown.
 
             Sample Query:
 
@@ -159,7 +162,9 @@ class ListJobsRequest(proto.Message):
             -  companyName = "projects/foo/tenants/bar/companies/baz"
                AND requisitionId = "req-1"
             -  companyName = "projects/foo/tenants/bar/companies/baz"
-               AND status = "EXPIRED".
+               AND status = "EXPIRED"
+            -  requisitionId = "req-1"
+            -  requisitionId = "req-1" AND status = "EXPIRED".
         page_token (str):
             The starting point of a query result.
         page_size (int):
@@ -287,6 +292,9 @@ class SearchJobsRequest(proto.Message):
             -  company_size: histogram by
                [CompanySize][google.cloud.talent.v4.CompanySize], for
                example, "SMALL", "MEDIUM", "BIG".
+            -  publish_time_in_day: histogram by the
+               [Job.posting_publish_time][google.cloud.talent.v4.Job.posting_publish_time]
+               in days. Must specify list of numeric buckets in spec.
             -  publish_time_in_month: histogram by the
                [Job.posting_publish_time][google.cloud.talent.v4.Job.posting_publish_time]
                in months. Must specify list of numeric buckets in spec.
@@ -351,7 +359,7 @@ class SearchJobsRequest(proto.Message):
             -  ``count(admin1)``
             -  ``count(base_compensation, [bucket(1000, 10000), bucket(10000, 100000), bucket(100000, MAX)])``
             -  ``count(string_custom_attribute["some-string-custom-attribute"])``
-            -  ``count(numeric_custom_attribute["some-numeric-custom-attribute"], [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])``
+            -  ``count(numeric_custom_attribute["some-numeric-custom-attribute"], [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative")])``
         job_view (google.cloud.talent_v4.types.JobView):
             The desired job attributes returned for jobs in the search
             response. Defaults to
