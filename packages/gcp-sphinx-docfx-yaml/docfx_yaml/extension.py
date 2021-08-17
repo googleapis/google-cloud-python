@@ -958,6 +958,44 @@ def disambiguate_toc_name(toc_yaml):
 
     return disambiguated_names
 
+
+# Combines toc_yaml entries with similar version headers.
+def group_by_package(toc_yaml):
+    new_toc_yaml = []
+    package_groups = {}
+    for module in toc_yaml:
+        package_group = find_package_group(module['uidname'])
+        if package_group not in package_groups:
+            package_name = pretty_package_name(package_group)
+            package_groups[package_group] = {
+                "name": package_name,
+                "uidname": package_group,
+                "items": []
+            }
+        package_groups[package_group]['items'].append(module)
+
+    for package_group in package_groups:
+        new_toc_yaml.append(package_groups[package_group])
+
+    return new_toc_yaml
+
+
+# Given the full uid, return the package group including its prefix.
+def find_package_group(uid):
+    return ".".join(uid.split(".")[:3])
+
+
+# Given the package group, make its name presentable.
+def pretty_package_name(package_group):
+    name = ""
+
+    # Retrieve only the package name
+    split_name = package_group.split(".")[-1]
+    # Capitalize the first letter of each package name part
+    capitalized_name = [part.capitalize() for part in split_name.split("_")]
+    return " ".join(capitalized_name)
+
+
 def build_finished(app, exception):
     """
     Output YAML on the file system.
@@ -986,6 +1024,7 @@ def build_finished(app, exception):
         if 'source' in obj and 'path' in obj['source'] and obj['source']['path']:
             if obj['source']['path'].endswith(INITPY):
                 obj['type'] = 'subPackage'
+                obj['summary'] = "API documentation for `{}` package.".format(obj['name'])
                 return
 
         for child_uid in obj['children']:
@@ -1184,6 +1223,8 @@ def build_finished(app, exception):
     # Perform additional disambiguation of the name
     disambiguated_names = disambiguate_toc_name(toc_yaml)
 
+    toc_yaml = group_by_package(toc_yaml)
+
     # Keeping uidname field carrys over onto the toc.yaml files, we need to
     # be keep using them but don't need them in the actual file
     toc_yaml_with_uid = copy.deepcopy(toc_yaml)
@@ -1202,37 +1243,6 @@ def build_finished(app, exception):
             )
         )
 
-    index_file = os.path.join(normalized_outdir, 'index.yml')
-    index_children = []
-    index_references = []
-    for item in toc_yaml_with_uid:
-        index_children.append(item.get('uidname', ''))
-        index_references.append({
-            'uid': item.get('uidname', ''),
-            'name': item.get('name', ''),
-            'fullname': item.get('uidname', ''),
-            'isExternal': False
-        })
-    with open(index_file, 'w') as index_file_obj:
-        index_file_obj.write('### YamlMime:UniversalReference\n')
-        dump(
-            {
-                'items': [{
-                    'uid': 'project-' + app.config.project,
-                    'name': app.config.project,
-                    'fullName': app.config.project,
-                    'langs': ['python'],
-                    'type': 'package',
-                    'kind': 'distribution',
-                    'summary': 'Reference API documentation for `{}`.'.format(app.config.project),
-                    'children': index_children
-                }],
-                'references': index_references
-            },
-            index_file_obj,
-            default_flow_style=False
-        )
-
     # Output files
     for uid, data in iter(yaml_map.items()):
 
@@ -1244,7 +1254,7 @@ def build_finished(app, exception):
                     obj['name'] = disambiguated_names[obj_full_name]
                     if obj['type'] == 'subPackage':
                         obj['summary'] = "API documentation for `{}` package.".format(obj['name'])
-      
+
         # data is formatted as [yaml_data, references]
         yaml_data, references = data
 
@@ -1274,6 +1284,38 @@ def build_finished(app, exception):
                 raise ValueError("Unable to dump object\n{0}".format(yaml_data)) from e
 
         file_name_set.add(filename)
+
+    index_file = os.path.join(normalized_outdir, 'index.yml')
+    index_children = []
+    index_references = []
+    for package in toc_yaml_with_uid:
+        for item in package.get("items"):
+            index_children.append(item.get('uidname', ''))
+            index_references.append({
+                'uid': item.get('uidname', ''),
+                'name': item.get('name', ''),
+                'fullname': item.get('uidname', ''),
+                'isExternal': False
+            })
+    with open(index_file, 'w') as index_file_obj:
+        index_file_obj.write('### YamlMime:UniversalReference\n')
+        dump(
+            {
+                'items': [{
+                    'uid': 'project-' + app.config.project,
+                    'name': app.config.project,
+                    'fullName': app.config.project,
+                    'langs': ['python'],
+                    'type': 'package',
+                    'kind': 'distribution',
+                    'summary': 'Reference API documentation for `{}`.'.format(app.config.project),
+                    'children': index_children
+                }],
+                'references': index_references
+            },
+            index_file_obj,
+            default_flow_style=False
+        )
 
     '''
     # TODO: handle xref for other products.

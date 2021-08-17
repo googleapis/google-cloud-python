@@ -4,6 +4,9 @@ from docfx_yaml.extension import _resolve_reference_in_module_summary
 from docfx_yaml.extension import REF_PATTERN
 from docfx_yaml.extension import REF_PATTERN_LAST
 from docfx_yaml.extension import _extract_docstring_info
+from docfx_yaml.extension import find_package_group
+from docfx_yaml.extension import pretty_package_name
+from docfx_yaml.extension import group_by_package
 
 import unittest
 
@@ -397,6 +400,143 @@ Simple test for docstring.
         # Same as the top summary from previous example, compare with that
         self.assertEqual(top_summary_got, self.top_summary1_want)
         self.assertDictEqual(summary_info_got, summary_info_want)
+
+
+    def test_find_package_group(self):
+        package_group_want = "google.cloud.spanner_v1beta2"
+        uid = "google.cloud.spanner_v1beta2.services.admin_database_v1.types"
+
+        package_group_got = find_package_group(uid)
+        self.assertEqual(package_group_got, package_group_want)
+
+
+    def test_pretty_package_name(self):
+        package_name_want = "Spanner V1beta2"
+        package_group = "google.cloud.spanner_v1beta2"
+
+        package_name_got = pretty_package_name(package_group)
+        self.assertEqual(package_name_got, package_name_want)
+
+
+    def test_group_by_package(self):
+        toc_yaml_want = [
+            {
+                "name": "Spanner Admin Database V1",
+                "uidname":"google.cloud.spanner_admin_database_v1",
+                "items": [
+                    {
+                      "name":"database_admin",
+                      "uidname":"google.cloud.spanner_admin_database_v1.services.database_admin",
+                      "items":[
+                          {
+                            "name":"Overview",
+                            "uidname":"google.cloud.spanner_admin_database_v1.services.database_admin",
+                            "uid":"google.cloud.spanner_admin_database_v1.services.database_admin"
+                          },
+                          {
+                            "name":"ListBackupOperationsAsyncPager",
+                            "uidname":"google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupOperationsAsyncPager",
+                            "uid":"google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupOperationsAsyncPager"
+                          }
+                      ]
+                    },
+                    {
+                      "name":"spanner_admin_database_v1.types",
+                      "uidname":"google.cloud.spanner_admin_database_v1.types",
+                      "items":[
+                          {
+                            "name":"Overview",
+                            "uidname":"google.cloud.spanner_admin_database_v1.types",
+                            "uid":"google.cloud.spanner_admin_database_v1.types"
+                          },
+                          {
+                            "name":"BackupInfo",
+                            "uidname":"google.cloud.spanner_admin_database_v1.types.BackupInfo",
+                            "uid":"google.cloud.spanner_admin_database_v1.types.BackupInfo"
+                          }
+                      ]
+                    },
+                ]
+            },
+            {
+                "name": "Spanner V1",
+                "uidname":"google.cloud.spanner_v1",
+                "items": [
+                    {
+                      "name":"pool",
+                      "uidname":"google.cloud.spanner_v1.pool",
+                      "items":[
+                          {
+                            "name":"Overview",
+                            "uidname":"google.cloud.spanner_v1.pool",
+                            "uid":"google.cloud.spanner_v1.pool"
+                          },
+                          {
+                            "name":"AbstractSessionPool",
+                            "uidname":"google.cloud.spanner_v1.pool.AbstractSessionPool",
+                            "uid":"google.cloud.spanner_v1.pool.AbstractSessionPool"
+                          }
+                      ]
+                    }
+                ]
+            }
+        ]
+
+        toc_yaml = [
+            {
+              "name":"database_admin",
+              "uidname":"google.cloud.spanner_admin_database_v1.services.database_admin",
+              "items":[
+                  {
+                    "name":"Overview",
+                    "uidname":"google.cloud.spanner_admin_database_v1.services.database_admin",
+                    "uid":"google.cloud.spanner_admin_database_v1.services.database_admin"
+                  },
+                  {
+                    "name":"ListBackupOperationsAsyncPager",
+                    "uidname":"google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupOperationsAsyncPager",
+                    "uid":"google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupOperationsAsyncPager"
+                  }
+              ]
+            },
+            {
+              "name":"spanner_admin_database_v1.types",
+              "uidname":"google.cloud.spanner_admin_database_v1.types",
+              "items":[
+                  {
+                    "name":"Overview",
+                    "uidname":"google.cloud.spanner_admin_database_v1.types",
+                    "uid":"google.cloud.spanner_admin_database_v1.types"
+                  },
+                  {
+                    "name":"BackupInfo",
+                    "uidname":"google.cloud.spanner_admin_database_v1.types.BackupInfo",
+                    "uid":"google.cloud.spanner_admin_database_v1.types.BackupInfo"
+                  }
+              ]
+            },
+            {
+              "name":"pool",
+              "uidname":"google.cloud.spanner_v1.pool",
+              "items":[
+                  {
+                    "name":"Overview",
+                    "uidname":"google.cloud.spanner_v1.pool",
+                    "uid":"google.cloud.spanner_v1.pool"
+                  },
+                  {
+                    "name":"AbstractSessionPool",
+                    "uidname":"google.cloud.spanner_v1.pool.AbstractSessionPool",
+                    "uid":"google.cloud.spanner_v1.pool.AbstractSessionPool"
+                  }
+              ]
+            }
+        ]
+
+        toc_yaml_got = group_by_package(toc_yaml)
+
+        self.assertCountEqual(toc_yaml_got, toc_yaml_want)
+
 
 if __name__ == '__main__':
     unittest.main()
