@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.0.0](https://www.github.com/googleapis/google-auth-library-python/compare/v2.0.0-b1...v2.0.0) (2021-08-16)
+
+
+### ⚠ BREAKING CHANGES
+* drop support for Python 2.7 ([#778](https://www.github.com/googleapis/google-auth-library-python/issues/778)) ([560cf1e](https://www.github.com/googleapis/google-auth-library-python/commit/560cf1ed02a900436c5d9e0a0fb3f94b5fd98c55))
+
+
+### Features
+
+* service account is able to use a private token endpoint ([#835](https://www.github.com/googleapis/google-auth-library-python/issues/835)) ([20b817a](https://www.github.com/googleapis/google-auth-library-python/commit/20b817af8e202b0331998e5abde4e2a5aab51f9a))
+
+
+### Bug Fixes
+
+* downscoping documentation bugs ([#830](https://www.github.com/googleapis/google-auth-library-python/issues/830)) ([da8bb13](https://www.github.com/googleapis/google-auth-library-python/commit/da8bb13c1349e771ffc2e125256030495c53d956))
+* Fix missing space in error message. ([#821](https://www.github.com/googleapis/google-auth-library-python/issues/821)) ([7b03988](https://www.github.com/googleapis/google-auth-library-python/commit/7b039888aeb6ec7691d91c9afce182b17f02b1a6))
+
+
+### Documentation
+
+* update user guide/references for downscoped creds ([#827](https://www.github.com/googleapis/google-auth-library-python/issues/827)) ([d1840dc](https://www.github.com/googleapis/google-auth-library-python/commit/d1840dcdcd03dfd7fdfa81d08da68402f6f8b658))
+
 ## [2.0.0b1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.34.0...v2.0.0b1) (2021-08-03)
 
 
