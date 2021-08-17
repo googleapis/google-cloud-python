@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.0.0...v1.1.0) (2021-08-17)
+
+
+### Features
+
+* Added the Backup resource and Backup resource GetIamPolicy/SetIamPolicy to V1 feat: Added the RestoreService method to V1 ([#63](https://www.github.com/googleapis/python-dataproc-metastore/issues/63)) ([483cc6e](https://www.github.com/googleapis/python-dataproc-metastore/commit/483cc6e90eff74e746adcb2e5ea67decc64aa217))
+
 ## [1.0.0](https://www.github.com/googleapis/python-dataproc-metastore/compare/v0.3.1...v1.0.0) (2021-08-03)
 
 
