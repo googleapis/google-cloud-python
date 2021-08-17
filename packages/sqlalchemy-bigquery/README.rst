@@ -1,15 +1,15 @@
 SQLAlchemy Dialect for BigQuery
 ===============================
 
-|beta| |pypi| |versions|
+|GA| |pypi| |versions|
 
 `SQLALchemy Dialects`_
 
 - `Dialect Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/sqlalchemy-bigquery.svg
    :target: https://pypi.org/project/sqlalchemy-bigquery/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/sqlalchemy-bigquery.svg

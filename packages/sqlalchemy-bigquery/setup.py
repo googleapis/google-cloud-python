@@ -32,7 +32,7 @@ description = "SQLAlchemy dialect for BigQuery"
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
-release_status = "Development Status :: 4 - Beta"
+release_status = "Development Status :: 5 - Production/Stable"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(package_root, "sqlalchemy_bigquery", "version.py")) as f:
