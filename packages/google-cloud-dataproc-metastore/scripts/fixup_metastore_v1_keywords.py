@@ -39,14 +39,19 @@ def partition(
 class metastoreCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+          'create_backup': ('parent', 'backup_id', 'backup', 'request_id', ),
           'create_metadata_import': ('parent', 'metadata_import_id', 'metadata_import', 'request_id', ),
           'create_service': ('parent', 'service_id', 'service', 'request_id', ),
+          'delete_backup': ('name', 'request_id', ),
           'delete_service': ('name', 'request_id', ),
           'export_metadata': ('service', 'destination_gcs_folder', 'request_id', 'database_dump_type', ),
+          'get_backup': ('name', ),
           'get_metadata_import': ('name', ),
           'get_service': ('name', ),
+          'list_backups': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
           'list_metadata_imports': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
           'list_services': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+          'restore_service': ('service', 'backup', 'restore_type', 'request_id', ),
           'update_metadata_import': ('update_mask', 'metadata_import', 'request_id', ),
           'update_service': ('update_mask', 'service', 'request_id', ),
     }

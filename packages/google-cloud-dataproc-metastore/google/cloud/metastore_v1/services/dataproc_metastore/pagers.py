@@ -281,3 +281,131 @@ class ListMetadataImportsAsyncPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupsPager:
+    """A pager for iterating through ``list_backups`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.metastore_v1.types.ListBackupsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``backups`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListBackups`` requests and continue to iterate
+    through the ``backups`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.metastore_v1.types.ListBackupsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., metastore.ListBackupsResponse],
+        request: metastore.ListBackupsRequest,
+        response: metastore.ListBackupsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.metastore_v1.types.ListBackupsRequest):
+                The initial request object.
+            response (google.cloud.metastore_v1.types.ListBackupsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = metastore.ListBackupsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterable[metastore.ListBackupsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterable[metastore.Backup]:
+        for page in self.pages:
+            yield from page.backups
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupsAsyncPager:
+    """A pager for iterating through ``list_backups`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.metastore_v1.types.ListBackupsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``backups`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListBackups`` requests and continue to iterate
+    through the ``backups`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.metastore_v1.types.ListBackupsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[metastore.ListBackupsResponse]],
+        request: metastore.ListBackupsRequest,
+        response: metastore.ListBackupsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.metastore_v1.types.ListBackupsRequest):
+                The initial request object.
+            response (google.cloud.metastore_v1.types.ListBackupsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = metastore.ListBackupsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterable[metastore.ListBackupsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterable[metastore.Backup]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.backups:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

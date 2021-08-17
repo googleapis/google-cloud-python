@@ -190,6 +190,21 @@ class DataprocMetastoreTransport(abc.ABC):
             self.export_metadata: gapic_v1.method.wrap_method(
                 self.export_metadata, default_timeout=60.0, client_info=client_info,
             ),
+            self.restore_service: gapic_v1.method.wrap_method(
+                self.restore_service, default_timeout=60.0, client_info=client_info,
+            ),
+            self.list_backups: gapic_v1.method.wrap_method(
+                self.list_backups, default_timeout=None, client_info=client_info,
+            ),
+            self.get_backup: gapic_v1.method.wrap_method(
+                self.get_backup, default_timeout=None, client_info=client_info,
+            ),
+            self.create_backup: gapic_v1.method.wrap_method(
+                self.create_backup, default_timeout=60.0, client_info=client_info,
+            ),
+            self.delete_backup: gapic_v1.method.wrap_method(
+                self.delete_backup, default_timeout=60.0, client_info=client_info,
+            ),
         }
 
     @property
@@ -288,6 +303,51 @@ class DataprocMetastoreTransport(abc.ABC):
         self,
     ) -> Callable[
         [metastore.ExportMetadataRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def restore_service(
+        self,
+    ) -> Callable[
+        [metastore.RestoreServiceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backups(
+        self,
+    ) -> Callable[
+        [metastore.ListBackupsRequest],
+        Union[metastore.ListBackupsResponse, Awaitable[metastore.ListBackupsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup(
+        self,
+    ) -> Callable[
+        [metastore.GetBackupRequest],
+        Union[metastore.Backup, Awaitable[metastore.Backup]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_backup(
+        self,
+    ) -> Callable[
+        [metastore.CreateBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_backup(
+        self,
+    ) -> Callable[
+        [metastore.DeleteBackupRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

@@ -40,12 +40,11 @@ from .client import DataprocMetastoreClient
 
 class DataprocMetastoreAsyncClient:
     """Configures and manages metastore services. Metastore services are
-    fully managed, highly available, auto-scaled, auto-healing,
-    OSS-native deployments of technical metadata management software.
-    Each metastore service exposes a network endpoint through which
-    metadata queries are served. Metadata queries can originate from a
-    variety of sources, including Apache Hive, Apache Presto, and Apache
-    Spark.
+    fully managed, highly available, autoscaled, autohealing, OSS-native
+    deployments of technical metadata management software. Each
+    metastore service exposes a network endpoint through which metadata
+    queries are served. Metadata queries can originate from a variety of
+    sources, including Apache Hive, Apache Presto, and Apache Spark.
 
     The Dataproc Metastore API defines the following resource model:
 
@@ -69,6 +68,8 @@ class DataprocMetastoreAsyncClient:
     DEFAULT_ENDPOINT = DataprocMetastoreClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = DataprocMetastoreClient.DEFAULT_MTLS_ENDPOINT
 
+    backup_path = staticmethod(DataprocMetastoreClient.backup_path)
+    parse_backup_path = staticmethod(DataprocMetastoreClient.parse_backup_path)
     metadata_import_path = staticmethod(DataprocMetastoreClient.metadata_import_path)
     parse_metadata_import_path = staticmethod(
         DataprocMetastoreClient.parse_metadata_import_path
@@ -1086,6 +1087,460 @@ class DataprocMetastoreAsyncClient:
             response,
             self._client._transport.operations_client,
             metastore.MetadataExport,
+            metadata_type=metastore.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def restore_service(
+        self,
+        request: metastore.RestoreServiceRequest = None,
+        *,
+        service: str = None,
+        backup: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Restores a service from a backup.
+
+        Args:
+            request (:class:`google.cloud.metastore_v1.types.RestoreServiceRequest`):
+                The request object. Request message for
+                [DataprocMetastore.Restore][].
+            service (:class:`str`):
+                Required. The relative resource name of the metastore
+                service to run restore, in the following form:
+
+                ``projects/{project_id}/locations/{location_id}/services/{service_id}``.
+
+                This corresponds to the ``service`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backup (:class:`str`):
+                Required. The relative resource name of the metastore
+                service backup to restore from, in the following form:
+
+                ``projects/{project_id}/locations/{location_id}/services/{service_id}/backups/{backup_id}``.
+
+                This corresponds to the ``backup`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.metastore_v1.types.Restore` The
+                details of a metadata restore operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([service, backup])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = metastore.RestoreServiceRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if service is not None:
+            request.service = service
+        if backup is not None:
+            request.backup = backup
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.restore_service,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("service", request.service),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            metastore.Restore,
+            metadata_type=metastore.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_backups(
+        self,
+        request: metastore.ListBackupsRequest = None,
+        *,
+        parent: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListBackupsAsyncPager:
+        r"""Lists backups in a service.
+
+        Args:
+            request (:class:`google.cloud.metastore_v1.types.ListBackupsRequest`):
+                The request object. Request message for
+                [DataprocMetastore.ListBackups][google.cloud.metastore.v1.DataprocMetastore.ListBackups].
+            parent (:class:`str`):
+                Required. The relative resource name of the service
+                whose backups to list, in the following form:
+
+                ``projects/{project_number}/locations/{location_id}/services/{service_id}/backups``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.metastore_v1.services.dataproc_metastore.pagers.ListBackupsAsyncPager:
+                Response message for
+                [DataprocMetastore.ListBackups][google.cloud.metastore.v1.DataprocMetastore.ListBackups].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = metastore.ListBackupsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_backups,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListBackupsAsyncPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_backup(
+        self,
+        request: metastore.GetBackupRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> metastore.Backup:
+        r"""Gets details of a single backup.
+
+        Args:
+            request (:class:`google.cloud.metastore_v1.types.GetBackupRequest`):
+                The request object. Request message for
+                [DataprocMetastore.GetBackup][google.cloud.metastore.v1.DataprocMetastore.GetBackup].
+            name (:class:`str`):
+                Required. The relative resource name of the backup to
+                retrieve, in the following form:
+
+                ``projects/{project_number}/locations/{location_id}/services/{service_id}/backups/{backup_id}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.metastore_v1.types.Backup:
+                The details of a backup resource.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = metastore.GetBackupRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_backup,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def create_backup(
+        self,
+        request: metastore.CreateBackupRequest = None,
+        *,
+        parent: str = None,
+        backup: metastore.Backup = None,
+        backup_id: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a new backup in a given project and location.
+
+        Args:
+            request (:class:`google.cloud.metastore_v1.types.CreateBackupRequest`):
+                The request object. Request message for
+                [DataprocMetastore.CreateBackup][google.cloud.metastore.v1.DataprocMetastore.CreateBackup].
+            parent (:class:`str`):
+                Required. The relative resource name of the service in
+                which to create a backup of the following form:
+
+                ``projects/{project_number}/locations/{location_id}/services/{service_id}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backup (:class:`google.cloud.metastore_v1.types.Backup`):
+                Required. The backup to create. The ``name`` field is
+                ignored. The ID of the created backup must be provided
+                in the request's ``backup_id`` field.
+
+                This corresponds to the ``backup`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backup_id (:class:`str`):
+                Required. The ID of the backup, which
+                is used as the final component of the
+                backup's name.
+                This value must be between 1 and 64
+                characters long, begin with a letter,
+                end with a letter or number, and consist
+                of alpha-numeric ASCII characters or
+                hyphens.
+
+                This corresponds to the ``backup_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.metastore_v1.types.Backup` The
+                details of a backup resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, backup, backup_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = metastore.CreateBackupRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if backup is not None:
+            request.backup = backup
+        if backup_id is not None:
+            request.backup_id = backup_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_backup,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            metastore.Backup,
+            metadata_type=metastore.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_backup(
+        self,
+        request: metastore.DeleteBackupRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes a single backup.
+
+        Args:
+            request (:class:`google.cloud.metastore_v1.types.DeleteBackupRequest`):
+                The request object. Request message for
+                [DataprocMetastore.DeleteBackup][google.cloud.metastore.v1.DataprocMetastore.DeleteBackup].
+            name (:class:`str`):
+                Required. The relative resource name of the backup to
+                delete, in the following form:
+
+                ``projects/{project_number}/locations/{location_id}/services/{service_id}/backups/{backup_id}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+                   The JSON representation for Empty is empty JSON
+                   object {}.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = metastore.DeleteBackupRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_backup,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
             metadata_type=metastore.OperationMetadata,
         )
 
