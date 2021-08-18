@@ -28,8 +28,9 @@ import nox
 # WARNING - WARNING - WARNING - WARNING - WARNING
 # WARNING - WARNING - WARNING - WARNING - WARNING
 
-# Copy `noxfile_config.py` to your directory and modify it instead.
+BLACK_VERSION = "black==19.10b0"
 
+# Copy `noxfile_config.py` to your directory and modify it instead.
 
 # `TEST_CONFIG` dict is a configuration hook that allows users to
 # modify the test configurations. The values here should be in sync
@@ -38,7 +39,7 @@ import nox
 
 TEST_CONFIG = {
     # You can opt out from the test for specific Python versions.
-    'ignored_versions': ["2.7"],
+    'ignored_versions': [],
 
     # Old samples are opted out of enforcing Python type hints
     # All new samples should feature them
@@ -50,7 +51,10 @@ TEST_CONFIG = {
     # to use your own Cloud project.
     'gcloud_project_env': 'GOOGLE_CLOUD_PROJECT',
     # 'gcloud_project_env': 'BUILD_SPECIFIC_GCLOUD_PROJECT',
-
+    # If you need to use a specific version of pip,
+    # change pip_version_override to the string representation
+    # of the version number, for example, "20.2.4"
+    "pip_version_override": None,
     # A dictionary you want to inject into your test. Don't put any
     # secrets here. These values will override predefined values.
     'envs': {},
@@ -77,7 +81,6 @@ def get_pytest_env_vars() -> Dict[str, str]:
     env_key = TEST_CONFIG['gcloud_project_env']
     # This should error out if not set.
     ret['GOOGLE_CLOUD_PROJECT'] = os.environ[env_key]
-    ret['GCLOUD_PROJECT'] = os.environ[env_key]  # deprecated
 
     # Apply user supplied envs.
     ret.update(TEST_CONFIG['envs'])
@@ -85,15 +88,15 @@ def get_pytest_env_vars() -> Dict[str, str]:
 
 
 # DO NOT EDIT - automatically generated.
-# All versions used to tested samples.
-ALL_VERSIONS = ["2.7", "3.6", "3.7", "3.8", "3.9"]
+# All versions used to test samples.
+ALL_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
 
 # Any default versions that should be ignored.
 IGNORED_VERSIONS = TEST_CONFIG['ignored_versions']
 
 TESTED_VERSIONS = sorted([v for v in ALL_VERSIONS if v not in IGNORED_VERSIONS])
 
-INSTALL_LIBRARY_FROM_SOURCE = bool(os.environ.get("INSTALL_LIBRARY_FROM_SOURCE", False))
+INSTALL_LIBRARY_FROM_SOURCE = os.environ.get("INSTALL_LIBRARY_FROM_SOURCE", False) in ("True", "true")
 #
 # Style Checks
 #
@@ -110,8 +113,8 @@ def _determine_local_import_names(start_dir: str) -> List[str]:
         basename
         for basename, extension in file_ext_pairs
         if extension == ".py"
-           or os.path.isdir(os.path.join(start_dir, basename))
-           and basename not in ("__pycache__")
+        or os.path.isdir(os.path.join(start_dir, basename))
+        and basename not in ("__pycache__")
     ]
 
 
@@ -150,19 +153,17 @@ def lint(session: nox.sessions.Session) -> None:
         "."
     ]
     session.run("flake8", *args)
-
-
 #
 # Black
 #
 
+
 @nox.session
 def blacken(session: nox.sessions.Session) -> None:
-    session.install("black")
+    session.install(BLACK_VERSION)
     python_files = [path for path in os.listdir(".") if path.endswith(".py")]
 
     session.run("black", *python_files)
-
 
 #
 # Sample Tests
@@ -173,6 +174,9 @@ PYTEST_COMMON_ARGS = ["--junitxml=sponge_log.xml"]
 
 
 def _session_tests(session: nox.sessions.Session, post_install: Callable = None) -> None:
+    if TEST_CONFIG["pip_version_override"]:
+        pip_version = TEST_CONFIG["pip_version_override"]
+        session.install(f"pip=={pip_version}")
     """Runs py.test for a particular project."""
     if os.path.exists("requirements.txt"):
         if os.path.exists("constraints.txt"):
@@ -221,13 +225,17 @@ def py(session: nox.sessions.Session) -> None:
 
 def _get_repo_root() -> Optional[str]:
     """ Returns the root folder of the project. """
-    # Get root of this repository.
-    # Assume we don't have directories nested deeper than 10 items.
+    # Get root of this repository. Assume we don't have directories nested deeper than 10 items.
     p = Path(os.getcwd())
     for i in range(10):
         if p is None:
             break
         if Path(p / ".git").exists():
+            return str(p)
+        # .git is not available in repos cloned via Cloud Build
+        # setup.py is always in the library's root, so use that instead
+        # https://github.com/googleapis/synthtool/issues/792
+        if Path(p / "setup.py").exists():
             return str(p)
         p = p.parent
     raise Exception("Unable to detect repository root.")
