@@ -18,6 +18,7 @@ import re
 
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 common = gcp.CommonTemplates()
 
@@ -45,5 +46,7 @@ s.move(
         "CONTRIBUTING.rst",
     ],
 )
+
+python.py_samples(skip_readmes=True)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
