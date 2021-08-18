@@ -18,7 +18,7 @@ across the Cloud Resource Hierarchy.
    :target: https://pypi.org/project/google-cloud-resource-settings/
 .. _Resource Settings: https://cloud.google.com/resource-settings
 .. _Client Library Documentation: https://googleapis.dev/python/resourcesettings/latest
-.. _Product Documentation:  https://cloud.google.com/resource-settings
+.. _Product Documentation:  https://cloud.google.com/resource-manager/docs/resource-settings/overview
 
 Quick Start
 -----------
@@ -80,5 +80,5 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Resource Settings Product documentation:  https://cloud.google.com/resource-settings/docs
+.. _Resource Settings Product documentation:  https://cloud.google.com/resource-manager/docs/resource-settings/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
