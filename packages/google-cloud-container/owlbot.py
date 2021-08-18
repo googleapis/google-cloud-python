@@ -15,6 +15,7 @@
 """This script is used to synthesize generated parts of this library."""
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 common = gcp.CommonTemplates()
 
@@ -94,9 +95,9 @@ templated_files = common.py_library(
     microgenerator=True,
     cov_level=99,
 )
-python.py_samples(skip_readmes=True)
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
+python.py_samples(skip_readmes=True)
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
