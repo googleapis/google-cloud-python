@@ -181,7 +181,16 @@ class AppProfile(proto.Message):
         available in the event of transient errors or delays. Clusters
         in a region are considered equidistant. Choosing this option
         sacrifices read-your-writes consistency to improve availability.
-            """
+
+        Attributes:
+            cluster_ids (Sequence[str]):
+                The set of clusters to route to. The order is
+                ignored; clusters will be tried in order of
+                distance. If left empty, all clusters are
+                eligible.
+        """
+
+        cluster_ids = proto.RepeatedField(proto.STRING, number=1,)
 
     class SingleClusterRouting(proto.Message):
         r"""Unconditionally routes all read/write requests to a specific
