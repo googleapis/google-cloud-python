@@ -16,6 +16,7 @@
 
 import synthtool as s
 import synthtool.gcp as gcp
+from synthtool.languages import python
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
@@ -38,7 +39,8 @@ templated_files = common.py_library(
     microgenerator=True,
     cov_level=98,
 )
-python.py_samples(skip_readmes=True)
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
+
+python.py_samples(skip_readmes=True)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
