@@ -138,6 +138,7 @@ templated_files = common.py_library(
     cov_level=100,
     split_system_tests=True,
 )
+python.py_samples(skip_readmes=True)
 
 s.move(templated_files)
 
