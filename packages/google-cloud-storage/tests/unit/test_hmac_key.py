@@ -173,7 +173,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
 
     def test_time_created_getter(self):
         import datetime
-        from pytz import UTC
+        from google.cloud._helpers import UTC
 
         metadata = self._make_one()
         now = datetime.datetime.utcnow()
@@ -183,7 +183,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
 
     def test_updated_getter(self):
         import datetime
-        from pytz import UTC
+        from google.cloud._helpers import UTC
 
         metadata = self._make_one()
         now = datetime.datetime.utcnow()

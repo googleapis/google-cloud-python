@@ -366,10 +366,10 @@ class Test_IAMConfiguration(unittest.TestCase):
 
     def test_ctor_explicit_ubla(self):
         import datetime
-        import pytz
+        from google.cloud._helpers import UTC
 
         bucket = self._make_bucket()
-        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
 
         config = self._make_one(
             bucket,
@@ -403,10 +403,10 @@ class Test_IAMConfiguration(unittest.TestCase):
 
     def test_ctor_explicit_bpo(self):
         import datetime
-        import pytz
+        from google.cloud._helpers import UTC
 
         bucket = self._make_bucket()
-        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
 
         config = pytest.deprecated_call(
             self._make_one,
@@ -433,10 +433,10 @@ class Test_IAMConfiguration(unittest.TestCase):
 
     def test_ctor_ubla_and_bpo_time(self):
         import datetime
-        import pytz
+        from google.cloud._helpers import UTC
 
         bucket = self._make_bucket()
-        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
 
         with self.assertRaises(ValueError):
             self._make_one(
@@ -481,12 +481,12 @@ class Test_IAMConfiguration(unittest.TestCase):
 
     def test_from_api_repr_w_enabled(self):
         import datetime
-        import pytz
+        from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_rfc3339
 
         klass = self._get_target_class()
         bucket = self._make_bucket()
-        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         resource = {
             "uniformBucketLevelAccess": {
                 "enabled": True,
@@ -2174,11 +2174,11 @@ class Test_Bucket(unittest.TestCase):
 
     def test_iam_configuration_policy_w_entry(self):
         import datetime
-        import pytz
+        from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud.storage.bucket import IAMConfiguration
 
-        now = datetime.datetime.utcnow().replace(tzinfo=pytz.UTC)
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         NAME = "name"
         properties = {
             "iamConfiguration": {

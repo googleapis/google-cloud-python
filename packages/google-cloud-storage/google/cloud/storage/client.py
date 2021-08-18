@@ -1613,10 +1613,10 @@ class Client(ClientWithProject):
         Example:
             Generate signed POST policy and upload a file.
 
+            >>> import datetime
             >>> from google.cloud import storage
-            >>> import pytz
             >>> client = storage.Client()
-            >>> tz = pytz.timezone('America/New_York')
+            >>> tz = datetime.timezone(datetime.timedelta(hours=1), 'CET')
             >>> policy = client.generate_signed_post_policy_v4(
                 "bucket-name",
                 "blob-name",

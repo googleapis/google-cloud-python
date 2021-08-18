@@ -1778,7 +1778,7 @@ class TestClient(unittest.TestCase):
         self, explicit_project=None, user_project=None, timeout=None, retry=None,
     ):
         import datetime
-        from pytz import UTC
+        from google.cloud._helpers import UTC
         from google.cloud.storage.hmac_key import HMACKeyMetadata
 
         project = "PROJECT"

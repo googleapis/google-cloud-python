@@ -44,6 +44,24 @@ def _utc_seconds(when):
     return int(calendar.timegm(when.timetuple()))
 
 
+def _make_cet_timezone():
+    try:
+        from datetime import timezone
+
+    except ImportError:  # Python 2.7
+        from google.cloud._helpers import _UTC
+
+        class CET(_UTC):
+            _tzname = "CET"
+            _utcoffset = datetime.timedelta(hours=1)
+
+        return CET()
+    else:
+        from datetime import timedelta
+
+        return timezone(timedelta(hours=1), name="CET")
+
+
 class Test_get_expiration_seconds_v2(unittest.TestCase):
     @staticmethod
     def _call_fut(expiration):
@@ -81,13 +99,7 @@ class Test_get_expiration_seconds_v2(unittest.TestCase):
         self.assertEqual(self._call_fut(expiration_utc), utc_seconds)
 
     def test_w_expiration_other_zone_datetime(self):
-        from google.cloud._helpers import _UTC
-
-        class CET(_UTC):
-            _tzname = "CET"
-            _utcoffset = datetime.timedelta(hours=1)
-
-        zone = CET()
+        zone = _make_cet_timezone()
         expiration_other = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, zone)
         utc_seconds = _utc_seconds(expiration_other)
         cet_seconds = utc_seconds - (60 * 60)  # CET one hour earlier than UTC
@@ -198,13 +210,8 @@ class Test_get_expiration_seconds_v4(unittest.TestCase):
 
     def test_w_expiration_other_zone_datetime(self):
         from google.cloud._helpers import UTC
-        from google.cloud._helpers import _UTC
 
-        class CET(_UTC):
-            _tzname = "CET"
-            _utcoffset = datetime.timedelta(hours=1)
-
-        zone = CET()
+        zone = _make_cet_timezone()
         fake_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, UTC)
         fake_cetnow = fake_utcnow.astimezone(zone)
         delta = datetime.timedelta(seconds=10)
