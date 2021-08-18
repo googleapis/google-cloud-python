@@ -73,6 +73,7 @@ s.remove_staging_dirs()
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(cov_level=98, microgenerator=True)
+python.py_samples(skip_readmes=True)
 s.move(templated_files)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
