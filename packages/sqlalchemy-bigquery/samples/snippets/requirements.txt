@@ -25,7 +25,7 @@ googleapis-common-protos==1.53.0
 greenlet==1.1.0
 grpcio==1.39.0
 idna==3.2
-immutables==0.15
+immutables==0.16
 importlib-metadata==4.6.1
 libcst==0.3.19
 munch==2.5.0
