@@ -54,7 +54,7 @@ rsa==4.7.2
 Shapely==1.7.1
 six==1.16.0
 SQLAlchemy==1.4.22
-tqdm==4.61.2
+tqdm==4.62.1
 typing-extensions==3.10.0.0
 typing-inspect==0.7.1
 urllib3==1.26.6
