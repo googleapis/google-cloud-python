@@ -72,6 +72,7 @@ templated_files = common.py_library(
     microgenerator=True,
     cov_level=99,
 )
+python.py_samples(skip_readmes=True)
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
