@@ -54,6 +54,7 @@ s.remove_staging_dirs()
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(microgenerator=True, split_system_tests=True,)
+python.py_samples(skip_readmes=True)
 s.move(templated_files, excludes=["docs/multiprocessing.rst", ".coveragerc"])
 
 
