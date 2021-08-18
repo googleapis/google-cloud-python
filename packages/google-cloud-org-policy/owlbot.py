@@ -43,6 +43,7 @@ s.remove_staging_dirs()
 
 # coverage is 97 to exclude orgpolicy/v1 code
 templated_files = common.py_library(microgenerator=True, cov_level=95)
+python.py_samples(skip_readmes=True)
 s.move(
     templated_files, excludes=[".coveragerc",]
 )
