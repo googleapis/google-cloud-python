@@ -34,7 +34,12 @@ def sample_import_instance():
     client = redis_v1.CloudRedisClient()
 
     # Initialize request argument(s)
+    input_config = redis_v1.InputConfig()
+    input_config.gcs_source.uri = "uri_value"
+
     request = redis_v1.ImportInstanceRequest(
+        name="name_value",
+        input_config=input_config,
     )
 
     # Make the request

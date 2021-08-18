@@ -35,6 +35,7 @@ async def sample_list_buckets():
 
     # Initialize request argument(s)
     request = logging_v2.ListBucketsRequest(
+        parent="projects/{project}/locations/{location}/buckets/{bucket}",
     )
 
     # Make the request

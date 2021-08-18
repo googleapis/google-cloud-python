@@ -35,6 +35,7 @@ def sample_failover_instance():
 
     # Initialize request argument(s)
     request = redis_v1.FailoverInstanceRequest(
+        name="projects/{project}/locations/{location}/instances/{instance}",
     )
 
     # Make the request

@@ -35,6 +35,7 @@ def sample_get_log_metric():
 
     # Initialize request argument(s)
     request = logging_v2.GetLogMetricRequest(
+        metric_name="projects/{project}/metrics/{metric}",
     )
 
     # Make the request

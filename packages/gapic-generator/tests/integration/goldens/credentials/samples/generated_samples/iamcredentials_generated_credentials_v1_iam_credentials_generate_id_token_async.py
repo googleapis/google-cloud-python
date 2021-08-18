@@ -35,6 +35,8 @@ async def sample_generate_id_token():
 
     # Initialize request argument(s)
     request = credentials_v1.GenerateIdTokenRequest(
+        name="projects/{project}/serviceAccounts/{service_account}",
+        audience="audience_value",
     )
 
     # Make the request

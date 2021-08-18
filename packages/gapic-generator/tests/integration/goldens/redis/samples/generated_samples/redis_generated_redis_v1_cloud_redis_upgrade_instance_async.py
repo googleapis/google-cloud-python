@@ -35,6 +35,8 @@ async def sample_upgrade_instance():
 
     # Initialize request argument(s)
     request = redis_v1.UpgradeInstanceRequest(
+        name="projects/{project}/locations/{location}/instances/{instance}",
+        redis_version="redis_version_value",
     )
 
     # Make the request

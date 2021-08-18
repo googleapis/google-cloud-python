@@ -39,22 +39,56 @@ class DummyMethod:
 
 DummyIdent = namedtuple("DummyIdent", ["name"])
 
-DummyMessage = namedtuple(
-    "DummyMessage", ["fields", "type", "options", "ident"])
-DummyMessage.__new__.__defaults__ = (False,) * len(DummyMessage._fields)
+DummyMessageTypePB = namedtuple("DummyMessageTypePB", ["name"])
 
-DummyField = namedtuple("DummyField",
+# DummyMessageBase = namedtuple(
+#     "DummyMessage", ["fields", "type", "options", "ident",])
+# DummyMessageBase.__new__.__defaults__ = (False,) * len(DummyMessageBase._fields)
+
+
+DummyFieldBase = namedtuple("DummyField",
                         ["message",
                          "enum",
                          "name",
                          "repeated",
+                         "required",
+                         "resource_reference",
+                         "oneof",
                          "field_pb",
                          "meta",
                          "is_primitive",
                          "type"])
-DummyField.__new__.__defaults__ = (False,) * len(DummyField._fields)
+DummyFieldBase.__new__.__defaults__ = (False,) * len(DummyFieldBase._fields)
 
-DummyService = namedtuple("DummyService", ["methods", "client_name"])
+
+class DummyField(DummyFieldBase):
+    @property
+    def mock_value_original_type(self):
+        return "mock_value"
+
+
+class DummyMessage:
+    def __init__(self, *, fields={}, type="", options=False, ident=False, resource_path=False):
+        self.fields = fields
+        self.type = type
+        self.options = options
+        self.ident = ident
+        self.resource_path = resource_path
+
+    def get_field(self, field_name: str):
+        return self.fields[field_name]
+
+    def oneof_fields(self):
+        return dict((field.oneof, field) for field in self.fields.values() if field.oneof)
+
+    @property
+    def required_fields(self):
+        return [field for field in self.fields.values() if field.required]
+
+
+DummyService = namedtuple("DummyService", [
+                          "methods", "client_name", "async_client_name", "resource_messages_dict"])
+DummyService.__new__.__defaults__ = (False,) * len(DummyService._fields)
 
 DummyApiSchema = namedtuple("DummyApiSchema",
                             ["services", "naming", "messages"])
@@ -76,7 +110,8 @@ def message_factory(exp: str,
     # used to describe the field and type hierarchy,
     # e.g. "mollusc.cephalopod.coleoid"
     toks = exp.split(".")
-    messages = [DummyMessage({}, tok.upper() + "_TYPE") for tok in toks]
+    messages = [DummyMessage(fields={}, type=tok.upper() + "_TYPE")
+                for tok in toks]
     if enum:
         messages[-1] = enum
 

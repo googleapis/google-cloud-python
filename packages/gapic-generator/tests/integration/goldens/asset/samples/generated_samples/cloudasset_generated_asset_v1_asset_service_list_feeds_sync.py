@@ -35,6 +35,7 @@ def sample_list_feeds():
 
     # Initialize request argument(s)
     request = asset_v1.ListFeedsRequest(
+        parent="parent_value",
     )
 
     # Make the request

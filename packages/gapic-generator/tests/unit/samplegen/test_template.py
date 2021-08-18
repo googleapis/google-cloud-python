@@ -64,7 +64,7 @@ def test_render_attr_value():
         {{ frags.render_request_attr("mollusc", request) }}
         ''',
         '''
-        mollusc["order"] = Molluscs.Cephalopoda.Coleoidea
+        mollusc.order = Molluscs.Cephalopoda.Coleoidea
         ''',
         request=samplegen.AttributeRequestSetup(
             field="order",
@@ -80,8 +80,9 @@ def test_render_attr_input_parameter():
         {{ frags.render_request_attr("squid", request) }}
         ''',
         '''
+
         # species = 'Humboldt'
-        squid["species"] = species
+        squid.species = species
         ''',
         request=samplegen.AttributeRequestSetup(field="species",
                                                 value="'Humboldt'",
@@ -95,9 +96,10 @@ def test_render_attr_file():
         {{ frags.render_request_attr("classify_mollusc_request", request) }}
         ''',
         '''
+
         # mollusc_video_path = 'path/to/mollusc/video.mkv'
         with open(mollusc_video_path, "rb") as f:
-            classify_mollusc_request["mollusc_video"] = f.read()
+            classify_mollusc_request.mollusc_video = f.read()
         ''',
         request=samplegen.AttributeRequestSetup(field="mollusc_video",
                                                 value="'path/to/mollusc/video.mkv'",
@@ -110,29 +112,29 @@ def test_render_request_basic():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_request_setup(request) }}
+        {{ frags.render_request_setup(request, module_name, request_type) }}
         ''',
         '''
         # Initialize request argument(s)
-        cephalopod = {}
+        cephalopod = mollusca.Cephalopod()
+
         # cephalopod_mass = '10 kg'
-        cephalopod["mantle_mass"] = cephalopod_mass
+        cephalopod.mantle_mass = cephalopod_mass
 
         # photo_path = 'path/to/cephalopod/photo.jpg'
         with open(photo_path, "rb") as f:
-            cephalopod["photo"] = f.read()
+            cephalopod.photo = f.read()
+        cephalopod.order = Molluscs.Cephalopoda.Coleoidea
 
-        cephalopod["order"] = Molluscs.Cephalopoda.Coleoidea
+        gastropod = mollusca.Gastropod()
 
-        gastropod = {}
         # gastropod_mass = '1 kg'
-        gastropod["mantle_mass"] = gastropod_mass
-
-        gastropod["order"] = Molluscs.Gastropoda.Pulmonata
+        gastropod.mantle_mass = gastropod_mass
+        gastropod.order = Molluscs.Gastropoda.Pulmonata
 
         # movie_path = 'path/to/gastropod/movie.mkv'
         with open(movie_path, "rb") as f:
-            gastropod["movie"] = f.read()
+            gastropod.movie = f.read()
 
         ''',
         request=samplegen.FullRequest(
@@ -176,6 +178,19 @@ def test_render_request_basic():
                                              single=None),
             ],
             flattenable=True,
+        ),
+        module_name="mollusca",
+        request_type=common_types.DummyMessage(
+            fields={
+                "cephalopod": common_types.DummyField(
+                    name="cephalopod",
+                    type=common_types.DummyMessageTypePB(name="Cephalopod")
+                ),
+                "gastropod": common_types.DummyField(
+                    name="gastropod",
+                    type=common_types.DummyMessageTypePB(name="Gastropod")
+                )
+            }
         )
     )
 
@@ -184,29 +199,29 @@ def test_render_request_unflattened():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_request_setup(request, "mollusca", "CreateMolluscRequest") }}
+        {{ frags.render_request_setup(request, module_name, request_type) }}
         ''',
         '''
         # Initialize request argument(s)
-        cephalopod = {}
+        cephalopod = mollusca.Cephalopod()
+
         # cephalopod_mass = '10 kg'
-        cephalopod["mantle_mass"] = cephalopod_mass
+        cephalopod.mantle_mass = cephalopod_mass
 
         # photo_path = 'path/to/cephalopod/photo.jpg'
         with open(photo_path, "rb") as f:
-            cephalopod["photo"] = f.read()
+            cephalopod.photo = f.read()
+        cephalopod.order = Molluscs.Cephalopoda.Coleoidea
 
-        cephalopod["order"] = Molluscs.Cephalopoda.Coleoidea
+        gastropod = mollusca.Gastropod()
 
-        gastropod = {}
         # gastropod_mass = '1 kg'
-        gastropod["mantle_mass"] = gastropod_mass
-
-        gastropod["order"] = Molluscs.Gastropoda.Pulmonata
+        gastropod.mantle_mass = gastropod_mass
+        gastropod.order = Molluscs.Gastropoda.Pulmonata
 
         # movie_path = 'path/to/gastropod/movie.mkv'
         with open(movie_path, "rb") as f:
-            gastropod["movie"] = f.read()
+            gastropod.movie = f.read()
 
         request = mollusca.CreateMolluscRequest(
             cephalopod=cephalopod,
@@ -255,11 +270,25 @@ def test_render_request_unflattened():
                                              single=None),
                 samplegen.TransformedRequest(base="bivalve",
                                              body=None,
-                                             single='"humboldt"'),
+                                             single=samplegen.AttributeRequestSetup(
+                                                 value='"humboldt"',
+                                             ),),
             ]
         ),
-        api=common_types.DummyApiSchema(),
-
+        module_name="mollusca",
+        request_type=common_types.DummyMessage(
+            fields={
+                "cephalopod": common_types.DummyField(
+                    name="cephalopod",
+                    type=common_types.DummyMessageTypePB(name="Cephalopod")
+                ),
+                "gastropod": common_types.DummyField(
+                    name="gastropod",
+                    type=common_types.DummyMessageTypePB(name="Gastropod")
+                )
+            },
+            ident=common_types.DummyIdent(name="CreateMolluscRequest")
+        )
     )
 
 
@@ -883,6 +912,35 @@ def test_render_method_call_basic():
         calling_form_enum=CallingForm,
         calling_form=CallingForm.Request,
         transport="grpc"
+    )
+
+
+def test_render_method_call_basic_async():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
+                                  calling_form, calling_form_enum, transport) }}
+        ''',
+        '''
+        await client.categorize_mollusc(request=request)
+        ''',
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="video",
+                                             body=True,
+                                             single=None),
+                samplegen.TransformedRequest(base="audio",
+                                             body=True,
+                                             single=None),
+                samplegen.TransformedRequest(base="guess",
+                                             body=True,
+                                             single=None)
+            ],
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.Request,
+        transport="grpc-async"
     )
 
 

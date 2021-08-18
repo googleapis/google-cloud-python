@@ -35,6 +35,7 @@ async def sample_update_view():
 
     # Initialize request argument(s)
     request = logging_v2.UpdateViewRequest(
+        name="name_value",
     )
 
     # Make the request

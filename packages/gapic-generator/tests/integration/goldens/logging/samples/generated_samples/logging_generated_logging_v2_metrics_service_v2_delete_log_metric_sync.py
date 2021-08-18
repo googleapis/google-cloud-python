@@ -35,6 +35,7 @@ def sample_delete_log_metric():
 
     # Initialize request argument(s)
     request = logging_v2.DeleteLogMetricRequest(
+        metric_name="projects/{project}/metrics/{metric}",
     )
 
     # Make the request

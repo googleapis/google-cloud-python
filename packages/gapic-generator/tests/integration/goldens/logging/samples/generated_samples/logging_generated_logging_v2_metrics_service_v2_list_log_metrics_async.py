@@ -35,6 +35,7 @@ async def sample_list_log_metrics():
 
     # Initialize request argument(s)
     request = logging_v2.ListLogMetricsRequest(
+        parent="projects/{project}",
     )
 
     # Make the request

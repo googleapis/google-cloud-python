@@ -15,39 +15,34 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ExportAssets
+# Snippet for OneOfMethod
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-asset
+#   python3 -m pip install animalia-mollusca
 
 
-# [START cloudasset_generated_asset_v1_AssetService_ExportAssets_async]
-from google.cloud import asset_v1
+# [START mollusca_generated_mollusca_v1_Snippets_OneOfMethod_sync]
+from animalia import mollusca_v1
 
 
-async def sample_export_assets():
-    """Snippet for export_assets"""
+def sample_one_of_method():
+    """Snippet for one_of_method"""
 
     # Create a client
-    client = asset_v1.AssetServiceAsyncClient()
+    client = mollusca_v1.SnippetsClient()
 
     # Initialize request argument(s)
-    output_config = asset_v1.OutputConfig()
-    output_config.gcs_destination.uri = "uri_value"
-
-    request = asset_v1.ExportAssetsRequest(
-        parent="*",
-        output_config=output_config,
+    request = mollusca_v1.OneOfRequest(
+        my_string="my_string_value",
+        non_one_of_string="non_one_of_string_value",
     )
 
     # Make the request
-    operation = client.export_assets(request=request)
+    response = client.one_of_method(request=request)
 
-    print("Waiting for operation to complete...")
-
-    response = await operation.result()
+    # Handle response
     print("{}".format(response))
 
-# [END cloudasset_generated_asset_v1_AssetService_ExportAssets_async]
+# [END mollusca_generated_mollusca_v1_Snippets_OneOfMethod_sync]

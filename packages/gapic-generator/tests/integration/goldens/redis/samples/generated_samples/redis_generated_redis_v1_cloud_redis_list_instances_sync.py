@@ -35,6 +35,7 @@ def sample_list_instances():
 
     # Initialize request argument(s)
     request = redis_v1.ListInstancesRequest(
+        parent="projects/{project}/locations/{location}",
     )
 
     # Make the request

@@ -35,6 +35,7 @@ def sample_list_exclusions():
 
     # Initialize request argument(s)
     request = logging_v2.ListExclusionsRequest(
+        parent="projects/{project}/exclusions/{exclusion}",
     )
 
     # Make the request

@@ -35,6 +35,7 @@ def sample_delete_sink():
 
     # Initialize request argument(s)
     request = logging_v2.DeleteSinkRequest(
+        sink_name="projects/{project}/sinks/{sink}",
     )
 
     # Make the request

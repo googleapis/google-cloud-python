@@ -35,10 +35,11 @@ def sample_tail_log_entries():
 
     # Initialize request argument(s)
     request = logging_v2.TailLogEntriesRequest(
+        resource_names=['resource_names_value'],
     )
 
     # Make the request
-    stream = client.tail_log_entries([])
+    stream = client.tail_log_entries([resource_names=['resource_names_value']])
     for response in stream:
         print("{}".format(response))
 

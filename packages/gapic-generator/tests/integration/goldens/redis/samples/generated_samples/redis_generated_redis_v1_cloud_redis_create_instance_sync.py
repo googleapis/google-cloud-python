@@ -34,7 +34,15 @@ def sample_create_instance():
     client = redis_v1.CloudRedisClient()
 
     # Initialize request argument(s)
+    instance = redis_v1.Instance()
+    instance.name = "name_value"
+    instance.tier = "STANDARD_HA"
+    instance.memory_size_gb = 1499
+
     request = redis_v1.CreateInstanceRequest(
+        parent="projects/{project}/locations/{location}",
+        instance_id="instance_id_value",
+        instance=instance,
     )
 
     # Make the request

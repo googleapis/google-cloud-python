@@ -35,6 +35,7 @@ async def sample_delete_log():
 
     # Initialize request argument(s)
     request = logging_v2.DeleteLogRequest(
+        log_name="projects/{project}/logs/{log}",
     )
 
     # Make the request

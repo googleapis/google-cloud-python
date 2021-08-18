@@ -35,10 +35,11 @@ async def sample_tail_log_entries():
 
     # Initialize request argument(s)
     request = logging_v2.TailLogEntriesRequest(
+        resource_names=['resource_names_value'],
     )
 
     # Make the request
-    stream = await client.tail_log_entries([])
+    stream = await client.tail_log_entries([resource_names=['resource_names_value']])
     async for response in stream:
         print("{}".format(response))
 

@@ -35,6 +35,7 @@ async def sample_delete_instance():
 
     # Initialize request argument(s)
     request = redis_v1.DeleteInstanceRequest(
+        name="projects/{project}/locations/{location}/instances/{instance}",
     )
 
     # Make the request

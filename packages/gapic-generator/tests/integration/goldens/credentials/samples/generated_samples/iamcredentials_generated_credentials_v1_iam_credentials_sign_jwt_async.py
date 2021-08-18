@@ -35,6 +35,8 @@ async def sample_sign_jwt():
 
     # Initialize request argument(s)
     request = credentials_v1.SignJwtRequest(
+        name="projects/{project}/serviceAccounts/{service_account}",
+        payload="payload_value",
     )
 
     # Make the request

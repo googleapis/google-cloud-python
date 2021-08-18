@@ -35,6 +35,7 @@ def sample_delete_feed():
 
     # Initialize request argument(s)
     request = asset_v1.DeleteFeedRequest(
+        name="projects/{project}/feeds/{feed}",
     )
 
     # Make the request

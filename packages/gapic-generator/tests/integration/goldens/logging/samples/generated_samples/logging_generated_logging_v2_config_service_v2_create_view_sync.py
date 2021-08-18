@@ -35,6 +35,8 @@ def sample_create_view():
 
     # Initialize request argument(s)
     request = logging_v2.CreateViewRequest(
+        parent="parent_value",
+        view_id="view_id_value",
     )
 
     # Make the request

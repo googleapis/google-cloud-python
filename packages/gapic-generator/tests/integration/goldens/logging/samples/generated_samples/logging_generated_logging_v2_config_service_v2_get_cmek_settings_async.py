@@ -35,6 +35,7 @@ async def sample_get_cmek_settings():
 
     # Initialize request argument(s)
     request = logging_v2.GetCmekSettingsRequest(
+        name="projects/{project}/cmekSettings",
     )
 
     # Make the request

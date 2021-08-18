@@ -35,6 +35,8 @@ def sample_generate_access_token():
 
     # Initialize request argument(s)
     request = credentials_v1.GenerateAccessTokenRequest(
+        name="projects/{project}/serviceAccounts/{service_account}",
+        scope=['scope_value'],
     )
 
     # Make the request

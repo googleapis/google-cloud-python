@@ -18,6 +18,7 @@ from typing import Sequence, Tuple
 
 import pytest
 
+from google.api import field_behavior_pb2
 from google.api import resource_pb2
 from google.protobuf import descriptor_pb2
 
@@ -275,3 +276,34 @@ def test_oneof_fields():
         "mass": [mass_kg, mass_lbs],
         "length": [length_m, length_f],
     }
+    assert actual_oneofs == expected_oneofs
+
+
+def test_required_fields():
+    REQUIRED = field_behavior_pb2.FieldBehavior.Value('REQUIRED')
+
+    mass_kg = make_field(name="mass_kg", type=5)
+    mass_kg.options.Extensions[field_behavior_pb2.field_behavior].append(
+        REQUIRED
+    )
+
+    length_m = make_field(name="length_m", type=5)
+    length_m.options.Extensions[field_behavior_pb2.field_behavior].append(
+        REQUIRED
+    )
+
+    color = make_field(name="color", type=5)
+    color.options.Extensions[field_behavior_pb2.field_behavior].append(
+        REQUIRED
+    )
+
+    request = make_message(
+        name="CreateMolluscReuqest",
+        fields=(
+            mass_kg,
+            length_m,
+            color,
+        ),
+    )
+
+    assert set(request.required_fields) == {mass_kg, length_m, color}

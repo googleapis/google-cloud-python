@@ -50,7 +50,7 @@ def unit(session):
                 "--cov-report=term",
                 "--cov-fail-under=100",
                 path.join("tests", "unit"),
-            ]
+                            ]
         ),
     )
 
@@ -308,7 +308,7 @@ def snippetgen(session):
 
     session.run(
         "py.test",
-        "--quiet",
+        "-vv",
         "tests/snippetgen"
     )
 

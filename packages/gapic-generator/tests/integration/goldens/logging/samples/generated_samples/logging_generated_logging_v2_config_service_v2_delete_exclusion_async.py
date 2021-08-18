@@ -35,6 +35,7 @@ async def sample_delete_exclusion():
 
     # Initialize request argument(s)
     request = logging_v2.DeleteExclusionRequest(
+        name="projects/{project}/exclusions/{exclusion}",
     )
 
     # Make the request

@@ -35,6 +35,7 @@ async def sample_list_log_entries():
 
     # Initialize request argument(s)
     request = logging_v2.ListLogEntriesRequest(
+        resource_names="projects/{project}/logs/{log}",
     )
 
     # Make the request

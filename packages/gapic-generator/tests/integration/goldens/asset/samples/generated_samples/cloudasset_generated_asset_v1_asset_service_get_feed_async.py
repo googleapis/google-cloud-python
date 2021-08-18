@@ -35,6 +35,7 @@ async def sample_get_feed():
 
     # Initialize request argument(s)
     request = asset_v1.GetFeedRequest(
+        name="projects/{project}/feeds/{feed}",
     )
 
     # Make the request

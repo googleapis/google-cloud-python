@@ -34,7 +34,11 @@ async def sample_update_feed():
     client = asset_v1.AssetServiceAsyncClient()
 
     # Initialize request argument(s)
+    feed = asset_v1.Feed()
+    feed.name = "name_value"
+
     request = asset_v1.UpdateFeedRequest(
+        feed=feed,
     )
 
     # Make the request

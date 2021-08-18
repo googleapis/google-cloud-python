@@ -35,6 +35,7 @@ async def sample_get_view():
 
     # Initialize request argument(s)
     request = logging_v2.GetViewRequest(
+        name="projects/{project}/locations/{location}/buckets/{bucket}/views/{view}",
     )
 
     # Make the request

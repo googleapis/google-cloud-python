@@ -29,11 +29,11 @@ service Snippets {
   option (google.api.default_host) = "mollusca.example.com";
 
   rpc MethodOneSignature(SignatureRequest) returns(Response) {
-    option (google.api.method_signature) = "a_string,an_int,a_bool";
+    option (google.api.method_signature) = "my_string,my_int,my_bool";
   }
 
   rpc MethodLroSignatures(SignatureRequest) returns(google.longrunning.Operation) {
-    option (google.api.method_signature) = "a_string,an_int,a_bool";
+    option (google.api.method_signature) = "my_string,my_int,my_bool";
     option (google.longrunning.operation_info) = {
       response_type: "LroResponse"
       metadata_type: "LroMetadata"
@@ -48,18 +48,24 @@ service Snippets {
   }
 
   rpc MethodServerStreaming(SignatureRequest) returns(stream Response) {
-    option (google.api.method_signature) = "a_string,a_bool";
+    option (google.api.method_signature) = "my_string,my_int,my_bool";
     option (google.api.method_signature) = "";
   }
 
-  rpc MethodBidiStreaming(stream SignatureRequest) returns (stream Response);
+  rpc MethodBidiStreaming(stream SignatureRequestOneRequiredField) returns (stream Response);
+
+  rpc OneOfMethod(OneOfRequest) returns (Response);
+}
+
+enum Enum {
+  DEFAULT = 0; // First value must be 0 and is the default
 }
 
 message ListResourcesRequest {
   string parent = 1 [
     (google.api.field_behavior) = REQUIRED,
     (google.api.resource_reference) = {
-      child_type: "snippets.example.com/Resource"
+      type: "snippets.example.com/Resource"
     }];
 
   int32 page_size = 2;
@@ -85,15 +91,34 @@ message Resource {
     pattern: "items/{item_id}/parts/{part_id}"
   };
   string name = 1;
+
+
 }
 
+message MessageWithNesting {
+  message NestedMessage {
+    string required_string = 1 [(google.api.field_behavior) = REQUIRED];
+    string optional_string = 2;
+  }
+
+  NestedMessage message = 1 [(google.api.field_behavior) = REQUIRED];
+  int32 my_int = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+
+message SignatureRequestOneRequiredField {
+  string my_string = 1 [(google.api.field_behavior) = REQUIRED];
+}
 
 message SignatureRequest {
-  string a_string = 1;
-  int32 an_int = 2;
-  bool a_bool = 3;
+  string my_string = 1 [(google.api.field_behavior) = REQUIRED];
+  int32 my_int = 2 [(google.api.field_behavior) = REQUIRED];
+  bool my_bool = 3 [(google.api.field_behavior) = REQUIRED];
   map<int32, string> map_int_string = 4;
+  MessageWithNesting my_message = 5 [(google.api.field_behavior) = REQUIRED];
+  Enum single_enum = 6 [(google.api.field_behavior) = REQUIRED];
 }
+
 
 message Response {
 }
@@ -104,3 +129,10 @@ message LroResponse {
 message LroMetadata {
 }
 
+message OneOfRequest {
+  string non_one_of_string = 1 [(google.api.field_behavior) = REQUIRED];
+  oneof my_one_of {
+    string my_string = 2;
+    int32 my_number = 3;
+  }
+}

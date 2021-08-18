@@ -35,6 +35,7 @@ async def sample_list_sinks():
 
     # Initialize request argument(s)
     request = logging_v2.ListSinksRequest(
+        parent="projects/{project}/sinks/{sink}",
     )
 
     # Make the request

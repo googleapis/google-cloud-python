@@ -35,6 +35,7 @@ async def sample_update_cmek_settings():
 
     # Initialize request argument(s)
     request = logging_v2.UpdateCmekSettingsRequest(
+        name="name_value",
     )
 
     # Make the request

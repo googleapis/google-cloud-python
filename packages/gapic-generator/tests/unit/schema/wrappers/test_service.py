@@ -41,8 +41,10 @@ def make_resource_opts(*args):
     # Resources are labeled via an options extension
     opts = descriptor_pb2.MessageOptions()
     opts.Extensions[resource_pb2.resource].pattern.append(
-        "/".join("{{{arg}}}/{arg}" for arg in args)
+        "/".join(f"{arg}/{{{arg}}}" for arg in args)
     )
+    opts.Extensions[resource_pb2.resource].type = "/".join(
+        f"{arg}/{{{arg}}}" for arg in args)
     return opts
 
 
@@ -246,6 +248,87 @@ def test_resource_messages():
         squamosa_message,
     }
     actual = service.resource_messages
+    assert expected == actual
+
+
+def test_resource_messages_dict():
+    # Regular, top level resource
+    squid_resource = make_message("Squid", options=make_resource_opts("squid"))
+    squid_request = make_message(
+        "CreateSquid",
+        fields=(
+            make_field('squid', message=squid_resource),
+        ),
+    )
+
+    # Nested resource
+    squamosa_message = make_message(
+        "Squamosa",
+        options=make_resource_opts("clam", "squamosa"),
+    )
+    clam_resource = make_message(
+        "Clam",
+        options=make_resource_opts("clam"),
+        fields=(
+            make_field('squamosa', message=squamosa_message),
+        ),
+    )
+    clam_request = make_message(
+        'CreateClam',
+        fields=(
+            make_field('clam', message=clam_resource),
+            # Red herring, not resources :)
+            make_field('zone', 2, enum=make_enum('Zone')),
+            make_field('pearls', 3, True, message=make_message('Pearl')),
+        ),
+    )
+
+    # Some special APIs have request messages that _are_ resources.
+    whelk_resource = make_message("Whelk", options=make_resource_opts("whelk"))
+
+    # Not a resource
+    octopus_request = make_message(
+        "CreateOctopus",
+        fields=(
+            make_field('Octopus', message=make_message('Octopus')),
+        ),
+    )
+
+    service = make_service(
+        'Molluscs',
+        methods=(
+            make_method(
+                f"{message.name}",
+                input_message=message,
+            )
+            for message in (
+                squid_request,
+                clam_request,
+                whelk_resource,
+                octopus_request,
+            )
+        )
+    )
+
+    expected = {
+        # Service specific
+        "squid/{squid}": squid_resource,
+        "clam/{clam}": clam_resource,
+        "whelk/{whelk}": whelk_resource,
+        "clam/{clam}/squamosa/{squamosa}": squamosa_message,
+        # Common resources
+        "cloudresourcemanager.googleapis.com/Project":
+            service.common_resources["cloudresourcemanager.googleapis.com/Project"].message_type,
+        "cloudresourcemanager.googleapis.com/Organization":
+            service.common_resources["cloudresourcemanager.googleapis.com/Organization"].message_type,
+        "cloudresourcemanager.googleapis.com/Folder":
+            service.common_resources["cloudresourcemanager.googleapis.com/Folder"].message_type,
+        "cloudbilling.googleapis.com/BillingAccount":
+            service.common_resources["cloudbilling.googleapis.com/BillingAccount"].message_type,
+        "locations.googleapis.com/Location":
+            service.common_resources["locations.googleapis.com/Location"].message_type
+    }
+    actual = service.resource_messages_dict
     assert expected == actual
 
 

@@ -35,6 +35,7 @@ async def sample_list_views():
 
     # Initialize request argument(s)
     request = logging_v2.ListViewsRequest(
+        parent="parent_value",
     )
 
     # Make the request

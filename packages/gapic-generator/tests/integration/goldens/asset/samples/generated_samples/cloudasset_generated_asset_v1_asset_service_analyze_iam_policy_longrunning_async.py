@@ -34,7 +34,15 @@ async def sample_analyze_iam_policy_longrunning():
     client = asset_v1.AssetServiceAsyncClient()
 
     # Initialize request argument(s)
+    analysis_query = asset_v1.IamPolicyAnalysisQuery()
+    analysis_query.scope = "scope_value"
+
+    output_config = asset_v1.IamPolicyAnalysisOutputConfig()
+    output_config.gcs_destination.uri = "uri_value"
+
     request = asset_v1.AnalyzeIamPolicyLongrunningRequest(
+        analysis_query=analysis_query,
+        output_config=output_config,
     )
 
     # Make the request

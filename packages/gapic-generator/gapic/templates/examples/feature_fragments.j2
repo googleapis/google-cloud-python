@@ -126,18 +126,19 @@ with open({{ print_string_formatting(statement["filename"])|trim }}, "wb") as f:
 {% macro render_request_attr(base_name, attr) %}
 {# Note: python code will have manipulated the value #}
 {# to be the correct enum from the right module, if necessary. #}
-{# Python is also responsible for verifying that each input parameter is unique,#}
+{# Python is also responsible for verifying that each input parameter is unique, #}
 {# no parameter is a reserved keyword #}
 {% if attr.input_parameter %}
+
 # {{ attr.input_parameter }} = {{ attr.value }}
 {% if attr.value_is_file %}
 with open({{ attr.input_parameter }}, "rb") as f:
-    {{ base_name }}["{{ attr.field }}"] = f.read()
+    {{ base_name }}.{{ attr.field }} = f.read()
 {% else %}
-{{ base_name }}["{{ attr.field }}"] = {{ attr.input_parameter }}
+{{ base_name }}.{{ attr.field }} = {{ attr.input_parameter }}
 {% endif %}
 {% else %}
-{{ base_name }}["{{ attr.field }}"] = {{ attr.value }}
+{{ base_name }}.{{ attr.field }} = {{ attr.value }}
 {% endif %}
 {% endmacro %}
 
@@ -159,16 +160,17 @@ client = {{ module_name }}.{{ client_name }}()
 {{ parameter_block.base }} = "{{parameter_block.pattern }}".format({{ formals|join(", ") }})
 {% endwith %}
 {% else %}{# End resource name construction #}
-{{ parameter_block.base }} = {}
+{{ parameter_block.base }} = {{ module_name }}.{{ request_type.get_field(parameter_block.base).type.name }}()
 {% for attr in parameter_block.body %}
-{{ render_request_attr(parameter_block.base, attr) }}
+{{ render_request_attr(parameter_block.base, attr) -}}
 {% endfor %}
+
 {% endif %}
 {% endfor %}
 {% if not full_request.flattenable %}
-request = {{ module_name }}.{{ request_type }}(
+request = {{ module_name }}.{{ request_type.ident.name }}(
 {% for parameter in full_request.request_list %}
-    {{ parameter.base }}={{ parameter.base if parameter.body else parameter.single }},
+    {{ parameter.base }}={{ parameter.base if parameter.body else parameter.single.value }},
 {% endfor %}
 )
 {% endif %}

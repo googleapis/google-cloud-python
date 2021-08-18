@@ -35,6 +35,7 @@ async def sample_search_all_iam_policies():
 
     # Initialize request argument(s)
     request = asset_v1.SearchAllIamPoliciesRequest(
+        scope="scope_value",
     )
 
     # Make the request

@@ -35,6 +35,7 @@ def sample_list_resources():
 
     # Initialize request argument(s)
     request = mollusca_v1.ListResourcesRequest(
+        parent="items/{item_id}/parts/{part_id}",
     )
 
     # Make the request

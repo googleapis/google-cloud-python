@@ -35,6 +35,7 @@ def sample_delete_bucket():
 
     # Initialize request argument(s)
     request = logging_v2.DeleteBucketRequest(
+        name="projects/{project}/locations/{location}/buckets/{bucket}",
     )
 
     # Make the request

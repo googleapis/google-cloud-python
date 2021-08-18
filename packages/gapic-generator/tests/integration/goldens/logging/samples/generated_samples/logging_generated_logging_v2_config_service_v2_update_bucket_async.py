@@ -35,6 +35,7 @@ async def sample_update_bucket():
 
     # Initialize request argument(s)
     request = logging_v2.UpdateBucketRequest(
+        name="projects/{project}/locations/{location}/buckets/{bucket}",
     )
 
     # Make the request

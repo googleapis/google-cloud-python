@@ -34,7 +34,11 @@ async def sample_write_log_entries():
     client = logging_v2.LoggingServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    entries = logging_v2.LogEntry()
+    entries.log_name = "log_name_value"
+
     request = logging_v2.WriteLogEntriesRequest(
+        entries=entries,
     )
 
     # Make the request

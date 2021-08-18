@@ -35,6 +35,7 @@ def sample_undelete_bucket():
 
     # Initialize request argument(s)
     request = logging_v2.UndeleteBucketRequest(
+        name="projects/{project}/locations/{location}/buckets/{bucket}",
     )
 
     # Make the request

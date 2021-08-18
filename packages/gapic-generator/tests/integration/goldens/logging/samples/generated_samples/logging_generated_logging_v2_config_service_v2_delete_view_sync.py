@@ -35,6 +35,7 @@ def sample_delete_view():
 
     # Initialize request argument(s)
     request = logging_v2.DeleteViewRequest(
+        name="projects/{project}/locations/{location}/buckets/{bucket}/views/{view}",
     )
 
     # Make the request

@@ -29,7 +29,7 @@ from gapic.schema import (api, metadata, naming)
 import gapic.schema.wrappers as wrappers
 from gapic.utils import Options
 
-from common_types import (DummyApiSchema, DummyField, DummyIdent, DummyNaming, DummyMessage,
+from common_types import (DummyApiSchema, DummyField, DummyIdent, DummyNaming, DummyMessage, DummyMessageTypePB,
                           DummyService, DummyMethod, message_factory, enum_factory)
 from gapic.samplegen_utils import utils
 
@@ -85,15 +85,25 @@ def test_define_redefinition():
 def test_preprocess_sample():
     # Verify that the default response is added.
     sample = {"service": "Mollusc", "rpc": "Classify"}
+
+    classify_request_message = DummyMessage(
+        fields={
+            "parent": DummyField(is_primitive=True, type=str, required=True, name="parent"),
+            },
+        type=DummyMessageTypePB(name="ClassifyRequest"),
+        ident=DummyIdent(name="ClassifyRequest")
+        )
+
     api_schema = DummyApiSchema(
         services={"Mollusc": DummyService(
-            methods={}, client_name="MolluscClient")},
+            methods={}, client_name="MolluscClient",
+            resource_messages_dict={})},
         naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
                            versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+        messages=classify_request_message
     )
 
-    rpc = DummyMethod(input=DummyMessage(
-        ident=DummyIdent(name="ClassifyRequest")))
+    rpc = DummyMethod(input=classify_request_message)
 
     samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
 
@@ -113,7 +123,149 @@ def test_preprocess_sample():
     assert client_name == "MolluscClient"
 
     request_type = sample.get("request_type")
-    assert request_type == "ClassifyRequest"
+    assert request_type.ident.name == "ClassifyRequest"
+
+    # assert mock request is created
+    assert sample["request"] == [
+        {
+            "field": "parent",
+            "value": "mock_value"
+        }
+    ]
+
+
+def test_preprocess_sample_resource_message_field():
+    # Verify that the default response is added.
+    sample = {"service": "Mollusc", "rpc": "Classify"}
+
+    classify_request_message = DummyMessage(
+        fields={
+            "parent": DummyField(is_primitive=True, type=str, required=True, name="parent", resource_reference="parent"),
+            },
+        type=DummyMessageTypePB(name="ClassifyRequest"),
+        ident=DummyIdent(name="ClassifyRequest")
+        )
+
+    api_schema = DummyApiSchema(
+        services={"Mollusc": DummyService(
+            methods={}, client_name="MolluscClient",
+            resource_messages_dict={"parent": DummyMessage(
+                resource_path="projects/{project}")}
+            )},
+        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
+                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+        messages=classify_request_message,
+
+    )
+
+    rpc = DummyMethod(input=classify_request_message)
+
+    samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
+
+    # assert mock request is created
+    assert sample["request"] == [
+        {
+            "field": "parent",
+            "value": "projects/{project}"
+        }
+    ]
+
+
+def test_preprocess_sample_with_enum_field():
+    # Verify that the default response is added.
+    sample = {"service": "Mollusc", "rpc": "Classify"}
+
+    classify_request_message = DummyMessage(
+        fields={
+            "type": DummyField(
+                name="type",
+                required=True,
+                type=enum_factory("type", ["TYPE_1", "TYPE_2"]),
+                enum=enum_factory("type", ["TYPE_1", "TYPE_2"])
+                )
+            },
+        type=DummyMessageTypePB(name="ClassifyRequest"),
+        ident=DummyIdent(name="ClassifyRequest")
+        )
+
+    api_schema = DummyApiSchema(
+        services={"Mollusc": DummyService(
+            methods={}, client_name="MolluscClient",
+            resource_messages_dict={})},
+        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
+                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+        messages=classify_request_message
+    )
+
+    rpc = DummyMethod(input=classify_request_message)
+
+    samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
+
+    response = sample.get("response")
+    assert response == [{"print": ["%s", "$resp"]}]
+
+    package_name = sample.get("package_name")
+    assert package_name == "mollusc-cephalopod-teuthida-"
+
+    module_name = sample.get("module_name")
+    assert module_name == "teuthida_v1"
+
+    module_namespace = sample.get("module_namespace")
+    assert module_namespace == "mollusc.cephalopod"
+
+    client_name = sample.get("client_name")
+    assert client_name == "MolluscClient"
+
+    request_type = sample.get("request_type")
+    assert request_type.ident.name == "ClassifyRequest"
+
+    # assert mock request is created
+    assert sample["request"] == [
+        {
+            "field": "type",
+            "value": "TYPE_2"
+        }
+    ]
+
+
+def test_preprocess_sample_nested_message_field():
+    # Verify that the default response is added.
+    sample = {"service": "Mollusc", "rpc": "Classify"}
+
+    classify_request_message = DummyMessage(
+        fields={
+            "config": DummyField(name="config", is_primitive=False, required=True, oneof=False, type=DummyMessage(
+                fields={"name": DummyField(
+                        is_primitive=True, type=str, name="name", required=True, oneof=False)},
+                ))
+            },
+        type=DummyMessageTypePB(name="ClassifyRequest"),
+        ident=DummyIdent(name="ClassifyRequest")
+    )
+
+    api_schema = DummyApiSchema(
+        services={"Mollusc": DummyService(
+            methods={}, client_name="MolluscClient",
+            resource_messages_dict={}
+            )},
+        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
+                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+        messages=classify_request_message,
+
+    )
+
+    rpc = DummyMethod(input=classify_request_message)
+
+    samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
+
+    # assert mock request is created
+    assert sample["request"] == [
+        {
+            "field": "config.name",
+            "value": "mock_value"
+        },
+
+    ]
 
 
 def test_preprocess_sample_void_method():
@@ -1919,7 +2071,6 @@ def test_generate_sample_spec_basic():
         "sample_type": "standalone",
         "rpc": "Ramshorn",
         "transport": "grpc",
-        "request": [],
         "service": "animalia.mollusca.v1.Squid",
         "region_tag": "example_generated_mollusca_v1_Squid_Ramshorn_sync",
         "description": "Snippet for ramshorn"
@@ -1929,7 +2080,6 @@ def test_generate_sample_spec_basic():
         "sample_type": "standalone",
         "rpc": "Ramshorn",
         "transport": "grpc-async",
-        "request": [],
         "service": "animalia.mollusca.v1.Squid",
         "region_tag": "example_generated_mollusca_v1_Squid_Ramshorn_async",
         "description": "Snippet for ramshorn"

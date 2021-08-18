@@ -34,7 +34,13 @@ def sample_update_exclusion():
     client = logging_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
+    exclusion = logging_v2.LogExclusion()
+    exclusion.name = "name_value"
+    exclusion.filter = "filter_value"
+
     request = logging_v2.UpdateExclusionRequest(
+        name="projects/{project}/exclusions/{exclusion}",
+        exclusion=exclusion,
     )
 
     # Make the request

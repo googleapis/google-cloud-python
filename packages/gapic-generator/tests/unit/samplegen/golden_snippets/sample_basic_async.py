@@ -34,13 +34,14 @@ async def sample_classify(video, location):
     client = molluscclient.MolluscServiceAsyncClient()
 
     # Initialize request argument(s)
-    classify_target = {}
+    classify_target = molluscclient.ClassifyTarget()
+
     # video = "path/to/mollusc/video.mkv"
     with open(video, "rb") as f:
-        classify_target["video"] = f.read()
+        classify_target.video = f.read()
 
     # location = "New Zealand"
-    classify_target["location_annotation"] = location
+    classify_target.location_annotation = location
 
     request = molluscclient.molluscs.v1.ClassifyRequest(
         classify_target=classify_target,
