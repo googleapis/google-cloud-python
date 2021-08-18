@@ -102,6 +102,7 @@ def test_from_http_response_no_content():
 
 def test_from_http_response_text_content():
     response = make_response(b"message")
+    response.encoding = "UTF8"  # suppress charset_normalizer warning
 
     exception = exceptions.from_http_response(response)
 

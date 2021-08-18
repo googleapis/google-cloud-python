@@ -114,9 +114,9 @@ The following server errors are considered transient:
 - :class:`google.api_core.exceptions.TooManyRequests` - HTTP 429
 - :class:`google.api_core.exceptions.ServiceUnavailable` - HTTP 503
 - :class:`requests.exceptions.ConnectionError`
-- :class:`requests.exceptions.ChunkedEncodingError` - The server declared 
+- :class:`requests.exceptions.ChunkedEncodingError` - The server declared
     chunked encoding but sent an invalid chunk.
-- :class:`google.auth.exceptions.TransportError` - Used to indicate an 
+- :class:`google.auth.exceptions.TransportError` - Used to indicate an
     error occurred during an HTTP request.
 """
 # pylint: enable=invalid-name
