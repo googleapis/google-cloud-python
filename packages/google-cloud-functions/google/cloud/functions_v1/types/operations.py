@@ -38,7 +38,7 @@ class OperationMetadataV1(proto.Message):
     Attributes:
         target (str):
             Target of the operation - for example
-            projects/project-1/locations/region-1/functions/function-1
+            ``projects/project-1/locations/region-1/functions/function-1``
         type_ (google.cloud.functions_v1.types.OperationType):
             Type of operation.
         request (google.protobuf.any_pb2.Any):
