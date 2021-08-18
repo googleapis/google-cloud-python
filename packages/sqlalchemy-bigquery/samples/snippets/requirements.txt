@@ -14,7 +14,7 @@ Fiona==1.8.20
 future==0.18.2
 GeoAlchemy2==0.9.3
 geopandas==0.9.0
-google-api-core==1.31.1
+google-api-core==1.31.2
 google-auth==1.34.0
 google-cloud-bigquery==2.23.2
 google-cloud-bigquery-storage==2.6.2
