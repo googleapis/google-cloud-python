@@ -18,6 +18,7 @@ import re
 
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 common = gcp.CommonTemplates()
 
@@ -25,7 +26,8 @@ common = gcp.CommonTemplates()
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(microgenerator=True) 
-python.py_samples(skip_readmes=True)
 s.move(templated_files, excludes=["docs/multiprocessing.rst"])
+
+python.py_samples(skip_readmes=True)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
