@@ -18,6 +18,7 @@ from pathlib import Path
 
 import synthtool as s
 import synthtool.gcp as gcp
+from synthtool.languages import python
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
