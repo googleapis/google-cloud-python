@@ -1,5 +1,6 @@
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 AUTOSYNTH_MULTIPLE_PRS = True
 
