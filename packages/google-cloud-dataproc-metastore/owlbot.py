@@ -34,6 +34,7 @@ s.remove_staging_dirs()
 # ----------------------------------------------------------------------------
 
 templated_files = common.py_library(cov_level=98, microgenerator=True)
+python.py_samples(skip_readmes=True)
 
 # the microgenerator has a good coveragerc file
 excludes = [".coveragerc"]
