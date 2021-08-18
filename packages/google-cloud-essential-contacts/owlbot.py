@@ -33,6 +33,7 @@ s.remove_staging_dirs()
 # ----------------------------------------------------------------------------
 
 templated_files = common.py_library(cov_level=97, microgenerator=True)
+python.py_samples(skip_readmes=True)
 
 s.move(templated_files, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
