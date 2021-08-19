@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+### [2.7.1](https://www.github.com/googleapis/python-pubsub/compare/v2.7.0...v2.7.1) (2021-08-13)
+
+
+### Bug Fixes
+
+* remove dependency on pytz ([#472](https://www.github.com/googleapis/python-pubsub/issues/472)) ([972cc16](https://www.github.com/googleapis/python-pubsub/commit/972cc163f5a1477b37a5ab7e329faf1468637fa2))
+
 ## [2.7.0](https://www.github.com/googleapis/python-pubsub/compare/v2.6.1...v2.7.0) (2021-07-24)
 
 
