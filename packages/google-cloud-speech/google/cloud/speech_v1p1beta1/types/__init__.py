@@ -51,6 +51,7 @@ from .resource import (
     CustomClass,
     PhraseSet,
     SpeechAdaptation,
+    TranscriptNormalization,
 )
 
 __all__ = (
@@ -87,4 +88,5 @@ __all__ = (
     "CustomClass",
     "PhraseSet",
     "SpeechAdaptation",
+    "TranscriptNormalization",
 )
