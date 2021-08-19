@@ -30,6 +30,9 @@ BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["2.7", "3.8"]
 UNIT_TEST_PYTHON_VERSIONS = ["2.7", "3.6", "3.7", "3.8", "3.9"]
+CONFORMANCE_TEST_PYTHON_VERSIONS = ["3.8"]
+
+_DEFAULT_STORAGE_HOST = "https://storage.googleapis.com"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
@@ -146,6 +149,37 @@ def system(session):
         session.run("py.test", "--quiet", system_test_path, *session.posargs)
     if system_test_folder_exists:
         session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
+
+
+@nox.session(python=CONFORMANCE_TEST_PYTHON_VERSIONS)
+def conftest_retry(session):
+    """Run the retry conformance test suite."""
+    conformance_test_path = os.path.join("tests", "conformance.py")
+    conformance_test_folder_path = os.path.join("tests", "conformance")
+
+    # Environment check: Only run tests if the STORAGE_EMULATOR_HOST is set.
+    if (
+        os.environ.get("STORAGE_EMULATOR_HOST", _DEFAULT_STORAGE_HOST)
+        == _DEFAULT_STORAGE_HOST
+    ):
+        session.skip("Set STORAGE_EMULATOR_HOST to run, skipping")
+
+    conformance_test_exists = os.path.exists(conformance_test_path)
+    conformance_test_folder_exists = os.path.exists(conformance_test_folder_path)
+    # Environment check: only run tests if found.
+    if not conformance_test_exists and not conformance_test_folder_exists:
+        session.skip("Conformance tests were not found")
+
+    session.install("pytest",)
+    session.install("-e", ".")
+
+    # Run py.test against the conformance tests.
+    if conformance_test_exists:
+        session.run("py.test", "--quiet", conformance_test_path, *session.posargs)
+    if conformance_test_folder_exists:
+        session.run(
+            "py.test", "--quiet", conformance_test_folder_path, *session.posargs
+        )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

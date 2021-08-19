@@ -825,6 +825,8 @@ class TestV4Stamps(unittest.TestCase):
         self.assertEqual(datestamp, "20200312")
 
 
+"""Conformance tests for v4 signed URLs."""
+
 _FAKE_SERVICE_ACCOUNT = None
 
 
