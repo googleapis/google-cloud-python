@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.51.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.5...v0.51.0) (2021-08-18)
+
+
+### Features
+
+* **snippetgen:** generate mock input for required fields ([#941](https://www.github.com/googleapis/gapic-generator-python/issues/941)) ([b2149da](https://www.github.com/googleapis/gapic-generator-python/commit/b2149da5e6873e1f71871bfecd899bb9aa0b6439))
+
+
+### Bug Fixes
+
+* add 'dict' type annotation to 'request' ([#966](https://www.github.com/googleapis/gapic-generator-python/issues/966)) ([49205d9](https://www.github.com/googleapis/gapic-generator-python/commit/49205d99dd440690b838c8eb3f6a695f35b061c2))
+
 ### [0.50.5](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.4...v0.50.5) (2021-07-22)
 
 
