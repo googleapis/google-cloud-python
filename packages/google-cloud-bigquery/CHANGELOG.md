@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+### [2.24.1](https://www.github.com/googleapis/python-bigquery/compare/v2.24.0...v2.24.1) (2021-08-13)
+
+
+### Bug Fixes
+
+* remove pytz dependency and require pyarrow>=3.0.0 ([#875](https://www.github.com/googleapis/python-bigquery/issues/875)) ([2cb3563](https://www.github.com/googleapis/python-bigquery/commit/2cb3563ee863edef7eaf5d04d739bcfe7bc6438e))
+
 ## [2.24.0](https://www.github.com/googleapis/python-bigquery/compare/v2.23.3...v2.24.0) (2021-08-11)
 
 
