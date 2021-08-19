@@ -70,10 +70,11 @@ class SearchServiceClientMeta(type):
 
 class SearchServiceClient(metaclass=SearchServiceClientMeta):
     """Service for search.
+
     This feature is only available for users who have Retail Search
-    enabled. Contact Retail Support (retail-search-
-    support@google.com) if you are interested in using Retail
-    Search.
+    enabled. Please submit a form
+    `here <https://cloud.google.com/contact>`__ to contact cloud sales
+    if you are interested in using Retail Search.
     """
 
     @staticmethod
@@ -384,10 +385,11 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchPager:
         r"""Performs a search.
-        This feature is only available for users who have Retail
-        Search enabled. Contact Retail Support (retail-search-
-        support@google.com) if you are interested in using
-        Retail Search.
+
+        This feature is only available for users who have Retail Search
+        enabled. Please submit a form
+        `here <https://cloud.google.com/contact>`__ to contact cloud
+        sales if you are interested in using Retail Search.
 
         Args:
             request (google.cloud.retail_v2.types.SearchRequest):

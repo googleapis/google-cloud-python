@@ -356,7 +356,7 @@ class CompletionDataInputConfig(proto.Message):
     Attributes:
         big_query_source (google.cloud.retail_v2.types.BigQuerySource):
             Required. BigQuery input source.
-            Add the IAM permission “BigQuery Data Viewer”
+            Add the IAM permission "BigQuery Data Viewer"
             for cloud-retail-customer-data-
             access@system.gserviceaccount.com before using
             this feature otherwise an error is thrown.

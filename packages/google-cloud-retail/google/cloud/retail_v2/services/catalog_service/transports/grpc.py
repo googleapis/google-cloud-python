@@ -325,9 +325,9 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
            branch {newBranch}.
 
         This feature is only available for users who have Retail Search
-        enabled. Contact Retail Support
-        (retail-search-support@google.com) if you are interested in
-        using Retail Search.
+        enabled. Please submit a form
+        `here <https://cloud.google.com/contact>`__ to contact cloud
+        sales if you are interested in using Retail Search.
 
         Returns:
             Callable[[~.SetDefaultBranchRequest],
@@ -361,9 +361,9 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         method under a specified parent catalog.
 
         This feature is only available for users who have Retail Search
-        enabled. Contact Retail Support
-        (retail-search-support@google.com) if you are interested in
-        using Retail Search.
+        enabled. Please submit a form
+        `here <https://cloud.google.com/contact>`__ to contact cloud
+        sales if you are interested in using Retail Search.
 
         Returns:
             Callable[[~.GetDefaultBranchRequest],

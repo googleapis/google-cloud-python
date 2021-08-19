@@ -76,10 +76,11 @@ class CompletionServiceClientMeta(type):
 
 class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
     """Auto-completion service for retail.
+
     This feature is only available for users who have Retail Search
-    enabled. Contact Retail Support (retail-search-
-    support@google.com) if you are interested in using Retail
-    Search.
+    enabled. Please submit a form
+    `here <https://cloud.google.com/contact>`__ to contact cloud sales
+    if you are interested in using Retail Search.
     """
 
     @staticmethod
@@ -367,12 +368,12 @@ class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> completion_service.CompleteQueryResponse:
-        r"""Completes the specified prefix with keyword
-        suggestions.
-        This feature is only available for users who have Retail
-        Search enabled. Contact Retail Support (retail-search-
-        support@google.com) if you are interested in using
-        Retail Search.
+        r"""Completes the specified prefix with keyword suggestions.
+
+        This feature is only available for users who have Retail Search
+        enabled. Please submit a form
+        `here <https://cloud.google.com/contact>`__ to contact cloud
+        sales if you are interested in using Retail Search.
 
         Args:
             request (google.cloud.retail_v2.types.CompleteQueryRequest):
@@ -420,12 +421,14 @@ class CompletionServiceClient(metaclass=CompletionServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Bulk import of processed completion dataset.
-        Request processing may be synchronous. Partial updating
-        is not supported.
-        This feature is only available for users who have Retail
-        Search enabled. Contact Retail Support (retail-search-
-        support@google.com) if you are interested in using
-        Retail Search.
+
+        Request processing may be synchronous. Partial updating is not
+        supported.
+
+        This feature is only available for users who have Retail Search
+        enabled. Please submit a form
+        `here <https://cloud.google.com/contact>`__ to contact cloud
+        sales if you are interested in using Retail Search.
 
         Args:
             request (google.cloud.retail_v2.types.ImportCompletionDataRequest):

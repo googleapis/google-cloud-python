@@ -82,13 +82,16 @@ class CompleteQueryRequest(proto.Message):
 
             -  user-data
 
-            -  cloud-retail This option is not automatically enabled.
-               Before using cloud-retail, contact
-               retail-search-support@google.com first.
+            -  cloud-retail This option requires additional
+               allowlisting. Before using cloud-retail, contact Cloud
+               Retail support team first.
         max_suggestions (int):
-            Completion max suggestions.
-            The maximum allowed max suggestions is 20. The
-            default value is 20.
+            Completion max suggestions. If left unset or set to 0, then
+            will fallback to the configured value
+            [CompletionConfig.max_suggestions][].
+
+            The maximum allowed max suggestions is 20. If it is set
+            higher, it will be capped by 20.
     """
 
     catalog = proto.Field(proto.STRING, number=1,)
@@ -113,9 +116,9 @@ class CompleteQueryResponse(proto.Message):
             resulting from this completion, which enables accurate
             attribution of complete model performance.
         recent_search_results (Sequence[google.cloud.retail_v2.types.CompleteQueryResponse.RecentSearchResult]):
-            Matched recent searches of this user. This field is a
-            restricted feature. Contact Retail Support
-            (retail-search-support@google.com) if you are interested in
+            Matched recent searches of this user. The maximum number of
+            recent searches is 10. This field is a restricted feature.
+            Contact Retail Search support team if you are interested in
             enabling it.
 
             This feature is only available when

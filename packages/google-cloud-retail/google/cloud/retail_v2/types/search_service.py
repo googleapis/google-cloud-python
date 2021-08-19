@@ -94,7 +94,8 @@ class SearchRequest(proto.Message):
             The filter syntax consists of an expression language for
             constructing a predicate from one or more fields of the
             products being filtered. Filter expression is
-            case-sensitive.
+            case-sensitive. See more details at this `user
+            guide </retail/private/docs/filter-and-order#filter>`__.
 
             If this field is unrecognizable, an INVALID_ARGUMENT is
             returned.
@@ -116,7 +117,8 @@ class SearchRequest(proto.Message):
             ordered by a field in an
             [Product][google.cloud.retail.v2.Product] object. Leave it
             unset if ordered by relevance. OrderBy expression is
-            case-sensitive.
+            case-sensitive. See more details at this `user
+            guide </retail/private/docs/filter-and-order#order>`__.
 
             If this field is unrecognizable, an INVALID_ARGUMENT is
             returned.
@@ -131,16 +133,17 @@ class SearchRequest(proto.Message):
             facets. Notice that only textual facets can be
             dynamically generated.
             This feature requires additional allowlisting.
-            Contact Retail Support (retail-search-
-            support@google.com) if you are interested in
-            using dynamic facet feature.
+            Contact Retail Search support team if you are
+            interested in using dynamic facet feature.
         boost_spec (google.cloud.retail_v2.types.SearchRequest.BoostSpec):
-            Boost specification to boost certain
-            products.
+            Boost specification to boost certain products. See more
+            details at this `user
+            guide </retail/private/docs/boosting>`__.
         query_expansion_spec (google.cloud.retail_v2.types.SearchRequest.QueryExpansionSpec):
-            The query expansion specification that
-            specifies the conditions under which query
-            expansion will occur.
+            The query expansion specification that specifies the
+            conditions under which query expansion will occur. See more
+            details at this `user
+            guide </retail/private/docs/result-size#query_expansion>`__.
         variant_rollup_keys (Sequence[str]):
             The keys to fetch and rollup the matching
             [variant][google.cloud.retail.v2.Product.Type.VARIANT]
@@ -154,9 +157,9 @@ class SearchRequest(proto.Message):
             lead to extra query latency. Maximum number of keys is 10.
 
             For
-            [Product.fulfillment_info][google.cloud.retail.v2.Product.fulfillment_info],
-            a fulfillment type and a fulfillment ID must be provided in
-            the format of "fulfillmentType.filfillmentId". E.g., in
+            [FulfillmentInfo][google.cloud.retail.v2.FulfillmentInfo], a
+            fulfillment type and a fulfillment ID must be provided in
+            the format of "fulfillmentType.fulfillmentId". E.g., in
             "pickupInStore.store123", "pickupInStore" is fulfillment
             type and "store123" is the store ID.
 
@@ -169,31 +172,51 @@ class SearchRequest(proto.Message):
             -  attributes.key, where key is any key in the
                [Product.attributes][google.cloud.retail.v2.Product.attributes]
                map.
-            -  pickupInStore.id, where id is any [FulfillmentInfo.ids][]
-               for type [FulfillmentInfo.Type.PICKUP_IN_STORE][].
-            -  shipToStore.id, where id is any [FulfillmentInfo.ids][]
-               for type [FulfillmentInfo.Type.SHIP_TO_STORE][].
+            -  pickupInStore.id, where id is any
+               [FulfillmentInfo.place_ids][google.cloud.retail.v2.FulfillmentInfo.place_ids]
+               for
+               [FulfillmentInfo.type][google.cloud.retail.v2.FulfillmentInfo.type]
+               "pickup-in-store".
+            -  shipToStore.id, where id is any
+               [FulfillmentInfo.place_ids][google.cloud.retail.v2.FulfillmentInfo.place_ids]
+               for
+               [FulfillmentInfo.type][google.cloud.retail.v2.FulfillmentInfo.type]
+               "ship-to-store".
             -  sameDayDelivery.id, where id is any
-               [FulfillmentInfo.ids][] for type
-               [FulfillmentInfo.Type.SAME_DAY_DELIVERY][].
+               [FulfillmentInfo.place_ids][google.cloud.retail.v2.FulfillmentInfo.place_ids]
+               for
+               [FulfillmentInfo.type][google.cloud.retail.v2.FulfillmentInfo.type]
+               "same-day-delivery".
             -  nextDayDelivery.id, where id is any
-               [FulfillmentInfo.ids][] for type
-               [FulfillmentInfo.Type.NEXT_DAY_DELIVERY][].
+               [FulfillmentInfo.place_ids][google.cloud.retail.v2.FulfillmentInfo.place_ids]
+               for
+               [FulfillmentInfo.type][google.cloud.retail.v2.FulfillmentInfo.type]
+               "next-day-delivery".
             -  customFulfillment1.id, where id is any
-               [FulfillmentInfo.ids][] for type
-               [FulfillmentInfo.Type.CUSTOM_TYPE_1][].
+               [FulfillmentInfo.place_ids][google.cloud.retail.v2.FulfillmentInfo.place_ids]
+               for
+               [FulfillmentInfo.type][google.cloud.retail.v2.FulfillmentInfo.type]
+               "custom-type-1".
             -  customFulfillment2.id, where id is any
-               [FulfillmentInfo.ids][] for type
-               [FulfillmentInfo.Type.CUSTOM_TYPE_2][].
+               [FulfillmentInfo.place_ids][google.cloud.retail.v2.FulfillmentInfo.place_ids]
+               for
+               [FulfillmentInfo.type][google.cloud.retail.v2.FulfillmentInfo.type]
+               "custom-type-2".
             -  customFulfillment3.id, where id is any
-               [FulfillmentInfo.ids][] for type
-               [FulfillmentInfo.Type.CUSTOM_TYPE_3][].
+               [FulfillmentInfo.place_ids][google.cloud.retail.v2.FulfillmentInfo.place_ids]
+               for
+               [FulfillmentInfo.type][google.cloud.retail.v2.FulfillmentInfo.type]
+               "custom-type-3".
             -  customFulfillment4.id, where id is any
-               [FulfillmentInfo.ids][] for type
-               [FulfillmentInfo.Type.CUSTOM_TYPE_4][].
+               [FulfillmentInfo.place_ids][google.cloud.retail.v2.FulfillmentInfo.place_ids]
+               for
+               [FulfillmentInfo.type][google.cloud.retail.v2.FulfillmentInfo.type]
+               "custom-type-4".
             -  customFulfillment5.id, where id is any
-               [FulfillmentInfo.ids][] for type
-               [FulfillmentInfo.Type.CUSTOM_TYPE_5][].
+               [FulfillmentInfo.place_ids][google.cloud.retail.v2.FulfillmentInfo.place_ids]
+               for
+               [FulfillmentInfo.type][google.cloud.retail.v2.FulfillmentInfo.type]
+               "custom-type-5".
 
             If this field is set to an invalid value other than these,
             an INVALID_ARGUMENT error is returned.
@@ -294,37 +317,37 @@ class SearchRequest(proto.Message):
                     [FacetKey.query][google.cloud.retail.v2.SearchRequest.FacetSpec.FacetKey.query]
                     is not specified:
 
-                    Textual facet keys:
+                    -  textual_field =
 
-                    -  brands
-                    -  categories
-                    -  genders
-                    -  ageGroups
-                    -  availability
-                    -  colorFamilies
-                    -  colors
-                    -  sizes
-                    -  materials
-                    -  patterns
-                    -  conditions
-                    -  attributes.key
-                    -  pickupInStore
-                    -  shipToStore
-                    -  sameDayDelivery
-                    -  nextDayDelivery
-                    -  customFulfillment1
-                    -  customFulfillment2
-                    -  customFulfillment3
-                    -  customFulfillment4
-                    -  customFulfillment5
+                       -  "brands"
+                       -  "categories"
+                       -  "genders"
+                       -  "ageGroups"
+                       -  "availability"
+                       -  "colorFamilies"
+                       -  "colors"
+                       -  "sizes"
+                       -  "materials"
+                       -  "patterns"
+                       -  "conditions"
+                       -  "attributes.key"
+                       -  "pickupInStore"
+                       -  "shipToStore"
+                       -  "sameDayDelivery"
+                       -  "nextDayDelivery"
+                       -  "customFulfillment1"
+                       -  "customFulfillment2"
+                       -  "customFulfillment3"
+                       -  "customFulfillment4"
+                       -  "customFulfillment5"
 
-                    Numeric facet keys:
+                    -  numerical_field =
 
-                    -  price
-                    -  discount
-                    -  rating
-                    -  ratingCount
-                    -  attributes.key
+                       -  "price"
+                       -  "discount"
+                       -  "rating"
+                       -  "ratingCount"
+                       -  "attributes.key".
                 intervals (Sequence[google.cloud.retail_v2.types.Interval]):
                     Set only if values should be bucketized into
                     intervals. Must be set for facets with numerical
@@ -389,7 +412,8 @@ class SearchRequest(proto.Message):
                     order <https://en.wikipedia.org/wiki/Natural_sort_order>`__;
                     numerical intervals are sorted in the order given by
                     [FacetSpec.FacetKey.intervals][google.cloud.retail.v2.SearchRequest.FacetSpec.FacetKey.intervals];
-                    [FulfillmentInfo.ids][] are sorted in the order given by
+                    [FulfillmentInfo.place_ids][google.cloud.retail.v2.FulfillmentInfo.place_ids]
+                    are sorted in the order given by
                     [FacetSpec.FacetKey.restricted_values][google.cloud.retail.v2.SearchRequest.FacetSpec.FacetKey.restricted_values].
                 query (str):
                     The query that is used to compute facet for the given facet
@@ -477,12 +501,9 @@ class SearchRequest(proto.Message):
                     Examples:
 
                     -  To boost products with product ID "product_1" or
-                       "product_2", and color "Red" or "Blue":
-                       ::
-
-                          (id: ANY("product_1", "product_2"))
-                          AND
-                          (colorFamilies: ANY("Red", "Blue"))
+                       "product_2", and color "Red" or "Blue": *(id:
+                       ANY("product_1", "product_2"))* *AND* *(colorFamilies:
+                       ANY("Red", "Blue"))*
                 boost (float):
                     Strength of the condition boost, which should be in [-1, 1].
                     Negative boost means demotion. Default is 0.0.
@@ -522,6 +543,11 @@ class SearchRequest(proto.Message):
                 The condition under which query expansion should occur.
                 Default to
                 [Condition.DISABLED][google.cloud.retail.v2.SearchRequest.QueryExpansionSpec.Condition.DISABLED].
+            pin_unexpanded_results (bool):
+                Whether to pin unexpanded results. If this
+                field is set to true, unexpanded products are
+                always at the top of the search results,
+                followed by the expanded results.
         """
 
         class Condition(proto.Enum):
@@ -535,6 +561,7 @@ class SearchRequest(proto.Message):
         condition = proto.Field(
             proto.ENUM, number=1, enum="SearchRequest.QueryExpansionSpec.Condition",
         )
+        pin_unexpanded_results = proto.Field(proto.BOOL, number=2,)
 
     placement = proto.Field(proto.STRING, number=1,)
     branch = proto.Field(proto.STRING, number=2,)
@@ -674,9 +701,9 @@ class SearchResponse(proto.Message):
                     }
 
                 For
-                [Product.fulfillment_info][google.cloud.retail.v2.Product.fulfillment_info],
+                [FulfillmentInfo][google.cloud.retail.v2.FulfillmentInfo],
                 the rollup values is a double value with type
-                [google.protobuf.Value][google.protobuf.Value]. For example:
+                [google.protobuf.Value][google.protobuf.Value]. For example,
                 ``{key: "pickupInStore.store1" value { number_value: 10 }}``
                 means a there are 10 variants in this product are available
                 in the store "store1".
@@ -737,9 +764,15 @@ class SearchResponse(proto.Message):
             expanded_query (bool):
                 Bool describing whether query expansion has
                 occurred.
+            pinned_result_count (int):
+                Number of pinned results. This field will only be set when
+                expansion happens and
+                [SearchRequest.query_expansion_spec.pin_unexpanded_results][]
+                is set to true.
         """
 
         expanded_query = proto.Field(proto.BOOL, number=1,)
+        pinned_result_count = proto.Field(proto.INT64, number=2,)
 
     @property
     def raw_page(self):

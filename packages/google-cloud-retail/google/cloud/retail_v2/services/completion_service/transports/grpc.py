@@ -35,10 +35,11 @@ class CompletionServiceGrpcTransport(CompletionServiceTransport):
     """gRPC backend transport for CompletionService.
 
     Auto-completion service for retail.
+
     This feature is only available for users who have Retail Search
-    enabled. Contact Retail Support (retail-search-
-    support@google.com) if you are interested in using Retail
-    Search.
+    enabled. Please submit a form
+    `here <https://cloud.google.com/contact>`__ to contact cloud sales
+    if you are interested in using Retail Search.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -256,12 +257,12 @@ class CompletionServiceGrpcTransport(CompletionServiceTransport):
     ]:
         r"""Return a callable for the complete query method over gRPC.
 
-        Completes the specified prefix with keyword
-        suggestions.
-        This feature is only available for users who have Retail
-        Search enabled. Contact Retail Support (retail-search-
-        support@google.com) if you are interested in using
-        Retail Search.
+        Completes the specified prefix with keyword suggestions.
+
+        This feature is only available for users who have Retail Search
+        enabled. Please submit a form
+        `here <https://cloud.google.com/contact>`__ to contact cloud
+        sales if you are interested in using Retail Search.
 
         Returns:
             Callable[[~.CompleteQueryRequest],
@@ -290,12 +291,14 @@ class CompletionServiceGrpcTransport(CompletionServiceTransport):
         r"""Return a callable for the import completion data method over gRPC.
 
         Bulk import of processed completion dataset.
-        Request processing may be synchronous. Partial updating
-        is not supported.
-        This feature is only available for users who have Retail
-        Search enabled. Contact Retail Support (retail-search-
-        support@google.com) if you are interested in using
-        Retail Search.
+
+        Request processing may be synchronous. Partial updating is not
+        supported.
+
+        This feature is only available for users who have Retail Search
+        enabled. Please submit a form
+        `here <https://cloud.google.com/contact>`__ to contact cloud
+        sales if you are interested in using Retail Search.
 
         Returns:
             Callable[[~.ImportCompletionDataRequest],

@@ -463,9 +463,9 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
         [RemoveFulfillmentPlaces][google.cloud.retail.v2.ProductService.RemoveFulfillmentPlaces].
 
         This feature is only available for users who have Retail Search
-        enabled. Contact Retail Support
-        (retail-search-support@google.com) if you are interested in
-        using Retail Search.
+        enabled. Please submit a form
+        `here <https://cloud.google.com/contact>`__ to contact cloud
+        sales if you are interested in using Retail Search.
 
         Returns:
             Callable[[~.SetInventoryRequest],
@@ -508,9 +508,9 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
         [ListProducts][google.cloud.retail.v2.ProductService.ListProducts].
 
         This feature is only available for users who have Retail Search
-        enabled. Contact Retail Support
-        (retail-search-support@google.com) if you are interested in
-        using Retail Search.
+        enabled. Please submit a form
+        `here <https://cloud.google.com/contact>`__ to contact cloud
+        sales if you are interested in using Retail Search.
 
         Returns:
             Callable[[~.AddFulfillmentPlacesRequest],
@@ -553,9 +553,9 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
         [ListProducts][google.cloud.retail.v2.ProductService.ListProducts].
 
         This feature is only available for users who have Retail Search
-        enabled. Contact Retail Support
-        (retail-search-support@google.com) if you are interested in
-        using Retail Search.
+        enabled. Please submit a form
+        `here <https://cloud.google.com/contact>`__ to contact cloud
+        sales if you are interested in using Retail Search.
 
         Returns:
             Callable[[~.RemoveFulfillmentPlacesRequest],
