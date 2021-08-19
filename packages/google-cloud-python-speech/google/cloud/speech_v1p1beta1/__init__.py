@@ -52,6 +52,7 @@ from .types.cloud_speech_adaptation import UpdatePhraseSetRequest
 from .types.resource import CustomClass
 from .types.resource import PhraseSet
 from .types.resource import SpeechAdaptation
+from .types.resource import TranscriptNormalization
 
 from google.cloud.speech_v1.helpers import SpeechHelpers
 
@@ -94,6 +95,7 @@ __all__ = (
     "StreamingRecognitionResult",
     "StreamingRecognizeRequest",
     "StreamingRecognizeResponse",
+    "TranscriptNormalization",
     "TranscriptOutputConfig",
     "UpdateCustomClassRequest",
     "UpdatePhraseSetRequest",

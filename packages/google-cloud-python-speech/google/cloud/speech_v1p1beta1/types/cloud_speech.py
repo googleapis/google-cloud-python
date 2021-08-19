@@ -265,6 +265,13 @@ class RecognitionConfig(proto.Message):
             information, see the `speech
             adaptation <https://cloud.google.com/speech-to-text/docs/adaptation>`__
             documentation.
+        transcript_normalization (google.cloud.speech_v1p1beta1.types.TranscriptNormalization):
+            Use transcription normalization to
+            automatically replace parts of the transcript
+            with phrases of your choosing. For
+            StreamingRecognize, this normalization only
+            applies to stable partial transcripts (stability
+            > 0.8) and final transcripts.
         speech_contexts (Sequence[google.cloud.speech_v1p1beta1.types.SpeechContext]):
             Array of
             [SpeechContext][google.cloud.speech.v1p1beta1.SpeechContext].
@@ -426,6 +433,9 @@ class RecognitionConfig(proto.Message):
     profanity_filter = proto.Field(proto.BOOL, number=5,)
     adaptation = proto.Field(
         proto.MESSAGE, number=20, message=resource.SpeechAdaptation,
+    )
+    transcript_normalization = proto.Field(
+        proto.MESSAGE, number=24, message=resource.TranscriptNormalization,
     )
     speech_contexts = proto.RepeatedField(
         proto.MESSAGE, number=6, message="SpeechContext",
