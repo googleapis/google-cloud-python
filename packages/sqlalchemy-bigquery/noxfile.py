@@ -99,11 +99,11 @@ def default(session):
     )
 
     if session.python == "3.8":
-        extras = "[alembic]"
+        extras = "[tests,alembic]"
     elif session.python == "3.9":
-        extras = "[geography]"
+        extras = "[tests,geography]"
     else:
-        extras = ""
+        extras = "[tests]"
     session.install("-e", f".{extras}", "-c", constraints_path)
 
     # Run py.test against the unit tests.
@@ -157,11 +157,11 @@ def system(session):
     # virtualenv's dist-packages.
     session.install("mock", "pytest", "google-cloud-testutils", "-c", constraints_path)
     if session.python == "3.8":
-        extras = "[alembic]"
+        extras = "[tests,alembic]"
     elif session.python == "3.9":
-        extras = "[geography]"
+        extras = "[tests,geography]"
     else:
-        extras = ""
+        extras = "[tests]"
     session.install("-e", f".{extras}", "-c", constraints_path)
 
     # Run py.test against the system tests.
@@ -211,11 +211,11 @@ def compliance(session):
         constraints_path,
     )
     if session.python == "3.8":
-        extras = "[alembic]"
+        extras = "[tests,alembic]"
     elif session.python == "3.9":
-        extras = "[geography]"
+        extras = "[tests,geography]"
     else:
-        extras = ""
+        extras = "[tests]"
     session.install("-e", f".{extras}", "-c", constraints_path)
 
     session.run(
