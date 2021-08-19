@@ -334,10 +334,8 @@ run gbq integration tests on a forked repository:
 Documenting your code
 ---------------------
 
-Changes should be reflected in the release notes located in ``doc/source/changelog.rst``.
-This file contains an ongoing change log.  Add an entry to this file to document your fix,
-enhancement or (unavoidable) breaking change.  Make sure to include the GitHub issue number
-when adding your entry (using `` :issue:`1234` `` where `1234` is the issue/pull request number).
+Changes should follow convential commits.  The release-please bot uses the
+commit message to create an ongoing change log. 
 
 If your code is an enhancement, it is most likely necessary to add usage
 examples to the existing documentation. Further, to let users know when

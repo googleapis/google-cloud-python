@@ -39,7 +39,7 @@ Contents:
    writing.rst
    api.rst
    contributing.rst
-   changelog.rst
+   changelog.md
    privacy.rst
 
 

@@ -1,4 +1,3 @@
 - [ ] closes #xxxx
 - [ ] tests added / passed
 - [ ] passes `nox -s blacken lint`
-- [ ] `docs/source/changelog.rst` entry

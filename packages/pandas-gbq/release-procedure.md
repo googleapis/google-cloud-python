@@ -1,8 +1,6 @@
 
 *   Send PR to prepare release on scheduled date.
 
-    *   Add current date and any missing changes to [`docs/source/changelog.rst`](https://github.com/pydata/pandas-gbq/blob/master/docs/source/changelog.rst).
-
 *   Verify your local repository is on the latest changes. `rebase -i` should be noop.
 
         git fetch pandas-gbq master
@@ -37,7 +35,6 @@
 
 *   Create the [release on GitHub](https://github.com/pydata/pandas-gbq/releases/new) using the tag created earlier.
 
-    *   Copy release notes from [changelog.rst](https://github.com/pydata/pandas-gbq/blob/master/docs/source/changelog.rst).
     *   Upload wheel and source zip from `dist/` directory.
 
 *   Do a pull-request to the feedstock on `pandas-gbq-feedstock <https://github.com/conda-forge/pandas-gbq-feedstock/>`__
