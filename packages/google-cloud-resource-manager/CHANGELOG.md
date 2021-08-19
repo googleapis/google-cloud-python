@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.1.0](https://www.github.com/googleapis/python-resource-manager/compare/v1.0.2...v1.1.0) (2021-08-19)
+
+
+### Features
+
+* bump release level to production/stable ([#96](https://www.github.com/googleapis/python-resource-manager/issues/96)) ([aac0a24](https://www.github.com/googleapis/python-resource-manager/commit/aac0a240843846ccb228c8d4223cfd2dbdf03f7d))
+
 ### [1.0.2](https://www.github.com/googleapis/python-resource-manager/compare/v1.0.1...v1.0.2) (2021-07-27)
 
 
