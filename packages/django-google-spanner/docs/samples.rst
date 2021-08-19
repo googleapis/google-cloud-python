@@ -1,24 +1,12 @@
-Sample Code
-####################################
+Sample Examples
+###############
 
-Create and register your first model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-To define your database layout create a models file in your app folder and add the relevant 
-classes to it. Spanner works exactly like any other database you may have used with Django. 
-Here is a simple example you can run with Spanner. In our poll application below we create 
-the following two models:
+django-spanner for Django tutorial
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: python
+This `Example <example_from_scratch.html>`_ shows how to use django-spanner for Cloud Spanner as a backend database for `healthchecks.io <https://healthchecks.io>`_ 
 
-    from django.db import models
-    
-    class Question(models.Model):
-        question_text = models.CharField(max_length=200)
-        pub_date = models.DateTimeField('date published')
-        def __str__(self):
-            return str(self.rating)
-    
-    class Choice(models.Model):
-        question = models.ForeignKey(Question, on_delete=models.CASCADE)
-        choice_text = models.CharField(max_length=200)
-        votes = models.IntegerField(default=0)
+django-spanner on healthchecks.io
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This `Example <example_healthchecks.html>`_ shows how to use django-spanner for Cloud Spanner as a backend database for `Django's tutorials <https://docs.djangoproject.com/en/2.2/intro/tutorial01/>`_ 

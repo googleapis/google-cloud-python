@@ -38,6 +38,8 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     skip_tests = (
         # No foreign key constraints in Spanner.
         "backends.tests.FkConstraintsTests.test_check_constraints",
+        # Spanner does not support empty list of DML statement.
+        "backends.tests.BackendTestCase.test_cursor_executemany_with_empty_params_list",
         "fixtures_regress.tests.TestFixtures.test_loaddata_raises_error_when_fixture_has_invalid_foreign_key",
         # No Django transaction management in Spanner.
         "basic.tests.SelectOnSaveTests.test_select_on_save_lying_update",
