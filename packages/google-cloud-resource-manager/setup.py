@@ -22,7 +22,7 @@ import setuptools
 name = "google-cloud-resource-manager"
 description = "Google Cloud Resource Manager API client library"
 version = "1.0.2"
-release_status = "Development Status :: 4 - Beta"
+release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-resource-manager"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
