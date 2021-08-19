@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [2.0.1](https://www.github.com/googleapis/google-auth-library-python/compare/v2.0.0...v2.0.1) (2021-08-17)
+
+
+### Bug Fixes
+
+* normalize AWS paths correctly on windows ([#842](https://www.github.com/googleapis/google-auth-library-python/issues/842)) ([4e0fb1c](https://www.github.com/googleapis/google-auth-library-python/commit/4e0fb1cee78ee56b878b6e12be3b3c58df242b05))
+
 ## [2.0.0](https://www.github.com/googleapis/google-auth-library-python/compare/v2.0.0-b1...v2.0.0) (2021-08-16)
 
 
