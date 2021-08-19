@@ -101,6 +101,8 @@ def build_init(app):
     app.env.docfx_info_uid_types = {}
     # This stores uidnames of docstrings already parsed
     app.env.docfx_uid_names = {}
+    # This stores file path for class when inspect cannot retrieve file path
+    app.env.docfx_class_paths = {}
 
     app.env.docfx_xrefs = {}
 
@@ -603,11 +605,13 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
 
         # Get folder name from conf.py
         path = os.path.join(app.config.folder, path)
+        app.env.docfx_class_paths[cls] = path
 
         # append relative path defined in conf.py (in case of "binding python" project)
         try:
             source_prefix  # does source_prefix exist in the current namespace
             path = source_prefix + path
+            app.env.docfx_class_paths[cls] = path
         except NameError:
             pass
 
@@ -915,10 +919,12 @@ def find_unique_name(package_name, entries):
         #   "google.cloud.spanner.v1.params_v1.types"
         #   "google.cloud.spanner.v1.instance_v1.types"
         # it will return "instace_v1" or "params_v1" and "types".
-        if name != "google" and name != "cloud" and entries[name] == 1:
+        # Also ensure that if name == package_name[-1], we only return one of
+        # the duplicate and not both.
+        if name != "google" and name != "cloud" and entries[name] == 1 and name != package_name[-1]:
             return [name, package_name[-1]]
 
-    # If there is no way to disambiguate, return the identifier name
+    # If there is no way to disambiguate or we found duplicates, return the identifier name.
     return [package_name[-1]]
 
 # Used to disambiguate names that have same entries.
@@ -1206,7 +1212,16 @@ def build_finished(app, exception):
                 else:
                     # Extract the file name to use for new entries into the TOC
                     # to make TOC entries consistent with filenames.
-                    file_name = obj['source']['path'].split("/")[-1][:-3]
+                    file_name = obj['source']['path']
+                    # `inspect.getfile() cannot retrieve file path for some
+                    # types. Try to retrieve the file path from its class
+                    # parent, otherwise simply use node_name.
+                    if not file_name:
+                        file_name = app.env.docfx_class_paths.get(obj.get("class"))
+                    try:
+                        file_name = obj['source']['path'].split("/")[-1][:-3]
+                    except AttributeError:
+                        file_name = node_name
                     toc_yaml.append({
                       'name': file_name, 
                       'uidname': uid, 
