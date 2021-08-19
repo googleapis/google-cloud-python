@@ -140,6 +140,10 @@ def wait_and_retry(func, get_status_code, retry_strategy):
     Expects ``func`` to return an HTTP response and uses ``get_status_code``
     to check if the response is retry-able.
 
+    ``func`` is expected to raise a failure status code as a
+    common.InvalidResponse, at which point this method will check the code
+    against the common.RETRIABLE list of retriable status codes.
+
     Will retry until :meth:`~.RetryStrategy.retry_allowed` (on the current
     ``retry_strategy``) returns :data:`False`. Uses
     :func:`calculate_retry_wait` to double the wait time (with jitter) after
@@ -176,18 +180,22 @@ def wait_and_retry(func, get_status_code, retry_strategy):
         try:
             response = func()
         except connection_error_exceptions as e:
-            error = e
+            error = e  # Fall through to retry, if there are retries left.
+        except common.InvalidResponse as e:
+            # An InvalidResponse is only retriable if its status code matches.
+            # The `process_response()` method on a Download or Upload method
+            # will convert the status code into an exception.
+            if get_status_code(e.response) in common.RETRYABLE:
+                error = e  # Fall through to retry, if there are retries left.
+            else:
+                raise  # If the status code is not retriable, raise w/o retry.
         else:
-            if get_status_code(response) not in common.RETRYABLE:
-                return response
+            return response
 
         if not retry_strategy.retry_allowed(total_sleep, num_retries):
-            # Retries are exhausted and no acceptable response was received. Raise the
-            # retriable_error or return the unacceptable response.
-            if error:
-                raise error
-
-            return response
+            # Retries are exhausted and no acceptable response was received.
+            # Raise the retriable_error.
+            raise error
 
         base_wait, wait_time = calculate_retry_wait(
             base_wait, retry_strategy.max_sleep, retry_strategy.multiplier

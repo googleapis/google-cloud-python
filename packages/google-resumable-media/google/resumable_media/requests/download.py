@@ -157,20 +157,25 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
         request_kwargs = {
             "data": payload,
             "headers": headers,
-            "retry_strategy": self._retry_strategy,
             "timeout": timeout,
         }
         if self._stream is not None:
             request_kwargs["stream"] = True
 
-        result = _request_helpers.http_request(transport, method, url, **request_kwargs)
+        # Wrap the request business logic in a function to be retried.
+        def retriable_request():
+            result = transport.request(method, url, **request_kwargs)
 
-        self._process_response(result)
+            self._process_response(result)
 
-        if self._stream is not None:
-            self._write_to_stream(result)
+            if self._stream is not None:
+                self._write_to_stream(result)
 
-        return result
+            return result
+
+        return _helpers.wait_and_retry(
+            retriable_request, self._get_status_code, self._retry_strategy
+        )
 
 
 class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
@@ -285,24 +290,29 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
                 finished.
         """
         method, url, payload, headers = self._prepare_request()
-        # NOTE: We assume "payload is None" but pass it along anyway.
-        result = _request_helpers.http_request(
-            transport,
-            method,
-            url,
-            data=payload,
-            headers=headers,
-            retry_strategy=self._retry_strategy,
-            stream=True,
-            timeout=timeout,
+
+        # Wrap the request business logic in a function to be retried.
+        def retriable_request():
+            # NOTE: We assume "payload is None" but pass it along anyway.
+            result = transport.request(
+                method,
+                url,
+                data=payload,
+                headers=headers,
+                stream=True,
+                timeout=timeout,
+            )
+
+            self._process_response(result)
+
+            if self._stream is not None:
+                self._write_to_stream(result)
+
+            return result
+
+        return _helpers.wait_and_retry(
+            retriable_request, self._get_status_code, self._retry_strategy
         )
-
-        self._process_response(result)
-
-        if self._stream is not None:
-            self._write_to_stream(result)
-
-        return result
 
 
 class ChunkedDownload(_request_helpers.RequestsMixin, _download.ChunkedDownload):
@@ -361,18 +371,23 @@ class ChunkedDownload(_request_helpers.RequestsMixin, _download.ChunkedDownload)
             ValueError: If the current download has finished.
         """
         method, url, payload, headers = self._prepare_request()
-        # NOTE: We assume "payload is None" but pass it along anyway.
-        result = _request_helpers.http_request(
-            transport,
-            method,
-            url,
-            data=payload,
-            headers=headers,
-            retry_strategy=self._retry_strategy,
-            timeout=timeout,
+
+        # Wrap the request business logic in a function to be retried.
+        def retriable_request():
+            # NOTE: We assume "payload is None" but pass it along anyway.
+            result = transport.request(
+                method,
+                url,
+                data=payload,
+                headers=headers,
+                timeout=timeout,
+            )
+            self._process_response(result)
+            return result
+
+        return _helpers.wait_and_retry(
+            retriable_request, self._get_status_code, self._retry_strategy
         )
-        self._process_response(result)
-        return result
 
 
 class RawChunkedDownload(_request_helpers.RawRequestsMixin, _download.ChunkedDownload):
@@ -431,19 +446,24 @@ class RawChunkedDownload(_request_helpers.RawRequestsMixin, _download.ChunkedDow
             ValueError: If the current download has finished.
         """
         method, url, payload, headers = self._prepare_request()
-        # NOTE: We assume "payload is None" but pass it along anyway.
-        result = _request_helpers.http_request(
-            transport,
-            method,
-            url,
-            data=payload,
-            headers=headers,
-            stream=True,
-            retry_strategy=self._retry_strategy,
-            timeout=timeout,
+
+        # Wrap the request business logic in a function to be retried.
+        def retriable_request():
+            # NOTE: We assume "payload is None" but pass it along anyway.
+            result = transport.request(
+                method,
+                url,
+                data=payload,
+                headers=headers,
+                stream=True,
+                timeout=timeout,
+            )
+            self._process_response(result)
+            return result
+
+        return _helpers.wait_and_retry(
+            retriable_request, self._get_status_code, self._retry_strategy
         )
-        self._process_response(result)
-        return result
 
 
 def _add_decoder(response_raw, checksum):

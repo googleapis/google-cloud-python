@@ -20,6 +20,7 @@ uploads that contain both metadata and a small file as payload.
 
 
 from google.resumable_media import _upload
+from google.resumable_media import _helpers
 from google.resumable_media.requests import _request_helpers
 
 
@@ -68,17 +69,20 @@ class SimpleUpload(_request_helpers.RequestsMixin, _upload.SimpleUpload):
             ~requests.Response: The HTTP response returned by ``transport``.
         """
         method, url, payload, headers = self._prepare_request(data, content_type)
-        response = _request_helpers.http_request(
-            transport,
-            method,
-            url,
-            data=payload,
-            headers=headers,
-            retry_strategy=self._retry_strategy,
-            timeout=timeout,
+
+        # Wrap the request business logic in a function to be retried.
+        def retriable_request():
+            result = transport.request(
+                method, url, data=payload, headers=headers, timeout=timeout
+            )
+
+            self._process_response(result)
+
+            return result
+
+        return _helpers.wait_and_retry(
+            retriable_request, self._get_status_code, self._retry_strategy
         )
-        self._process_response(response)
-        return response
 
 
 class MultipartUpload(_request_helpers.RequestsMixin, _upload.MultipartUpload):
@@ -136,18 +140,20 @@ class MultipartUpload(_request_helpers.RequestsMixin, _upload.MultipartUpload):
         method, url, payload, headers = self._prepare_request(
             data, metadata, content_type
         )
-        response = _request_helpers.http_request(
-            transport,
-            method,
-            url,
-            data=payload,
-            headers=headers,
-            retry_strategy=self._retry_strategy,
-            timeout=timeout,
-        )
 
-        self._process_response(response)
-        return response
+        # Wrap the request business logic in a function to be retried.
+        def retriable_request():
+            result = transport.request(
+                method, url, data=payload, headers=headers, timeout=timeout
+            )
+
+            self._process_response(result)
+
+            return result
+
+        return _helpers.wait_and_retry(
+            retriable_request, self._get_status_code, self._retry_strategy
+        )
 
 
 class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
@@ -401,17 +407,20 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
             total_bytes=total_bytes,
             stream_final=stream_final,
         )
-        response = _request_helpers.http_request(
-            transport,
-            method,
-            url,
-            data=payload,
-            headers=headers,
-            retry_strategy=self._retry_strategy,
-            timeout=timeout,
+
+        # Wrap the request business logic in a function to be retried.
+        def retriable_request():
+            result = transport.request(
+                method, url, data=payload, headers=headers, timeout=timeout
+            )
+
+            self._process_initiate_response(result)
+
+            return result
+
+        return _helpers.wait_and_retry(
+            retriable_request, self._get_status_code, self._retry_strategy
         )
-        self._process_initiate_response(response)
-        return response
 
     def transmit_next_chunk(
         self,
@@ -493,17 +502,20 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
                 does not match or is not available.
         """
         method, url, payload, headers = self._prepare_request()
-        response = _request_helpers.http_request(
-            transport,
-            method,
-            url,
-            data=payload,
-            headers=headers,
-            retry_strategy=self._retry_strategy,
-            timeout=timeout,
+
+        # Wrap the request business logic in a function to be retried.
+        def retriable_request():
+            result = transport.request(
+                method, url, data=payload, headers=headers, timeout=timeout
+            )
+
+            self._process_response(result, len(payload))
+
+            return result
+
+        return _helpers.wait_and_retry(
+            retriable_request, self._get_status_code, self._retry_strategy
         )
-        self._process_response(response, len(payload))
-        return response
 
     def recover(self, transport):
         """Recover from a failure.
@@ -522,15 +534,24 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
         Returns:
             ~requests.Response: The HTTP response returned by ``transport``.
         """
+        timeout = (
+            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
+            _request_helpers._DEFAULT_READ_TIMEOUT,
+        )
+
         method, url, payload, headers = self._prepare_recover_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
-        response = _request_helpers.http_request(
-            transport,
-            method,
-            url,
-            data=payload,
-            headers=headers,
-            retry_strategy=self._retry_strategy,
+
+        # Wrap the request business logic in a function to be retried.
+        def retriable_request():
+            result = transport.request(
+                method, url, data=payload, headers=headers, timeout=timeout
+            )
+
+            self._process_recover_response(result)
+
+            return result
+
+        return _helpers.wait_and_retry(
+            retriable_request, self._get_status_code, self._retry_strategy
         )
-        self._process_recover_response(response)
-        return response

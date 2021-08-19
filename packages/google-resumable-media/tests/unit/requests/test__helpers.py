@@ -55,54 +55,5 @@ class TestRawRequestsMixin(object):
         assert body == _request_helpers.RawRequestsMixin._get_body(response)
 
 
-def test_http_request():
-    transport, responses = _make_transport(http.client.OK)
-    method = "POST"
-    url = "http://test.invalid"
-    data = mock.sentinel.data
-    headers = {"one": "fish", "blue": "fish"}
-    timeout = mock.sentinel.timeout
-    ret_val = _request_helpers.http_request(
-        transport,
-        method,
-        url,
-        data=data,
-        headers=headers,
-        extra1=b"work",
-        extra2=125.5,
-        timeout=timeout,
-    )
-
-    assert ret_val is responses[0]
-    transport.request.assert_called_once_with(
-        method,
-        url,
-        data=data,
-        headers=headers,
-        extra1=b"work",
-        extra2=125.5,
-        timeout=timeout,
-    )
-
-
-def test_http_request_defaults():
-    transport, responses = _make_transport(http.client.OK)
-    method = "POST"
-    url = "http://test.invalid"
-    ret_val = _request_helpers.http_request(transport, method, url)
-
-    assert ret_val is responses[0]
-    transport.request.assert_called_once_with(
-        method, url, data=None, headers=None, timeout=EXPECTED_TIMEOUT
-    )
-
-
 def _make_response(status_code):
     return mock.Mock(status_code=status_code, spec=["status_code"])
-
-
-def _make_transport(*status_codes):
-    transport = mock.Mock(spec=["request"])
-    responses = [_make_response(status_code) for status_code in status_codes]
-    transport.request.side_effect = responses
-    return transport, responses

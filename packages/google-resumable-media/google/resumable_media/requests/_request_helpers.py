@@ -18,9 +18,6 @@ This utilities are explicitly catered to ``requests``-like transports.
 """
 
 
-import functools
-
-from google.resumable_media import _helpers
 from google.resumable_media import common
 
 
@@ -96,41 +93,3 @@ class RawRequestsMixin(RequestsMixin):
             )
             response._content_consumed = True
         return response._content
-
-
-def http_request(
-    transport,
-    method,
-    url,
-    data=None,
-    headers=None,
-    retry_strategy=_DEFAULT_RETRY_STRATEGY,
-    **transport_kwargs
-):
-    """Make an HTTP request.
-
-    Args:
-        transport (~requests.Session): A ``requests`` object which can make
-            authenticated requests via a ``request()`` method. This method
-            must accept an HTTP method, an upload URL, a ``data`` keyword
-            argument and a ``headers`` keyword argument.
-        method (str): The HTTP method for the request.
-        url (str): The URL for the request.
-        data (Optional[bytes]): The body of the request.
-        headers (Mapping[str, str]): The headers for the request (``transport``
-            may also add additional headers).
-        retry_strategy (~google.resumable_media.common.RetryStrategy): The
-            strategy to use if the request fails and must be retried.
-        transport_kwargs (Dict[str, str]): Extra keyword arguments to be
-            passed along to ``transport.request``.
-
-    Returns:
-        ~requests.Response: The return value of ``transport.request()``.
-    """
-    if "timeout" not in transport_kwargs:
-        transport_kwargs["timeout"] = (_DEFAULT_CONNECT_TIMEOUT, _DEFAULT_READ_TIMEOUT)
-
-    func = functools.partial(
-        transport.request, method, url, data=data, headers=headers, **transport_kwargs
-    )
-    return _helpers.wait_and_retry(func, RequestsMixin._get_status_code, retry_strategy)

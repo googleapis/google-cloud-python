@@ -185,12 +185,19 @@ class Test_wait_and_retry(object):
             http.client.NOT_FOUND,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
-        func = mock.Mock(side_effect=responses, spec=[])
+
+        def raise_response():
+            raise common.InvalidResponse(responses.pop(0))
+
+        func = mock.Mock(side_effect=raise_response)
 
         retry_strategy = common.RetryStrategy()
-        ret_val = _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
+        try:
+            _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
+        except common.InvalidResponse as e:
+            ret_val = e.response
 
-        assert ret_val == responses[-1]
+        assert ret_val.status_code == status_codes[-1]
         assert status_codes[-1] not in common.RETRYABLE
 
         assert func.call_count == 4
@@ -216,12 +223,19 @@ class Test_wait_and_retry(object):
             http.client.NOT_FOUND,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
-        func = mock.Mock(side_effect=responses, spec=[])
+
+        def raise_response():
+            raise common.InvalidResponse(responses.pop(0))
+
+        func = mock.Mock(side_effect=raise_response)
 
         retry_strategy = common.RetryStrategy(initial_delay=3.0, multiplier=4)
-        ret_val = _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
+        try:
+            _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
+        except common.InvalidResponse as e:
+            ret_val = e.response
 
-        assert ret_val == responses[-1]
+        assert ret_val.status_code == status_codes[-1]
         assert status_codes[-1] not in common.RETRYABLE
 
         assert func.call_count == 4
@@ -323,7 +337,7 @@ class Test_wait_and_retry(object):
     @mock.patch("time.sleep")
     @mock.patch("random.randint")
     def test_retry_exceeds_max_cumulative(self, randint_mock, sleep_mock):
-        randint_mock.side_effect = [875, 0, 375, 500, 500, 250, 125]
+        randint_mock.side_effect = [875, 0, 375, 500, 500, 250, 125, 0]
 
         status_codes = (
             http.client.SERVICE_UNAVAILABLE,
@@ -336,12 +350,19 @@ class Test_wait_and_retry(object):
             common.TOO_MANY_REQUESTS,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
-        func = mock.Mock(side_effect=responses, spec=[])
+
+        def raise_response():
+            raise common.InvalidResponse(responses.pop(0))
+
+        func = mock.Mock(side_effect=raise_response)
 
         retry_strategy = common.RetryStrategy(max_cumulative_retry=100.0)
-        ret_val = _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
+        try:
+            _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
+        except common.InvalidResponse as e:
+            ret_val = e.response
 
-        assert ret_val == responses[-1]
+        assert ret_val.status_code == status_codes[-1]
         assert status_codes[-1] in common.RETRYABLE
 
         assert func.call_count == 8
