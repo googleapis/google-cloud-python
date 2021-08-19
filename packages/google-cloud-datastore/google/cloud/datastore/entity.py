@@ -40,23 +40,6 @@ class Entity(dict):
     Use :meth:`~google.cloud.datastore.client.Client.get` to retrieve an
     existing entity:
 
-    .. testsetup:: entity-ctor
-
-        import os
-        import uuid
-
-        from google.cloud import datastore
-        from tests.system.test_system import Config  # system tests
-
-        unique = os.getenv('CIRCLE_BUILD_NUM', str(uuid.uuid4())[0:8])
-        client = datastore.Client(namespace='ns{}'.format(unique))
-        key = client.key('EntityKind', 1234, namespace='_Doctest')
-        entity = datastore.Entity(key=key)
-        entity['property'] = 'value'
-        Config.TO_DELETE.append(entity)
-
-        client.put(entity)
-
     .. doctest:: entity-ctor
 
         >>> client.get(key)

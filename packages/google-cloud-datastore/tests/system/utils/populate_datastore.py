@@ -54,6 +54,9 @@ CHARACTERS = (
     {"name": u"Bran", "family": u"Stark", "appearances": 25, "alive": True},
     {"name": u"Jon Snow", "family": u"Stark", "appearances": 32, "alive": True},
 )
+LARGE_CHARACTER_TOTAL_OBJECTS = 2500
+LARGE_CHARACTER_NAMESPACE = "LargeCharacterEntity"
+LARGE_CHARACTER_KIND = "LargeCharacter"
 
 
 def print_func(message):
@@ -62,15 +65,14 @@ def print_func(message):
 
 
 def add_large_character_entities(client=None):
-    TOTAL_OBJECTS = 2500
-    NAMESPACE = "LargeCharacterEntity"
-    KIND = "LargeCharacter"
     MAX_STRING = (string.ascii_lowercase * 58)[:1500]
 
-    client.namespace = NAMESPACE
+    client.namespace = LARGE_CHARACTER_NAMESPACE
 
     # Query used for all tests
-    page_query = client.query(kind=KIND, namespace=NAMESPACE)
+    page_query = client.query(
+        kind=LARGE_CHARACTER_KIND, namespace=LARGE_CHARACTER_NAMESPACE
+    )
 
     def put_objects(count):
         current = 0
@@ -86,7 +88,7 @@ def add_large_character_entities(client=None):
                 for i in range(start, end):
                     name = "character{0:05d}".format(i)
                     # The Cloud Datastore key for the new entity
-                    task_key = client.key(KIND, name)
+                    task_key = client.key(LARGE_CHARACTER_KIND, name)
 
                     # Prepares the new entity
                     task = datastore.Entity(key=task_key)
@@ -102,16 +104,16 @@ def add_large_character_entities(client=None):
             current += ENTITIES_TO_BATCH
 
     # Ensure we have 1500 entities for tests. If not, clean up type and add
-    # new entities equal to TOTAL_OBJECTS
+    # new entities equal to LARGE_CHARACTER_TOTAL_OBJECTS
     all_entities = [e for e in page_query.fetch()]
-    if len(all_entities) != TOTAL_OBJECTS:
+    if len(all_entities) != LARGE_CHARACTER_TOTAL_OBJECTS:
         # Cleanup Collection if not an exact match
         while all_entities:
             entities = all_entities[:500]
             all_entities = all_entities[500:]
             client.delete_multi([e.key for e in entities])
         # Put objects
-        put_objects(TOTAL_OBJECTS)
+        put_objects(LARGE_CHARACTER_TOTAL_OBJECTS)
 
 
 def add_characters(client=None):

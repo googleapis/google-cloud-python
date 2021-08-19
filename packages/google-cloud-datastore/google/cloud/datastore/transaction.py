@@ -41,26 +41,6 @@ class Transaction(Batch):
     operations (either ``insert`` or ``upsert``) into the same
     mutation, and execute those within a transaction:
 
-    .. testsetup:: txn-put-multi, txn-api
-
-        import os
-        import uuid
-
-        from google.cloud import datastore
-        from tests.system.test_system import Config  # system tests
-
-        unique = os.getenv('CIRCLE_BUILD_NUM', str(uuid.uuid4())[0:8])
-        client = datastore.Client(namespace='ns{}'.format(unique))
-        key1 = client.key('_Doctest')
-        entity1 = datastore.Entity(key=key1)
-        entity1['foo'] = 1337
-
-        key2 = client.key('_Doctest', 'abcd1234')
-        entity2 = datastore.Entity(key=key2)
-        entity2['foo'] = 42
-
-        Config.TO_DELETE.extend([entity1, entity2])
-
     .. doctest:: txn-put-multi
 
         >>> with client.transaction():
@@ -111,22 +91,6 @@ class Transaction(Batch):
         Inside a transaction, automatically assigned IDs for
         entities will not be available at save time!  That means, if you
         try:
-
-        .. testsetup:: txn-entity-key, txn-entity-key-after, txn-manual
-
-            import os
-            import uuid
-
-            from google.cloud import datastore
-            from tests.system.test_system import Config  # system tests
-
-            unique = os.getenv('CIRCLE_BUILD_NUM', str(uuid.uuid4())[0:8])
-            client = datastore.Client(namespace='ns{}'.format(unique))
-
-            def Entity(*args, **kwargs):
-                entity = datastore.Entity(*args, **kwargs)
-                Config.TO_DELETE.append(entity)
-                return entity
 
         .. doctest:: txn-entity-key
 
