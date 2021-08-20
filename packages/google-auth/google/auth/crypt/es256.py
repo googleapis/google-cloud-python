@@ -53,8 +53,8 @@ class ES256Verifier(base.Verifier):
         sig_bytes = _helpers.to_bytes(signature)
         if len(sig_bytes) != 64:
             return False
-        r = utils.int_from_bytes(sig_bytes[:32], byteorder="big")
-        s = utils.int_from_bytes(sig_bytes[32:], byteorder="big")
+        r = int.from_bytes(sig_bytes[:32], byteorder="big")
+        s = int.from_bytes(sig_bytes[32:], byteorder="big")
         asn1_sig = encode_dss_signature(r, s)
 
         message = _helpers.to_bytes(message)
