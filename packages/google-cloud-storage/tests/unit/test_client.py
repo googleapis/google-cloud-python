@@ -785,6 +785,51 @@ class TestClient(unittest.TestCase):
             _target_object=target,
         )
 
+    def test__bucket_arg_to_bucket_w_bucket_w_client(self):
+        from google.cloud.storage.bucket import Bucket
+
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        other_client = mock.Mock(spec=[])
+        bucket_name = "w_client"
+
+        bucket = Bucket(other_client, name=bucket_name)
+
+        found = client._bucket_arg_to_bucket(bucket)
+
+        self.assertIs(found, bucket)
+        self.assertIs(found.client, other_client)
+
+    def test__bucket_arg_to_bucket_w_bucket_wo_client(self):
+        from google.cloud.storage.bucket import Bucket
+
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        bucket_name = "wo_client"
+
+        bucket = Bucket(client=None, name=bucket_name)
+
+        found = client._bucket_arg_to_bucket(bucket)
+
+        self.assertIs(found, bucket)
+        self.assertIs(found.client, client)
+
+    def test__bucket_arg_to_bucket_w_bucket_name(self):
+        from google.cloud.storage.bucket import Bucket
+
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        bucket_name = "string-name"
+
+        found = client._bucket_arg_to_bucket(bucket_name)
+
+        self.assertIsInstance(found, Bucket)
+        self.assertEqual(found.name, bucket_name)
+        self.assertIs(found.client, client)
+
     def test_get_bucket_miss_w_string_w_defaults(self):
         from google.cloud.exceptions import NotFound
         from google.cloud.storage.bucket import Bucket

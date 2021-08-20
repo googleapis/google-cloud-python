@@ -221,26 +221,6 @@ class Client(ClientWithProject):
         """
         return self._batch_stack.pop()
 
-    def _bucket_arg_to_bucket(self, bucket_or_name):
-        """Helper to return given bucket or create new by name.
-
-        Args:
-            bucket_or_name (Union[ \
-                :class:`~google.cloud.storage.bucket.Bucket`, \
-                 str, \
-            ]):
-                The bucket resource to pass or name to create.
-
-        Returns:
-            google.cloud.storage.bucket.Bucket
-                The newly created bucket or the given one.
-        """
-        if isinstance(bucket_or_name, Bucket):
-            bucket = bucket_or_name
-        else:
-            bucket = Bucket(self, name=bucket_or_name)
-        return bucket
-
     @property
     def current_batch(self):
         """Currently-active batch.
@@ -681,6 +661,28 @@ class Client(ClientWithProject):
             retry=retry,
             _target_object=_target_object,
         )
+
+    def _bucket_arg_to_bucket(self, bucket_or_name):
+        """Helper to return given bucket or create new by name.
+
+        Args:
+            bucket_or_name (Union[ \
+                :class:`~google.cloud.storage.bucket.Bucket`, \
+                 str, \
+            ]):
+                The bucket resource to pass or name to create.
+
+        Returns:
+            google.cloud.storage.bucket.Bucket
+                The newly created bucket or the given one.
+        """
+        if isinstance(bucket_or_name, Bucket):
+            bucket = bucket_or_name
+            if bucket.client is None:
+                bucket._client = self
+        else:
+            bucket = Bucket(self, name=bucket_or_name)
+        return bucket
 
     def get_bucket(
         self,
