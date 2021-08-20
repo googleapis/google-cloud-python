@@ -34,8 +34,8 @@ from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.gkehub import configmanagement_v1 as configmanagement_pb2  # type: ignore
-from google.cloud.gkehub import multiclusteringress_v1 as multiclusteringress_pb2  # type: ignore
+from google.cloud.gkehub_v1 import configmanagement_v1  # type: ignore
+from google.cloud.gkehub_v1 import multiclusteringress_v1  # type: ignore
 from google.cloud.gkehub_v1.services.gke_hub import GkeHubAsyncClient
 from google.cloud.gkehub_v1.services.gke_hub import GkeHubClient
 from google.cloud.gkehub_v1.services.gke_hub import pagers

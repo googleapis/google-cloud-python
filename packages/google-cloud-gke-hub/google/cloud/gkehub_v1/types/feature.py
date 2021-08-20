@@ -15,8 +15,8 @@
 #
 import proto  # type: ignore
 
-from google.cloud.gkehub import configmanagement_v1 as configmanagement_pb2  # type: ignore
-from google.cloud.gkehub import multiclusteringress_v1 as multiclusteringress_pb2  # type: ignore
+from google.cloud.gkehub_v1 import configmanagement_v1  # type: ignore
+from google.cloud.gkehub_v1 import multiclusteringress_v1  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
@@ -175,7 +175,7 @@ class CommonFeatureSpec(proto.Message):
     r"""CommonFeatureSpec contains Hub-wide configuration informatio.
 
     Attributes:
-        multiclusteringress (google.cloud.gkehub.multiclusteringress.v1.multiclusteringress_pb2.FeatureSpec):
+        multiclusteringress (google.cloud.gkehub_v1.multiclusteringress_v1.FeatureSpec):
             Multicluster Ingress-specific spec.
     """
 
@@ -183,7 +183,7 @@ class CommonFeatureSpec(proto.Message):
         proto.MESSAGE,
         number=102,
         oneof="feature_spec",
-        message=multiclusteringress_pb2.FeatureSpec,
+        message=multiclusteringress_v1.FeatureSpec,
     )
 
 
@@ -205,7 +205,7 @@ class MembershipFeatureSpec(proto.Message):
     a single Membership.
 
     Attributes:
-        configmanagement (google.cloud.gkehub.configmanagement.v1.configmanagement_pb2.MembershipSpec):
+        configmanagement (google.cloud.gkehub_v1.configmanagement_v1.MembershipSpec):
             Config Management-specific spec.
     """
 
@@ -213,7 +213,7 @@ class MembershipFeatureSpec(proto.Message):
         proto.MESSAGE,
         number=106,
         oneof="feature_spec",
-        message=configmanagement_pb2.MembershipSpec,
+        message=configmanagement_v1.MembershipSpec,
     )
 
 
@@ -222,7 +222,7 @@ class MembershipFeatureState(proto.Message):
     for a single Membership.
 
     Attributes:
-        configmanagement (google.cloud.gkehub.configmanagement.v1.configmanagement_pb2.MembershipState):
+        configmanagement (google.cloud.gkehub_v1.configmanagement_v1.MembershipState):
             Config Management-specific state.
         state (google.cloud.gkehub_v1.types.FeatureState):
             The high-level state of this Feature for a
@@ -233,7 +233,7 @@ class MembershipFeatureState(proto.Message):
         proto.MESSAGE,
         number=106,
         oneof="feature_state",
-        message=configmanagement_pb2.MembershipState,
+        message=configmanagement_v1.MembershipState,
     )
     state = proto.Field(proto.MESSAGE, number=1, message="FeatureState",)
 
