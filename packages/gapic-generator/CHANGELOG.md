@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.51.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.51.0...v0.51.1) (2021-08-20)
+
+
+### Bug Fixes
+
+* timeouts are handled by rest clients, retries silently ignored ([#976](https://www.github.com/googleapis/gapic-generator-python/issues/976)) ([a62463c](https://www.github.com/googleapis/gapic-generator-python/commit/a62463cadee0cdaf861e93998faa27e6a82adab4))
+
 ## [0.51.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.5...v0.51.0) (2021-08-18)
 
 
