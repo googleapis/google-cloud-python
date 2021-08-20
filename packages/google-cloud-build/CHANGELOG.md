@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.4.0](https://www.github.com/googleapis/python-cloudbuild/compare/v3.3.2...v3.4.0) (2021-08-20)
+
+
+### Features
+
+* Add ability to configure BuildTriggers to create Builds that require approval before executing and ApproveBuild API to approve or reject pending Builds ([#147](https://www.github.com/googleapis/python-cloudbuild/issues/147)) ([0ba4e0d](https://www.github.com/googleapis/python-cloudbuild/commit/0ba4e0d5f44897abf70427d54d152fe265698d91))
+
 ### [3.3.2](https://www.github.com/googleapis/python-cloudbuild/compare/v3.3.1...v3.3.2) (2021-07-28)
 
 
