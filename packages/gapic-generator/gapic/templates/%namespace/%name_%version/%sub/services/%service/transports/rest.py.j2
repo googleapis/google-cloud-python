@@ -9,6 +9,7 @@ from typing import Callable, Dict, Optional, Sequence, Tuple
 from google.api_core import operations_v1
 {% endif %}
 from google.api_core import gapic_v1       # type: ignore
+from google.api_core import retry as retries                      # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.auth import credentials as ga_credentials      # type: ignore
 from google.auth.transport.grpc import SslCredentials      # type: ignore
@@ -134,6 +135,8 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
 
     def {{ method.name|snake_case }}(self,
             request: {{ method.input.ident }}, *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> {{ method.output.ident }}:
         r"""Call the {{- ' ' -}}
@@ -145,6 +148,9 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
             request (~.{{ method.input.ident }}):
                 The request object.{{ ' ' }}
                 {{- method.input.meta.doc|rst(width=72, indent=16) }}
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         {% if not method.void %}
@@ -207,6 +213,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         headers['Content-Type'] = 'application/json'
         response = self._session.{{ method.http_opt['verb'] }}(
             url,
+            timeout=timeout,
             headers=headers,
             params=query_params,
             {% if 'body' in method.http_opt %}
