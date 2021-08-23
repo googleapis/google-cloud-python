@@ -111,7 +111,9 @@ def test_bucket_update_labels(storage_client, buckets_to_delete):
     assert bucket.labels == new_labels
 
     bucket.labels = {}
-    bucket.update()
+    # See https://github.com/googleapis/python-storage/issues/541
+    retry_400 = _helpers.RetryErrors(exceptions.BadRequest)
+    retry_400(bucket.update)()
     assert bucket.labels == {}
 
 
