@@ -135,10 +135,16 @@ class TestInstanceGroups(TestBase):
         )
         self.assertEqual(instance_group.target_size, 1)
 
-        # Resize to zero fails, uncomment once fixed b/189145532.
-        # resize_0_op = self.igm_client.resize(project=self.DEFAULT_PROJECT,
-        #                                     zone=self.DEFAULT_ZONE, size=0, instance_group_manager=igm_name)
-        # self.wait_for_zonal_operation(resize_0_op.name)
-        # igm = self.igm_client.get(project=self.DEFAULT_PROJECT, zone=self.DEFAULT_ZONE,
-        #                          instance_group_manager=igm_name)
-        # self.assertEqual(igm.target_size, 0)
+        resize_0_op = self.igm_client.resize(
+            project=self.DEFAULT_PROJECT,
+            zone=self.DEFAULT_ZONE,
+            size=0,
+            instance_group_manager=igm_name,
+        )
+        self.wait_for_zonal_operation(resize_0_op.name)
+        igm = self.igm_client.get(
+            project=self.DEFAULT_PROJECT,
+            zone=self.DEFAULT_ZONE,
+            instance_group_manager=igm_name,
+        )
+        self.assertEqual(igm.target_size, 0)

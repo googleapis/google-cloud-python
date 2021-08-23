@@ -12,8 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import collections
 
+from google.cloud.compute_v1.services.accelerator_types.client import (
+    AcceleratorTypesClient,
+)
 from google.cloud.compute_v1.services.zones.client import ZonesClient
+from google.cloud.compute_v1.types import AggregatedListAcceleratorTypesRequest
 from google.cloud.compute_v1.types import ListZonesRequest
 from tests.system.base import TestBase
 
@@ -65,3 +70,20 @@ class TestComputePagination(TestBase):
                 presented = True
                 break
         self.assertTrue(presented)
+
+
+class TestPaginationAggregatedList(TestBase):
+    def setUp(self) -> None:
+        super().setUp()
+
+    def test_auto_paging_map_response(self):
+        client = AcceleratorTypesClient()
+        request = AggregatedListAcceleratorTypesRequest(
+            project=self.DEFAULT_PROJECT, max_results=3
+        )
+        result = client.aggregated_list(request=request)
+        zone_acc_types = collections.defaultdict(list)
+        for zone, types in result:
+            zone_acc_types[zone].extend(at.name for at in types.accelerator_types)
+        default_zone = "zones/" + self.DEFAULT_ZONE
+        self.assertIn("nvidia-tesla-t4", zone_acc_types[default_zone])
