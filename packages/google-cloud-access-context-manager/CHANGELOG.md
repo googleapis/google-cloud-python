@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.7](https://www.github.com/googleapis/python-access-context-manager/compare/v0.1.6...v0.1.7) (2021-08-23)
+
+
+### Documentation
+
+* migrate to main branch ([#76](https://www.github.com/googleapis/python-access-context-manager/issues/76)) ([4f36a1d](https://www.github.com/googleapis/python-access-context-manager/commit/4f36a1dad07554ef676c7b01a9f1bd0e132bdb01))
+
 ### [0.1.6](https://www.github.com/googleapis/python-access-context-manager/compare/v0.1.5...v0.1.6) (2021-07-27)
 
 
