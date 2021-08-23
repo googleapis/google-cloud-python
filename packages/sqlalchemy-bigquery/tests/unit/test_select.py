@@ -356,3 +356,21 @@ def test_select_notin_param_empty(faux_conn):
         else "SELECT (%(param_1:INT64)s NOT IN UNNEST([  ])) AS `anon_1`",
         {"param_1": 1},
     )
+
+
+def test_literal_binds_kwarg_with_an_IN_operator_252(faux_conn):
+    table = setup_table(
+        faux_conn,
+        "test",
+        sqlalchemy.Column("val", sqlalchemy.Integer),
+        initial_data=[dict(val=i) for i in range(3)],
+    )
+    q = sqlalchemy.select([table.c.val]).where(table.c.val.in_([2]))
+
+    def nstr(q):
+        return " ".join(str(q).strip().split())
+
+    assert (
+        nstr(q.compile(faux_conn.engine, compile_kwargs={"literal_binds": True}))
+        == "SELECT `test`.`val` FROM `test` WHERE `test`.`val` IN (2)"
+    )

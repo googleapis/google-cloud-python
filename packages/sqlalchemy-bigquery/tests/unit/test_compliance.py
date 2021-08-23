@@ -200,3 +200,19 @@ def test_group_by_composed(faux_conn):
         select([sqlalchemy.func.count(table.c.id), expr]).group_by(expr).order_by(expr)
     )
     assert_result(faux_conn, stmt, [(1, 3), (1, 5), (1, 7)])
+
+
+def test_cast_type_decorator(faux_conn, last_query):
+    # [artial dup of:
+    #   sqlalchemy.testing.suite.test_types.CastTypeDecoratorTest.test_special_type
+    # That test failes without code that's otherwise not covered by the unit tests.
+
+    class StringAsInt(sqlalchemy.TypeDecorator):
+        impl = sqlalchemy.String(50)
+
+        def bind_expression(self, col):
+            return sqlalchemy.cast(col, String(50))
+
+    t = setup_table(faux_conn, "t", Column("x", StringAsInt()))
+    faux_conn.execute(t.insert(), [{"x": x} for x in [1, 2, 3]])
+    last_query("INSERT INTO `t` (`x`) VALUES (CAST(%(x:STRING)s AS STRING))", {"x": 3})

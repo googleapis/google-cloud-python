@@ -420,7 +420,7 @@ class BigQueryCompiler(SQLCompiler):
         )
 
         type_ = bindparam.type
-        if isinstance(type_, NullType):
+        if literal_binds or isinstance(type_, NullType):
             return param
 
         if (
