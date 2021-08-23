@@ -24,7 +24,7 @@ import socket
 import mock
 import pytest
 import requests
-from six.moves import urllib
+import urllib
 
 from google_auth_oauthlib import flow
 
@@ -282,7 +282,7 @@ class TestInstalledAppFlow(object):
         with fetch_token_patch as fetch_token_mock:
             yield fetch_token_mock
 
-    @mock.patch("google_auth_oauthlib.flow.input", autospec=True)
+    @mock.patch("builtins.input", autospec=True)
     def test_run_console(self, input_mock, instance, mock_fetch_token):
         input_mock.return_value = mock.sentinel.code
         instance.code_verifier = "amanaplanacanalpanama"

@@ -67,7 +67,6 @@ import wsgiref.util
 
 import google.auth.transport.requests
 import google.oauth2.credentials
-from six.moves import input
 
 import google_auth_oauthlib.helpers
 
