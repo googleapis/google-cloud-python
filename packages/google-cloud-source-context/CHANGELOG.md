@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.3](https://www.github.com/googleapis/python-source-context/compare/v0.1.2...v0.1.3) (2021-08-23)
+
+
+### Documentation
+
+* Migrate default branch to main ([#17](https://www.github.com/googleapis/python-source-context/issues/17)) ([6011f91](https://www.github.com/googleapis/python-source-context/commit/6011f91031abce8a71c5b6891a1ee8e241d580e0))
+
 ### [0.1.2](https://www.github.com/googleapis/python-source-context/compare/v0.1.1...v0.1.2) (2021-07-29)
 
 
