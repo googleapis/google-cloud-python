@@ -247,7 +247,12 @@ class BigQueryCompiler(SQLCompiler):
         )
 
     def visit_column(
-        self, column, add_to_result_map=None, include_table=True, **kwargs
+        self,
+        column,
+        add_to_result_map=None,
+        include_table=True,
+        result_map_targets=(),
+        **kwargs,
     ):
         name = orig_name = column.name
         if name is None:
@@ -258,7 +263,12 @@ class BigQueryCompiler(SQLCompiler):
             name = self._truncated_identifier("colident", name)
 
         if add_to_result_map is not None:
-            add_to_result_map(name, orig_name, (column, name, column.key), column.type)
+            targets = (column, name, column.key) + result_map_targets
+            if getattr(column, "_tq_label", None):
+                # _tq_label was added in SQLAlchemy 1.4
+                targets += (column._tq_label,)
+
+            add_to_result_map(name, orig_name, targets, column.type)
 
         if is_literal:
             name = self.escape_literal_column(name)
@@ -271,6 +281,7 @@ class BigQueryCompiler(SQLCompiler):
             tablename = table.name
             if isinstance(tablename, elements._truncated_label):
                 tablename = self._truncated_identifier("alias", tablename)
+
             return self.preparer.quote(tablename) + "." + name
 
     def visit_label(self, *args, within_group_by=False, **kwargs):

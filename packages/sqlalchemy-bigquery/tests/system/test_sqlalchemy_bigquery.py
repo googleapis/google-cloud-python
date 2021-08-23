@@ -691,3 +691,37 @@ def test_has_table(engine, engine_using_test_dataset, bigquery_dataset):
     assert engine_using_test_dataset.has_table(f"{bigquery_dataset}.sample") is True
 
     assert engine_using_test_dataset.has_table("sample_alt") is False
+
+
+def test_distinct_188(engine, bigquery_dataset):
+    from sqlalchemy.ext.declarative import declarative_base
+    from sqlalchemy import Column, Integer
+    from sqlalchemy.orm import sessionmaker
+
+    Base = declarative_base()
+
+    class MyTable(Base):
+        __tablename__ = f"{bigquery_dataset}.test_distinct_188"
+        id = Column(Integer, primary_key=True)
+        my_column = Column(Integer)
+
+    MyTable.__table__.create(engine)
+
+    Session = sessionmaker(bind=engine)
+    db = Session()
+    db.add_all([MyTable(id=i, my_column=i % 2) for i in range(9)])
+    db.commit()
+
+    expected = [(0,), (1,)]
+
+    assert sorted(db.query(MyTable.my_column).distinct().all()) == expected
+    assert (
+        sorted(
+            db.query(
+                sqlalchemy.distinct(MyTable.my_column).label("just_a_random_label")
+            ).all()
+        )
+        == expected
+    )
+
+    assert sorted(db.query(sqlalchemy.distinct(MyTable.my_column)).all()) == expected

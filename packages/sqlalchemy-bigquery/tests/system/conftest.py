@@ -21,6 +21,7 @@ import pathlib
 from typing import List
 
 import pytest
+import sqlalchemy
 
 from google.cloud import bigquery
 import test_utils.prefixer
@@ -137,3 +138,8 @@ def cleanup_datasets(bigquery_client: bigquery.Client):
             bigquery_client.delete_dataset(
                 dataset, delete_contents=True, not_found_ok=True
             )
+
+
+@pytest.fixture
+def metadata():
+    return sqlalchemy.MetaData()
