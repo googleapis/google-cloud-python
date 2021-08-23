@@ -19,8 +19,10 @@ name = 'gcp-sphinx-docfx-yaml'
 description = 'Sphinx Python Domain to DocFX YAML Generator'
 version = '0.5.2'
 dependencies = [
+    'gcp-docuploader',
     'PyYAML',
     'sphinx',
+    'sphinx-markdown-builder',
     'sphinxcontrib.napoleon',
     'unidecode',
     'wheel>=0.24.0'

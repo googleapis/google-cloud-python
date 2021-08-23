@@ -7,6 +7,7 @@ from docfx_yaml.extension import _extract_docstring_info
 from docfx_yaml.extension import find_package_group
 from docfx_yaml.extension import pretty_package_name
 from docfx_yaml.extension import group_by_package
+from docfx_yaml.extension import extract_header_from_markdown
 
 import unittest
 
@@ -396,7 +397,6 @@ Simple test for docstring.
         }
 
         top_summary_got = _extract_docstring_info(summary_info_got, summary, "")
-        self.maxDiff = None
         # Same as the top summary from previous example, compare with that
         self.assertEqual(top_summary_got, self.top_summary1_want)
         self.assertDictEqual(summary_info_got, summary_info_want)
@@ -536,6 +536,43 @@ Simple test for docstring.
         toc_yaml_got = group_by_package(toc_yaml)
 
         self.assertCountEqual(toc_yaml_got, toc_yaml_want)
+
+
+    def test_extract_header_from_markdown(self):
+        # Check the header for a normal markdown file.
+        header_line_want = "Test header for a simple markdown file."
+
+        mdfile = open('tests/markdown_example.md', 'r')
+        header_line_got = extract_header_from_markdown(mdfile)
+
+        self.assertEqual(header_line_got, header_line_want)
+        mdfile.close()
+
+        # The header should be the same even with the license header.
+        header_line_with_license_want = header_line_want
+
+        mdfile = open('tests/markdown_example_header.md', 'r')
+        header_line_with_license_got = extract_header_from_markdown(mdfile)
+
+        self.assertEqual(header_line_with_license_got, header_line_with_license_want)
+        mdfile.close()
+
+
+    def test_extract_header_from_markdown_check_error(self):
+        # Check an exception is thrown for markdown files that's not well
+        # formatted.
+        mdfile = open('tests/markdown_example_bad.md', 'r')
+        with self.assertRaises(ValueError):
+            header_line = extract_header_from_markdown(mdfile)
+
+        mdfile.close()
+
+        mdfile = open('tests/markdown_example_noheader.md', 'r')
+        with self.assertRaises(ValueError):
+            header_line = extract_header_from_markdown(mdfile)
+
+        mdfile.close()
+
 
 
 if __name__ == '__main__':

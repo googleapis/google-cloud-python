@@ -33,7 +33,7 @@ python3 -m pip install --user gcp-docuploader
 python3 -m pip install -e .
 python3 -m pip install recommonmark
 # Required for some client libraries:
-python3 -m pip install --user django==2.2
+python3 -m pip install --user django==2.2 ipython
 
 # Retrieve unique repositories to regenerate the YAML with.
 for bucket_item in $(gsutil ls 'gs://docs-staging-v2/docfx-python*' | sort -u -t- -k5,5); do
@@ -100,7 +100,7 @@ for bucket_item in $(gsutil ls 'gs://docs-staging-v2/docfx-python*' | sort -u -t
     # Test running with the plugin version locally.
     if [[ "${TEST_PLUGIN}" == "true" ]]; then
       # --no-use-pep517 is required for django-spanner install issue: see https://github.com/pypa/pip/issues/7953
-      python3 -m pip install --user --no-use-pep517 -e .
+      python3 -m pip install --user --no-use-pep517 -e .[all]
       sphinx-build -T -N -D extensions=sphinx.ext.autodoc,sphinx.ext.autosummary,docfx_yaml.extension,sphinx.ext.intersphinx,sphinx.ext.coverage,sphinx.ext.napoleon,sphinx.ext.todo,sphinx.ext.viewcode,recommonmark -b html -d docs/_build/doctrees/ docs/ docs/_build/html/
       continue
     fi
