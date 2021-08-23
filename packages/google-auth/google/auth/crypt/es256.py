@@ -15,7 +15,6 @@
 """ECDSA (ES256) verifier and signer that use the ``cryptography`` library.
 """
 
-from cryptography import utils
 import cryptography.exceptions
 from cryptography.hazmat import backends
 from cryptography.hazmat.primitives import hashes
@@ -121,7 +120,7 @@ class ES256Signer(base.Signer, base.FromServiceAccountMixin):
 
         # Convert ASN1 encoded signature to (r||s) raw signature.
         (r, s) = decode_dss_signature(asn1_signature)
-        return utils.int_to_bytes(r, 32) + utils.int_to_bytes(s, 32)
+        return r.to_bytes(32, byteorder="big") + s.to_bytes(32, byteorder="big")
 
     @classmethod
     def from_string(cls, key, key_id=None):
