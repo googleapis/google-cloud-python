@@ -22,7 +22,7 @@ SQLAlchemy dialect for Google BigQuery
 
 from .version import __version__  # noqa
 
-from .base import BigQueryDialect
+from .base import BigQueryDialect, dialect  # noqa
 from .base import (
     STRING,
     BOOL,

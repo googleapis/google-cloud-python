@@ -171,3 +171,10 @@ def test_multi_value_insert(faux_conn, last_query):
         " (%(id_m0:INT64)s), (%(id_m1:INT64)s), (%(id_m2:INT64)s)",
         {"id_m0": 0, "id_m1": 1, "id_m2": 2},
     )
+
+
+def test_follow_dialect_attribute_convention():
+    import sqlalchemy_bigquery.base
+
+    assert sqlalchemy_bigquery.dialect is sqlalchemy_bigquery.BigQueryDialect
+    assert sqlalchemy_bigquery.base.dialect is sqlalchemy_bigquery.BigQueryDialect
