@@ -5,6 +5,28 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.3.0](https://www.github.com/googleapis/python-firestore/compare/v2.2.0...v2.3.0) (2021-08-18)
+
+
+### Features
+
+* add bulk writer ([#396](https://www.github.com/googleapis/python-firestore/issues/396)) ([98a7753](https://www.github.com/googleapis/python-firestore/commit/98a7753f05240a2a75b9ffd42b7a148c65a6e87f))
+* add recursive delete ([#420](https://www.github.com/googleapis/python-firestore/issues/420)) ([813a57b](https://www.github.com/googleapis/python-firestore/commit/813a57b1070a1f6ac41d02897fab33f8039b83f9))
+* add support for recursive queries ([#407](https://www.github.com/googleapis/python-firestore/issues/407)) ([eb45a36](https://www.github.com/googleapis/python-firestore/commit/eb45a36e6c06b642106e061a32bfc119eb7e5bf0))
+
+
+### Bug Fixes
+
+* enable self signed jwt for grpc ([#405](https://www.github.com/googleapis/python-firestore/issues/405)) ([8703b48](https://www.github.com/googleapis/python-firestore/commit/8703b48c45e7bb742a794cad9597740c44182f81))
+* use insecure grpc channels with emulator ([#402](https://www.github.com/googleapis/python-firestore/issues/402)) ([4381ad5](https://www.github.com/googleapis/python-firestore/commit/4381ad503ca3e83510b876281fc768d00d40d499))
+* remove unused requirement pytz ([#422](https://www.github.com/googleapis/python-firestore/issues/422)) ([539c1d7](https://www.github.com/googleapis/python-firestore/commit/539c1d719191eb0ae3a49290c26b628de7c27cd5))
+
+
+### Documentation
+
+* added generated docs for Bundles ([#416](https://www.github.com/googleapis/python-firestore/issues/416)) ([0176cc7](https://www.github.com/googleapis/python-firestore/commit/0176cc7fef8752433b5c2496046d3a56557eb824))
+* fixed broken links to devsite ([#417](https://www.github.com/googleapis/python-firestore/issues/417)) ([1adfc81](https://www.github.com/googleapis/python-firestore/commit/1adfc81237c4ddee665e81f1beaef808cddb860e))
+
 ## [2.2.0](https://www.github.com/googleapis/python-firestore/compare/v2.1.3...v2.2.0) (2021-07-22)
 
 
