@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-gke-hub/compare/v0.2.0...v0.2.1) (2021-08-20)
+
+
+### Bug Fixes
+
+* resolve issue importing library ([#64](https://www.github.com/googleapis/python-gke-hub/issues/64)) ([cfa166e](https://www.github.com/googleapis/python-gke-hub/commit/cfa166e9b9024920bd00b5994d2638ab7716c2d1))
+
 ## [0.2.0](https://www.github.com/googleapis/python-gke-hub/compare/v0.1.2...v0.2.0) (2021-07-24)
 
 
