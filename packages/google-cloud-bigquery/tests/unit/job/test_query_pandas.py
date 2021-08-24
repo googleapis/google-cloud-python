@@ -24,6 +24,14 @@ try:
 except (ImportError, AttributeError):  # pragma: NO COVER
     pandas = None
 try:
+    import shapely
+except (ImportError, AttributeError):  # pragma: NO COVER
+    shapely = None
+try:
+    import geopandas
+except (ImportError, AttributeError):  # pragma: NO COVER
+    geopandas = None
+try:
     import pyarrow
 except (ImportError, AttributeError):  # pragma: NO COVER
     pyarrow = None
@@ -425,38 +433,41 @@ def test_to_arrow_w_tqdm_wo_query_plan():
     result_patch_tqdm.assert_called()
 
 
-@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
-def test_to_dataframe():
+def _make_job(schema=(), rows=()):
     from google.cloud.bigquery.job import QueryJob as target_class
 
     begun_resource = _make_job_resource(job_type="query")
     query_resource = {
         "jobComplete": True,
         "jobReference": begun_resource["jobReference"],
-        "totalRows": "4",
+        "totalRows": str(len(rows)),
         "schema": {
             "fields": [
-                {"name": "name", "type": "STRING", "mode": "NULLABLE"},
-                {"name": "age", "type": "INTEGER", "mode": "NULLABLE"},
+                dict(name=field[0], type=field[1], mode=field[2]) for field in schema
             ]
         },
     }
-    tabledata_resource = {
-        "rows": [
-            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
-            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
-            {"f": [{"v": "Wylma Phlyntstone"}, {"v": "29"}]},
-            {"f": [{"v": "Bhettye Rhubble"}, {"v": "27"}]},
-        ]
-    }
+    tabledata_resource = {"rows": [{"f": [{"v": v} for v in row]} for row in rows]}
     done_resource = copy.deepcopy(begun_resource)
     done_resource["status"] = {"state": "DONE"}
     connection = _make_connection(
         begun_resource, query_resource, done_resource, tabledata_resource
     )
     client = _make_client(connection=connection)
-    job = target_class.from_api_repr(begun_resource, client)
+    return target_class.from_api_repr(begun_resource, client)
 
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_to_dataframe():
+    job = _make_job(
+        (("name", "STRING", "NULLABLE"), ("age", "INTEGER", "NULLABLE")),
+        (
+            ("Phred Phlyntstone", "32"),
+            ("Bharney Rhubble", "33"),
+            ("Wylma Phlyntstone", "29"),
+            ("Bhettye Rhubble", "27"),
+        ),
+    )
     df = job.to_dataframe(create_bqstorage_client=False)
 
     assert isinstance(df, pandas.DataFrame)
@@ -868,3 +879,94 @@ def test_to_dataframe_w_tqdm_max_results():
     result_patch_tqdm.assert_called_with(
         timeout=_PROGRESS_BAR_UPDATE_INTERVAL, max_results=3
     )
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(shapely is None, reason="Requires `shapely`")
+def test_to_dataframe_geography_as_object():
+    job = _make_job(
+        (("name", "STRING", "NULLABLE"), ("geog", "GEOGRAPHY", "NULLABLE")),
+        (
+            ("Phred Phlyntstone", "Point(0 0)"),
+            ("Bharney Rhubble", "Point(0 1)"),
+            ("Wylma Phlyntstone", None),
+        ),
+    )
+    df = job.to_dataframe(create_bqstorage_client=False, geography_as_object=True)
+
+    assert isinstance(df, pandas.DataFrame)
+    assert len(df) == 3  # verify the number of rows
+    assert list(df) == ["name", "geog"]  # verify the column names
+    assert [v.__class__.__name__ for v in df.geog] == [
+        "Point",
+        "Point",
+        "float",
+    ]  # float because nan
+
+
+@pytest.mark.skipif(geopandas is None, reason="Requires `geopandas`")
+def test_to_geodataframe():
+    job = _make_job(
+        (("name", "STRING", "NULLABLE"), ("geog", "GEOGRAPHY", "NULLABLE")),
+        (
+            ("Phred Phlyntstone", "Point(0 0)"),
+            ("Bharney Rhubble", "Point(0 1)"),
+            ("Wylma Phlyntstone", None),
+        ),
+    )
+    df = job.to_geodataframe(create_bqstorage_client=False)
+
+    assert isinstance(df, geopandas.GeoDataFrame)
+    assert len(df) == 3  # verify the number of rows
+    assert list(df) == ["name", "geog"]  # verify the column names
+    assert [v.__class__.__name__ for v in df.geog] == [
+        "Point",
+        "Point",
+        "NoneType",
+    ]  # float because nan
+    assert isinstance(df.geog, geopandas.GeoSeries)
+
+
+@pytest.mark.skipif(geopandas is None, reason="Requires `geopandas`")
+@mock.patch("google.cloud.bigquery.job.query.wait_for_query")
+def test_query_job_to_geodataframe_delegation(wait_for_query):
+    """
+    QueryJob.to_geodataframe just delegates to RowIterator.to_geodataframe.
+
+    This test just demonstrates that. We don't need to test all the
+    variations, which are tested for RowIterator.
+    """
+    import numpy
+
+    job = _make_job()
+    bqstorage_client = object()
+    dtypes = dict(xxx=numpy.dtype("int64"))
+    progress_bar_type = "normal"
+    create_bqstorage_client = False
+    date_as_object = False
+    max_results = 42
+    geography_column = "g"
+
+    df = job.to_geodataframe(
+        bqstorage_client=bqstorage_client,
+        dtypes=dtypes,
+        progress_bar_type=progress_bar_type,
+        create_bqstorage_client=create_bqstorage_client,
+        date_as_object=date_as_object,
+        max_results=max_results,
+        geography_column=geography_column,
+    )
+
+    wait_for_query.assert_called_once_with(
+        job, progress_bar_type, max_results=max_results
+    )
+    row_iterator = wait_for_query.return_value
+    row_iterator.to_geodataframe.assert_called_once_with(
+        bqstorage_client=bqstorage_client,
+        dtypes=dtypes,
+        progress_bar_type=progress_bar_type,
+        create_bqstorage_client=create_bqstorage_client,
+        date_as_object=date_as_object,
+        geography_column=geography_column,
+    )
+    assert df is row_iterator.to_geodataframe.return_value

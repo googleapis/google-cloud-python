@@ -37,6 +37,21 @@ To retrieve table rows as a :class:`pandas.DataFrame`:
    :start-after: [START bigquery_list_rows_dataframe]
    :end-before: [END bigquery_list_rows_dataframe]
 
+
+Retrieve BigQuery GEOGRAPHY data as a GeoPandas GeoDataFrame
+------------------------------------------------------------
+
+`GeoPandas <https://geopandas.org/>`_ adds geospatial analytics
+capabilities to Pandas.  To retrieve query results containing
+GEOGRAPHY data as a :class:`geopandas.GeoDataFrame`:
+
+.. literalinclude:: ../samples/geography/to_geodataframe.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_query_results_geodataframe]
+   :end-before: [END bigquery_query_results_geodataframe]
+
+
 Load a Pandas DataFrame to a BigQuery Table
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

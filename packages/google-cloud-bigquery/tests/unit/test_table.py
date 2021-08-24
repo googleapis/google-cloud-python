@@ -14,6 +14,7 @@
 
 import datetime
 import logging
+import re
 import time
 import types
 import unittest
@@ -38,6 +39,11 @@ try:
     import pandas
 except (ImportError, AttributeError):  # pragma: NO COVER
     pandas = None
+
+try:
+    import geopandas
+except (ImportError, AttributeError):  # pragma: NO COVER
+    geopandas = None
 
 try:
     import pyarrow
@@ -1842,6 +1848,27 @@ class Test_EmptyRowIterator(unittest.TestCase):
         self.assertEqual(len(df), 0)  # Verify the number of rows.
         self.assertEqual(len(df.columns), 0)
 
+    @mock.patch("google.cloud.bigquery.table.geopandas", new=None)
+    def test_to_geodataframe_if_geopandas_is_none(self):
+        row_iterator = self._make_one()
+        with self.assertRaisesRegex(
+            ValueError,
+            re.escape(
+                "The geopandas library is not installed, please install "
+                "geopandas to use the to_geodataframe() function."
+            ),
+        ):
+            row_iterator.to_geodataframe(create_bqstorage_client=False)
+
+    @unittest.skipIf(geopandas is None, "Requires `geopandas`")
+    def test_to_geodataframe(self):
+        row_iterator = self._make_one()
+        df = row_iterator.to_geodataframe(create_bqstorage_client=False)
+        self.assertIsInstance(df, geopandas.GeoDataFrame)
+        self.assertEqual(len(df), 0)  # verify the number of rows
+        self.assertEqual(df.crs.srs, "EPSG:4326")
+        self.assertEqual(df.crs.name, "WGS 84")
+
 
 class TestRowIterator(unittest.TestCase):
     def _class_under_test(self):
@@ -1878,6 +1905,16 @@ class TestRowIterator(unittest.TestCase):
         return self._class_under_test()(
             client, api_request, path, schema, table=table, **kwargs
         )
+
+    def _make_one_from_data(self, schema=(), rows=()):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [SchemaField(*a) for a in schema]
+        rows = [{"f": [{"v": v} for v in row]} for row in rows]
+
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        return self._make_one(_mock_client(), api_request, path, schema)
 
     def test_constructor(self):
         from google.cloud.bigquery.table import _item_to_row
@@ -3171,6 +3208,18 @@ class TestRowIterator(unittest.TestCase):
             row_iterator.to_dataframe()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @mock.patch("google.cloud.bigquery.table.shapely", new=None)
+    def test_to_dataframe_error_if_shapely_is_none(self):
+        with self.assertRaisesRegex(
+            ValueError,
+            re.escape(
+                "The shapely library is not installed, please install "
+                "shapely to use the geography_as_object option."
+            ),
+        ):
+            self._make_one_from_data().to_dataframe(geography_as_object=True)
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_max_results_w_bqstorage_warning(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -3926,6 +3975,199 @@ class TestRowIterator(unittest.TestCase):
 
         # Don't close the client if it was passed in.
         bqstorage_client._transport.grpc_channel.close.assert_not_called()
+
+    @unittest.skipIf(geopandas is None, "Requires `geopandas`")
+    def test_to_dataframe_geography_as_object(self):
+        row_iterator = self._make_one_from_data(
+            (("name", "STRING"), ("geog", "GEOGRAPHY")),
+            (
+                ("foo", "Point(0 0)"),
+                ("bar", None),
+                ("baz", "Polygon((0 0, 0 1, 1 0, 0 0))"),
+            ),
+        )
+        df = row_iterator.to_dataframe(
+            create_bqstorage_client=False, geography_as_object=True,
+        )
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 3)  # verify the number of rows
+        self.assertEqual(list(df), ["name", "geog"])  # verify the column names
+        self.assertEqual(df.name.dtype.name, "object")
+        self.assertEqual(df.geog.dtype.name, "object")
+        self.assertIsInstance(df.geog, pandas.Series)
+        self.assertEqual(
+            [v.__class__.__name__ for v in df.geog], ["Point", "float", "Polygon"]
+        )
+
+    @mock.patch("google.cloud.bigquery.table.geopandas", new=None)
+    def test_to_geodataframe_error_if_geopandas_is_none(self):
+        with self.assertRaisesRegex(
+            ValueError,
+            re.escape(
+                "The geopandas library is not installed, please install "
+                "geopandas to use the to_geodataframe() function."
+            ),
+        ):
+            self._make_one_from_data().to_geodataframe()
+
+    @unittest.skipIf(geopandas is None, "Requires `geopandas`")
+    def test_to_geodataframe(self):
+        row_iterator = self._make_one_from_data(
+            (("name", "STRING"), ("geog", "GEOGRAPHY")),
+            (
+                ("foo", "Point(0 0)"),
+                ("bar", None),
+                ("baz", "Polygon((0 0, 0 1, 1 0, 0 0))"),
+            ),
+        )
+        df = row_iterator.to_geodataframe(create_bqstorage_client=False)
+        self.assertIsInstance(df, geopandas.GeoDataFrame)
+        self.assertEqual(len(df), 3)  # verify the number of rows
+        self.assertEqual(list(df), ["name", "geog"])  # verify the column names
+        self.assertEqual(df.name.dtype.name, "object")
+        self.assertEqual(df.geog.dtype.name, "geometry")
+        self.assertIsInstance(df.geog, geopandas.GeoSeries)
+        self.assertEqual(list(map(str, df.area)), ["0.0", "nan", "0.5"])
+        self.assertEqual(list(map(str, df.geog.area)), ["0.0", "nan", "0.5"])
+        self.assertEqual(df.crs.srs, "EPSG:4326")
+        self.assertEqual(df.crs.name, "WGS 84")
+        self.assertEqual(df.geog.crs.srs, "EPSG:4326")
+        self.assertEqual(df.geog.crs.name, "WGS 84")
+
+    @unittest.skipIf(geopandas is None, "Requires `geopandas`")
+    def test_to_geodataframe_ambiguous_geog(self):
+        row_iterator = self._make_one_from_data(
+            (("name", "STRING"), ("geog", "GEOGRAPHY"), ("geog2", "GEOGRAPHY")), ()
+        )
+        with self.assertRaisesRegex(
+            ValueError,
+            re.escape(
+                "There is more than one GEOGRAPHY column in the result. "
+                "The geography_column argument must be used to specify which "
+                "one to use to create a GeoDataFrame"
+            ),
+        ):
+            row_iterator.to_geodataframe(create_bqstorage_client=False)
+
+    @unittest.skipIf(geopandas is None, "Requires `geopandas`")
+    def test_to_geodataframe_bad_geography_column(self):
+        row_iterator = self._make_one_from_data(
+            (("name", "STRING"), ("geog", "GEOGRAPHY"), ("geog2", "GEOGRAPHY")), ()
+        )
+        with self.assertRaisesRegex(
+            ValueError,
+            re.escape(
+                "The given geography column, xxx, doesn't name"
+                " a GEOGRAPHY column in the result."
+            ),
+        ):
+            row_iterator.to_geodataframe(
+                create_bqstorage_client=False, geography_column="xxx"
+            )
+
+    @unittest.skipIf(geopandas is None, "Requires `geopandas`")
+    def test_to_geodataframe_no_geog(self):
+        row_iterator = self._make_one_from_data(
+            (("name", "STRING"), ("geog", "STRING")), ()
+        )
+        with self.assertRaisesRegex(
+            TypeError,
+            re.escape(
+                "There must be at least one GEOGRAPHY column"
+                " to create a GeoDataFrame"
+            ),
+        ):
+            row_iterator.to_geodataframe(create_bqstorage_client=False)
+
+    @unittest.skipIf(geopandas is None, "Requires `geopandas`")
+    def test_to_geodataframe_w_geography_column(self):
+        row_iterator = self._make_one_from_data(
+            (("name", "STRING"), ("geog", "GEOGRAPHY"), ("geog2", "GEOGRAPHY")),
+            (
+                ("foo", "Point(0 0)", "Point(1 1)"),
+                ("bar", None, "Point(2 2)"),
+                ("baz", "Polygon((0 0, 0 1, 1 0, 0 0))", "Point(3 3)"),
+            ),
+        )
+        df = row_iterator.to_geodataframe(
+            create_bqstorage_client=False, geography_column="geog"
+        )
+        self.assertIsInstance(df, geopandas.GeoDataFrame)
+        self.assertEqual(len(df), 3)  # verify the number of rows
+        self.assertEqual(list(df), ["name", "geog", "geog2"])  # verify the column names
+        self.assertEqual(df.name.dtype.name, "object")
+        self.assertEqual(df.geog.dtype.name, "geometry")
+        self.assertEqual(df.geog2.dtype.name, "object")
+        self.assertIsInstance(df.geog, geopandas.GeoSeries)
+        self.assertEqual(list(map(str, df.area)), ["0.0", "nan", "0.5"])
+        self.assertEqual(list(map(str, df.geog.area)), ["0.0", "nan", "0.5"])
+        self.assertEqual(
+            [v.__class__.__name__ for v in df.geog], ["Point", "NoneType", "Polygon"]
+        )
+
+        # Geog2 isn't a GeoSeries, but it contains geomentries:
+        self.assertIsInstance(df.geog2, pandas.Series)
+        self.assertEqual(
+            [v.__class__.__name__ for v in df.geog2], ["Point", "Point", "Point"]
+        )
+        # and can easily be converted to a GeoSeries
+        self.assertEqual(
+            list(map(str, geopandas.GeoSeries(df.geog2).area)), ["0.0", "0.0", "0.0"]
+        )
+
+    @unittest.skipIf(geopandas is None, "Requires `geopandas`")
+    @mock.patch("google.cloud.bigquery.table.RowIterator.to_dataframe")
+    def test_rowiterator_to_geodataframe_delegation(self, to_dataframe):
+        """
+        RowIterator.to_geodataframe just delegates to RowIterator.to_dataframe.
+
+        This test just demonstrates that. We don't need to test all the
+        variations, which are tested for to_dataframe.
+        """
+        import numpy
+        from shapely import wkt
+
+        row_iterator = self._make_one_from_data(
+            (("name", "STRING"), ("g", "GEOGRAPHY"))
+        )
+        bqstorage_client = object()
+        dtypes = dict(xxx=numpy.dtype("int64"))
+        progress_bar_type = "normal"
+        create_bqstorage_client = False
+        date_as_object = False
+        geography_column = "g"
+
+        to_dataframe.return_value = pandas.DataFrame(
+            dict(name=["foo"], g=[wkt.loads("point(0 0)")],)
+        )
+
+        df = row_iterator.to_geodataframe(
+            bqstorage_client=bqstorage_client,
+            dtypes=dtypes,
+            progress_bar_type=progress_bar_type,
+            create_bqstorage_client=create_bqstorage_client,
+            date_as_object=date_as_object,
+            geography_column=geography_column,
+        )
+
+        to_dataframe.assert_called_once_with(
+            bqstorage_client,
+            dtypes,
+            progress_bar_type,
+            create_bqstorage_client,
+            date_as_object,
+            geography_as_object=True,
+        )
+
+        self.assertIsInstance(df, geopandas.GeoDataFrame)
+        self.assertEqual(len(df), 1)  # verify the number of rows
+        self.assertEqual(list(df), ["name", "g"])  # verify the column names
+        self.assertEqual(df.name.dtype.name, "object")
+        self.assertEqual(df.g.dtype.name, "geometry")
+        self.assertIsInstance(df.g, geopandas.GeoSeries)
+        self.assertEqual(list(map(str, df.area)), ["0.0"])
+        self.assertEqual(list(map(str, df.g.area)), ["0.0"])
+        self.assertEqual([v.__class__.__name__ for v in df.g], ["Point"])
 
 
 class TestPartitionRange(unittest.TestCase):

@@ -97,6 +97,10 @@ templated_files = common.py_library(
     samples=True,
     microgenerator=True,
     split_system_tests=True,
+    intersphinx_dependencies={
+        "pandas": 'http://pandas.pydata.org/pandas-docs/dev',
+        "geopandas": "https://geopandas.org/",
+    }
 )
 
 # BigQuery has a custom multiprocessing note

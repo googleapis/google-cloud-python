@@ -36,6 +36,11 @@ except ImportError:  # pragma: NO COVER
     # Mock out pyarrow when missing, because methods from pyarrow.types are
     # used in test parameterization.
     pyarrow = mock.Mock()
+try:
+    import geopandas
+except ImportError:  # pragma: NO COVER
+    geopandas = None
+
 import pytest
 
 from google import api_core
@@ -582,6 +587,60 @@ def test_bq_to_arrow_array_w_special_floats(module_under_test):
     assert roundtrip[1] is None
     assert roundtrip[2] == float("inf")
     assert roundtrip[3] is None
+
+
+@pytest.mark.skipif(geopandas is None, reason="Requires `geopandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
+def test_bq_to_arrow_array_w_geography_dtype(module_under_test):
+    from shapely import wkb, wkt
+
+    bq_field = schema.SchemaField("field_name", "GEOGRAPHY")
+
+    series = geopandas.GeoSeries([None, wkt.loads("point(0 0)")])
+    array = module_under_test.bq_to_arrow_array(series, bq_field)
+    # The result is binary, because we use wkb format
+    assert array.type == pyarrow.binary()
+    assert array.to_pylist() == [None, wkb.dumps(series[1])]
+
+    # All na:
+    series = geopandas.GeoSeries([None, None])
+    array = module_under_test.bq_to_arrow_array(series, bq_field)
+    assert array.type == pyarrow.string()
+    assert array.to_pylist() == list(series)
+
+
+@pytest.mark.skipif(geopandas is None, reason="Requires `geopandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
+def test_bq_to_arrow_array_w_geography_type_shapely_data(module_under_test):
+    from shapely import wkb, wkt
+
+    bq_field = schema.SchemaField("field_name", "GEOGRAPHY")
+
+    series = pandas.Series([None, wkt.loads("point(0 0)")])
+    array = module_under_test.bq_to_arrow_array(series, bq_field)
+    # The result is binary, because we use wkb format
+    assert array.type == pyarrow.binary()
+    assert array.to_pylist() == [None, wkb.dumps(series[1])]
+
+    # All na:
+    series = pandas.Series([None, None])
+    array = module_under_test.bq_to_arrow_array(series, bq_field)
+    assert array.type == pyarrow.string()
+    assert array.to_pylist() == list(series)
+
+
+@pytest.mark.skipif(geopandas is None, reason="Requires `geopandas`")
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
+def test_bq_to_arrow_array_w_geography_type_wkb_data(module_under_test):
+    from shapely import wkb, wkt
+
+    bq_field = schema.SchemaField("field_name", "GEOGRAPHY")
+
+    series = pandas.Series([None, wkb.dumps(wkt.loads("point(0 0)"))])
+    array = module_under_test.bq_to_arrow_array(series, bq_field)
+    # The result is binary, because we use wkb format
+    assert array.type == pyarrow.binary()
+    assert array.to_pylist() == list(series)
 
 
 @pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
@@ -1158,6 +1217,28 @@ def test_dataframe_to_bq_schema_pyarrow_fallback_fails(module_under_test):
     assert "struct_field" in str(expected_warnings[0])
 
 
+@pytest.mark.skipif(geopandas is None, reason="Requires `geopandas`")
+def test_dataframe_to_bq_schema_geography(module_under_test):
+    from shapely import wkt
+
+    df = geopandas.GeoDataFrame(
+        pandas.DataFrame(
+            dict(
+                name=["foo", "bar"],
+                geo1=[None, None],
+                geo2=[None, wkt.loads("Point(1 1)")],
+            )
+        ),
+        geometry="geo1",
+    )
+    bq_schema = module_under_test.dataframe_to_bq_schema(df, [])
+    assert bq_schema == (
+        schema.SchemaField("name", "STRING"),
+        schema.SchemaField("geo1", "GEOGRAPHY"),
+        schema.SchemaField("geo2", "GEOGRAPHY"),
+    )
+
+
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 @pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
 def test_augment_schema_type_detection_succeeds(module_under_test):
@@ -1554,3 +1635,22 @@ def test_download_dataframe_row_iterator_dict_sequence_schema(module_under_test)
 def test_table_data_listpage_to_dataframe_skips_stop_iteration(module_under_test):
     dataframe = module_under_test._row_iterator_page_to_dataframe([], [], {})
     assert isinstance(dataframe, pandas.DataFrame)
+
+
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
+def test_bq_to_arrow_field_type_override(module_under_test):
+    # When loading pandas data, we may need to override the type
+    # decision based on data contents, because GEOGRAPHY data can be
+    # stored as either text or binary.
+
+    assert (
+        module_under_test.bq_to_arrow_field(schema.SchemaField("g", "GEOGRAPHY")).type
+        == pyarrow.string()
+    )
+
+    assert (
+        module_under_test.bq_to_arrow_field(
+            schema.SchemaField("g", "GEOGRAPHY"), pyarrow.binary(),
+        ).type
+        == pyarrow.binary()
+    )

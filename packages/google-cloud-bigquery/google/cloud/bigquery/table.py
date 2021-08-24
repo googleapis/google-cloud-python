@@ -30,6 +30,20 @@ except ImportError:  # pragma: NO COVER
     pandas = None
 
 try:
+    import geopandas
+except ImportError:
+    geopandas = None
+else:
+    _COORDINATE_REFERENCE_SYSTEM = "EPSG:4326"
+
+try:
+    import shapely.geos
+except ImportError:
+    shapely = None
+else:
+    _read_wkt = shapely.geos.WKTReader(shapely.geos.lgeos).read
+
+try:
     import pyarrow
 except ImportError:  # pragma: NO COVER
     pyarrow = None
@@ -52,6 +66,7 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
     # Unconditionally import optional dependencies again to tell pytype that
     # they are not None, avoiding false "no attribute" errors.
     import pandas
+    import geopandas
     import pyarrow
     from google.cloud import bigquery_storage
 
@@ -59,6 +74,14 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
 _NO_PANDAS_ERROR = (
     "The pandas library is not installed, please install "
     "pandas to use the to_dataframe() function."
+)
+_NO_GEOPANDAS_ERROR = (
+    "The geopandas library is not installed, please install "
+    "geopandas to use the to_geodataframe() function."
+)
+_NO_SHAPELY_ERROR = (
+    "The shapely library is not installed, please install "
+    "shapely to use the geography_as_object option."
 )
 _NO_PYARROW_ERROR = (
     "The pyarrow library is not installed, please install "
@@ -1878,6 +1901,7 @@ class RowIterator(HTTPIterator):
         progress_bar_type: str = None,
         create_bqstorage_client: bool = True,
         date_as_object: bool = True,
+        geography_as_object: bool = False,
     ) -> "pandas.DataFrame":
         """Create a pandas DataFrame by loading all pages of a query.
 
@@ -1933,6 +1957,13 @@ class RowIterator(HTTPIterator):
 
                 .. versionadded:: 1.26.0
 
+            geography_as_object (Optional[bool]):
+                If ``True``, convert GEOGRAPHY data to :mod:`shapely`
+                geometry objects. If ``False`` (default), don't cast
+                geography data to :mod:`shapely` geometry objects.
+
+                .. versionadded:: 2.24.0
+
         Returns:
             pandas.DataFrame:
                 A :class:`~pandas.DataFrame` populated with row data and column
@@ -1941,13 +1972,18 @@ class RowIterator(HTTPIterator):
 
         Raises:
             ValueError:
-                If the :mod:`pandas` library cannot be imported, or the
-                :mod:`google.cloud.bigquery_storage_v1` module is
-                required but cannot be imported.
+                If the :mod:`pandas` library cannot be imported, or
+                the :mod:`google.cloud.bigquery_storage_v1` module is
+                required but cannot be imported.  Also if
+                `geography_as_object` is `True`, but the
+                :mod:`shapely` library cannot be imported.
 
         """
         if pandas is None:
             raise ValueError(_NO_PANDAS_ERROR)
+        if geography_as_object and shapely is None:
+            raise ValueError(_NO_SHAPELY_ERROR)
+
         if dtypes is None:
             dtypes = {}
 
@@ -1988,7 +2024,135 @@ class RowIterator(HTTPIterator):
         for column in dtypes:
             df[column] = pandas.Series(df[column], dtype=dtypes[column])
 
+        if geography_as_object:
+            for field in self.schema:
+                if field.field_type.upper() == "GEOGRAPHY":
+                    df[field.name] = df[field.name].dropna().apply(_read_wkt)
+
         return df
+
+    # If changing the signature of this method, make sure to apply the same
+    # changes to job.QueryJob.to_geodataframe()
+    def to_geodataframe(
+        self,
+        bqstorage_client: "bigquery_storage.BigQueryReadClient" = None,
+        dtypes: Dict[str, Any] = None,
+        progress_bar_type: str = None,
+        create_bqstorage_client: bool = True,
+        date_as_object: bool = True,
+        geography_column: Optional[str] = None,
+    ) -> "geopandas.GeoDataFrame":
+        """Create a GeoPandas GeoDataFrame by loading all pages of a query.
+
+        Args:
+            bqstorage_client (Optional[google.cloud.bigquery_storage_v1.BigQueryReadClient]):
+                A BigQuery Storage API client. If supplied, use the faster
+                BigQuery Storage API to fetch rows from BigQuery.
+
+                This method requires the ``pyarrow`` and
+                ``google-cloud-bigquery-storage`` libraries.
+
+                This method only exposes a subset of the capabilities of the
+                BigQuery Storage API. For full access to all features
+                (projections, filters, snapshots) use the Storage API directly.
+
+            dtypes (Optional[Map[str, Union[str, pandas.Series.dtype]]]):
+                A dictionary of column names pandas ``dtype``s. The provided
+                ``dtype`` is used when constructing the series for the column
+                specified. Otherwise, the default pandas behavior is used.
+            progress_bar_type (Optional[str]):
+                If set, use the `tqdm <https://tqdm.github.io/>`_ library to
+                display a progress bar while the data downloads. Install the
+                ``tqdm`` package to use this feature.
+
+                Possible values of ``progress_bar_type`` include:
+
+                ``None``
+                  No progress bar.
+                ``'tqdm'``
+                  Use the :func:`tqdm.tqdm` function to print a progress bar
+                  to :data:`sys.stderr`.
+                ``'tqdm_notebook'``
+                  Use the :func:`tqdm.tqdm_notebook` function to display a
+                  progress bar as a Jupyter notebook widget.
+                ``'tqdm_gui'``
+                  Use the :func:`tqdm.tqdm_gui` function to display a
+                  progress bar as a graphical dialog box.
+
+            create_bqstorage_client (Optional[bool]):
+                If ``True`` (default), create a BigQuery Storage API client
+                using the default API settings. The BigQuery Storage API
+                is a faster way to fetch rows from BigQuery. See the
+                ``bqstorage_client`` parameter for more information.
+
+                This argument does nothing if ``bqstorage_client`` is supplied.
+
+            date_as_object (Optional[bool]):
+                If ``True`` (default), cast dates to objects. If ``False``, convert
+                to datetime64[ns] dtype.
+
+            geography_column (Optional[str]):
+                If there are more than one GEOGRAPHY column,
+                identifies which one to use to construct a geopandas
+                GeoDataFrame.  This option can be ommitted if there's
+                only one GEOGRAPHY column.
+
+        Returns:
+            geopandas.GeoDataFrame:
+                A :class:`geopandas.GeoDataFrame` populated with row
+                data and column headers from the query results. The
+                column headers are derived from the destination
+                table's schema.
+
+        Raises:
+            ValueError:
+                If the :mod:`geopandas` library cannot be imported, or the
+                :mod:`google.cloud.bigquery_storage_v1` module is
+                required but cannot be imported.
+
+        .. versionadded:: 2.24.0
+        """
+        if geopandas is None:
+            raise ValueError(_NO_GEOPANDAS_ERROR)
+
+        geography_columns = set(
+            field.name
+            for field in self.schema
+            if field.field_type.upper() == "GEOGRAPHY"
+        )
+        if not geography_columns:
+            raise TypeError(
+                "There must be at least one GEOGRAPHY column"
+                " to create a GeoDataFrame"
+            )
+
+        if geography_column:
+            if geography_column not in geography_columns:
+                raise ValueError(
+                    f"The given geography column, {geography_column}, doesn't name"
+                    f" a GEOGRAPHY column in the result."
+                )
+        elif len(geography_columns) == 1:
+            [geography_column] = geography_columns
+        else:
+            raise ValueError(
+                "There is more than one GEOGRAPHY column in the result. "
+                "The geography_column argument must be used to specify which "
+                "one to use to create a GeoDataFrame"
+            )
+
+        df = self.to_dataframe(
+            bqstorage_client,
+            dtypes,
+            progress_bar_type,
+            create_bqstorage_client,
+            date_as_object,
+            geography_as_object=True,
+        )
+
+        return geopandas.GeoDataFrame(
+            df, crs=_COORDINATE_REFERENCE_SYSTEM, geometry=geography_column
+        )
 
 
 class _EmptyRowIterator(RowIterator):
@@ -2042,6 +2206,7 @@ class _EmptyRowIterator(RowIterator):
         progress_bar_type=None,
         create_bqstorage_client=True,
         date_as_object=True,
+        geography_as_object=False,
     ) -> "pandas.DataFrame":
         """Create an empty dataframe.
 
@@ -2058,6 +2223,31 @@ class _EmptyRowIterator(RowIterator):
         if pandas is None:
             raise ValueError(_NO_PANDAS_ERROR)
         return pandas.DataFrame()
+
+    def to_geodataframe(
+        self,
+        bqstorage_client=None,
+        dtypes=None,
+        progress_bar_type=None,
+        create_bqstorage_client=True,
+        date_as_object=True,
+        geography_column: Optional[str] = None,
+    ) -> "pandas.DataFrame":
+        """Create an empty dataframe.
+
+        Args:
+            bqstorage_client (Any): Ignored. Added for compatibility with RowIterator.
+            dtypes (Any): Ignored. Added for compatibility with RowIterator.
+            progress_bar_type (Any): Ignored. Added for compatibility with RowIterator.
+            create_bqstorage_client (bool): Ignored. Added for compatibility with RowIterator.
+            date_as_object (bool): Ignored. Added for compatibility with RowIterator.
+
+        Returns:
+            pandas.DataFrame: An empty :class:`~pandas.DataFrame`.
+        """
+        if geopandas is None:
+            raise ValueError(_NO_GEOPANDAS_ERROR)
+        return geopandas.GeoDataFrame(crs=_COORDINATE_REFERENCE_SYSTEM)
 
     def to_dataframe_iterable(
         self,

@@ -56,6 +56,7 @@ extras = {
         "grpcio >= 1.38.1, < 2.0dev",
         "pyarrow >= 3.0.0, < 6.0dev",
     ],
+    "geopandas": ["geopandas>=0.9.0, <1.0dev", "Shapely>=1.6.0, <2.0dev"],
     "pandas": ["pandas>=0.23.0", "pyarrow >= 3.0.0, < 6.0dev"],
     "bignumeric_type": ["pyarrow >= 3.0.0, < 6.0dev"],
     "tqdm": ["tqdm >= 4.7.4, <5.0.0dev"],

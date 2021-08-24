@@ -53,6 +53,7 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
     # Assumption: type checks are only used by library developers and CI environments
     # that have all optional dependencies installed, thus no conditional imports.
     import pandas
+    import geopandas
     import pyarrow
     from google.api_core import retry as retries
     from google.cloud import bigquery_storage
@@ -1487,6 +1488,7 @@ class QueryJob(_AsyncJob):
         create_bqstorage_client: bool = True,
         date_as_object: bool = True,
         max_results: Optional[int] = None,
+        geography_as_object: bool = False,
     ) -> "pandas.DataFrame":
         """Return a pandas DataFrame from a QueryJob
 
@@ -1538,13 +1540,27 @@ class QueryJob(_AsyncJob):
 
                 .. versionadded:: 2.21.0
 
+            geography_as_object (Optional[bool]):
+                If ``True``, convert GEOGRAPHY data to :mod:`shapely`
+                geometry objects.  If ``False`` (default), don't cast
+                geography data to :mod:`shapely` geometry objects.
+
+                .. versionadded:: 2.24.0
+
         Returns:
-            A :class:`~pandas.DataFrame` populated with row data and column
-            headers from the query results. The column headers are derived
-            from the destination table's schema.
+            pandas.DataFrame:
+                A :class:`~pandas.DataFrame` populated with row data
+                and column headers from the query results. The column
+                headers are derived from the destination table's
+                schema.
 
         Raises:
-            ValueError: If the `pandas` library cannot be imported.
+            ValueError:
+                If the :mod:`pandas` library cannot be imported, or
+                the :mod:`google.cloud.bigquery_storage_v1` module is
+                required but cannot be imported.  Also if
+                `geography_as_object` is `True`, but the
+                :mod:`shapely` library cannot be imported.
         """
         query_result = wait_for_query(self, progress_bar_type, max_results=max_results)
         return query_result.to_dataframe(
@@ -1553,6 +1569,101 @@ class QueryJob(_AsyncJob):
             progress_bar_type=progress_bar_type,
             create_bqstorage_client=create_bqstorage_client,
             date_as_object=date_as_object,
+            geography_as_object=geography_as_object,
+        )
+
+    # If changing the signature of this method, make sure to apply the same
+    # changes to table.RowIterator.to_dataframe(), except for the max_results parameter
+    # that should only exist here in the QueryJob method.
+    def to_geodataframe(
+        self,
+        bqstorage_client: "bigquery_storage.BigQueryReadClient" = None,
+        dtypes: Dict[str, Any] = None,
+        progress_bar_type: str = None,
+        create_bqstorage_client: bool = True,
+        date_as_object: bool = True,
+        max_results: Optional[int] = None,
+        geography_column: Optional[str] = None,
+    ) -> "geopandas.GeoDataFrame":
+        """Return a GeoPandas GeoDataFrame from a QueryJob
+
+        Args:
+            bqstorage_client (Optional[google.cloud.bigquery_storage_v1.BigQueryReadClient]):
+                A BigQuery Storage API client. If supplied, use the faster
+                BigQuery Storage API to fetch rows from BigQuery. This
+                API is a billable API.
+
+                This method requires the ``fastavro`` and
+                ``google-cloud-bigquery-storage`` libraries.
+
+                Reading from a specific partition or snapshot is not
+                currently supported by this method.
+
+            dtypes (Optional[Map[str, Union[str, pandas.Series.dtype]]]):
+                A dictionary of column names pandas ``dtype``s. The provided
+                ``dtype`` is used when constructing the series for the column
+                specified. Otherwise, the default pandas behavior is used.
+
+            progress_bar_type (Optional[str]):
+                If set, use the `tqdm <https://tqdm.github.io/>`_ library to
+                display a progress bar while the data downloads. Install the
+                ``tqdm`` package to use this feature.
+
+                See
+                :func:`~google.cloud.bigquery.table.RowIterator.to_dataframe`
+                for details.
+
+                .. versionadded:: 1.11.0
+            create_bqstorage_client (Optional[bool]):
+                If ``True`` (default), create a BigQuery Storage API client
+                using the default API settings. The BigQuery Storage API
+                is a faster way to fetch rows from BigQuery. See the
+                ``bqstorage_client`` parameter for more information.
+
+                This argument does nothing if ``bqstorage_client`` is supplied.
+
+                .. versionadded:: 1.24.0
+
+            date_as_object (Optional[bool]):
+                If ``True`` (default), cast dates to objects. If ``False``, convert
+                to datetime64[ns] dtype.
+
+                .. versionadded:: 1.26.0
+
+            max_results (Optional[int]):
+                Maximum number of rows to include in the result. No limit by default.
+
+                .. versionadded:: 2.21.0
+
+            geography_column (Optional[str]):
+                If there are more than one GEOGRAPHY column,
+                identifies which one to use to construct a GeoPandas
+                GeoDataFrame.  This option can be ommitted if there's
+                only one GEOGRAPHY column.
+
+        Returns:
+            geopandas.GeoDataFrame:
+                A :class:`geopandas.GeoDataFrame` populated with row
+                data and column headers from the query results. The
+                column headers are derived from the destination
+                table's schema.
+
+        Raises:
+            ValueError:
+               If the :mod:`geopandas` library cannot be imported, or the
+                :mod:`google.cloud.bigquery_storage_v1` module is
+                required but cannot be imported.
+
+        .. versionadded:: 2.24.0
+        """
+        query_result = wait_for_query(self, progress_bar_type, max_results=max_results)
+        return query_result.to_geodataframe(
+            bqstorage_client=bqstorage_client,
+            dtypes=dtypes,
+            progress_bar_type=progress_bar_type,
+            create_bqstorage_client=create_bqstorage_client,
+            date_as_object=date_as_object,
+            geography_column=geography_column,
         )
 
     def __iter__(self):
