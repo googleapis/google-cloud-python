@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-data-fusion/compare/v0.1.2...v1.0.0) (2021-08-24)
+
+
+### Features
+
+* bump release level to production/stable ([#14](https://www.github.com/googleapis/python-data-fusion/issues/14)) ([26f5506](https://www.github.com/googleapis/python-data-fusion/commit/26f5506b24453c6764f41637c18c6ceb10a9ba3c))
+
+
+### Documentation
+
+* migrate to main branch ([#20](https://www.github.com/googleapis/python-data-fusion/issues/20)) ([7edab48](https://www.github.com/googleapis/python-data-fusion/commit/7edab48370aeb6194f864bc2d402b8ffa7761a51))
+
 ### [0.1.2](https://www.github.com/googleapis/python-data-fusion/compare/v0.1.1...v0.1.2) (2021-07-29)
 
 
