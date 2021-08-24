@@ -10,7 +10,7 @@ data from siloed on-premises platforms.
 - `Product Documentation`_
 
 .. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-data-fusion.svg
    :target: https://pypi.org/project/google-cloud-data-fusion/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-data-fusion.svg
@@ -80,4 +80,4 @@ Next Steps
    APIs that we cover.
 
 .. _Cloud Data Fusion Product documentation:  https://cloud.google.com/data-fusion/docs
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
