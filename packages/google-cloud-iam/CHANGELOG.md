@@ -78,7 +78,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* migrate to microgenerator (#26). See the [migration guide](https://github.com/googleapis/python-iam/blob/master/UPGRADING.md).
+* migrate to microgenerator (#26). See the [migration guide](https://github.com/googleapis/python-iam/blob/main/UPGRADING.md).
 
 ### Features
 
