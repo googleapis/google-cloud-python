@@ -17,7 +17,7 @@ sed -i -e 's/upstream\/master/upstream\/main/g' CONTRIBUTING.rst
 curl https://raw.githubusercontent.com/googleapis/google-cloud-python/main-migration/scripts/main_migration/migratemainowlbot -o migratemainowlbot
 sed -i '/the microgenerator has a good coveragerc file/r migratemainowlbot' owlbot.py
 rm migratemainowlbot
-git commit -a -m "docs: migrate default branch from master to main"
+git commit -a -m "chore: migrate default branch from master to main"
 git push origin migrate-default-branch-to-main
 
 
