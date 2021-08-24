@@ -88,20 +88,29 @@ def initialize_environment(request, environ):
 
 
 @pytest.fixture
-def context():
-    client = mock.Mock(
-        project="testing",
-        namespace=None,
-        spec=("project", "namespace"),
-        stub=mock.Mock(spec=()),
-    )
-    context = context_module.Context(
-        client,
-        eventloop=TestingEventLoop(),
-        datastore_policy=True,
-        legacy_data=False,
-    )
+def context_factory():
+    def context(**kwargs):
+        client = mock.Mock(
+            project="testing",
+            namespace=None,
+            spec=("project", "namespace"),
+            stub=mock.Mock(spec=()),
+        )
+        context = context_module.Context(
+            client,
+            eventloop=TestingEventLoop(),
+            datastore_policy=True,
+            legacy_data=False,
+            **kwargs
+        )
+        return context
+
     return context
+
+
+@pytest.fixture
+def context(context_factory):
+    return context_factory()
 
 
 @pytest.fixture
