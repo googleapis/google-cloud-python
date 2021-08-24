@@ -17,7 +17,7 @@ class TestGenerate(unittest.TestCase):
     def test_find_unique_name(self):
 
         entries = {}
-        
+
         # Disambiguate with unique entries.
         entry1 = "google.cloud.aiplatform.v1.schema.predict.instance_v1.types"
         entry2 = "google.cloud.aiplatform.v1beta2.schema.predict.instance_v1.types"

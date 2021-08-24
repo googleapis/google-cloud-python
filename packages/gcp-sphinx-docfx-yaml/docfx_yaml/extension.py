@@ -1272,13 +1272,13 @@ def build_finished(app, exception):
                         del(obj['source'])
 
             yaml_map[uid] = [yaml_data, references]
-           
+
             # Parse the name of the object.
             # Some types will need additional parsing to de-duplicate their names and contain
-            # a portion of their parent name for better disambiguation. This is done in 
+            # a portion of their parent name for better disambiguation. This is done in
             # disambiguate_toc_name
-            
-            node_name = obj.get('class').split(".")[-1] if obj.get('class') else obj['name']
+
+            node_name = uid.split(".")[-1]
 
             # Build nested TOC
             if uid.count('.') >= 1:
@@ -1286,38 +1286,25 @@ def build_finished(app, exception):
                 found_node = find_node_in_toc_tree(pkg_toc_yaml, parent_level)
 
                 if found_node:
-                    found_node.pop('uid', 'No uid found')
                     found_node.setdefault(
-                      'items', 
+                      'items',
                       [{'name': 'Overview', 'uidname': parent_level, 'uid': parent_level}]
                     ).append({
                       'name': node_name,
-                      'uidname': uid, 
+                      'uidname': uid,
                       'uid': uid
                     })
                 else:
-                    # Extract the file name to use for new entries into the TOC
-                    # to make TOC entries consistent with filenames.
-                    file_name = obj['source']['path']
-                    # `inspect.getfile() cannot retrieve file path for some
-                    # types. Try to retrieve the file path from its class
-                    # parent, otherwise simply use node_name.
-                    if not file_name:
-                        file_name = app.env.docfx_class_paths.get(obj.get("class"))
-                    try:
-                        file_name = obj['source']['path'].split("/")[-1][:-3]
-                    except AttributeError:
-                        file_name = node_name
                     pkg_toc_yaml.append({
-                      'name': file_name, 
-                      'uidname': uid, 
+                      'name': node_name,
+                      'uidname': uid,
                       'uid': uid
                     })
 
             else:
                 pkg_toc_yaml.append({
-                  'name': node_name, 
-                  'uidname': uid, 
+                  'name': node_name,
+                  'uidname': uid,
                   'uid': uid
                 })
 
