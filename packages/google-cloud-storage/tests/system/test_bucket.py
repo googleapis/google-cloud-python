@@ -567,7 +567,7 @@ def test_bucket_w_retention_period(
     assert not bucket.default_event_based_hold
     assert not bucket.retention_policy_locked
 
-    other.reload()
+    _helpers.retry_no_event_based_hold(other.reload)()
 
     assert not other.event_based_hold
     assert not other.temporary_hold
