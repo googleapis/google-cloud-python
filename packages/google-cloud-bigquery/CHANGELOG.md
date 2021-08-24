@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [2.25.0](https://www.github.com/googleapis/python-bigquery/compare/v2.24.1...v2.25.0) (2021-08-24)
+
+
+### Features
+
+* Support using GeoPandas for GEOGRAPHY columns ([#848](https://www.github.com/googleapis/python-bigquery/issues/848)) ([16f65e6](https://www.github.com/googleapis/python-bigquery/commit/16f65e6ae15979217ceea6c6d398c9057a363a13))
+
 ### [2.24.1](https://www.github.com/googleapis/python-bigquery/compare/v2.24.0...v2.24.1) (2021-08-13)
 
 
