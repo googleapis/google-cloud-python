@@ -229,6 +229,9 @@ Libraries
    * - `Redis <https://github.com/googleapis/python-redis>`_
      - |ga|
      - |PyPI-google-cloud-redis|
+   * - `Resource Manager API <https://github.com/googleapis/python-resource-manager>`_
+     - |ga|
+     - |PyPI-google-cloud-resource-manager|
    * - `Resource Settings <https://github.com/googleapis/python-resource-settings>`_
      - |ga|
      - |PyPI-google-cloud-resource-settings|
@@ -388,9 +391,6 @@ Libraries
    * - `Recommendations AI <https://github.com/googleapis/python-recommendations-ai>`_
      - |beta|
      - |PyPI-google-cloud-recommendations-ai|
-   * - `Resource Manager API <https://github.com/googleapis/python-resource-manager>`_
-     - |beta|
-     - |PyPI-google-cloud-resource-manager|
    * - `Runtime Configurator <https://github.com/googleapis/python-runtimeconfig>`_
      - |beta|
      - |PyPI-google-cloud-runtimeconfig|
@@ -534,6 +534,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-recommender
 .. |PyPI-google-cloud-redis| image:: https://img.shields.io/pypi/v/google-cloud-redis.svg
      :target: https://pypi.org/project/google-cloud-redis
+.. |PyPI-google-cloud-resource-manager| image:: https://img.shields.io/pypi/v/google-cloud-resource-manager.svg
+     :target: https://pypi.org/project/google-cloud-resource-manager
 .. |PyPI-google-cloud-resource-settings| image:: https://img.shields.io/pypi/v/google-cloud-resource-settings.svg
      :target: https://pypi.org/project/google-cloud-resource-settings
 .. |PyPI-google-cloud-retail| image:: https://img.shields.io/pypi/v/google-cloud-retail.svg
@@ -640,8 +642,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-private-catalog
 .. |PyPI-google-cloud-recommendations-ai| image:: https://img.shields.io/pypi/v/google-cloud-recommendations-ai.svg
      :target: https://pypi.org/project/google-cloud-recommendations-ai
-.. |PyPI-google-cloud-resource-manager| image:: https://img.shields.io/pypi/v/google-cloud-resource-manager.svg
-     :target: https://pypi.org/project/google-cloud-resource-manager
 .. |PyPI-google-cloud-runtimeconfig| image:: https://img.shields.io/pypi/v/google-cloud-runtimeconfig.svg
      :target: https://pypi.org/project/google-cloud-runtimeconfig
 .. |PyPI-sqlalchemy-bigquery| image:: https://img.shields.io/pypi/v/sqlalchemy-bigquery.svg
