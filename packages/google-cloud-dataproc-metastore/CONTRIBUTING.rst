@@ -50,9 +50,9 @@ You'll have to create a development environment using a Git checkout:
    # Configure remotes such that you can pull changes from the googleapis/python-dataproc-metastore
    # repository into your local repository.
    $ git remote add upstream git@github.com:googleapis/python-dataproc-metastore.git
-   # fetch and merge changes from upstream into master
+   # fetch and merge changes from upstream into main
    $ git fetch upstream
-   $ git merge upstream/master
+   $ git merge upstream/main
 
 Now your local repo is set up such that you will push changes to your GitHub
 repo, from which you can submit a pull request.
@@ -110,12 +110,12 @@ Coding Style
   variables::
 
    export GOOGLE_CLOUD_TESTING_REMOTE="upstream"
-   export GOOGLE_CLOUD_TESTING_BRANCH="master"
+   export GOOGLE_CLOUD_TESTING_BRANCH="main"
 
   By doing this, you are specifying the location of the most up-to-date
   version of ``python-dataproc-metastore``. The the suggested remote name ``upstream``
   should point to the official ``googleapis`` checkout and the
-  the branch should be the main branch on that remote (``master``).
+  the branch should be the main branch on that remote (``main``).
 
 - This repository contains configuration for the
   `pre-commit <https://pre-commit.com/>`__ tool, which automates checking
@@ -209,7 +209,7 @@ The `description on PyPI`_ for the project comes directly from the
 ``README``. Due to the reStructuredText (``rst``) parser used by
 PyPI, relative links which will work on GitHub (e.g. ``CONTRIBUTING.rst``
 instead of
-``https://github.com/googleapis/python-dataproc-metastore/blob/master/CONTRIBUTING.rst``)
+``https://github.com/googleapis/python-dataproc-metastore/blob/main/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
 .. _description on PyPI: https://pypi.org/project/google-cloud-dataproc-metastore
@@ -234,7 +234,7 @@ We support:
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
 
-.. _config: https://github.com/googleapis/python-dataproc-metastore/blob/master/noxfile.py
+.. _config: https://github.com/googleapis/python-dataproc-metastore/blob/main/noxfile.py
 
 
 We also explicitly decided to support Python 3 beginning with version 3.6.
