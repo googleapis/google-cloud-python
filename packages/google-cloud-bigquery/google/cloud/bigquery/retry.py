@@ -29,6 +29,7 @@ _UNSTRUCTURED_RETRYABLE_TYPES = (
     exceptions.BadGateway,
     requests.exceptions.ChunkedEncodingError,
     requests.exceptions.ConnectionError,
+    requests.exceptions.Timeout,
     auth_exceptions.TransportError,
 )
 
@@ -57,6 +58,13 @@ with reasonable defaults. To disable retry, pass ``retry=None``.
 To modify the default retry behavior, call a ``with_XXX`` method
 on ``DEFAULT_RETRY``. For example, to change the deadline to 30 seconds,
 pass ``retry=bigquery.DEFAULT_RETRY.with_deadline(30)``.
+"""
+
+DEFAULT_TIMEOUT = 5.0 * 60.0
+"""The default API timeout.
+
+This is the time to wait per request. To adjust the total wait time, set a
+deadline on the retry object.
 """
 
 job_retry_reasons = "rateLimitExceeded", "backendError"

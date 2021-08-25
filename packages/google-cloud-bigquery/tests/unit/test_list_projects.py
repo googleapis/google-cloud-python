@@ -1,11 +1,11 @@
 # Copyright 2021 Google LLC
-
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-
+#
 #     https://www.apache.org/licenses/LICENSE-2.0
-
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,6 +15,7 @@
 import mock
 import pytest
 
+from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
 from .helpers import make_connection
 
 
@@ -66,7 +67,7 @@ def test_list_projects_defaults(client, PROJECT, extra, query):
     assert token == TOKEN
 
     conn.api_request.assert_called_once_with(
-        method="GET", path="/projects", query_params=query, timeout=None
+        method="GET", path="/projects", query_params=query, timeout=DEFAULT_TIMEOUT
     )
 
 
@@ -115,5 +116,5 @@ def test_list_projects_explicit_response_missing_projects_key(client):
         method="GET",
         path="/projects",
         query_params={"maxResults": 3, "pageToken": TOKEN},
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )

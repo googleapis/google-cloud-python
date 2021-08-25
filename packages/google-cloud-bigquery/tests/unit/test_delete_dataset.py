@@ -14,6 +14,7 @@
 
 from .helpers import make_connection, make_client, dataset_polymorphic
 import google.api_core.exceptions
+from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
 import pytest
 
 
@@ -40,7 +41,7 @@ def test_delete_dataset_delete_contents(
         method="DELETE",
         path="/%s" % PATH,
         query_params={"deleteContents": "true"},
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )
 
 
@@ -61,7 +62,7 @@ def test_delete_dataset_w_not_found_ok_false(PROJECT, DS_ID):
         client.delete_dataset(DS_ID)
 
     conn.api_request.assert_called_with(
-        method="DELETE", path=path, query_params={}, timeout=None
+        method="DELETE", path=path, query_params={}, timeout=DEFAULT_TIMEOUT
     )
 
 
@@ -74,5 +75,5 @@ def test_delete_dataset_w_not_found_ok_true(PROJECT, DS_ID):
     )
     client.delete_dataset(DS_ID, not_found_ok=True)
     conn.api_request.assert_called_with(
-        method="DELETE", path=path, query_params={}, timeout=None
+        method="DELETE", path=path, query_params={}, timeout=DEFAULT_TIMEOUT
     )

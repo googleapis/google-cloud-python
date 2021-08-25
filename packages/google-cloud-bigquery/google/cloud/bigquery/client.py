@@ -76,17 +76,24 @@ from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
 from google.cloud.bigquery.opentelemetry_tracing import create_span
 from google.cloud.bigquery import job
 from google.cloud.bigquery.job import (
+    CopyJob,
+    CopyJobConfig,
+    ExtractJob,
+    ExtractJobConfig,
+    LoadJob,
     LoadJobConfig,
     QueryJob,
     QueryJobConfig,
-    CopyJobConfig,
-    ExtractJobConfig,
 )
 from google.cloud.bigquery.model import Model
 from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.model import _model_arg_to_model_ref
 from google.cloud.bigquery.query import _QueryResults
-from google.cloud.bigquery.retry import DEFAULT_RETRY, DEFAULT_JOB_RETRY
+from google.cloud.bigquery.retry import (
+    DEFAULT_JOB_RETRY,
+    DEFAULT_RETRY,
+    DEFAULT_TIMEOUT,
+)
 from google.cloud.bigquery.routine import Routine
 from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
@@ -245,7 +252,7 @@ class Client(ClientWithProject):
         self,
         project: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> str:
         """Get the email address of the project's BigQuery service account
 
@@ -292,7 +299,7 @@ class Client(ClientWithProject):
         max_results: int = None,
         page_token: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
         page_size: int = None,
     ) -> page_iterator.Iterator:
         """List projects for the project associated with this client.
@@ -358,7 +365,7 @@ class Client(ClientWithProject):
         max_results: int = None,
         page_token: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
         page_size: int = None,
     ) -> page_iterator.Iterator:
         """List datasets for the project associated with this client.
@@ -549,7 +556,7 @@ class Client(ClientWithProject):
         dataset: Union[str, Dataset, DatasetReference],
         exists_ok: bool = False,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Dataset:
         """API call: create the dataset via a POST request.
 
@@ -624,7 +631,7 @@ class Client(ClientWithProject):
         routine: Routine,
         exists_ok: bool = False,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Routine:
         """[Beta] Create a routine via a POST request.
 
@@ -679,7 +686,7 @@ class Client(ClientWithProject):
         table: Union[str, Table, TableReference],
         exists_ok: bool = False,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Table:
         """API call:  create a table via a PUT request
 
@@ -751,7 +758,7 @@ class Client(ClientWithProject):
         self,
         dataset_ref: Union[DatasetReference, str],
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Dataset:
         """Fetch the dataset referenced by ``dataset_ref``
 
@@ -795,7 +802,7 @@ class Client(ClientWithProject):
         table: Union[Table, TableReference],
         requested_policy_version: int = 1,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Policy:
         if not isinstance(table, (Table, TableReference)):
             raise TypeError("table must be a Table or TableReference")
@@ -825,7 +832,7 @@ class Client(ClientWithProject):
         policy: Policy,
         updateMask: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Policy:
         if not isinstance(table, (Table, TableReference)):
             raise TypeError("table must be a Table or TableReference")
@@ -858,7 +865,7 @@ class Client(ClientWithProject):
         table: Union[Table, TableReference],
         permissions: Sequence[str],
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Dict[str, Any]:
         if not isinstance(table, (Table, TableReference)):
             raise TypeError("table must be a Table or TableReference")
@@ -883,7 +890,7 @@ class Client(ClientWithProject):
         self,
         model_ref: Union[ModelReference, str],
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Model:
         """[Beta] Fetch the model referenced by ``model_ref``.
 
@@ -926,7 +933,7 @@ class Client(ClientWithProject):
         self,
         routine_ref: Union[Routine, RoutineReference, str],
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Routine:
         """[Beta] Get the routine referenced by ``routine_ref``.
 
@@ -970,7 +977,7 @@ class Client(ClientWithProject):
         self,
         table: Union[Table, TableReference, str],
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Table:
         """Fetch the table referenced by ``table``.
 
@@ -1012,7 +1019,7 @@ class Client(ClientWithProject):
         dataset: Dataset,
         fields: Sequence[str],
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Dataset:
         """Change some fields of a dataset.
 
@@ -1082,7 +1089,7 @@ class Client(ClientWithProject):
         model: Model,
         fields: Sequence[str],
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Model:
         """[Beta] Change some fields of a model.
 
@@ -1146,7 +1153,7 @@ class Client(ClientWithProject):
         routine: Routine,
         fields: Sequence[str],
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Routine:
         """[Beta] Change some fields of a routine.
 
@@ -1220,7 +1227,7 @@ class Client(ClientWithProject):
         table: Table,
         fields: Sequence[str],
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Table:
         """Change some fields of a table.
 
@@ -1286,7 +1293,7 @@ class Client(ClientWithProject):
         max_results: int = None,
         page_token: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
         page_size: int = None,
     ) -> page_iterator.Iterator:
         """[Beta] List models in the dataset.
@@ -1363,7 +1370,7 @@ class Client(ClientWithProject):
         max_results: int = None,
         page_token: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
         page_size: int = None,
     ) -> page_iterator.Iterator:
         """[Beta] List routines in the dataset.
@@ -1440,7 +1447,7 @@ class Client(ClientWithProject):
         max_results: int = None,
         page_token: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
         page_size: int = None,
     ) -> page_iterator.Iterator:
         """List tables in the dataset.
@@ -1515,7 +1522,7 @@ class Client(ClientWithProject):
         dataset: Union[Dataset, DatasetReference, str],
         delete_contents: bool = False,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
         not_found_ok: bool = False,
     ) -> None:
         """Delete a dataset.
@@ -1574,7 +1581,7 @@ class Client(ClientWithProject):
         self,
         model: Union[Model, ModelReference, str],
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
         not_found_ok: bool = False,
     ) -> None:
         """[Beta] Delete a model
@@ -1624,12 +1631,12 @@ class Client(ClientWithProject):
 
     def delete_job_metadata(
         self,
-        job_id,
-        project=None,
-        location=None,
-        retry=DEFAULT_RETRY,
-        timeout=None,
-        not_found_ok=False,
+        job_id: Union[str, LoadJob, CopyJob, ExtractJob, QueryJob],
+        project: Optional[str] = None,
+        location: Optional[str] = None,
+        retry: retries.Retry = DEFAULT_RETRY,
+        timeout: float = DEFAULT_TIMEOUT,
+        not_found_ok: bool = False,
     ):
         """[Beta] Delete job metadata from job history.
 
@@ -1637,26 +1644,20 @@ class Client(ClientWithProject):
         :func:`~google.cloud.bigquery.client.Client.cancel_job` instead.
 
         Args:
-            job_id (Union[ \
-                str, \
-                google.cloud.bigquery.job.LoadJob, \
-                google.cloud.bigquery.job.CopyJob, \
-                google.cloud.bigquery.job.ExtractJob, \
-                google.cloud.bigquery.job.QueryJob \
-            ]): Job identifier.
+            job_id: Job or job identifier.
 
         Keyword Arguments:
-            project (Optional[str]):
+            project:
                 ID of the project which owns the job (defaults to the client's project).
-            location (Optional[str]):
+            location:
                 Location where the job was run. Ignored if ``job_id`` is a job
                 object.
-            retry (Optional[google.api_core.retry.Retry]):
+            retry:
                 How to retry the RPC.
-            timeout (Optional[float]):
+            timeout:
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
-            not_found_ok (Optional[bool]):
+            not_found_ok:
                 Defaults to ``False``. If ``True``, ignore "not found" errors
                 when deleting the job.
         """
@@ -1697,7 +1698,7 @@ class Client(ClientWithProject):
         self,
         routine: Union[Routine, RoutineReference, str],
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
         not_found_ok: bool = False,
     ) -> None:
         """[Beta] Delete a routine.
@@ -1751,7 +1752,7 @@ class Client(ClientWithProject):
         self,
         table: Union[Table, TableReference, str],
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
         not_found_ok: bool = False,
     ) -> None:
         """Delete a table
@@ -1804,7 +1805,7 @@ class Client(ClientWithProject):
         project: str = None,
         timeout_ms: int = None,
         location: str = None,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> _QueryResults:
         """Get the query results object for a query job.
 
@@ -1893,7 +1894,7 @@ class Client(ClientWithProject):
         self,
         job_config: dict,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Union[job.LoadJob, job.CopyJob, job.ExtractJob, job.QueryJob]:
         """Create a new job.
         Args:
@@ -1990,7 +1991,7 @@ class Client(ClientWithProject):
         project: str = None,
         location: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Union[job.LoadJob, job.CopyJob, job.ExtractJob, job.QueryJob]:
         """Fetch a job for the project associated with this client.
 
@@ -2064,7 +2065,7 @@ class Client(ClientWithProject):
         project: str = None,
         location: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Union[job.LoadJob, job.CopyJob, job.ExtractJob, job.QueryJob]:
         """Attempt to cancel a job from a job ID.
 
@@ -2141,7 +2142,7 @@ class Client(ClientWithProject):
         all_users: bool = None,
         state_filter: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
         min_creation_time: datetime.datetime = None,
         max_creation_time: datetime.datetime = None,
         page_size: int = None,
@@ -2256,7 +2257,7 @@ class Client(ClientWithProject):
         project: str = None,
         job_config: LoadJobConfig = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> job.LoadJob:
         """Starts a job for loading data into a table from CloudStorage.
 
@@ -2340,7 +2341,7 @@ class Client(ClientWithProject):
         location: str = None,
         project: str = None,
         job_config: LoadJobConfig = None,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> job.LoadJob:
         """Upload the contents of this table from a file-like object.
 
@@ -2443,7 +2444,7 @@ class Client(ClientWithProject):
         project: str = None,
         job_config: LoadJobConfig = None,
         parquet_compression: str = "snappy",
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> job.LoadJob:
         """Upload the contents of a table from a pandas DataFrame.
 
@@ -2678,7 +2679,7 @@ class Client(ClientWithProject):
         location: str = None,
         project: str = None,
         job_config: LoadJobConfig = None,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> job.LoadJob:
         """Upload the contents of a table from a JSON string or dict.
 
@@ -2961,7 +2962,7 @@ class Client(ClientWithProject):
         project: str = None,
         job_config: CopyJobConfig = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> job.CopyJob:
         """Copy one or more tables to another table.
 
@@ -3064,7 +3065,7 @@ class Client(ClientWithProject):
         project: str = None,
         job_config: ExtractJobConfig = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
         source_type: str = "Table",
     ) -> job.ExtractJob:
         """Start a job to extract a table into Cloud Storage files.
@@ -3162,7 +3163,7 @@ class Client(ClientWithProject):
         location: str = None,
         project: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
         job_retry: retries.Retry = DEFAULT_JOB_RETRY,
     ) -> job.QueryJob:
         """Run a SQL query.
@@ -3444,7 +3445,7 @@ class Client(ClientWithProject):
         ignore_unknown_values: bool = None,
         template_suffix: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Sequence[dict]:
         """Insert rows into a table without applying local type conversions.
 
@@ -3579,7 +3580,7 @@ class Client(ClientWithProject):
         self,
         table: Union[Table, TableReference, str],
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> Sequence[str]:
         """List the partitions in a table.
 
@@ -3629,7 +3630,7 @@ class Client(ClientWithProject):
         start_index: int = None,
         page_size: int = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> RowIterator:
         """List the rows of the table.
 
@@ -3741,7 +3742,7 @@ class Client(ClientWithProject):
         start_index: int = None,
         page_size: int = None,
         retry: retries.Retry = DEFAULT_RETRY,
-        timeout: float = None,
+        timeout: float = DEFAULT_TIMEOUT,
     ) -> RowIterator:
         """List the rows of a completed query.
         See

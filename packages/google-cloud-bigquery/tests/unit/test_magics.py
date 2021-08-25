@@ -32,6 +32,7 @@ from google.cloud import bigquery
 from google.cloud.bigquery import job
 from google.cloud.bigquery import table
 from google.cloud.bigquery.magics import magics
+from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
 from tests.unit.helpers import make_connection
 from test_utils.imports import maybe_fail_import
 
@@ -185,7 +186,7 @@ def test_context_with_default_connection():
         method="POST",
         path="/projects/project-from-env/jobs",
         data=mock.ANY,
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )
     query_results_call = mock.call(
         method="GET",
@@ -249,7 +250,7 @@ def test_context_with_custom_connection():
         method="POST",
         path="/projects/project-from-env/jobs",
         data=mock.ANY,
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )
     query_results_call = mock.call(
         method="GET",

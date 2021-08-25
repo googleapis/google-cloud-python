@@ -15,6 +15,7 @@
 from google.cloud.bigquery.dataset import Dataset, DatasetReference
 from .helpers import make_connection, dataset_polymorphic, make_client
 import google.cloud.bigquery.dataset
+from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
 import mock
 import pytest
 
@@ -111,7 +112,7 @@ def test_create_dataset_w_attrs(client, PROJECT, DS_ID):
             "access": [{"role": "OWNER", "userByEmail": USER_EMAIL}, {"view": VIEW}],
             "labels": LABELS,
         },
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )
 
 
@@ -143,7 +144,7 @@ def test_create_dataset_w_custom_property(client, PROJECT, DS_ID):
             "newAlphaProperty": "unreleased property",
             "labels": {},
         },
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )
 
 
@@ -176,7 +177,7 @@ def test_create_dataset_w_client_location_wo_dataset_location(PROJECT, DS_ID, LO
             "labels": {},
             "location": LOCATION,
         },
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )
 
 
@@ -211,7 +212,7 @@ def test_create_dataset_w_client_location_w_dataset_location(PROJECT, DS_ID, LOC
             "labels": {},
             "location": OTHER_LOCATION,
         },
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )
 
 
@@ -241,7 +242,7 @@ def test_create_dataset_w_reference(PROJECT, DS_ID, LOCATION):
             "labels": {},
             "location": LOCATION,
         },
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )
 
 
@@ -271,7 +272,7 @@ def test_create_dataset_w_fully_qualified_string(PROJECT, DS_ID, LOCATION):
             "labels": {},
             "location": LOCATION,
         },
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )
 
 
@@ -306,7 +307,7 @@ def test_create_dataset_w_string(PROJECT, DS_ID, LOCATION):
             "labels": {},
             "location": LOCATION,
         },
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )
 
 
@@ -356,8 +357,8 @@ def test_create_dataset_alreadyexists_w_exists_ok_true(PROJECT, DS_ID, LOCATION)
                     "labels": {},
                     "location": LOCATION,
                 },
-                timeout=None,
+                timeout=DEFAULT_TIMEOUT,
             ),
-            mock.call(method="GET", path=get_path, timeout=None),
+            mock.call(method="GET", path=get_path, timeout=DEFAULT_TIMEOUT),
         ]
     )

@@ -1,11 +1,11 @@
 # Copyright 2021 Google LLC
-
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-
+#
 #     https://www.apache.org/licenses/LICENSE-2.0
-
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,6 +17,7 @@ import datetime
 import mock
 import pytest
 
+from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
 from .helpers import make_connection
 
 
@@ -136,7 +137,7 @@ def test_list_jobs_defaults(client, PROJECT, DS_ID, extra, query):
         method="GET",
         path="/%s" % PATH,
         query_params=dict({"projection": "full"}, **query),
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )
 
 
@@ -185,7 +186,7 @@ def test_list_jobs_load_job_wo_sourceUris(client, PROJECT, DS_ID):
         method="GET",
         path="/%s" % PATH,
         query_params={"projection": "full"},
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )
 
 
@@ -220,7 +221,7 @@ def test_list_jobs_explicit_missing(client, PROJECT):
             "allUsers": True,
             "stateFilter": "done",
         },
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )
 
 
@@ -233,7 +234,7 @@ def test_list_jobs_w_project(client, PROJECT):
         method="GET",
         path="/projects/other-project/jobs",
         query_params={"projection": "full"},
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )
 
 
@@ -269,7 +270,7 @@ def test_list_jobs_w_time_filter(client, PROJECT):
             "minCreationTime": "1",
             "maxCreationTime": str(end_time_millis),
         },
-        timeout=None,
+        timeout=DEFAULT_TIMEOUT,
     )
 
 
@@ -286,6 +287,6 @@ def test_list_jobs_w_parent_job_filter(client, PROJECT):
             method="GET",
             path="/projects/%s/jobs" % PROJECT,
             query_params={"projection": "full", "parentJobId": "parent-job-123"},
-            timeout=None,
+            timeout=DEFAULT_TIMEOUT,
         )
         conn.api_request.reset_mock()
