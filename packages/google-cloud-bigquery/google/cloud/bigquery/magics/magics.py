@@ -671,7 +671,9 @@ def _cell_magic(line, query):
                 _handle_error(ex, args.destination_var)
                 return
 
-            result = rows.to_dataframe(bqstorage_client=bqstorage_client)
+            result = rows.to_dataframe(
+                bqstorage_client=bqstorage_client, create_bqstorage_client=False,
+            )
             if args.destination_var:
                 IPython.get_ipython().push({args.destination_var: result})
                 return
@@ -728,11 +730,15 @@ def _cell_magic(line, query):
 
         if max_results:
             result = query_job.result(max_results=max_results).to_dataframe(
-                bqstorage_client=bqstorage_client, progress_bar_type=progress_bar
+                bqstorage_client=None,
+                create_bqstorage_client=False,
+                progress_bar_type=progress_bar,
             )
         else:
             result = query_job.to_dataframe(
-                bqstorage_client=bqstorage_client, progress_bar_type=progress_bar
+                bqstorage_client=bqstorage_client,
+                create_bqstorage_client=False,
+                progress_bar_type=progress_bar,
             )
 
         if args.destination_var:

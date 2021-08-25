@@ -660,7 +660,9 @@ def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
     assert client_info.user_agent == "ipython-" + IPython.__version__
 
     query_job_mock.to_dataframe.assert_called_once_with(
-        bqstorage_client=bqstorage_instance_mock, progress_bar_type="tqdm"
+        bqstorage_client=bqstorage_instance_mock,
+        create_bqstorage_client=mock.ANY,
+        progress_bar_type="tqdm",
     )
 
     assert isinstance(return_value, pandas.DataFrame)
@@ -703,7 +705,9 @@ def test_bigquery_magic_with_rest_client_requested(monkeypatch):
 
         bqstorage_mock.assert_not_called()
         query_job_mock.to_dataframe.assert_called_once_with(
-            bqstorage_client=None, progress_bar_type="tqdm"
+            bqstorage_client=None,
+            create_bqstorage_client=False,
+            progress_bar_type="tqdm",
         )
 
     assert isinstance(return_value, pandas.DataFrame)
@@ -757,7 +761,12 @@ def test_bigquery_magic_w_max_results_valid_calls_queryjob_result():
         client_query_mock.return_value = query_job_mock
         ip.run_cell_magic("bigquery", "--max_results=5", sql)
 
-        query_job_mock.result.assert_called_with(max_results=5)
+    query_job_mock.result.assert_called_with(max_results=5)
+    query_job_mock.result.return_value.to_dataframe.assert_called_once_with(
+        bqstorage_client=None,
+        create_bqstorage_client=False,
+        progress_bar_type=mock.ANY,
+    )
 
 
 @pytest.mark.usefixtures("ipython_interactive")
@@ -929,7 +938,7 @@ def test_bigquery_magic_w_table_id_and_bqstorage_client():
 
         ip.run_cell_magic("bigquery", "--max_results=5", table_id)
         row_iterator_mock.to_dataframe.assert_called_once_with(
-            bqstorage_client=bqstorage_instance_mock
+            bqstorage_client=bqstorage_instance_mock, create_bqstorage_client=mock.ANY,
         )
 
 
@@ -1246,7 +1255,9 @@ def test_bigquery_magic_w_progress_bar_type_w_context_setter(monkeypatch):
 
         bqstorage_mock.assert_not_called()
         query_job_mock.to_dataframe.assert_called_once_with(
-            bqstorage_client=None, progress_bar_type=magics.context.progress_bar_type
+            bqstorage_client=None,
+            create_bqstorage_client=False,
+            progress_bar_type=magics.context.progress_bar_type,
         )
 
     assert isinstance(return_value, pandas.DataFrame)
