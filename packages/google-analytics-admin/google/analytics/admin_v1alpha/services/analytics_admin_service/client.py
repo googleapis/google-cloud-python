@@ -242,6 +242,17 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def data_retention_settings_path(property: str,) -> str:
+        """Returns a fully-qualified data_retention_settings string."""
+        return "properties/{property}/dataRetentionSettings".format(property=property,)
+
+    @staticmethod
+    def parse_data_retention_settings_path(path: str) -> Dict[str, str]:
+        """Parses a data_retention_settings path into its component segments."""
+        m = re.match(r"^properties/(?P<property>.+?)/dataRetentionSettings$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def data_sharing_settings_path(account: str,) -> str:
         """Returns a fully-qualified data_sharing_settings string."""
         return "accounts/{account}/dataSharingSettings".format(account=account,)
@@ -250,6 +261,46 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     def parse_data_sharing_settings_path(path: str) -> Dict[str, str]:
         """Parses a data_sharing_settings path into its component segments."""
         m = re.match(r"^accounts/(?P<account>.+?)/dataSharingSettings$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def display_video360_advertiser_link_path(
+        property: str, display_video_360_advertiser_link: str,
+    ) -> str:
+        """Returns a fully-qualified display_video360_advertiser_link string."""
+        return "properties/{property}/displayVideo360AdvertiserLinks/{display_video_360_advertiser_link}".format(
+            property=property,
+            display_video_360_advertiser_link=display_video_360_advertiser_link,
+        )
+
+    @staticmethod
+    def parse_display_video360_advertiser_link_path(path: str) -> Dict[str, str]:
+        """Parses a display_video360_advertiser_link path into its component segments."""
+        m = re.match(
+            r"^properties/(?P<property>.+?)/displayVideo360AdvertiserLinks/(?P<display_video_360_advertiser_link>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def display_video360_advertiser_link_proposal_path(
+        property: str, display_video_360_advertiser_link_proposal: str,
+    ) -> str:
+        """Returns a fully-qualified display_video360_advertiser_link_proposal string."""
+        return "properties/{property}/displayVideo360AdvertiserLinkProposals/{display_video_360_advertiser_link_proposal}".format(
+            property=property,
+            display_video_360_advertiser_link_proposal=display_video_360_advertiser_link_proposal,
+        )
+
+    @staticmethod
+    def parse_display_video360_advertiser_link_proposal_path(
+        path: str,
+    ) -> Dict[str, str]:
+        """Parses a display_video360_advertiser_link_proposal path into its component segments."""
+        m = re.match(
+            r"^properties/(?P<property>.+?)/displayVideo360AdvertiserLinkProposals/(?P<display_video_360_advertiser_link_proposal>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -3273,92 +3324,6 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         # Done; return the response.
         return response
 
-    def update_firebase_link(
-        self,
-        request: analytics_admin.UpdateFirebaseLinkRequest = None,
-        *,
-        firebase_link: resources.FirebaseLink = None,
-        update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.FirebaseLink:
-        r"""Updates a FirebaseLink on a property
-
-        Args:
-            request (google.analytics.admin_v1alpha.types.UpdateFirebaseLinkRequest):
-                The request object. Request message for
-                UpdateFirebaseLink RPC
-            firebase_link (google.analytics.admin_v1alpha.types.FirebaseLink):
-                Required. The Firebase link to
-                update.
-
-                This corresponds to the ``firebase_link`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. The list of fields to be updated. Field names
-                must be in snake case (e.g., "field_to_update"). Omitted
-                fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
-                fields.
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.FirebaseLink:
-                A link between an GA4 property and a
-                Firebase project.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([firebase_link, update_mask])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a analytics_admin.UpdateFirebaseLinkRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, analytics_admin.UpdateFirebaseLinkRequest):
-            request = analytics_admin.UpdateFirebaseLinkRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if firebase_link is not None:
-                request.firebase_link = firebase_link
-            if update_mask is not None:
-                request.update_mask = update_mask
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_firebase_link]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("firebase_link.name", request.firebase_link.name),)
-            ),
-        )
-
-        # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
     def delete_firebase_link(
         self,
         request: analytics_admin.DeleteFirebaseLinkRequest = None,
@@ -4924,6 +4889,906 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         # Done; return the response.
         return response
 
+    def get_display_video360_advertiser_link(
+        self,
+        request: analytics_admin.GetDisplayVideo360AdvertiserLinkRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.DisplayVideo360AdvertiserLink:
+        r"""Look up a single DisplayVideo360AdvertiserLink
+
+        Args:
+            request (google.analytics.admin_v1alpha.types.GetDisplayVideo360AdvertiserLinkRequest):
+                The request object. Request message for
+                GetDisplayVideo360AdvertiserLink RPC.
+            name (str):
+                Required. The name of the
+                DisplayVideo360AdvertiserLink to get.
+                Example format:
+                properties/1234/displayVideo360AdvertiserLink/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink:
+                A link between a GA4 property and a
+                Display & Video 360 advertiser.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.GetDisplayVideo360AdvertiserLinkRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_admin.GetDisplayVideo360AdvertiserLinkRequest
+        ):
+            request = analytics_admin.GetDisplayVideo360AdvertiserLinkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_display_video360_advertiser_link
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def list_display_video360_advertiser_links(
+        self,
+        request: analytics_admin.ListDisplayVideo360AdvertiserLinksRequest = None,
+        *,
+        parent: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListDisplayVideo360AdvertiserLinksPager:
+        r"""Lists all DisplayVideo360AdvertiserLinks on a
+        property.
+
+        Args:
+            request (google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinksRequest):
+                The request object. Request message for
+                ListDisplayVideo360AdvertiserLinks RPC.
+            parent (str):
+                Required. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListDisplayVideo360AdvertiserLinksPager:
+                Response message for
+                ListDisplayVideo360AdvertiserLinks RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.ListDisplayVideo360AdvertiserLinksRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_admin.ListDisplayVideo360AdvertiserLinksRequest
+        ):
+            request = analytics_admin.ListDisplayVideo360AdvertiserLinksRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_display_video360_advertiser_links
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListDisplayVideo360AdvertiserLinksPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_display_video360_advertiser_link(
+        self,
+        request: analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest = None,
+        *,
+        parent: str = None,
+        display_video_360_advertiser_link: resources.DisplayVideo360AdvertiserLink = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.DisplayVideo360AdvertiserLink:
+        r"""Creates a DisplayVideo360AdvertiserLink.
+        This can only be utilized by users who have proper
+        authorization both on the Google Analytics property and
+        on the Display & Video 360 advertiser. Users who do not
+        have access to the Display & Video 360 advertiser should
+        instead seek to create a DisplayVideo360LinkProposal.
+
+        Args:
+            request (google.analytics.admin_v1alpha.types.CreateDisplayVideo360AdvertiserLinkRequest):
+                The request object. Request message for
+                CreateDisplayVideo360AdvertiserLink RPC.
+            parent (str):
+                Required. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            display_video_360_advertiser_link (google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink):
+                Required. The
+                DisplayVideo360AdvertiserLink to create.
+
+                This corresponds to the ``display_video_360_advertiser_link`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink:
+                A link between a GA4 property and a
+                Display & Video 360 advertiser.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, display_video_360_advertiser_link])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest
+        ):
+            request = analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if display_video_360_advertiser_link is not None:
+                request.display_video_360_advertiser_link = (
+                    display_video_360_advertiser_link
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_display_video360_advertiser_link
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def delete_display_video360_advertiser_link(
+        self,
+        request: analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a DisplayVideo360AdvertiserLink on a
+        property.
+
+        Args:
+            request (google.analytics.admin_v1alpha.types.DeleteDisplayVideo360AdvertiserLinkRequest):
+                The request object. Request message for
+                DeleteDisplayVideo360AdvertiserLink RPC.
+            name (str):
+                Required. The name of the
+                DisplayVideo360AdvertiserLink to delete.
+                Example format:
+                properties/1234/displayVideo360AdvertiserLinks/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest
+        ):
+            request = analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_display_video360_advertiser_link
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
+
+    def update_display_video360_advertiser_link(
+        self,
+        request: analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest = None,
+        *,
+        display_video_360_advertiser_link: resources.DisplayVideo360AdvertiserLink = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.DisplayVideo360AdvertiserLink:
+        r"""Updates a DisplayVideo360AdvertiserLink on a
+        property.
+
+        Args:
+            request (google.analytics.admin_v1alpha.types.UpdateDisplayVideo360AdvertiserLinkRequest):
+                The request object. Request message for
+                UpdateDisplayVideo360AdvertiserLink RPC.
+            display_video_360_advertiser_link (google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink):
+                The DisplayVideo360AdvertiserLink to
+                update
+
+                This corresponds to the ``display_video_360_advertiser_link`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The list of fields to be updated. Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink:
+                A link between a GA4 property and a
+                Display & Video 360 advertiser.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([display_video_360_advertiser_link, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest
+        ):
+            request = analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if display_video_360_advertiser_link is not None:
+                request.display_video_360_advertiser_link = (
+                    display_video_360_advertiser_link
+                )
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_display_video360_advertiser_link
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "display_video_360_advertiser_link.name",
+                        request.display_video_360_advertiser_link.name,
+                    ),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def get_display_video360_advertiser_link_proposal(
+        self,
+        request: analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.DisplayVideo360AdvertiserLinkProposal:
+        r"""Lookup for a single
+        DisplayVideo360AdvertiserLinkProposal.
+
+        Args:
+            request (google.analytics.admin_v1alpha.types.GetDisplayVideo360AdvertiserLinkProposalRequest):
+                The request object. Request message for
+                GetDisplayVideo360AdvertiserLinkProposal RPC.
+            name (str):
+                Required. The name of the
+                DisplayVideo360AdvertiserLinkProposal to
+                get. Example format:
+                properties/1234/displayVideo360AdvertiserLinkProposals/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal:
+                A proposal for a link between an GA4
+                property and a Display & Video 360
+                advertiser.
+                A proposal is converted to a
+                DisplayVideo360AdvertiserLink once
+                approved. Google Analytics admins
+                approve inbound proposals while Display
+                & Video 360 admins approve outbound
+                proposals.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest
+        ):
+            request = analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_display_video360_advertiser_link_proposal
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def list_display_video360_advertiser_link_proposals(
+        self,
+        request: analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest = None,
+        *,
+        parent: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListDisplayVideo360AdvertiserLinkProposalsPager:
+        r"""Lists DisplayVideo360AdvertiserLinkProposals on a
+        property.
+
+        Args:
+            request (google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinkProposalsRequest):
+                The request object. Request message for
+                ListDisplayVideo360AdvertiserLinkProposals RPC.
+            parent (str):
+                Required. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListDisplayVideo360AdvertiserLinkProposalsPager:
+                Response message for
+                ListDisplayVideo360AdvertiserLinkProposals
+                RPC.  Iterating over this object will
+                yield results and resolve additional
+                pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest
+        ):
+            request = analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_display_video360_advertiser_link_proposals
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListDisplayVideo360AdvertiserLinkProposalsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_display_video360_advertiser_link_proposal(
+        self,
+        request: analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest = None,
+        *,
+        parent: str = None,
+        display_video_360_advertiser_link_proposal: resources.DisplayVideo360AdvertiserLinkProposal = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.DisplayVideo360AdvertiserLinkProposal:
+        r"""Creates a DisplayVideo360AdvertiserLinkProposal.
+
+        Args:
+            request (google.analytics.admin_v1alpha.types.CreateDisplayVideo360AdvertiserLinkProposalRequest):
+                The request object. Request message for
+                CreateDisplayVideo360AdvertiserLinkProposal RPC.
+            parent (str):
+                Required. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            display_video_360_advertiser_link_proposal (google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal):
+                Required. The
+                DisplayVideo360AdvertiserLinkProposal to
+                create.
+
+                This corresponds to the ``display_video_360_advertiser_link_proposal`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal:
+                A proposal for a link between an GA4
+                property and a Display & Video 360
+                advertiser.
+                A proposal is converted to a
+                DisplayVideo360AdvertiserLink once
+                approved. Google Analytics admins
+                approve inbound proposals while Display
+                & Video 360 admins approve outbound
+                proposals.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, display_video_360_advertiser_link_proposal])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest
+        ):
+            request = analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if display_video_360_advertiser_link_proposal is not None:
+                request.display_video_360_advertiser_link_proposal = (
+                    display_video_360_advertiser_link_proposal
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_display_video360_advertiser_link_proposal
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def delete_display_video360_advertiser_link_proposal(
+        self,
+        request: analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a DisplayVideo360AdvertiserLinkProposal on a
+        property. This can only be used on cancelled proposals.
+
+        Args:
+            request (google.analytics.admin_v1alpha.types.DeleteDisplayVideo360AdvertiserLinkProposalRequest):
+                The request object. Request message for
+                DeleteDisplayVideo360AdvertiserLinkProposal RPC.
+            name (str):
+                Required. The name of the
+                DisplayVideo360AdvertiserLinkProposal to
+                delete. Example format:
+                properties/1234/displayVideo360AdvertiserLinkProposals/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest
+        ):
+            request = analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_display_video360_advertiser_link_proposal
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
+
+    def approve_display_video360_advertiser_link_proposal(
+        self,
+        request: analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse:
+        r"""Approves a DisplayVideo360AdvertiserLinkProposal.
+        The DisplayVideo360AdvertiserLinkProposal will be
+        deleted and a new DisplayVideo360AdvertiserLink will be
+        created.
+
+        Args:
+            request (google.analytics.admin_v1alpha.types.ApproveDisplayVideo360AdvertiserLinkProposalRequest):
+                The request object. Request message for
+                ApproveDisplayVideo360AdvertiserLinkProposal RPC.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.ApproveDisplayVideo360AdvertiserLinkProposalResponse:
+                Response message for
+                ApproveDisplayVideo360AdvertiserLinkProposal
+                RPC.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest
+        ):
+            request = analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest(
+                request
+            )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.approve_display_video360_advertiser_link_proposal
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def cancel_display_video360_advertiser_link_proposal(
+        self,
+        request: analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.DisplayVideo360AdvertiserLinkProposal:
+        r"""Cancels a DisplayVideo360AdvertiserLinkProposal.
+        Cancelling can mean either:
+        - Declining a proposal initiated from Display & Video
+        360 - Withdrawing a proposal initiated from Google
+        Analytics After being cancelled, a proposal will
+        eventually be deleted automatically.
+
+        Args:
+            request (google.analytics.admin_v1alpha.types.CancelDisplayVideo360AdvertiserLinkProposalRequest):
+                The request object. Request message for
+                CancelDisplayVideo360AdvertiserLinkProposal RPC.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal:
+                A proposal for a link between an GA4
+                property and a Display & Video 360
+                advertiser.
+                A proposal is converted to a
+                DisplayVideo360AdvertiserLink once
+                approved. Google Analytics admins
+                approve inbound proposals while Display
+                & Video 360 admins approve outbound
+                proposals.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest
+        ):
+            request = analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest(
+                request
+            )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.cancel_display_video360_advertiser_link_proposal
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
     def create_custom_dimension(
         self,
         request: analytics_admin.CreateCustomDimensionRequest = None,
@@ -5665,6 +6530,177 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def get_data_retention_settings(
+        self,
+        request: analytics_admin.GetDataRetentionSettingsRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.DataRetentionSettings:
+        r"""Returns the singleton data retention settings for
+        this property.
+
+        Args:
+            request (google.analytics.admin_v1alpha.types.GetDataRetentionSettingsRequest):
+                The request object. Request message for
+                GetDataRetentionSettings RPC.
+            name (str):
+                Required. The name of the settings to
+                lookup. Format:
+                properties/{property}/dataRetentionSettings
+                Example:
+                "properties/1000/dataRetentionSettings"
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.DataRetentionSettings:
+                Settings values for data retention.
+                This is a singleton resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.GetDataRetentionSettingsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.GetDataRetentionSettingsRequest):
+            request = analytics_admin.GetDataRetentionSettingsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_data_retention_settings
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def update_data_retention_settings(
+        self,
+        request: analytics_admin.UpdateDataRetentionSettingsRequest = None,
+        *,
+        data_retention_settings: resources.DataRetentionSettings = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.DataRetentionSettings:
+        r"""Updates the singleton data retention settings for
+        this property.
+
+        Args:
+            request (google.analytics.admin_v1alpha.types.UpdateDataRetentionSettingsRequest):
+                The request object. Request message for
+                UpdateDataRetentionSettings RPC.
+            data_retention_settings (google.analytics.admin_v1alpha.types.DataRetentionSettings):
+                Required. The settings to update. The ``name`` field is
+                used to identify the settings to be updated.
+
+                This corresponds to the ``data_retention_settings`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.DataRetentionSettings:
+                Settings values for data retention.
+                This is a singleton resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([data_retention_settings, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.UpdateDataRetentionSettingsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.UpdateDataRetentionSettingsRequest):
+            request = analytics_admin.UpdateDataRetentionSettingsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if data_retention_settings is not None:
+                request.data_retention_settings = data_retention_settings
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_data_retention_settings
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "data_retention_settings.name",
+                        request.data_retention_settings.name,
+                    ),
+                )
+            ),
         )
 
         # Send the request.

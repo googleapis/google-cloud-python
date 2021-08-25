@@ -312,11 +312,6 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_firebase_link: gapic_v1.method.wrap_method(
-                self.update_firebase_link,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
             self.delete_firebase_link: gapic_v1.method.wrap_method(
                 self.delete_firebase_link,
                 default_timeout=60.0,
@@ -413,6 +408,61 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_display_video360_advertiser_link: gapic_v1.method.wrap_method(
+                self.get_display_video360_advertiser_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_display_video360_advertiser_links: gapic_v1.method.wrap_method(
+                self.list_display_video360_advertiser_links,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_display_video360_advertiser_link: gapic_v1.method.wrap_method(
+                self.create_display_video360_advertiser_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_display_video360_advertiser_link: gapic_v1.method.wrap_method(
+                self.delete_display_video360_advertiser_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_display_video360_advertiser_link: gapic_v1.method.wrap_method(
+                self.update_display_video360_advertiser_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_display_video360_advertiser_link_proposal: gapic_v1.method.wrap_method(
+                self.get_display_video360_advertiser_link_proposal,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_display_video360_advertiser_link_proposals: gapic_v1.method.wrap_method(
+                self.list_display_video360_advertiser_link_proposals,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_display_video360_advertiser_link_proposal: gapic_v1.method.wrap_method(
+                self.create_display_video360_advertiser_link_proposal,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_display_video360_advertiser_link_proposal: gapic_v1.method.wrap_method(
+                self.delete_display_video360_advertiser_link_proposal,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.approve_display_video360_advertiser_link_proposal: gapic_v1.method.wrap_method(
+                self.approve_display_video360_advertiser_link_proposal,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_display_video360_advertiser_link_proposal: gapic_v1.method.wrap_method(
+                self.cancel_display_video360_advertiser_link_proposal,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_custom_dimension: gapic_v1.method.wrap_method(
                 self.create_custom_dimension,
                 default_timeout=None,
@@ -458,6 +508,16 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             ),
             self.get_custom_metric: gapic_v1.method.wrap_method(
                 self.get_custom_metric, default_timeout=None, client_info=client_info,
+            ),
+            self.get_data_retention_settings: gapic_v1.method.wrap_method(
+                self.get_data_retention_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_data_retention_settings: gapic_v1.method.wrap_method(
+                self.update_data_retention_settings,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
@@ -841,15 +901,6 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def update_firebase_link(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateFirebaseLinkRequest],
-        Union[resources.FirebaseLink, Awaitable[resources.FirebaseLink]],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def delete_firebase_link(
         self,
     ) -> Callable[
@@ -1058,6 +1109,136 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def get_display_video360_advertiser_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetDisplayVideo360AdvertiserLinkRequest],
+        Union[
+            resources.DisplayVideo360AdvertiserLink,
+            Awaitable[resources.DisplayVideo360AdvertiserLink],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_display_video360_advertiser_links(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListDisplayVideo360AdvertiserLinksRequest],
+        Union[
+            analytics_admin.ListDisplayVideo360AdvertiserLinksResponse,
+            Awaitable[analytics_admin.ListDisplayVideo360AdvertiserLinksResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_display_video360_advertiser_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest],
+        Union[
+            resources.DisplayVideo360AdvertiserLink,
+            Awaitable[resources.DisplayVideo360AdvertiserLink],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_display_video360_advertiser_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_display_video360_advertiser_link(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest],
+        Union[
+            resources.DisplayVideo360AdvertiserLink,
+            Awaitable[resources.DisplayVideo360AdvertiserLink],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_display_video360_advertiser_link_proposal(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest],
+        Union[
+            resources.DisplayVideo360AdvertiserLinkProposal,
+            Awaitable[resources.DisplayVideo360AdvertiserLinkProposal],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_display_video360_advertiser_link_proposals(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest],
+        Union[
+            analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse,
+            Awaitable[
+                analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_display_video360_advertiser_link_proposal(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest],
+        Union[
+            resources.DisplayVideo360AdvertiserLinkProposal,
+            Awaitable[resources.DisplayVideo360AdvertiserLinkProposal],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_display_video360_advertiser_link_proposal(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def approve_display_video360_advertiser_link_proposal(
+        self,
+    ) -> Callable[
+        [analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest],
+        Union[
+            analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse,
+            Awaitable[
+                analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_display_video360_advertiser_link_proposal(
+        self,
+    ) -> Callable[
+        [analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest],
+        Union[
+            resources.DisplayVideo360AdvertiserLinkProposal,
+            Awaitable[resources.DisplayVideo360AdvertiserLinkProposal],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def create_custom_dimension(
         self,
     ) -> Callable[
@@ -1150,6 +1331,28 @@ class AnalyticsAdminServiceTransport(abc.ABC):
     ) -> Callable[
         [analytics_admin.GetCustomMetricRequest],
         Union[resources.CustomMetric, Awaitable[resources.CustomMetric]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_data_retention_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetDataRetentionSettingsRequest],
+        Union[
+            resources.DataRetentionSettings, Awaitable[resources.DataRetentionSettings]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_data_retention_settings(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateDataRetentionSettingsRequest],
+        Union[
+            resources.DataRetentionSettings, Awaitable[resources.DataRetentionSettings]
+        ],
     ]:
         raise NotImplementedError()
 

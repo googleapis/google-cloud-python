@@ -22,13 +22,15 @@ from google.protobuf import wrappers_pb2  # type: ignore
 __protobuf__ = proto.module(
     package="google.analytics.admin.v1alpha",
     manifest={
-        "MaximumUserAccess",
         "IndustryCategory",
+        "ServiceLevel",
         "ActorType",
         "ActionType",
         "ChangeHistoryResourceType",
         "GoogleSignalsState",
         "GoogleSignalsConsent",
+        "LinkProposalInitiatingProduct",
+        "LinkProposalState",
         "Account",
         "Property",
         "AndroidAppDataStream",
@@ -46,23 +48,16 @@ __protobuf__ = proto.module(
         "MeasurementProtocolSecret",
         "ChangeHistoryEvent",
         "ChangeHistoryChange",
+        "DisplayVideo360AdvertiserLink",
+        "DisplayVideo360AdvertiserLinkProposal",
+        "LinkProposalStatusDetails",
         "ConversionEvent",
         "GoogleSignalsSettings",
         "CustomDimension",
         "CustomMetric",
+        "DataRetentionSettings",
     },
 )
-
-
-class MaximumUserAccess(proto.Enum):
-    r"""Maximum access settings that Firebase user receive on the
-    linked Analytics property.
-    """
-    MAXIMUM_USER_ACCESS_UNSPECIFIED = 0
-    NO_ACCESS = 1
-    READ_AND_ANALYZE = 2
-    EDITOR_WITHOUT_LINK_MANAGEMENT = 3
-    EDITOR_INCLUDING_LINK_MANAGEMENT = 4
 
 
 class IndustryCategory(proto.Enum):
@@ -96,6 +91,13 @@ class IndustryCategory(proto.Enum):
     SPORTS = 24
     JOBS_AND_EDUCATION = 25
     SHOPPING = 26
+
+
+class ServiceLevel(proto.Enum):
+    r"""Various levels of service for Google Analytics."""
+    SERVICE_LEVEL_UNSPECIFIED = 0
+    GOOGLE_ANALYTICS_STANDARD = 1
+    GOOGLE_ANALYTICS_360 = 2
 
 
 class ActorType(proto.Enum):
@@ -133,6 +135,7 @@ class ChangeHistoryResourceType(proto.Enum):
     MEASUREMENT_PROTOCOL_SECRET = 10
     CUSTOM_DIMENSION = 11
     CUSTOM_METRIC = 12
+    DATA_RETENTION_SETTINGS = 13
 
 
 class GoogleSignalsState(proto.Enum):
@@ -151,6 +154,26 @@ class GoogleSignalsConsent(proto.Enum):
     GOOGLE_SIGNALS_CONSENT_UNSPECIFIED = 0
     GOOGLE_SIGNALS_CONSENT_CONSENTED = 2
     GOOGLE_SIGNALS_CONSENT_NOT_CONSENTED = 1
+
+
+class LinkProposalInitiatingProduct(proto.Enum):
+    r"""An indication of which product the user initiated a link
+    proposal from.
+    """
+    LINK_PROPOSAL_INITIATING_PRODUCT_UNSPECIFIED = 0
+    GOOGLE_ANALYTICS = 1
+    LINKED_PRODUCT = 2
+
+
+class LinkProposalState(proto.Enum):
+    r"""The state of a link proposal resource."""
+    LINK_PROPOSAL_STATE_UNSPECIFIED = 0
+    AWAITING_REVIEW_FROM_GOOGLE_ANALYTICS = 1
+    AWAITING_REVIEW_FROM_LINKED_PRODUCT = 2
+    WITHDRAWN = 3
+    DECLINED = 4
+    EXPIRED = 5
+    OBSOLETE = 6
 
 
 class Account(proto.Message):
@@ -231,6 +254,9 @@ class Property(proto.Message):
 
             Format: https://en.wikipedia.org/wiki/ISO_4217 Examples:
             "USD", "EUR", "JPY".
+        service_level (google.analytics.admin_v1alpha.types.ServiceLevel):
+            Output only. The Google Analytics service
+            level that applies to this property.
         delete_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. If set, the time at which this
             property was trashed. If not set, then this
@@ -250,6 +276,7 @@ class Property(proto.Message):
     industry_category = proto.Field(proto.ENUM, number=6, enum="IndustryCategory",)
     time_zone = proto.Field(proto.STRING, number=7,)
     currency_code = proto.Field(proto.STRING, number=8,)
+    service_level = proto.Field(proto.ENUM, number=10, enum="ServiceLevel",)
     delete_time = proto.Field(
         proto.MESSAGE, number=11, message=timestamp_pb2.Timestamp,
     )
@@ -526,16 +553,11 @@ class FirebaseLink(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when this FirebaseLink was
             originally created.
-        maximum_user_access (google.analytics.admin_v1alpha.types.MaximumUserAccess):
-            Maximum user access to the GA4 property
-            allowed to admins of the linked Firebase
-            project.
     """
 
     name = proto.Field(proto.STRING, number=1,)
     project = proto.Field(proto.STRING, number=2,)
     create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    maximum_user_access = proto.Field(proto.ENUM, number=4, enum="MaximumUserAccess",)
 
 
 class GlobalSiteTag(proto.Message):
@@ -578,17 +600,17 @@ class GoogleAdsLink(proto.Message):
             linked Google Ads account. If this field is not
             set on create/update, it will be defaulted to
             true.
-        email_address (str):
-            Output only. Email address of the user that
-            created the link. An empty string will be
-            returned if the email address can't be
-            retrieved.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when this link was
             originally created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when this link was last
             updated.
+        creator_email_address (str):
+            Output only. Email address of the user that
+            created the link. An empty string will be
+            returned if the email address can't be
+            retrieved.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -597,9 +619,9 @@ class GoogleAdsLink(proto.Message):
     ads_personalization_enabled = proto.Field(
         proto.MESSAGE, number=5, message=wrappers_pb2.BoolValue,
     )
-    email_address = proto.Field(proto.STRING, number=6,)
     create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
     update_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
+    creator_email_address = proto.Field(proto.STRING, number=9,)
 
 
 class DataSharingSettings(proto.Message):
@@ -798,6 +820,13 @@ class ChangeHistoryChange(proto.Message):
             google_signals_settings (google.analytics.admin_v1alpha.types.GoogleSignalsSettings):
                 A snapshot of a GoogleSignalsSettings
                 resource in change history.
+            display_video_360_advertiser_link (google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink):
+                A snapshot of a DisplayVideo360AdvertiserLink
+                resource in change history.
+            display_video_360_advertiser_link_proposal (google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal):
+                A snapshot of a
+                DisplayVideo360AdvertiserLinkProposal resource
+                in change history.
             conversion_event (google.analytics.admin_v1alpha.types.ConversionEvent):
                 A snapshot of a ConversionEvent resource in
                 change history.
@@ -810,6 +839,9 @@ class ChangeHistoryChange(proto.Message):
             custom_metric (google.analytics.admin_v1alpha.types.CustomMetric):
                 A snapshot of a CustomMetric resource in
                 change history.
+            data_retention_settings (google.analytics.admin_v1alpha.types.DataRetentionSettings):
+                A snapshot of a data retention settings
+                resource in change history.
         """
 
         account = proto.Field(
@@ -836,6 +868,18 @@ class ChangeHistoryChange(proto.Message):
         google_signals_settings = proto.Field(
             proto.MESSAGE, number=8, oneof="resource", message="GoogleSignalsSettings",
         )
+        display_video_360_advertiser_link = proto.Field(
+            proto.MESSAGE,
+            number=9,
+            oneof="resource",
+            message="DisplayVideo360AdvertiserLink",
+        )
+        display_video_360_advertiser_link_proposal = proto.Field(
+            proto.MESSAGE,
+            number=10,
+            oneof="resource",
+            message="DisplayVideo360AdvertiserLinkProposal",
+        )
         conversion_event = proto.Field(
             proto.MESSAGE, number=11, oneof="resource", message="ConversionEvent",
         )
@@ -851,6 +895,9 @@ class ChangeHistoryChange(proto.Message):
         custom_metric = proto.Field(
             proto.MESSAGE, number=14, oneof="resource", message="CustomMetric",
         )
+        data_retention_settings = proto.Field(
+            proto.MESSAGE, number=15, oneof="resource", message="DataRetentionSettings",
+        )
 
     resource = proto.Field(proto.STRING, number=1,)
     action = proto.Field(proto.ENUM, number=2, enum="ActionType",)
@@ -860,6 +907,145 @@ class ChangeHistoryChange(proto.Message):
     resource_after_change = proto.Field(
         proto.MESSAGE, number=4, message=ChangeHistoryResource,
     )
+
+
+class DisplayVideo360AdvertiserLink(proto.Message):
+    r"""A link between a GA4 property and a Display & Video 360
+    advertiser.
+
+    Attributes:
+        name (str):
+            Output only. The resource name for this
+            DisplayVideo360AdvertiserLink resource. Format:
+            properties/{propertyId}/displayVideo360AdvertiserLinks/{linkId}
+            Note: linkId is not the Display & Video 360
+            Advertiser ID
+        advertiser_id (str):
+            Immutable. The Display & Video 360
+            Advertiser's advertiser ID.
+        advertiser_display_name (str):
+            Output only. The display name of the Display
+            & Video 360 Advertiser.
+        ads_personalization_enabled (google.protobuf.wrappers_pb2.BoolValue):
+            Enables personalized advertising features
+            with this integration. If this field is not set
+            on create/update, it will be defaulted to true.
+        campaign_data_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
+            Immutable. Enables the import of campaign
+            data from Display & Video 360 into the GA4
+            property. After link creation, this can only be
+            updated from the Display & Video 360 product.
+            If this field is not set on create, it will be
+            defaulted to true.
+        cost_data_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
+            Immutable. Enables the import of cost data from Display &
+            Video 360 into the GA4 property. This can only be enabled if
+            campaign_data_import_enabled is enabled. After link
+            creation, this can only be updated from the Display & Video
+            360 product. If this field is not set on create, it will be
+            defaulted to true.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    advertiser_id = proto.Field(proto.STRING, number=2,)
+    advertiser_display_name = proto.Field(proto.STRING, number=3,)
+    ads_personalization_enabled = proto.Field(
+        proto.MESSAGE, number=4, message=wrappers_pb2.BoolValue,
+    )
+    campaign_data_sharing_enabled = proto.Field(
+        proto.MESSAGE, number=5, message=wrappers_pb2.BoolValue,
+    )
+    cost_data_sharing_enabled = proto.Field(
+        proto.MESSAGE, number=6, message=wrappers_pb2.BoolValue,
+    )
+
+
+class DisplayVideo360AdvertiserLinkProposal(proto.Message):
+    r"""A proposal for a link between an GA4 property and a Display &
+    Video 360 advertiser.
+
+    A proposal is converted to a DisplayVideo360AdvertiserLink once
+    approved. Google Analytics admins approve inbound proposals
+    while Display & Video 360 admins approve outbound proposals.
+
+    Attributes:
+        name (str):
+            Output only. The resource name for this
+            DisplayVideo360AdvertiserLinkProposal resource.
+            Format:
+            properties/{propertyId}/displayVideo360AdvertiserLinkProposals/{proposalId}
+            Note: proposalId is not the Display & Video 360
+            Advertiser ID
+        advertiser_id (str):
+            Immutable. The Display & Video 360
+            Advertiser's advertiser ID.
+        link_proposal_status_details (google.analytics.admin_v1alpha.types.LinkProposalStatusDetails):
+            Output only. The status information for this
+            link proposal.
+        advertiser_display_name (str):
+            Output only. The display name of the Display
+            & Video Advertiser. Only populated for proposals
+            that originated from Display & Video 360.
+        validation_email (str):
+            Input only. On a proposal being sent to
+            Display & Video 360, this field must be set to
+            the email address of an admin on the target
+            advertiser. This is used to verify that the
+            Google Analytics admin is aware of at least one
+            admin on the Display & Video 360 Advertiser.
+            This does not restrict approval of the proposal
+            to a single user. Any admin on the Display &
+            Video 360 Advertiser may approve the proposal.
+        ads_personalization_enabled (google.protobuf.wrappers_pb2.BoolValue):
+            Immutable. Enables personalized advertising
+            features with this integration. If this field is
+            not set on create, it will be defaulted to true.
+        campaign_data_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
+            Immutable. Enables the import of campaign
+            data from Display & Video 360. If this field is
+            not set on create, it will be defaulted to true.
+        cost_data_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
+            Immutable. Enables the import of cost data from Display &
+            Video 360. This can only be enabled if
+            campaign_data_import_enabled is enabled. If this field is
+            not set on create, it will be defaulted to true.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    advertiser_id = proto.Field(proto.STRING, number=2,)
+    link_proposal_status_details = proto.Field(
+        proto.MESSAGE, number=3, message="LinkProposalStatusDetails",
+    )
+    advertiser_display_name = proto.Field(proto.STRING, number=4,)
+    validation_email = proto.Field(proto.STRING, number=5,)
+    ads_personalization_enabled = proto.Field(
+        proto.MESSAGE, number=6, message=wrappers_pb2.BoolValue,
+    )
+    campaign_data_sharing_enabled = proto.Field(
+        proto.MESSAGE, number=7, message=wrappers_pb2.BoolValue,
+    )
+    cost_data_sharing_enabled = proto.Field(
+        proto.MESSAGE, number=8, message=wrappers_pb2.BoolValue,
+    )
+
+
+class LinkProposalStatusDetails(proto.Message):
+    r"""Status information for a link proposal.
+    Attributes:
+        link_proposal_initiating_product (google.analytics.admin_v1alpha.types.LinkProposalInitiatingProduct):
+            Output only. The source of this proposal.
+        requestor_email (str):
+            Output only. The email address of the user
+            that proposed this linkage.
+        link_proposal_state (google.analytics.admin_v1alpha.types.LinkProposalState):
+            Output only. The state of this proposal.
+    """
+
+    link_proposal_initiating_product = proto.Field(
+        proto.ENUM, number=1, enum="LinkProposalInitiatingProduct",
+    )
+    requestor_email = proto.Field(proto.STRING, number=2,)
+    link_proposal_state = proto.Field(proto.ENUM, number=3, enum="LinkProposalState",)
 
 
 class ConversionEvent(proto.Message):
@@ -874,15 +1060,27 @@ class ConversionEvent(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when this conversion event
             was created in the property.
-        is_deletable (bool):
+        deletable (bool):
             Output only. If set, this event can currently
             be deleted via DeleteConversionEvent.
+        custom (bool):
+            Output only. If set to true, this conversion
+            event refers to a custom event.  If set to
+            false, this conversion event refers to a default
+            event in GA. Default events typically have
+            special meaning in GA. Default events are
+            usually created for you by the GA system, but in
+            some cases can be created by property admins.
+            Custom events count towards the maximum number
+            of custom conversion events that may be created
+            per property.
     """
 
     name = proto.Field(proto.STRING, number=1,)
     event_name = proto.Field(proto.STRING, number=2,)
     create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    is_deletable = proto.Field(proto.BOOL, number=4,)
+    deletable = proto.Field(proto.BOOL, number=4,)
+    custom = proto.Field(proto.BOOL, number=5,)
 
 
 class GoogleSignalsSettings(proto.Message):
@@ -987,8 +1185,8 @@ class CustomMetric(proto.Message):
             Optional. Description for this custom
             dimension. Max length of 150 characters.
         measurement_unit (google.analytics.admin_v1alpha.types.CustomMetric.MeasurementUnit):
-            Required. Immutable. The type for the custom
-            metric's value.
+            Required. The type for the custom metric's
+            value.
         scope (google.analytics.admin_v1alpha.types.CustomMetric.MetricScope):
             Required. Immutable. The scope of this custom
             metric.
@@ -1022,6 +1220,37 @@ class CustomMetric(proto.Message):
     description = proto.Field(proto.STRING, number=4,)
     measurement_unit = proto.Field(proto.ENUM, number=5, enum=MeasurementUnit,)
     scope = proto.Field(proto.ENUM, number=6, enum=MetricScope,)
+
+
+class DataRetentionSettings(proto.Message):
+    r"""Settings values for data retention. This is a singleton
+    resource.
+
+    Attributes:
+        name (str):
+            Output only. Resource name for this
+            DataRetentionSetting resource. Format:
+            properties/{property}/dataRetentionSettings
+        event_data_retention (google.analytics.admin_v1alpha.types.DataRetentionSettings.RetentionDuration):
+            The length of time that event-level data is
+            retained.
+        reset_user_data_on_new_activity (bool):
+            If true, reset the retention period for the
+            user identifier with every event from that user.
+    """
+
+    class RetentionDuration(proto.Enum):
+        r"""Valid values for the data retention duration."""
+        RETENTION_DURATION_UNSPECIFIED = 0
+        TWO_MONTHS = 1
+        FOURTEEN_MONTHS = 3
+        TWENTY_SIX_MONTHS = 4
+        THIRTY_EIGHT_MONTHS = 5
+        FIFTY_MONTHS = 6
+
+    name = proto.Field(proto.STRING, number=1,)
+    event_data_retention = proto.Field(proto.ENUM, number=2, enum=RetentionDuration,)
+    reset_user_data_on_new_activity = proto.Field(proto.BOOL, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -1710,6 +1710,293 @@ class ListConversionEventsAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListDisplayVideo360AdvertiserLinksPager:
+    """A pager for iterating through ``list_display_video360_advertiser_links`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinksResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``display_video_360_advertiser_links`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListDisplayVideo360AdvertiserLinks`` requests and continue to iterate
+    through the ``display_video_360_advertiser_links`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinksResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., analytics_admin.ListDisplayVideo360AdvertiserLinksResponse
+        ],
+        request: analytics_admin.ListDisplayVideo360AdvertiserLinksRequest,
+        response: analytics_admin.ListDisplayVideo360AdvertiserLinksResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinksRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinksResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListDisplayVideo360AdvertiserLinksRequest(
+            request
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterable[analytics_admin.ListDisplayVideo360AdvertiserLinksResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterable[resources.DisplayVideo360AdvertiserLink]:
+        for page in self.pages:
+            yield from page.display_video_360_advertiser_links
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListDisplayVideo360AdvertiserLinksAsyncPager:
+    """A pager for iterating through ``list_display_video360_advertiser_links`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinksResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``display_video_360_advertiser_links`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListDisplayVideo360AdvertiserLinks`` requests and continue to iterate
+    through the ``display_video_360_advertiser_links`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinksResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[analytics_admin.ListDisplayVideo360AdvertiserLinksResponse]
+        ],
+        request: analytics_admin.ListDisplayVideo360AdvertiserLinksRequest,
+        response: analytics_admin.ListDisplayVideo360AdvertiserLinksResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinksRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinksResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListDisplayVideo360AdvertiserLinksRequest(
+            request
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterable[analytics_admin.ListDisplayVideo360AdvertiserLinksResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterable[resources.DisplayVideo360AdvertiserLink]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.display_video_360_advertiser_links:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListDisplayVideo360AdvertiserLinkProposalsPager:
+    """A pager for iterating through ``list_display_video360_advertiser_link_proposals`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinkProposalsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``display_video_360_advertiser_link_proposals`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListDisplayVideo360AdvertiserLinkProposals`` requests and continue to iterate
+    through the ``display_video_360_advertiser_link_proposals`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinkProposalsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse
+        ],
+        request: analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest,
+        response: analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinkProposalsRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinkProposalsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest(
+            request
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterable[analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterable[resources.DisplayVideo360AdvertiserLinkProposal]:
+        for page in self.pages:
+            yield from page.display_video_360_advertiser_link_proposals
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListDisplayVideo360AdvertiserLinkProposalsAsyncPager:
+    """A pager for iterating through ``list_display_video360_advertiser_link_proposals`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinkProposalsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``display_video_360_advertiser_link_proposals`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListDisplayVideo360AdvertiserLinkProposals`` requests and continue to iterate
+    through the ``display_video_360_advertiser_link_proposals`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinkProposalsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            Awaitable[
+                analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse
+            ],
+        ],
+        request: analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest,
+        response: analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinkProposalsRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinkProposalsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest(
+            request
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterable[
+        analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterable[resources.DisplayVideo360AdvertiserLinkProposal]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.display_video_360_advertiser_link_proposals:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListCustomDimensionsPager:
     """A pager for iterating through ``list_custom_dimensions`` requests.
 

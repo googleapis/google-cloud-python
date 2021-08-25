@@ -70,7 +70,6 @@ __protobuf__ = proto.module(
         "GetEnhancedMeasurementSettingsRequest",
         "UpdateEnhancedMeasurementSettingsRequest",
         "CreateFirebaseLinkRequest",
-        "UpdateFirebaseLinkRequest",
         "DeleteFirebaseLinkRequest",
         "ListFirebaseLinksRequest",
         "ListFirebaseLinksResponse",
@@ -98,6 +97,20 @@ __protobuf__ = proto.module(
         "DeleteConversionEventRequest",
         "ListConversionEventsRequest",
         "ListConversionEventsResponse",
+        "GetDisplayVideo360AdvertiserLinkRequest",
+        "ListDisplayVideo360AdvertiserLinksRequest",
+        "ListDisplayVideo360AdvertiserLinksResponse",
+        "CreateDisplayVideo360AdvertiserLinkRequest",
+        "DeleteDisplayVideo360AdvertiserLinkRequest",
+        "UpdateDisplayVideo360AdvertiserLinkRequest",
+        "GetDisplayVideo360AdvertiserLinkProposalRequest",
+        "ListDisplayVideo360AdvertiserLinkProposalsRequest",
+        "ListDisplayVideo360AdvertiserLinkProposalsResponse",
+        "CreateDisplayVideo360AdvertiserLinkProposalRequest",
+        "DeleteDisplayVideo360AdvertiserLinkProposalRequest",
+        "ApproveDisplayVideo360AdvertiserLinkProposalRequest",
+        "ApproveDisplayVideo360AdvertiserLinkProposalResponse",
+        "CancelDisplayVideo360AdvertiserLinkProposalRequest",
         "CreateCustomDimensionRequest",
         "UpdateCustomDimensionRequest",
         "ListCustomDimensionsRequest",
@@ -110,6 +123,8 @@ __protobuf__ = proto.module(
         "ListCustomMetricsResponse",
         "ArchiveCustomMetricRequest",
         "GetCustomMetricRequest",
+        "GetDataRetentionSettingsRequest",
+        "UpdateDataRetentionSettingsRequest",
     },
 )
 
@@ -971,26 +986,6 @@ class CreateFirebaseLinkRequest(proto.Message):
     )
 
 
-class UpdateFirebaseLinkRequest(proto.Message):
-    r"""Request message for UpdateFirebaseLink RPC
-    Attributes:
-        firebase_link (google.analytics.admin_v1alpha.types.FirebaseLink):
-            Required. The Firebase link to update.
-        update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to be updated. Field names must
-            be in snake case (e.g., "field_to_update"). Omitted fields
-            will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
-    """
-
-    firebase_link = proto.Field(
-        proto.MESSAGE, number=1, message=resources.FirebaseLink,
-    )
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
-    )
-
-
 class DeleteFirebaseLinkRequest(proto.Message):
     r"""Request message for DeleteFirebaseLink RPC
     Attributes:
@@ -1534,6 +1529,261 @@ class ListConversionEventsResponse(proto.Message):
     next_page_token = proto.Field(proto.STRING, number=2,)
 
 
+class GetDisplayVideo360AdvertiserLinkRequest(proto.Message):
+    r"""Request message for GetDisplayVideo360AdvertiserLink RPC.
+    Attributes:
+        name (str):
+            Required. The name of the
+            DisplayVideo360AdvertiserLink to get. Example
+            format:
+            properties/1234/displayVideo360AdvertiserLink/5678
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class ListDisplayVideo360AdvertiserLinksRequest(proto.Message):
+    r"""Request message for ListDisplayVideo360AdvertiserLinks RPC.
+    Attributes:
+        parent (str):
+            Required. Example format: properties/1234
+        page_size (int):
+            The maximum number of resources to return.
+            If unspecified, at most 50 resources will be
+            returned. The maximum value is 200 (higher
+            values will be coerced to the maximum).
+        page_token (str):
+            A page token, received from a previous
+            ``ListDisplayVideo360AdvertiserLinks`` call. Provide this to
+            retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListDisplayVideo360AdvertiserLinks`` must match the call
+            that provided the page token.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+
+
+class ListDisplayVideo360AdvertiserLinksResponse(proto.Message):
+    r"""Response message for ListDisplayVideo360AdvertiserLinks RPC.
+    Attributes:
+        display_video_360_advertiser_links (Sequence[google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink]):
+            List of DisplayVideo360AdvertiserLinks.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    display_video_360_advertiser_links = proto.RepeatedField(
+        proto.MESSAGE, number=1, message=resources.DisplayVideo360AdvertiserLink,
+    )
+    next_page_token = proto.Field(proto.STRING, number=2,)
+
+
+class CreateDisplayVideo360AdvertiserLinkRequest(proto.Message):
+    r"""Request message for CreateDisplayVideo360AdvertiserLink RPC.
+    Attributes:
+        parent (str):
+            Required. Example format: properties/1234
+        display_video_360_advertiser_link (google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink):
+            Required. The DisplayVideo360AdvertiserLink
+            to create.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    display_video_360_advertiser_link = proto.Field(
+        proto.MESSAGE, number=2, message=resources.DisplayVideo360AdvertiserLink,
+    )
+
+
+class DeleteDisplayVideo360AdvertiserLinkRequest(proto.Message):
+    r"""Request message for DeleteDisplayVideo360AdvertiserLink RPC.
+    Attributes:
+        name (str):
+            Required. The name of the
+            DisplayVideo360AdvertiserLink to delete. Example
+            format:
+            properties/1234/displayVideo360AdvertiserLinks/5678
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class UpdateDisplayVideo360AdvertiserLinkRequest(proto.Message):
+    r"""Request message for UpdateDisplayVideo360AdvertiserLink RPC.
+    Attributes:
+        display_video_360_advertiser_link (google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink):
+            The DisplayVideo360AdvertiserLink to update
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    display_video_360_advertiser_link = proto.Field(
+        proto.MESSAGE, number=1, message=resources.DisplayVideo360AdvertiserLink,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
+
+
+class GetDisplayVideo360AdvertiserLinkProposalRequest(proto.Message):
+    r"""Request message for GetDisplayVideo360AdvertiserLinkProposal
+    RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the
+            DisplayVideo360AdvertiserLinkProposal to get.
+            Example format:
+            properties/1234/displayVideo360AdvertiserLinkProposals/5678
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class ListDisplayVideo360AdvertiserLinkProposalsRequest(proto.Message):
+    r"""Request message for
+    ListDisplayVideo360AdvertiserLinkProposals RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format: properties/1234
+        page_size (int):
+            The maximum number of resources to return.
+            If unspecified, at most 50 resources will be
+            returned. The maximum value is 200 (higher
+            values will be coerced to the maximum).
+        page_token (str):
+            A page token, received from a previous
+            ``ListDisplayVideo360AdvertiserLinkProposals`` call. Provide
+            this to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListDisplayVideo360AdvertiserLinkProposals`` must match
+            the call that provided the page token.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+
+
+class ListDisplayVideo360AdvertiserLinkProposalsResponse(proto.Message):
+    r"""Response message for
+    ListDisplayVideo360AdvertiserLinkProposals RPC.
+
+    Attributes:
+        display_video_360_advertiser_link_proposals (Sequence[google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal]):
+            List of
+            DisplayVideo360AdvertiserLinkProposals.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    display_video_360_advertiser_link_proposals = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.DisplayVideo360AdvertiserLinkProposal,
+    )
+    next_page_token = proto.Field(proto.STRING, number=2,)
+
+
+class CreateDisplayVideo360AdvertiserLinkProposalRequest(proto.Message):
+    r"""Request message for
+    CreateDisplayVideo360AdvertiserLinkProposal RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format: properties/1234
+        display_video_360_advertiser_link_proposal (google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal):
+            Required. The
+            DisplayVideo360AdvertiserLinkProposal to create.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    display_video_360_advertiser_link_proposal = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.DisplayVideo360AdvertiserLinkProposal,
+    )
+
+
+class DeleteDisplayVideo360AdvertiserLinkProposalRequest(proto.Message):
+    r"""Request message for
+    DeleteDisplayVideo360AdvertiserLinkProposal RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the
+            DisplayVideo360AdvertiserLinkProposal to delete.
+            Example format:
+            properties/1234/displayVideo360AdvertiserLinkProposals/5678
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class ApproveDisplayVideo360AdvertiserLinkProposalRequest(proto.Message):
+    r"""Request message for
+    ApproveDisplayVideo360AdvertiserLinkProposal RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the
+            DisplayVideo360AdvertiserLinkProposal to
+            approve. Example format:
+            properties/1234/displayVideo360AdvertiserLinkProposals/5678
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class ApproveDisplayVideo360AdvertiserLinkProposalResponse(proto.Message):
+    r"""Response message for
+    ApproveDisplayVideo360AdvertiserLinkProposal RPC.
+
+    Attributes:
+        display_video_360_advertiser_link (google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink):
+            The DisplayVideo360AdvertiserLink created as
+            a result of approving the proposal.
+    """
+
+    display_video_360_advertiser_link = proto.Field(
+        proto.MESSAGE, number=1, message=resources.DisplayVideo360AdvertiserLink,
+    )
+
+
+class CancelDisplayVideo360AdvertiserLinkProposalRequest(proto.Message):
+    r"""Request message for
+    CancelDisplayVideo360AdvertiserLinkProposal RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the
+            DisplayVideo360AdvertiserLinkProposal to cancel.
+            Example format:
+            properties/1234/displayVideo360AdvertiserLinkProposals/5678
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
 class CreateCustomDimensionRequest(proto.Message):
     r"""Request message for CreateCustomDimension RPC.
     Attributes:
@@ -1739,6 +1989,40 @@ class GetCustomMetricRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1,)
+
+
+class GetDataRetentionSettingsRequest(proto.Message):
+    r"""Request message for GetDataRetentionSettings RPC.
+    Attributes:
+        name (str):
+            Required. The name of the settings to lookup.
+            Format:
+            properties/{property}/dataRetentionSettings
+            Example: "properties/1000/dataRetentionSettings".
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class UpdateDataRetentionSettingsRequest(proto.Message):
+    r"""Request message for UpdateDataRetentionSettings RPC.
+    Attributes:
+        data_retention_settings (google.analytics.admin_v1alpha.types.DataRetentionSettings):
+            Required. The settings to update. The ``name`` field is used
+            to identify the settings to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Field names must
+            be in snake case (e.g., "field_to_update"). Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    data_retention_settings = proto.Field(
+        proto.MESSAGE, number=1, message=resources.DataRetentionSettings,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

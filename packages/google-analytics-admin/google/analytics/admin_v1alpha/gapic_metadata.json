@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "AnalyticsAdminServiceClient",
           "rpcs": {
+            "ApproveDisplayVideo360AdvertiserLinkProposal": {
+              "methods": [
+                "approve_display_video360_advertiser_link_proposal"
+              ]
+            },
             "ArchiveCustomDimension": {
               "methods": [
                 "archive_custom_dimension"
@@ -45,6 +50,11 @@
                 "batch_update_user_links"
               ]
             },
+            "CancelDisplayVideo360AdvertiserLinkProposal": {
+              "methods": [
+                "cancel_display_video360_advertiser_link_proposal"
+              ]
+            },
             "CreateConversionEvent": {
               "methods": [
                 "create_conversion_event"
@@ -58,6 +68,16 @@
             "CreateCustomMetric": {
               "methods": [
                 "create_custom_metric"
+              ]
+            },
+            "CreateDisplayVideo360AdvertiserLink": {
+              "methods": [
+                "create_display_video360_advertiser_link"
+              ]
+            },
+            "CreateDisplayVideo360AdvertiserLinkProposal": {
+              "methods": [
+                "create_display_video360_advertiser_link_proposal"
               ]
             },
             "CreateFirebaseLink": {
@@ -103,6 +123,16 @@
             "DeleteConversionEvent": {
               "methods": [
                 "delete_conversion_event"
+              ]
+            },
+            "DeleteDisplayVideo360AdvertiserLink": {
+              "methods": [
+                "delete_display_video360_advertiser_link"
+              ]
+            },
+            "DeleteDisplayVideo360AdvertiserLinkProposal": {
+              "methods": [
+                "delete_display_video360_advertiser_link_proposal"
               ]
             },
             "DeleteFirebaseLink": {
@@ -165,9 +195,24 @@
                 "get_custom_metric"
               ]
             },
+            "GetDataRetentionSettings": {
+              "methods": [
+                "get_data_retention_settings"
+              ]
+            },
             "GetDataSharingSettings": {
               "methods": [
                 "get_data_sharing_settings"
+              ]
+            },
+            "GetDisplayVideo360AdvertiserLink": {
+              "methods": [
+                "get_display_video360_advertiser_link"
+              ]
+            },
+            "GetDisplayVideo360AdvertiserLinkProposal": {
+              "methods": [
+                "get_display_video360_advertiser_link_proposal"
               ]
             },
             "GetEnhancedMeasurementSettings": {
@@ -240,6 +285,16 @@
                 "list_custom_metrics"
               ]
             },
+            "ListDisplayVideo360AdvertiserLinkProposals": {
+              "methods": [
+                "list_display_video360_advertiser_link_proposals"
+              ]
+            },
+            "ListDisplayVideo360AdvertiserLinks": {
+              "methods": [
+                "list_display_video360_advertiser_links"
+              ]
+            },
             "ListFirebaseLinks": {
               "methods": [
                 "list_firebase_links"
@@ -305,14 +360,19 @@
                 "update_custom_metric"
               ]
             },
+            "UpdateDataRetentionSettings": {
+              "methods": [
+                "update_data_retention_settings"
+              ]
+            },
+            "UpdateDisplayVideo360AdvertiserLink": {
+              "methods": [
+                "update_display_video360_advertiser_link"
+              ]
+            },
             "UpdateEnhancedMeasurementSettings": {
               "methods": [
                 "update_enhanced_measurement_settings"
-              ]
-            },
-            "UpdateFirebaseLink": {
-              "methods": [
-                "update_firebase_link"
               ]
             },
             "UpdateGoogleAdsLink": {
@@ -355,6 +415,11 @@
         "grpc-async": {
           "libraryClient": "AnalyticsAdminServiceAsyncClient",
           "rpcs": {
+            "ApproveDisplayVideo360AdvertiserLinkProposal": {
+              "methods": [
+                "approve_display_video360_advertiser_link_proposal"
+              ]
+            },
             "ArchiveCustomDimension": {
               "methods": [
                 "archive_custom_dimension"
@@ -390,6 +455,11 @@
                 "batch_update_user_links"
               ]
             },
+            "CancelDisplayVideo360AdvertiserLinkProposal": {
+              "methods": [
+                "cancel_display_video360_advertiser_link_proposal"
+              ]
+            },
             "CreateConversionEvent": {
               "methods": [
                 "create_conversion_event"
@@ -403,6 +473,16 @@
             "CreateCustomMetric": {
               "methods": [
                 "create_custom_metric"
+              ]
+            },
+            "CreateDisplayVideo360AdvertiserLink": {
+              "methods": [
+                "create_display_video360_advertiser_link"
+              ]
+            },
+            "CreateDisplayVideo360AdvertiserLinkProposal": {
+              "methods": [
+                "create_display_video360_advertiser_link_proposal"
               ]
             },
             "CreateFirebaseLink": {
@@ -448,6 +528,16 @@
             "DeleteConversionEvent": {
               "methods": [
                 "delete_conversion_event"
+              ]
+            },
+            "DeleteDisplayVideo360AdvertiserLink": {
+              "methods": [
+                "delete_display_video360_advertiser_link"
+              ]
+            },
+            "DeleteDisplayVideo360AdvertiserLinkProposal": {
+              "methods": [
+                "delete_display_video360_advertiser_link_proposal"
               ]
             },
             "DeleteFirebaseLink": {
@@ -510,9 +600,24 @@
                 "get_custom_metric"
               ]
             },
+            "GetDataRetentionSettings": {
+              "methods": [
+                "get_data_retention_settings"
+              ]
+            },
             "GetDataSharingSettings": {
               "methods": [
                 "get_data_sharing_settings"
+              ]
+            },
+            "GetDisplayVideo360AdvertiserLink": {
+              "methods": [
+                "get_display_video360_advertiser_link"
+              ]
+            },
+            "GetDisplayVideo360AdvertiserLinkProposal": {
+              "methods": [
+                "get_display_video360_advertiser_link_proposal"
               ]
             },
             "GetEnhancedMeasurementSettings": {
@@ -585,6 +690,16 @@
                 "list_custom_metrics"
               ]
             },
+            "ListDisplayVideo360AdvertiserLinkProposals": {
+              "methods": [
+                "list_display_video360_advertiser_link_proposals"
+              ]
+            },
+            "ListDisplayVideo360AdvertiserLinks": {
+              "methods": [
+                "list_display_video360_advertiser_links"
+              ]
+            },
             "ListFirebaseLinks": {
               "methods": [
                 "list_firebase_links"
@@ -650,14 +765,19 @@
                 "update_custom_metric"
               ]
             },
+            "UpdateDataRetentionSettings": {
+              "methods": [
+                "update_data_retention_settings"
+              ]
+            },
+            "UpdateDisplayVideo360AdvertiserLink": {
+              "methods": [
+                "update_display_video360_advertiser_link"
+              ]
+            },
             "UpdateEnhancedMeasurementSettings": {
               "methods": [
                 "update_enhanced_measurement_settings"
-              ]
-            },
-            "UpdateFirebaseLink": {
-              "methods": [
-                "update_firebase_link"
               ]
             },
             "UpdateGoogleAdsLink": {
