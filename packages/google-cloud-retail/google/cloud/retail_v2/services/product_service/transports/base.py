@@ -174,7 +174,19 @@ class ProductServiceTransport(abc.ABC):
                 self.delete_product, default_timeout=None, client_info=client_info,
             ),
             self.import_products: gapic_v1.method.wrap_method(
-                self.import_products, default_timeout=None, client_info=client_info,
+                self.import_products,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=300.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=300.0,
+                ),
+                default_timeout=300.0,
+                client_info=client_info,
             ),
             self.set_inventory: gapic_v1.method.wrap_method(
                 self.set_inventory, default_timeout=None, client_info=client_info,
