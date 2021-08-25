@@ -28,12 +28,12 @@ from sqlalchemy import types, func, case, inspect
 from sqlalchemy.sql import expression, select, literal_column
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.orm import sessionmaker
+import packaging.version
 from pytz import timezone
 import pytest
 import sqlalchemy
 import datetime
 import decimal
-
 
 ONE_ROW_CONTENTS_EXPANDED = [
     588,
@@ -725,3 +725,31 @@ def test_distinct_188(engine, bigquery_dataset):
     )
 
     assert sorted(db.query(sqlalchemy.distinct(MyTable.my_column)).all()) == expected
+
+
+@pytest.mark.skipif(
+    packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.4"),
+    reason="unnest (and other table-valued-function) support required version 1.4",
+)
+def test_unnest(engine, bigquery_dataset):
+    from sqlalchemy import select, func, String
+    from sqlalchemy_bigquery import ARRAY
+
+    conn = engine.connect()
+    metadata = MetaData()
+    table = Table(
+        f"{bigquery_dataset}.test_unnest", metadata, Column("objects", ARRAY(String)),
+    )
+    metadata.create_all(engine)
+    conn.execute(
+        table.insert(), [dict(objects=["a", "b", "c"]), dict(objects=["x", "y"])]
+    )
+    query = select([func.unnest(table.c.objects).alias("foo_objects").column])
+    compiled = str(query.compile(engine))
+    assert " ".join(compiled.strip().split()) == (
+        f"SELECT `foo_objects`"
+        f" FROM"
+        f" `{bigquery_dataset}.test_unnest` `{bigquery_dataset}.test_unnest_1`,"
+        f" unnest(`{bigquery_dataset}.test_unnest_1`.`objects`) AS `foo_objects`"
+    )
+    assert sorted(r[0] for r in conn.execute(query)) == ["a", "b", "c", "x", "y"]

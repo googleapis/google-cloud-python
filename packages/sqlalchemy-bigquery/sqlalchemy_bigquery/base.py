@@ -62,6 +62,8 @@ except ImportError:
 
 FIELD_ILLEGAL_CHARACTERS = re.compile(r"[^\w]+")
 
+TABLE_VALUED_ALIAS_ALIASES = "bigquery_table_valued_alias_aliases"
+
 
 def assert_(cond, message="Assertion failed"):  # pragma: NO COVER
     if not cond:
@@ -114,39 +116,41 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
 
 
 _type_map = {
-    "STRING": types.String,
-    "BOOL": types.Boolean,
+    "ARRAY": types.ARRAY,
+    "BIGNUMERIC": types.Numeric,
     "BOOLEAN": types.Boolean,
-    "INT64": types.Integer,
-    "INTEGER": types.Integer,
-    "FLOAT64": types.Float,
-    "FLOAT": types.Float,
-    "TIMESTAMP": types.TIMESTAMP,
+    "BOOL": types.Boolean,
+    "BYTES": types.BINARY,
     "DATETIME": types.DATETIME,
     "DATE": types.DATE,
-    "BYTES": types.BINARY,
-    "TIME": types.TIME,
-    "RECORD": types.JSON,
+    "FLOAT64": types.Float,
+    "FLOAT": types.Float,
+    "INT64": types.Integer,
+    "INTEGER": types.Integer,
     "NUMERIC": types.Numeric,
-    "BIGNUMERIC": types.Numeric,
+    "RECORD": types.JSON,
+    "STRING": types.String,
+    "TIMESTAMP": types.TIMESTAMP,
+    "TIME": types.TIME,
 }
 
 # By convention, dialect-provided types are spelled with all upper case.
-STRING = _type_map["STRING"]
-BOOL = _type_map["BOOL"]
+ARRAY = _type_map["ARRAY"]
+BIGNUMERIC = _type_map["NUMERIC"]
 BOOLEAN = _type_map["BOOLEAN"]
-INT64 = _type_map["INT64"]
-INTEGER = _type_map["INTEGER"]
-FLOAT64 = _type_map["FLOAT64"]
-FLOAT = _type_map["FLOAT"]
-TIMESTAMP = _type_map["TIMESTAMP"]
+BOOL = _type_map["BOOL"]
+BYTES = _type_map["BYTES"]
 DATETIME = _type_map["DATETIME"]
 DATE = _type_map["DATE"]
-BYTES = _type_map["BYTES"]
-TIME = _type_map["TIME"]
-RECORD = _type_map["RECORD"]
+FLOAT64 = _type_map["FLOAT64"]
+FLOAT = _type_map["FLOAT"]
+INT64 = _type_map["INT64"]
+INTEGER = _type_map["INTEGER"]
 NUMERIC = _type_map["NUMERIC"]
-BIGNUMERIC = _type_map["NUMERIC"]
+RECORD = _type_map["RECORD"]
+STRING = _type_map["STRING"]
+TIMESTAMP = _type_map["TIMESTAMP"]
+TIME = _type_map["TIME"]
 
 try:
     _type_map["GEOGRAPHY"] = GEOGRAPHY
@@ -246,6 +250,56 @@ class BigQueryCompiler(SQLCompiler):
             insert_stmt, asfrom=False, **kw
         )
 
+    def visit_table_valued_alias(self, element, **kw):
+        # When using table-valued functions, like UNNEST, BigQuery requires a
+        # FROM for any table referenced in the function, including expressions
+        # in function arguments.
+        #
+        # For example, given SQLAlchemy code:
+        #
+        #   print(
+        #      select([func.unnest(foo.c.objects).alias('foo_objects').column])
+        #      .compile(engine))
+        #
+        # Left to it's own devices, SQLAlchemy would outout:
+        #
+        #   SELECT `foo_objects`
+        #   FROM unnest(`foo`.`objects`) AS `foo_objects`
+        #
+        # But BigQuery diesn't understand the `foo` reference unless
+        # we add as reference to `foo` in the FROM:
+        #
+        #   SELECT foo_objects
+        #   FROM `foo`, UNNEST(`foo`.`objects`) as foo_objects
+        #
+        # This is tricky because:
+        # 1. We have to find the table references.
+        # 2. We can't know practically if there's already a FROM for a table.
+        #
+        # We leverage visit_column to find a table reference.  Whenever we find
+        # one, we create an alias for it, so as not to conflict with an existing
+        # reference if one is present.
+        #
+        # This requires communicating between this function and visit_column.
+        # We do this by sticking a dictionary in the keyword arguments.
+        # This dictionary:
+        # a. Tells visit_column that it's an a table-valued alias expresssion, and
+        # b. Gives it a place to record the aliases it creates.
+        #
+        # This function creates aliases in the FROM list for any aliases recorded
+        # by visit_column.
+
+        kw[TABLE_VALUED_ALIAS_ALIASES] = {}
+        ret = super().visit_table_valued_alias(element, **kw)
+        aliases = kw.pop(TABLE_VALUED_ALIAS_ALIASES)
+        if aliases:
+            aliases = ", ".join(
+                f"{self.preparer.quote(tablename)} {self.preparer.quote(alias)}"
+                for tablename, alias in aliases.items()
+            )
+            ret = f"{aliases}, {ret}"
+        return ret
+
     def visit_column(
         self,
         column,
@@ -281,6 +335,13 @@ class BigQueryCompiler(SQLCompiler):
             tablename = table.name
             if isinstance(tablename, elements._truncated_label):
                 tablename = self._truncated_identifier("alias", tablename)
+            elif TABLE_VALUED_ALIAS_ALIASES in kwargs:
+                aliases = kwargs[TABLE_VALUED_ALIAS_ALIASES]
+                if tablename not in aliases:
+                    aliases[tablename] = self.anon_map[
+                        f"{TABLE_VALUED_ALIAS_ALIASES} {tablename}"
+                    ]
+                tablename = aliases[tablename]
 
             return self.preparer.quote(tablename) + "." + name
 

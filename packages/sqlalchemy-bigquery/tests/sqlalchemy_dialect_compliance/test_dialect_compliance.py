@@ -19,6 +19,7 @@
 
 import datetime
 import mock
+import packaging.version
 import pytest
 import pytz
 import sqlalchemy
@@ -41,7 +42,7 @@ from sqlalchemy.testing.suite import (
 )
 
 
-if sqlalchemy.__version__ < "1.4":
+if packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.4"):
     from sqlalchemy.testing.suite import LimitOffsetTest as _LimitOffsetTest
 
     class LimitOffsetTest(_LimitOffsetTest):

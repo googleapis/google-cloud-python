@@ -20,6 +20,7 @@
 import datetime
 from decimal import Decimal
 
+import packaging.version
 import pytest
 import sqlalchemy
 
@@ -292,7 +293,10 @@ def test_select_in_param_empty(faux_conn):
     assert not isin
     assert faux_conn.test_data["execute"][-1] == (
         "SELECT %(param_1:INT64)s IN(NULL) AND (1 != 1) AS `anon_1`"
-        if sqlalchemy.__version__ >= "1.4"
+        if (
+            packaging.version.parse(sqlalchemy.__version__)
+            >= packaging.version.parse("1.4")
+        )
         else "SELECT %(param_1:INT64)s IN UNNEST([  ]) AS `anon_1`",
         {"param_1": 1},
     )
@@ -352,7 +356,10 @@ def test_select_notin_param_empty(faux_conn):
     assert isnotin
     assert faux_conn.test_data["execute"][-1] == (
         "SELECT (%(param_1:INT64)s NOT IN(NULL) OR (1 = 1)) AS `anon_1`"
-        if sqlalchemy.__version__ >= "1.4"
+        if (
+            packaging.version.parse(sqlalchemy.__version__)
+            >= packaging.version.parse("1.4")
+        )
         else "SELECT (%(param_1:INT64)s NOT IN UNNEST([  ])) AS `anon_1`",
         {"param_1": 1},
     )
@@ -373,4 +380,55 @@ def test_literal_binds_kwarg_with_an_IN_operator_252(faux_conn):
     assert (
         nstr(q.compile(faux_conn.engine, compile_kwargs={"literal_binds": True}))
         == "SELECT `test`.`val` FROM `test` WHERE `test`.`val` IN (2)"
+    )
+
+
+@sqlalchemy_1_4_or_higher
+@pytest.mark.parametrize("alias", [True, False])
+def test_unnest(faux_conn, alias):
+    from sqlalchemy import String
+    from sqlalchemy_bigquery import ARRAY
+
+    table = setup_table(faux_conn, "t", sqlalchemy.Column("objects", ARRAY(String)))
+    fcall = sqlalchemy.func.unnest(table.c.objects)
+    if alias:
+        query = fcall.alias("foo_objects").column
+    else:
+        query = fcall.column_valued("foo_objects")
+    compiled = str(sqlalchemy.select(query).compile(faux_conn.engine))
+    assert " ".join(compiled.strip().split()) == (
+        "SELECT `foo_objects` FROM `t` `t_1`, unnest(`t_1`.`objects`) AS `foo_objects`"
+    )
+
+
+@sqlalchemy_1_4_or_higher
+@pytest.mark.parametrize("alias", [True, False])
+def test_table_valued_alias_w_multiple_references_to_the_same_table(faux_conn, alias):
+    from sqlalchemy import String
+    from sqlalchemy_bigquery import ARRAY
+
+    table = setup_table(faux_conn, "t", sqlalchemy.Column("objects", ARRAY(String)))
+    fcall = sqlalchemy.func.foo(table.c.objects, table.c.objects)
+    if alias:
+        query = fcall.alias("foo_objects").column
+    else:
+        query = fcall.column_valued("foo_objects")
+    compiled = str(sqlalchemy.select(query).compile(faux_conn.engine))
+    assert " ".join(compiled.strip().split()) == (
+        "SELECT `foo_objects` "
+        "FROM `t` `t_1`, foo(`t_1`.`objects`, `t_1`.`objects`) AS `foo_objects`"
+    )
+
+
+@sqlalchemy_1_4_or_higher
+@pytest.mark.parametrize("alias", [True, False])
+def test_unnest_w_no_table_references(faux_conn, alias):
+    fcall = sqlalchemy.func.unnest([1, 2, 3])
+    if alias:
+        query = fcall.alias().column
+    else:
+        query = fcall.column_valued()
+    compiled = str(sqlalchemy.select(query).compile(faux_conn.engine))
+    assert " ".join(compiled.strip().split()) == (
+        "SELECT `anon_1` FROM unnest(%(unnest_1)s) AS `anon_1`"
     )

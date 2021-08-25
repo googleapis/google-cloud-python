@@ -45,7 +45,11 @@ def readme():
         return f.read()
 
 
-extras = dict(geography=["GeoAlchemy2", "shapely"], alembic=["alembic"], tests=["pytz"])
+extras = dict(
+    geography=["GeoAlchemy2", "shapely"],
+    alembic=["alembic"],
+    tests=["packaging", "pytz"],
+)
 extras["all"] = set(itertools.chain.from_iterable(extras.values()))
 
 setup(
@@ -85,7 +89,7 @@ setup(
     ],
     extras_require=extras,
     python_requires=">=3.6, <3.10",
-    tests_require=["pytz"],
+    tests_require=["packaging", "pytz"],
     entry_points={
         "sqlalchemy.dialects": ["bigquery = sqlalchemy_bigquery:BigQueryDialect"]
     },
