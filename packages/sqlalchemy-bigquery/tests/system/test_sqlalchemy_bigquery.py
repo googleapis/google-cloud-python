@@ -729,6 +729,27 @@ def test_distinct_188(engine, bigquery_dataset):
 
 @pytest.mark.skipif(
     packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.4"),
+    reason="requires sqlalchemy 1.4 or higher",
+)
+def test_huge_in():
+    engine = sqlalchemy.create_engine("bigquery://")
+    conn = engine.connect()
+    try:
+        assert list(
+            conn.execute(
+                sqlalchemy.select([sqlalchemy.literal(-1).in_(list(range(99999)))])
+            )
+        ) == [(False,)]
+    except Exception:
+        error = True
+    else:
+        error = False
+
+    assert not error, "execution failed"
+
+
+@pytest.mark.skipif(
+    packaging.version.parse(sqlalchemy.__version__) < packaging.version.parse("1.4"),
     reason="unnest (and other table-valued-function) support required version 1.4",
 )
 def test_unnest(engine, bigquery_dataset):
