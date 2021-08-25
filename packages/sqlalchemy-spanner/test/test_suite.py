@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from datetime import timezone
 import decimal
 import operator
 import os
 import pytest
-import pytz
 from unittest import mock
 
 import sqlalchemy
@@ -945,7 +945,7 @@ class RowFetchTest(_RowFetchTest):
 
         eq_(
             row["somelabel"],
-            DatetimeWithNanoseconds(2006, 5, 12, 12, 0, 0, tzinfo=pytz.UTC),
+            DatetimeWithNanoseconds(2006, 5, 12, 12, 0, 0, tzinfo=timezone.utc),
         )
 
 
