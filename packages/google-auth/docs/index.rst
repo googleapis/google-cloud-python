@@ -62,7 +62,7 @@ google-auth is made available under the Apache License, Version 2.0. For more
 details, see `LICENSE`_
 
 .. _LICENSE:
-    https://github.com/GoogleCloudPlatform/google-auth-library-python/blob/master/LICENSE
+    https://github.com/GoogleCloudPlatform/google-auth-library-python/blob/main/LICENSE
 
 Contributing
 ------------
@@ -71,4 +71,4 @@ We happily welcome contributions, please see our `contributing`_ documentation
 for details.
 
 .. _contributing:
-    https://github.com/GoogleCloudPlatform/google-auth-library-python/blob/master/CONTRIBUTING.rst
+    https://github.com/GoogleCloudPlatform/google-auth-library-python/blob/main/CONTRIBUTING.rst
