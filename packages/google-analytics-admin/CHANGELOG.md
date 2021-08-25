@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/python-analytics-admin/compare/v0.4.3...v0.5.0) (2021-08-25)
+
+
+### Features
+
+* add `CancelDisplayVideo360AdvertiserLinkProposal` method to the API ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* add `CreateDisplayVideo360AdvertiserLink`, `DeleteDisplayVideo360AdvertiserLink` methods to the API ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* add `custom` output only field to `ConversionEvent` type ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* add `data_retention_settings` fields to `ChangeHistoryChange.resource` oneof field. ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* add `DeleteDisplayVideo360AdvertiserLinkProposal` method to the API ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* add `display_video_360_advertiser_link_proposal` fields to `ChangeHistoryChange.resource` oneof field. ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* add `display_video_360_advertiser_link` fields to `ChangeHistoryChange.resource` oneof field. ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* add `DisplayVideo360AdvertiserLink`, `LinkProposalState` types to the API ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* add `GetDataRetentionSettings`, `UpdateDataRetentionSettings` methods to the API ([#119](https://www.github.com/googleapis/python-analytics-admin/issues/119)) ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* add `GetDisplayVideo360AdvertiserLink`, `ListDisplayVideo360AdvertiserLinks` methods to the API ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* add `GetDisplayVideo360AdvertiserLinkProposal`, `ListDisplayVideo360AdvertiserLinkProposals` methods to the API ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* add `LinkProposalInitiatingProduct`, `ServiceLevel`, `DataRetentionSettings` types to the API ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* add `LinkProposalStatusDetails`, `DisplayVideo360AdvertiserLinkProposal` types to the API ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* add `service_level` field to `Property` type ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* change `measurement_unit` field to mutable in `CustomMetric` type ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+
+
+### Bug Fixes
+
+* remove `maximum_user_access` field from `FirebaseLink` type ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* remove `MaximumUserAccess` enum from the API ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* remove `UpdateFirebaseLink` method from the API ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* rename `email_address` field of `GoogleAdsLink` type to `creator_email_address` ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+* rename `is_deletable` field of `ConversionEvent` type to `deletable` ([2a1c5a0](https://www.github.com/googleapis/python-analytics-admin/commit/2a1c5a098503d075633222a7b926efe2d7026559))
+
 ### [0.4.3](https://www.github.com/googleapis/python-analytics-admin/compare/v0.4.2...v0.4.3) (2021-07-27)
 
 
