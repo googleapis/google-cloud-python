@@ -1704,6 +1704,7 @@ def test_create_build_trigger(
             ignored_files=["ignored_files_value"],
             included_files=["included_files_value"],
             filter="filter_value",
+            service_account="service_account_value",
             autodetect=True,
         )
         response = client.create_build_trigger(request)
@@ -1724,6 +1725,7 @@ def test_create_build_trigger(
     assert response.ignored_files == ["ignored_files_value"]
     assert response.included_files == ["included_files_value"]
     assert response.filter == "filter_value"
+    assert response.service_account == "service_account_value"
 
 
 def test_create_build_trigger_from_dict():
@@ -1775,6 +1777,7 @@ async def test_create_build_trigger_async(
                 ignored_files=["ignored_files_value"],
                 included_files=["included_files_value"],
                 filter="filter_value",
+                service_account="service_account_value",
             )
         )
         response = await client.create_build_trigger(request)
@@ -1795,6 +1798,7 @@ async def test_create_build_trigger_async(
     assert response.ignored_files == ["ignored_files_value"]
     assert response.included_files == ["included_files_value"]
     assert response.filter == "filter_value"
+    assert response.service_account == "service_account_value"
 
 
 @pytest.mark.asyncio
@@ -1912,6 +1916,7 @@ def test_get_build_trigger(
             ignored_files=["ignored_files_value"],
             included_files=["included_files_value"],
             filter="filter_value",
+            service_account="service_account_value",
             autodetect=True,
         )
         response = client.get_build_trigger(request)
@@ -1932,6 +1937,7 @@ def test_get_build_trigger(
     assert response.ignored_files == ["ignored_files_value"]
     assert response.included_files == ["included_files_value"]
     assert response.filter == "filter_value"
+    assert response.service_account == "service_account_value"
 
 
 def test_get_build_trigger_from_dict():
@@ -1983,6 +1989,7 @@ async def test_get_build_trigger_async(
                 ignored_files=["ignored_files_value"],
                 included_files=["included_files_value"],
                 filter="filter_value",
+                service_account="service_account_value",
             )
         )
         response = await client.get_build_trigger(request)
@@ -2003,6 +2010,7 @@ async def test_get_build_trigger_async(
     assert response.ignored_files == ["ignored_files_value"]
     assert response.included_files == ["included_files_value"]
     assert response.filter == "filter_value"
+    assert response.service_account == "service_account_value"
 
 
 @pytest.mark.asyncio
@@ -2575,6 +2583,7 @@ def test_update_build_trigger(
             ignored_files=["ignored_files_value"],
             included_files=["included_files_value"],
             filter="filter_value",
+            service_account="service_account_value",
             autodetect=True,
         )
         response = client.update_build_trigger(request)
@@ -2595,6 +2604,7 @@ def test_update_build_trigger(
     assert response.ignored_files == ["ignored_files_value"]
     assert response.included_files == ["included_files_value"]
     assert response.filter == "filter_value"
+    assert response.service_account == "service_account_value"
 
 
 def test_update_build_trigger_from_dict():
@@ -2646,6 +2656,7 @@ async def test_update_build_trigger_async(
                 ignored_files=["ignored_files_value"],
                 included_files=["included_files_value"],
                 filter="filter_value",
+                service_account="service_account_value",
             )
         )
         response = await client.update_build_trigger(request)
@@ -2666,6 +2677,7 @@ async def test_update_build_trigger_async(
     assert response.ignored_files == ["ignored_files_value"]
     assert response.included_files == ["included_files_value"]
     assert response.filter == "filter_value"
+    assert response.service_account == "service_account_value"
 
 
 @pytest.mark.asyncio

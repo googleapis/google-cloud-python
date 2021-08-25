@@ -1250,6 +1250,14 @@ class BuildTrigger(proto.Message):
         filter (str):
             Optional. A Common Expression Language
             string.
+        service_account (str):
+            The service account used for all user-controlled operations
+            including UpdateBuildTrigger, RunBuildTrigger, CreateBuild,
+            and CancelBuild. If no service account is set, then the
+            standard Cloud Build service account
+            ([PROJECT_NUM]@system.gserviceaccount.com) will be used
+            instead. Format:
+            ``projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT_ID_OR_EMAIL}``
     """
 
     resource_name = proto.Field(proto.STRING, number=34,)
@@ -1272,6 +1280,7 @@ class BuildTrigger(proto.Message):
     ignored_files = proto.RepeatedField(proto.STRING, number=15,)
     included_files = proto.RepeatedField(proto.STRING, number=16,)
     filter = proto.Field(proto.STRING, number=30,)
+    service_account = proto.Field(proto.STRING, number=33,)
 
 
 class GitHubEventsConfig(proto.Message):
