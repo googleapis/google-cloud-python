@@ -14,13 +14,8 @@
 
 set -e -x
 
-PY_BIN="python3.7"
-
-# Check that the REPO_ROOT variable is set.
-if [[ -z "${REPO_ROOT}" ]]; then
-    echo "REPO_ROOT environment variable should be set by the caller."
-    exit 1
-fi
+PY_BIN=${PY_BIN:-python3.7}
+REPO_ROOT=${REPO_ROOT:-$(pwd)}
 
 CRC32C_INSTALL_PREFIX=${REPO_ROOT}/usr
 
@@ -28,12 +23,17 @@ CRC32C_INSTALL_PREFIX=${REPO_ROOT}/usr
 # Create a virtualenv where we can install `cmake`.
 VENV=${REPO_ROOT}/venv
 ${PY_BIN} -m venv ${VENV}
+${VENV}/bin/python -m pip install --upgrade setuptools pip wheel
 ${VENV}/bin/python -m pip install "cmake >= 3.12.0"
+rm -rf ${REPO_ROOT}/build
+rm -rf ${CRC32C_INSTALL_PREFIX}
 # Build `libcrc32c`
 cd ${REPO_ROOT}/google_crc32c
+rm -rf build
 mkdir build
 cd build/
 ${VENV}/bin/cmake \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCRC32C_BUILD_TESTS=no \
     -DCRC32C_BUILD_BENCHMARKS=no \
     -DBUILD_SHARED_LIBS=yes \
@@ -41,6 +41,14 @@ ${VENV}/bin/cmake \
     ..
 # Install `libcrc32c` into CRC32C_INSTALL_PREFIX.
 make all install
+
+cd ${REPO_ROOT}
+
+${VENV}/bin/python setup.py build_ext \
+    --include-dirs=${REPO_ROOT}/usr/include \
+    --library-dirs=${REPO_ROOT}/usr/lib \
+    --rpath=${REPO_ROOT}/usr/lib
+${VENV}/bin/python -m pip wheel . --wheel-dir=wheels
 
 # Clean up.
 rm -fr ${REPO_ROOT}/google_crc32c/build

@@ -44,6 +44,10 @@ ${VENV}/bin/python -m pip install \
 DIST_WHEELS="${REPO_ROOT}/dist_wheels"
 mkdir -p ${DIST_WHEELS}
 cd ${REPO_ROOT}
+${VENV}/bin/python setup.py build_ext \
+    --include-dirs=${REPO_ROOT}/usr/include \
+    --library-dirs=${REPO_ROOT}/usr/lib \
+    --rpath=${REPO_ROOT}/usr/lib
 ${VENV}/bin/python -m pip wheel ${REPO_ROOT} --wheel-dir ${DIST_WHEELS}
 
 # Delocate the wheel. removed --check-archs. We don't build i386.

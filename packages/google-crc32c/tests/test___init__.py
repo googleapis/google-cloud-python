@@ -178,32 +178,34 @@ def test_extend_w_multiple_chunks():
     crc = 0
 
     for chunk in iscsi_chunks(7):
-        crc = google_crc32c.extend(crc, chunk)
+        chunk_bytes = bytes(chunk)
+        crc = google_crc32c.extend(crc, chunk_bytes)
 
     assert crc == ISCSI_CRC
 
 
 def test_extend_w_reduce():
-    assert functools.reduce(google_crc32c.extend, iscsi_chunks(3), 0) == ISCSI_CRC
+    chunks = [bytes(chunk) for chunk in iscsi_chunks(3)]
+    assert functools.reduce(google_crc32c.extend, chunks, 0) == ISCSI_CRC
 
 
 @pytest.mark.parametrize("chunk, expected", _EXPECTED)
 def test_value(chunk, expected):
-    assert google_crc32c.value(chunk) == expected
+    assert google_crc32c.value(bytes(chunk)) == expected
 
 
 def pytest_generate_tests(metafunc):
     if "_crc32c" in metafunc.fixturenames:
-        metafunc.parametrize("_crc32c", ["python", "cffi"], indirect=True)
+        metafunc.parametrize("_crc32c", ["python", "cext"], indirect=True)
 
 @pytest.fixture
 def _crc32c(request):
     if request.param == "python":
         from google_crc32c import python
         return python
-    elif request.param == "cffi":
-        from google_crc32c import cffi
-        return cffi
+    elif request.param == "cext":
+        from google_crc32c import cext
+        return cext
     else:
         raise ValueError("invalid internal test config")
 
@@ -233,7 +235,7 @@ class TestChecksum(object):
 
         for index in itertools.islice(range(ISCSI_LENGTH), 0, None, 7):
             chunk = ISCSI_SCSI_READ_10_COMMAND_PDU[index : index + 7]
-            helper.update(chunk)
+            helper.update(bytes(chunk))
 
         assert helper._crc == ISCSI_CRC
 
@@ -272,7 +274,7 @@ class TestChecksum(object):
     @pytest.mark.parametrize("chunksize", [1, 3, 5, 7, 11, 13, ISCSI_LENGTH])
     def test_consume_stream(_crc32c, chunksize):
         helper = google_crc32c.Checksum()
-        expected = list(iscsi_chunks(chunksize))
+        expected = [bytes(chunk) for chunk in iscsi_chunks(chunksize)]
         stream = mock.Mock(spec=["read"])
         stream.read.side_effect = expected + [b""]
 

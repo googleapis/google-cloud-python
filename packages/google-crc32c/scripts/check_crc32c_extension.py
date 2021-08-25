@@ -12,13 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google_crc32c import _crc32c_cffi
+from google_crc32c import _crc32c
 
 
 def main():
-    print("_crc32c_cffi: {}".format(_crc32c_cffi))
-    print("_crc32c_cffi.lib: {}".format(_crc32c_cffi.lib))
-    print("dir(_crc32c_cffi.lib): {}".format(dir(_crc32c_cffi.lib)))
+    print("_crc32c: {}".format(_crc32c))
+    print("dir(_crc32c): {}".format(dir(_crc32c)))
 
 
 if __name__ == "__main__":

@@ -39,7 +39,7 @@ py -%PYTHON_VERSION% -m pip install cmake
 
 git submodule update --init --recursive
 
-FOR %%V IN (32,64) DO (ddd
+FOR %%V IN (32,64) DO (
     set TARGET_PLATFORM="x64"
 
     if "%%V"=="32" (
@@ -61,7 +61,7 @@ FOR %%V IN (32,64) DO (ddd
 
     echo "Running cmake with Generator:  %CMAKE_GENERATOR%, Platform: !TARGET_PLATFORM!, Install Prefix: %CRC32C_INSTALL_PREFIX%"
 
-    %cmake% -G %CMAKE_GENERATOR% -A !TARGET_PLATFORM! -DCRC32C_BUILD_BENCHMARKS=no -DCRC32C_BUILD_TESTS=no -DBUILD_SHARED_LIBS=yes -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCRC32C_USE_GLOG=0 -DCMAKE_INSTALL_PREFIX:PATH=%CRC32C_INSTALL_PREFIX% ..
+    %cmake% -G %CMAKE_GENERATOR% -A !TARGET_PLATFORM! -DCMAKE_BUILD_TYPE=Release -DCRC32C_BUILD_BENCHMARKS=no -DCRC32C_BUILD_TESTS=no -DBUILD_SHARED_LIBS=yes -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCRC32C_USE_GLOG=0 -DCMAKE_INSTALL_PREFIX:PATH=%CRC32C_INSTALL_PREFIX% ..
 
     %cmake% --build . --config "%CONFIGURATION%" --target install
 
@@ -73,5 +73,8 @@ FOR %%V IN (32,64) DO (ddd
     copy %CRC32C_INSTALL_PREFIX%\bin\crc32c.dll .
 
     py -%PYTHON_VERSION%-%%V -m pip install --upgrade pip setuptools wheel
+    echo "Building C extension"
+    py -%PYTHON_VERSION%-%%V setup.py build_ext --include-dirs=%CRC32C_INSTALL_PREFIX%\include --library-dirs=%CRC32C_INSTALL_PREFIX%\lib
+    echo "Building Wheel"
     py -%PYTHON_VERSION%-%%V -m pip wheel . --wheel-dir wheels/
 )

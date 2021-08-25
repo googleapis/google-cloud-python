@@ -30,7 +30,7 @@ PYTHON38="/Library/Frameworks/Python.framework/Versions/3.8/bin"
 PYTHON39="/Library/Frameworks/Python.framework/Versions/3.9/bin"
 
 # Build and install `libcrc32c`
-export PY_BIN="python3"
+export PY_BIN="${PY_BIN:-python3}"
 export CRC32C_INSTALL_PREFIX="${REPO_ROOT}/usr"
 
 cd ${REPO_ROOT}

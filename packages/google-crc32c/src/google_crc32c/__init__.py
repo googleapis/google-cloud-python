@@ -20,18 +20,18 @@ _SLOW_CRC32C_WARNING = (
     "please configure a c build environment and compile the extension"
 )
 
-# If available, default to CFFI Implementation, otherwise, use pure python.
+# Default to C exstension Implementation, falling back to pure python.
 try:
-    from google_crc32c import cffi as _crc32c
-    implementation = "cffi"
-except ImportError:
-    from google_crc32c import python as _crc32c
+    from google_crc32c import cext as impl
+    implementation = "c"
+except ImportError as exc:
+    from google_crc32c import python as impl
     warnings.warn(_SLOW_CRC32C_WARNING, RuntimeWarning)
     implementation = "python"
 
-extend = _crc32c.extend
-value = _crc32c.value
+extend = impl.extend
+value = impl.value
 
-Checksum = _crc32c.Checksum
+Checksum = impl.Checksum
 
 __all__ = ["extend", "value", "Checksum", "implementation"]

@@ -37,7 +37,7 @@ ${PYTHON} -m venv venv
 venv/bin/pip install ${WHEEL_FILE}
 
 # Verify that the module is installed and peek at contents.
-venv/bin/python scripts/check_cffi_crc32c.py
+venv/bin/python scripts/check_crc32c_extension.py
 unzip -l ${WHEEL_FILE}
 
 # Clean up.

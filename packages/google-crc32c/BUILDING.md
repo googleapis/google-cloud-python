@@ -19,11 +19,10 @@ On Linux:
 
 
 # Install the wheel that was built as a result
-pip install cffi pycparser
 pip install --no-index --find-links=wheels google-crc32c
 
 # Check the package, try and load the native library.
-python ./scripts/check_cffi_crc32c.py
+python ./scripts/check_crc32c_extension.py
 ```
 
 On OS X:
@@ -33,11 +32,10 @@ On OS X:
 ./scripts/osx/build.sh
 
 # Install the wheel that was built as a result
-pip install cffi pycparser
 pip install --no-index --find-links=wheels google-crc32c
 
 # Check the package, try and load the native library.
-python ./scripts/check_cffi_crc32c.py
+python ./scripts/check_crc32c_extension.py
 ```
 
 On Windows:
@@ -64,6 +62,7 @@ $ export CRC32C_INSTALL_PREFIX=$(pwd)/usr
 $ mkdir google_crc32c/build
 $ cd google_crc32c/build
 $ ../../venv/bin/cmake \
+>   -DCMAKE_BUILD_TYPE=Release \
 >   -DCRC32C_BUILD_TESTS=no \
 >   -DCRC32C_BUILD_BENCHMARKS=no \
 >   -DBUILD_SHARED_LIBS=yes \
@@ -76,6 +75,10 @@ $ cd ../..
 Now, run the tests:
 
 ```bash
+$ venv/bin/python setup.py build_ext \
+    --include-dirs=$(pwd)/usr/include \
+    --library-dirs=$(pwd)/usr/lib \
+    --rpath=$(pwd)/usr/lib
 $ venv/bin/pip install -e .[testing]
 $ venv/bin/py.test tests/
 ============================= test session starts ==============================
