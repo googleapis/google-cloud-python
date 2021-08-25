@@ -38,13 +38,14 @@ s.remove_staging_dirs()
 # # Add templated files
 # # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-python.py_samples(skip_readmes=True)
     samples=False,  # set to True only if there are samples
     microgenerator=True,
     cov_level=98,
 
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
+
+python.py_samples(skip_readmes=True)
 
 # Don't treat warnings as errors
 # Docstrings have unexpected idnentation and block quote formatting issues
@@ -55,3 +56,44 @@ s.replace(
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+
+# ----------------------------------------------------------------------------
+# Main Branch migration
+# ----------------------------------------------------------------------------
+
+s.replace(
+  "*.rst",
+  "master",
+  "main"
+)
+
+s.replace(
+  "CONTRIBUTING.rst",
+  "kubernetes/community/blob/main",
+  "kubernetes/community/blob/master"
+)
+
+s.replace(
+  "docs/conf.py",
+  "master",
+  "main"
+)
+
+s.replace(
+  "docs/conf.py",
+  "main_doc",
+  "root_doc"
+)
+
+s.replace(
+  ".kokoro/*",
+  "master",
+  "main"
+)
+
+s.replace(
+  "README.rst",
+  "google-cloud-python/blob/main/README.rst",
+  "google-cloud-python/blob/master/README.rst"
+)
+

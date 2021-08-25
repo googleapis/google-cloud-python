@@ -82,11 +82,11 @@ More Information: `Google Cloud Python Library Support <https://github.com/googl
 Contributing
 ------------
 
-Contributions welcome! See the `Contributing Guide <https://github.com/googleapis/python-dialogflow/blob/master/.github/CONTRIBUTING.md>`_.
+Contributions welcome! See the `Contributing Guide <https://github.com/googleapis/python-dialogflow/blob/main/.github/CONTRIBUTING.md>`_.
 
 License
 -------
 
 Apache Version 2.0
 
-See `the LICENSE file <https://github.com/googleapis/python-dialogflow/blob/master/LICENSE>`_ for more information.
+See `the LICENSE file <https://github.com/googleapis/python-dialogflow/blob/main/LICENSE>`_ for more information.

@@ -141,7 +141,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* use microgenerator. See [Migration Guide](https://github.com/googleapis/python-dialogflow/blob/master/UPGRADING.md). (#239)
+* use microgenerator. See [Migration Guide](https://github.com/googleapis/python-dialogflow/blob/main/UPGRADING.md). (#239)
 
 ### Features
 
