@@ -289,7 +289,7 @@ class MultipartUpload(UploadBase):
             raise TypeError("`data` must be bytes, received", type(data))
 
         checksum_object = _helpers._get_checksum_object(self._checksum_type)
-        if checksum_object:
+        if checksum_object is not None:
             checksum_object.update(data)
             actual_checksum = _helpers.prepare_checksum_digest(checksum_object.digest())
             metadata_key = _helpers._get_metadata_key(self._checksum_type)

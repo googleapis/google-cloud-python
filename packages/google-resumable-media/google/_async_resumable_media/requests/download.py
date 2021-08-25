@@ -90,10 +90,7 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
             self._stream.write(chunk)
             local_checksum_object.update(chunk)
 
-        if expected_checksum is None:
-            return
-
-        else:
+        if expected_checksum is not None:
             actual_checksum = sync_helpers.prepare_checksum_digest(
                 checksum_object.digest()
             )
@@ -216,9 +213,7 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
             self._stream.write(chunk)
             checksum_object.update(chunk)
 
-        if expected_checksum is None:
-            return
-        else:
+        if expected_checksum is not None:
             actual_checksum = sync_helpers.prepare_checksum_digest(
                 checksum_object.digest()
             )

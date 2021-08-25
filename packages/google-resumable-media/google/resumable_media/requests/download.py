@@ -106,9 +106,7 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
                 self._stream.write(chunk)
                 local_checksum_object.update(chunk)
 
-        if expected_checksum is None:
-            return
-        else:
+        if expected_checksum is not None:
             actual_checksum = _helpers.prepare_checksum_digest(checksum_object.digest())
             if actual_checksum != expected_checksum:
                 msg = _CHECKSUM_MISMATCH.format(
@@ -242,9 +240,7 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
                 checksum_object.update(chunk)
             response._content_consumed = True
 
-        if expected_checksum is None:
-            return
-        else:
+        if expected_checksum is not None:
             actual_checksum = _helpers.prepare_checksum_digest(checksum_object.digest())
 
             if actual_checksum != expected_checksum:
