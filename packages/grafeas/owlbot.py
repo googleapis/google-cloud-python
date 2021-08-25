@@ -220,3 +220,44 @@ s.replace(
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+
+# ----------------------------------------------------------------------------
+# Main Branch migration
+# ----------------------------------------------------------------------------
+
+s.replace(
+  "*.rst",
+  "master",
+  "main"
+)
+
+s.replace(
+  "CONTRIBUTING.rst",
+  "kubernetes/community/blob/main",
+  "kubernetes/community/blob/master"
+)
+
+s.replace(
+  "docs/*",
+  "master",
+  "main"
+)
+
+s.replace(
+  "docs/conf.py",
+  "main_doc",
+  "root_doc"
+)
+
+s.replace(
+  ".kokoro/*",
+  "master",
+  "main"
+)
+
+s.replace(
+  "README.rst",
+  "google-cloud-python/blob/main/README.rst",
+  "google-cloud-python/blob/master/README.rst"
+)
+
