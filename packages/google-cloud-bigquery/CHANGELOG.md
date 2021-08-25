@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+### [2.25.1](https://www.github.com/googleapis/python-bigquery/compare/v2.25.0...v2.25.1) (2021-08-25)
+
+
+### Bug Fixes
+
+* populate default `timeout` and retry after client-side timeout ([#896](https://www.github.com/googleapis/python-bigquery/issues/896)) ([b508809](https://www.github.com/googleapis/python-bigquery/commit/b508809c0f887575274309a463e763c56ddd017d))
+* use REST API in cell magic when requested ([#892](https://www.github.com/googleapis/python-bigquery/issues/892)) ([1cb3e55](https://www.github.com/googleapis/python-bigquery/commit/1cb3e55253e824e3a1da5201f6ec09065fb6b627))
+
 ## [2.25.0](https://www.github.com/googleapis/python-bigquery/compare/v2.24.1...v2.25.0) (2021-08-24)
 
 
