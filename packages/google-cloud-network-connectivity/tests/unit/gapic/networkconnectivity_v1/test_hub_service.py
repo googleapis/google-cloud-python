@@ -2533,392 +2533,6 @@ async def test_update_spoke_flattened_error_async():
         )
 
 
-def test_deactivate_spoke(
-    transport: str = "grpc", request_type=hub.DeactivateSpokeRequest
-):
-    client = HubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.deactivate_spoke), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.deactivate_spoke(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.DeactivateSpokeRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-def test_deactivate_spoke_from_dict():
-    test_deactivate_spoke(request_type=dict)
-
-
-def test_deactivate_spoke_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = HubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.deactivate_spoke), "__call__") as call:
-        client.deactivate_spoke()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.DeactivateSpokeRequest()
-
-
-@pytest.mark.asyncio
-async def test_deactivate_spoke_async(
-    transport: str = "grpc_asyncio", request_type=hub.DeactivateSpokeRequest
-):
-    client = HubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.deactivate_spoke), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.deactivate_spoke(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.DeactivateSpokeRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_deactivate_spoke_async_from_dict():
-    await test_deactivate_spoke_async(request_type=dict)
-
-
-def test_deactivate_spoke_field_headers():
-    client = HubServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = hub.DeactivateSpokeRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.deactivate_spoke), "__call__") as call:
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        client.deactivate_spoke(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_deactivate_spoke_field_headers_async():
-    client = HubServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = hub.DeactivateSpokeRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.deactivate_spoke), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
-        await client.deactivate_spoke(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-def test_deactivate_spoke_flattened():
-    client = HubServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.deactivate_spoke), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.deactivate_spoke(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-
-
-def test_deactivate_spoke_flattened_error():
-    client = HubServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.deactivate_spoke(
-            hub.DeactivateSpokeRequest(), name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_deactivate_spoke_flattened_async():
-    client = HubServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.deactivate_spoke), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/op")
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.deactivate_spoke(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_deactivate_spoke_flattened_error_async():
-    client = HubServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.deactivate_spoke(
-            hub.DeactivateSpokeRequest(), name="name_value",
-        )
-
-
-def test_activate_spoke(transport: str = "grpc", request_type=hub.ActivateSpokeRequest):
-    client = HubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.activate_spoke), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.activate_spoke(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.ActivateSpokeRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-def test_activate_spoke_from_dict():
-    test_activate_spoke(request_type=dict)
-
-
-def test_activate_spoke_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = HubServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.activate_spoke), "__call__") as call:
-        client.activate_spoke()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.ActivateSpokeRequest()
-
-
-@pytest.mark.asyncio
-async def test_activate_spoke_async(
-    transport: str = "grpc_asyncio", request_type=hub.ActivateSpokeRequest
-):
-    client = HubServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.activate_spoke), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.activate_spoke(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == hub.ActivateSpokeRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_activate_spoke_async_from_dict():
-    await test_activate_spoke_async(request_type=dict)
-
-
-def test_activate_spoke_field_headers():
-    client = HubServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = hub.ActivateSpokeRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.activate_spoke), "__call__") as call:
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        client.activate_spoke(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_activate_spoke_field_headers_async():
-    client = HubServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = hub.ActivateSpokeRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.activate_spoke), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
-        await client.activate_spoke(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-def test_activate_spoke_flattened():
-    client = HubServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.activate_spoke), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.activate_spoke(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-
-
-def test_activate_spoke_flattened_error():
-    client = HubServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.activate_spoke(
-            hub.ActivateSpokeRequest(), name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_activate_spoke_flattened_async():
-    client = HubServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.activate_spoke), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/op")
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.activate_spoke(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_activate_spoke_flattened_error_async():
-    client = HubServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.activate_spoke(
-            hub.ActivateSpokeRequest(), name="name_value",
-        )
-
-
 def test_delete_spoke(transport: str = "grpc", request_type=hub.DeleteSpokeRequest):
     client = HubServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
@@ -3214,8 +2828,6 @@ def test_hub_service_base_transport():
         "get_spoke",
         "create_spoke",
         "update_spoke",
-        "deactivate_spoke",
-        "activate_spoke",
         "delete_spoke",
     )
     for method in methods:
@@ -3649,10 +3261,32 @@ def test_parse_interconnect_attachment_path():
     assert expected == actual
 
 
-def test_spoke_path():
+def test_network_path():
     project = "oyster"
-    location = "nudibranch"
-    spoke = "cuttlefish"
+    resource_id = "nudibranch"
+    expected = "projects/{project}/global/networks/{resource_id}".format(
+        project=project, resource_id=resource_id,
+    )
+    actual = HubServiceClient.network_path(project, resource_id)
+    assert expected == actual
+
+
+def test_parse_network_path():
+    expected = {
+        "project": "cuttlefish",
+        "resource_id": "mussel",
+    }
+    path = HubServiceClient.network_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = HubServiceClient.parse_network_path(path)
+    assert expected == actual
+
+
+def test_spoke_path():
+    project = "winkle"
+    location = "nautilus"
+    spoke = "scallop"
     expected = "projects/{project}/locations/{location}/spokes/{spoke}".format(
         project=project, location=location, spoke=spoke,
     )
@@ -3662,9 +3296,9 @@ def test_spoke_path():
 
 def test_parse_spoke_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "spoke": "nautilus",
+        "project": "abalone",
+        "location": "squid",
+        "spoke": "clam",
     }
     path = HubServiceClient.spoke_path(**expected)
 
@@ -3674,9 +3308,9 @@ def test_parse_spoke_path():
 
 
 def test_vpn_tunnel_path():
-    project = "scallop"
-    region = "abalone"
-    resource_id = "squid"
+    project = "whelk"
+    region = "octopus"
+    resource_id = "oyster"
     expected = "projects/{project}/regions/{region}/vpnTunnels/{resource_id}".format(
         project=project, region=region, resource_id=resource_id,
     )
@@ -3686,9 +3320,9 @@ def test_vpn_tunnel_path():
 
 def test_parse_vpn_tunnel_path():
     expected = {
-        "project": "clam",
-        "region": "whelk",
-        "resource_id": "octopus",
+        "project": "nudibranch",
+        "region": "cuttlefish",
+        "resource_id": "mussel",
     }
     path = HubServiceClient.vpn_tunnel_path(**expected)
 
@@ -3698,7 +3332,7 @@ def test_parse_vpn_tunnel_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3708,7 +3342,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "nautilus",
     }
     path = HubServiceClient.common_billing_account_path(**expected)
 
@@ -3718,7 +3352,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "scallop"
     expected = "folders/{folder}".format(folder=folder,)
     actual = HubServiceClient.common_folder_path(folder)
     assert expected == actual
@@ -3726,7 +3360,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "abalone",
     }
     path = HubServiceClient.common_folder_path(**expected)
 
@@ -3736,7 +3370,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "squid"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = HubServiceClient.common_organization_path(organization)
     assert expected == actual
@@ -3744,7 +3378,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "clam",
     }
     path = HubServiceClient.common_organization_path(**expected)
 
@@ -3754,7 +3388,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "whelk"
     expected = "projects/{project}".format(project=project,)
     actual = HubServiceClient.common_project_path(project)
     assert expected == actual
@@ -3762,7 +3396,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "octopus",
     }
     path = HubServiceClient.common_project_path(**expected)
 
@@ -3772,8 +3406,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -3783,8 +3417,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = HubServiceClient.common_location_path(**expected)
 

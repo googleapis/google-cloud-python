@@ -18,10 +18,8 @@ from .services.hub_service import HubServiceClient
 from .services.hub_service import HubServiceAsyncClient
 
 from .types.common import OperationMetadata
-from .types.hub import ActivateSpokeRequest
 from .types.hub import CreateHubRequest
 from .types.hub import CreateSpokeRequest
-from .types.hub import DeactivateSpokeRequest
 from .types.hub import DeleteHubRequest
 from .types.hub import DeleteSpokeRequest
 from .types.hub import GetHubRequest
@@ -35,6 +33,7 @@ from .types.hub import ListHubsResponse
 from .types.hub import ListSpokesRequest
 from .types.hub import ListSpokesResponse
 from .types.hub import RouterApplianceInstance
+from .types.hub import RoutingVPC
 from .types.hub import Spoke
 from .types.hub import UpdateHubRequest
 from .types.hub import UpdateSpokeRequest
@@ -42,10 +41,8 @@ from .types.hub import State
 
 __all__ = (
     "HubServiceAsyncClient",
-    "ActivateSpokeRequest",
     "CreateHubRequest",
     "CreateSpokeRequest",
-    "DeactivateSpokeRequest",
     "DeleteHubRequest",
     "DeleteSpokeRequest",
     "GetHubRequest",
@@ -61,6 +58,7 @@ __all__ = (
     "ListSpokesResponse",
     "OperationMetadata",
     "RouterApplianceInstance",
+    "RoutingVPC",
     "Spoke",
     "State",
     "UpdateHubRequest",

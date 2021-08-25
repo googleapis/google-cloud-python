@@ -43,10 +43,10 @@ class OperationMetadata(proto.Message):
             operation, if any.
         requested_cancellation (bool):
             Output only. Identifies whether the user has requested
-            cancellation of the operation. Operations that have
-            successfully been cancelled have [Operation.error][] value
-            with a [google.rpc.Status.code][google.rpc.Status.code] of
-            1, corresponding to ``Code.CANCELLED``.
+            cancellation of the operation. Operations that have been
+            cancelled successfully have [Operation.error][] value with a
+            [google.rpc.Status.code][google.rpc.Status.code] of 1,
+            corresponding to ``Code.CANCELLED``.
         api_version (str):
             Output only. API version used to start the
             operation.

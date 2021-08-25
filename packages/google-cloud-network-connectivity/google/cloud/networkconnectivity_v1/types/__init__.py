@@ -15,10 +15,8 @@
 #
 from .common import OperationMetadata
 from .hub import (
-    ActivateSpokeRequest,
     CreateHubRequest,
     CreateSpokeRequest,
-    DeactivateSpokeRequest,
     DeleteHubRequest,
     DeleteSpokeRequest,
     GetHubRequest,
@@ -32,6 +30,7 @@ from .hub import (
     ListSpokesRequest,
     ListSpokesResponse,
     RouterApplianceInstance,
+    RoutingVPC,
     Spoke,
     UpdateHubRequest,
     UpdateSpokeRequest,
@@ -40,10 +39,8 @@ from .hub import (
 
 __all__ = (
     "OperationMetadata",
-    "ActivateSpokeRequest",
     "CreateHubRequest",
     "CreateSpokeRequest",
-    "DeactivateSpokeRequest",
     "DeleteHubRequest",
     "DeleteSpokeRequest",
     "GetHubRequest",
@@ -57,6 +54,7 @@ __all__ = (
     "ListSpokesRequest",
     "ListSpokesResponse",
     "RouterApplianceInstance",
+    "RoutingVPC",
     "Spoke",
     "UpdateHubRequest",
     "UpdateSpokeRequest",

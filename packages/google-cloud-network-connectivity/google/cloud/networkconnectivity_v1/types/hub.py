@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
     manifest={
         "State",
         "Hub",
+        "RoutingVPC",
         "Spoke",
         "ListHubsRequest",
         "ListHubsResponse",
@@ -37,8 +38,6 @@ __protobuf__ = proto.module(
         "CreateSpokeRequest",
         "UpdateSpokeRequest",
         "DeleteSpokeRequest",
-        "DeactivateSpokeRequest",
-        "ActivateSpokeRequest",
         "LinkedVpnTunnels",
         "LinkedInterconnectAttachments",
         "LinkedRouterApplianceInstances",
@@ -87,6 +86,16 @@ class Hub(proto.Message):
         state (google.cloud.networkconnectivity_v1.types.State):
             Output only. The current lifecycle state of
             this hub.
+        routing_vpcs (Sequence[google.cloud.networkconnectivity_v1.types.RoutingVPC]):
+            The VPC network associated with this hub's
+            spokes. All of the VPN tunnels, VLAN
+            attachments, and router appliance instances
+            referenced by this hub's spokes must belong to
+            this VPC network.
+
+            This field is read-only. Network Connectivity
+            Center automatically populates it based on the
+            set of spokes attached to the hub.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -96,6 +105,19 @@ class Hub(proto.Message):
     description = proto.Field(proto.STRING, number=5,)
     unique_id = proto.Field(proto.STRING, number=8,)
     state = proto.Field(proto.ENUM, number=9, enum="State",)
+    routing_vpcs = proto.RepeatedField(proto.MESSAGE, number=10, message="RoutingVPC",)
+
+
+class RoutingVPC(proto.Message):
+    r"""RoutingsVPC contains information about a VPC network that is
+    associated with a hub's spokes.
+
+    Attributes:
+        uri (str):
+            The URI of a VPC network.
+    """
+
+    uri = proto.Field(proto.STRING, number=1,)
 
 
 class Spoke(proto.Message):
@@ -529,73 +551,6 @@ class DeleteSpokeRequest(proto.Message):
     request_id = proto.Field(proto.STRING, number=2,)
 
 
-class DeactivateSpokeRequest(proto.Message):
-    r"""The request for
-    [HubService.DeactivateSpoke][google.cloud.networkconnectivity.v1.HubService.DeactivateSpoke].
-
-    Attributes:
-        name (str):
-            Required. The name of the spoke to
-            deactivate.
-        request_id (str):
-            Optional. A unique request ID (optional). If
-            you specify this ID, you can use it in cases
-            when you need to retry your request. When you
-            need to retry, this ID lets the server know that
-            it can ignore the request if it has already been
-            completed. The server guarantees that for at
-            least 60 minutes after the first request.
-
-            For example, consider a situation where you make
-            an initial request and the request times out. If
-            you make the request again with the same request
-            ID, the server can check to see whether the
-            original operation was received. If it was, the
-            server ignores the second request. This behavior
-            prevents clients from mistakenly creating
-            duplicate commitments.
-            The request ID must be a valid UUID, with the
-            exception that zero UUID is not supported
-            (00000000-0000-0000-0000-000000000000).
-    """
-
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
-
-
-class ActivateSpokeRequest(proto.Message):
-    r"""The request for
-    [HubService.ActivateSpoke][google.cloud.networkconnectivity.v1.HubService.ActivateSpoke].
-
-    Attributes:
-        name (str):
-            Required. The name of the spoke to activate.
-        request_id (str):
-            Optional. A unique request ID (optional). If
-            you specify this ID, you can use it in cases
-            when you need to retry your request. When you
-            need to retry, this ID lets the server know that
-            it can ignore the request if it has already been
-            completed. The server guarantees that for at
-            least 60 minutes after the first request.
-
-            For example, consider a situation where you make
-            an initial request and the request times out. If
-            you make the request again with the same request
-            ID, the server can check to see whether the
-            original operation was received. If it was, the
-            server ignores the second request. This behavior
-            prevents clients from mistakenly creating
-            duplicate commitments.
-            The request ID must be a valid UUID, with the
-            exception that zero UUID is not supported
-            (00000000-0000-0000-0000-000000000000).
-    """
-
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
-
-
 class LinkedVpnTunnels(proto.Message):
     r"""A collection of Cloud VPN tunnel resources. These resources
     should be redundant HA VPN tunnels that all advertise the same
@@ -608,15 +563,10 @@ class LinkedVpnTunnels(proto.Message):
             The URIs of linked VPN tunnel resources.
         site_to_site_data_transfer (bool):
             A value that controls whether site-to-site
-            data transfer is enabled for these resources. If
-            true, routes are propagated between the spoke
-            associated with these resources and other spokes
-            in the hub that have data transfer enabled. If
-            false, the spoke associated with these resources
-            provides connectivity only between the external
-            site and Google Cloud. In regions where data
-            transfer is unsupported, you cannot set this
-            field to true.
+            data transfer is enabled for these resources.
+            This field is set to false by default, but you
+            must set it to true. Note that data transfer is
+            available only in supported locations.
     """
 
     uris = proto.RepeatedField(proto.STRING, number=1,)
@@ -636,15 +586,10 @@ class LinkedInterconnectAttachments(proto.Message):
             resources
         site_to_site_data_transfer (bool):
             A value that controls whether site-to-site
-            data transfer is enabled for these resources. If
-            true, routes are propagated between the spoke
-            associated with these resources and other spokes
-            in the hub that have data transfer enabled. If
-            false, the spoke associated with these resources
-            provides connectivity only between the external
-            site and Google Cloud. In regions where data
-            transfer is unsupported, you cannot set this
-            field to true.
+            data transfer is enabled for these resources.
+            This field is set to false by default, but you
+            must set it to true. Note that data transfer is
+            available only in supported locations.
     """
 
     uris = proto.RepeatedField(proto.STRING, number=1,)
@@ -661,15 +606,10 @@ class LinkedRouterApplianceInstances(proto.Message):
             The list of router appliance instances.
         site_to_site_data_transfer (bool):
             A value that controls whether site-to-site
-            data transfer is enabled for these resources. If
-            true, routes are propagated between the spoke
-            associated with these resources and other spokes
-            in the hub that have data transfer enabled. If
-            false, the spoke associated with these resources
-            provides connectivity only between the external
-            site and Google Cloud. In regions where data
-            transfer is unsupported, you cannot set this
-            field to true.
+            data transfer is enabled for these resources.
+            This field is set to false by default, but you
+            must set it to true. Note that data transfer is
+            available only in supported locations.
     """
 
     instances = proto.RepeatedField(

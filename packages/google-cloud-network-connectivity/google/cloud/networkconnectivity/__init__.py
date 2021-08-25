@@ -22,10 +22,8 @@ from google.cloud.networkconnectivity_v1.services.hub_service.async_client impor
 )
 
 from google.cloud.networkconnectivity_v1.types.common import OperationMetadata
-from google.cloud.networkconnectivity_v1.types.hub import ActivateSpokeRequest
 from google.cloud.networkconnectivity_v1.types.hub import CreateHubRequest
 from google.cloud.networkconnectivity_v1.types.hub import CreateSpokeRequest
-from google.cloud.networkconnectivity_v1.types.hub import DeactivateSpokeRequest
 from google.cloud.networkconnectivity_v1.types.hub import DeleteHubRequest
 from google.cloud.networkconnectivity_v1.types.hub import DeleteSpokeRequest
 from google.cloud.networkconnectivity_v1.types.hub import GetHubRequest
@@ -39,6 +37,7 @@ from google.cloud.networkconnectivity_v1.types.hub import ListHubsResponse
 from google.cloud.networkconnectivity_v1.types.hub import ListSpokesRequest
 from google.cloud.networkconnectivity_v1.types.hub import ListSpokesResponse
 from google.cloud.networkconnectivity_v1.types.hub import RouterApplianceInstance
+from google.cloud.networkconnectivity_v1.types.hub import RoutingVPC
 from google.cloud.networkconnectivity_v1.types.hub import Spoke
 from google.cloud.networkconnectivity_v1.types.hub import UpdateHubRequest
 from google.cloud.networkconnectivity_v1.types.hub import UpdateSpokeRequest
@@ -48,10 +47,8 @@ __all__ = (
     "HubServiceClient",
     "HubServiceAsyncClient",
     "OperationMetadata",
-    "ActivateSpokeRequest",
     "CreateHubRequest",
     "CreateSpokeRequest",
-    "DeactivateSpokeRequest",
     "DeleteHubRequest",
     "DeleteSpokeRequest",
     "GetHubRequest",
@@ -65,6 +62,7 @@ __all__ = (
     "ListSpokesRequest",
     "ListSpokesResponse",
     "RouterApplianceInstance",
+    "RoutingVPC",
     "Spoke",
     "UpdateHubRequest",
     "UpdateSpokeRequest",
