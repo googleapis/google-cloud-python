@@ -1,5 +1,4 @@
 auditwheel >= 2.1.1; sys_platform == 'linux' or sys_platform == 'linux2'
-cffi >= 1.13.2
 delocate >= 0.8.0; sys_platform == 'darwin'
 setuptools >= 42.0.2
 # See: https://github.com/pypa/auditwheel/issues/102

@@ -58,6 +58,7 @@ ls
 
 # We don't build i386 anymore as XCode no longer supports.
 ${VENV}/bin/cmake \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 \
     -DCMAKE_OSX_ARCHITECTURES="x86_64" \
     -DCRC32C_BUILD_TESTS=no \

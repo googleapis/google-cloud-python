@@ -17,6 +17,7 @@ set -e -x
 
 MAIN_PYTHON_BIN="/opt/python/cp37-cp37m/bin"
 echo "BUILD_PYTHON: ${BUILD_PYTHON}"
+REPO_ROOT=/var/code/python-crc32c/
 
 # Upgrade `pip` before using it.
 ${MAIN_PYTHON_BIN}/python -m pip install --upgrade pip
@@ -24,13 +25,15 @@ ${MAIN_PYTHON_BIN}/python -m pip install --upgrade pip
 ${MAIN_PYTHON_BIN}/python -m pip install "cmake >= 3.12.0"
 # Install Python build dependencies.
 ${MAIN_PYTHON_BIN}/python -m pip install \
-    --requirement /var/code/python-crc32c/scripts/dev-requirements.txt
+    --requirement ${REPO_ROOT}/scripts/dev-requirements.txt
 
 # Build and install `crc32c`
-cd /var/code/python-crc32c/google_crc32c/
+cd ${REPO_ROOT}/google_crc32c/
+rm -rf build
 mkdir build
 cd build/
 ${MAIN_PYTHON_BIN}/cmake \
+    -DCMAKE_BUILD_TYPE=Release \
     -DCRC32C_BUILD_TESTS=no \
     -DCRC32C_BUILD_BENCHMARKS=no \
     -DBUILD_SHARED_LIBS=yes \
@@ -72,11 +75,11 @@ else
 fi
 
 # Build the wheels.
-cd /var/code/python-crc32c/
+cd ${REPO_ROOT}
 for PYTHON_BIN in ${VERSION_WHITELIST}; do
     ${PYTHON_BIN}/python -m pip install --upgrade pip
     ${PYTHON_BIN}/python -m pip install \
-        --requirement /var/code/python-crc32c/scripts/dev-requirements.txt
+        --requirement ${REPO_ROOT}/scripts/dev-requirements.txt
     ${PYTHON_BIN}/python -m pip wheel . --wheel-dir dist_wheels/
 done
 
@@ -86,5 +89,5 @@ for whl in dist_wheels/google_crc32c*.whl; do
 done
 
 # Clean up.
-rm -fr /var/code/python-crc32c/google_crc32c/build/
-rm -fr /var/code/python-crc32c/dist_wheels/
+rm -fr ${REPO_ROOT}/google_crc32c/build/
+rm -fr ${REPO_ROOT}/dist_wheels/
