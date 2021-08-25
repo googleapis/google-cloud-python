@@ -54,13 +54,13 @@
             ]
           },
           {
-            "name": "storage.buckets.lockRententionPolicy",
+            "name": "storage.buckets.lockRetentionPolicy",
             "resources": [
               "BUCKET"
             ]
           },
           {
-            "name": "storage.buckets.testIamPermission",
+            "name": "storage.buckets.testIamPermissions",
             "resources": [
               "BUCKET"
             ]

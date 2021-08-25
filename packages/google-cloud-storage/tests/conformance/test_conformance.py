@@ -164,7 +164,6 @@ def bucket_test_iam_permissions(client, _preconditions, **resources):
     bucket.test_iam_permissions(permissions)
 
 
-# TODO(cathyo@): issue resolved in the new testbench where buckets have a valid metageneration
 def bucket_lock_retention_policy(client, _preconditions, **resources):
     bucket = client.bucket(resources.get("bucket").name)
     bucket.retention_period = 60
@@ -222,8 +221,8 @@ def client_get_service_account_email(client, _preconditions, **_):
     client.get_service_account_email()
 
 
-def bucket_patch(client, _preconditions, **_):
-    bucket = client.get_bucket("bucket")
+def bucket_patch(client, _preconditions, **resources):
+    bucket = client.get_bucket(resources.get("bucket").name)
     metageneration = bucket.metageneration
     bucket.storage_class = "COLDLINE"
     if _preconditions:
@@ -233,7 +232,7 @@ def bucket_patch(client, _preconditions, **_):
 
 
 def bucket_update(client, _preconditions, **resources):
-    bucket = client.get_bucket("bucket")
+    bucket = client.get_bucket(resources.get("bucket").name)
     metageneration = bucket.metageneration
     bucket._properties = {"storageClass": "STANDARD"}
     if _preconditions:
@@ -252,6 +251,8 @@ def bucket_set_iam_policy(client, _preconditions, **resources):
     if _preconditions:
         bucket.set_iam_policy(policy)
     else:
+        # IAM policies have no metageneration:  clear ETag to avoid checking that it matches.
+        policy.etag = None
         bucket.set_iam_policy(policy)
 
 
@@ -311,7 +312,7 @@ def blob_update(client, _preconditions, **resources):
 def bucket_copy_blob(client, _preconditions, **resources):
     object = resources.get("object")
     bucket = client.bucket(resources.get("bucket").name)
-    destination = client.bucket("bucket")
+    destination = client.create_bucket(uuid.uuid4().hex)
     if _preconditions:
         bucket.copy_blob(
             object, destination, new_name=uuid.uuid4().hex, if_generation_match=0
@@ -443,8 +444,8 @@ method_mapping = {
     "storage.buckets.getIamPolicy": [bucket_get_iam_policy],
     "storage.buckets.insert": [client_create_bucket, bucket_create],
     "storage.buckets.list": [client_list_buckets],
-    "storage.buckets.lockRententionPolicy": [],
-    "storage.buckets.testIamPermission": [bucket_test_iam_permissions],
+    "storage.buckets.lockRetentionPolicy": [bucket_lock_retention_policy],
+    "storage.buckets.testIamPermissions": [bucket_test_iam_permissions],
     "storage.notifications.delete": [notification_delete],
     "storage.notifications.get": [
         bucket_get_notification,
@@ -466,7 +467,7 @@ method_mapping = {
         bucket_list_blobs,
         bucket_delete,
     ],  # S1 end
-    "storage.buckets.patch": [bucket_patch],  # S2 start
+    "storage.buckets.patch": [bucket_patch],  # S2/S3 start
     "storage.buckets.setIamPolicy": [bucket_set_iam_policy],
     "storage.buckets.update": [bucket_update],
     "storage.objects.compose": [blob_compose],
@@ -474,7 +475,6 @@ method_mapping = {
     "storage.objects.delete": [
         bucket_delete_blob,
         bucket_delete_blobs,
-        bucket_delete,
         blob_delete,
         bucket_rename_blob,
     ],
@@ -487,7 +487,7 @@ method_mapping = {
     ],
     "storage.objects.patch": [blob_patch],
     "storage.objects.rewrite": [blob_rewrite, blob_update_storage_class],
-    "storage.objects.update": [blob_update],  # S2 end
+    "storage.objects.update": [blob_update],  # S2/S3 end
 }
 
 
