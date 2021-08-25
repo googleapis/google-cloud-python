@@ -1039,18 +1039,48 @@ def pretty_package_name(package_group):
     return " ".join(capitalized_name)
 
 
+# Check is the current lines conform to markdown header format.
+def parse_markdown_header(header_line, prev_line):
+    # Markdown h1 prefix should have only 1 of '#' character followed by exactly one space.
+    h1_header_prefix = "# "
+    if h1_header_prefix in header_line and header_line.count("#") == 1:
+        # Check for proper h1 header formatting, ensure there's more than just
+        # the hashtag character, and exactly only one space after the hashtag.
+        if not header_line[header_line.index(h1_header_prefix)+2].isspace() and \
+            len(header_line) > 2:
+
+            return header_line.strip("#").strip()
+
+    elif "=" in header_line:
+        # Check if we're inspecting an empty or undefined lines.
+        if not prev_line:
+            return ""
+
+        # Check if the current line only has equal sign divider.
+        if header_line.count("=") == len(header_line.strip()):
+            # Update header to the previous line.
+            return prev_line.strip()
+
+    return ""
+
+
 # For a given markdown file, extract its header line.
 def extract_header_from_markdown(mdfile_iterator):
+    mdfile_name = mdfile_iterator.name.split("/")[-1].split(".")[0].capitalize()
+    prev_line = ""
+
     for header_line in mdfile_iterator:
+
         # Ignore licenses and other non-headers prior to the header.
-        if "#" in header_line:
-            break
+        header = parse_markdown_header(header_line, prev_line)
+        # If we've found the header, return the header.
+        if header != "":
+            return header
 
-    if header_line.count("#") != 1:
-        raise ValueError(f"The first header of {mdfile_iterator.name} is not a h1 header: {header_line}")
+        prev_line = header_line
 
-    # Extract the header name.
-    return header_line.strip("#").strip()
+    print(f"Could not find a title for {mdfile_iterator.name}. Using {mdfile_name} as the title instead.")
+    return mdfile_name
 
 
 # Given generated markdown files, incorporate them into the docfx_yaml output.

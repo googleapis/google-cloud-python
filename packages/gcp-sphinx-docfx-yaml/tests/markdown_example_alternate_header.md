@@ -11,8 +11,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
+This is a simple alternate header
+=================================
 
-# Test header for a simple markdown file.
+With a different style
+----------------------
 
-##Content header
-This is a simple line followed by an h2 header.
+This is a simple markdown file testing for different header style.

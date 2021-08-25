@@ -8,6 +8,7 @@ from docfx_yaml.extension import find_package_group
 from docfx_yaml.extension import pretty_package_name
 from docfx_yaml.extension import group_by_package
 from docfx_yaml.extension import extract_header_from_markdown
+from docfx_yaml.extension import parse_markdown_header
 
 import unittest
 
@@ -40,20 +41,17 @@ class TestGenerate(unittest.TestCase):
 
     def test_disambiguate_toc_name(self):
 
-        want_file = open('tests/yaml_post.yaml', 'r')
-        yaml_want = load(want_file, Loader=Loader)
+        with open('tests/yaml_post.yaml', 'r') as want_file:
+            yaml_want = load(want_file, Loader=Loader)
         disambiguated_names_want = {
             'google.cloud.spanner_admin_database_v1.types': 'spanner_admin_database_v1.types',
-            'google.cloud.spanner_admin_instance_v1.types': 'spanner_admin_instance_v1.types', 
+            'google.cloud.spanner_admin_instance_v1.types': 'spanner_admin_instance_v1.types',
             'google.cloud.spanner_v1.types': 'spanner_v1.types'
         }
 
-        test_file = open('tests/yaml_pre.yaml', 'r')
-        yaml_got = load(test_file, Loader=Loader)
+        with open('tests/yaml_pre.yaml', 'r') as test_file:
+            yaml_got = load(test_file, Loader=Loader)
         disambiguated_names_got = disambiguate_toc_name(yaml_got)
-
-        want_file.close()
-        test_file.close()
 
         self.assertEqual(yaml_want, yaml_got)
         self.assertEqual(disambiguated_names_want, disambiguated_names_got)
@@ -61,19 +59,17 @@ class TestGenerate(unittest.TestCase):
 
     def test_disambiguate_toc_name_duplicate(self):
 
-        want_file = open('tests/yaml_post_duplicate.yaml', 'r')
-        yaml_want = load(want_file, Loader=Loader)
+        with open('tests/yaml_post_duplicate.yaml', 'r') as want_file:
+            yaml_want = load(want_file, Loader=Loader)
         disambiguated_names_want = {
-            'google.api_core.client_info': 'client_info', 
+            'google.api_core.client_info': 'client_info',
             'google.api_core.gapic_v1.client_info': 'gapic_v1.client_info'
         }
-        
-        test_file = open('tests/yaml_pre_duplicate.yaml', 'r')
-        yaml_got = load(test_file, Loader=Loader)
+
+        with open('tests/yaml_pre_duplicate.yaml', 'r') as test_file:
+            yaml_got = load(test_file, Loader=Loader)
         disambiguated_names_got = disambiguate_toc_name(yaml_got)
 
-        want_file.close()
-        test_file.close()
 
         self.assertEqual(yaml_want, yaml_got)
         self.assertEqual(disambiguated_names_want, disambiguated_names_got)
@@ -538,41 +534,149 @@ Simple test for docstring.
         self.assertCountEqual(toc_yaml_got, toc_yaml_want)
 
 
+    def test_parse_markdown_header(self):
+        # Test for simple header_line.
+        header_line_want = "Test header"
+
+        header_line = "# Test header"
+        prev_line = ""
+
+        header_line_got = parse_markdown_header(header_line, prev_line)
+
+        self.assertEqual(header_line_got, header_line_want)
+
+        # Test for invalid input.
+        header_line_want = ""
+
+        header_line = "#Test header"
+        prev_line = ""
+
+        header_line_got = parse_markdown_header(header_line, prev_line)
+
+        self.assertEqual(header_line_got, header_line_want)
+
+        # Test for invalid input.
+        header_line_want = ""
+
+        header_line = "#  Test header"
+        prev_line = ""
+
+        header_line_got = parse_markdown_header(header_line, prev_line)
+
+        self.assertEqual(header_line_got, header_line_want)
+
+        # Test for no header.
+        header_line_want = ""
+
+        header_line = "-->"
+        prev_line = "limitations under the License.\n"
+
+        header_line_got = parse_markdown_header(header_line, prev_line)
+
+        self.assertEqual(header_line_got, header_line_want)
+
+
+    def test_parse_markdown_header_alternate(self):
+        # Test for simple alternate header.
+        header_line_want = "Test header"
+
+        header_line = "============\n"
+        prev_line = "Test header"
+
+        header_line_got = parse_markdown_header(header_line, prev_line)
+
+        self.assertEqual(header_line_got, header_line_want)
+
+        # Test for no header.
+        header_line_want = ""
+
+        header_line = "============\n"
+        prev_line = ""
+
+        header_line_got = parse_markdown_header(header_line, prev_line)
+
+        self.assertEqual(header_line_got, header_line_want)
+
+
+        # Test for shorter divider.
+        header_line_want = "Test header"
+
+        header_line = "======\n"
+        prev_line = "Test header"
+
+        header_line_got = parse_markdown_header(header_line, prev_line)
+
+        self.assertEqual(header_line_got, header_line_want)
+
+
     def test_extract_header_from_markdown(self):
         # Check the header for a normal markdown file.
         header_line_want = "Test header for a simple markdown file."
 
-        mdfile = open('tests/markdown_example.md', 'r')
-        header_line_got = extract_header_from_markdown(mdfile)
+        with open('tests/markdown_example.md', 'r') as mdfile:
+            header_line_got = extract_header_from_markdown(mdfile)
 
         self.assertEqual(header_line_got, header_line_want)
-        mdfile.close()
 
         # The header should be the same even with the license header.
         header_line_with_license_want = header_line_want
 
-        mdfile = open('tests/markdown_example_header.md', 'r')
-        header_line_with_license_got = extract_header_from_markdown(mdfile)
+        with open('tests/markdown_example_header.md', 'r') as mdfile_license:
+            header_line_with_license_got = extract_header_from_markdown(mdfile_license)
 
         self.assertEqual(header_line_with_license_got, header_line_with_license_want)
-        mdfile.close()
 
 
-    def test_extract_header_from_markdown_check_error(self):
-        # Check an exception is thrown for markdown files that's not well
-        # formatted.
-        mdfile = open('tests/markdown_example_bad.md', 'r')
-        with self.assertRaises(ValueError):
-            header_line = extract_header_from_markdown(mdfile)
+    def test_extract_header_from_markdown_alternate_header(self):
+        # Check the header for an alternate header style.
+        header_line_want = "This is a simple alternate header"
 
-        mdfile.close()
+        with open('tests/markdown_example_alternate.md', 'r') as mdfile:
+            header_line_got = extract_header_from_markdown(mdfile)
 
-        mdfile = open('tests/markdown_example_noheader.md', 'r')
-        with self.assertRaises(ValueError):
-            header_line = extract_header_from_markdown(mdfile)
+        self.assertEqual(header_line_got, header_line_want)
 
-        mdfile.close()
+        # The header should be the same even with the license header.
+        header_line_with_license_want = header_line_want
 
+        with open('tests/markdown_example_alternate_header.md', 'r') as mdfile:
+            header_line_with_license_got = extract_header_from_markdown(mdfile)
+
+        self.assertEqual(header_line_with_license_got, header_line_with_license_want)
+
+        # Check the header for an alternate header style.
+        header_line_want = "This is a simple alternate header"
+
+        with open('tests/markdown_example_alternate_less.md', 'r') as mdfile:
+            header_line_got = extract_header_from_markdown(mdfile)
+
+        self.assertEqual(header_line_got, header_line_want)
+
+
+    def test_extract_header_from_markdown_bad_headers(self):
+        # Check that the filename is used as header if no valid header is found.
+        header_line_want = "Markdown_example_bad_header"
+
+        with open('tests/markdown_example_bad_header.md', 'r') as mdfile:
+            header_line_got = extract_header_from_markdown(mdfile)
+
+        self.assertEqual(header_line_want, header_line_got)
+
+        # Check that only h1 headers are parsed.
+        header_line_want = "Markdown_example_h2"
+
+        with open('tests/markdown_example_h2.md', 'r') as mdfile:
+            header_line_got = extract_header_from_markdown(mdfile)
+
+        self.assertEqual(header_line_want, header_line_got)
+
+        # Check that there must be a line before the h1 header breaker.
+        header_line_want = "Markdown_example_alternate_bad"
+
+        with open('tests/markdown_example_alternate_bad.md', 'r') as mdfile:
+            header_line_got = extract_header_from_markdown(mdfile)
+
+        self.assertEqual(header_line_want, header_line_got)
 
 
 if __name__ == '__main__':
