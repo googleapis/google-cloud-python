@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.0.0...v1.0.1) (2021-08-25)
+
+
+### Bug Fixes
+
+* do not omit arguments retrieved from docstring ([#114](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/114)) ([18bf0de](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/18bf0de2b761feabdcba071690d04b4dac0a6001))
+* parse markdown header more carefully ([#111](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/111)) ([485b248](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/485b248091a6dffd8f4c0cd77a8fcb4fde8eca09))
+
 ## [1.0.0](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.5.2...v1.0.0) (2021-08-24)
 
 
