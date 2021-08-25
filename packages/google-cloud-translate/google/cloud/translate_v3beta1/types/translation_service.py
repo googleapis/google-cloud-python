@@ -131,14 +131,12 @@ class TranslateTextRequest(proto.Message):
 
             -  General (built-in) models:
                ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
-               ``projects/{project-number-or-id}/locations/{location-id}/models/general/base``
 
             For global (non-regionalized) requests, use ``location-id``
             ``global``. For example,
             ``projects/{project-number-or-id}/locations/global/models/general/nmt``.
 
-            If missing, the system decides which google base model to
-            use.
+            If not provided, the default Google model (NMT) will be used
         glossary_config (google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig):
             Optional. Glossary to be applied. The glossary must be
             within the same region (have the same location-id) as the
@@ -196,6 +194,8 @@ class Translation(proto.Message):
     Attributes:
         translated_text (str):
             Text translated into the target language.
+            If an error occurs during translation, this
+            field might be excluded from the response.
         model (str):
             Only present when ``model`` is present in the request.
             ``model`` here is normalized to have project number.
@@ -239,9 +239,9 @@ class DetectLanguageRequest(proto.Message):
             ``projects/{project-number-or-id}/locations/global`` or
             ``projects/{project-number-or-id}``.
 
-            Only models within the same region, which have the same
-            location-id, can be used. Otherwise an INVALID_ARGUMENT
-            (400) error is returned.
+            Only models within the same region (has same location-id)
+            can be used. Otherwise an INVALID_ARGUMENT (400) error is
+            returned.
         model (str):
             Optional. The language detection model to be used.
 
@@ -342,11 +342,10 @@ class GetSupportedLanguagesRequest(proto.Message):
 
             -  General (built-in) models:
                ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
-               ``projects/{project-number-or-id}/locations/{location-id}/models/general/base``
 
             Returns languages supported by the specified model. If
-            missing, we get supported languages of Google general base
-            (PBMT) model.
+            missing, we get supported languages of Google general NMT
+            model.
     """
 
     parent = proto.Field(proto.STRING, number=3,)
@@ -490,13 +489,13 @@ class OutputConfig(proto.Message):
             content to output.
 
             Once a row is present in index.csv, the input/output
-            matching never changes. Callers should also expect the
-            contents in the input_file are processed and ready to be
-            consumed (that is, no partial output file is written).
+            matching never changes. Callers should also expect all the
+            content in input_file are processed and ready to be consumed
+            (that is, no partial output file is written).
 
-            Since index.csv will be updated during the process, please
-            make sure there is no custom retention policy applied on the
-            output bucket that may prevent file updating.
+            Since index.csv will be keeping updated during the process,
+            please make sure there is no custom retention policy applied
+            on the output bucket that may avoid file updating.
             (https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy)
 
             The format of translations_file (for target language code
@@ -653,8 +652,7 @@ class TranslateDocumentRequest(proto.Message):
             ``projects/{project-number-or-id}/locations/{location-id}``.
 
             For global calls, use
-            ``projects/{project-number-or-id}/locations/global`` or
-            ``projects/{project-number-or-id}``.
+            ``projects/{project-number-or-id}/locations/global``.
 
             Non-global location is required for requests using AutoML
             models or custom glossaries.
@@ -696,7 +694,6 @@ class TranslateDocumentRequest(proto.Message):
 
             -  General (built-in) models:
                ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
-               ``projects/{project-number-or-id}/locations/{location-id}/models/general/base``
 
             If not provided, the default Google model (NMT) will be used
             for translation.
@@ -818,9 +815,8 @@ class BatchTranslateTextRequest(proto.Message):
             here.
         models (Sequence[google.cloud.translate_v3beta1.types.BatchTranslateTextRequest.ModelsEntry]):
             Optional. The models to use for translation. Map's key is
-            target language code. Map's value is the model name. Value
-            can be a built-in general model, or an AutoML Translation
-            model.
+            target language code. Map's value is model name. Value can
+            be a built-in general model, or an AutoML Translation model.
 
             The value format depends on model type:
 
@@ -829,7 +825,6 @@ class BatchTranslateTextRequest(proto.Message):
 
             -  General (built-in) models:
                ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
-               ``projects/{project-number-or-id}/locations/{location-id}/models/general/base``
 
             If the map is empty or a specific model is not requested for
             a language pair, then default google model (nmt) is used.
@@ -1284,7 +1279,6 @@ class BatchTranslateDocumentRequest(proto.Message):
 
             -  General (built-in) models:
                ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
-               ``projects/{project-number-or-id}/locations/{location-id}/models/general/base``
 
             If the map is empty or a specific model is not requested for
             a language pair, then default google model (nmt) is used.
@@ -1328,10 +1322,10 @@ class BatchDocumentInputConfig(proto.Message):
             -  ``xlsx``,
                application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 
-            The max file size supported for ``.docx``, ``.pptx`` and
-            ``.xlsx`` is 100MB. The max file size supported for ``.pdf``
-            is 1GB and the max page limit is 1000 pages. The max file
-            size supported for all input documents is 1GB.
+            The max file size to support for ``.docx``, ``.pptx`` and
+            ``.xlsx`` is 100MB. The max file size to support for
+            ``.pdf`` is 1GB and the max page limit is 1000 pages. The
+            max file size to support for all input documents is 1GB.
     """
 
     gcs_source = proto.Field(
@@ -1411,15 +1405,15 @@ class BatchTranslateDocumentResponse(proto.Message):
     Attributes:
         total_pages (int):
             Total number of pages to translate in all
-            documents. Documents without a clear page
+            documents. Documents without clear page
             definition (such as XLSX) are not counted.
         translated_pages (int):
             Number of successfully translated pages in
-            all documents. Documents without a clear page
+            all documents. Documents without clear page
             definition (such as XLSX) are not counted.
         failed_pages (int):
             Number of pages that failed to process in all
-            documents. Documents without a clear page
+            documents. Documents without clear page
             definition (such as XLSX) are not counted.
         total_billable_pages (int):
             Number of billable pages in documents with

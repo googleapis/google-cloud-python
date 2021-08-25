@@ -241,8 +241,8 @@ class TranslationServiceAsyncClient:
                 ``projects/{project-number-or-id}/locations/global`` or
                 ``projects/{project-number-or-id}``.
 
-                Only models within the same region, which have the same
-                location-id, can be used. Otherwise an INVALID_ARGUMENT
+                Only models within the same region (has same
+                location-id) can be used. Otherwise an INVALID_ARGUMENT
                 (400) error is returned.
 
                 This corresponds to the ``parent`` field
@@ -383,11 +383,10 @@ class TranslationServiceAsyncClient:
 
                 -  General (built-in) models:
                    ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
-                   ``projects/{project-number-or-id}/locations/{location-id}/models/general/base``
 
                 Returns languages supported by the specified model. If
                 missing, we get supported languages of Google general
-                base (PBMT) model.
+                NMT model.
 
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
