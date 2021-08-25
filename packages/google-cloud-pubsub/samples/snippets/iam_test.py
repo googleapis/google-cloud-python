@@ -13,8 +13,10 @@
 # limitations under the License.
 
 import os
+from typing import Generator
 import uuid
 
+from _pytest.capture import CaptureFixture
 from google.api_core.exceptions import NotFound
 from google.cloud import pubsub_v1
 import pytest
@@ -28,12 +30,14 @@ SUBSCRIPTION_ID = "iam-test-subscription-" + UUID
 
 
 @pytest.fixture(scope="module")
-def publisher_client():
+def publisher_client() -> Generator[pubsub_v1.PublisherClient, None, None]:
     yield pubsub_v1.PublisherClient()
 
 
 @pytest.fixture(scope="module")
-def topic_path(publisher_client):
+def topic_path(
+    publisher_client: pubsub_v1.PublisherClient,
+) -> Generator[str, None, None]:
     topic_path = publisher_client.topic_path(PROJECT_ID, TOPIC_ID)
 
     try:
@@ -50,14 +54,16 @@ def topic_path(publisher_client):
 
 
 @pytest.fixture(scope="module")
-def subscriber_client():
+def subscriber_client() -> Generator[pubsub_v1.SubscriberClient, None, None]:
     subscriber_client = pubsub_v1.SubscriberClient()
     yield subscriber_client
     subscriber_client.close()
 
 
 @pytest.fixture(scope="module")
-def subscription_path(subscriber_client, topic_path):
+def subscription_path(
+    subscriber_client: pubsub_v1.SubscriberClient, topic_path: str,
+) -> Generator[str, None, None]:
     subscription_path = subscriber_client.subscription_path(PROJECT_ID, SUBSCRIPTION_ID)
     subscription = subscriber_client.create_subscription(
         request={"name": subscription_path, "topic": topic_path}
@@ -72,40 +78,48 @@ def subscription_path(subscriber_client, topic_path):
         pass
 
 
-def test_get_topic_policy(topic_path, capsys):
+def test_get_topic_policy(topic_path: str, capsys: CaptureFixture) -> None:
     iam.get_topic_policy(PROJECT_ID, TOPIC_ID)
     out, _ = capsys.readouterr()
     assert topic_path in out
 
 
-def test_get_subscription_policy(subscription_path, capsys):
+def test_get_subscription_policy(
+    subscription_path: str, capsys: CaptureFixture
+) -> None:
     iam.get_subscription_policy(PROJECT_ID, SUBSCRIPTION_ID)
     out, _ = capsys.readouterr()
     assert subscription_path in out
 
 
-def test_set_topic_policy(publisher_client, topic_path):
+def test_set_topic_policy(
+    publisher_client: pubsub_v1.PublisherClient, topic_path: str,
+) -> CaptureFixture:
     iam.set_topic_policy(PROJECT_ID, TOPIC_ID)
     policy = publisher_client.get_iam_policy(request={"resource": topic_path})
     assert "roles/pubsub.publisher" in str(policy)
     assert "allUsers" in str(policy)
 
 
-def test_set_subscription_policy(subscriber_client, subscription_path):
+def test_set_subscription_policy(
+    subscriber_client: pubsub_v1.SubscriberClient, subscription_path: str,
+) -> None:
     iam.set_subscription_policy(PROJECT_ID, SUBSCRIPTION_ID)
     policy = subscriber_client.get_iam_policy(request={"resource": subscription_path})
     assert "roles/pubsub.viewer" in str(policy)
     assert "allUsers" in str(policy)
 
 
-def test_check_topic_permissions(topic_path, capsys):
+def test_check_topic_permissions(topic_path: str, capsys: CaptureFixture) -> None:
     iam.check_topic_permissions(PROJECT_ID, TOPIC_ID)
     out, _ = capsys.readouterr()
     assert topic_path in out
     assert "pubsub.topics.publish" in out
 
 
-def test_check_subscription_permissions(subscription_path, capsys):
+def test_check_subscription_permissions(
+    subscription_path: str, capsys: CaptureFixture,
+) -> None:
     iam.check_subscription_permissions(PROJECT_ID, SUBSCRIPTION_ID)
     out, _ = capsys.readouterr()
     assert subscription_path in out

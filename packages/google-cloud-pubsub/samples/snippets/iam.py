@@ -24,7 +24,7 @@ at https://cloud.google.com/pubsub/docs.
 import argparse
 
 
-def get_topic_policy(project_id, topic_id):
+def get_topic_policy(project_id: str, topic_id: str) -> None:
     """Prints the IAM policy for the given topic."""
     # [START pubsub_get_topic_policy]
     from google.cloud import pubsub_v1
@@ -44,7 +44,7 @@ def get_topic_policy(project_id, topic_id):
     # [END pubsub_get_topic_policy]
 
 
-def get_subscription_policy(project_id, subscription_id):
+def get_subscription_policy(project_id: str, subscription_id: str) -> None:
     """Prints the IAM policy for the given subscription."""
     # [START pubsub_get_subscription_policy]
     from google.cloud import pubsub_v1
@@ -66,7 +66,7 @@ def get_subscription_policy(project_id, subscription_id):
     # [END pubsub_get_subscription_policy]
 
 
-def set_topic_policy(project_id, topic_id):
+def set_topic_policy(project_id: str, topic_id: str) -> None:
     """Sets the IAM policy for a topic."""
     # [START pubsub_set_topic_policy]
     from google.cloud import pubsub_v1
@@ -95,7 +95,7 @@ def set_topic_policy(project_id, topic_id):
     # [END pubsub_set_topic_policy]
 
 
-def set_subscription_policy(project_id, subscription_id):
+def set_subscription_policy(project_id: str, subscription_id: str) -> None:
     """Sets the IAM policy for a topic."""
     # [START pubsub_set_subscription_policy]
     from google.cloud import pubsub_v1
@@ -126,7 +126,7 @@ def set_subscription_policy(project_id, subscription_id):
     # [END pubsub_set_subscription_policy]
 
 
-def check_topic_permissions(project_id, topic_id):
+def check_topic_permissions(project_id: str, topic_id: str) -> None:
     """Checks to which permissions are available on the given topic."""
     # [START pubsub_test_topic_permissions]
     from google.cloud import pubsub_v1
@@ -150,7 +150,7 @@ def check_topic_permissions(project_id, topic_id):
     # [END pubsub_test_topic_permissions]
 
 
-def check_subscription_permissions(project_id, subscription_id):
+def check_subscription_permissions(project_id: str, subscription_id: str) -> None:
     """Checks to which permissions are available on the given subscription."""
     # [START pubsub_test_subscription_permissions]
     from google.cloud import pubsub_v1

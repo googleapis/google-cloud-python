@@ -19,7 +19,7 @@ import argparse
 from google.cloud import pubsub_v1
 
 
-def sub(project_id, subscription_id, timeout=None):
+def sub(project_id: str, subscription_id: str, timeout: float = None) -> None:
     """Receives messages from a Pub/Sub subscription."""
     # Initialize a Subscriber client
     subscriber_client = pubsub_v1.SubscriberClient()
@@ -27,7 +27,7 @@ def sub(project_id, subscription_id, timeout=None):
     # `projects/{project_id}/subscriptions/{subscription_id}`
     subscription_path = subscriber_client.subscription_path(project_id, subscription_id)
 
-    def callback(message):
+    def callback(message: pubsub_v1.subscriber.message.Message) -> None:
         print(f"Received {message}.")
         # Acknowledge the message. Unack'ed messages will be redelivered.
         message.ack()

@@ -24,7 +24,7 @@ at https://cloud.google.com/pubsub/docs.
 import argparse
 
 
-def list_subscriptions_in_topic(project_id, topic_id):
+def list_subscriptions_in_topic(project_id: str, topic_id: str) -> None:
     """Lists all subscriptions for a given topic."""
     # [START pubsub_list_topic_subscriptions]
     from google.cloud import pubsub_v1
@@ -42,7 +42,7 @@ def list_subscriptions_in_topic(project_id, topic_id):
     # [END pubsub_list_topic_subscriptions]
 
 
-def list_subscriptions_in_project(project_id):
+def list_subscriptions_in_project(project_id: str) -> None:
     """Lists all subscriptions in the current project."""
     # [START pubsub_list_subscriptions]
     from google.cloud import pubsub_v1
@@ -63,7 +63,7 @@ def list_subscriptions_in_project(project_id):
     # [END pubsub_list_subscriptions]
 
 
-def create_subscription(project_id, topic_id, subscription_id):
+def create_subscription(project_id: str, topic_id: str, subscription_id: str) -> None:
     """Create a new pull subscription on the given topic."""
     # [START pubsub_create_pull_subscription]
     from google.cloud import pubsub_v1
@@ -90,8 +90,12 @@ def create_subscription(project_id, topic_id, subscription_id):
 
 
 def create_subscription_with_dead_letter_topic(
-    project_id, topic_id, subscription_id, dead_letter_topic_id, max_delivery_attempts=5
-):
+    project_id: str,
+    topic_id: str,
+    subscription_id: str,
+    dead_letter_topic_id: str,
+    max_delivery_attempts: int = 5,
+) -> None:
     """Create a subscription with dead letter policy."""
     # [START pubsub_dead_letter_create_subscription]
     from google.cloud import pubsub_v1
@@ -142,7 +146,9 @@ def create_subscription_with_dead_letter_topic(
     # [END pubsub_dead_letter_create_subscription]
 
 
-def create_push_subscription(project_id, topic_id, subscription_id, endpoint):
+def create_push_subscription(
+    project_id: str, topic_id: str, subscription_id: str, endpoint: str
+) -> None:
     """Create a new push subscription on the given topic."""
     # [START pubsub_create_push_subscription]
     from google.cloud import pubsub_v1
@@ -176,7 +182,9 @@ def create_push_subscription(project_id, topic_id, subscription_id, endpoint):
     # [END pubsub_create_push_subscription]
 
 
-def create_subscription_with_ordering(project_id, topic_id, subscription_id):
+def create_subscription_with_ordering(
+    project_id: str, topic_id: str, subscription_id: str
+) -> None:
     """Create a subscription with dead letter policy."""
     # [START pubsub_enable_subscription_ordering]
     from google.cloud import pubsub_v1
@@ -203,7 +211,7 @@ def create_subscription_with_ordering(project_id, topic_id, subscription_id):
     # [END pubsub_enable_subscription_ordering]
 
 
-def delete_subscription(project_id, subscription_id):
+def delete_subscription(project_id: str, subscription_id: str) -> None:
     """Deletes an existing Pub/Sub topic."""
     # [START pubsub_delete_subscription]
     from google.cloud import pubsub_v1
@@ -224,7 +232,9 @@ def delete_subscription(project_id, subscription_id):
     # [END pubsub_delete_subscription]
 
 
-def update_push_subscription(project_id, topic_id, subscription_id, endpoint):
+def update_push_subscription(
+    project_id: str, topic_id: str, subscription_id: str, endpoint: str
+) -> None:
     """
     Updates an existing Pub/Sub subscription's push endpoint URL.
     Note that certain properties of a subscription, such as
@@ -263,8 +273,12 @@ def update_push_subscription(project_id, topic_id, subscription_id, endpoint):
 
 
 def update_subscription_with_dead_letter_policy(
-    project_id, topic_id, subscription_id, dead_letter_topic_id, max_delivery_attempts=5
-):
+    project_id: str,
+    topic_id: str,
+    subscription_id: str,
+    dead_letter_topic_id: str,
+    max_delivery_attempts: int = 5,
+) -> None:
     """Update a subscription's dead letter policy."""
     # [START pubsub_dead_letter_update_subscription]
     from google.cloud import pubsub_v1
@@ -322,7 +336,9 @@ def update_subscription_with_dead_letter_policy(
     return subscription_after_update
 
 
-def remove_dead_letter_policy(project_id, topic_id, subscription_id):
+def remove_dead_letter_policy(
+    project_id: str, topic_id: str, subscription_id: str
+) -> None:
     """Remove dead letter policy from a subscription."""
     # [START pubsub_dead_letter_remove]
     from google.cloud import pubsub_v1
@@ -365,7 +381,9 @@ def remove_dead_letter_policy(project_id, topic_id, subscription_id):
     return subscription_after_update
 
 
-def receive_messages(project_id, subscription_id, timeout=None):
+def receive_messages(
+    project_id: str, subscription_id: str, timeout: float = None
+) -> None:
     """Receives messages from a pull subscription."""
     # [START pubsub_subscriber_async_pull]
     # [START pubsub_quickstart_subscriber]
@@ -383,7 +401,7 @@ def receive_messages(project_id, subscription_id, timeout=None):
     # in the form `projects/{project_id}/subscriptions/{subscription_id}`
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
-    def callback(message):
+    def callback(message: pubsub_v1.subscriber.message.Message) -> None:
         print(f"Received {message}.")
         message.ack()
 
@@ -403,7 +421,9 @@ def receive_messages(project_id, subscription_id, timeout=None):
     # [END pubsub_quickstart_subscriber]
 
 
-def receive_messages_with_custom_attributes(project_id, subscription_id, timeout=None):
+def receive_messages_with_custom_attributes(
+    project_id: str, subscription_id: str, timeout: float = None
+) -> None:
     """Receives messages from a pull subscription."""
     # [START pubsub_subscriber_async_pull_custom_attributes]
     from concurrent.futures import TimeoutError
@@ -418,7 +438,7 @@ def receive_messages_with_custom_attributes(project_id, subscription_id, timeout
     subscriber = pubsub_v1.SubscriberClient()
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
-    def callback(message):
+    def callback(message: pubsub_v1.subscriber.message.Message) -> None:
         print(f"Received {message.data}.")
         if message.attributes:
             print("Attributes:")
@@ -442,7 +462,9 @@ def receive_messages_with_custom_attributes(project_id, subscription_id, timeout
     # [END pubsub_subscriber_async_pull_custom_attributes]
 
 
-def receive_messages_with_flow_control(project_id, subscription_id, timeout=None):
+def receive_messages_with_flow_control(
+    project_id: str, subscription_id: str, timeout: float = None
+) -> None:
     """Receives messages from a pull subscription with flow control."""
     # [START pubsub_subscriber_flow_settings]
     from concurrent.futures import TimeoutError
@@ -457,7 +479,7 @@ def receive_messages_with_flow_control(project_id, subscription_id, timeout=None
     subscriber = pubsub_v1.SubscriberClient()
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
-    def callback(message):
+    def callback(message: pubsub_v1.subscriber.message.Message) -> None:
         print(f"Received {message.data}.")
         message.ack()
 
@@ -481,7 +503,9 @@ def receive_messages_with_flow_control(project_id, subscription_id, timeout=None
     # [END pubsub_subscriber_flow_settings]
 
 
-def receive_messages_with_blocking_shutdown(project_id, subscription_id, timeout=5.0):
+def receive_messages_with_blocking_shutdown(
+    project_id: str, subscription_id: str, timeout: float = 5.0
+) -> None:
     """Shuts down a pull subscription by awaiting message callbacks to complete."""
     # [START pubsub_subscriber_blocking_shutdown]
     import time
@@ -497,7 +521,7 @@ def receive_messages_with_blocking_shutdown(project_id, subscription_id, timeout
     subscriber = pubsub_v1.SubscriberClient()
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
-    def callback(message):
+    def callback(message: pubsub_v1.subscriber.message.Message) -> None:
         print(f"Received {message.data}.")
         time.sleep(timeout + 3.0)  # Pocess longer than streaming pull future timeout.
         message.ack()
@@ -525,7 +549,7 @@ def receive_messages_with_blocking_shutdown(project_id, subscription_id, timeout
     # [END pubsub_subscriber_blocking_shutdown]
 
 
-def synchronous_pull(project_id, subscription_id):
+def synchronous_pull(project_id: str, subscription_id: str) -> None:
     """Pulling messages synchronously."""
     # [START pubsub_subscriber_sync_pull]
     from google.api_core import retry
@@ -566,7 +590,9 @@ def synchronous_pull(project_id, subscription_id):
     # [END pubsub_subscriber_sync_pull]
 
 
-def synchronous_pull_with_lease_management(project_id, subscription_id):
+def synchronous_pull_with_lease_management(
+    project_id: str, subscription_id: str
+) -> None:
     """Pulling messages synchronously with lease management"""
     # [START pubsub_subscriber_sync_pull_with_lease]
     import logging
@@ -638,7 +664,9 @@ def synchronous_pull_with_lease_management(project_id, subscription_id):
     # [END pubsub_subscriber_sync_pull_with_lease]
 
 
-def listen_for_errors(project_id, subscription_id, timeout=None):
+def listen_for_errors(
+    project_id: str, subscription_id: str, timeout: float = None
+) -> None:
     """Receives messages and catches errors from a pull subscription."""
     # [START pubsub_subscriber_error_listener]
     from google.cloud import pubsub_v1
@@ -652,7 +680,7 @@ def listen_for_errors(project_id, subscription_id, timeout=None):
     subscriber = pubsub_v1.SubscriberClient()
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
-    def callback(message):
+    def callback(message: pubsub_v1.subscriber.message.Message) -> None:
         print(f"Received {message}.")
         message.ack()
 
@@ -674,7 +702,9 @@ def listen_for_errors(project_id, subscription_id, timeout=None):
     # [END pubsub_subscriber_error_listener]
 
 
-def receive_messages_with_delivery_attempts(project_id, subscription_id, timeout=None):
+def receive_messages_with_delivery_attempts(
+    project_id: str, subscription_id: str, timeout: float = None
+) -> None:
     # [START pubsub_dead_letter_delivery_attempt]
     from concurrent.futures import TimeoutError
     from google.cloud import pubsub_v1
@@ -686,7 +716,7 @@ def receive_messages_with_delivery_attempts(project_id, subscription_id, timeout
     subscriber = pubsub_v1.SubscriberClient()
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
-    def callback(message):
+    def callback(message: pubsub_v1.subscriber.message.Message) -> None:
         print(f"Received {message}.")
         print(f"With delivery attempts: {message.delivery_attempt}.")
         message.ack()

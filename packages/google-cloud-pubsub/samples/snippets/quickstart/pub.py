@@ -19,7 +19,7 @@ import argparse
 from google.cloud import pubsub_v1
 
 
-def pub(project_id, topic_id):
+def pub(project_id: str, topic_id: str) -> None:
     """Publishes a message to a Pub/Sub topic."""
     # Initialize a Publisher client.
     client = pubsub_v1.PublisherClient()

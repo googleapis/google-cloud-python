@@ -22,9 +22,10 @@ at https://cloud.google.com/pubsub/docs.
 """
 
 import argparse
+from typing import Callable
 
 
-def list_topics(project_id):
+def list_topics(project_id: str) -> None:
     """Lists all Pub/Sub topics in the given project."""
     # [START pubsub_list_topics]
     from google.cloud import pubsub_v1
@@ -40,7 +41,7 @@ def list_topics(project_id):
     # [END pubsub_list_topics]
 
 
-def create_topic(project_id, topic_id):
+def create_topic(project_id: str, topic_id: str) -> None:
     """Create a new Pub/Sub topic."""
     # [START pubsub_quickstart_create_topic]
     # [START pubsub_create_topic]
@@ -60,7 +61,7 @@ def create_topic(project_id, topic_id):
     # [END pubsub_create_topic]
 
 
-def delete_topic(project_id, topic_id):
+def delete_topic(project_id: str, topic_id: str) -> None:
     """Deletes an existing Pub/Sub topic."""
     # [START pubsub_delete_topic]
     from google.cloud import pubsub_v1
@@ -78,7 +79,7 @@ def delete_topic(project_id, topic_id):
     # [END pubsub_delete_topic]
 
 
-def publish_messages(project_id, topic_id):
+def publish_messages(project_id: str, topic_id: str) -> None:
     """Publishes multiple messages to a Pub/Sub topic."""
     # [START pubsub_quickstart_publisher]
     # [START pubsub_publish]
@@ -106,7 +107,7 @@ def publish_messages(project_id, topic_id):
     # [END pubsub_publish]
 
 
-def publish_messages_with_custom_attributes(project_id, topic_id):
+def publish_messages_with_custom_attributes(project_id: str, topic_id: str) -> None:
     """Publishes multiple messages with custom attributes
     to a Pub/Sub topic."""
     # [START pubsub_publish_custom_attributes]
@@ -133,7 +134,7 @@ def publish_messages_with_custom_attributes(project_id, topic_id):
     # [END pubsub_publish_custom_attributes]
 
 
-def publish_messages_with_error_handler(project_id, topic_id):
+def publish_messages_with_error_handler(project_id: str, topic_id: str) -> None:
     # [START pubsub_publish_with_error_handler]
     """Publishes multiple messages to a Pub/Sub topic with an error handler."""
     from concurrent import futures
@@ -147,8 +148,10 @@ def publish_messages_with_error_handler(project_id, topic_id):
     topic_path = publisher.topic_path(project_id, topic_id)
     publish_futures = []
 
-    def get_callback(publish_future, data):
-        def callback(publish_future):
+    def get_callback(
+        publish_future: pubsub_v1.publisher.futures.Future, data: str
+    ) -> Callable[[pubsub_v1.publisher.futures.Future], None]:
+        def callback(publish_future: pubsub_v1.publisher.futures.Future) -> None:
             try:
                 # Wait 60 seconds for the publish call to succeed.
                 print(publish_future.result(timeout=60))
@@ -172,7 +175,7 @@ def publish_messages_with_error_handler(project_id, topic_id):
     # [END pubsub_publish_with_error_handler]
 
 
-def publish_messages_with_batch_settings(project_id, topic_id):
+def publish_messages_with_batch_settings(project_id: str, topic_id: str) -> None:
     """Publishes multiple messages to a Pub/Sub topic with batch settings."""
     # [START pubsub_publisher_batch_settings]
     from concurrent import futures
@@ -194,7 +197,7 @@ def publish_messages_with_batch_settings(project_id, topic_id):
     publish_futures = []
 
     # Resolve the publish future in a separate thread.
-    def callback(future):
+    def callback(future: pubsub_v1.publisher.futures.Future) -> None:
         message_id = future.result()
         print(message_id)
 
@@ -213,7 +216,7 @@ def publish_messages_with_batch_settings(project_id, topic_id):
     # [END pubsub_publisher_batch_settings]
 
 
-def publish_messages_with_flow_control_settings(project_id, topic_id):
+def publish_messages_with_flow_control_settings(project_id: str, topic_id: str) -> None:
     """Publishes messages to a Pub/Sub topic with flow control settings."""
     # [START pubsub_publisher_flow_control]
     from concurrent import futures
@@ -242,7 +245,7 @@ def publish_messages_with_flow_control_settings(project_id, topic_id):
     publish_futures = []
 
     # Resolve the publish future in a separate thread.
-    def callback(publish_future):
+    def callback(publish_future: pubsub_v1.publisher.futures.Future) -> None:
         message_id = publish_future.result()
         print(message_id)
 
@@ -263,7 +266,7 @@ def publish_messages_with_flow_control_settings(project_id, topic_id):
     # [END pubsub_publisher_flow_control]
 
 
-def publish_messages_with_retry_settings(project_id, topic_id):
+def publish_messages_with_retry_settings(project_id: str, topic_id: str) -> None:
     """Publishes messages with custom retry settings."""
     # [START pubsub_publisher_retry_settings]
     from google import api_core
@@ -305,7 +308,7 @@ def publish_messages_with_retry_settings(project_id, topic_id):
     # [END pubsub_publisher_retry_settings]
 
 
-def publish_with_ordering_keys(project_id, topic_id):
+def publish_with_ordering_keys(project_id: str, topic_id: str) -> None:
     """Publishes messages with ordering keys."""
     # [START pubsub_publish_with_ordering_keys]
     from google.cloud import pubsub_v1
@@ -342,7 +345,7 @@ def publish_with_ordering_keys(project_id, topic_id):
     # [END pubsub_publish_with_ordering_keys]
 
 
-def resume_publish_with_ordering_keys(project_id, topic_id):
+def resume_publish_with_ordering_keys(project_id: str, topic_id: str) -> None:
     """Resume publishing messages with ordering keys when unrecoverable errors occur."""
     # [START pubsub_resume_publish_with_ordering_keys]
     from google.cloud import pubsub_v1
@@ -383,7 +386,7 @@ def resume_publish_with_ordering_keys(project_id, topic_id):
     # [END pubsub_resume_publish_with_ordering_keys]
 
 
-def detach_subscription(project_id, subscription_id):
+def detach_subscription(project_id: str, subscription_id: str) -> None:
     """Detaches a subscription from a topic and drops all messages retained in it."""
     # [START pubsub_detach_subscription]
     from google.api_core.exceptions import GoogleAPICallError, RetryError
@@ -416,8 +419,7 @@ def detach_subscription(project_id, subscription_id):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description=__doc__,
-        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("project_id", help="Your Google Cloud project ID")
 
@@ -440,8 +442,7 @@ if __name__ == "__main__":
     publish_with_custom_attributes_parser.add_argument("topic_id")
 
     publish_with_error_handler_parser = subparsers.add_parser(
-        "publish-with-error-handler",
-        help=publish_messages_with_error_handler.__doc__,
+        "publish-with-error-handler", help=publish_messages_with_error_handler.__doc__,
     )
     publish_with_error_handler_parser.add_argument("topic_id")
 
@@ -464,8 +465,7 @@ if __name__ == "__main__":
     publish_with_retry_settings_parser.add_argument("topic_id")
 
     publish_with_ordering_keys_parser = subparsers.add_parser(
-        "publish-with-ordering-keys",
-        help=publish_with_ordering_keys.__doc__,
+        "publish-with-ordering-keys", help=publish_with_ordering_keys.__doc__,
     )
     publish_with_ordering_keys_parser.add_argument("topic_id")
 
@@ -476,8 +476,7 @@ if __name__ == "__main__":
     resume_publish_with_ordering_keys_parser.add_argument("topic_id")
 
     detach_subscription_parser = subparsers.add_parser(
-        "detach-subscription",
-        help=detach_subscription.__doc__,
+        "detach-subscription", help=detach_subscription.__doc__,
     )
     detach_subscription_parser.add_argument("subscription_id")
 
