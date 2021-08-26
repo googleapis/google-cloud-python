@@ -14,6 +14,23 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+## [1.1.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.0.0...v1.1.0) (2021-08-25)
+
+
+### Features
+
+* Add geography support ([#228](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/228)) ([da7a403](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/da7a40309de6ca8063d6dcf6678de96a463344e6))
+* Handle passing of arrays to in statements more efficiently in SQLAlchemy 1.4 and higher ([#253](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/253)) ([7692704](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/76927044aa4d2be9d0f2ec47e917b28b97c18425))
+
+
+### Bug Fixes
+
+* dialect atribute wasn't provided ([#291](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/291)) ([2cf05a0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/2cf05a0f37e32344b29ba2e92d709f7e51b20916))
+* distinct doesn't work as a column wrapper ([#275](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/275)) ([ad5baf8](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/ad5baf8a5351b9cdac4eda243e4042aeb551b937))
+* in-operator literal binds not handled properly ([#285](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/285)) ([e06bf74](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/e06bf74310fa27d5bc775e13beed4ab3a520e1aa))
+* supports_multivalues_insert dialect option was mispelled ([#278](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/278)) ([ec36a12](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/ec36a120c1607d9769105e873550bb727c504c93))
+* unnest failed in some cases (with table references failed when there were no other references to refrenced tables in a query) ([#290](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/290)) ([9b5b002](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/9b5b0025ec0b65177c0df02013ac387b3d3de472))
+
 ## [1.0.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.0.0-a1...v1.0.0) (2021-08-17)
 
 
