@@ -694,7 +694,7 @@ class Database(object):
             parent=self._instance.name,
             database_id=self.database_id,
             backup=source.name,
-            encryption_config=self._encryption_config,
+            encryption_config=self._encryption_config or None,
         )
         future = api.restore_database(request=request, metadata=metadata,)
         return future

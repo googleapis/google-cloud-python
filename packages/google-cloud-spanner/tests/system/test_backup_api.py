@@ -79,9 +79,14 @@ def diff_config_instance(
     _helpers.scrub_instance_ignore_not_found(diff_config_instance)
 
 
-@pytest.fixture(scope="function")
-def database_version_time(shared_database):  # Ensure database exists.
-    return datetime.datetime.now(datetime.timezone.utc)
+@pytest.fixture(scope="session")
+def database_version_time(shared_database):
+    shared_database.reload()
+    diff = (
+        datetime.datetime.now(datetime.timezone.utc)
+        - shared_database.earliest_version_time
+    )
+    return shared_database.earliest_version_time + diff / 2
 
 
 @pytest.fixture(scope="session")
