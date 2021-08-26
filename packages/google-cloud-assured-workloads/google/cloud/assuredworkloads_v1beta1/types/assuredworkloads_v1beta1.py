@@ -181,12 +181,12 @@ class Workload(proto.Message):
             Output only. Immutable. The Workload creation
             timestamp.
         billing_account (str):
-            Required. Input only. The billing account used for the
-            resources which are direct children of workload. This
-            billing account is initially associated with the resources
-            created as part of Workload creation. After the initial
-            creation of these resources, the customer can change the
-            assigned billing account. The resource name has the form
+            Input only. The billing account used for the resources which
+            are direct children of workload. This billing account is
+            initially associated with the resources created as part of
+            Workload creation. After the initial creation of these
+            resources, the customer can change the assigned billing
+            account. The resource name has the form
             ``billingAccounts/{billing_account_id}``. For example,
             ``billingAccounts/012345-567890-ABCDEF``.
         il4_settings (google.cloud.assuredworkloads_v1beta1.types.Workload.IL4Settings):
@@ -211,11 +211,10 @@ class Workload(proto.Message):
             Optional. Labels applied to the workload.
         provisioned_resources_parent (str):
             Input only. The parent resource for the resources managed by
-            this Assured Workload. May be either an organization or a
-            folder. Must be the same or a child of the Workload parent.
-            If not specified all resources are created under the
-            Workload parent. Formats: folders/{folder_id}
-            organizations/{organization_id}
+            this Assured Workload. May be either empty or a folder
+            resource which is a child of the Workload parent. If not
+            specified all resources are created under the parent
+            organization. Format: folders/{folder_id}
         kms_settings (google.cloud.assuredworkloads_v1beta1.types.Workload.KMSSettings):
             Input only. Settings used to create a CMEK
             crypto key. When set a project with a KMS CMEK
@@ -240,6 +239,7 @@ class Workload(proto.Message):
         HIPAA = 6
         HITRUST = 7
         EU_REGIONS_AND_SUPPORT = 8
+        CA_REGIONS_AND_SUPPORT = 9
 
     class ResourceInfo(proto.Message):
         r"""Represent the resources that are children of this Workload.
@@ -255,7 +255,9 @@ class Workload(proto.Message):
             r"""The type of resource."""
             RESOURCE_TYPE_UNSPECIFIED = 0
             CONSUMER_PROJECT = 1
+            CONSUMER_FOLDER = 4
             ENCRYPTION_KEYS_PROJECT = 2
+            KEYRING = 3
 
         resource_id = proto.Field(proto.INT64, number=1,)
         resource_type = proto.Field(
@@ -345,12 +347,17 @@ class Workload(proto.Message):
                 Indicates the type of resource. This field should be
                 specified to correspond the id to the right project type
                 (CONSUMER_PROJECT or ENCRYPTION_KEYS_PROJECT)
+            display_name (str):
+                User-assigned resource display name.
+                If not empty it will be used to create a
+                resource with the specified name.
         """
 
         resource_id = proto.Field(proto.STRING, number=1,)
         resource_type = proto.Field(
             proto.ENUM, number=2, enum="Workload.ResourceInfo.ResourceType",
         )
+        display_name = proto.Field(proto.STRING, number=3,)
 
     name = proto.Field(proto.STRING, number=1,)
     display_name = proto.Field(proto.STRING, number=2,)
@@ -405,6 +412,10 @@ class CreateWorkloadOperationMetadata(proto.Message):
             Optional. Compliance controls that should be
             applied to the resources managed by the
             workload.
+        resource_settings (Sequence[google.cloud.assuredworkloads_v1beta1.types.Workload.ResourceSettings]):
+            Optional. Resource properties in the input
+            that are used for creating/customizing workload
+            resources.
     """
 
     create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
@@ -412,6 +423,9 @@ class CreateWorkloadOperationMetadata(proto.Message):
     parent = proto.Field(proto.STRING, number=3,)
     compliance_regime = proto.Field(
         proto.ENUM, number=4, enum="Workload.ComplianceRegime",
+    )
+    resource_settings = proto.RepeatedField(
+        proto.MESSAGE, number=5, message="Workload.ResourceSettings",
     )
 
 
