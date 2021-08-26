@@ -1,6 +1,6 @@
 attrs==21.2.0
 google-cloud-testutils==1.0.0
-importlib-metadata==4.6.4
+importlib-metadata==4.7.1
 iniconfig==1.1.1
 packaging==21.0
 pluggy==0.13.1
