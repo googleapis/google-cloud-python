@@ -55,9 +55,7 @@ method from the google-auth package."""
     return credentials, project_id
 
 
-def get_credentials_cache(
-    reauth,
-):
+def get_credentials_cache(reauth):
     import pydata_google_auth.cache
 
     if reauth:
