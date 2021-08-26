@@ -26,10 +26,11 @@ default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
     # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
-    s.replace(library / f"google/cloud/bigquery_storage_{library.name}/types/arrow.py",
-                r""".
+    s.replace(
+        library / f"google/cloud/bigquery_storage_{library.name}/types/arrow.py",
+        r""".
     Attributes:""",
-                r""".\n
+        r""".\n
     Attributes:""",
     )
 
@@ -99,11 +100,12 @@ for library in s.get_staging_dirs(default_version):
     # The append_rows method doesn't contain keyword arguments that build request
     # objects, so flattened tests are not needed and break with TypeError.
     s.replace(
-        library / f'tests/unit/gapic/bigquery_storage_{library.name}*/test_big_query_write.py',
+        library
+        / f"tests/unit/gapic/bigquery_storage_{library.name}*/test_big_query_write.py",
         r"(@[a-z.()\n]*\n)?(async )?"
         r"def test_append_rows_flattened[_a-z]*\(\):\n"
         r"( {4}.*|\n)+",
-        '\n',
+        "\n",
     )
 
     s.move(
@@ -148,5 +150,51 @@ s.move(
 
 python.py_samples(skip_readmes=True)
 
+# Remove the replacements below once
+# https://github.com/googleapis/synthtool/pull/1188 is merged
+
+# Update googleapis/repo-automation-bots repo to main in .kokoro/*.sh files
+s.replace(
+    ".kokoro/*.sh",
+    "repo-automation-bots/tree/master",
+    "repo-automation-bots/tree/main",
+)
+
+# Customize CONTRIBUTING.rst to replace master with main
+s.replace(
+    "CONTRIBUTING.rst",
+    "fetch and merge changes from upstream into master",
+    "fetch and merge changes from upstream into main",
+)
+
+s.replace(
+    "CONTRIBUTING.rst", "git merge upstream/master", "git merge upstream/main",
+)
+
+s.replace(
+    "CONTRIBUTING.rst",
+    """export GOOGLE_CLOUD_TESTING_BRANCH=\"master\"""",
+    """export GOOGLE_CLOUD_TESTING_BRANCH=\"main\"""",
+)
+
+s.replace(
+    "CONTRIBUTING.rst", "remote \(``master``\)", "remote (``main``)",
+)
+
+s.replace(
+    "CONTRIBUTING.rst", "blob/master/CONTRIBUTING.rst", "blob/main/CONTRIBUTING.rst",
+)
+
+s.replace(
+    "CONTRIBUTING.rst", "blob/master/noxfile.py", "blob/main/noxfile.py",
+)
+
+s.replace(
+    "docs/conf.py", "master_doc", "root_doc",
+)
+
+s.replace(
+    "docs/conf.py", "# The master toctree document.", "# The root toctree document.",
+)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
