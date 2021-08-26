@@ -35,6 +35,8 @@ from google.cloud.bigquery.table import TableReference
 from google.api_core.exceptions import NotFound
 
 import sqlalchemy
+import sqlalchemy.sql.expression
+import sqlalchemy.sql.functions
 import sqlalchemy.sql.sqltypes
 import sqlalchemy.sql.type_api
 from sqlalchemy.exc import NoSuchTableError
@@ -1090,6 +1092,21 @@ class BigQueryDialect(DefaultDialect):
             view_name = f"{self.dataset_id}.{view_name}"
         view = client.get_table(view_name)
         return view.view_query
+
+
+class unnest(sqlalchemy.sql.functions.GenericFunction):
+    def __init__(self, *args, **kwargs):
+        expr = kwargs.pop("expr", None)
+        if expr is not None:
+            args = (expr,) + args
+        if len(args) != 1:
+            raise TypeError("The unnest function requires a single argument.")
+        arg = args[0]
+        if isinstance(arg, sqlalchemy.sql.expression.ColumnElement):
+            if not isinstance(arg.type, sqlalchemy.sql.sqltypes.ARRAY):
+                raise TypeError("The argument to unnest must have an ARRAY type.")
+            self.type = arg.type.item_type
+        super().__init__(*args, **kwargs)
 
 
 dialect = BigQueryDialect

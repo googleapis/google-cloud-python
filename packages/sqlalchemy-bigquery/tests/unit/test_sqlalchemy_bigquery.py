@@ -10,6 +10,7 @@ import google.api_core.exceptions
 from google.cloud import bigquery
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.table import TableListItem
+import packaging.version
 import pytest
 import sqlalchemy
 
@@ -178,3 +179,53 @@ def test_follow_dialect_attribute_convention():
 
     assert sqlalchemy_bigquery.dialect is sqlalchemy_bigquery.BigQueryDialect
     assert sqlalchemy_bigquery.base.dialect is sqlalchemy_bigquery.BigQueryDialect
+
+
+@pytest.mark.parametrize(
+    "args,kw,error",
+    [
+        ((), {}, "The unnest function requires a single argument."),
+        ((1, 1), {}, "The unnest function requires a single argument."),
+        ((1,), {"expr": 1}, "The unnest function requires a single argument."),
+        ((1, 1), {"expr": 1}, "The unnest function requires a single argument."),
+        (
+            (),
+            {"expr": sqlalchemy.Column("x", sqlalchemy.String)},
+            "The argument to unnest must have an ARRAY type.",
+        ),
+        (
+            (sqlalchemy.Column("x", sqlalchemy.String),),
+            {},
+            "The argument to unnest must have an ARRAY type.",
+        ),
+    ],
+)
+def test_unnest_function_errors(args, kw, error):
+    # Make sure the unnest function is registered with SQLAlchemy, which
+    # happens when sqlalchemy_bigquery is imported.
+    import sqlalchemy_bigquery  # noqa
+
+    with pytest.raises(TypeError, match=error):
+        sqlalchemy.func.unnest(*args, **kw)
+
+
+@pytest.mark.parametrize(
+    "args,kw",
+    [
+        ((), {"expr": sqlalchemy.Column("x", sqlalchemy.ARRAY(sqlalchemy.String))}),
+        ((sqlalchemy.Column("x", sqlalchemy.ARRAY(sqlalchemy.String)),), {}),
+    ],
+)
+def test_unnest_function(args, kw):
+    # Make sure the unnest function is registered with SQLAlchemy, which
+    # happens when sqlalchemy_bigquery is imported.
+    import sqlalchemy_bigquery  # noqa
+
+    f = sqlalchemy.func.unnest(*args, **kw)
+    assert isinstance(f.type, sqlalchemy.String)
+    if packaging.version.parse(sqlalchemy.__version__) >= packaging.version.parse(
+        "1.4"
+    ):
+        assert isinstance(
+            sqlalchemy.select([f]).subquery().c.unnest.type, sqlalchemy.String
+        )
