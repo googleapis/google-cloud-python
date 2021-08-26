@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eo pipefail
+# Should run regardless of failure status for the generator.
+set +eo pipefail
 
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
@@ -59,15 +60,12 @@ for bucket_item in $(gsutil ls 'gs://docs-staging-v2/docfx-python*' | sort -u -t
   # For each repo, process docs and docfx jobs to regenerate the YAML.
   cd ${repo}
 
-  # Save the noxfile for usage throughout different releases. 
+  # Save the noxfile for usage throughout different releases.
   cp "noxfile.py" ../
 
   if [[ ${FORCE_GENERATE_ALL_TAGS} == "true" ]]; then
     # Grabs all tags from the repository.
     GITHUB_TAGS=$(git tag --sort=-v:refname)
-
-    # Turn off exit on failures, continue execution.
-    set +eo pipefail
   else
     # Grab the latest released tag.
     GITHUB_TAGS=$(git describe --tags `git rev-list --tags --max-count=1`)
@@ -122,9 +120,9 @@ for bucket_item in $(gsutil ls 'gs://docs-staging-v2/docfx-python*' | sort -u -t
     # upload docs
     python3 -m docuploader upload docs/_build/html/docfx_yaml --metadata-file docs.metadata --destination-prefix docfx --staging-bucket "${V2_STAGING_BUCKET}"
   done
-  
+
   # Clean up the repository to make room.
   cd ../
-  rm -rf ${repo} 
+  rm -rf ${repo}
   rm "noxfile.py"
 done
