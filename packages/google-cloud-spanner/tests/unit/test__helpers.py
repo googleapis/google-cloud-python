@@ -295,6 +295,17 @@ class Test_make_value_pb(unittest.TestCase):
                     ValueError, err_msg, lambda: self._callFUT(value),
                 )
 
+    def test_w_json(self):
+        import json
+        from google.protobuf.struct_pb2 import Value
+
+        value = json.dumps(
+            {"id": 27863, "Name": "Anamika"}, sort_keys=True, separators=(",", ":")
+        )
+        value_pb = self._callFUT(value)
+        self.assertIsInstance(value_pb, Value)
+        self.assertEqual(value_pb.string_value, value)
+
 
 class Test_make_list_value_pb(unittest.TestCase):
     def _callFUT(self, *args, **kw):
@@ -549,6 +560,20 @@ class Test_parse_value_pb(unittest.TestCase):
         VALUE = decimal.Decimal("99999999999999999999999999999.999999999")
         field_type = Type(code=TypeCode.NUMERIC)
         value_pb = Value(string_value=str(VALUE))
+
+        self.assertEqual(self._callFUT(value_pb, field_type), VALUE)
+
+    def test_w_json(self):
+        import json
+        from google.protobuf.struct_pb2 import Value
+        from google.cloud.spanner_v1 import Type
+        from google.cloud.spanner_v1 import TypeCode
+
+        VALUE = json.dumps(
+            {"id": 27863, "Name": "Anamika"}, sort_keys=True, separators=(",", ":")
+        )
+        field_type = Type(code=TypeCode.JSON)
+        value_pb = Value(string_value=VALUE)
 
         self.assertEqual(self._callFUT(value_pb, field_type), VALUE)
 

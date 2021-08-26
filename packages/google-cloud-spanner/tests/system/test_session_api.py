@@ -19,7 +19,7 @@ import math
 import struct
 import threading
 import time
-
+import json
 import pytest
 
 import grpc
@@ -43,6 +43,24 @@ BYTES_1 = b"Ymlu"
 BYTES_2 = b"Ym9vdHM="
 NUMERIC_1 = decimal.Decimal("0.123456789")
 NUMERIC_2 = decimal.Decimal("1234567890")
+JSON_1 = json.dumps(
+    {
+        "sample_boolean": True,
+        "sample_int": 872163,
+        "sample float": 7871.298,
+        "sample_null": None,
+        "sample_string": "abcdef",
+        "sample_array": [23, 76, 19],
+    },
+    sort_keys=True,
+    separators=(",", ":"),
+)
+JSON_2 = json.dumps(
+    {"sample_object": {"name": "Anamika", "id": 2635}},
+    sort_keys=True,
+    separators=(",", ":"),
+)
+
 COUNTERS_TABLE = "counters"
 COUNTERS_COLUMNS = ("name", "value")
 ALL_TYPES_TABLE = "all_types"
@@ -64,8 +82,10 @@ LIVE_ALL_TYPES_COLUMNS = (
     "timestamp_array",
     "numeric_value",
     "numeric_array",
+    "json_value",
+    "json_array",
 )
-EMULATOR_ALL_TYPES_COLUMNS = LIVE_ALL_TYPES_COLUMNS[:-2]
+EMULATOR_ALL_TYPES_COLUMNS = LIVE_ALL_TYPES_COLUMNS[:-4]
 AllTypesRowData = collections.namedtuple("AllTypesRowData", LIVE_ALL_TYPES_COLUMNS)
 AllTypesRowData.__new__.__defaults__ = tuple([None for colum in LIVE_ALL_TYPES_COLUMNS])
 EmulatorAllTypesRowData = collections.namedtuple(
@@ -88,6 +108,7 @@ LIVE_ALL_TYPES_ROWDATA = (
     AllTypesRowData(pkey=107, timestamp_value=SOME_TIME),
     AllTypesRowData(pkey=108, timestamp_value=NANO_TIME),
     AllTypesRowData(pkey=109, numeric_value=NUMERIC_1),
+    AllTypesRowData(pkey=110, json_value=JSON_1),
     # empty array values
     AllTypesRowData(pkey=201, int_array=[]),
     AllTypesRowData(pkey=202, bool_array=[]),
@@ -97,6 +118,7 @@ LIVE_ALL_TYPES_ROWDATA = (
     AllTypesRowData(pkey=206, string_array=[]),
     AllTypesRowData(pkey=207, timestamp_array=[]),
     AllTypesRowData(pkey=208, numeric_array=[]),
+    AllTypesRowData(pkey=209, json_array=[]),
     # non-empty array values, including nulls
     AllTypesRowData(pkey=301, int_array=[123, 456, None]),
     AllTypesRowData(pkey=302, bool_array=[True, False, None]),
@@ -106,6 +128,7 @@ LIVE_ALL_TYPES_ROWDATA = (
     AllTypesRowData(pkey=306, string_array=["One", "Two", None]),
     AllTypesRowData(pkey=307, timestamp_array=[SOME_TIME, NANO_TIME, None]),
     AllTypesRowData(pkey=308, numeric_array=[NUMERIC_1, NUMERIC_2, None]),
+    AllTypesRowData(pkey=309, json_array=[JSON_1, JSON_2, None]),
 )
 EMULATOR_ALL_TYPES_ROWDATA = (
     # all nulls
@@ -1864,6 +1887,12 @@ def test_execute_sql_w_numeric_bindings(not_emulator, sessions_database):
         spanner_v1.TypeCode.NUMERIC,
         NUMERIC_1,
         [NUMERIC_1, NUMERIC_2],
+    )
+
+
+def test_execute_sql_w_json_bindings(not_emulator, sessions_database):
+    _bind_test_helper(
+        sessions_database, spanner_v1.TypeCode.JSON, JSON_1, [JSON_1, JSON_2],
     )
 
 

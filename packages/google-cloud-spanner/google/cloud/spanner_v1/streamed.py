@@ -316,6 +316,7 @@ _MERGE_BY_TYPE = {
     TypeCode.STRUCT: _merge_struct,
     TypeCode.TIMESTAMP: _merge_string,
     TypeCode.NUMERIC: _merge_string,
+    TypeCode.JSON: _merge_string,
 }
 
 
