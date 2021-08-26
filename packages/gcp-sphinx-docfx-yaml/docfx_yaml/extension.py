@@ -39,7 +39,7 @@ from sphinx.util import ensuredir
 from sphinx.errors import ExtensionError
 from sphinx.util.nodes import make_refnode
 from sphinxcontrib.napoleon.docstring import GoogleDocstring
-from sphinxcontrib.napoleon import Config
+from sphinxcontrib.napoleon import Config, _process_docstring
 
 from .utils import transform_node, transform_string
 from .settings import API_ROOT
@@ -48,6 +48,7 @@ from .directives import RemarksDirective, TodoDirective
 from .nodes import remarks
 
 import subprocess
+import ast
 from docuploader import shell
 
 class Bcolors:
@@ -82,6 +83,8 @@ REF_PATTERN = ':(py:)?(func|class|meth|mod|ref|attr|exc):`~?[a-zA-Z0-9_\.<> ]*(\
 REF_PATTERN_LAST = '~([a-zA-Z0-9_<>]*\.)*[a-zA-Z0-9_<>]*(\(\))?'
 
 PROPERTY = 'property'
+CODEBLOCK = "code-block"
+CODE = "code"
 
 
 # Run sphinx-build with Markdown builder in the plugin.
@@ -340,6 +343,129 @@ def _extract_signature(obj_sig):
                 signature = None
                 parameters = None    
     return signature, parameters
+
+
+# Given a line containing restructured keyword, returns which keyword it is.
+def extract_keyword(line):
+    # Must be in the form of:
+    #   .. keyword::
+    # where it begind with 2 dot prefix, followed by a space, then the keyword
+    # followed by 2 collon suffix.
+    try:
+        return line[ 3 : line.index("::") ]
+    except ValueError:
+        # TODO: handle reST template.
+        if line[3] != "_":
+            raise ValueError(f"Wrong formatting enoucntered for \n{line}\n Please check the docstring.")
+        return line
+
+
+# Given lines of code, indent to left by 1 block, based on
+# amount of trailing white space of first line as 1 block.
+def indent_code_left(lines):
+    parts = lines.split("\n")
+    # Count how much leading whitespaces there are based on first line.
+    # lstrip(" ") removes all trailing whitespace from the string.
+    tab_space = len(parts[0]) - len(parts[0].lstrip(" "))
+    parts = [part[tab_space:] for part in parts]
+    return "\n".join(parts)
+
+
+def _parse_docstring_summary(summary):
+    summary_parts = []
+    attributes = []
+    attribute_type_token = ":type:"
+    keyword = name = description = var_type = ""
+
+    # We need to separate in chunks, which is defined by 3 newline breaks.
+    # Otherwise when parsing for code and blocks of stuff, we will not be able
+    # to have the entire context when just splitting by single newlines.
+    # We should fix this from the library side for consistent docstring style,
+    # rather than monkey-patching it in the plugin.
+    for part in summary.split("\n\n\n"):
+        # Don't process empty string
+        if part == "":
+            continue
+
+        # Continue adding parts for code-block.
+        if keyword and keyword in [CODE, CODEBLOCK]:
+            # If we reach the end of keyword, close up the code block.
+            if not part.startswith(" "*tab_space) or part.startswith(".."):
+                summary_parts.append("```\n")
+                keyword = ""
+
+            else:
+                if tab_space == -1:
+                    parts = [split_part for split_part in part.split("\n") if split_part]
+                    tab_space = len(parts[0]) - len(parts[0].lstrip(" "))
+                    if tab_space == 0:
+                        raise ValueError("Code in the code block should be indented. Please check the docstring.")
+                if not part.startswith(" "*tab_space):
+                    # No longer looking at code-block, reset keyword.
+                    keyword = ""
+                    summary_parts.append("```\n")
+                summary_parts.append(indent_code_left(part))
+                continue
+
+        # Attributes come in 3 parts, parse the latter two here.
+        elif keyword and keyword == ATTRIBUTE:
+            # Second part, extract the description.
+            if not found_name:
+                description = part.strip()
+                found_name = True
+                continue
+            # Third part, extract the attribute type then add the completed one
+            # set to a list to be returned. Close up as needed.
+            else:
+                if attribute_type_token in part:
+                    var_type = part.split(":type:")[1].strip()
+                keyword = ""
+                if name and description and var_type:
+                    attributes.append({
+                        "name": name,
+                        "description": description,
+                        "var_type": var_type
+                    })
+
+                else:
+                    print("Could not process the attribute. Please check the docstring in {summary}.")
+
+                continue
+
+        # Parse keywords if found.
+        if part.startswith(".."):
+            keyword = extract_keyword(part)
+            # Works for both code-block and code
+            if keyword and keyword in [CODE, CODEBLOCK]:
+                # Retrieve the language found in the format of
+                #   .. code-block:: lang
+                # {lang} is optional however.
+                language = part.split("::")[1].strip()
+                summary_parts.append(f"```{language}")
+
+                tab_space = -1
+
+            # Extract the name for attribute first.
+            elif keyword and keyword == ATTRIBUTE:
+                found_name = False
+                name = part.split("::")[1].strip()
+
+            # Reserve for additional parts
+            # elif keyword == keyword:
+            else:
+                summary_parts.append(part + "\n")
+
+        else:
+            summary_parts.append(part + "\n")
+
+    # Close up from the keyword if needed.
+    if keyword and keyword in [CODE, CODEBLOCK]:
+        # Check if it's already closed.
+        if summary_parts[-1] != "```\n":
+            summary_parts.append("```\n")
+
+    # Requires 2 newline chars to properly show on cloud site.
+    return "\n".join(summary_parts), attributes
 
 
 # Given documentation docstring, parse them into summary_info.
@@ -700,11 +826,12 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
                 app.env.docfx_xrefs[xref] = ''
 
         summary = app.docfx_transform_string('\n'.join(_refact_example_in_module_summary(lines)))
-    
+
         # Extract summary info into respective sections.
         if summary:
             top_summary = _extract_docstring_info(summary_info, summary, name)
-            datam['summary'] = top_summary
+            datam['summary'], datam['attributes'] = _parse_docstring_summary(top_summary)
+
 
     # If there is no summary, add a short snippet.
     else:
@@ -1486,6 +1613,9 @@ def setup(app):
         app (Application): The Sphinx application instance
 
     """
+
+    app.setup_extension('sphinx.ext.autodoc')
+    app.connect('autodoc-process-docstring', _process_docstring)
 
     app.add_node(remarks, html = (remarks.visit_remarks, remarks.depart_remarks))
     app.add_directive('remarks', RemarksDirective)

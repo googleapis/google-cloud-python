@@ -8,6 +8,7 @@ from docfx_yaml.extension import find_package_group
 from docfx_yaml.extension import pretty_package_name
 from docfx_yaml.extension import group_by_package
 from docfx_yaml.extension import extract_header_from_markdown
+from docfx_yaml.extension import _parse_docstring_summary
 from docfx_yaml.extension import parse_markdown_header
 
 import unittest
@@ -677,6 +678,198 @@ Simple test for docstring.
             header_line_got = extract_header_from_markdown(mdfile)
 
         self.assertEqual(header_line_want, header_line_got)
+
+    def test_parse_docstring_summary(self):
+        # Check that the summary gets parsed correctly.
+        attributes_want = []
+        summary_want = \
+"""```python
+from google.api_core.client_options import ClientOptions
+
+from google.cloud.vision_v1 import ImageAnnotatorClient
+
+def get_client_cert():
+
+    # code to load client certificate and private key.
+
+    return client_cert_bytes, client_private_key_bytes
+
+options = ClientOptions(api_endpoint=\"foo.googleapis.com\",
+
+    client_cert_source=get_client_cert)
+
+client = ImageAnnotatorClient(client_options=options)
+```
+
+You can also pass a mapping object.
+
+```ruby
+from google.cloud.vision_v1 import ImageAnnotatorClient
+
+client = ImageAnnotatorClient(
+
+    client_options={
+
+        \"api_endpoint\": \"foo.googleapis.com\",
+
+        \"client_cert_source\" : get_client_cert
+
+    })
+
+```
+"""
+        summary = \
+"""
+
+
+.. code-block:: python
+
+\n    from google.api_core.client_options import ClientOptions
+\n    from google.cloud.vision_v1 import ImageAnnotatorClient
+\n    def get_client_cert():
+\n        # code to load client certificate and private key.
+\n        return client_cert_bytes, client_private_key_bytes
+\n    options = ClientOptions(api_endpoint=\"foo.googleapis.com\",
+\n        client_cert_source=get_client_cert)
+\n    client = ImageAnnotatorClient(client_options=options)
+
+
+You can also pass a mapping object.
+
+
+.. code-block:: ruby
+
+\n    from google.cloud.vision_v1 import ImageAnnotatorClient
+\n    client = ImageAnnotatorClient(
+\n        client_options={
+\n            \"api_endpoint\": \"foo.googleapis.com\",
+\n            \"client_cert_source\" : get_client_cert
+\n        })
+"""
+        summary_got, attributes_got = _parse_docstring_summary(summary)
+        self.assertEqual(summary_got, summary_want)
+        self.assertEqual(attributes_got, attributes_want)
+
+        # Check that nothing much changes otherwise.
+        summary = \
+"""
+.. note::
+    note that these are not supported yet, so they will be ignored for now.
+
+And any other documentation that the source code would have could go here.
+"""
+        summary_want = summary + "\n"
+
+        summary_got, attributes_got = _parse_docstring_summary(summary)
+        self.assertEqual(summary_got, summary_want)
+        self.assertEqual(attributes_got, attributes_want)
+
+        # Check that exception is raised if code block is not indented.
+        summary = \
+"""
+
+
+.. code:: python
+
+\nprint("This should throw an exception.")
+\nfor i in range(10):
+\n    print(i)
+"""
+        with self.assertRaises(ValueError):
+            _parse_docstring_summary(summary)
+
+
+    def test_parse_docstring_summary_attributes(self):
+        # Test parsing docstring with attributes.
+        attributes_want = [
+            {
+                "name": "simple name",
+                "description": "simple description",
+                "var_type": 'str'
+            }
+        ]
+        summary = \
+"""
+
+
+.. attribute:: simple name
+
+\nsimple description
+
+\n:type: str
+"""
+
+        summary_got, attributes_got = _parse_docstring_summary(summary)
+        self.assertCountEqual(attributes_got, attributes_want)
+
+        # Check multiple attributes are parsed.
+        attributes_want = [
+            {
+                "name": "simple name",
+                "description": "simple description",
+                "var_type": "str"
+            },
+            {
+                "name": "table_insert_request",
+                "description": "Table insert request.",
+                "var_type": "google.cloud.bigquery_logging_v1.types.TableInsertRequest"
+            }
+        ]
+
+        summary = \
+"""
+
+
+.. attribute:: simple name
+
+\nsimple description
+
+\n:type: str
+
+
+.. attribute:: table_insert_request
+
+\nTable insert request.
+
+\n:type: google.cloud.bigquery_logging_v1.types.TableInsertRequest
+"""
+        summary_got, attributes_got = _parse_docstring_summary(summary)
+
+        self.assertCountEqual(attributes_got, attributes_want)
+        for attribute_got, attribute_want in zip(attributes_got, attributes_want):
+            self.assertDictEqual(attribute_got, attribute_want)
+
+        # Check only attributes in valid format gets parsed.
+        attributes_want = [
+            {
+                "name": "proper name",
+                "description": "proper description.",
+                "var_type": "str"
+            }
+        ]
+        summary = \
+"""
+
+
+.. attribute:: table_insert_request
+
+\nTable insert request.
+
+\ntype: google.cloud.bigquery_logging_v1.types.TableInsertRequest
+
+
+.. attribute:: proper name
+
+\nproper description.
+
+\n:type: str
+"""
+        summary_got, attributes_got = _parse_docstring_summary(summary)
+
+        # Check that we are returned only one item.
+        self.assertCountEqual(attributes_got, attributes_want)
+        for attribute_got, attribute_want in zip(attributes_got, attributes_want):
+            self.assertDictEqual(attribute_got, attribute_want)
 
 
 if __name__ == '__main__':
