@@ -45,7 +45,7 @@ except pkg_resources.DistributionNotFound:
 
 _LOGGER = logging.getLogger(__name__)
 
-_BLACKLISTED_METHODS = (
+_DENYLISTED_METHODS = (
     "publish",
     "from_service_account_file",
     "from_service_account_json",
@@ -54,7 +54,7 @@ _BLACKLISTED_METHODS = (
 _raw_proto_pubbsub_message = gapic_types.PubsubMessage.pb()
 
 
-@_gapic.add_methods(publisher_client.PublisherClient, blacklist=_BLACKLISTED_METHODS)
+@_gapic.add_methods(publisher_client.PublisherClient, denylist=_DENYLISTED_METHODS)
 class Client(object):
     """A publisher client for Google Cloud Pub/Sub.
 

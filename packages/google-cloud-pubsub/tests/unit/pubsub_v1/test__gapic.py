@@ -32,12 +32,12 @@ class SourceClass(object):
         return "source class class method"
 
     @classmethod
-    def blacklisted_method(cls):  # pragma: NO COVER
-        return "source class blacklisted method"
+    def denylisted_method(cls):  # pragma: NO COVER
+        return "source class denylisted method"
 
 
 def test_add_method():
-    @_gapic.add_methods(SourceClass, ("blacklisted_method",))
+    @_gapic.add_methods(SourceClass, ("denylisted_method",))
     class Foo(object):
         def __init__(self):
             self.api = SourceClass()
@@ -47,9 +47,9 @@ def test_add_method():
 
     foo = Foo()
 
-    # Any method that's callable and not blacklisted is "inherited".
+    # Any method that's callable and not denylisted is "inherited".
     assert set(["method", "static_method", "class_method"]) <= set(dir(foo))
-    assert "blacklisted_method" not in dir(foo)
+    assert "denylisted_method" not in dir(foo)
 
     # Source Class's static and class methods become static methods.
     assert type(Foo.__dict__["static_method"]) == staticmethod

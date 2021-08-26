@@ -27,18 +27,20 @@ default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
     # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
-    s.replace(library / f"google/pubsub_{library.name}/types/*.py",
-                r""".
+    s.replace(
+        library / f"google/pubsub_{library.name}/types/*.py",
+        r""".
     Attributes:""",
-                r""".\n
+        r""".\n
     Attributes:""",
     )
 
     # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
-    s.replace(library / f"google/pubsub_{library.name}/types/*.py",
-                r""".
+    s.replace(
+        library / f"google/pubsub_{library.name}/types/*.py",
+        r""".
         Attributes:""",
-                r""".\n
+        r""".\n
         Attributes:""",
     )
 
@@ -63,8 +65,8 @@ for library in s.get_staging_dirs(default_version):
     # Modify GRPC options in transports.
     count = s.replace(
         [
-            library / f"google/pubsub_{library.name}/services/*/transports/grpc*", 
-            library / f"tests/unit/gapic/pubsub_{library.name}/*"
+            library / f"google/pubsub_{library.name}/services/*/transports/grpc*",
+            library / f"tests/unit/gapic/pubsub_{library.name}/*",
         ],
         "options=\[.*?\]",
         """options=[
@@ -83,13 +85,11 @@ for library in s.get_staging_dirs(default_version):
         library / f"google/pubsub_{library.name}/services/publisher/client.py",
         library / f"google/pubsub_{library.name}/services/subscriber/client.py",
     ]
-    err_msg = "Expected replacements for gRPC channel to use with the emulator not made."
-
-    count = s.replace(
-        clients_to_patch,
-        r"import os",
-        "import functools\n\g<0>"
+    err_msg = (
+        "Expected replacements for gRPC channel to use with the emulator not made."
     )
+
+    count = s.replace(clients_to_patch, r"import os", "import functools\n\g<0>")
 
     if count < len(clients_to_patch):
         raise Exception(err_msg)
@@ -97,7 +97,7 @@ for library in s.get_staging_dirs(default_version):
     count = s.replace(
         clients_to_patch,
         f"from google\.pubsub_{library.name}\.types import pubsub",
-        "\g<0>\n\nimport grpc"
+        "\g<0>\n\nimport grpc",
     )
 
     if count < len(clients_to_patch):
@@ -154,7 +154,7 @@ for library in s.get_staging_dirs(default_version):
     ((?P<indent>[^\n\S]+)\#\ Wrap\ the\ RPC\ method)
     """,
         textwrap.dedent(
-        """
+            """
     \g<1>
     \g<indent>if request.return_immediately:
     \g<indent>    warnings.warn(
@@ -162,7 +162,8 @@ for library in s.get_staging_dirs(default_version):
     \g<indent>        category=DeprecationWarning,
     \g<indent>    )
 
-    \g<2>"""),
+    \g<2>"""
+        ),
         flags=re.MULTILINE | re.DOTALL | re.VERBOSE,
     )
 
@@ -179,7 +180,7 @@ for library in s.get_staging_dirs(default_version):
     count = s.replace(
         library / f"tests/unit/gapic/pubsub_{library.name}/test_subscriber.py",
         textwrap.dedent(
-        r"""
+            r"""
         ([^\n\S]+# Call the method with a truthy value for each flattened field,
         [^\n\S]+# using the keyword arguments to the method\.)
         \s+(client\.pull\(.*?\))"""
@@ -188,7 +189,7 @@ for library in s.get_staging_dirs(default_version):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=DeprecationWarning)
             \g<2>""",
-        flags = re.MULTILINE | re.DOTALL,
+        flags=re.MULTILINE | re.DOTALL,
     )
 
     if count < 1:
@@ -206,7 +207,7 @@ for library in s.get_staging_dirs(default_version):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=DeprecationWarning)
             \g<2>""",
-        flags = re.MULTILINE | re.DOTALL,
+        flags=re.MULTILINE | re.DOTALL,
     )
 
     if count < 1:
@@ -215,15 +216,21 @@ for library in s.get_staging_dirs(default_version):
     # Make sure that client library version is present in user agent header.
     s.replace(
         [
-            library / f"google/pubsub_{library.name}/services/publisher/async_client.py",
+            library
+            / f"google/pubsub_{library.name}/services/publisher/async_client.py",
             library / f"google/pubsub_{library.name}/services/publisher/client.py",
-            library / f"google/pubsub_{library.name}/services/publisher/transports/base.py",
-            library / f"google/pubsub_{library.name}/services/schema_service/async_client.py",
+            library
+            / f"google/pubsub_{library.name}/services/publisher/transports/base.py",
+            library
+            / f"google/pubsub_{library.name}/services/schema_service/async_client.py",
             library / f"google/pubsub_{library.name}/services/schema_service/client.py",
-            library / f"google/pubsub_{library.name}/services/schema_service/transports/base.py",
-            library / f"google/pubsub_{library.name}/services/subscriber/async_client.py",
+            library
+            / f"google/pubsub_{library.name}/services/schema_service/transports/base.py",
+            library
+            / f"google/pubsub_{library.name}/services/subscriber/async_client.py",
             library / f"google/pubsub_{library.name}/services/subscriber/client.py",
-            library / f"google/pubsub_{library.name}/services/subscriber/transports/base.py",
+            library
+            / f"google/pubsub_{library.name}/services/subscriber/transports/base.py",
         ],
         r"""gapic_version=(pkg_resources\.get_distribution\(\s+)['"]google-pubsub['"]""",
         "client_library_version=\g<1>'google-cloud-pubsub'",
@@ -231,7 +238,11 @@ for library in s.get_staging_dirs(default_version):
 
     # Docstrings of *_iam_policy() methods are formatted poorly and must be fixed
     # in order to avoid docstring format warnings in docs.
-    s.replace(library / f"google/pubsub_{library.name}/services/*er/client.py", r"(\s+)Args:", "\n\g<1>Args:")
+    s.replace(
+        library / f"google/pubsub_{library.name}/services/*er/client.py",
+        r"(\s+)Args:",
+        "\n\g<1>Args:",
+    )
     s.replace(
         library / f"google/pubsub_{library.name}/services/*er/client.py",
         r"(\s+)\*\*JSON Example\*\*\s+::",
@@ -254,13 +265,14 @@ for library in s.get_staging_dirs(default_version):
     s.replace(
         library / f"google/pubsub_{library.name}/types/__init__.py",
         r"from \.pubsub import \(",
-        "from typing import Union\n\n\g<0>"
+        "from typing import Union\n\n\g<0>",
     )
 
     s.replace(
         library / f"google/pubsub_{library.name}/types/__init__.py",
         r"__all__ = \(\n",
-        textwrap.dedent('''\
+        textwrap.dedent(
+            '''\
             TimeoutType = Union[
                 int,
                 float,
@@ -269,13 +281,14 @@ for library in s.get_staging_dirs(default_version):
             ]
             """The type of the timeout parameter of publisher client methods."""
 
-            \g<0>    "TimeoutType",''')
+            \g<0>    "TimeoutType",'''
+        ),
     )
 
     s.replace(
         library / f"google/pubsub_{library.name}/services/publisher/*client.py",
         r"from google.api_core import retry as retries.*\n",
-        "\g<0>from google.api_core import timeout as timeouts  # type: ignore\n"
+        "\g<0>from google.api_core import timeout as timeouts  # type: ignore\n",
     )
 
     s.replace(
@@ -293,10 +306,7 @@ for library in s.get_staging_dirs(default_version):
     s.replace(
         library / f"google/pubsub_{library.name}/services/publisher/*client.py",
         r"([^\S\r\n]+)timeout \(float\): (.*)\n",
-        (
-            "\g<1>timeout (TimeoutType):\n"
-            "\g<1>    \g<2>\n"
-        ),
+        ("\g<1>timeout (TimeoutType):\n" "\g<1>    \g<2>\n"),
     )
 
     # The namespace package declaration in google/cloud/__init__.py should be excluded
@@ -340,5 +350,52 @@ s.move(templated_files, excludes=[".coveragerc"])
 # Samples templates
 # ----------------------------------------------------------------------------
 python.py_samples()
+
+# Remove the replacements below once
+# https://github.com/googleapis/synthtool/pull/1188 is merged
+
+# Update googleapis/repo-automation-bots repo to main in .kokoro/*.sh files
+s.replace(
+    ".kokoro/*.sh",
+    "repo-automation-bots/tree/master",
+    "repo-automation-bots/tree/main",
+)
+
+# Customize CONTRIBUTING.rst to replace master with main
+s.replace(
+    "CONTRIBUTING.rst",
+    "fetch and merge changes from upstream into master",
+    "fetch and merge changes from upstream into main",
+)
+
+s.replace(
+    "CONTRIBUTING.rst", "git merge upstream/master", "git merge upstream/main",
+)
+
+s.replace(
+    "CONTRIBUTING.rst",
+    """export GOOGLE_CLOUD_TESTING_BRANCH=\"master\"""",
+    """export GOOGLE_CLOUD_TESTING_BRANCH=\"main\"""",
+)
+
+s.replace(
+    "CONTRIBUTING.rst", "remote \(``master``\)", "remote (``main``)",
+)
+
+s.replace(
+    "CONTRIBUTING.rst", "blob/master/CONTRIBUTING.rst", "blob/main/CONTRIBUTING.rst",
+)
+
+s.replace(
+    "CONTRIBUTING.rst", "blob/master/noxfile.py", "blob/main/noxfile.py",
+)
+
+s.replace(
+    "docs/conf.py", "master_doc", "root_doc",
+)
+
+s.replace(
+    "docs/conf.py", "# The master toctree document.", "# The root toctree document.",
+)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

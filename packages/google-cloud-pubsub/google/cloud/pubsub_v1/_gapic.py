@@ -17,10 +17,10 @@ from __future__ import absolute_import
 import functools
 
 
-def add_methods(source_class, blacklist=()):
+def add_methods(source_class, denylist=()):
     """Add wrapped versions of the `api` member's methods to the class.
 
-    Any methods passed in `blacklist` are not added.
+    Any methods passed in `denylist` are not added.
     Additionally, any methods explicitly defined on the wrapped class are
     not added.
     """
@@ -48,8 +48,8 @@ def add_methods(source_class, blacklist=()):
             if name.startswith("_"):
                 continue
 
-            # Ignore anything on our blacklist.
-            if name in blacklist:
+            # Ignore anything on our denylist.
+            if name in denylist:
                 continue
 
             # Retrieve the attribute, and ignore it if it is not callable.

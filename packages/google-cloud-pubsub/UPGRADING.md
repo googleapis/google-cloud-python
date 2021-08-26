@@ -88,7 +88,7 @@ required or optional.
 > of these methods have in large part been preserved.
 
 Some methods have additional keyword only parameters. The available parameters depend
-on the [`google.api.method_signature` annotation](https://github.com/googleapis/python-pubsub/blob/master/google/cloud/pubsub_v1/proto/pubsub.proto#L88)
+on the [`google.api.method_signature` annotation](https://github.com/googleapis/python-pubsub/blob/main/google/cloud/pubsub_v1/proto/pubsub.proto#L88)
 specified by the API producer.
 
 

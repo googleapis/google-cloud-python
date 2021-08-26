@@ -34,14 +34,14 @@ except pkg_resources.DistributionNotFound:
     # a PIP package.
     __version__ = "0.0"
 
-_BLACKLISTED_METHODS = (
+_DENYLISTED_METHODS = (
     "publish",
     "from_service_account_file",
     "from_service_account_json",
 )
 
 
-@_gapic.add_methods(subscriber_client.SubscriberClient, blacklist=_BLACKLISTED_METHODS)
+@_gapic.add_methods(subscriber_client.SubscriberClient, denylist=_DENYLISTED_METHODS)
 class Client(object):
     """A subscriber client for Google Cloud Pub/Sub.
 
