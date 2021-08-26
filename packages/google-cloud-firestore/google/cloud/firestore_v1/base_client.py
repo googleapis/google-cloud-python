@@ -180,7 +180,10 @@ class BaseClient(ClientWithProject):
         # https://github.com/googleapis/python-firestore/issues/359
         # Default the token to a non-empty string, in this case "owner".
         token = "owner"
-        if self._credentials is not None and self._credentials.id_token is not None:
+        if (
+            self._credentials is not None
+            and getattr(self._credentials, "id_token", None) is not None
+        ):
             token = self._credentials.id_token
         options = [("Authorization", f"Bearer {token}")]
 
