@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.0.1...v1.1.0) (2021-08-26)
+
+
+### Features
+
+* handle additional docstring items ([#116](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/116)) ([8c31924](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/8c319244d726c3425fcb9d10ee0a3f4157193e75))
+
 ### [1.0.1](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.0.0...v1.0.1) (2021-08-25)
 
 
