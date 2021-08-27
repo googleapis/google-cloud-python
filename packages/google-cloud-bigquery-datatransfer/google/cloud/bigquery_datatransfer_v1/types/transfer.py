@@ -108,13 +108,11 @@ class TransferConfig(proto.Message):
     Attributes:
         name (str):
             The resource name of the transfer config. Transfer config
-            names have the form of
+            names have the form
             ``projects/{project_id}/locations/{region}/transferConfigs/{config_id}``.
-            The name is automatically generated based on the config_id
-            specified in CreateTransferConfigRequest along with
-            project_id and region. If config_id is not provided, usually
-            a uuid, even though it is not guaranteed or required, will
-            be generated for config_id.
+            Where ``config_id`` is usually a uuid, even though it is not
+            guaranteed or required. The name is ignored when creating a
+            transfer config.
         destination_dataset_id (str):
             The BigQuery target dataset id.
         display_name (str):
@@ -124,7 +122,13 @@ class TransferConfig(proto.Message):
             Data source id. Cannot be changed once data
             transfer is created.
         params (google.protobuf.struct_pb2.Struct):
-            Data transfer specific parameters.
+            Parameters specific to each data source. For
+            more information see the bq tab in the 'Setting
+            up a data transfer' section for each data
+            source. For example the parameters for Cloud
+            Storage transfers are listed here:
+            https://cloud.google.com/bigquery-
+            transfer/docs/cloud-storage-transfer#bq
         schedule (str):
             Data transfer schedule. If the data source does not support
             a custom schedule, this should be empty. If it is empty, the
@@ -166,9 +170,11 @@ class TransferConfig(proto.Message):
             Output only. Region in which BigQuery dataset
             is located.
         notification_pubsub_topic (str):
-            Pub/Sub topic where notifications will be
-            sent after transfer runs associated with this
-            transfer config finish.
+            Pub/Sub topic where notifications will be sent after
+            transfer runs associated with this transfer config finish.
+
+            The format for specifying a pubsub topic is:
+            ``projects/{project}/topics/{topic}``
         email_preferences (google.cloud.bigquery_datatransfer_v1.types.EmailPreferences):
             Email notifications will be sent according to
             these preferences to the email address of the
@@ -224,8 +230,13 @@ class TransferRun(proto.Message):
             Output only. Last time the data transfer run
             state was updated.
         params (google.protobuf.struct_pb2.Struct):
-            Output only. Data transfer specific
-            parameters.
+            Output only. Parameters specific to each data
+            source. For more information see the bq tab in
+            the 'Setting up a data transfer' section for
+            each data source. For example the parameters for
+            Cloud Storage transfers are listed here:
+            https://cloud.google.com/bigquery-
+            transfer/docs/cloud-storage-transfer#bq
         destination_dataset_id (str):
             Output only. The BigQuery target dataset id.
         data_source_id (str):
@@ -244,9 +255,11 @@ class TransferRun(proto.Message):
             depending on the current load, so ``schedule_time`` doesn't
             always match this.
         notification_pubsub_topic (str):
-            Output only. Pub/Sub topic where a
-            notification will be sent after this transfer
-            run finishes
+            Output only. Pub/Sub topic where a notification will be sent
+            after this transfer run finishes.
+
+            The format for specifying a pubsub topic is:
+            ``projects/{project}/topics/{topic}``
         email_preferences (google.cloud.bigquery_datatransfer_v1.types.EmailPreferences):
             Output only. Email notifications will be sent
             according to these preferences to the email

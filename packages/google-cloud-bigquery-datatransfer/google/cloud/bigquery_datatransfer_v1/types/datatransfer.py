@@ -731,13 +731,14 @@ class StartManualTransferRunsRequest(proto.Message):
                 Start time of the range of transfer runs. For example,
                 ``"2017-05-25T00:00:00+00:00"``. The start_time must be
                 strictly less than the end_time. Creates transfer runs where
-                run_time is in the range betwen start_time (inclusive) and
-                end_time (exlusive).
+                run_time is in the range between start_time (inclusive) and
+                end_time (exclusive).
             end_time (google.protobuf.timestamp_pb2.Timestamp):
                 End time of the range of transfer runs. For example,
                 ``"2017-05-30T00:00:00+00:00"``. The end_time must not be in
                 the future. Creates transfer runs where run_time is in the
-                range betwen start_time (inclusive) and end_time (exlusive).
+                range between start_time (inclusive) and end_time
+                (exclusive).
         """
 
         start_time = proto.Field(

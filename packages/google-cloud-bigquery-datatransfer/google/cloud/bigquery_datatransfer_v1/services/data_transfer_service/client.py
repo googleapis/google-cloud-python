@@ -897,8 +897,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferConfigsPager:
-        r"""Returns information about all data transfers in the
-        project.
+        r"""Returns information about all transfer configs owned
+        by a project in the specified location.
 
         Args:
             request (google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest):
