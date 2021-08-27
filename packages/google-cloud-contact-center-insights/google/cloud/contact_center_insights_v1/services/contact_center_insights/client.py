@@ -2532,9 +2532,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The request object. The request to update project-level
                 settings.
             settings (google.cloud.contact_center_insights_v1.types.Settings):
-                Required. The new values for the
-                conversation.
-
+                Required. The new settings values.
                 This corresponds to the ``settings`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

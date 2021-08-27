@@ -2260,9 +2260,7 @@ class ContactCenterInsightsAsyncClient:
                 The request object. The request to update project-level
                 settings.
             settings (:class:`google.cloud.contact_center_insights_v1.types.Settings`):
-                Required. The new values for the
-                conversation.
-
+                Required. The new settings values.
                 This corresponds to the ``settings`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

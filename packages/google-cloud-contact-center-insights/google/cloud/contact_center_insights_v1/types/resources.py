@@ -437,10 +437,15 @@ class IssueAssignment(proto.Message):
         score (float):
             Score indicating the likelihood of the issue assignment.
             currently bounded on [0,1].
+        display_name (str):
+            Immutable. Display name of the assigned
+            issue. This field is set at time of analyis and
+            immutable since then.
     """
 
     issue = proto.Field(proto.STRING, number=1,)
     score = proto.Field(proto.DOUBLE, number=2,)
+    display_name = proto.Field(proto.STRING, number=3,)
 
 
 class CallAnnotation(proto.Message):
@@ -1256,8 +1261,8 @@ class ConversationParticipant(proto.Message):
             A user-specified ID representing the
             participant.
         dialogflow_participant (str):
-            The name of the Dialogflow participant.
-            Format:
+            Deprecated. Use ``dialogflow_participant_name`` instead. The
+            name of the Dialogflow participant. Format:
             projects/{project}/locations/{location}/conversations/{conversation}/participants/{participant}
         role (google.cloud.contact_center_insights_v1.types.ConversationParticipant.Role):
             The role of the participant.

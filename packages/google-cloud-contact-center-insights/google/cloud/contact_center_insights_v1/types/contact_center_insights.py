@@ -231,11 +231,12 @@ class ListConversationsRequest(proto.Message):
             Required. The parent resource of the
             conversation.
         page_size (int):
-            The maximum number of conversations to return in the
-            response. If this value is zero, the service will select a
-            default size. A call might return fewer objects than
-            requested. A non-empty ``next_page_token`` in the response
-            indicates that more data is available.
+            The maximum number of conversations to return
+            in the response. A valid page size ranges from 0
+            to 1,000 inclusive. If the page size is zero or
+            unspecified, a default page size of 100 will be
+            chosen. Note that a call might return fewer
+            results than the requested page size.
         page_token (str):
             The value returned by the last
             ``ListConversationsResponse``. This value indicates that
@@ -264,9 +265,10 @@ class ListConversationsResponse(proto.Message):
         conversations (Sequence[google.cloud.contact_center_insights_v1.types.Conversation]):
             The conversations that match the request.
         next_page_token (str):
-            A token, which can be sent as ``page_token`` to retrieve the
-            next page. If this field is omitted, there are no subsequent
-            pages.
+            A token which can be sent as ``page_token`` to retrieve the
+            next page. If this field is set, it means there is another
+            page available. If it is not set, it means no other pages
+            are available.
     """
 
     @property
@@ -871,8 +873,7 @@ class UpdateSettingsRequest(proto.Message):
 
     Attributes:
         settings (google.cloud.contact_center_insights_v1.types.Settings):
-            Required. The new values for the
-            conversation.
+            Required. The new settings values.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The list of fields to be updated.
     """
