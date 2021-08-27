@@ -1,10 +1,10 @@
 # sqlalchemy-bigquery release procedure
 
-*   Checkout master branch
+*   Checkout main branch
 
-        git fetch upstream master
-        git checkout master
-        git rebase -i upstream/master
+        git fetch upstream main
+        git checkout main
+        git rebase -i upstream/main
 
 *   Update version number in `setup.py`
 
@@ -13,7 +13,7 @@
 *   Commit and push
 
         git commit -m "Release x.x.x"
-        git push upstream master
+        git push upstream main
 
 *   Build the package
 
