@@ -141,7 +141,7 @@ All changes are from [#51](https://www.github.com/googleapis/python-container/is
 
 ### ⚠ BREAKING CHANGES
 
-* migrate to microgenerator (#33). See the [migration guide](https://github.com/googleapis/python-container/blob/master/UPGRADING.md).
+* migrate to microgenerator (#33). See the [migration guide](https://github.com/googleapis/python-container/blob/main/UPGRADING.md).
 
 ### Features
 
