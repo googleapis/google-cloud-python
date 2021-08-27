@@ -150,7 +150,7 @@ positional parameter `request`. Method docstrings indicate whether a parameter i
 required or optional.
 
 Some methods have additional keyword only parameters. The available parameters depend
-on the [`google.api.method_signature` annotation](https://github.com/googleapis/python-bigquery-datatransfer/blob/master/google/cloud/bigquery_datatransfer_v1/proto/datatransfer.proto#L80)
+on the [`google.api.method_signature` annotation](https://github.com/googleapis/python-bigquery-datatransfer/blob/main/google/cloud/bigquery_datatransfer_v1/proto/datatransfer.proto#L80)
 specified by the API producer.
 
 
