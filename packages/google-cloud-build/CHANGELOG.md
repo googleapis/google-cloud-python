@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.5.0](https://www.github.com/googleapis/python-cloudbuild/compare/v3.4.0...v3.5.0) (2021-08-27)
+
+
+### Features
+
+* add script field to BuildStep message ([#154](https://www.github.com/googleapis/python-cloudbuild/issues/154)) ([8336413](https://www.github.com/googleapis/python-cloudbuild/commit/83364130c4e216724094c88bf57fe6ecf3d1e50d))
+* Update cloudbuild proto with the service_account for BYOSA Triggers. ([#155](https://www.github.com/googleapis/python-cloudbuild/issues/155)) ([e18dbee](https://www.github.com/googleapis/python-cloudbuild/commit/e18dbeedda72f2e2bac5138e0068c80cb5eba5d1))
+
 ## [3.4.0](https://www.github.com/googleapis/python-cloudbuild/compare/v3.3.2...v3.4.0) (2021-08-20)
 
 
