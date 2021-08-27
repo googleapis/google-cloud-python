@@ -240,7 +240,7 @@ class CopyJob(_AsyncJob):
     def from_api_repr(cls, resource, client):
         """Factory: construct a job given its API representation
 
-        .. note:
+        .. note::
 
            This method assumes that the project found in the resource matches
            the client's project.
