@@ -30,6 +30,7 @@ dependencies = [
     "google-api-core[grpc] >= 1.26.0, <3.0.0dev",
     "proto-plus >= 0.4.0",
     "packaging >= 14.3",
+    "pytz >= 2021.1",
 ]
 
 extras = {"libcst": "libcst >= 0.2.5"}
