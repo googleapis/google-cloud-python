@@ -1,4 +1,4 @@
-# https://github.com/googleapis/repo-automation-bots/tree/master/packages/sync-repo-settings
+# https://github.com/googleapis/repo-automation-bots/tree/main/packages/sync-repo-settings
 
 permissionRules:
     # Team slug to add to repository permissions
