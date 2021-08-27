@@ -71,6 +71,14 @@ for library in s.get_staging_dirs(default_version):
         re.MULTILINE| re.DOTALL
     )
 
+    # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
+    s.replace(library / f"google/cloud/monitoring_{library.name}/types/service.py",
+                r""".
+    Attributes:""",
+                r""".\n
+    Attributes:""",
+    )
+
     # don't copy nox.py, setup.py, README.rst, docs/index.rst
     excludes = ["nox.py", "setup.py", "README.rst", "docs/index.rst"]
     s.move(library, excludes=excludes)

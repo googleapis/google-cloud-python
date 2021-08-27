@@ -64,7 +64,6 @@ from google.cloud.monitoring_v3.types.common import Aggregation
 from google.cloud.monitoring_v3.types.common import TimeInterval
 from google.cloud.monitoring_v3.types.common import TypedValue
 from google.cloud.monitoring_v3.types.common import ComparisonType
-from google.cloud.monitoring_v3.types.common import ServiceTier
 from google.cloud.monitoring_v3.types.dropped_labels import DroppedLabels
 from google.cloud.monitoring_v3.types.group import Group
 from google.cloud.monitoring_v3.types.group_service import CreateGroupRequest
@@ -236,7 +235,6 @@ __all__ = (
     "TimeInterval",
     "TypedValue",
     "ComparisonType",
-    "ServiceTier",
     "DroppedLabels",
     "Group",
     "CreateGroupRequest",

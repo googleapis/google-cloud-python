@@ -38,8 +38,9 @@ class ListUptimeCheckConfigsRequest(proto.Message):
     r"""The protocol for the ``ListUptimeCheckConfigs`` request.
     Attributes:
         parent (str):
-            Required. The project whose Uptime check configurations are
-            listed. The format is:
+            Required. The
+            `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            whose Uptime check configurations are listed. The format is:
 
             ::
 
@@ -110,8 +111,9 @@ class CreateUptimeCheckConfigRequest(proto.Message):
     r"""The protocol for the ``CreateUptimeCheckConfig`` request.
     Attributes:
         parent (str):
-            Required. The project in which to create the Uptime check.
-            The format is:
+            Required. The
+            `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            in which to create the Uptime check. The format is:
 
             ::
 

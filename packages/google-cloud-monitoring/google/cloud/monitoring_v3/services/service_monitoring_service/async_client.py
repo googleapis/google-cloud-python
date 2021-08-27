@@ -196,8 +196,9 @@ class ServiceMonitoringServiceAsyncClient:
             request (:class:`google.cloud.monitoring_v3.types.CreateServiceRequest`):
                 The request object. The `CreateService` request.
             parent (:class:`str`):
-                Required. Resource name of the parent workspace. The
-                format is:
+                Required. Resource
+                `name <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                of the parent workspace. The format is:
 
                 ::
 
@@ -333,7 +334,6 @@ class ServiceMonitoringServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -370,8 +370,9 @@ class ServiceMonitoringServiceAsyncClient:
                 The request object. The `ListServices` request.
             parent (:class:`str`):
                 Required. Resource name of the parent containing the
-                listed services, either a project or a Monitoring
-                Workspace. The formats are:
+                listed services, either a
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                or a Monitoring Workspace. The formats are:
 
                 ::
 
@@ -421,7 +422,6 @@ class ServiceMonitoringServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -581,7 +581,6 @@ class ServiceMonitoringServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -773,7 +772,6 @@ class ServiceMonitoringServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -862,7 +860,6 @@ class ServiceMonitoringServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -1037,7 +1034,6 @@ class ServiceMonitoringServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,

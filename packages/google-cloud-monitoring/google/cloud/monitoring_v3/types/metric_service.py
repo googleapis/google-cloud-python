@@ -49,8 +49,9 @@ class ListMonitoredResourceDescriptorsRequest(proto.Message):
     r"""The ``ListMonitoredResourceDescriptors`` request.
     Attributes:
         name (str):
-            Required. The project on which to execute the request. The
-            format is:
+            Required. The
+            `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            on which to execute the request. The format is:
 
             ::
 
@@ -129,8 +130,9 @@ class ListMetricDescriptorsRequest(proto.Message):
     r"""The ``ListMetricDescriptors`` request.
     Attributes:
         name (str):
-            Required. The project on which to execute the request. The
-            format is:
+            Required. The
+            `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            on which to execute the request. The format is:
 
             ::
 
@@ -207,12 +209,10 @@ class CreateMetricDescriptorRequest(proto.Message):
     r"""The ``CreateMetricDescriptor`` request.
     Attributes:
         name (str):
-            Required. The project on which to execute the request. The
-            format is:
-
-            ::
-
-                projects/[PROJECT_ID_OR_NUMBER]
+            Required. The
+            `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            on which to execute the request. The format is: 4
+            projects/[PROJECT_ID_OR_NUMBER]
         metric_descriptor (google.api.metric_pb2.MetricDescriptor):
             Required. The new `custom
             metric <https://cloud.google.com/monitoring/custom-metrics>`__
@@ -247,8 +247,10 @@ class ListTimeSeriesRequest(proto.Message):
     r"""The ``ListTimeSeries`` request.
     Attributes:
         name (str):
-            Required. The project, organization or folder on which to
-            execute the request. The format is:
+            Required. The
+            `project <https://cloud.google.com/monitoring/api/v3#project_name>`__,
+            organization or folder on which to execute the request. The
+            format is:
 
             ::
 
@@ -362,8 +364,9 @@ class CreateTimeSeriesRequest(proto.Message):
     r"""The ``CreateTimeSeries`` request.
     Attributes:
         name (str):
-            Required. The project on which to execute the request. The
-            format is:
+            Required. The
+            `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            on which to execute the request. The format is:
 
             ::
 
@@ -438,8 +441,9 @@ class QueryTimeSeriesRequest(proto.Message):
     r"""The ``QueryTimeSeries`` request.
     Attributes:
         name (str):
-            Required. The project on which to execute the request. The
-            format is:
+            Required. The
+            `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            on which to execute the request. The format is:
 
             ::
 

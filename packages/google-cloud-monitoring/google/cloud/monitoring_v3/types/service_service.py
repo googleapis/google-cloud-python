@@ -42,8 +42,9 @@ class CreateServiceRequest(proto.Message):
     r"""The ``CreateService`` request.
     Attributes:
         parent (str):
-            Required. Resource name of the parent workspace. The format
-            is:
+            Required. Resource
+            `name <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            of the parent workspace. The format is:
 
             ::
 
@@ -80,8 +81,9 @@ class ListServicesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Resource name of the parent containing the listed
-            services, either a project or a Monitoring Workspace. The
-            formats are:
+            services, either a
+            `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            or a Monitoring Workspace. The formats are:
 
             ::
 

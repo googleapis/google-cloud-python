@@ -52,9 +52,10 @@ class ListNotificationChannelDescriptorsRequest(proto.Message):
 
                 projects/[PROJECT_ID_OR_NUMBER]
 
-            Note that this names the parent container in which to look
-            for the descriptors; to retrieve a single descriptor by
-            name, use the
+            Note that this
+            `names <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            the parent container in which to look for the descriptors;
+            to retrieve a single descriptor by name, use the
             [GetNotificationChannelDescriptor][google.monitoring.v3.NotificationChannelService.GetNotificationChannelDescriptor]
             operation, instead.
         page_size (int):
@@ -115,8 +116,9 @@ class CreateNotificationChannelRequest(proto.Message):
     r"""The ``CreateNotificationChannel`` request.
     Attributes:
         name (str):
-            Required. The project on which to execute the request. The
-            format is:
+            Required. The
+            `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            on which to execute the request. The format is:
 
             ::
 
@@ -143,8 +145,9 @@ class ListNotificationChannelsRequest(proto.Message):
     r"""The ``ListNotificationChannels`` request.
     Attributes:
         name (str):
-            Required. The project on which to execute the request. The
-            format is:
+            Required. The
+            `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            on which to execute the request. The format is:
 
             ::
 

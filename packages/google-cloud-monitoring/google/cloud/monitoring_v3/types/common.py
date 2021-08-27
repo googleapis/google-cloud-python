@@ -22,13 +22,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.monitoring.v3",
-    manifest={
-        "ComparisonType",
-        "ServiceTier",
-        "TypedValue",
-        "TimeInterval",
-        "Aggregation",
-    },
+    manifest={"ComparisonType", "TypedValue", "TimeInterval", "Aggregation",},
 )
 
 
@@ -43,17 +37,6 @@ class ComparisonType(proto.Enum):
     COMPARISON_LE = 4
     COMPARISON_EQ = 5
     COMPARISON_NE = 6
-
-
-class ServiceTier(proto.Enum):
-    r"""The tier of service for a Workspace. Please see the `service tiers
-    documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__
-    for more details.
-    """
-    _pb_options = {"deprecated": True}
-    SERVICE_TIER_UNSPECIFIED = 0
-    SERVICE_TIER_BASIC = 1
-    SERVICE_TIER_PREMIUM = 2
 
 
 class TypedValue(proto.Message):
@@ -88,7 +71,7 @@ class TimeInterval(proto.Message):
     r"""A closed time interval. It extends from the start time to the end
     time, and includes both: ``[startTime, endTime]``. Valid time
     intervals depend on the
-    ```MetricKind`` </monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind>`__
+    ```MetricKind`` <https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind>`__
     of the metric value. The end time must not be earlier than the start
     time. When writing data points, the start time must not be more than
     25 hours in the past and the end time must not be more than five

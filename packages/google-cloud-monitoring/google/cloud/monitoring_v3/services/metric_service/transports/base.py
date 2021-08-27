@@ -169,7 +169,6 @@ class MetricServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -184,7 +183,6 @@ class MetricServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -199,7 +197,6 @@ class MetricServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -214,7 +211,6 @@ class MetricServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -234,7 +230,6 @@ class MetricServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -249,12 +244,11 @@ class MetricServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=30.0,
+                    deadline=90.0,
                 ),
-                default_timeout=30.0,
+                default_timeout=90.0,
                 client_info=client_info,
             ),
             self.create_time_series: gapic_v1.method.wrap_method(

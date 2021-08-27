@@ -39,8 +39,9 @@ class ListGroupsRequest(proto.Message):
     r"""The ``ListGroup`` request.
     Attributes:
         name (str):
-            Required. The project whose groups are to be listed. The
-            format is:
+            Required. The
+            `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            whose groups are to be listed. The format is:
 
             ::
 
@@ -134,8 +135,9 @@ class CreateGroupRequest(proto.Message):
     r"""The ``CreateGroup`` request.
     Attributes:
         name (str):
-            Required. The project in which to create the group. The
-            format is:
+            Required. The
+            `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            in which to create the group. The format is:
 
             ::
 

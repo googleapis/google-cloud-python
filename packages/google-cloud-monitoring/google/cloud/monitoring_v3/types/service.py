@@ -71,6 +71,17 @@ class Service(proto.Message):
         telemetry (google.cloud.monitoring_v3.types.Service.Telemetry):
             Configuration for how to query telemetry on a
             Service.
+        user_labels (Sequence[google.cloud.monitoring_v3.types.Service.UserLabelsEntry]):
+            Labels which have been used to annotate the
+            service. Label keys must start with a letter.
+            Label keys and values may contain lowercase
+            letters, numbers, underscores, and dashes. Label
+            keys and values have a maximum length of 63
+            characters, and must be less than 128 bytes in
+            size. Up to 64 label entries may be stored. For
+            labels which do not have a semantic value, the
+            empty string may be supplied for the label
+            value.
     """
 
     class Custom(proto.Message):
@@ -217,6 +228,7 @@ class Service(proto.Message):
         proto.MESSAGE, number=11, oneof="identifier", message=IstioCanonicalService,
     )
     telemetry = proto.Field(proto.MESSAGE, number=13, message=Telemetry,)
+    user_labels = proto.MapField(proto.STRING, proto.STRING, number=14,)
 
 
 class ServiceLevelObjective(proto.Message):
@@ -254,6 +266,17 @@ class ServiceLevelObjective(proto.Message):
             A calendar period, semantically "since the start of the
             current ``<calendar_period>``". At this time, only ``DAY``,
             ``WEEK``, ``FORTNIGHT``, and ``MONTH`` are supported.
+        user_labels (Sequence[google.cloud.monitoring_v3.types.ServiceLevelObjective.UserLabelsEntry]):
+            Labels which have been used to annotate the
+            service-level objective. Label keys must start
+            with a letter. Label keys and values may contain
+            lowercase letters, numbers, underscores, and
+            dashes. Label keys and values have a maximum
+            length of 63 characters, and must be less than
+            128 bytes in size. Up to 64 label entries may be
+            stored. For labels which do not have a semantic
+            value, the empty string may be supplied for the
+            label value.
     """
 
     class View(proto.Enum):
@@ -278,6 +301,7 @@ class ServiceLevelObjective(proto.Message):
     calendar_period = proto.Field(
         proto.ENUM, number=6, oneof="period", enum=calendar_period_pb2.CalendarPeriod,
     )
+    user_labels = proto.MapField(proto.STRING, proto.STRING, number=12,)
 
 
 class ServiceLevelIndicator(proto.Message):
@@ -384,10 +408,7 @@ class BasicSli(proto.Message):
 
 
 class Range(proto.Message):
-    r"""Range of numerical values, inclusive of ``min`` and exclusive of
-    ``max``. If the open range "< range.max" is desired, set
-    ``range.min = -infinity``. If the open range ">= range.min" is
-    desired, set ``range.max = infinity``.
+    r"""Range of numerical values within ``min`` and ``max``.
 
     Attributes:
         min_ (float):
@@ -468,8 +489,8 @@ class DistributionCut(proto.Message):
     for measuring good service and total service. The ``TimeSeries``
     must have ``ValueType = DISTRIBUTION`` and ``MetricKind = DELTA`` or
     ``MetricKind = CUMULATIVE``. The computed ``good_service`` will be
-    the count of values x in the ``Distribution`` such that
-    ``range.min <= x < range.max``.
+    the estimated count of values in the ``Distribution`` that fall
+    within the specified ``min`` and ``max``.
 
     Attributes:
         distribution_filter (str):
@@ -536,9 +557,10 @@ class WindowsBasedSli(proto.Message):
 
     class MetricRange(proto.Message):
         r"""A ``MetricRange`` is used when each window is good when the value x
-        of a single ``TimeSeries`` satisfies ``range.min <= x < range.max``.
-        The provided ``TimeSeries`` must have ``ValueType = INT64`` or
-        ``ValueType = DOUBLE`` and ``MetricKind = GAUGE``.
+        of a single ``TimeSeries`` satisfies
+        ``range.min <= x <= range.max``. The provided ``TimeSeries`` must
+        have ``ValueType = INT64`` or ``ValueType = DOUBLE`` and
+        ``MetricKind = GAUGE``.
 
         Attributes:
             time_series (str):

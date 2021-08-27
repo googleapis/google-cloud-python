@@ -29,7 +29,6 @@ from google.oauth2 import service_account  # type: ignore
 from google.api import label_pb2  # type: ignore
 from google.api import launch_stage_pb2  # type: ignore
 from google.cloud.monitoring_v3.services.notification_channel_service import pagers
-from google.cloud.monitoring_v3.types import common
 from google.cloud.monitoring_v3.types import mutation_record
 from google.cloud.monitoring_v3.types import notification
 from google.cloud.monitoring_v3.types import notification_service
@@ -214,9 +213,11 @@ class NotificationChannelServiceAsyncClient:
 
                     projects/[PROJECT_ID_OR_NUMBER]
 
-                Note that this names the parent container in which to
-                look for the descriptors; to retrieve a single
-                descriptor by name, use the
+                Note that this
+                `names <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                the parent container in which to look for the
+                descriptors; to retrieve a single descriptor by name,
+                use the
                 [GetNotificationChannelDescriptor][google.monitoring.v3.NotificationChannelService.GetNotificationChannelDescriptor]
                 operation, instead.
 
@@ -265,7 +266,6 @@ class NotificationChannelServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -361,7 +361,6 @@ class NotificationChannelServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -399,8 +398,9 @@ class NotificationChannelServiceAsyncClient:
                 The request object. The `ListNotificationChannels`
                 request.
             name (:class:`str`):
-                Required. The project on which to execute the request.
-                The format is:
+                Required. The
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                on which to execute the request. The format is:
 
                 ::
 
@@ -456,7 +456,6 @@ class NotificationChannelServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -558,7 +557,6 @@ class NotificationChannelServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -598,8 +596,9 @@ class NotificationChannelServiceAsyncClient:
                 The request object. The `CreateNotificationChannel`
                 request.
             name (:class:`str`):
-                Required. The project on which to execute the request.
-                The format is:
+                Required. The
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                on which to execute the request. The format is:
 
                 ::
 
@@ -842,7 +841,6 @@ class NotificationChannelServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -1021,7 +1019,6 @@ class NotificationChannelServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -1126,7 +1123,6 @@ class NotificationChannelServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,

@@ -393,8 +393,9 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
             request (google.cloud.monitoring_v3.types.CreateServiceRequest):
                 The request object. The `CreateService` request.
             parent (str):
-                Required. Resource name of the parent workspace. The
-                format is:
+                Required. Resource
+                `name <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                of the parent workspace. The format is:
 
                 ::
 
@@ -557,8 +558,9 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
                 The request object. The `ListServices` request.
             parent (str):
                 Required. Resource name of the parent containing the
-                listed services, either a project or a Monitoring
-                Workspace. The formats are:
+                listed services, either a
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                or a Monitoring Workspace. The formats are:
 
                 ::
 

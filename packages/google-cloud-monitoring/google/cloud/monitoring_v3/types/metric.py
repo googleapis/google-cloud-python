@@ -70,9 +70,11 @@ class TimeSeries(proto.Message):
             The associated metric. A fully-specified
             metric used to identify the time series.
         resource (google.api.monitored_resource_pb2.MonitoredResource):
-            The associated monitored resource.  Custom
-            metrics can use only certain monitored resource
-            types in their time series data.
+            The associated monitored resource. Custom metrics can use
+            only certain monitored resource types in their time series
+            data. For more information, see `Monitored resources for
+            custom
+            metrics <https://cloud.google.com/monitoring/custom-metrics/creating-metrics#custom-metric-resources>`__.
         metadata (google.api.monitored_resource_pb2.MonitoredResourceMetadata):
             Output only. The associated monitored
             resource metadata. When reading a time series,

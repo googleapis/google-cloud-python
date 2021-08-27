@@ -402,8 +402,9 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 The request object. The
                 `ListMonitoredResourceDescriptors` request.
             name (str):
-                Required. The project on which to execute the request.
-                The format is:
+                Required. The
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                on which to execute the request. The format is:
 
                 ::
 
@@ -581,8 +582,9 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             request (google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest):
                 The request object. The `ListMetricDescriptors` request.
             name (str):
-                Required. The project on which to execute the request.
-                The format is:
+                Required. The
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                on which to execute the request. The format is:
 
                 ::
 
@@ -748,12 +750,10 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 The request object. The `CreateMetricDescriptor`
                 request.
             name (str):
-                Required. The project on which to execute the request.
-                The format is:
-
-                ::
-
-                    projects/[PROJECT_ID_OR_NUMBER]
+                Required. The
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                on which to execute the request. The format is: 4
+                projects/[PROJECT_ID_OR_NUMBER]
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -912,8 +912,10 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             request (google.cloud.monitoring_v3.types.ListTimeSeriesRequest):
                 The request object. The `ListTimeSeries` request.
             name (str):
-                Required. The project, organization or folder on which
-                to execute the request. The format is:
+                Required. The
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__,
+                organization or folder on which to execute the request.
+                The format is:
 
                 ::
 
@@ -1040,8 +1042,9 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             request (google.cloud.monitoring_v3.types.CreateTimeSeriesRequest):
                 The request object. The `CreateTimeSeries` request.
             name (str):
-                Required. The project on which to execute the request.
-                The format is:
+                Required. The
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                on which to execute the request. The format is:
 
                 ::
 

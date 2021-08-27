@@ -373,8 +373,9 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
             request (google.cloud.monitoring_v3.types.ListGroupsRequest):
                 The request object. The `ListGroup` request.
             name (str):
-                Required. The project whose groups are to be listed. The
-                format is:
+                Required. The
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                whose groups are to be listed. The format is:
 
                 ::
 
@@ -560,8 +561,9 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
             request (google.cloud.monitoring_v3.types.CreateGroupRequest):
                 The request object. The `CreateGroup` request.
             name (str):
-                Required. The project in which to create the group. The
-                format is:
+                Required. The
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                in which to create the group. The format is:
 
                 ::
 

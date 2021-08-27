@@ -201,8 +201,9 @@ class AlertPolicyServiceAsyncClient:
                 The request object. The protocol for the
                 `ListAlertPolicies` request.
             name (:class:`str`):
-                Required. The project whose alert policies are to be
-                listed. The format is:
+                Required. The
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                whose alert policies are to be listed. The format is:
 
                 ::
 
@@ -257,7 +258,6 @@ class AlertPolicyServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -351,7 +351,6 @@ class AlertPolicyServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -389,8 +388,9 @@ class AlertPolicyServiceAsyncClient:
                 The request object. The protocol for the
                 `CreateAlertPolicy` request.
             name (:class:`str`):
-                Required. The project in which to create the alerting
-                policy. The format is:
+                Required. The
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                in which to create the alerting policy. The format is:
 
                 ::
 
@@ -532,7 +532,6 @@ class AlertPolicyServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,

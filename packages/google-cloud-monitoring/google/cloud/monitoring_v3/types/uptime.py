@@ -134,9 +134,9 @@ class UptimeCheckConfig(proto.Message):
             The `monitored
             resource <https://cloud.google.com/monitoring/api/resources>`__
             associated with the configuration. The following monitored
-            resource types are supported for Uptime checks:
-            ``uptime_url``, ``gce_instance``, ``gae_app``,
-            ``aws_ec2_instance``, ``aws_elb_load_balancer``
+            resource types are valid for this field: ``uptime_url``,
+            ``gce_instance``, ``gae_app``, ``aws_ec2_instance``,
+            ``aws_elb_load_balancer`` ``k8s_service``
         resource_group (google.cloud.monitoring_v3.types.UptimeCheckConfig.ResourceGroup):
             The group resource associated with the
             configuration.

@@ -168,7 +168,6 @@ class GroupServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -183,7 +182,6 @@ class GroupServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -201,12 +199,11 @@ class GroupServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=30.0,
+                    deadline=180.0,
                 ),
-                default_timeout=30.0,
+                default_timeout=180.0,
                 client_info=client_info,
             ),
             self.delete_group: gapic_v1.method.wrap_method(
@@ -216,7 +213,6 @@ class GroupServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -231,7 +227,6 @@ class GroupServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,

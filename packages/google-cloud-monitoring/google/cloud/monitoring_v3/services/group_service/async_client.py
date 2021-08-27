@@ -187,8 +187,9 @@ class GroupServiceAsyncClient:
             request (:class:`google.cloud.monitoring_v3.types.ListGroupsRequest`):
                 The request object. The `ListGroup` request.
             name (:class:`str`):
-                Required. The project whose groups are to be listed. The
-                format is:
+                Required. The
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                whose groups are to be listed. The format is:
 
                 ::
 
@@ -237,7 +238,6 @@ class GroupServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -357,7 +357,6 @@ class GroupServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -394,8 +393,9 @@ class GroupServiceAsyncClient:
             request (:class:`google.cloud.monitoring_v3.types.CreateGroupRequest`):
                 The request object. The `CreateGroup` request.
             name (:class:`str`):
-                Required. The project in which to create the group. The
-                format is:
+                Required. The
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                in which to create the group. The format is:
 
                 ::
 
@@ -585,12 +585,11 @@ class GroupServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
-                deadline=30.0,
+                deadline=180.0,
             ),
-            default_timeout=30.0,
+            default_timeout=180.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -666,7 +665,6 @@ class GroupServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
@@ -752,7 +750,6 @@ class GroupServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,

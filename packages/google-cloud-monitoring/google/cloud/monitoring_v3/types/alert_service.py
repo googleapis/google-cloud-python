@@ -36,8 +36,9 @@ class CreateAlertPolicyRequest(proto.Message):
     r"""The protocol for the ``CreateAlertPolicy`` request.
     Attributes:
         name (str):
-            Required. The project in which to create the alerting
-            policy. The format is:
+            Required. The
+            `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            in which to create the alerting policy. The format is:
 
             ::
 
@@ -79,8 +80,9 @@ class ListAlertPoliciesRequest(proto.Message):
     r"""The protocol for the ``ListAlertPolicies`` request.
     Attributes:
         name (str):
-            Required. The project whose alert policies are to be listed.
-            The format is:
+            Required. The
+            `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+            whose alert policies are to be listed. The format is:
 
             ::
 

@@ -167,7 +167,6 @@ class NotificationChannelServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -182,7 +181,6 @@ class NotificationChannelServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -197,7 +195,6 @@ class NotificationChannelServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -212,7 +209,6 @@ class NotificationChannelServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -237,7 +233,6 @@ class NotificationChannelServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -257,7 +252,6 @@ class NotificationChannelServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
@@ -272,7 +266,6 @@ class NotificationChannelServiceTransport(abc.ABC):
                     maximum=30.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,

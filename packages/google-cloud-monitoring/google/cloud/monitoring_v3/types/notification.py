@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.api import label_pb2  # type: ignore
 from google.api import launch_stage_pb2  # type: ignore
-from google.cloud.monitoring_v3.types import common
 from google.cloud.monitoring_v3.types import mutation_record
 from google.protobuf import wrappers_pb2  # type: ignore
 
@@ -64,9 +63,6 @@ class NotificationChannelDescriptor(proto.Message):
             corresponding type. Each label includes a
             description for how that field should be
             populated.
-        supported_tiers (Sequence[google.cloud.monitoring_v3.types.ServiceTier]):
-            The tiers that support this notification channel; the
-            project service tier must be one of the supported_tiers.
         launch_stage (google.api.launch_stage_pb2.LaunchStage):
             The product launch stage for channels of this
             type.
@@ -78,9 +74,6 @@ class NotificationChannelDescriptor(proto.Message):
     description = proto.Field(proto.STRING, number=3,)
     labels = proto.RepeatedField(
         proto.MESSAGE, number=4, message=label_pb2.LabelDescriptor,
-    )
-    supported_tiers = proto.RepeatedField(
-        proto.ENUM, number=5, enum=common.ServiceTier,
     )
     launch_stage = proto.Field(proto.ENUM, number=7, enum=launch_stage_pb2.LaunchStage,)
 
