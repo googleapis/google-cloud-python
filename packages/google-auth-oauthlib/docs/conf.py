@@ -76,8 +76,8 @@ source_suffix = [".rst", ".md"]
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
 
-# The master toctree document.
-master_doc = "index"
+# The root toctree document.
+root_doc = "index"
 
 # General information about the project.
 project = "google-auth-oauthlib"
@@ -280,7 +280,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (
-        master_doc,
+        root_doc,
         "google-auth-oauthlib.tex",
         "google-auth-oauthlib Documentation",
         author,
@@ -315,7 +315,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     (
-        master_doc,
+        root_doc,
         "google-auth-oauthlib",
         "google-auth-oauthlib Documentation",
         [author],
@@ -334,7 +334,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (
-        master_doc,
+        root_doc,
         "google-auth-oauthlib",
         "google-auth-oauthlib Documentation",
         author,

@@ -51,8 +51,7 @@ def session_from_client_config(client_config, scopes, **kwargs):
             oauthlib session and the validated client configuration.
 
     .. _client secrets:
-        https://github.com/googleapis/google-api-python-client/blob/master/
-        docs/client-secrets.md
+        https://github.com/googleapis/google-api-python-client/blob/main/docs/client-secrets.md
     """
 
     if "web" in client_config:
@@ -89,8 +88,7 @@ def session_from_client_secrets_file(client_secrets_file, scopes, **kwargs):
             oauthlib session and the validated client configuration.
 
     .. _client secrets:
-        https://github.com/googleapis/google-api-python-client/blob/master/
-        docs/client-secrets.md
+        https://github.com/googleapis/google-api-python-client/blob/main/docs/client-secrets.md
     """
     with open(client_secrets_file, "r") as json_file:
         client_config = json.load(json_file)

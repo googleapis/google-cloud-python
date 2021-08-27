@@ -119,7 +119,7 @@ class Flow(object):
                 code_verifier.
         .. _client secrets:
             https://github.com/googleapis/google-api-python-client/blob
-            /master/docs/client-secrets.md
+            /main/docs/client-secrets.md
         """
         self.client_type = client_type
         """str: The client type, either ``'web'`` or ``'installed'``"""
@@ -152,8 +152,7 @@ class Flow(object):
                 format.
 
         .. _client secrets:
-            https://github.com/googleapis/google-api-python-client/blob/
-            master/docs/client-secrets.md
+            https://github.com/googleapis/google-api-python-client/blob/main/docs/client-secrets.md
         """
         if "web" in client_config:
             client_type = "web"
@@ -356,7 +355,7 @@ class InstalledAppFlow(Flow):
     response, such as using an embedded web view.
 
     .. _Installed Application Authorization Flow:
-        https://github.com/googleapis/google-api-python-client/blob/master/docs/oauth-installed.md
+        https://github.com/googleapis/google-api-python-client/blob/main/docs/oauth-installed.md
     """
 
     _OOB_REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob"
