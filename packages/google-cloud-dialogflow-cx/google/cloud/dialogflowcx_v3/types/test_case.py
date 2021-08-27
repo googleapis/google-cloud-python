@@ -223,7 +223,8 @@ class ConversationTurn(proto.Message):
             diagnostic_info (google.protobuf.struct_pb2.Struct):
                 Required. Input only. The diagnostic
                 [info][Session.DetectIntentResponse.QueryResult.diagnostic_info]
-                output for the turn.
+                output for the turn. Required to calculate the testing
+                coverage.
             triggered_intent (google.cloud.dialogflowcx_v3.types.Intent):
                 The [Intent][google.cloud.dialogflow.cx.v3.Intent] that
                 triggered the response. Only name and displayName will be
@@ -664,7 +665,7 @@ class RunTestCaseResponse(proto.Message):
 class RunTestCaseMetadata(proto.Message):
     r"""Metadata returned for the
     [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3.TestCases.RunTestCase]
-    long running operation.
+    long running operation. This message currently has no fields.
         """
 
 

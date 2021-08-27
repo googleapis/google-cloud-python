@@ -385,7 +385,16 @@ class AgentsGrpcTransport(AgentsTransport):
     ) -> Callable[[agent.ExportAgentRequest], operations_pb2.Operation]:
         r"""Return a callable for the export agent method over gRPC.
 
-        Exports the specified agent to a binary file.
+        Exports the specified agent to a binary file. This method is a
+        `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [ExportAgentResponse][google.cloud.dialogflow.cx.v3.ExportAgentResponse]
 
         Returns:
             Callable[[~.ExportAgentRequest],
