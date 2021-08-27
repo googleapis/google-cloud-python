@@ -270,3 +270,44 @@ To update the copy of these conformance tests used by this repository, run the p
 *************
 Test Coverage"""
 )
+
+# ----------------------------------------------------------------------------
+# Main Branch migration
+# ----------------------------------------------------------------------------
+
+s.replace(
+  "*.rst",
+  "master",
+  "main"
+)
+
+s.replace(
+  "CONTRIBUTING.rst",
+  "kubernetes/community/blob/main",
+  "kubernetes/community/blob/master"
+)
+
+s.replace(
+  "docs/*",
+  "master",
+  "main"
+)
+
+s.replace(
+  "docs/conf.py",
+  "main_doc",
+  "root_doc"
+)
+
+s.replace(
+  ".kokoro/*",
+  "master",
+  "main"
+)
+
+s.replace(
+  "README.rst",
+  "google-cloud-python/blob/main/README.rst",
+  "google-cloud-python/blob/master/README.rst"
+)
+

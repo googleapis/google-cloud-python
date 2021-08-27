@@ -591,7 +591,7 @@
 ### Documentation
 - Document Python 2 deprecation ([#6910](https://github.com/googleapis/google-cloud-python/pull/6910))
 - Nnormalize docs for `page_size` / `max_results` / `page_token`. ([#6842](https://github.com/googleapis/google-cloud-python/pull/6842))
-- Port changelog from 30.1 branch to master ([#6903](https://github.com/googleapis/google-cloud-python/pull/6903))
+- Port changelog from 30.1 branch to main ([#6903](https://github.com/googleapis/google-cloud-python/pull/6903))
 - Normalize use of support level badges ([#6159](https://github.com/googleapis/google-cloud-python/pull/6159))
 
 ### Internal / Testing Changes
