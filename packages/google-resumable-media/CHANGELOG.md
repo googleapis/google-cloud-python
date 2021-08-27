@@ -218,7 +218,7 @@ might break the hypothetical usecase of downloading a blob marked with
 - Modify file not found test to look for the correct error message
 - Harden tests so they can run with debug logging statements
 - Add Appveyor support. ([#40](https://github.com/googleapis/google-resumable-media-python/pull/40))
-- Mark the version in `master` as `.dev1`.
+- Mark the version in `main` as `.dev1`.
 
 
 ## 0.3.1

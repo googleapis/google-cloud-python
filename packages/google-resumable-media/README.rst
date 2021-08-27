@@ -31,4 +31,4 @@ License
 
 Apache 2.0 - See `the LICENSE`_ for more information.
 
-.. _the LICENSE: https://github.com/googleapis/google-resumable-media-python/blob/master/LICENSE
+.. _the LICENSE: https://github.com/googleapis/google-resumable-media-python/blob/main/LICENSE
