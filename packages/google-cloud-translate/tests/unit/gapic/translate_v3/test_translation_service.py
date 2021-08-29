@@ -1228,6 +1228,155 @@ async def test_get_supported_languages_flattened_error_async():
         )
 
 
+def test_translate_document(
+    transport: str = "grpc", request_type=translation_service.TranslateDocumentRequest
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.translate_document), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = translation_service.TranslateDocumentResponse(
+            model="model_value",
+        )
+        response = client.translate_document(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.TranslateDocumentRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, translation_service.TranslateDocumentResponse)
+    assert response.model == "model_value"
+
+
+def test_translate_document_from_dict():
+    test_translate_document(request_type=dict)
+
+
+def test_translate_document_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.translate_document), "__call__"
+    ) as call:
+        client.translate_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.TranslateDocumentRequest()
+
+
+@pytest.mark.asyncio
+async def test_translate_document_async(
+    transport: str = "grpc_asyncio",
+    request_type=translation_service.TranslateDocumentRequest,
+):
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.translate_document), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.TranslateDocumentResponse(model="model_value",)
+        )
+        response = await client.translate_document(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.TranslateDocumentRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, translation_service.TranslateDocumentResponse)
+    assert response.model == "model_value"
+
+
+@pytest.mark.asyncio
+async def test_translate_document_async_from_dict():
+    await test_translate_document_async(request_type=dict)
+
+
+def test_translate_document_field_headers():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = translation_service.TranslateDocumentRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.translate_document), "__call__"
+    ) as call:
+        call.return_value = translation_service.TranslateDocumentResponse()
+        client.translate_document(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_translate_document_field_headers_async():
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = translation_service.TranslateDocumentRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.translate_document), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.TranslateDocumentResponse()
+        )
+        await client.translate_document(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
 def test_batch_translate_text(
     transport: str = "grpc", request_type=translation_service.BatchTranslateTextRequest
 ):
@@ -1362,6 +1511,152 @@ async def test_batch_translate_text_field_headers_async():
             operations_pb2.Operation(name="operations/op")
         )
         await client.batch_translate_text(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_batch_translate_document(
+    transport: str = "grpc",
+    request_type=translation_service.BatchTranslateDocumentRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_translate_document), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.batch_translate_document(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.BatchTranslateDocumentRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_batch_translate_document_from_dict():
+    test_batch_translate_document(request_type=dict)
+
+
+def test_batch_translate_document_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_translate_document), "__call__"
+    ) as call:
+        client.batch_translate_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.BatchTranslateDocumentRequest()
+
+
+@pytest.mark.asyncio
+async def test_batch_translate_document_async(
+    transport: str = "grpc_asyncio",
+    request_type=translation_service.BatchTranslateDocumentRequest,
+):
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_translate_document), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.batch_translate_document(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == translation_service.BatchTranslateDocumentRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_batch_translate_document_async_from_dict():
+    await test_batch_translate_document_async(request_type=dict)
+
+
+def test_batch_translate_document_field_headers():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = translation_service.BatchTranslateDocumentRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_translate_document), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.batch_translate_document(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_batch_translate_document_field_headers_async():
+    client = TranslationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = translation_service.BatchTranslateDocumentRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_translate_document), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.batch_translate_document(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -2492,7 +2787,9 @@ def test_translation_service_base_transport():
         "translate_text",
         "detect_language",
         "get_supported_languages",
+        "translate_document",
         "batch_translate_text",
+        "batch_translate_document",
         "create_glossary",
         "list_glossaries",
         "get_glossary",

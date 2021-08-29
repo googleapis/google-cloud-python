@@ -336,6 +336,35 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["get_supported_languages"]
 
     @property
+    def translate_document(
+        self,
+    ) -> Callable[
+        [translation_service.TranslateDocumentRequest],
+        Awaitable[translation_service.TranslateDocumentResponse],
+    ]:
+        r"""Return a callable for the translate document method over gRPC.
+
+        Translates documents in synchronous mode.
+
+        Returns:
+            Callable[[~.TranslateDocumentRequest],
+                    Awaitable[~.TranslateDocumentResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "translate_document" not in self._stubs:
+            self._stubs["translate_document"] = self.grpc_channel.unary_unary(
+                "/google.cloud.translation.v3.TranslationService/TranslateDocument",
+                request_serializer=translation_service.TranslateDocumentRequest.serialize,
+                response_deserializer=translation_service.TranslateDocumentResponse.deserialize,
+            )
+        return self._stubs["translate_document"]
+
+    @property
     def batch_translate_text(
         self,
     ) -> Callable[
@@ -371,6 +400,43 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["batch_translate_text"]
+
+    @property
+    def batch_translate_document(
+        self,
+    ) -> Callable[
+        [translation_service.BatchTranslateDocumentRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the batch translate document method over gRPC.
+
+        Translates a large volume of document in asynchronous
+        batch mode. This function provides real-time output as
+        the inputs are being processed. If caller cancels a
+        request, the partial results (for an input file, it's
+        all or nothing) may still be available on the specified
+        output location.
+        This call returns immediately and you can use
+        google.longrunning.Operation.name to poll the status of
+        the call.
+
+        Returns:
+            Callable[[~.BatchTranslateDocumentRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_translate_document" not in self._stubs:
+            self._stubs["batch_translate_document"] = self.grpc_channel.unary_unary(
+                "/google.cloud.translation.v3.TranslationService/BatchTranslateDocument",
+                request_serializer=translation_service.BatchTranslateDocumentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["batch_translate_document"]
 
     @property
     def create_glossary(

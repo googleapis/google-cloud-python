@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "TranslationServiceClient",
           "rpcs": {
+            "BatchTranslateDocument": {
+              "methods": [
+                "batch_translate_document"
+              ]
+            },
             "BatchTranslateText": {
               "methods": [
                 "batch_translate_text"
@@ -43,6 +48,11 @@
             "ListGlossaries": {
               "methods": [
                 "list_glossaries"
+              ]
+            },
+            "TranslateDocument": {
+              "methods": [
+                "translate_document"
               ]
             },
             "TranslateText": {
@@ -55,6 +65,11 @@
         "grpc-async": {
           "libraryClient": "TranslationServiceAsyncClient",
           "rpcs": {
+            "BatchTranslateDocument": {
+              "methods": [
+                "batch_translate_document"
+              ]
+            },
             "BatchTranslateText": {
               "methods": [
                 "batch_translate_text"
@@ -88,6 +103,11 @@
             "ListGlossaries": {
               "methods": [
                 "list_glossaries"
+              ]
+            },
+            "TranslateDocument": {
+              "methods": [
+                "translate_document"
               ]
             },
             "TranslateText": {

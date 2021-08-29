@@ -35,6 +35,11 @@ __protobuf__ = proto.module(
         "InputConfig",
         "GcsDestination",
         "OutputConfig",
+        "DocumentInputConfig",
+        "DocumentOutputConfig",
+        "TranslateDocumentRequest",
+        "DocumentTranslation",
+        "TranslateDocumentResponse",
         "BatchTranslateTextRequest",
         "BatchTranslateMetadata",
         "BatchTranslateResponse",
@@ -48,6 +53,11 @@ __protobuf__ = proto.module(
         "CreateGlossaryMetadata",
         "DeleteGlossaryMetadata",
         "DeleteGlossaryResponse",
+        "BatchTranslateDocumentRequest",
+        "BatchDocumentInputConfig",
+        "BatchDocumentOutputConfig",
+        "BatchTranslateDocumentResponse",
+        "BatchTranslateDocumentMetadata",
     },
 )
 
@@ -58,8 +68,13 @@ class TranslateTextGlossaryConfig(proto.Message):
 
     Attributes:
         glossary (str):
-            Required. Specifies the glossary used for this translation.
-            Use this format: projects/\ */locations/*/glossaries/\*
+            Required. The ``glossary`` to be applied for this
+            translation.
+
+            The format depends on glossary:
+
+            -  User provided custom glossary:
+               ``projects/{project-number-or-id}/locations/{location-id}/glossaries/{glossary-id}``
         ignore_case (bool):
             Optional. Indicates match is case-
             nsensitive. Default value is false if missing.
@@ -75,8 +90,9 @@ class TranslateTextRequest(proto.Message):
         contents (Sequence[str]):
             Required. The content of the input in string
             format. We recommend the total content be less
-            than 30k codepoints. Use BatchTranslateText for
-            larger text.
+            than 30k codepoints. The max length of this
+            field is 1024.
+            Use BatchTranslateText for larger text.
         mime_type (str):
             Optional. The format of the source text, for
             example, "text/html",  "text/plain". If left
@@ -120,14 +136,13 @@ class TranslateTextRequest(proto.Message):
 
             -  General (built-in) models:
                ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
-               ``projects/{project-number-or-id}/locations/{location-id}/models/general/base``
 
             For global (non-regionalized) requests, use ``location-id``
             ``global``. For example,
             ``projects/{project-number-or-id}/locations/global/models/general/nmt``.
 
-            If missing, the system decides which google base model to
-            use.
+            If not provided, the default Google model (NMT) will be
+            used.
         glossary_config (google.cloud.translate_v3.types.TranslateTextGlossaryConfig):
             Optional. Glossary to be applied. The glossary must be
             within the same region (have the same location-id) as the
@@ -143,7 +158,7 @@ class TranslateTextRequest(proto.Message):
             are allowed. Label values are optional. Label
             keys must start with a letter.
             See
-            https://cloud.google.com/translate/docs/labels
+            https://cloud.google.com/translate/docs/advanced/labels
             for more information.
     """
 
@@ -185,6 +200,8 @@ class Translation(proto.Message):
     Attributes:
         translated_text (str):
             Text translated into the target language.
+            If an error occurs during translation, this
+            field might be excluded from the response.
         model (str):
             Only present when ``model`` is present in the request.
             ``model`` here is normalized to have project number.
@@ -257,7 +274,7 @@ class DetectLanguageRequest(proto.Message):
             are allowed. Label values are optional. Label
             keys must start with a letter.
             See
-            https://cloud.google.com/translate/docs/labels
+            https://cloud.google.com/translate/docs/advanced/labels
             for more information.
     """
 
@@ -287,9 +304,10 @@ class DetectLanguageResponse(proto.Message):
     r"""The response message for language detection.
     Attributes:
         languages (Sequence[google.cloud.translate_v3.types.DetectedLanguage]):
-            A list of detected languages sorted by
-            detection confidence in descending order. The
-            most probable language first.
+            The most probable language detected by the
+            Translation API. For each request, the
+            Translation API will always return only one
+            result.
     """
 
     languages = proto.RepeatedField(
@@ -331,11 +349,10 @@ class GetSupportedLanguagesRequest(proto.Message):
 
             -  General (built-in) models:
                ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
-               ``projects/{project-number-or-id}/locations/{location-id}/models/general/base``
 
             Returns languages supported by the specified model. If
-            missing, we get supported languages of Google general base
-            (PBMT) model.
+            missing, we get supported languages of Google general NMT
+            model.
     """
 
     parent = proto.Field(proto.STRING, number=3,)
@@ -435,10 +452,12 @@ class GcsDestination(proto.Message):
     r"""The Google Cloud Storage location for the output content.
     Attributes:
         output_uri_prefix (str):
-            Required. There must be no files under 'output_uri_prefix'.
+            Required. The bucket used in 'output_uri_prefix' must exist
+            and there must be no files under 'output_uri_prefix'.
             'output_uri_prefix' must end with "/" and start with
-            "gs://", otherwise an INVALID_ARGUMENT (400) error is
-            returned.
+            "gs://". One 'output_uri_prefix' can only be used by one
+            batch translation job at a time. Otherwise an
+            INVALID_ARGUMENT (400) error is returned.
     """
 
     output_uri_prefix = proto.Field(proto.STRING, number=1,)
@@ -483,9 +502,14 @@ class OutputConfig(proto.Message):
             content in input_file are processed and ready to be consumed
             (that is, no partial output file is written).
 
+            Since index.csv will be keeping updated during the process,
+            please make sure there is no custom retention policy applied
+            on the output bucket that may avoid file updating.
+            (https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy)
+
             The format of translations_file (for target language code
             'trg') is:
-            ``gs://translation_test/a_b_c\_'trg'_translations.[extension]``
+            gs://translation_test/a_b_c\_'trg'_translations.[extension]
 
             If the input file extension is tsv, the output has the
             following columns: Column 1: ID of the request provided in
@@ -502,10 +526,10 @@ class OutputConfig(proto.Message):
             directly written to the output file. If glossary is
             requested, a separate glossary_translations_file has format
             of
-            ``gs://translation_test/a_b_c\_'trg'_glossary_translations.[extension]``
+            gs://translation_test/a_b_c\_'trg'_glossary_translations.[extension]
 
             The format of errors file (for target language code 'trg')
-            is: ``gs://translation_test/a_b_c\_'trg'_errors.[extension]``
+            is: gs://translation_test/a_b_c\_'trg'_errors.[extension]
 
             If the input file extension is tsv, errors_file contains the
             following: Column 1: ID of the request provided in the
@@ -518,11 +542,263 @@ class OutputConfig(proto.Message):
             If the input file extension is txt or html,
             glossary_error_file will be generated that contains error
             details. glossary_error_file has format of
-            ``gs://translation_test/a_b_c\_'trg'_glossary_errors.[extension]``
+            gs://translation_test/a_b_c\_'trg'_glossary_errors.[extension]
     """
 
     gcs_destination = proto.Field(
         proto.MESSAGE, number=1, oneof="destination", message="GcsDestination",
+    )
+
+
+class DocumentInputConfig(proto.Message):
+    r"""A document translation request input config.
+    Attributes:
+        content (bytes):
+            Document's content represented as a stream of
+            bytes.
+        gcs_source (google.cloud.translate_v3.types.GcsSource):
+            Google Cloud Storage location. This must be a single file.
+            For example: gs://example_bucket/example_file.pdf
+        mime_type (str):
+            Specifies the input document's mime_type.
+
+            If not specified it will be determined using the file
+            extension for gcs_source provided files. For a file provided
+            through bytes content the mime_type must be provided.
+            Currently supported mime types are:
+
+            -  application/pdf
+            -  application/vnd.openxmlformats-officedocument.wordprocessingml.document
+            -  application/vnd.openxmlformats-officedocument.presentationml.presentation
+            -  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+    """
+
+    content = proto.Field(proto.BYTES, number=1, oneof="source",)
+    gcs_source = proto.Field(
+        proto.MESSAGE, number=2, oneof="source", message="GcsSource",
+    )
+    mime_type = proto.Field(proto.STRING, number=4,)
+
+
+class DocumentOutputConfig(proto.Message):
+    r"""A document translation request output config.
+    Attributes:
+        gcs_destination (google.cloud.translate_v3.types.GcsDestination):
+            Optional. Google Cloud Storage destination for the
+            translation output, e.g., ``gs://my_bucket/my_directory/``.
+
+            The destination directory provided does not have to be
+            empty, but the bucket must exist. If a file with the same
+            name as the output file already exists in the destination an
+            error will be returned.
+
+            For a DocumentInputConfig.contents provided document, the
+            output file will have the name
+            "output_[trg]_translations.[ext]", where
+
+            -  [trg] corresponds to the translated file's language code,
+            -  [ext] corresponds to the translated file's extension
+               according to its mime type.
+
+            For a DocumentInputConfig.gcs_uri provided document, the
+            output file will have a name according to its URI. For
+            example: an input file with URI: "gs://a/b/c.[extension]"
+            stored in a gcs_destination bucket with name "my_bucket"
+            will have an output URI:
+            "gs://my_bucket/a_b_c\_[trg]_translations.[ext]", where
+
+            -  [trg] corresponds to the translated file's language code,
+            -  [ext] corresponds to the translated file's extension
+               according to its mime type.
+
+            If the document was directly provided through the request,
+            then the output document will have the format:
+            "gs://my_bucket/translated_document_[trg]_translations.[ext],
+            where
+
+            -  [trg] corresponds to the translated file's language code,
+            -  [ext] corresponds to the translated file's extension
+               according to its mime type.
+
+            If a glossary was provided, then the output URI for the
+            glossary translation will be equal to the default output URI
+            but have ``glossary_translations`` instead of
+            ``translations``. For the previous example, its glossary URI
+            would be:
+            "gs://my_bucket/a_b_c\_[trg]_glossary_translations.[ext]".
+
+            Thus the max number of output files will be 2 (Translated
+            document, Glossary translated document).
+
+            Callers should expect no partial outputs. If there is any
+            error during document translation, no output will be stored
+            in the Cloud Storage bucket.
+        mime_type (str):
+            Optional. Specifies the translated document's mime_type. If
+            not specified, the translated file's mime type will be the
+            same as the input file's mime type. Currently only support
+            the output mime type to be the same as input mime type.
+
+            -  application/pdf
+            -  application/vnd.openxmlformats-officedocument.wordprocessingml.document
+            -  application/vnd.openxmlformats-officedocument.presentationml.presentation
+            -  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+    """
+
+    gcs_destination = proto.Field(
+        proto.MESSAGE, number=1, oneof="destination", message="GcsDestination",
+    )
+    mime_type = proto.Field(proto.STRING, number=3,)
+
+
+class TranslateDocumentRequest(proto.Message):
+    r"""A document translation request.
+    Attributes:
+        parent (str):
+            Required. Location to make a regional call.
+
+            Format:
+            ``projects/{project-number-or-id}/locations/{location-id}``.
+
+            For global calls, use
+            ``projects/{project-number-or-id}/locations/global`` or
+            ``projects/{project-number-or-id}``.
+
+            Non-global location is required for requests using AutoML
+            models or custom glossaries.
+
+            Models and glossaries must be within the same region (have
+            the same location-id), otherwise an INVALID_ARGUMENT (400)
+            error is returned.
+        source_language_code (str):
+            Optional. The BCP-47 language code of the
+            input document if known, for example, "en-US" or
+            "sr-Latn". Supported language codes are listed
+            in Language Support. If the source language
+            isn't specified, the API attempts to identify
+            the source language automatically and returns
+            the source language within the response. Source
+            language must be specified if the request
+            contains a glossary or a custom model.
+        target_language_code (str):
+            Required. The BCP-47 language code to use for
+            translation of the input document, set to one of
+            the language codes listed in Language Support.
+        document_input_config (google.cloud.translate_v3.types.DocumentInputConfig):
+            Required. Input configurations.
+        document_output_config (google.cloud.translate_v3.types.DocumentOutputConfig):
+            Optional. Output configurations.
+            Defines if the output file should be stored
+            within Cloud Storage as well as the desired
+            output format. If not provided the translated
+            file will only be returned through a byte-stream
+            and its output mime type will be the same as the
+            input file's mime type.
+        model (str):
+            Optional. The ``model`` type requested for this translation.
+
+            The format depends on model type:
+
+            -  AutoML Translation models:
+               ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
+
+            -  General (built-in) models:
+               ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
+
+            If not provided, the default Google model (NMT) will be used
+            for translation.
+        glossary_config (google.cloud.translate_v3.types.TranslateTextGlossaryConfig):
+            Optional. Glossary to be applied. The glossary must be
+            within the same region (have the same location-id) as the
+            model, otherwise an INVALID_ARGUMENT (400) error is
+            returned.
+        labels (Sequence[google.cloud.translate_v3.types.TranslateDocumentRequest.LabelsEntry]):
+            Optional. The labels with user-defined
+            metadata for the request.
+            Label keys and values can be no longer than 63
+            characters (Unicode codepoints), can only
+            contain lowercase letters, numeric characters,
+            underscores and dashes. International characters
+            are allowed. Label values are optional. Label
+            keys must start with a letter.
+            See
+            https://cloud.google.com/translate/docs/advanced/labels
+            for more information.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    source_language_code = proto.Field(proto.STRING, number=2,)
+    target_language_code = proto.Field(proto.STRING, number=3,)
+    document_input_config = proto.Field(
+        proto.MESSAGE, number=4, message="DocumentInputConfig",
+    )
+    document_output_config = proto.Field(
+        proto.MESSAGE, number=5, message="DocumentOutputConfig",
+    )
+    model = proto.Field(proto.STRING, number=6,)
+    glossary_config = proto.Field(
+        proto.MESSAGE, number=7, message="TranslateTextGlossaryConfig",
+    )
+    labels = proto.MapField(proto.STRING, proto.STRING, number=8,)
+
+
+class DocumentTranslation(proto.Message):
+    r"""A translated document message.
+    Attributes:
+        byte_stream_outputs (Sequence[bytes]):
+            The array of translated documents. It is
+            expected to be size 1 for now. We may produce
+            multiple translated documents in the future for
+            other type of file formats.
+        mime_type (str):
+            The translated document's mime type.
+        detected_language_code (str):
+            The detected language for the input document.
+            If the user did not provide the source language
+            for the input document, this field will have the
+            language code automatically detected. If the
+            source language was passed, auto-detection of
+            the language does not occur and this field is
+            empty.
+    """
+
+    byte_stream_outputs = proto.RepeatedField(proto.BYTES, number=1,)
+    mime_type = proto.Field(proto.STRING, number=2,)
+    detected_language_code = proto.Field(proto.STRING, number=3,)
+
+
+class TranslateDocumentResponse(proto.Message):
+    r"""A translated document response message.
+    Attributes:
+        document_translation (google.cloud.translate_v3.types.DocumentTranslation):
+            Translated document.
+        glossary_document_translation (google.cloud.translate_v3.types.DocumentTranslation):
+            The document's translation output if a glossary is provided
+            in the request. This can be the same as
+            [TranslateDocumentResponse.document_translation] if no
+            glossary terms apply.
+        model (str):
+            Only present when 'model' is present in the request. 'model'
+            is normalized to have a project number.
+
+            For example: If the 'model' field in
+            TranslateDocumentRequest is:
+            ``projects/{project-id}/locations/{location-id}/models/general/nmt``
+            then ``model`` here would be normalized to
+            ``projects/{project-number}/locations/{location-id}/models/general/nmt``.
+        glossary_config (google.cloud.translate_v3.types.TranslateTextGlossaryConfig):
+            The ``glossary_config`` used for this translation.
+    """
+
+    document_translation = proto.Field(
+        proto.MESSAGE, number=1, message="DocumentTranslation",
+    )
+    glossary_document_translation = proto.Field(
+        proto.MESSAGE, number=2, message="DocumentTranslation",
+    )
+    model = proto.Field(proto.STRING, number=3,)
+    glossary_config = proto.Field(
+        proto.MESSAGE, number=4, message="TranslateTextGlossaryConfig",
     )
 
 
@@ -559,14 +835,13 @@ class BatchTranslateTextRequest(proto.Message):
 
             -  General (built-in) models:
                ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
-               ``projects/{project-number-or-id}/locations/{location-id}/models/general/base``
 
             If the map is empty or a specific model is not requested for
             a language pair, then default google model (nmt) is used.
         input_configs (Sequence[google.cloud.translate_v3.types.InputConfig]):
             Required. Input configurations.
             The total number of files matched should be <=
-            1000. The total content size should be <= 100M
+            100. The total content size should be <= 100M
             Unicode codepoints. The files must use UTF-8
             encoding.
         output_config (google.cloud.translate_v3.types.OutputConfig):
@@ -587,7 +862,7 @@ class BatchTranslateTextRequest(proto.Message):
             are allowed. Label values are optional. Label
             keys must start with a letter.
             See
-            https://cloud.google.com/translate/docs/labels
+            https://cloud.google.com/translate/docs/advanced/labels
             for more information.
     """
 
@@ -696,10 +971,9 @@ class GlossaryInputConfig(proto.Message):
             For equivalent term sets glossaries:
 
             -  CSV (``.csv``): Multi-column CSV file defining equivalent
-               glossary terms in multiple languages. The format is
-               defined for Google Translation Toolkit and documented in
-               `Use a
-               glossary <https://support.google.com/translatortoolkit/answer/6306379?hl=en>`__.
+               glossary terms in multiple languages. See documentation
+               for more information -
+               `glossaries <https://cloud.google.com/translate/docs/advanced/glossary>`__.
     """
 
     gcs_source = proto.Field(
@@ -826,9 +1100,29 @@ class ListGlossariesRequest(proto.Message):
             is returned if ``page_token``\ is empty or missing.
         filter (str):
             Optional. Filter specifying constraints of a
-            list operation. Filtering is not supported yet,
-            and the parameter currently has no effect. If
-            missing, no filtering is performed.
+            list operation. Specify the constraint by the
+            format of "key=value", where key must be "src"
+            or "tgt", and the value must be a valid language
+            code. For multiple restrictions, concatenate
+            them by "AND" (uppercase only), such as:
+            "src=en-US AND tgt=zh-CN". Notice that the exact
+            match is used here, which means using 'en-US'
+            and 'en' can lead to different results, which
+            depends on the language code you used when you
+            create the glossary. For the unidirectional
+            glossaries, the "src" and "tgt" add restrictions
+            on the source and target language code
+            separately. For the equivalent term set
+            glossaries, the "src" and/or "tgt" add
+            restrictions on the term set.
+            For example: "src=en-US AND tgt=zh-CN" will only
+            pick the unidirectional glossaries which exactly
+            match the source language code as "en-US" and
+            the target language code "zh-CN", but all
+            equivalent term set glossaries which contain
+            "en-US" and "zh-CN" in their language set will
+            be picked. If missing, no filtering is
+            performed.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
@@ -943,6 +1237,302 @@ class DeleteGlossaryResponse(proto.Message):
     name = proto.Field(proto.STRING, number=1,)
     submit_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
     end_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+
+
+class BatchTranslateDocumentRequest(proto.Message):
+    r"""The BatchTranslateDocument request.
+    Attributes:
+        parent (str):
+            Required. Location to make a regional call.
+
+            Format:
+            ``projects/{project-number-or-id}/locations/{location-id}``.
+
+            The ``global`` location is not supported for batch
+            translation.
+
+            Only AutoML Translation models or glossaries within the same
+            region (have the same location-id) can be used, otherwise an
+            INVALID_ARGUMENT (400) error is returned.
+        source_language_code (str):
+            Required. The BCP-47 language code of the
+            input document if known, for example, "en-US" or
+            "sr-Latn". Supported language codes are listed
+            in Language Support
+            (https://cloud.google.com/translate/docs/languages).
+        target_language_codes (Sequence[str]):
+            Required. The BCP-47 language code to use for
+            translation of the input document. Specify up to
+            10 language codes here.
+        input_configs (Sequence[google.cloud.translate_v3.types.BatchDocumentInputConfig]):
+            Required. Input configurations.
+            The total number of files matched should be <=
+            100. The total content size to translate should
+            be <= 100M Unicode codepoints. The files must
+            use UTF-8 encoding.
+        output_config (google.cloud.translate_v3.types.BatchDocumentOutputConfig):
+            Required. Output configuration.
+            If 2 input configs match to the same file (that
+            is, same input path), we don't generate output
+            for duplicate inputs.
+        models (Sequence[google.cloud.translate_v3.types.BatchTranslateDocumentRequest.ModelsEntry]):
+            Optional. The models to use for translation. Map's key is
+            target language code. Map's value is the model name. Value
+            can be a built-in general model, or an AutoML Translation
+            model.
+
+            The value format depends on model type:
+
+            -  AutoML Translation models:
+               ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
+
+            -  General (built-in) models:
+               ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
+
+            If the map is empty or a specific model is not requested for
+            a language pair, then default google model (nmt) is used.
+        glossaries (Sequence[google.cloud.translate_v3.types.BatchTranslateDocumentRequest.GlossariesEntry]):
+            Optional. Glossaries to be applied. It's
+            keyed by target language code.
+        format_conversions (Sequence[google.cloud.translate_v3.types.BatchTranslateDocumentRequest.FormatConversionsEntry]):
+            Optional. File format conversion map to be applied to all
+            input files. Map's key is the original mime_type. Map's
+            value is the target mime_type of translated documents.
+
+            Supported file format conversion includes:
+
+            -  ``application/pdf`` to
+               ``application/vnd.openxmlformats-officedocument.wordprocessingml.document``
+
+            If nothing specified, output files will be in the same
+            format as the original file.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    source_language_code = proto.Field(proto.STRING, number=2,)
+    target_language_codes = proto.RepeatedField(proto.STRING, number=3,)
+    input_configs = proto.RepeatedField(
+        proto.MESSAGE, number=4, message="BatchDocumentInputConfig",
+    )
+    output_config = proto.Field(
+        proto.MESSAGE, number=5, message="BatchDocumentOutputConfig",
+    )
+    models = proto.MapField(proto.STRING, proto.STRING, number=6,)
+    glossaries = proto.MapField(
+        proto.STRING, proto.MESSAGE, number=7, message="TranslateTextGlossaryConfig",
+    )
+    format_conversions = proto.MapField(proto.STRING, proto.STRING, number=8,)
+
+
+class BatchDocumentInputConfig(proto.Message):
+    r"""Input configuration for BatchTranslateDocument request.
+    Attributes:
+        gcs_source (google.cloud.translate_v3.types.GcsSource):
+            Google Cloud Storage location for the source input. This can
+            be a single file (for example,
+            ``gs://translation-test/input.docx``) or a wildcard (for
+            example, ``gs://translation-test/*``).
+
+            File mime type is determined based on extension. Supported
+            mime type includes:
+
+            -  ``pdf``, application/pdf
+            -  ``docx``,
+               application/vnd.openxmlformats-officedocument.wordprocessingml.document
+            -  ``pptx``,
+               application/vnd.openxmlformats-officedocument.presentationml.presentation
+            -  ``xlsx``,
+               application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+
+            The max file size to support for ``.docx``, ``.pptx`` and
+            ``.xlsx`` is 100MB. The max file size to support for
+            ``.pdf`` is 1GB and the max page limit is 1000 pages. The
+            max file size to support for all input documents is 1GB.
+    """
+
+    gcs_source = proto.Field(
+        proto.MESSAGE, number=1, oneof="source", message="GcsSource",
+    )
+
+
+class BatchDocumentOutputConfig(proto.Message):
+    r"""Output configuration for BatchTranslateDocument request.
+    Attributes:
+        gcs_destination (google.cloud.translate_v3.types.GcsDestination):
+            Google Cloud Storage destination for output content. For
+            every single input document (for example,
+            gs://a/b/c.[extension]), we generate at most 2 \* n output
+            files. (n is the # of target_language_codes in the
+            BatchTranslateDocumentRequest).
+
+            While the input documents are being processed, we
+            write/update an index file ``index.csv`` under
+            ``gcs_destination.output_uri_prefix`` (for example,
+            gs://translation_output/index.csv) The index file is
+            generated/updated as new files are being translated. The
+            format is:
+
+            input_document,target_language_code,translation_output,error_output,
+            glossary_translation_output,glossary_error_output
+
+            ``input_document`` is one file we matched using
+            gcs_source.input_uri. ``target_language_code`` is provided
+            in the request. ``translation_output`` contains the
+            translations. (details provided below) ``error_output``
+            contains the error message during processing of the file.
+            Both translations_file and errors_file could be empty
+            strings if we have no content to output.
+            ``glossary_translation_output`` and
+            ``glossary_error_output`` are the translated output/error
+            when we apply glossaries. They could also be empty if we
+            have no content to output.
+
+            Once a row is present in index.csv, the input/output
+            matching never changes. Callers should also expect all the
+            content in input_file are processed and ready to be consumed
+            (that is, no partial output file is written).
+
+            Since index.csv will be keeping updated during the process,
+            please make sure there is no custom retention policy applied
+            on the output bucket that may avoid file updating.
+            (https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy)
+
+            The naming format of translation output files follows (for
+            target language code [trg]): ``translation_output``:
+            gs://translation_output/a_b_c\_[trg]\ *translation.[extension]
+            ``glossary_translation_output``:
+            gs://translation_test/a_b_c*\ [trg]_glossary_translation.[extension]
+            The output document will maintain the same file format as
+            the input document.
+
+            The naming format of error output files follows (for target
+            language code [trg]): ``error_output``:
+            gs://translation_test/a_b_c\_[trg]\ *errors.txt
+            ``glossary_error_output``:
+            gs://translation_test/a_b_c*\ [trg]_glossary_translation.txt
+            The error output is a txt file containing error details.
+    """
+
+    gcs_destination = proto.Field(
+        proto.MESSAGE, number=1, oneof="destination", message="GcsDestination",
+    )
+
+
+class BatchTranslateDocumentResponse(proto.Message):
+    r"""Stored in the
+    [google.longrunning.Operation.response][google.longrunning.Operation.response]
+    field returned by BatchTranslateDocument if at least one document is
+    translated successfully.
+
+    Attributes:
+        total_pages (int):
+            Total number of pages to translate in all
+            documents. Documents without clear page
+            definition (such as XLSX) are not counted.
+        translated_pages (int):
+            Number of successfully translated pages in
+            all documents. Documents without clear page
+            definition (such as XLSX) are not counted.
+        failed_pages (int):
+            Number of pages that failed to process in all
+            documents. Documents without clear page
+            definition (such as XLSX) are not counted.
+        total_billable_pages (int):
+            Number of billable pages in documents with
+            clear page definition (such as PDF, DOCX, PPTX)
+        total_characters (int):
+            Total number of characters (Unicode
+            codepoints) in all documents.
+        translated_characters (int):
+            Number of successfully translated characters
+            (Unicode codepoints) in all documents.
+        failed_characters (int):
+            Number of characters that have failed to
+            process (Unicode codepoints) in all documents.
+        total_billable_characters (int):
+            Number of billable characters (Unicode
+            codepoints) in documents without clear page
+            definition, such as XLSX.
+        submit_time (google.protobuf.timestamp_pb2.Timestamp):
+            Time when the operation was submitted.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the operation is finished and
+            [google.longrunning.Operation.done][google.longrunning.Operation.done]
+            is set to true.
+    """
+
+    total_pages = proto.Field(proto.INT64, number=1,)
+    translated_pages = proto.Field(proto.INT64, number=2,)
+    failed_pages = proto.Field(proto.INT64, number=3,)
+    total_billable_pages = proto.Field(proto.INT64, number=4,)
+    total_characters = proto.Field(proto.INT64, number=5,)
+    translated_characters = proto.Field(proto.INT64, number=6,)
+    failed_characters = proto.Field(proto.INT64, number=7,)
+    total_billable_characters = proto.Field(proto.INT64, number=8,)
+    submit_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,)
+
+
+class BatchTranslateDocumentMetadata(proto.Message):
+    r"""State metadata for the batch translation operation.
+    Attributes:
+        state (google.cloud.translate_v3.types.BatchTranslateDocumentMetadata.State):
+            The state of the operation.
+        total_pages (int):
+            Total number of pages to translate in all
+            documents so far. Documents without clear page
+            definition (such as XLSX) are not counted.
+        translated_pages (int):
+            Number of successfully translated pages in
+            all documents so far. Documents without clear
+            page definition (such as XLSX) are not counted.
+        failed_pages (int):
+            Number of pages that failed to process in all
+            documents so far. Documents without clear page
+            definition (such as XLSX) are not counted.
+        total_billable_pages (int):
+            Number of billable pages in documents with
+            clear page definition (such as PDF, DOCX, PPTX)
+            so far.
+        total_characters (int):
+            Total number of characters (Unicode
+            codepoints) in all documents so far.
+        translated_characters (int):
+            Number of successfully translated characters
+            (Unicode codepoints) in all documents so far.
+        failed_characters (int):
+            Number of characters that have failed to
+            process (Unicode codepoints) in all documents so
+            far.
+        total_billable_characters (int):
+            Number of billable characters (Unicode
+            codepoints) in documents without clear page
+            definition (such as XLSX) so far.
+        submit_time (google.protobuf.timestamp_pb2.Timestamp):
+            Time when the operation was submitted.
+    """
+
+    class State(proto.Enum):
+        r"""State of the job."""
+        STATE_UNSPECIFIED = 0
+        RUNNING = 1
+        SUCCEEDED = 2
+        FAILED = 3
+        CANCELLING = 4
+        CANCELLED = 5
+
+    state = proto.Field(proto.ENUM, number=1, enum=State,)
+    total_pages = proto.Field(proto.INT64, number=2,)
+    translated_pages = proto.Field(proto.INT64, number=3,)
+    failed_pages = proto.Field(proto.INT64, number=4,)
+    total_billable_pages = proto.Field(proto.INT64, number=5,)
+    total_characters = proto.Field(proto.INT64, number=6,)
+    translated_characters = proto.Field(proto.INT64, number=7,)
+    failed_characters = proto.Field(proto.INT64, number=8,)
+    total_billable_characters = proto.Field(proto.INT64, number=9,)
+    submit_time = proto.Field(
+        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

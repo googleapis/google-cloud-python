@@ -218,8 +218,9 @@ class TranslationServiceAsyncClient:
             contents (:class:`Sequence[str]`):
                 Required. The content of the input in
                 string format. We recommend the total
-                content be less than 30k codepoints. Use
-                BatchTranslateText for larger text.
+                content be less than 30k codepoints. The
+                max length of this field is 1024.
+                Use BatchTranslateText for larger text.
 
                 This corresponds to the ``contents`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -235,14 +236,13 @@ class TranslationServiceAsyncClient:
 
                 -  General (built-in) models:
                    ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
-                   ``projects/{project-number-or-id}/locations/{location-id}/models/general/base``
 
                 For global (non-regionalized) requests, use
                 ``location-id`` ``global``. For example,
                 ``projects/{project-number-or-id}/locations/global/models/general/nmt``.
 
-                If missing, the system decides which google base model
-                to use.
+                If not provided, the default Google model (NMT) will be
+                used.
 
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -506,11 +506,10 @@ class TranslationServiceAsyncClient:
 
                 -  General (built-in) models:
                    ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
-                   ``projects/{project-number-or-id}/locations/{location-id}/models/general/base``
 
                 Returns languages supported by the specified model. If
                 missing, we get supported languages of Google general
-                base (PBMT) model.
+                NMT model.
 
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -572,6 +571,54 @@ class TranslationServiceAsyncClient:
                 ),
                 deadline=600.0,
             ),
+            default_timeout=600.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def translate_document(
+        self,
+        request: translation_service.TranslateDocumentRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> translation_service.TranslateDocumentResponse:
+        r"""Translates documents in synchronous mode.
+
+        Args:
+            request (:class:`google.cloud.translate_v3.types.TranslateDocumentRequest`):
+                The request object. A document translation request.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.translate_v3.types.TranslateDocumentResponse:
+                A translated document response
+                message.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = translation_service.TranslateDocumentRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.translate_document,
             default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -651,6 +698,74 @@ class TranslationServiceAsyncClient:
             self._client._transport.operations_client,
             translation_service.BatchTranslateResponse,
             metadata_type=translation_service.BatchTranslateMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def batch_translate_document(
+        self,
+        request: translation_service.BatchTranslateDocumentRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Translates a large volume of document in asynchronous
+        batch mode. This function provides real-time output as
+        the inputs are being processed. If caller cancels a
+        request, the partial results (for an input file, it's
+        all or nothing) may still be available on the specified
+        output location.
+        This call returns immediately and you can use
+        google.longrunning.Operation.name to poll the status of
+        the call.
+
+        Args:
+            request (:class:`google.cloud.translate_v3.types.BatchTranslateDocumentRequest`):
+                The request object. The BatchTranslateDocument request.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.translate_v3.types.BatchTranslateDocumentResponse` Stored in the
+                   [google.longrunning.Operation.response][google.longrunning.Operation.response]
+                   field returned by BatchTranslateDocument if at least
+                   one document is translated successfully.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = translation_service.BatchTranslateDocumentRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.batch_translate_document,
+            default_timeout=600.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            translation_service.BatchTranslateDocumentResponse,
+            metadata_type=translation_service.BatchTranslateDocumentMetadata,
         )
 
         # Done; return the response.

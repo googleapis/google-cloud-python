@@ -39,7 +39,7 @@ def partition(
 class translateCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'batch_translate_document': ('parent', 'source_language_code', 'target_language_codes', 'input_configs', 'output_config', 'models', 'glossaries', ),
+          'batch_translate_document': ('parent', 'source_language_code', 'target_language_codes', 'input_configs', 'output_config', 'models', 'glossaries', 'format_conversions', ),
           'batch_translate_text': ('parent', 'source_language_code', 'target_language_codes', 'input_configs', 'output_config', 'models', 'glossaries', 'labels', ),
           'create_glossary': ('parent', 'glossary', ),
           'delete_glossary': ('name', ),

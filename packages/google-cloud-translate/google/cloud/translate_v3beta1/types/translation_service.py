@@ -1285,6 +1285,18 @@ class BatchTranslateDocumentRequest(proto.Message):
         glossaries (Sequence[google.cloud.translate_v3beta1.types.BatchTranslateDocumentRequest.GlossariesEntry]):
             Optional. Glossaries to be applied. It's
             keyed by target language code.
+        format_conversions (Sequence[google.cloud.translate_v3beta1.types.BatchTranslateDocumentRequest.FormatConversionsEntry]):
+            Optional. File format conversion map to be applied to all
+            input files. Map's key is the original mime_type. Map's
+            value is the target mime_type of translated documents.
+
+            Supported file format conversion includes:
+
+            -  ``application/pdf`` to
+               ``application/vnd.openxmlformats-officedocument.wordprocessingml.document``
+
+            If nothing specified, output files will be in the same
+            format as the original file.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
@@ -1300,6 +1312,7 @@ class BatchTranslateDocumentRequest(proto.Message):
     glossaries = proto.MapField(
         proto.STRING, proto.MESSAGE, number=7, message="TranslateTextGlossaryConfig",
     )
+    format_conversions = proto.MapField(proto.STRING, proto.STRING, number=8,)
 
 
 class BatchDocumentInputConfig(proto.Message):
