@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.6.0](https://www.github.com/googleapis/python-kms/compare/v2.5.0...v2.6.0) (2021-08-30)
+
+
+### Features
+
+* add support for Key Reimport ([#167](https://www.github.com/googleapis/python-kms/issues/167)) ([1aaaea9](https://www.github.com/googleapis/python-kms/commit/1aaaea9405109a2f226f3d6a9631eb5f110349ab))
+
+
+### Documentation
+
+* **kms:** add samples for new hmac and rng apis ([#161](https://www.github.com/googleapis/python-kms/issues/161)) ([558b740](https://www.github.com/googleapis/python-kms/commit/558b740f0491311ebcaf3c62d7117ec15883150a))
+
 ## [2.5.0](https://www.github.com/googleapis/python-kms/compare/v2.4.3...v2.5.0) (2021-08-07)
 
 
