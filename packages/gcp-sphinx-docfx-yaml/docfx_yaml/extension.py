@@ -356,7 +356,7 @@ def extract_keyword(line):
     except ValueError:
         # TODO: handle reST template.
         if line[3] != "_":
-            raise ValueError(f"Wrong formatting enoucntered for \n{line}\n Please check the docstring.")
+            raise ValueError(f"Wrong formatting enoucntered for \n{line}")
         return line
 
 
@@ -399,7 +399,7 @@ def _parse_docstring_summary(summary):
                     parts = [split_part for split_part in part.split("\n") if split_part]
                     tab_space = len(parts[0]) - len(parts[0].lstrip(" "))
                     if tab_space == 0:
-                        raise ValueError("Code in the code block should be indented. Please check the docstring.")
+                        raise ValueError(f"Code in the code block should be indented. Please check the docstring: \n{summary}")
                 if not part.startswith(" "*tab_space):
                     # No longer looking at code-block, reset keyword.
                     keyword = ""
@@ -428,13 +428,16 @@ def _parse_docstring_summary(summary):
                     })
 
                 else:
-                    print("Could not process the attribute. Please check the docstring in {summary}.")
+                    print(f"Could not process the attribute. Please check the docstring: \n{summary}")
 
                 continue
 
         # Parse keywords if found.
         if part.startswith(".."):
-            keyword = extract_keyword(part)
+            try:
+                keyword = extract_keyword(part)
+            except ValueError:
+                raise ValueError(f"Please check the docstring: \n{summary}")
             # Works for both code-block and code
             if keyword and keyword in [CODE, CODEBLOCK]:
                 # Retrieve the language found in the format of
@@ -830,7 +833,15 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
         # Extract summary info into respective sections.
         if summary:
             top_summary = _extract_docstring_info(summary_info, summary, name)
-            datam['summary'], datam['attributes'] = _parse_docstring_summary(top_summary)
+            try:
+                datam['summary'], datam['attributes'] = _parse_docstring_summary(top_summary)
+            except ValueError:
+                debug_line = []
+                if path:
+                    debug_line.append(f"In file {path}\n")
+                debug_line.append(f"For module {module}, type {_type}:\n")
+                debug_line.append(f"Failed to parse docstring on {name}.")
+                raise ValueError("".join(debug_line))
 
 
     # If there is no summary, add a short snippet.
