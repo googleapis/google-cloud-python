@@ -54,7 +54,7 @@ class kmsCallTransformer(cst.CSTTransformer):
           'get_import_job': ('name', ),
           'get_key_ring': ('name', ),
           'get_public_key': ('name', ),
-          'import_crypto_key_version': ('parent', 'algorithm', 'import_job', 'rsa_aes_wrapped_key', ),
+          'import_crypto_key_version': ('parent', 'algorithm', 'import_job', 'crypto_key_version', 'rsa_aes_wrapped_key', ),
           'list_crypto_keys': ('parent', 'page_size', 'page_token', 'version_view', 'filter', 'order_by', ),
           'list_crypto_key_versions': ('parent', 'page_size', 'page_token', 'view', 'filter', 'order_by', ),
           'list_import_jobs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),

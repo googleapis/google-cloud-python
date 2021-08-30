@@ -2457,6 +2457,7 @@ def test_get_crypto_key_version(
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            reimport_eligible=True,
         )
         response = client.get_crypto_key_version(request)
 
@@ -2479,6 +2480,7 @@ def test_get_crypto_key_version(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.reimport_eligible is True
 
 
 def test_get_crypto_key_version_from_dict():
@@ -2527,6 +2529,7 @@ async def test_get_crypto_key_version_async(
                 algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
                 import_job="import_job_value",
                 import_failure_reason="import_failure_reason_value",
+                reimport_eligible=True,
             )
         )
         response = await client.get_crypto_key_version(request)
@@ -2550,6 +2553,7 @@ async def test_get_crypto_key_version_async(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.reimport_eligible is True
 
 
 @pytest.mark.asyncio
@@ -3638,6 +3642,7 @@ def test_create_crypto_key_version(
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            reimport_eligible=True,
         )
         response = client.create_crypto_key_version(request)
 
@@ -3660,6 +3665,7 @@ def test_create_crypto_key_version(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.reimport_eligible is True
 
 
 def test_create_crypto_key_version_from_dict():
@@ -3708,6 +3714,7 @@ async def test_create_crypto_key_version_async(
                 algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
                 import_job="import_job_value",
                 import_failure_reason="import_failure_reason_value",
+                reimport_eligible=True,
             )
         )
         response = await client.create_crypto_key_version(request)
@@ -3731,6 +3738,7 @@ async def test_create_crypto_key_version_async(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.reimport_eligible is True
 
 
 @pytest.mark.asyncio
@@ -3912,6 +3920,7 @@ def test_import_crypto_key_version(
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            reimport_eligible=True,
         )
         response = client.import_crypto_key_version(request)
 
@@ -3934,6 +3943,7 @@ def test_import_crypto_key_version(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.reimport_eligible is True
 
 
 def test_import_crypto_key_version_from_dict():
@@ -3982,6 +3992,7 @@ async def test_import_crypto_key_version_async(
                 algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
                 import_job="import_job_value",
                 import_failure_reason="import_failure_reason_value",
+                reimport_eligible=True,
             )
         )
         response = await client.import_crypto_key_version(request)
@@ -4005,6 +4016,7 @@ async def test_import_crypto_key_version_async(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.reimport_eligible is True
 
 
 @pytest.mark.asyncio
@@ -4599,6 +4611,7 @@ def test_update_crypto_key_version(
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            reimport_eligible=True,
         )
         response = client.update_crypto_key_version(request)
 
@@ -4621,6 +4634,7 @@ def test_update_crypto_key_version(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.reimport_eligible is True
 
 
 def test_update_crypto_key_version_from_dict():
@@ -4669,6 +4683,7 @@ async def test_update_crypto_key_version_async(
                 algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
                 import_job="import_job_value",
                 import_failure_reason="import_failure_reason_value",
+                reimport_eligible=True,
             )
         )
         response = await client.update_crypto_key_version(request)
@@ -4692,6 +4707,7 @@ async def test_update_crypto_key_version_async(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.reimport_eligible is True
 
 
 @pytest.mark.asyncio
@@ -5121,6 +5137,7 @@ def test_destroy_crypto_key_version(
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            reimport_eligible=True,
         )
         response = client.destroy_crypto_key_version(request)
 
@@ -5143,6 +5160,7 @@ def test_destroy_crypto_key_version(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.reimport_eligible is True
 
 
 def test_destroy_crypto_key_version_from_dict():
@@ -5191,6 +5209,7 @@ async def test_destroy_crypto_key_version_async(
                 algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
                 import_job="import_job_value",
                 import_failure_reason="import_failure_reason_value",
+                reimport_eligible=True,
             )
         )
         response = await client.destroy_crypto_key_version(request)
@@ -5214,6 +5233,7 @@ async def test_destroy_crypto_key_version_async(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.reimport_eligible is True
 
 
 @pytest.mark.asyncio
@@ -5379,6 +5399,7 @@ def test_restore_crypto_key_version(
             algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
             import_job="import_job_value",
             import_failure_reason="import_failure_reason_value",
+            reimport_eligible=True,
         )
         response = client.restore_crypto_key_version(request)
 
@@ -5401,6 +5422,7 @@ def test_restore_crypto_key_version(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.reimport_eligible is True
 
 
 def test_restore_crypto_key_version_from_dict():
@@ -5449,6 +5471,7 @@ async def test_restore_crypto_key_version_async(
                 algorithm=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm.GOOGLE_SYMMETRIC_ENCRYPTION,
                 import_job="import_job_value",
                 import_failure_reason="import_failure_reason_value",
+                reimport_eligible=True,
             )
         )
         response = await client.restore_crypto_key_version(request)
@@ -5472,6 +5495,7 @@ async def test_restore_crypto_key_version_async(
     )
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
+    assert response.reimport_eligible is True
 
 
 @pytest.mark.asyncio

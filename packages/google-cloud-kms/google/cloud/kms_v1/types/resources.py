@@ -323,17 +323,17 @@ class CryptoKeyVersion(proto.Message):
             [DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED].
         import_job (str):
             Output only. The name of the
-            [ImportJob][google.cloud.kms.v1.ImportJob] used to import
-            this
+            [ImportJob][google.cloud.kms.v1.ImportJob] used in the most
+            recent import of this
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
             Only present if the underlying key material was imported.
         import_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s
-            key material was imported.
+            key material was most recently imported.
         import_failure_reason (str):
-            Output only. The root cause of an import failure. Only
-            present if
+            Output only. The root cause of the most recent import
+            failure. Only present if
             [state][google.cloud.kms.v1.CryptoKeyVersion.state] is
             [IMPORT_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.IMPORT_FAILED].
         external_protection_level_options (google.cloud.kms_v1.types.ExternalProtectionLevelOptions):
@@ -343,6 +343,10 @@ class CryptoKeyVersion(proto.Message):
             that are specific to the
             [EXTERNAL][google.cloud.kms.v1.ProtectionLevel.EXTERNAL]
             protection level.
+        reimport_eligible (bool):
+            Output only. Whether or not this key version is eligible for
+            reimport, by being specified as a target in
+            [ImportCryptoKeyVersionRequest.crypto_key_version][google.cloud.kms.v1.ImportCryptoKeyVersionRequest.crypto_key_version].
     """
 
     class CryptoKeyVersionAlgorithm(proto.Enum):
@@ -465,6 +469,7 @@ class CryptoKeyVersion(proto.Message):
     external_protection_level_options = proto.Field(
         proto.MESSAGE, number=17, message="ExternalProtectionLevelOptions",
     )
+    reimport_eligible = proto.Field(proto.BOOL, number=18,)
 
 
 class PublicKey(proto.Message):
