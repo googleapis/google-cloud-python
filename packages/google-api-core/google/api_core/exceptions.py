@@ -293,8 +293,7 @@ class Cancelled(ClientError):
     """Exception mapping a :attr:`grpc.StatusCode.CANCELLED` error."""
 
     # This maps to HTTP status code 499. See
-    # https://github.com/googleapis/googleapis/blob/master/google/rpc\
-    # /code.proto
+    # https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto
     code = 499
     grpc_status_code = grpc.StatusCode.CANCELLED if grpc is not None else None
 

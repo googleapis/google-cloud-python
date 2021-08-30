@@ -29,7 +29,17 @@ BLACK_EXCLUDES = ["--exclude", "^/google/api_core/operations_v1/__init__.py"]
 DEFAULT_PYTHON_VERSION = "3.7"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
-_MINIMAL_ASYNCIO_SUPPORT_PYTHON_VERSION = [3, 6]
+# 'docfx' is excluded since it only needs to run in 'docs-presubmit'
+nox.options.sessions = [
+    "unit",
+    "unit_grpc_gcp",
+    "cover",
+    "pytype",
+    "lint",
+    "lint_setup_py",
+    "blacken",
+    "docs",
+]
 
 
 def _greater_or_equal_than_36(version_string):
