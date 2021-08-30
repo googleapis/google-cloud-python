@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.8.0](https://www.github.com/googleapis/python-speech/compare/v2.7.0...v2.8.0) (2021-08-19)
+
+
+### Features
+
+* Add transcript normalization ([#235](https://www.github.com/googleapis/python-speech/issues/235)) ([f76effc](https://www.github.com/googleapis/python-speech/commit/f76effc3c5477db858571d89c5b52078e85ff94e))
+
+
+### Documentation
+
+* **samples:** remove io dependency in transcribe samples ([#223](https://www.github.com/googleapis/python-speech/issues/223)) ([928ca3a](https://www.github.com/googleapis/python-speech/commit/928ca3aeb8f8665dedfa7663c56ee3bb464481cd))
+
 ## [2.7.0](https://www.github.com/googleapis/python-speech/compare/v2.6.0...v2.7.0) (2021-08-10)
 
 
