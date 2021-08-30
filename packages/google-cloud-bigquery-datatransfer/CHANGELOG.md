@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+### [3.3.2](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.1...v3.3.2) (2021-08-27)
+
+
+### Documentation
+
+* Improvements to various message and field descriptions ([#202](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/202)) ([9684723](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/9684723aed8c743d665ccac2b338770dd09fc94a))
+
 ### [3.3.1](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.0...v3.3.1) (2021-07-26)
 
 
