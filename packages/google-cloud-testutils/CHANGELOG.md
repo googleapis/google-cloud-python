@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-test-utils/compare/v1.0.0...v1.1.0) (2021-08-30)
+
+
+### Features
+
+* add 'orchestrate' module ([#54](https://www.github.com/googleapis/python-test-utils/issues/54)) ([ae3da1a](https://www.github.com/googleapis/python-test-utils/commit/ae3da1ab4e7cbf268d6dce60cb467ca7ed6c2c89))
+
 ## [1.0.0](https://www.github.com/googleapis/python-test-utils/compare/v0.3.0...v1.0.0) (2021-08-02)
 
 
