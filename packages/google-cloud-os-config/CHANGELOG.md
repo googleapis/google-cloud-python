@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://www.github.com/googleapis/python-os-config/compare/v1.3.2...v1.4.0) (2021-08-30)
+
+
+### Features
+
+* Update osconfig v1 and v1alpha with WindowsApplication ([#108](https://www.github.com/googleapis/python-os-config/issues/108)) ([befbfdc](https://www.github.com/googleapis/python-os-config/commit/befbfdcd6bffdc402330bd0b715593ac788bd3b0))
+
 ### [1.3.2](https://www.github.com/googleapis/python-os-config/compare/v1.3.1...v1.3.2) (2021-07-28)
 
 
