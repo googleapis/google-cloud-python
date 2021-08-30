@@ -44,6 +44,7 @@ s.move(
         "CONTRIBUTING.rst",  # repo has a CONTRIBUTING.md
         ".github/CONTRIBUTING.md",
         ".github/PULL_REQUEST_TEMPLATE.md",
-        ".gitignore"
+        ".gitignore",
+        "renovate.json"
     ],
 )
