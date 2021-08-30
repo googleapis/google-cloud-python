@@ -158,9 +158,10 @@ class RetryStrategy(object):
         """Check if another retry is allowed.
 
         Args:
-            total_sleep (float): The amount of sleep accumulated by the caller.
-            num_retries (int): The number of retries already attempted by
-                the caller.
+            total_sleep (float): With another retry, the amount of sleep that
+                will be accumulated by the caller.
+            num_retries (int): With another retry, the number of retries that
+                will be attempted by the caller.
 
         Returns:
             bool: Indicating if another retry is allowed (depending on either
