@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.2.0...v1.3.0) (2021-08-27)
+
+
+### Features
+
+* **v3:** added support for DLP templates ([#144](https://www.github.com/googleapis/python-dialogflow-cx/issues/144)) ([c74e3ac](https://www.github.com/googleapis/python-dialogflow-cx/commit/c74e3acb609363cdf941586e98ed2c8c5804980b))
+* **v3beta1:** added support for DLP templates ([#143](https://www.github.com/googleapis/python-dialogflow-cx/issues/143)) ([7efb89c](https://www.github.com/googleapis/python-dialogflow-cx/commit/7efb89cc6311e1df9d03740ba6d078af3f79559e))
+* **v3beta1:** expose `Locations` service to get/list avaliable locations of Dialogflow products ([7efb89c](https://www.github.com/googleapis/python-dialogflow-cx/commit/7efb89cc6311e1df9d03740ba6d078af3f79559e))
+* **v3:** expose `Locations` service to get/list avaliable locations of Dialogflow products ([c74e3ac](https://www.github.com/googleapis/python-dialogflow-cx/commit/c74e3acb609363cdf941586e98ed2c8c5804980b))
+
+
+### Documentation
+
+* clarified LRO types  ([#156](https://www.github.com/googleapis/python-dialogflow-cx/issues/156)) ([a50e8dc](https://www.github.com/googleapis/python-dialogflow-cx/commit/a50e8dca8952cea19be2587ee68c600a41a92eeb))
+* fixed incorrect update mask descriptions ([a50e8dc](https://www.github.com/googleapis/python-dialogflow-cx/commit/a50e8dca8952cea19be2587ee68c600a41a92eeb))
+* **samples:** add agent creation code snippet ([#146](https://www.github.com/googleapis/python-dialogflow-cx/issues/146)) ([272fc98](https://www.github.com/googleapis/python-dialogflow-cx/commit/272fc9879e536f7a9ea31d8c10169cf644170769))
+* **samples:** add region tags ([#150](https://www.github.com/googleapis/python-dialogflow-cx/issues/150)) ([54ea84d](https://www.github.com/googleapis/python-dialogflow-cx/commit/54ea84d58064a7c8d0a71f020a0c8cf36ac157bd))
+* **samples:** add region tags ([#151](https://www.github.com/googleapis/python-dialogflow-cx/issues/151)) ([788b67a](https://www.github.com/googleapis/python-dialogflow-cx/commit/788b67a8c966788a70a5d683a5e79e3a289c7ba3))
+* **samples:** add update intent sample ([#142](https://www.github.com/googleapis/python-dialogflow-cx/issues/142)) ([3e80235](https://www.github.com/googleapis/python-dialogflow-cx/commit/3e80235277a0df12644d743f6853ba45263a1239))
+* **v3beta1:** reorder some fields ([7efb89c](https://www.github.com/googleapis/python-dialogflow-cx/commit/7efb89cc6311e1df9d03740ba6d078af3f79559e))
+
 ## [1.2.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.1.1...v1.2.0) (2021-08-02)
 
 
