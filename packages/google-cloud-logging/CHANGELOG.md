@@ -150,7 +150,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* Use microgenerator for GAPIC layer. See [UPGRADING.md](https://github.com/googleapis/python-logging/blob/master/UPGRADING.md) for details. (#94)
+* Use microgenerator for GAPIC layer. See [UPGRADING.md](https://github.com/googleapis/python-logging/blob/main/UPGRADING.md) for details. (#94)
 * removes support for webapp2 and other Python2 specific code
 
 ### Features
