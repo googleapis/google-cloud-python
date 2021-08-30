@@ -48,3 +48,32 @@ s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .
 s.replace("noxfile.py", '''["']sphinx["']''', '"sphinx<3.0.0"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+
+# ----------------------------------------------------------------------------
+# Main Branch migration
+# ----------------------------------------------------------------------------
+
+s.replace(
+  "*.rst",
+  "master",
+  "main"
+)
+
+s.replace(
+  "*.rst",
+  "google-cloud-python/blob/main",
+  "google-cloud-python/blob/master"
+)
+
+s.replace(
+  "CONTRIBUTING.rst",
+  "kubernetes/community/blob/main",
+  "kubernetes/community/blob/master"
+)
+
+s.replace(
+  ".kokoro/*",
+  "master",
+  "main"
+)
+

@@ -66,7 +66,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* Move to API to python microgenerator. See [Migration Guide](https://github.com/googleapis/python-phishingprotection/blob/master/UPGRADING.md). (#31)
+* Move to API to python microgenerator. See [Migration Guide](https://github.com/googleapis/python-phishingprotection/blob/main/UPGRADING.md). (#31)
 
 ### Features
 
