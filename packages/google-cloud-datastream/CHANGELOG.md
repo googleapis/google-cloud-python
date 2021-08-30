@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.3](https://www.github.com/googleapis/python-datastream/compare/v0.1.2...v0.1.3) (2021-08-30)
+
+
+### Bug Fixes
+
+* **datastream:** Change a few resource pattern variables from camelCase to snake_case ([#20](https://www.github.com/googleapis/python-datastream/issues/20)) ([296962a](https://www.github.com/googleapis/python-datastream/commit/296962abf8d0b8cda4f3e1e978262c8628f4b31e))
+
 ### [0.1.2](https://www.github.com/googleapis/python-datastream/compare/v0.1.1...v0.1.2) (2021-07-29)
 
 
