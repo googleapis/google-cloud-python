@@ -562,6 +562,29 @@ def test_query_data_with_numeric_parameter(capsys, instance_id, sample_database)
     assert "VenueId: 4, Revenue: 35000" in out
 
 
+@pytest.mark.dependency(
+    name="add_json_column", depends=["create_table_with_datatypes"],
+)
+def test_add_json_column(capsys, instance_id, sample_database):
+    snippets.add_json_column(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert 'Altered table "Venues" on database ' in out
+
+
+@pytest.mark.dependency(depends=["add_json_column", "insert_datatypes_data"])
+def test_update_data_with_json(capsys, instance_id, sample_database):
+    snippets.update_data_with_json(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "Updated data" in out
+
+
+@pytest.mark.dependency(depends=["add_json_column"])
+def test_query_data_with_json_parameter(capsys, instance_id, sample_database):
+    snippets.query_data_with_json_parameter(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "VenueId: 19, VenueDetails: {\"open\":true,\"rating\":9}" in out
+
+
 @pytest.mark.dependency(depends=["insert_datatypes_data"])
 def test_query_data_with_timestamp_parameter(capsys, instance_id, sample_database):
     snippets.query_data_with_timestamp_parameter(instance_id, sample_database.database_id)

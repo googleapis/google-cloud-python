@@ -24,6 +24,7 @@ import argparse
 import base64
 import datetime
 import decimal
+import json
 import logging
 import time
 
@@ -1012,6 +1013,81 @@ def update_data_with_numeric(instance_id, database_id):
 # [END spanner_update_data_with_numeric_column]
 
 
+# [START spanner_add_json_column]
+def add_json_column(instance_id, database_id):
+    """ Adds a new JSON column to the Venues table in the example database.
+    """
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+
+    database = instance.database(database_id)
+
+    operation = database.update_ddl(["ALTER TABLE Venues ADD COLUMN VenueDetails JSON"])
+
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print(
+        'Altered table "Venues" on database {} on instance {}.'.format(
+            database_id, instance_id
+        )
+    )
+
+
+# [END spanner_add_json_column]
+
+
+# [START spanner_update_data_with_json_column]
+def update_data_with_json(instance_id, database_id):
+    """Updates Venues tables in the database with the JSON
+    column.
+
+    This updates the `VenueDetails` column which must be created before
+    running this sample. You can add the column by running the
+    `add_json_column` sample or by running this DDL statement
+     against your database:
+
+        ALTER TABLE Venues ADD COLUMN VenueDetails JSON
+    """
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+
+    database = instance.database(database_id)
+
+    with database.batch() as batch:
+        batch.update(
+            table="Venues",
+            columns=("VenueId", "VenueDetails"),
+            values=[
+                (
+                    4,
+                    json.dumps(
+                        [
+                            {"name": "room 1", "open": True},
+                            {"name": "room 2", "open": False},
+                        ]
+                    ),
+                ),
+                (19, json.dumps({"rating": 9, "open": True})),
+                (
+                    42,
+                    json.dumps(
+                        {
+                            "name": None,
+                            "open": {"Monday": True, "Tuesday": False},
+                            "tags": ["large", "airy"],
+                        }
+                    ),
+                ),
+            ],
+        )
+
+    print("Updated data.")
+
+
+# [END spanner_update_data_with_json_column]
+
+
 # [START spanner_write_data_for_struct_queries]
 def write_struct_data(instance_id, database_id):
     """Inserts sample data that can be used to test STRUCT parameters
@@ -1858,6 +1934,34 @@ def query_data_with_numeric_parameter(instance_id, database_id):
         for row in results:
             print(u"VenueId: {}, Revenue: {}".format(*row))
     # [END spanner_query_with_numeric_parameter]
+
+
+def query_data_with_json_parameter(instance_id, database_id):
+    """Queries sample data using SQL with a JSON parameter. """
+    # [START spanner_query_with_json_parameter]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    example_json = json.dumps({"rating": 9})
+    param = {"details": example_json}
+    param_type = {"details": param_types.JSON}
+
+    with database.snapshot() as snapshot:
+        results = snapshot.execute_sql(
+            "SELECT VenueId, VenueDetails "
+            "FROM Venues "
+            "WHERE JSON_VALUE(VenueDetails, '$.rating') = "
+            "JSON_VALUE(@details, '$.rating')",
+            params=param,
+            param_types=param_type,
+        )
+
+        for row in results:
+            print(u"VenueId: {}, VenueDetails: {}".format(*row))
+    # [END spanner_query_with_json_parameter]
 
 
 def query_data_with_timestamp_parameter(instance_id, database_id):
