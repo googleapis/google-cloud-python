@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-crc32c/#history
 
+### [1.1.3](https://www.github.com/googleapis/python-crc32c/compare/v1.1.2...v1.1.3) (2021-08-30)
+
+
+### Performance Improvements
+
+* replace CFFI with a native C extension ([#76](https://www.github.com/googleapis/python-crc32c/issues/76)) ([b1bf461](https://www.github.com/googleapis/python-crc32c/commit/b1bf461cc0539962ac16a62860cae3cd2384cb4f))
+
 ### [1.1.2](https://www.github.com/googleapis/python-crc32c/compare/v1.1.1...v1.1.2) (2021-01-20)
 
 
