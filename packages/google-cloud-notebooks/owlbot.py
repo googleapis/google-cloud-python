@@ -21,9 +21,80 @@ from synthtool.languages import python
 
 common = gcp.CommonTemplates()
 
-default_version = "v1beta1"
+default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
+
+    # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
+    s.replace(library / f"google/cloud/notebooks_{library.name}/types/instance.py",
+                r""".
+    Attributes:""",
+                r""".\n
+    Attributes:""",
+    )
+
+    # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
+    s.replace(library / f"google/cloud/notebooks_{library.name}/types/instance.py",
+                r""".
+        Attributes:""",
+                r""".\n
+        Attributes:""",
+    )
+
+    # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
+    s.replace(library / f"google/cloud/notebooks_{library.name}/types/instance.py",
+                r""".
+            Attributes:""",
+                r""".\n
+            Attributes:""",
+    )
+
+
+    # Fix docstring formatting issue. Fix proposed upstream in cl/393820869.
+    s.replace(library / f"google/cloud/notebooks_{library.name}/types/instance.py",
+                """values:
+                    NVME
+                    SCSI""",
+                """values:
+
+                * NVME
+                * SCSI"""
+    )
+
+    # Fix docstring formatting issue. Fix proposed upstream in cl/393820869.
+    s.replace(library / f"google/cloud/notebooks_{library.name}/types/runtime.py",
+                """values:
+                NVME
+                SCSI""",
+                """values:
+
+            * NVME
+            * SCSI"""
+    )
+
+    # Fix docstring formatting issue. Fix proposed upstream in cl/393820869.
+    s.replace(library / f"google/cloud/notebooks_{library.name}/types/instance.py",
+                """values:
+                    PERSISTENT
+                    SCRATCH""",
+                """values:
+
+                * PERSISTENT
+                * SCRATCH""",
+    )
+
+    # Fix docstring formatting issue. Fix proposed upstream in cl/393820869.
+    s.replace(library / f"google/cloud/notebooks_{library.name}/types/runtime.py",
+                """values:
+                PERSISTENT
+                SCRATCH""",
+                """values:
+
+            * PERSISTENT
+            * SCRATCH"""
+    )
+
+
     s.move(library, excludes=["scripts/fixup*.py", "setup.py", "README.rst", "docs/index.rst"])
 
 s.remove_staging_dirs()

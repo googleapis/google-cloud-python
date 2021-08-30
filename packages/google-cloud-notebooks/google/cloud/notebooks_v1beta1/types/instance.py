@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
 
 class Instance(proto.Message):
     r"""The definition of a notebook instance.
+
     Attributes:
         name (str):
             Output only. The name of this notebook instance. Format:
