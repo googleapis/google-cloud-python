@@ -40,25 +40,25 @@ ${MAIN_PYTHON_BIN}/cmake \
     ..
 make all install
 
-VERSION_WHITELIST=""
+PYTHON_VERSIONS=""
 if [[ -z ${BUILD_PYTHON} ]]; then
     # Collect all target Python versions.
     for PYTHON_BIN in /opt/python/*/bin; do
         # H/T: https://stackoverflow.com/a/229606/1068170
         if [[ "${PYTHON_BIN}" == *"36"* ]]; then
-            VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+            PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
             continue
         elif [[ "${PYTHON_BIN}" == *"37"* ]]; then
-            VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+            PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
             continue
         elif [[ "${PYTHON_BIN}" == *"38"* ]]; then
-            VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+            PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
             continue
         elif [[ "${PYTHON_BIN}" == *"39"* ]]; then
-            VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+            PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
             continue
         elif [[ "${PYTHON_BIN}" == *"310"* ]]; then
-            VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+            PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
             continue
         else
             echo "Ignoring unsupported version: ${PYTHON_BIN}"
@@ -69,14 +69,14 @@ else
     STRIPPED_PYTHON=$(echo ${BUILD_PYTHON} | sed -e "s/\.//g")
     for PYTHON_BIN in /opt/python/*/bin; do
         if [[ "${PYTHON_BIN}" == *"${STRIPPED_PYTHON}"* ]]; then
-            VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+            PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
         fi
     done
 fi
 
 # Build the wheels.
 cd ${REPO_ROOT}
-for PYTHON_BIN in ${VERSION_WHITELIST}; do
+for PYTHON_BIN in ${PYTHON_VERSIONS}; do
     ${PYTHON_BIN}/python -m pip install --upgrade pip
     ${PYTHON_BIN}/python -m pip install \
         --requirement ${REPO_ROOT}/scripts/dev-requirements.txt

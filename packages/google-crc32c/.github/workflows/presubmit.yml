@@ -4,7 +4,7 @@ name: Presubmit
 on:
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   build-source-distribution:
