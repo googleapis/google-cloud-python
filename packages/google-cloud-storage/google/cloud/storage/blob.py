@@ -3052,7 +3052,7 @@ class Blob(_PropertyMixin):
     ):
         """Retrieve the IAM policy for the object.
 
-        .. note:
+        .. note::
 
            Blob- / object-level IAM support does not yet exist and methods
            currently call an internal ACL backend not providing any utility
@@ -3120,7 +3120,7 @@ class Blob(_PropertyMixin):
     ):
         """Update the IAM policy for the bucket.
 
-        .. note:
+        .. note::
 
            Blob- / object-level IAM support does not yet exist and methods
            currently call an internal ACL backend not providing any utility
@@ -3177,7 +3177,7 @@ class Blob(_PropertyMixin):
     ):
         """API call:  test permissions
 
-        .. note:
+        .. note::
 
            Blob- / object-level IAM support does not yet exist and methods
            currently call an internal ACL backend not providing any utility
