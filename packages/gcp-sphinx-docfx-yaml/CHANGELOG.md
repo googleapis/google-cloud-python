@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.1.0...v1.1.1) (2021-08-30)
+
+
+### Bug Fixes
+
+* make plugin more verbose ([#123](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/123)) ([1f25757](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/1f2575730935f0be2795c37262aa1e465221daa7))
+
 ## [1.1.0](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.0.1...v1.1.0) (2021-08-26)
 
 
