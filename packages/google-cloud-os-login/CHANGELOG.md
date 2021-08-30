@@ -72,7 +72,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* move to microgen (#33). See [Migration Guide](https://github.com/googleapis/python-oslogin/blob/master/UPGRADING.md).
+* move to microgen (#33). See [Migration Guide](https://github.com/googleapis/python-oslogin/blob/main/UPGRADING.md).
 
 ### Features
 
