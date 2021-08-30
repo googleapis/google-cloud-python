@@ -509,7 +509,7 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
     ]:
         r"""Return a callable for the failover instance method over gRPC.
 
-        Initiates a failover of the master node to current
+        Initiates a failover of the main node to current
         replica node for a specific STANDARD tier Cloud
         Memorystore for Redis instance.
 
