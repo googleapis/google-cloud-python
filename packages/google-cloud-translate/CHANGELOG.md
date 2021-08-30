@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.4.0](https://www.github.com/googleapis/python-translate/compare/v3.3.2...v3.4.0) (2021-08-29)
+
+
+### Features
+
+* add translate_document and batch_translate_document ([#234](https://www.github.com/googleapis/python-translate/issues/234)) ([b5962d6](https://www.github.com/googleapis/python-translate/commit/b5962d68051d7dc6e4213c78d21ab3bbea1411f5))
+* **v3beta1:** add format_conversions ([b5962d6](https://www.github.com/googleapis/python-translate/commit/b5962d68051d7dc6e4213c78d21ab3bbea1411f5))
+
+
+### Bug Fixes
+
+* add missing annotation for batch document translation ([#231](https://www.github.com/googleapis/python-translate/issues/231)) ([a1297ba](https://www.github.com/googleapis/python-translate/commit/a1297ba6079524f82588c3fe79ec3f5c433a7606))
+
 ### [3.3.2](https://www.github.com/googleapis/python-translate/compare/v3.3.1...v3.3.2) (2021-07-29)
 
 
