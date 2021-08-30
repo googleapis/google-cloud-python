@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.5.0](https://www.github.com/googleapis/python-monitoring/compare/v2.4.2...v2.5.0) (2021-08-27)
+
+
+### Features
+
+* Added support for log-based alerts ([#204](https://www.github.com/googleapis/python-monitoring/issues/204)) ([b56a78c](https://www.github.com/googleapis/python-monitoring/commit/b56a78c50780e778f8ce1ad956e621433d1c451b))
+* Added support for user-defined labels on cloud monitoring's Service object ([b56a78c](https://www.github.com/googleapis/python-monitoring/commit/b56a78c50780e778f8ce1ad956e621433d1c451b))
+* Added support for user-defined labels on cloud monitoring's ServiceLevelObjective object ([b56a78c](https://www.github.com/googleapis/python-monitoring/commit/b56a78c50780e778f8ce1ad956e621433d1c451b))
+
+
+### Bug Fixes
+
+* mark required fields in QueryTimeSeriesRequest as required by the backend ([b56a78c](https://www.github.com/googleapis/python-monitoring/commit/b56a78c50780e778f8ce1ad956e621433d1c451b))
+
+
+### Documentation
+
+* **samples:** include example writing of label data ([#202](https://www.github.com/googleapis/python-monitoring/issues/202)) ([f5e8cf8](https://www.github.com/googleapis/python-monitoring/commit/f5e8cf8b51812b9e79bb5312f84e29b3f8c2c81e))
+
 ### [2.4.2](https://www.github.com/googleapis/python-monitoring/compare/v2.4.1...v2.4.2) (2021-07-28)
 
 
