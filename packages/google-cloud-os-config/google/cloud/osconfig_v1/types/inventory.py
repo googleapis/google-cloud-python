@@ -16,6 +16,7 @@
 import proto  # type: ignore
 
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -164,6 +165,8 @@ class Inventory(proto.Message):
                 for info in Windows Quick Fix Engineering.
             cos_package (google.cloud.osconfig_v1.types.Inventory.VersionedPackage):
                 Details of a COS package.
+            windows_application (google.cloud.osconfig_v1.types.Inventory.WindowsApplication):
+                Details of a Windows Application
         """
 
         yum_package = proto.Field(
@@ -210,6 +213,12 @@ class Inventory(proto.Message):
             number=8,
             oneof="details",
             message="Inventory.VersionedPackage",
+        )
+        windows_application = proto.Field(
+            proto.MESSAGE,
+            number=9,
+            oneof="details",
+            message="Inventory.WindowsApplication",
         )
 
     class VersionedPackage(proto.Message):
@@ -342,6 +351,39 @@ class Inventory(proto.Message):
         install_time = proto.Field(
             proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
         )
+
+    class WindowsApplication(proto.Message):
+        r"""Contains information about a Windows application as retrieved from
+        the Windows Registry. For more information about these fields, see
+
+        `Windows Installer Properties for the Uninstall
+        Registry <https://docs.microsoft.com/en-us/windows/win32/msi/uninstall-registry-key>`__\ {:
+        class="external" }
+
+        Attributes:
+            display_name (str):
+                The name of the application or product.
+            display_version (str):
+                The version of the product or application in
+                string format.
+            publisher (str):
+                The name of the manufacturer for the product
+                or application.
+            install_date (google.type.date_pb2.Date):
+                The last time this product received service.
+                The value of this property is replaced each time
+                a patch is applied or removed from the product
+                or the command-line option is used to repair the
+                product.
+            help_link (str):
+                The internet address for technical support.
+        """
+
+        display_name = proto.Field(proto.STRING, number=1,)
+        display_version = proto.Field(proto.STRING, number=2,)
+        publisher = proto.Field(proto.STRING, number=3,)
+        install_date = proto.Field(proto.MESSAGE, number=4, message=date_pb2.Date,)
+        help_link = proto.Field(proto.STRING, number=5,)
 
     os_info = proto.Field(proto.MESSAGE, number=1, message=OsInfo,)
     items = proto.MapField(proto.STRING, proto.MESSAGE, number=2, message=Item,)
