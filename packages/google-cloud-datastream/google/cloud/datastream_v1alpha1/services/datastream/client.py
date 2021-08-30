@@ -161,49 +161,49 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     @staticmethod
     def connection_profile_path(
-        project: str, location: str, connectionProfile: str,
+        project: str, location: str, connection_profile: str,
     ) -> str:
         """Returns a fully-qualified connection_profile string."""
-        return "projects/{project}/locations/{location}/connectionProfiles/{connectionProfile}".format(
-            project=project, location=location, connectionProfile=connectionProfile,
+        return "projects/{project}/locations/{location}/connectionProfiles/{connection_profile}".format(
+            project=project, location=location, connection_profile=connection_profile,
         )
 
     @staticmethod
     def parse_connection_profile_path(path: str) -> Dict[str, str]:
         """Parses a connection_profile path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/connectionProfiles/(?P<connectionProfile>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/connectionProfiles/(?P<connection_profile>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
 
     @staticmethod
     def private_connection_path(
-        project: str, location: str, privateConnection: str,
+        project: str, location: str, private_connection: str,
     ) -> str:
         """Returns a fully-qualified private_connection string."""
-        return "projects/{project}/locations/{location}/privateConnections/{privateConnection}".format(
-            project=project, location=location, privateConnection=privateConnection,
+        return "projects/{project}/locations/{location}/privateConnections/{private_connection}".format(
+            project=project, location=location, private_connection=private_connection,
         )
 
     @staticmethod
     def parse_private_connection_path(path: str) -> Dict[str, str]:
         """Parses a private_connection path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/privateConnections/(?P<privateConnection>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/privateConnections/(?P<private_connection>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
 
     @staticmethod
     def route_path(
-        project: str, location: str, privateConnection: str, route: str,
+        project: str, location: str, private_connection: str, route: str,
     ) -> str:
         """Returns a fully-qualified route string."""
-        return "projects/{project}/locations/{location}/privateConnections/{privateConnection}/routes/{route}".format(
+        return "projects/{project}/locations/{location}/privateConnections/{private_connection}/routes/{route}".format(
             project=project,
             location=location,
-            privateConnection=privateConnection,
+            private_connection=private_connection,
             route=route,
         )
 
@@ -211,7 +211,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     def parse_route_path(path: str) -> Dict[str, str]:
         """Parses a route path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/privateConnections/(?P<privateConnection>.+?)/routes/(?P<route>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/privateConnections/(?P<private_connection>.+?)/routes/(?P<route>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

@@ -6046,12 +6046,12 @@ def test_datastream_grpc_lro_async_client():
 def test_connection_profile_path():
     project = "squid"
     location = "clam"
-    connectionProfile = "whelk"
-    expected = "projects/{project}/locations/{location}/connectionProfiles/{connectionProfile}".format(
-        project=project, location=location, connectionProfile=connectionProfile,
+    connection_profile = "whelk"
+    expected = "projects/{project}/locations/{location}/connectionProfiles/{connection_profile}".format(
+        project=project, location=location, connection_profile=connection_profile,
     )
     actual = DatastreamClient.connection_profile_path(
-        project, location, connectionProfile
+        project, location, connection_profile
     )
     assert expected == actual
 
@@ -6060,7 +6060,7 @@ def test_parse_connection_profile_path():
     expected = {
         "project": "octopus",
         "location": "oyster",
-        "connectionProfile": "nudibranch",
+        "connection_profile": "nudibranch",
     }
     path = DatastreamClient.connection_profile_path(**expected)
 
@@ -6072,12 +6072,12 @@ def test_parse_connection_profile_path():
 def test_private_connection_path():
     project = "cuttlefish"
     location = "mussel"
-    privateConnection = "winkle"
-    expected = "projects/{project}/locations/{location}/privateConnections/{privateConnection}".format(
-        project=project, location=location, privateConnection=privateConnection,
+    private_connection = "winkle"
+    expected = "projects/{project}/locations/{location}/privateConnections/{private_connection}".format(
+        project=project, location=location, private_connection=private_connection,
     )
     actual = DatastreamClient.private_connection_path(
-        project, location, privateConnection
+        project, location, private_connection
     )
     assert expected == actual
 
@@ -6086,7 +6086,7 @@ def test_parse_private_connection_path():
     expected = {
         "project": "nautilus",
         "location": "scallop",
-        "privateConnection": "abalone",
+        "private_connection": "abalone",
     }
     path = DatastreamClient.private_connection_path(**expected)
 
@@ -6098,15 +6098,15 @@ def test_parse_private_connection_path():
 def test_route_path():
     project = "squid"
     location = "clam"
-    privateConnection = "whelk"
+    private_connection = "whelk"
     route = "octopus"
-    expected = "projects/{project}/locations/{location}/privateConnections/{privateConnection}/routes/{route}".format(
+    expected = "projects/{project}/locations/{location}/privateConnections/{private_connection}/routes/{route}".format(
         project=project,
         location=location,
-        privateConnection=privateConnection,
+        private_connection=private_connection,
         route=route,
     )
-    actual = DatastreamClient.route_path(project, location, privateConnection, route)
+    actual = DatastreamClient.route_path(project, location, private_connection, route)
     assert expected == actual
 
 
@@ -6114,7 +6114,7 @@ def test_parse_route_path():
     expected = {
         "project": "oyster",
         "location": "nudibranch",
-        "privateConnection": "cuttlefish",
+        "private_connection": "cuttlefish",
         "route": "mussel",
     }
     path = DatastreamClient.route_path(**expected)
