@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+### [2.3.1](https://www.github.com/googleapis/python-firestore/compare/v2.3.0...v2.3.1) (2021-08-30)
+
+
+### Bug Fixes
+
+* harden lookup of credentials id_token attribute ([#434](https://www.github.com/googleapis/python-firestore/issues/434)) ([e28272a](https://www.github.com/googleapis/python-firestore/commit/e28272a1a4e8f7a681f4506142f4d4cd6fa0b993))
+
 ## [2.3.0](https://www.github.com/googleapis/python-firestore/compare/v2.2.0...v2.3.0) (2021-08-18)
 
 
