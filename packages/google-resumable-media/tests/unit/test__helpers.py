@@ -125,6 +125,28 @@ class Test_require_status_code(object):
         assert error.args[3:] == status_codes
         callback.assert_called_once_with()
 
+    def test_retryable_failure_without_callback(self):
+        status_codes = (http.client.OK,)
+        retryable_responses = [
+            _make_response(status_code) for status_code in common.RETRYABLE
+        ]
+        callback = mock.Mock(spec=[])
+        for retryable_response in retryable_responses:
+            with pytest.raises(common.InvalidResponse) as exc_info:
+                _helpers.require_status_code(
+                    retryable_response,
+                    status_codes,
+                    self._get_status_code,
+                    callback=callback,
+                )
+
+            error = exc_info.value
+            assert error.response is retryable_response
+            assert len(error.args) == 4
+            assert error.args[1] == retryable_response.status_code
+            assert error.args[3:] == status_codes
+            callback.assert_not_called()
+
 
 class Test_calculate_retry_wait(object):
     @mock.patch("random.randint", return_value=125)

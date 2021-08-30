@@ -95,7 +95,8 @@ def require_status_code(response, status_codes, get_status_code, callback=do_not
     """
     status_code = get_status_code(response)
     if status_code not in status_codes:
-        callback()
+        if status_code not in common.RETRYABLE:
+            callback()
         raise common.InvalidResponse(
             response,
             "Request failed with status code",
