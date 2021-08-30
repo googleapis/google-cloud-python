@@ -62,7 +62,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* move API to python microgenerator. See [Migration Guide](https://github.com/googleapis/python-monitoring-dashboards/blob/master/UPGRADING.md). (#26)
+* move API to python microgenerator. See [Migration Guide](https://github.com/googleapis/python-monitoring-dashboards/blob/main/UPGRADING.md). (#26)
 
 ### Features
 
