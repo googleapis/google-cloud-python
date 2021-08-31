@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.4](https://www.github.com/googleapis/python-functions/compare/v1.0.3...v1.0.4) (2021-08-30)
+
+
+### Documentation
+
+* minor formatting fixes to Cloud Functions reference docs ([#98](https://www.github.com/googleapis/python-functions/issues/98)) ([05f10cf](https://www.github.com/googleapis/python-functions/commit/05f10cfc3d735d04806a25630875c5ecb3bad65d))
+
 ### [1.0.3](https://www.github.com/googleapis/python-functions/compare/v1.0.2...v1.0.3) (2021-08-07)
 
 
