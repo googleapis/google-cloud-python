@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.3](https://www.github.com/googleapis/python-channel/compare/v1.2.2...v1.2.3) (2021-08-31)
+
+
+### Bug Fixes
+
+* disable self signed jwt if users provide their own credential ([#86](https://www.github.com/googleapis/python-channel/issues/86)) ([d7c07f8](https://www.github.com/googleapis/python-channel/commit/d7c07f8d579ce55ea86520e6a7b7a268befae92d))
+
 ### [1.2.2](https://www.github.com/googleapis/python-channel/compare/v1.2.1...v1.2.2) (2021-07-27)
 
 
