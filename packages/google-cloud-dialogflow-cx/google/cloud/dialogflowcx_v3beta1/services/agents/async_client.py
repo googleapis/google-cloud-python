@@ -608,7 +608,16 @@ class AgentsAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Exports the specified agent to a binary file.
+        r"""Exports the specified agent to a binary file. This method is a
+        `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [ExportAgentResponse][google.cloud.dialogflow.cx.v3beta1.ExportAgentResponse]
 
         Args:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.ExportAgentRequest`):

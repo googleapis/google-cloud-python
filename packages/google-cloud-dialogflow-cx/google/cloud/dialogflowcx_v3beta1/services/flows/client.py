@@ -815,9 +815,9 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. The mask to control which fields get updated.
-                If ``update_mask`` is not specified, an error will be
-                returned.
+                The mask to control which fields get
+                updated. If the mask is not present, all
+                fields will be updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

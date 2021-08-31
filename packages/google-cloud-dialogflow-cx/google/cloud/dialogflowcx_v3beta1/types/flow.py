@@ -322,8 +322,9 @@ class UpdateFlowRequest(proto.Message):
         flow (google.cloud.dialogflowcx_v3beta1.types.Flow):
             Required. The flow to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The mask to control which fields get updated. If
-            ``update_mask`` is not specified, an error will be returned.
+            The mask to control which fields get updated.
+            If the mask is not present, all fields will be
+            updated.
         language_code (str):
             The language of the following fields in ``flow``:
 
