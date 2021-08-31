@@ -98,6 +98,47 @@ templated_files = common.py_library(
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
 # ----------------------------------------------------------------------------
+# master --> main edits; context: https://github.com/googleapis/google-cloud-python/issues/10579
+# ----------------------------------------------------------------------------
+
+s.replace(
+    "docs/conf.py",
+    "master_doc",
+    "root_doc",
+)
+
+s.replace(
+    "docs/conf.py",
+    "# The master toctree document.",
+    "# The root toctree document.",
+)
+
+s.replace(
+    ".kokoro/test-samples-impl.sh",
+    "https://github.com/googleapis/repo-automation-bots/tree/master/packages/flakybot.",
+    "https://github.com/googleapis/repo-automation-bots/tree/main/packages/flakybot.",
+)
+
+s.replace(
+    ".kokoro/build.sh",
+    "https://github.com/googleapis/repo-automation-bots/tree/master/packages/flakybot.",
+    "https://github.com/googleapis/repo-automation-bots/tree/main/packages/flakybot.",
+)
+
+s.replace(
+    "CONTRIBUTING.rst",
+    "master",
+    "main",
+)
+
+# Revert the change from above, because kubernetes is still using master:
+s.replace(
+    "CONTRIBUTING.rst",
+    r"https://github.com/kubernetes/community/blob/main/contributors/guide/pull-requests.md#best-practices-for-faster-reviews",
+    r"https://github.com/kubernetes/community/blob/master/contributors/guide/pull-requests.md#best-practices-for-faster-reviews",
+)
+
+# ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------
 python.py_samples(skip_readmes=True)
