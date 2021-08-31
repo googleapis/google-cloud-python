@@ -844,7 +844,13 @@ def dataframe_to_json_generator(dataframe):
         output = {}
         for column, value in zip(dataframe.columns, row):
             # Omit NaN values.
-            if pandas.isna(value):
+            is_nan = pandas.isna(value)
+
+            # isna() can also return an array-like of bools, but the latter's boolean
+            # value is ambiguous, hence an extra check. An array-like value is *not*
+            # considered a NaN, however.
+            if isinstance(is_nan, bool) and is_nan:
                 continue
             output[column] = value
+
         yield output
