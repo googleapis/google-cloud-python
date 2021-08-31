@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-storage-transfer/compare/v0.1.0...v1.0.0) (2021-08-31)
+
+
+### Features
+
+* bump release level to production/stable ([#6](https://www.github.com/googleapis/python-storage-transfer/issues/6)) ([2c68696](https://www.github.com/googleapis/python-storage-transfer/commit/2c686965213a416bfc42030e73fa340213e1dd70))
+
 ## 0.1.0 (2021-07-30)
 
 
