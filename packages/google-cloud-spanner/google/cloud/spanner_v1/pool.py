@@ -180,7 +180,7 @@ class FixedSizePool(AbstractSessionPool):
                 session._session_id = session_pb.name.split("/")[-1]
                 self._sessions.put(session)
 
-    def get(self, timeout=None):  # pylint: disable=arguments-differ
+    def get(self, timeout=None):
         """Check a session out from the pool.
 
         :type timeout: int
@@ -374,7 +374,7 @@ class PingingPool(AbstractSessionPool):
                 self.put(session)
             created_session_count += len(resp.session)
 
-    def get(self, timeout=None):  # pylint: disable=arguments-differ
+    def get(self, timeout=None):
         """Check a session out from the pool.
 
         :type timeout: int

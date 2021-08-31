@@ -29,12 +29,19 @@ from google.api_core.exceptions import Aborted
 from google.api_core import gapic_v1
 import six
 
-# pylint: disable=ungrouped-imports
+from google.cloud.spanner_admin_database_v1 import CreateDatabaseRequest
 from google.cloud.spanner_admin_database_v1 import Database as DatabasePB
-from google.cloud.spanner_v1._helpers import (
-    _merge_query_options,
-    _metadata_with_prefix,
-)
+from google.cloud.spanner_admin_database_v1 import EncryptionConfig
+from google.cloud.spanner_admin_database_v1 import RestoreDatabaseEncryptionConfig
+from google.cloud.spanner_admin_database_v1 import RestoreDatabaseRequest
+from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
+from google.cloud.spanner_v1 import ExecuteSqlRequest
+from google.cloud.spanner_v1 import TransactionSelector
+from google.cloud.spanner_v1 import TransactionOptions
+from google.cloud.spanner_v1 import RequestOptions
+from google.cloud.spanner_v1 import SpannerClient
+from google.cloud.spanner_v1._helpers import _merge_query_options
+from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.keyset import KeySet
 from google.cloud.spanner_v1.pool import BurstyPool
@@ -43,24 +50,11 @@ from google.cloud.spanner_v1.session import Session
 from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
 from google.cloud.spanner_v1.snapshot import Snapshot
 from google.cloud.spanner_v1.streamed import StreamedResultSet
-from google.cloud.spanner_v1 import SpannerClient
 from google.cloud.spanner_v1.services.spanner.transports.grpc import (
     SpannerGrpcTransport,
 )
-from google.cloud.spanner_admin_database_v1 import CreateDatabaseRequest
-from google.cloud.spanner_admin_database_v1 import EncryptionConfig
-from google.cloud.spanner_admin_database_v1 import RestoreDatabaseEncryptionConfig
-from google.cloud.spanner_admin_database_v1 import RestoreDatabaseRequest
-from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
-from google.cloud.spanner_v1 import (
-    ExecuteSqlRequest,
-    TransactionSelector,
-    TransactionOptions,
-)
 from google.cloud.spanner_v1.table import Table
-from google.cloud.spanner_v1 import RequestOptions
 
-# pylint: enable=ungrouped-imports
 
 SPANNER_DATA_SCOPE = "https://www.googleapis.com/auth/spanner.data"
 

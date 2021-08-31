@@ -14,18 +14,14 @@
 
 """Wrapper for streaming results."""
 
+from google.cloud import exceptions
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
-from google.cloud import exceptions
+
 from google.cloud.spanner_v1 import PartialResultSet
 from google.cloud.spanner_v1 import ResultSetMetadata
 from google.cloud.spanner_v1 import TypeCode
-import six
-
-# pylint: disable=ungrouped-imports
 from google.cloud.spanner_v1._helpers import _parse_value_pb
-
-# pylint: enable=ungrouped-imports
 
 
 class StreamedResultSet(object):
@@ -118,7 +114,7 @@ class StreamedResultSet(object):
 
         Parse the result set into new/existing rows in :attr:`_rows`
         """
-        response = six.next(self._response_iterator)
+        response = next(self._response_iterator)
         response_pb = PartialResultSet.pb(response)
 
         if self._metadata is None:  # first response
@@ -218,7 +214,7 @@ def _unmergeable(lhs, rhs, type_):
     raise Unmergeable(lhs, rhs, type_)
 
 
-def _merge_float64(lhs, rhs, type_):  # pylint: disable=unused-argument
+def _merge_float64(lhs, rhs, type_):
     """Helper for '_merge_by_type'."""
     lhs_kind = lhs.WhichOneof("kind")
     if lhs_kind == "string_value":
@@ -234,7 +230,7 @@ def _merge_float64(lhs, rhs, type_):  # pylint: disable=unused-argument
     raise Unmergeable(lhs, rhs, type_)
 
 
-def _merge_string(lhs, rhs, type_):  # pylint: disable=unused-argument
+def _merge_string(lhs, rhs, type_):
     """Helper for '_merge_by_type'."""
     return Value(string_value=lhs.string_value + rhs.string_value)
 

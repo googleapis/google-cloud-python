@@ -18,22 +18,19 @@ from functools import total_ordering
 import random
 import time
 
-from google.rpc.error_details_pb2 import RetryInfo
-
-# pylint: disable=ungrouped-imports
 from google.api_core.exceptions import Aborted
 from google.api_core.exceptions import GoogleAPICallError
 from google.api_core.exceptions import NotFound
-import google.api_core.gapic_v1.method
+from google.api_core.gapic_v1 import method
+from google.rpc.error_details_pb2 import RetryInfo
+
+from google.cloud.spanner_v1 import ExecuteSqlRequest
+from google.cloud.spanner_v1 import CreateSessionRequest
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.snapshot import Snapshot
 from google.cloud.spanner_v1.transaction import Transaction
-from google.cloud.spanner_v1 import ExecuteSqlRequest
-from google.cloud.spanner_v1 import CreateSessionRequest
-
-# pylint: enable=ungrouped-imports
 
 
 DEFAULT_RETRY_TIMEOUT_SECS = 30
@@ -231,8 +228,8 @@ class Session(object):
         query_mode=None,
         query_options=None,
         request_options=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        retry=method.DEFAULT,
+        timeout=method.DEFAULT,
     ):
         """Perform an ``ExecuteStreamingSql`` API request.
 
@@ -387,8 +384,6 @@ class Session(object):
                 return return_value
 
 
-# pylint: disable=misplaced-bare-raise
-#
 # Rational:  this function factors out complex shared deadline / retry
 #            handling from two `except:` clauses.
 def _delay_until_retry(exc, deadline, attempts):
@@ -419,9 +414,6 @@ def _delay_until_retry(exc, deadline, attempts):
             raise
 
         time.sleep(delay)
-
-
-# pylint: enable=misplaced-bare-raise
 
 
 def _get_retry_delay(cause, attempts):

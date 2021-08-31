@@ -123,7 +123,6 @@ def _assert_numeric_precision_and_scale(value):
         raise ValueError(NUMERIC_MAX_PRECISION_ERR_MSG.format(precision + scale))
 
 
-# pylint: disable=too-many-return-statements,too-many-branches
 def _make_value_pb(value):
     """Helper for :func:`_make_list_value_pbs`.
 
@@ -170,9 +169,6 @@ def _make_value_pb(value):
     raise ValueError("Unknown type: %s" % (value,))
 
 
-# pylint: enable=too-many-return-statements,too-many-branches
-
-
 def _make_list_value_pb(values):
     """Construct of ListValue protobufs.
 
@@ -197,7 +193,6 @@ def _make_list_value_pbs(values):
     return [_make_list_value_pb(row) for row in values]
 
 
-# pylint: disable=too-many-branches
 def _parse_value_pb(value_pb, field_type):
     """Convert a Value protobuf to cell data.
 
@@ -248,9 +243,6 @@ def _parse_value_pb(value_pb, field_type):
         return value_pb.string_value
     else:
         raise ValueError("Unknown type: %s" % (field_type,))
-
-
-# pylint: enable=too-many-branches
 
 
 def _parse_list_value_pbs(rows, row_type):

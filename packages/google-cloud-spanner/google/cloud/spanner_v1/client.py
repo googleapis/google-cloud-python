@@ -30,29 +30,24 @@ import warnings
 from google.api_core.gapic_v1 import client_info
 from google.auth.credentials import AnonymousCredentials
 import google.api_core.client_options
+from google.cloud.client import ClientWithProject
 
-# pylint: disable=line-too-long
 
-from google.cloud.spanner_admin_instance_v1.services.instance_admin.transports.grpc import (
-    InstanceAdminGrpcTransport,
-)
-
+from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
 from google.cloud.spanner_admin_database_v1.services.database_admin.transports.grpc import (
     DatabaseAdminGrpcTransport,
 )
-
-from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
 from google.cloud.spanner_admin_instance_v1 import InstanceAdminClient
-
-# pylint: enable=line-too-long
-
-from google.cloud.client import ClientWithProject
-from google.cloud.spanner_v1 import __version__
-from google.cloud.spanner_v1._helpers import _merge_query_options, _metadata_with_prefix
-from google.cloud.spanner_v1.instance import Instance
-from google.cloud.spanner_v1 import ExecuteSqlRequest
+from google.cloud.spanner_admin_instance_v1.services.instance_admin.transports.grpc import (
+    InstanceAdminGrpcTransport,
+)
 from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsRequest
 from google.cloud.spanner_admin_instance_v1 import ListInstancesRequest
+from google.cloud.spanner_v1 import __version__
+from google.cloud.spanner_v1 import ExecuteSqlRequest
+from google.cloud.spanner_v1._helpers import _merge_query_options
+from google.cloud.spanner_v1._helpers import _metadata_with_prefix
+from google.cloud.spanner_v1.instance import Instance
 
 _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 EMULATOR_ENV_VAR = "SPANNER_EMULATOR_HOST"

@@ -18,14 +18,11 @@ from google.cloud.spanner_v1 import CommitRequest
 from google.cloud.spanner_v1 import Mutation
 from google.cloud.spanner_v1 import TransactionOptions
 
-# pylint: disable=ungrouped-imports
 from google.cloud.spanner_v1._helpers import _SessionWrapper
 from google.cloud.spanner_v1._helpers import _make_list_value_pbs
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 from google.cloud.spanner_v1 import RequestOptions
-
-# pylint: enable=ungrouped-imports
 
 
 class _BatchBase(_SessionWrapper):

@@ -106,7 +106,7 @@ class _SnapshotBase(_SessionWrapper):
     _read_request_count = 0
     _execute_sql_count = 0
 
-    def _make_txn_selector(self):  # pylint: disable=redundant-returns-doc
+    def _make_txn_selector(self):
         """Helper for :meth:`read` / :meth:`execute_sql`.
 
         Subclasses must override, returning an instance of
