@@ -42,6 +42,6 @@ def sample_get_instance():
     response = client.get_instance(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_GetInstance_sync]

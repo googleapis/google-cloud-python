@@ -47,6 +47,6 @@ def sample_create_feed():
     response = client.create_feed(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END cloudasset_generated_asset_v1_AssetService_CreateFeed_sync]

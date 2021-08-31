@@ -42,6 +42,6 @@ def sample_get_cmek_settings():
     response = client.get_cmek_settings(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_GetCmekSettings_sync]

@@ -42,6 +42,6 @@ async def sample_get_exclusion():
     response = await client.get_exclusion(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_GetExclusion_async]

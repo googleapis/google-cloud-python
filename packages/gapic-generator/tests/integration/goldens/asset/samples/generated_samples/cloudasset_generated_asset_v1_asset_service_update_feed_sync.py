@@ -45,6 +45,6 @@ def sample_update_feed():
     response = client.update_feed(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END cloudasset_generated_asset_v1_AssetService_UpdateFeed_sync]

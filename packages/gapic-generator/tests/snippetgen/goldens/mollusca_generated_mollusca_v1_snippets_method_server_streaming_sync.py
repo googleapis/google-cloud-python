@@ -49,6 +49,6 @@ def sample_method_server_streaming():
     # Make the request
     stream = client.method_server_streaming(request=request)
     for response in stream:
-        print("{}".format(response))
+        print(response)
 
 # [END mollusca_generated_mollusca_v1_Snippets_MethodServerStreaming_sync]

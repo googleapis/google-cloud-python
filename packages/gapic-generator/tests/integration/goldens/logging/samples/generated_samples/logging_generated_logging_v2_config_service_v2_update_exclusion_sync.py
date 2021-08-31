@@ -47,6 +47,6 @@ def sample_update_exclusion():
     response = client.update_exclusion(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_UpdateExclusion_sync]

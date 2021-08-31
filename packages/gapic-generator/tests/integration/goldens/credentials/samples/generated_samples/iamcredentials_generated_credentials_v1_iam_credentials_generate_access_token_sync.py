@@ -43,6 +43,6 @@ def sample_generate_access_token():
     response = client.generate_access_token(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END iamcredentials_generated_credentials_v1_IAMCredentials_GenerateAccessToken_sync]

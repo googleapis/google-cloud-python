@@ -42,6 +42,6 @@ def sample_update_view():
     response = client.update_view(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_UpdateView_sync]

@@ -43,6 +43,6 @@ def sample_create_bucket():
     response = client.create_bucket(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_CreateBucket_sync]

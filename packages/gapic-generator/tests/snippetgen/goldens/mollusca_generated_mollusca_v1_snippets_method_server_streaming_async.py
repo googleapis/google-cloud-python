@@ -49,6 +49,6 @@ async def sample_method_server_streaming():
     # Make the request
     stream = await client.method_server_streaming(request=request)
     async for response in stream:
-        print("{}".format(response))
+        print(response)
 
 # [END mollusca_generated_mollusca_v1_Snippets_MethodServerStreaming_async]

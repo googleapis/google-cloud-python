@@ -42,6 +42,6 @@ async def sample_get_view():
     response = await client.get_view(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_GetView_async]

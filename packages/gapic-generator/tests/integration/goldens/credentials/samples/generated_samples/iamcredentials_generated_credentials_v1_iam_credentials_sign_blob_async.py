@@ -43,6 +43,6 @@ async def sample_sign_blob():
     response = await client.sign_blob(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END iamcredentials_generated_credentials_v1_IAMCredentials_SignBlob_async]

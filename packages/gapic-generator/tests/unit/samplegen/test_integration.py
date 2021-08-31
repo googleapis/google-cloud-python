@@ -44,6 +44,7 @@ env = jinja2.Environment(
 )
 env.filters['snake_case'] = utils.to_snake_case
 env.filters['coerce_response_name'] = gapic_utils.coerce_response_name
+env.filters['render_format_string'] = gapic_utils.render_format_string
 
 
 def golden_snippet(filename: str) -> str:

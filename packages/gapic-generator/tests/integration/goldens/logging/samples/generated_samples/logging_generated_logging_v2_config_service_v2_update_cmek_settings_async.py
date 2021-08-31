@@ -42,6 +42,6 @@ async def sample_update_cmek_settings():
     response = await client.update_cmek_settings(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_UpdateCmekSettings_async]

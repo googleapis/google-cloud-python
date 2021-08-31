@@ -41,6 +41,6 @@ def sample_list_sinks():
     # Make the request
     page_result = client.list_sinks(request=request)
     for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_ListSinks_sync]

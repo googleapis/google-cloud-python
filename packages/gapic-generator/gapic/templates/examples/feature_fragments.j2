@@ -27,10 +27,15 @@
 {% endmacro %}
 
 {% macro print_string_formatting(string_list) %}
+
 {% if string_list|length == 1 %}
-"{{ string_list[0]|replace("%s", "{}")|replace('\"', '\\\"') }}"
+"{{ string_list[0] | render_format_string }}"
+{% elif string_list|length == 2 and string_list[0] == "%s" and string_list[1] == "$resp" %}
+response
 {% else %}
-"{{ string_list[0]|replace("%s", "{}")|replace('\"', '\\\"') }}".format({{ string_list[1:]|map("coerce_response_name")|join(", ") }})
+{# Note: This is the equivalent of render_format_string(string_list[0], string_list[1:] )
+# See https://jinja.palletsprojects.com/en/3.0.x/api/#custom-filters #}
+f"{{ string_list[0] | render_format_string(string_list[1:]) }}"
 {% endif %}
 {% endmacro %}
 

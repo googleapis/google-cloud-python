@@ -41,6 +41,6 @@ def sample_list_logs():
     # Make the request
     page_result = client.list_logs(request=request)
     for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END logging_generated_logging_v2_LoggingServiceV2_ListLogs_sync]

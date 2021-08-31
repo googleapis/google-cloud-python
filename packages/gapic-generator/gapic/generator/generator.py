@@ -21,7 +21,7 @@ import typing
 from typing import Any, DefaultDict, Dict, Mapping
 from hashlib import sha256
 from collections import OrderedDict, defaultdict
-from gapic.samplegen_utils.utils import coerce_response_name, is_valid_sample_cfg
+from gapic.samplegen_utils.utils import coerce_response_name, is_valid_sample_cfg, render_format_string
 from gapic.samplegen_utils.types import DuplicateSample
 from gapic.samplegen import manifest, samplegen
 from gapic.generator import formatter
@@ -62,6 +62,7 @@ class Generator:
         self._env.filters["sort_lines"] = utils.sort_lines
         self._env.filters["wrap"] = utils.wrap
         self._env.filters["coerce_response_name"] = coerce_response_name
+        self._env.filters["render_format_string"] = render_format_string
 
         # Add tests to determine type of expressions stored in strings
         self._env.tests["str_field_pb"] = utils.is_str_field_pb

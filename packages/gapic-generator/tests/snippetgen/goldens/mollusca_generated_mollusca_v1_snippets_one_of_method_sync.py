@@ -43,6 +43,6 @@ def sample_one_of_method():
     response = client.one_of_method(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END mollusca_generated_mollusca_v1_Snippets_OneOfMethod_sync]

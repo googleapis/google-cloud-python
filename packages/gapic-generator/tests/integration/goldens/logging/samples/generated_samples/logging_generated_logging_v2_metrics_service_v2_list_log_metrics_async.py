@@ -41,6 +41,6 @@ async def sample_list_log_metrics():
     # Make the request
     page_result = client.list_log_metrics(request=request)
     async for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END logging_generated_logging_v2_MetricsServiceV2_ListLogMetrics_async]

@@ -29,6 +29,12 @@ Execute unit tests by running one of the sessions prefixed with `unit-`.
     find gapic tests -name "*.py" -not -path 'tests/integration/goldens/*' | xargs autopep8 --diff --exit-code
     ```
 
+-  Format sources in place:
+
+    ```
+    find gapic tests -name "*.py" -not -path 'tests/integration/goldens/*' | xargs autopep8 --in-place
+    ```
+
 ## Integration Tests
 
 -   Run a single integration test for one API. This generates Python source code

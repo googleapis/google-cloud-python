@@ -41,6 +41,6 @@ async def sample_list_instances():
     # Make the request
     page_result = client.list_instances(request=request)
     async for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_ListInstances_async]

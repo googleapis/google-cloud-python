@@ -41,6 +41,6 @@ async def sample_list_resources():
     # Make the request
     page_result = client.list_resources(request=request)
     async for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END mollusca_generated_mollusca_v1_Snippets_ListResources_async]

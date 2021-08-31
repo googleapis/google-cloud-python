@@ -40,6 +40,6 @@ def sample_list_monitored_resource_descriptors():
     # Make the request
     page_result = client.list_monitored_resource_descriptors(request=request)
     for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END logging_generated_logging_v2_LoggingServiceV2_ListMonitoredResourceDescriptors_sync]

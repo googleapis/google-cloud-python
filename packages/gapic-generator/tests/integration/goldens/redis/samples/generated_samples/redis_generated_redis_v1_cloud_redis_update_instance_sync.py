@@ -49,6 +49,6 @@ def sample_update_instance():
     print("Waiting for operation to complete...")
 
     response = operation.result()
-    print("{}".format(response))
+    print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_UpdateInstance_sync]

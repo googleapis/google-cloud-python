@@ -41,6 +41,6 @@ async def sample_tail_log_entries():
     # Make the request
     stream = await client.tail_log_entries([resource_names=['resource_names_value']])
     async for response in stream:
-        print("{}".format(response))
+        print(response)
 
 # [END logging_generated_logging_v2_LoggingServiceV2_TailLogEntries_async]

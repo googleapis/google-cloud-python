@@ -47,6 +47,6 @@ def sample_create_log_metric():
     response = client.create_log_metric(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_MetricsServiceV2_CreateLogMetric_sync]

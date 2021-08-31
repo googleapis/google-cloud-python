@@ -47,6 +47,6 @@ def sample_create_exclusion():
     response = client.create_exclusion(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_CreateExclusion_sync]

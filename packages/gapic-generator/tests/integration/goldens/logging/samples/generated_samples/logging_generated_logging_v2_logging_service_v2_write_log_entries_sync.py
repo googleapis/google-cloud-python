@@ -45,6 +45,6 @@ def sample_write_log_entries():
     response = client.write_log_entries(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END logging_generated_logging_v2_LoggingServiceV2_WriteLogEntries_sync]

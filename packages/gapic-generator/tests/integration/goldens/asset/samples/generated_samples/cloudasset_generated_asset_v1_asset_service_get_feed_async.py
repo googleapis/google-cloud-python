@@ -42,6 +42,6 @@ async def sample_get_feed():
     response = await client.get_feed(request=request)
 
     # Handle response
-    print("{}".format(response))
+    print(response)
 
 # [END cloudasset_generated_asset_v1_AssetService_GetFeed_async]

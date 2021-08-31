@@ -49,6 +49,7 @@ def check_template(template_fragment, expected_output, **kwargs):
 
     env.filters['snake_case'] = utils.to_snake_case
     env.filters['coerce_response_name'] = sample_utils.coerce_response_name
+    env.filters['render_format_string'] = sample_utils.render_format_string
 
     template = env.get_template("template_fragment")
     text = template.render(**kwargs)
@@ -345,7 +346,7 @@ def test_render_print_args():
         {{ frags.render_print(["$resp %s %s", "$resp.squids", "$resp.clams"]) }}
         ''',
         '''
-        print("$resp {} {}".format(response.squids, response.clams))
+        print(f"$resp {response.squids} {response.clams}")
         '''
     )
 
@@ -446,7 +447,7 @@ def test_write_file():
                                     "contents": "$resp.photo"}) }}
         ''',
         '''
-        with open("specimen-{}".format(response.species), "wb") as f:
+        with open(f"specimen-{response.species}", "wb") as f:
             f.write(response.photo)
         '''
     )
@@ -462,7 +463,7 @@ def test_dispatch_write_file():
                                         "contents": "$resp.photo"}})}}
         ''',
         '''
-        with open("specimen-{}".format(response.species), "wb") as f:
+        with open(f"specimen-{response.species}", "wb") as f:
             f.write(response.photo)
 
         '''
@@ -477,7 +478,7 @@ def test_collection_loop():
         ''',
         '''
         for m in response.molluscs:
-            print("Mollusc: {}".format(m))
+            print(f"Mollusc: {m}")
 
 
         ''',
@@ -494,7 +495,7 @@ def test_dispatch_collection_loop():
         {{ frags.dispatch_statement(statement) }}''',
         '''
         for m in molluscs:
-            print("Mollusc: {}".format(m))
+            print(f"Mollusc: {m}")
 
 
 
@@ -513,7 +514,7 @@ def test_map_loop():
         }}''',
         '''
         for cls, example in response.molluscs.items():
-            print("A {} is a {}".format(example, cls))
+            print(f"A {example} is a {cls}")
 
 
         ''',
@@ -533,7 +534,7 @@ def test_map_loop_no_key():
         ''',
         '''
         for example in response.molluscs.values():
-            print("A {} is a mollusc".format(example))
+            print(f"A {example} is a mollusc")
 
 
         ''',
@@ -552,7 +553,7 @@ def test_map_loop_no_value():
         ''',
         '''
         for cls in response.molluscs.keys():
-            print("A {} is a mollusc".format(cls))
+            print(f"A {cls} is a mollusc")
 
 
         ''',
@@ -570,7 +571,7 @@ def test_dispatch_map_loop():
         ''',
         '''
         for cls, example in molluscs.items():
-            print("A {} is a {}".format(example, cls))
+            print(f"A {example} is a {cls}")
 
 
 
@@ -618,7 +619,7 @@ def test_render_nested_loop_collection():
         for m in response.molluscs:
             for t in m.tentacles:
                 for s in t.suckers:
-                    print("Sucker: {}".format(s))
+                    print(f"Sucker: {s}")
 
 
 
@@ -671,7 +672,7 @@ def test_render_nested_loop_map():
         for klass, orders in response.molluscs.items():
             for order, families in orders.items():
                 for family, ex in families.items():
-                    print("Example: {}".format(ex))
+                    print(f"Example: {ex}")
 
 
 

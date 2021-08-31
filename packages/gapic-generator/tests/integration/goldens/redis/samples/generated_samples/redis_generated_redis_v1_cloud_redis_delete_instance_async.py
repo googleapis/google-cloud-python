@@ -44,6 +44,6 @@ async def sample_delete_instance():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
-    print("{}".format(response))
+    print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_DeleteInstance_async]

@@ -41,6 +41,6 @@ async def sample_list_assets():
     # Make the request
     page_result = client.list_assets(request=request)
     async for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END cloudasset_generated_asset_v1_AssetService_ListAssets_async]
