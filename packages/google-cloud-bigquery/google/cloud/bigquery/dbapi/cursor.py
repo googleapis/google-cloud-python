@@ -494,7 +494,7 @@ def _extract_types(
         ([^:)]*)      # name
         (?::          # ':' introduces type
           (             # start of type group
-            [a-zA-Z0-9<>, ]+  # First part, no parens
+            [a-zA-Z0-9_<>, ]+ # First part, no parens
 
             (?:               # start sets of parens + non-paren text
               \([0-9 ,]+\)      # comma-separated groups of digits in parens

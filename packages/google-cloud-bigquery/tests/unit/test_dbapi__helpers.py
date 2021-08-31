@@ -612,8 +612,8 @@ def test_complex_query_parameter_type_errors(type_, value, expect):
     "parameters,parameter_types,expect",
     [
         (
-            [[], dict(name="ch1", bdate=datetime.date(2021, 1, 1))],
-            ["ARRAY<INT64>", "struct<name string, bdate date>"],
+            [[], dict(name="ch1", b_date=datetime.date(2021, 1, 1))],
+            ["ARRAY<INT64>", "struct<name string, b_date date>"],
             [
                 {
                     "parameterType": {"arrayType": {"type": "INT64"}, "type": "ARRAY"},
@@ -623,13 +623,13 @@ def test_complex_query_parameter_type_errors(type_, value, expect):
                     "parameterType": {
                         "structTypes": [
                             {"name": "name", "type": {"type": "STRING"}},
-                            {"name": "bdate", "type": {"type": "DATE"}},
+                            {"name": "b_date", "type": {"type": "DATE"}},
                         ],
                         "type": "STRUCT",
                     },
                     "parameterValue": {
                         "structValues": {
-                            "bdate": {"value": "2021-01-01"},
+                            "b_date": {"value": "2021-01-01"},
                             "name": {"value": "ch1"},
                         }
                     },

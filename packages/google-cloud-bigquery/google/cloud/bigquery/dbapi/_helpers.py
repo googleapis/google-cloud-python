@@ -173,7 +173,7 @@ def _parse_type(
         \s*
         (ARRAY|STRUCT|RECORD)  # Type
         \s*
-        <([A-Z0-9<> ,()]+)>      # Subtype(s)
+        <([A-Z0-9_<> ,()]+)>   # Subtype(s)
         \s*$
         """,
         re.IGNORECASE | re.VERBOSE,

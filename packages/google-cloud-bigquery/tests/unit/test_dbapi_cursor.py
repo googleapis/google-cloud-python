@@ -810,6 +810,10 @@ class TestCursor(unittest.TestCase):
             ("values(%%%%%(foo)s, %(bar)s)", dict(foo="INT64")),
         ),
         (
+            "values(%%%%%(foo:struct<x_1 string, y_ int64>)s, %(bar)s)",
+            ("values(%%%%%(foo)s, %(bar)s)", dict(foo="struct<x_1 string, y_ int64>")),
+        ),
+        (
             "values(%%%%%(foo:struct<x string, y int64>)s, %(bar)s)",
             ("values(%%%%%(foo)s, %(bar)s)", dict(foo="struct<x string, y int64>")),
         ),
