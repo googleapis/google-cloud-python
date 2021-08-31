@@ -836,7 +836,7 @@ class TestBackgroundConsumer(object):
 
         # Wait for the consumer's thread to exit.
         while consumer.is_active:
-            pass
+            pass  # pragma: NO COVER (race condition)
 
         on_response.assert_not_called()
         bidi_rpc.recv.assert_called_once()
