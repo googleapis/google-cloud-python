@@ -1,12 +1,12 @@
 attrs==21.2.0
-google-cloud-testutils==1.0.0
-importlib-metadata==4.7.1
+google-cloud-testutils==1.1.0
+importlib-metadata==4.8.1
 iniconfig==1.1.1
 packaging==21.0
-pluggy==0.13.1
+pluggy==1.0.0
 py==1.10.0
 pyparsing==2.4.7
-pytest==6.2.4
+pytest==6.2.5
 toml==0.10.2
-typing-extensions==3.10.0.0
+typing-extensions==3.10.0.2
 zipp==3.5.0
