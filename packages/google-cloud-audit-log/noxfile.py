@@ -17,10 +17,20 @@ import os
 from pathlib import Path
 import nox
 
+
+nox.options.sessions = [
+    "unit",
+    "blacken",
+    "lint_setup_py",
+]
+
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
+
 BLACK_VERSION = "black==19.3b0"
 
 
-@nox.session(python="3.6")
+@nox.session(python="3.8")
 def blacken(session):
     """Run black.
     Format code to uniform standard.
@@ -31,6 +41,34 @@ def blacken(session):
     session.install(BLACK_VERSION)
     session.run("black", "google", "setup.py")
 
+
+
+@nox.session(python="3.8")
+def generate_protos(session):
+    """Generates the protos using protoc.
+    Some notes on the `google` directory:
+    1. The `_pb2.py` files are produced by protoc.
+    2. The .proto files are non-functional but are left in the repository
+       to make it easier to understand diffs.
+    3. The `google` directory also has `__init__.py` files to create proper modules.
+       If a new subdirectory is added, you will need to create more `__init__.py`
+       files.
+    NOTE: This is a hack and only runnable locally. You will need to have
+    the api-common-protos repo cloned. This should be migrated to use
+    bazel in the future.
+    """
+    session.install("grpcio-tools")
+    protos = [str(p) for p in (Path(".").glob("google/**/*.proto"))]
+
+    session.run(
+        "python",
+        "-m",
+        "grpc_tools.protoc",
+        "--proto_path=../api-common-protos",
+        "--proto_path=.",
+        "--python_out=.",
+        *protos,
+    )
 
 @nox.session(python="3.8")
 def lint_setup_py(session):
