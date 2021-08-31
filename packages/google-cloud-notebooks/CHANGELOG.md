@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-notebooks/compare/v0.3.2...v0.4.0) (2021-08-31)
+
+
+### Features
+
+* add Notebooks v1 ([#76](https://www.github.com/googleapis/python-notebooks/issues/76)) ([bc92c07](https://www.github.com/googleapis/python-notebooks/commit/bc92c075369bc93f0b15bd6afa0cc00b8eb9cc77))
+* set the default import to notebooks_v1 ([bc92c07](https://www.github.com/googleapis/python-notebooks/commit/bc92c075369bc93f0b15bd6afa0cc00b8eb9cc77))
+
 ### [0.3.2](https://www.github.com/googleapis/python-notebooks/compare/v0.3.1...v0.3.2) (2021-07-28)
 
 
