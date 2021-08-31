@@ -1310,7 +1310,7 @@ def _parse_readrows_acceptance_tests(filename):
     """Parse acceptance tests from JSON
 
     See
-    https://github.com/googleapis/python-bigtable/blob/master/\
+    https://github.com/googleapis/python-bigtable/blob/main/\
     tests/unit/read-rows-acceptance-test.json
     """
     import json

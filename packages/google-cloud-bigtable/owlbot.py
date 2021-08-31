@@ -149,6 +149,54 @@ s.replace("noxfile.py",
     "system",""",
 )
 
+# Remove the replacements below once https://github.com/googleapis/synthtool/pull/1188 is merged
+
+# Update googleapis/repo-automation-bots repo to main in .kokoro/*.sh files
+s.replace(
+    ".kokoro/*.sh", "repo-automation-bots/tree/master", "repo-automation-bots/tree/main"
+)
+
+# Customize CONTRIBUTING.rst to replace master with main
+s.replace(
+    "CONTRIBUTING.rst",
+    "fetch and merge changes from upstream into master",
+    "fetch and merge changes from upstream into main",
+)
+
+s.replace(
+    "CONTRIBUTING.rst", "git merge upstream/master", "git merge upstream/main",
+)
+
+s.replace(
+    "CONTRIBUTING.rst",
+    """export GOOGLE_CLOUD_TESTING_BRANCH=\"master\"""",
+    """export GOOGLE_CLOUD_TESTING_BRANCH=\"main\"""",
+)
+
+s.replace(
+    "CONTRIBUTING.rst", r"remote \(``master``\)", "remote (``main``)",
+)
+
+s.replace(
+    "CONTRIBUTING.rst", "blob/master/CONTRIBUTING.rst", "blob/main/CONTRIBUTING.rst",
+)
+
+s.replace(
+    "CONTRIBUTING.rst", "blob/master/noxfile.py", "blob/main/noxfile.py",
+)
+
+s.replace(
+    "docs/conf.py", "master_doc", "root_doc",
+)
+
+s.replace(
+    "docs/conf.py", "# The master toctree document.", "# The root toctree document.",
+)
+
+s.replace(
+    "docs/**/*.rst", r"/blob/master/", "/blob/main/",
+)
+
 # ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------
@@ -156,6 +204,11 @@ s.replace("noxfile.py",
 sample_files = common.py_samples(samples=True)
 for path in sample_files:
     s.move(path)
+
+# Note: google-cloud-python and python-docs-samples are nnt yet usin 'main':
+#s.replace(
+#    "samples/**/*.md", r"/blob/master/", "/blob/main/",
+#)
 
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

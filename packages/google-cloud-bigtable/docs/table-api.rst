@@ -146,7 +146,7 @@ Head next to learn about the :doc:`data-api`.
 .. _ListTables: https://googleapis.dev/python/bigtable/latest/table-api.html#list-tables
 .. _CreateTable: https://googleapis.dev/python/bigtable/latest/table-api.html#create-a-new-table
 .. _DeleteTable: https://googleapis.dev/python/bigtable/latest/table-api.html#delete-an-existing-table
-.. _GetTable: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L97-L102
+.. _GetTable: https://github.com/googleapis/python-bigtable/blob/main/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto#L97-L102
 .. _CreateColumnFamily: https://googleapis.dev/python/bigtable/latest/table-api.html?highlight=gettable#create-a-new-column-family
 .. _UpdateColumnFamily: https://googleapis.dev/python/bigtable/latest/table-api.html?highlight=gettable#update-an-existing-column-family
 .. _DeleteColumnFamily: https://googleapis.dev/python/bigtable/latest/table-api.html?highlight=gettable#delete-an-existing-column-family

@@ -127,4 +127,4 @@ Head next to learn about the :doc:`table-api`.
 .. _DeleteInstance: https://googleapis.dev/python/bigtable/latest/instance-api.html#delete-an-existing-instance
 .. _ListInstances: https://googleapis.dev/python/bigtable/latest/instance-api.html#list-instances
 .. _GetOperation: https://googleapis.dev/python/bigtable/latest/instance-api.html#check-on-current-operation
-.. _long-running operation: https://github.com/googleapis/googleapis/blob/master/google/longrunning/operations.proto#L128-L162
+.. _long-running operation: https://github.com/googleapis/googleapis/blob/main/google/longrunning/operations.proto#L128-L162

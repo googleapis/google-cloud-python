@@ -86,5 +86,5 @@ one before you can interact with tables or data.
 
 Head next to learn about the :doc:`instance-api`.
 
-.. _Instance Admin: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_instance_admin.proto
-.. _Table Admin: https://github.com/googleapis/python-bigtable/blob/master/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto
+.. _Instance Admin: https://github.com/googleapis/python-bigtable/blob/main/google/cloud/bigtable_admin_v2/proto/bigtable_instance_admin.proto
+.. _Table Admin: https://github.com/googleapis/python-bigtable/blob/main/google/cloud/bigtable_admin_v2/proto/bigtable_table_admin.proto

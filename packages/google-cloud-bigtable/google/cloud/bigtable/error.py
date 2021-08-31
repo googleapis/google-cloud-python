@@ -36,7 +36,7 @@ class Status:
         Values are defined in ``google.rpc.code_pb2.Code``.
 
         See: `google.rpc.Code
-        <https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto>`_
+        <https://github.com/googleapis/googleapis/blob/main/google/rpc/code.proto>`_
 
         :rtype: int
         :returns: The status code.
