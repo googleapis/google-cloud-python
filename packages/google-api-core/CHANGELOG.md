@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [2.0.1](https://www.github.com/googleapis/python-api-core/compare/v2.0.0...v2.0.1) (2021-08-31)
+
+
+### Bug Fixes
+
+* do not error on LROs with no response or error ([#258](https://www.github.com/googleapis/python-api-core/issues/258)) ([618f192](https://www.github.com/googleapis/python-api-core/commit/618f19201af729205892fcecd9c8e315ba3174a3))
+
 ## [2.0.0](https://www.github.com/googleapis/python-api-core/compare/v2.0.0-b1...v2.0.0) (2021-08-18)
 
 ### ⚠ BREAKING CHANGES
