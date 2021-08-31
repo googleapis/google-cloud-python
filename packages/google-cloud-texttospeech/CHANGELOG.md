@@ -105,7 +105,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* This release has breaking changes. See the [2.0.0 Migration Guide](https://github.com/googleapis/python-texttospeech/blob/master/UPGRADING.md#200-migration-guide) for details.
+* This release has breaking changes. See the [2.0.0 Migration Guide](https://github.com/googleapis/python-texttospeech/blob/main/UPGRADING.md#200-migration-guide) for details.
 
 ### Features
 
