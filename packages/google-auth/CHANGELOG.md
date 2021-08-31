@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [2.0.2](https://www.github.com/googleapis/google-auth-library-python/compare/v2.0.1...v2.0.2) (2021-08-25)
+
+
+### Bug Fixes
+
+* use 'int.to_bytes' rather than deprecated crypto wrapper ([#848](https://www.github.com/googleapis/google-auth-library-python/issues/848)) ([b79b554](https://www.github.com/googleapis/google-auth-library-python/commit/b79b55407b31933c9a8fe6de01478fa00a33fa2b))
+* use int.from_bytes ([#846](https://www.github.com/googleapis/google-auth-library-python/issues/846)) ([466aed9](https://www.github.com/googleapis/google-auth-library-python/commit/466aed99f5c2ba15d2036fa21cc83b3f0fc22639))
+
 ### [2.0.1](https://www.github.com/googleapis/google-auth-library-python/compare/v2.0.0...v2.0.1) (2021-08-17)
 
 
