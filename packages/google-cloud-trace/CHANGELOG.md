@@ -83,7 +83,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* migrate to microgenerator. See [Migration Guide](https://github.com/googleapis/python-trace/blob/master/UPGRADING.md) (#29)
+* migrate to microgenerator. See [Migration Guide](https://github.com/googleapis/python-trace/blob/main/UPGRADING.md) (#29)
 
 ### Features
 

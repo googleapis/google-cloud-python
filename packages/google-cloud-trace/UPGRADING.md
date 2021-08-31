@@ -28,7 +28,7 @@ from google.cloud import trace_v2
 client = trace_v2.TraceServiceClient()
 ```
 
-**NOTE**: The following sections identify changes between the previous `TraceServiceClient()` and the current `TraceServiceClient()` (not the handwritten wrapper `Client()`). If you were previously using `Client()`, it may be more helpful to reference the [samples](https://github.com/googleapis/python-trace/tree/master/samples/snippets).
+**NOTE**: The following sections identify changes between the previous `TraceServiceClient()` and the current `TraceServiceClient()` (not the handwritten wrapper `Client()`). If you were previously using `Client()`, it may be more helpful to reference the [samples](https://github.com/googleapis/python-trace/tree/main/samples/snippets).
 
 ## Method Calls
 
