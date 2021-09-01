@@ -66,7 +66,7 @@ if [[ -z ${BUILD_PYTHON} ]]; then
         fi
     done
 else
-    STRIPPED_PYTHON=$(echo ${BUILD_PYTHON} | sed -e "s/\.//g")
+    STRIPPED_PYTHON=$(echo ${BUILD_PYTHON} | sed -e "s/\.//g" | sed -e "s/-dev$//")
     for PYTHON_BIN in /opt/python/*/bin; do
         if [[ "${PYTHON_BIN}" == *"${STRIPPED_PYTHON}"* ]]; then
             PYTHON_VERSIONS="${PYTHON_VERSIONS} ${PYTHON_BIN}"
