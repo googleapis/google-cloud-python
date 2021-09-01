@@ -34,7 +34,6 @@ dependencies = [
     "google-auth >= 1.25.0, < 3.0dev",
     "requests >= 2.18.0, < 3.0.0dev",
     "setuptools >= 40.3.0",
-    'futures >= 3.2.0; python_version < "3.2"',
 ]
 extras = {
     "grpc": "grpcio >= 1.33.2, < 2.0dev",
