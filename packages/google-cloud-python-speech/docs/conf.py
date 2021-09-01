@@ -76,8 +76,8 @@ source_suffix = [".rst", ".md"]
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
 
-# The master toctree document.
-master_doc = "index"
+# The root toctree document.
+root_doc = "index"
 
 # General information about the project.
 project = "google-cloud-speech"
@@ -280,7 +280,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (
-        master_doc,
+        root_doc,
         "google-cloud-speech.tex",
         "google-cloud-speech Documentation",
         author,
@@ -314,13 +314,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (
-        master_doc,
-        "google-cloud-speech",
-        "google-cloud-speech Documentation",
-        [author],
-        1,
-    )
+    (root_doc, "google-cloud-speech", "google-cloud-speech Documentation", [author], 1,)
 ]
 
 # If true, show URL addresses after external links.
@@ -334,7 +328,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (
-        master_doc,
+        root_doc,
         "google-cloud-speech",
         "google-cloud-speech Documentation",
         author,
