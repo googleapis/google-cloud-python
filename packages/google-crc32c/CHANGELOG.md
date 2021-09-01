@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-crc32c/#history
 
+### [1.1.4](https://www.github.com/googleapis/python-crc32c/compare/v1.1.3...v1.1.4) (2021-09-01)
+
+
+### Bug Fixes
+
+* advise setting 'CRC32C_PURE_PYTHON' after build failure ([#84](https://www.github.com/googleapis/python-crc32c/issues/84)) ([6aa1cd6](https://www.github.com/googleapis/python-crc32c/commit/6aa1cd69376b57fbc9bc2c470ed63a270279623d))
+* restore building 'manylinux1' wheels ([#87](https://www.github.com/googleapis/python-crc32c/issues/87)) ([ebb9c68](https://www.github.com/googleapis/python-crc32c/commit/ebb9c68aca66e6b89d832e9e237679ac8b9ad344))
+
 ### [1.1.3](https://www.github.com/googleapis/python-crc32c/compare/v1.1.2...v1.1.3) (2021-08-30)
 
 
