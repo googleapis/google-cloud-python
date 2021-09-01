@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.3.0...v1.3.1) (2021-08-31)
+
+
+### Documentation
+
+* **v3beta1:** clarified LRO types ([#161](https://www.github.com/googleapis/python-dialogflow-cx/issues/161)) ([dd2b2fd](https://www.github.com/googleapis/python-dialogflow-cx/commit/dd2b2fd345e91fa3da1290f6896ac6b521c2eb7b))
+* **v3beta1:** fixed incorrect update mask descriptions ([dd2b2fd](https://www.github.com/googleapis/python-dialogflow-cx/commit/dd2b2fd345e91fa3da1290f6896ac6b521c2eb7b))
+
 ## [1.3.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.2.0...v1.3.0) (2021-08-27)
 
 
