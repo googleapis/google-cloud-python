@@ -37,6 +37,7 @@ jobs:
     - name: Build
       env:
         BUILD_PYTHON: ${{ matrix.python }}
+        CRC32C_PURE_PYTHON: "0"
       run: |
         ./scripts/manylinux/build.sh
     - name: Test Import
@@ -68,6 +69,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install setuptools wheel
     - name: Build
+      env:
+        CRC32C_PURE_PYTHON: "0"
       run: |
         ./scripts/osx/build_gh_action.sh
     - name: Test Import
@@ -104,6 +107,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install setuptools wheel
     - name: Build
+      env:
+        CRC32C_PURE_PYTHON: "0"
       run: |
         where python
         ./scripts/windows/build.bat ${{ matrix.python }}

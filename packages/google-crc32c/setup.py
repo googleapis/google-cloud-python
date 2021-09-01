@@ -12,15 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import os
 import shutil
 import setuptools
 import setuptools.command.build_ext
-import warnings
 
 _EXTRA_DLL = "extra-dll"
 _DLL_FILENAME = "crc32c.dll"
-CRC32C_PURE_PYTHON = os.getenv("CRC32C_PURE_PYTHON") is not None
+
+# Explicit environment variable disables pure-Python fallback
+CRC32C_PURE_PYTHON_EXPLICIT = "CRC32C_PURE_PYTHON" in os.environ
+_FALSE_OPTIONS = ("0", "false", "no", "False", "No", None)
+CRC32C_PURE_PYTHON = os.getenv("CRC32C_PURE_PYTHON") not in _FALSE_OPTIONS
 
 
 def copy_dll(build_lib):
@@ -54,14 +58,27 @@ module = setuptools.Extension(
 
 
 if CRC32C_PURE_PYTHON:
-    ext_modules = []
+    setuptools.setup(
+        packages=["google_crc32c"],
+        package_dir={"": "src"},
+        ext_modules=[],
+    )
 else:
-    ext_modules = [module]
-
-
-setuptools.setup(
-    packages=["google_crc32c"],
-    package_dir={"": "src"},
-    ext_modules=ext_modules,
-    cmdclass={"build_ext": BuildExtWithDLL},
-)
+    try:
+        setuptools.setup(
+            packages=["google_crc32c"],
+            package_dir={"": "src"},
+            ext_modules=[module],
+            cmdclass={"build_ext": BuildExtWithDLL},
+        )
+    except SystemExit:
+        if "CRC32C_PURE_PYTHON" not in os.environ:
+            # If build / install fails, it is likely a compilation error with
+            # the C extension:  advise user how to enable the pure-Python
+            # build.
+            logging.error(
+                "Compiling the C Extension for the crc32c library failed. "
+                "To enable building / installing a pure-Python-only version, "
+                "set 'CRC32C_PURE_PYTHON=1' in the environment."
+            )
+        raise
