@@ -131,6 +131,8 @@ _MIN_GET_QUERY_RESULTS_TIMEOUT = 120
 # https://github.com/googleapis/python-bigquery/issues/781#issuecomment-883497414
 _PYARROW_BAD_VERSIONS = frozenset([packaging.version.Version("2.0.0")])
 
+TIMEOUT_HEADER = "X-Server-Timeout"
+
 
 class Project(object):
     """Wrapper for resource describing a BigQuery project.
@@ -742,16 +744,26 @@ class Client(ClientWithProject):
             return self.get_table(table.reference, retry=retry)
 
     def _call_api(
-        self, retry, span_name=None, span_attributes=None, job_ref=None, **kwargs
+        self,
+        retry,
+        span_name=None,
+        span_attributes=None,
+        job_ref=None,
+        headers: Optional[Dict[str, str]] = None,
+        **kwargs,
     ):
+        kwargs = _add_server_timeout_header(headers, kwargs)
         call = functools.partial(self._connection.api_request, **kwargs)
+
         if retry:
             call = retry(call)
+
         if span_name is not None:
             with create_span(
                 name=span_name, attributes=span_attributes, client=self, job_ref=job_ref
             ):
                 return call()
+
         return call()
 
     def get_dataset(
@@ -4045,3 +4057,16 @@ def _get_upload_headers(user_agent):
         "User-Agent": user_agent,
         "content-type": "application/json",
     }
+
+
+def _add_server_timeout_header(headers: Optional[Dict[str, str]], kwargs):
+    timeout = kwargs.get("timeout")
+    if timeout is not None:
+        if headers is None:
+            headers = {}
+        headers[TIMEOUT_HEADER] = str(timeout)
+
+    if headers:
+        kwargs["headers"] = headers
+
+    return kwargs

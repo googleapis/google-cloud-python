@@ -1806,7 +1806,6 @@ class TestClient(unittest.TestCase):
                 "access": ACCESS,
             },
             path="/" + PATH,
-            headers=None,
             timeout=7.5,
         )
         self.assertEqual(ds2.description, ds.description)
@@ -1850,7 +1849,6 @@ class TestClient(unittest.TestCase):
             method="PATCH",
             data={"newAlphaProperty": "unreleased property"},
             path=path,
-            headers=None,
             timeout=DEFAULT_TIMEOUT,
         )
 
@@ -1909,7 +1907,7 @@ class TestClient(unittest.TestCase):
             "labels": {"x": "y"},
         }
         conn.api_request.assert_called_once_with(
-            method="PATCH", data=sent, path="/" + path, headers=None, timeout=7.5
+            method="PATCH", data=sent, path="/" + path, timeout=7.5
         )
         self.assertEqual(updated_model.model_id, model.model_id)
         self.assertEqual(updated_model.description, model.description)
@@ -1982,7 +1980,6 @@ class TestClient(unittest.TestCase):
             method="PUT",
             data=sent,
             path="/projects/routines-project/datasets/test_routines/routines/updated_routine",
-            headers=None,
             timeout=7.5,
         )
         self.assertEqual(actual_routine.arguments, routine.arguments)
@@ -2090,7 +2087,7 @@ class TestClient(unittest.TestCase):
             "labels": {"x": "y"},
         }
         conn.api_request.assert_called_once_with(
-            method="PATCH", data=sent, path="/" + path, headers=None, timeout=7.5
+            method="PATCH", data=sent, path="/" + path, timeout=7.5
         )
         self.assertEqual(updated_table.description, table.description)
         self.assertEqual(updated_table.friendly_name, table.friendly_name)
@@ -2140,7 +2137,6 @@ class TestClient(unittest.TestCase):
             method="PATCH",
             path="/%s" % path,
             data={"newAlphaProperty": "unreleased property"},
-            headers=None,
             timeout=DEFAULT_TIMEOUT,
         )
         self.assertEqual(
@@ -2175,7 +2171,6 @@ class TestClient(unittest.TestCase):
             method="PATCH",
             path="/%s" % path,
             data={"view": {"useLegacySql": True}},
-            headers=None,
             timeout=DEFAULT_TIMEOUT,
         )
         self.assertEqual(updated_table.view_use_legacy_sql, table.view_use_legacy_sql)
@@ -2273,7 +2268,6 @@ class TestClient(unittest.TestCase):
                 "expirationTime": str(_millis(exp_time)),
                 "schema": schema_resource,
             },
-            headers=None,
             timeout=DEFAULT_TIMEOUT,
         )
 
@@ -8173,3 +8167,20 @@ def test_upload_chunksize(client):
 
         chunk_size = RU.call_args_list[0][0][1]
         assert chunk_size == 100 * (1 << 20)
+
+
+@pytest.mark.enable_add_server_timeout_header
+@pytest.mark.parametrize("headers", [None, {}])
+def test__call_api_add_server_timeout_w_timeout(client, headers):
+    client._connection = make_connection({})
+    client._call_api(None, method="GET", path="/", headers=headers, timeout=42)
+    client._connection.api_request.assert_called_with(
+        method="GET", path="/", timeout=42, headers={"X-Server-Timeout": "42"}
+    )
+
+
+@pytest.mark.enable_add_server_timeout_header
+def test__call_api_no_add_server_timeout_wo_timeout(client):
+    client._connection = make_connection({})
+    client._call_api(None, method="GET", path="/")
+    client._connection.api_request.assert_called_with(method="GET", path="/")

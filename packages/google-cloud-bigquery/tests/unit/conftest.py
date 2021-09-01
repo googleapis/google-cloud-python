@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import mock
 import pytest
 
 from .helpers import make_client
@@ -35,3 +36,21 @@ def DS_ID():
 @pytest.fixture
 def LOCATION():
     yield "us-central"
+
+
+def noop_add_server_timeout_header(headers, kwargs):
+    if headers:
+        kwargs["headers"] = headers
+    return kwargs
+
+
+@pytest.fixture(autouse=True)
+def disable_add_server_timeout_header(request):
+    if "enable_add_server_timeout_header" in request.keywords:
+        yield
+    else:
+        with mock.patch(
+            "google.cloud.bigquery.client._add_server_timeout_header",
+            noop_add_server_timeout_header,
+        ):
+            yield
