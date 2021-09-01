@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+### [3.4.1](https://www.github.com/googleapis/python-datacatalog/compare/v3.4.0...v3.4.1) (2021-09-01)
+
+
+### Bug Fixes
+
+* make datacatalog == datacatalog_v1 ([#206](https://www.github.com/googleapis/python-datacatalog/issues/206)) ([aefe892](https://www.github.com/googleapis/python-datacatalog/commit/aefe892ab2cdb37b5f58faecd45758ea685c74ec))
+
+
+### Documentation
+
+* **samples:** add samples from docs & reorganize all samples for testing ([#78](https://www.github.com/googleapis/python-datacatalog/issues/78)) ([d34aca0](https://www.github.com/googleapis/python-datacatalog/commit/d34aca05a87aa75ad982612f57fe987a005f7896))
+
 ## [3.4.0](https://www.github.com/googleapis/python-datacatalog/compare/v3.3.2...v3.4.0) (2021-07-28)
 
 

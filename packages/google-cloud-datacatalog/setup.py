@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-datacatalog"
 description = "Google Cloud Data Catalog API API client library"
-version = "3.4.0"
+version = "3.4.1"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
