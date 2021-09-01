@@ -19,6 +19,7 @@ import os
 import re
 from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
+import warnings
 
 from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
@@ -202,7 +203,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
     @staticmethod
     def bi_reservation_path(project: str, location: str,) -> str:
         """Returns a fully-qualified bi_reservation string."""
-        return "projects/{project}/locations/{location}/bireservation".format(
+        return "projects/{project}/locations/{location}/biReservation".format(
             project=project, location=location,
         )
 
@@ -210,7 +211,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
     def parse_bi_reservation_path(path: str) -> Dict[str, str]:
         """Parses a bi_reservation path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/bireservation$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/biReservation$",
             path,
         )
         return m.groupdict() if m else {}
@@ -1493,6 +1494,12 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
            ``project1``, and ``project2``) could all be created and
            mapped to the same or different reservations.
 
+        "None" assignments represent an absence of the assignment.
+        Projects assigned to None use on-demand pricing. To create a
+        "None" assignment, use "none" as a reservation_id in the parent.
+        Example parent:
+        ``projects/myproject/locations/US/reservations/none``.
+
         Returns ``google.rpc.Code.PERMISSION_DENIED`` if user does not
         have 'bigquery.admin' permissions on the project using the
         reservation and the project that owns this reservation.
@@ -1768,8 +1775,8 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAssignmentsPager:
-        r"""Looks up assignments for a specified resource for a particular
-        region. If the request is about a project:
+        r"""Deprecated: Looks up assignments for a specified resource for a
+        particular region. If the request is about a project:
 
         1. Assignments created on the project will be returned if they
            exist.
@@ -1836,6 +1843,11 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
                 resolve additional pages automatically.
 
         """
+        warnings.warn(
+            "ReservationServiceClient.search_assignments is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
@@ -1875,6 +1887,127 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.SearchAssignmentsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def search_all_assignments(
+        self,
+        request: reservation.SearchAllAssignmentsRequest = None,
+        *,
+        parent: str = None,
+        query: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.SearchAllAssignmentsPager:
+        r"""Looks up assignments for a specified resource for a particular
+        region. If the request is about a project:
+
+        1. Assignments created on the project will be returned if they
+           exist.
+        2. Otherwise assignments created on the closest ancestor will be
+           returned.
+        3. Assignments for different JobTypes will all be returned.
+
+        The same logic applies if the request is about a folder.
+
+        If the request is about an organization, then assignments
+        created on the organization will be returned (organization
+        doesn't have ancestors).
+
+        Comparing to ListAssignments, there are some behavior
+        differences:
+
+        1. permission on the assignee will be verified in this API.
+        2. Hierarchy lookup (project->folder->organization) happens in
+           this API.
+        3. Parent here is ``projects/*/locations/*``, instead of
+           ``projects/*/locations/*reservations/*``.
+
+        Args:
+            request (google.cloud.bigquery_reservation_v1.types.SearchAllAssignmentsRequest):
+                The request object. The request for
+                [ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments].
+                Note: "bigquery.reservationAssignments.search"
+                permission is required on the related assignee.
+            parent (str):
+                Required. The resource name with location (project name
+                could be the wildcard '-'), e.g.:
+                ``projects/-/locations/US``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            query (str):
+                Please specify resource name as assignee in the query.
+
+                Examples:
+
+                -  ``assignee=projects/myproject``
+                -  ``assignee=folders/123``
+                -  ``assignee=organizations/456``
+
+
+                This corresponds to the ``query`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bigquery_reservation_v1.services.reservation_service.pagers.SearchAllAssignmentsPager:
+                The response for
+                [ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, query])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.SearchAllAssignmentsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.SearchAllAssignmentsRequest):
+            request = reservation.SearchAllAssignmentsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if query is not None:
+                request.query = query
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.search_all_assignments]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.SearchAllAssignmentsPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
 
@@ -1991,7 +2124,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
             name (str):
                 Required. Name of the requested reservation, for
                 example:
-                ``projects/{project_id}/locations/{location_id}/bireservation``
+                ``projects/{project_id}/locations/{location_id}/biReservation``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

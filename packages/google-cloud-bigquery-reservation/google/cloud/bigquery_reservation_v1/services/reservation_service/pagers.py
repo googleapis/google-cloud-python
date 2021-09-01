@@ -537,3 +537,131 @@ class SearchAssignmentsAsyncPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class SearchAllAssignmentsPager:
+    """A pager for iterating through ``search_all_assignments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.bigquery_reservation_v1.types.SearchAllAssignmentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``assignments`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``SearchAllAssignments`` requests and continue to iterate
+    through the ``assignments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.bigquery_reservation_v1.types.SearchAllAssignmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., reservation.SearchAllAssignmentsResponse],
+        request: reservation.SearchAllAssignmentsRequest,
+        response: reservation.SearchAllAssignmentsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.bigquery_reservation_v1.types.SearchAllAssignmentsRequest):
+                The initial request object.
+            response (google.cloud.bigquery_reservation_v1.types.SearchAllAssignmentsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = reservation.SearchAllAssignmentsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterable[reservation.SearchAllAssignmentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterable[reservation.Assignment]:
+        for page in self.pages:
+            yield from page.assignments
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class SearchAllAssignmentsAsyncPager:
+    """A pager for iterating through ``search_all_assignments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.bigquery_reservation_v1.types.SearchAllAssignmentsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``assignments`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``SearchAllAssignments`` requests and continue to iterate
+    through the ``assignments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.bigquery_reservation_v1.types.SearchAllAssignmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[reservation.SearchAllAssignmentsResponse]],
+        request: reservation.SearchAllAssignmentsRequest,
+        response: reservation.SearchAllAssignmentsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.bigquery_reservation_v1.types.SearchAllAssignmentsRequest):
+                The initial request object.
+            response (google.cloud.bigquery_reservation_v1.types.SearchAllAssignmentsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = reservation.SearchAllAssignmentsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterable[reservation.SearchAllAssignmentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterable[reservation.Assignment]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.assignments:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

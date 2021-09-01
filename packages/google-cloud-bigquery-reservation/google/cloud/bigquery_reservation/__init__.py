@@ -73,6 +73,12 @@ from google.cloud.bigquery_reservation_v1.types.reservation import (
 from google.cloud.bigquery_reservation_v1.types.reservation import MoveAssignmentRequest
 from google.cloud.bigquery_reservation_v1.types.reservation import Reservation
 from google.cloud.bigquery_reservation_v1.types.reservation import (
+    SearchAllAssignmentsRequest,
+)
+from google.cloud.bigquery_reservation_v1.types.reservation import (
+    SearchAllAssignmentsResponse,
+)
+from google.cloud.bigquery_reservation_v1.types.reservation import (
     SearchAssignmentsRequest,
 )
 from google.cloud.bigquery_reservation_v1.types.reservation import (
@@ -118,6 +124,8 @@ __all__ = (
     "MergeCapacityCommitmentsRequest",
     "MoveAssignmentRequest",
     "Reservation",
+    "SearchAllAssignmentsRequest",
+    "SearchAllAssignmentsResponse",
     "SearchAssignmentsRequest",
     "SearchAssignmentsResponse",
     "SplitCapacityCommitmentRequest",

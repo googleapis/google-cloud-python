@@ -18,6 +18,7 @@ import functools
 import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
+import warnings
 
 import google.api_core.client_options as ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
@@ -274,7 +275,7 @@ class ReservationServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_reservation,
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -603,7 +604,7 @@ class ReservationServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_reservation,
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -698,7 +699,7 @@ class ReservationServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_capacity_commitment,
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1060,7 +1061,7 @@ class ReservationServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_capacity_commitment,
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1151,7 +1152,7 @@ class ReservationServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.split_capacity_commitment,
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1258,7 +1259,7 @@ class ReservationServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.merge_capacity_commitments,
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1309,6 +1310,12 @@ class ReservationServiceAsyncClient:
         -  Assignments for all three entities (``organizationA``,
            ``project1``, and ``project2``) could all be created and
            mapped to the same or different reservations.
+
+        "None" assignments represent an absence of the assignment.
+        Projects assigned to None use on-demand pricing. To create a
+        "None" assignment, use "none" as a reservation_id in the parent.
+        Example parent:
+        ``projects/myproject/locations/US/reservations/none``.
 
         Returns ``google.rpc.Code.PERMISSION_DENIED`` if user does not
         have 'bigquery.admin' permissions on the project using the
@@ -1372,7 +1379,7 @@ class ReservationServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_assignment,
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1605,8 +1612,8 @@ class ReservationServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAssignmentsAsyncPager:
-        r"""Looks up assignments for a specified resource for a particular
-        region. If the request is about a project:
+        r"""Deprecated: Looks up assignments for a specified resource for a
+        particular region. If the request is about a project:
 
         1. Assignments created on the project will be returned if they
            exist.
@@ -1673,6 +1680,11 @@ class ReservationServiceAsyncClient:
                 resolve additional pages automatically.
 
         """
+        warnings.warn(
+            "ReservationServiceAsyncClient.search_assignments is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
@@ -1722,6 +1734,127 @@ class ReservationServiceAsyncClient:
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.SearchAssignmentsAsyncPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def search_all_assignments(
+        self,
+        request: reservation.SearchAllAssignmentsRequest = None,
+        *,
+        parent: str = None,
+        query: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.SearchAllAssignmentsAsyncPager:
+        r"""Looks up assignments for a specified resource for a particular
+        region. If the request is about a project:
+
+        1. Assignments created on the project will be returned if they
+           exist.
+        2. Otherwise assignments created on the closest ancestor will be
+           returned.
+        3. Assignments for different JobTypes will all be returned.
+
+        The same logic applies if the request is about a folder.
+
+        If the request is about an organization, then assignments
+        created on the organization will be returned (organization
+        doesn't have ancestors).
+
+        Comparing to ListAssignments, there are some behavior
+        differences:
+
+        1. permission on the assignee will be verified in this API.
+        2. Hierarchy lookup (project->folder->organization) happens in
+           this API.
+        3. Parent here is ``projects/*/locations/*``, instead of
+           ``projects/*/locations/*reservations/*``.
+
+        Args:
+            request (:class:`google.cloud.bigquery_reservation_v1.types.SearchAllAssignmentsRequest`):
+                The request object. The request for
+                [ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments].
+                Note: "bigquery.reservationAssignments.search"
+                permission is required on the related assignee.
+            parent (:class:`str`):
+                Required. The resource name with location (project name
+                could be the wildcard '-'), e.g.:
+                ``projects/-/locations/US``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            query (:class:`str`):
+                Please specify resource name as assignee in the query.
+
+                Examples:
+
+                -  ``assignee=projects/myproject``
+                -  ``assignee=folders/123``
+                -  ``assignee=organizations/456``
+
+
+                This corresponds to the ``query`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bigquery_reservation_v1.services.reservation_service.pagers.SearchAllAssignmentsAsyncPager:
+                The response for
+                [ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, query])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = reservation.SearchAllAssignmentsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if query is not None:
+            request.query = query
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.search_all_assignments,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.SearchAllAssignmentsAsyncPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
 
@@ -1804,7 +1937,7 @@ class ReservationServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.move_assignment,
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1838,7 +1971,7 @@ class ReservationServiceAsyncClient:
             name (:class:`str`):
                 Required. Name of the requested reservation, for
                 example:
-                ``projects/{project_id}/locations/{location_id}/bireservation``
+                ``projects/{project_id}/locations/{location_id}/biReservation``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1968,7 +2101,7 @@ class ReservationServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_bi_reservation,
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 

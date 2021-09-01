@@ -160,7 +160,7 @@ class ReservationServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_reservation: gapic_v1.method.wrap_method(
-                self.create_reservation, default_timeout=60.0, client_info=client_info,
+                self.create_reservation, default_timeout=300.0, client_info=client_info,
             ),
             self.list_reservations: gapic_v1.method.wrap_method(
                 self.list_reservations,
@@ -208,11 +208,11 @@ class ReservationServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_reservation: gapic_v1.method.wrap_method(
-                self.update_reservation, default_timeout=60.0, client_info=client_info,
+                self.update_reservation, default_timeout=300.0, client_info=client_info,
             ),
             self.create_capacity_commitment: gapic_v1.method.wrap_method(
                 self.create_capacity_commitment,
-                default_timeout=60.0,
+                default_timeout=300.0,
                 client_info=client_info,
             ),
             self.list_capacity_commitments: gapic_v1.method.wrap_method(
@@ -262,21 +262,21 @@ class ReservationServiceTransport(abc.ABC):
             ),
             self.update_capacity_commitment: gapic_v1.method.wrap_method(
                 self.update_capacity_commitment,
-                default_timeout=60.0,
+                default_timeout=300.0,
                 client_info=client_info,
             ),
             self.split_capacity_commitment: gapic_v1.method.wrap_method(
                 self.split_capacity_commitment,
-                default_timeout=60.0,
+                default_timeout=300.0,
                 client_info=client_info,
             ),
             self.merge_capacity_commitments: gapic_v1.method.wrap_method(
                 self.merge_capacity_commitments,
-                default_timeout=60.0,
+                default_timeout=300.0,
                 client_info=client_info,
             ),
             self.create_assignment: gapic_v1.method.wrap_method(
-                self.create_assignment, default_timeout=60.0, client_info=client_info,
+                self.create_assignment, default_timeout=300.0, client_info=client_info,
             ),
             self.list_assignments: gapic_v1.method.wrap_method(
                 self.list_assignments,
@@ -323,8 +323,13 @@ class ReservationServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.search_all_assignments: gapic_v1.method.wrap_method(
+                self.search_all_assignments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.move_assignment: gapic_v1.method.wrap_method(
-                self.move_assignment, default_timeout=60.0, client_info=client_info,
+                self.move_assignment, default_timeout=300.0, client_info=client_info,
             ),
             self.get_bi_reservation: gapic_v1.method.wrap_method(
                 self.get_bi_reservation,
@@ -343,7 +348,7 @@ class ReservationServiceTransport(abc.ABC):
             ),
             self.update_bi_reservation: gapic_v1.method.wrap_method(
                 self.update_bi_reservation,
-                default_timeout=60.0,
+                default_timeout=300.0,
                 client_info=client_info,
             ),
         }
@@ -511,6 +516,18 @@ class ReservationServiceTransport(abc.ABC):
         Union[
             reservation.SearchAssignmentsResponse,
             Awaitable[reservation.SearchAssignmentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def search_all_assignments(
+        self,
+    ) -> Callable[
+        [reservation.SearchAllAssignmentsRequest],
+        Union[
+            reservation.SearchAllAssignmentsResponse,
+            Awaitable[reservation.SearchAllAssignmentsResponse],
         ],
     ]:
         raise NotImplementedError()

@@ -80,6 +80,11 @@
                 "move_assignment"
               ]
             },
+            "SearchAllAssignments": {
+              "methods": [
+                "search_all_assignments"
+              ]
+            },
             "SearchAssignments": {
               "methods": [
                 "search_assignments"
@@ -178,6 +183,11 @@
             "MoveAssignment": {
               "methods": [
                 "move_assignment"
+              ]
+            },
+            "SearchAllAssignments": {
+              "methods": [
+                "search_all_assignments"
               ]
             },
             "SearchAssignments": {

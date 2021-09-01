@@ -637,6 +637,12 @@ class ReservationServiceGrpcTransport(ReservationServiceTransport):
            ``project1``, and ``project2``) could all be created and
            mapped to the same or different reservations.
 
+        "None" assignments represent an absence of the assignment.
+        Projects assigned to None use on-demand pricing. To create a
+        "None" assignment, use "none" as a reservation_id in the parent.
+        Example parent:
+        ``projects/myproject/locations/US/reservations/none``.
+
         Returns ``google.rpc.Code.PERMISSION_DENIED`` if user does not
         have 'bigquery.admin' permissions on the project using the
         reservation and the project that owns this reservation.
@@ -760,8 +766,8 @@ class ReservationServiceGrpcTransport(ReservationServiceTransport):
     ]:
         r"""Return a callable for the search assignments method over gRPC.
 
-        Looks up assignments for a specified resource for a particular
-        region. If the request is about a project:
+        Deprecated: Looks up assignments for a specified resource for a
+        particular region. If the request is about a project:
 
         1. Assignments created on the project will be returned if they
            exist.
@@ -803,6 +809,57 @@ class ReservationServiceGrpcTransport(ReservationServiceTransport):
                 response_deserializer=reservation.SearchAssignmentsResponse.deserialize,
             )
         return self._stubs["search_assignments"]
+
+    @property
+    def search_all_assignments(
+        self,
+    ) -> Callable[
+        [reservation.SearchAllAssignmentsRequest],
+        reservation.SearchAllAssignmentsResponse,
+    ]:
+        r"""Return a callable for the search all assignments method over gRPC.
+
+        Looks up assignments for a specified resource for a particular
+        region. If the request is about a project:
+
+        1. Assignments created on the project will be returned if they
+           exist.
+        2. Otherwise assignments created on the closest ancestor will be
+           returned.
+        3. Assignments for different JobTypes will all be returned.
+
+        The same logic applies if the request is about a folder.
+
+        If the request is about an organization, then assignments
+        created on the organization will be returned (organization
+        doesn't have ancestors).
+
+        Comparing to ListAssignments, there are some behavior
+        differences:
+
+        1. permission on the assignee will be verified in this API.
+        2. Hierarchy lookup (project->folder->organization) happens in
+           this API.
+        3. Parent here is ``projects/*/locations/*``, instead of
+           ``projects/*/locations/*reservations/*``.
+
+        Returns:
+            Callable[[~.SearchAllAssignmentsRequest],
+                    ~.SearchAllAssignmentsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "search_all_assignments" not in self._stubs:
+            self._stubs["search_all_assignments"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/SearchAllAssignments",
+                request_serializer=reservation.SearchAllAssignmentsRequest.serialize,
+                response_deserializer=reservation.SearchAllAssignmentsResponse.deserialize,
+            )
+        return self._stubs["search_all_assignments"]
 
     @property
     def move_assignment(
