@@ -151,7 +151,7 @@ request = vision_v1.GetProductSetRequest(name="name")
 
 ## Location Path Helper Method
 
-Loation path helper method has been removed. Please construct
+Location path helper method has been removed. Please construct
 the path manually.
 
 ```py
