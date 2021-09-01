@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.6.0](https://www.github.com/googleapis/python-assured-workloads/compare/v0.5.0...v0.6.0) (2021-08-30)
+
+
+### Features
+
+* Add Canada regions and support compliance regime ([#73](https://www.github.com/googleapis/python-assured-workloads/issues/73)) ([b62f7c7](https://www.github.com/googleapis/python-assured-workloads/commit/b62f7c720d198741673cc93d452d0ac9067cd3c3))
+* display_name is added to ResourceSettings ([b62f7c7](https://www.github.com/googleapis/python-assured-workloads/commit/b62f7c720d198741673cc93d452d0ac9067cd3c3))
+* resource_settings is added to CreateWorkloadOperationMetadata ([b62f7c7](https://www.github.com/googleapis/python-assured-workloads/commit/b62f7c720d198741673cc93d452d0ac9067cd3c3))
+* ResourceType CONSUMER_FOLDER and KEYRING are added ([b62f7c7](https://www.github.com/googleapis/python-assured-workloads/commit/b62f7c720d198741673cc93d452d0ac9067cd3c3))
+
+
+### Bug Fixes
+
+* billing_account is now optional in Workload ([b62f7c7](https://www.github.com/googleapis/python-assured-workloads/commit/b62f7c720d198741673cc93d452d0ac9067cd3c3))
+* ResourceType CONSUMER_PROJECT is deprecated ([b62f7c7](https://www.github.com/googleapis/python-assured-workloads/commit/b62f7c720d198741673cc93d452d0ac9067cd3c3))
+
 ## [0.5.0](https://www.github.com/googleapis/python-assured-workloads/compare/v0.4.2...v0.5.0) (2021-07-28)
 
 
