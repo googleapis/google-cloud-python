@@ -23,10 +23,15 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 COPY app.js ./
 COPY tests.js ./
-# Assumption: local file is already built
-COPY _library ./nodejs-logging
 
-# Install test app's dependencies.
+# Compile library
+COPY _library ./nodejs-logging
+WORKDIR nodejs-logging
+RUN npm install
+RUN npm run compile
+
+# Install other dependencies
+WORKDIR /usr/src/app
 RUN npm install --production
 
 # Environment variable denoting whether to run an app server

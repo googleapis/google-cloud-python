@@ -47,26 +47,8 @@ verify() {
   set -e
 }
 
-
-build_node_container() {
-  export GCR_PATH=gcr.io/$PROJECT_ID/logging:$SERVICE_NAME
-  # copy super-repo into deployable dir
-  _env_tests_relative_path=${REPO_ROOT#"$SUPERREPO_ROOT/"}
-  _deployable_dir=$REPO_ROOT/deployable/$LANGUAGE
-
-  # copy over local copy of library
-  pushd $SUPERREPO_ROOT
-      tar -cvf $_deployable_dir/lib.tar --exclude node_modules --exclude env-tests-logging --exclude test --exclude system-test --exclude .nox --exclude samples --exclude docs .
-  popd
-  mkdir -p $_deployable_dir/$LIBRARY_NAME
-  tar -xvf $_deployable_dir/lib.tar --directory $_deployable_dir/$LIBRARY_NAME
-  # build container
-  docker build -t $GCR_PATH $_deployable_dir
-  docker push $GCR_PATH
-}
-
 deploy() {
-  build_node_container
+  build_container
   gcloud config set compute/zone $ZONE
   gcloud compute instances create-with-container \
     $SERVICE_NAME \

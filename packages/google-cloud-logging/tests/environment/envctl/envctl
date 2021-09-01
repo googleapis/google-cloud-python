@@ -46,6 +46,7 @@ build_container() {
     tar -cvf $_deployable_dir/lib.tar \
       --exclude tests --exclude .nox --exclude samples --exclude docs --exclude __pycache__ \
       --exclude target --exclude env-tests-logging --exclude test --exclude .git --exclude .github \
+      --exclude node_modules --exclude system-test \
       --exclude system-test --exclude environment-tests --exclude .kokoro .
   popd
   mkdir -p $_deployable_dir/_library
