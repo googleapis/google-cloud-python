@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+### [2.0.1](https://www.github.com/googleapis/google-resumable-media-python/compare/v2.0.0...v2.0.1) (2021-08-30)
+
+
+### Bug Fixes
+
+* check if retry is allowed after retry wait calculation ([#258](https://www.github.com/googleapis/google-resumable-media-python/issues/258)) ([00ccf71](https://www.github.com/googleapis/google-resumable-media-python/commit/00ccf7120251d3899c8d0c2eccdf3b177b5b3742))
+* do not mark upload download instances invalid with retriable error codes ([#261](https://www.github.com/googleapis/google-resumable-media-python/issues/261)) ([a1c5f7d](https://www.github.com/googleapis/google-resumable-media-python/commit/a1c5f7d0e3ce48d8d6eb8aced31707a881f7ee96))
+
 ## [2.0.0](https://www.github.com/googleapis/google-resumable-media-python/compare/v2.0.0-b1...v2.0.0) (2021-08-19)
 
 
