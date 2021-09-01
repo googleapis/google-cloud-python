@@ -1,6 +1,7 @@
 {
   "extends": [
     "config:base",
+    "group:all",
     ":preserveSemverRanges",
     ":disableDependencyDashboard"
   ],
