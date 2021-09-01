@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.0](https://www.github.com/googleapis/python-analytics-data/compare/v0.7.2...v0.8.0) (2021-09-01)
+
+
+### Features
+
+* add `category` field to `DimensionMetadata`, `MetricMetadata` types ([81c2eea](https://www.github.com/googleapis/python-analytics-data/commit/81c2eeaf88f8fc5a15a1df13e3fef02437a23bb7))
+* add `CheckCompatibility` method to the API ([#131](https://www.github.com/googleapis/python-analytics-data/issues/131)) ([81c2eea](https://www.github.com/googleapis/python-analytics-data/commit/81c2eeaf88f8fc5a15a1df13e3fef02437a23bb7))
+* add `DimensionCompatibility`, `MetricCompatibility`, `Compatibility` types to the API ([81c2eea](https://www.github.com/googleapis/python-analytics-data/commit/81c2eeaf88f8fc5a15a1df13e3fef02437a23bb7))
+
 ### [0.7.2](https://www.github.com/googleapis/python-analytics-data/compare/v0.7.1...v0.7.2) (2021-07-27)
 
 
