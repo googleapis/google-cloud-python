@@ -56,12 +56,6 @@ else:
         _to_wkb = _to_wkb()
 
 try:
-    import pyarrow
-    import pyarrow.parquet
-except ImportError:  # pragma: NO COVER
-    pyarrow = None
-
-try:
     from google.cloud.bigquery_storage import ArrowSerializationOptions
 except ImportError:
     _ARROW_COMPRESSION_SUPPORT = False
@@ -73,12 +67,10 @@ from google.cloud.bigquery import _helpers
 from google.cloud.bigquery import schema
 
 
-_LOGGER = logging.getLogger(__name__)
+pyarrow = _helpers.PYARROW_VERSIONS.try_import()
 
-_NO_BQSTORAGE_ERROR = (
-    "The google-cloud-bigquery-storage library is not installed, "
-    "please install google-cloud-bigquery-storage to use bqstorage features."
-)
+
+_LOGGER = logging.getLogger(__name__)
 
 _PROGRESS_INTERVAL = 0.2  # Maximum time between download status checks, in seconds.
 
@@ -548,8 +540,9 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath, parquet_compression="SN
             serializing method. Defaults to "SNAPPY".
             https://arrow.apache.org/docs/python/generated/pyarrow.parquet.write_table.html#pyarrow-parquet-write-table
     """
-    if pyarrow is None:
-        raise ValueError("pyarrow is required for BigQuery schema conversion.")
+    pyarrow = _helpers.PYARROW_VERSIONS.try_import(raise_if_error=True)
+
+    import pyarrow.parquet
 
     bq_schema = schema._to_schema_fields(bq_schema)
     arrow_table = dataframe_to_arrow(dataframe, bq_schema)

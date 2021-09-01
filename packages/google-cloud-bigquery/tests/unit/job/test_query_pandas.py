@@ -32,10 +32,6 @@ try:
 except (ImportError, AttributeError):  # pragma: NO COVER
     geopandas = None
 try:
-    import pyarrow
-except (ImportError, AttributeError):  # pragma: NO COVER
-    pyarrow = None
-try:
     from google.cloud import bigquery_storage
 except (ImportError, AttributeError):  # pragma: NO COVER
     bigquery_storage = None
@@ -44,9 +40,13 @@ try:
 except (ImportError, AttributeError):  # pragma: NO COVER
     tqdm = None
 
+from google.cloud.bigquery import _helpers
 from .helpers import _make_client
 from .helpers import _make_connection
 from .helpers import _make_job_resource
+
+
+pyarrow = _helpers.PYARROW_VERSIONS.try_import()
 
 
 @pytest.fixture

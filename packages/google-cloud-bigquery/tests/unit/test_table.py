@@ -46,17 +46,17 @@ except (ImportError, AttributeError):  # pragma: NO COVER
     geopandas = None
 
 try:
-    import pyarrow
-    import pyarrow.types
-except ImportError:  # pragma: NO COVER
-    pyarrow = None
-
-try:
     from tqdm import tqdm
 except (ImportError, AttributeError):  # pragma: NO COVER
     tqdm = None
 
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery import _helpers
+
+
+pyarrow = _helpers.PYARROW_VERSIONS.try_import()
+if pyarrow:
+    import pyarrow.types
 
 
 def _mock_client():

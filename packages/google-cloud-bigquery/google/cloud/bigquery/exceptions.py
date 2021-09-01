@@ -19,3 +19,7 @@ class BigQueryError(Exception):
 
 class LegacyBigQueryStorageError(BigQueryError):
     """Raised when too old a version of BigQuery Storage extra is detected at runtime."""
+
+
+class LegacyPyarrowError(BigQueryError):
+    """Raised when too old a version of pyarrow package is detected at runtime."""

@@ -30,13 +30,6 @@ try:
 except ImportError:  # pragma: NO COVER
     pandas = None
 try:
-    import pyarrow
-    import pyarrow.types
-except ImportError:  # pragma: NO COVER
-    # Mock out pyarrow when missing, because methods from pyarrow.types are
-    # used in test parameterization.
-    pyarrow = mock.Mock()
-try:
     import geopandas
 except ImportError:  # pragma: NO COVER
     geopandas = None
@@ -44,8 +37,18 @@ except ImportError:  # pragma: NO COVER
 import pytest
 
 from google import api_core
+from google.cloud.bigquery import exceptions
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery import schema
+
+
+pyarrow = _helpers.PYARROW_VERSIONS.try_import()
+if pyarrow:
+    import pyarrow.types
+else:  # pragma: NO COVER
+    # Mock out pyarrow when missing, because methods from pyarrow.types are
+    # used in test parameterization.
+    pyarrow = mock.Mock()
 
 try:
     from google.cloud import bigquery_storage
@@ -1120,15 +1123,19 @@ def test_dataframe_to_arrow_dict_sequence_schema(module_under_test):
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_dataframe_to_parquet_without_pyarrow(module_under_test, monkeypatch):
-    monkeypatch.setattr(module_under_test, "pyarrow", None)
-    with pytest.raises(ValueError) as exc_context:
+    mock_pyarrow_import = mock.Mock()
+    mock_pyarrow_import.side_effect = exceptions.LegacyPyarrowError(
+        "pyarrow not installed"
+    )
+    monkeypatch.setattr(_helpers.PYARROW_VERSIONS, "try_import", mock_pyarrow_import)
+
+    with pytest.raises(exceptions.LegacyPyarrowError):
         module_under_test.dataframe_to_parquet(pandas.DataFrame(), (), None)
-    assert "pyarrow is required" in str(exc_context.value)
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 @pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
-def test_dataframe_to_parquet_w_extra_fields(module_under_test, monkeypatch):
+def test_dataframe_to_parquet_w_extra_fields(module_under_test):
     with pytest.raises(ValueError) as exc_context:
         module_under_test.dataframe_to_parquet(
             pandas.DataFrame(), (schema.SchemaField("not_in_df", "STRING"),), None

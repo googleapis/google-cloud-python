@@ -19,7 +19,7 @@ import datetime
 import decimal
 import math
 import re
-from typing import Union
+from typing import Any, Union
 
 from google.cloud._helpers import UTC
 from google.cloud._helpers import _date_from_iso8601_date
@@ -29,7 +29,10 @@ from google.cloud._helpers import _RFC3339_NO_FRACTION
 from google.cloud._helpers import _to_bytes
 import packaging.version
 
-from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
+from google.cloud.bigquery.exceptions import (
+    LegacyBigQueryStorageError,
+    LegacyPyarrowError,
+)
 
 
 _RFC3339_MICROS_NO_ZULU = "%Y-%m-%dT%H:%M:%S.%f"
@@ -42,6 +45,7 @@ _PROJECT_PREFIX_PATTERN = re.compile(
     re.VERBOSE,
 )
 
+_MIN_PYARROW_VERSION = packaging.version.Version("3.0.0")
 _MIN_BQ_STORAGE_VERSION = packaging.version.Version("2.0.0")
 _BQ_STORAGE_OPTIONAL_READ_SESSION_VERSION = packaging.version.Version("2.6.0")
 
@@ -95,12 +99,74 @@ class BQStorageVersions:
         if self.installed_version < _MIN_BQ_STORAGE_VERSION:
             msg = (
                 "Dependency google-cloud-bigquery-storage is outdated, please upgrade "
-                f"it to version >= 2.0.0 (version found: {self.installed_version})."
+                f"it to version >= {_MIN_BQ_STORAGE_VERSION} (version found: {self.installed_version})."
             )
             raise LegacyBigQueryStorageError(msg)
 
 
+class PyarrowVersions:
+    """Version comparisons for pyarrow package."""
+
+    def __init__(self):
+        self._installed_version = None
+
+    @property
+    def installed_version(self) -> packaging.version.Version:
+        """Return the parsed version of pyarrow."""
+        if self._installed_version is None:
+            import pyarrow
+
+            self._installed_version = packaging.version.parse(
+                # Use 0.0.0, since it is earlier than any released version.
+                # Legacy versions also have the same property, but
+                # creating a LegacyVersion has been deprecated.
+                # https://github.com/pypa/packaging/issues/321
+                getattr(pyarrow, "__version__", "0.0.0")
+            )
+
+        return self._installed_version
+
+    def try_import(self, raise_if_error: bool = False) -> Any:
+        """Verify that a recent enough version of pyarrow extra is
+        installed.
+
+        The function assumes that pyarrow extra is installed, and should thus
+        be used in places where this assumption holds.
+
+        Because `pip` can install an outdated version of this extra despite the
+        constraints in `setup.py`, the calling code can use this helper to
+        verify the version compatibility at runtime.
+
+        Returns:
+            The ``pyarrow`` module or ``None``.
+
+        Raises:
+            LegacyPyarrowError:
+                If the pyarrow package is outdated and ``raise_if_error`` is ``True``.
+        """
+        try:
+            import pyarrow
+        except ImportError as exc:  # pragma: NO COVER
+            if raise_if_error:
+                raise LegacyPyarrowError(
+                    f"pyarrow package not found. Install pyarrow version >= {_MIN_PYARROW_VERSION}."
+                ) from exc
+            return None
+
+        if self.installed_version < _MIN_PYARROW_VERSION:
+            if raise_if_error:
+                msg = (
+                    "Dependency pyarrow is outdated, please upgrade "
+                    f"it to version >= {_MIN_PYARROW_VERSION} (version found: {self.installed_version})."
+                )
+                raise LegacyPyarrowError(msg)
+            return None
+
+        return pyarrow
+
+
 BQ_STORAGE_VERSIONS = BQStorageVersions()
+PYARROW_VERSIONS = PyarrowVersions()
 
 
 def _not_null(value, field):
