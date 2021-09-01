@@ -5,6 +5,19 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+### [2.25.2](https://www.github.com/googleapis/python-bigquery/compare/v2.25.1...v2.25.2) (2021-08-31)
+
+
+### Bug Fixes
+
+* error inserting DataFrame with REPEATED field ([#925](https://www.github.com/googleapis/python-bigquery/issues/925)) ([656d2fa](https://www.github.com/googleapis/python-bigquery/commit/656d2fa6f870573a21235c83463752a2d084caba))
+* underscores weren't allowed in struct field names when passing parameters to the DB API ([#930](https://www.github.com/googleapis/python-bigquery/issues/930)) ([fcb0bc6](https://www.github.com/googleapis/python-bigquery/commit/fcb0bc68c972c2c98bb8542f54e9228308177ecb))
+
+
+### Documentation
+
+* update docstring for bigquery_create_routine sample ([#883](https://www.github.com/googleapis/python-bigquery/issues/883)) ([#917](https://www.github.com/googleapis/python-bigquery/issues/917)) ([e2d12b7](https://www.github.com/googleapis/python-bigquery/commit/e2d12b795ef2dc51b0ee36f1b3000edb1e64ce05))
+
 ### [2.25.1](https://www.github.com/googleapis/python-bigquery/compare/v2.25.0...v2.25.1) (2021-08-25)
 
 
