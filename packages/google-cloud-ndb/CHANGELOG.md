@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.10.2](https://www.github.com/googleapis/python-ndb/compare/v1.10.1...v1.10.2) (2021-08-31)
+
+
+### Bug Fixes
+
+* **deps:** add pytz as an explicit dependency ([#707](https://www.github.com/googleapis/python-ndb/issues/707)) ([6b48548](https://www.github.com/googleapis/python-ndb/commit/6b48548a1ea4b0c125314f907c25b47992ee6556))
+
 ### [1.10.1](https://www.github.com/googleapis/python-ndb/compare/v1.10.0...v1.10.1) (2021-08-11)
 
 
