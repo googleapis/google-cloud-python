@@ -31,40 +31,13 @@ s.remove_staging_dirs()
 # ----------------------------------------------------------------------------
 
 templated_files = gcp.CommonTemplates().py_library(microgenerator=True)
-python.py_samples(skip_readmes=True)
+
 s.move(templated_files, excludes=[".coveragerc"]) # the microgenerator has a good coveragerc file
+
+python.py_samples(skip_readmes=True)
 
 # ----------------------------------------------------------------------------
 # Run blacken session
 # ----------------------------------------------------------------------------
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
-
-# ----------------------------------------------------------------------------
-# Main Branch migration
-# ----------------------------------------------------------------------------
-
-s.replace(
-  "*.rst",
-  "master",
-  "main"
-)
-
-s.replace(
-  "*.rst",
-  "google-cloud-python/blob/main",
-  "google-cloud-python/blob/master"
-)
-
-s.replace(
-  "CONTRIBUTING.rst",
-  "kubernetes/community/blob/main",
-  "kubernetes/community/blob/master"
-)
-
-s.replace(
-  ".kokoro/*",
-  "master",
-  "main"
-)
-
