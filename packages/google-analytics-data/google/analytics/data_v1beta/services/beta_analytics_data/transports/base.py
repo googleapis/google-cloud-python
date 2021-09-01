@@ -175,6 +175,9 @@ class BetaAnalyticsDataTransport(abc.ABC):
             self.run_realtime_report: gapic_v1.method.wrap_method(
                 self.run_realtime_report, default_timeout=60.0, client_info=client_info,
             ),
+            self.check_compatibility: gapic_v1.method.wrap_method(
+                self.check_compatibility, default_timeout=None, client_info=client_info,
+            ),
         }
 
     @property
@@ -242,6 +245,18 @@ class BetaAnalyticsDataTransport(abc.ABC):
         Union[
             analytics_data_api.RunRealtimeReportResponse,
             Awaitable[analytics_data_api.RunRealtimeReportResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def check_compatibility(
+        self,
+    ) -> Callable[
+        [analytics_data_api.CheckCompatibilityRequest],
+        Union[
+            analytics_data_api.CheckCompatibilityResponse,
+            Awaitable[analytics_data_api.CheckCompatibilityResponse],
         ],
     ]:
         raise NotImplementedError()

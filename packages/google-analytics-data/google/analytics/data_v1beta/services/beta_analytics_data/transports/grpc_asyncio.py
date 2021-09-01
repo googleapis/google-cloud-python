@@ -429,5 +429,44 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
             )
         return self._stubs["run_realtime_report"]
 
+    @property
+    def check_compatibility(
+        self,
+    ) -> Callable[
+        [analytics_data_api.CheckCompatibilityRequest],
+        Awaitable[analytics_data_api.CheckCompatibilityResponse],
+    ]:
+        r"""Return a callable for the check compatibility method over gRPC.
+
+        This compatibility method lists dimensions and
+        metrics that can be added to a report request and
+        maintain compatibility. This method fails if the
+        request's dimensions and metrics are incompatible.
+        In Google Analytics, reports fail if they request
+        incompatible dimensions and/or metrics; in that case,
+        you will need to remove dimensions and/or metrics from
+        the incompatible report until the report is compatible.
+        The Realtime and Core reports have different
+        compatibility rules. This method checks compatibility
+        for Core reports.
+
+        Returns:
+            Callable[[~.CheckCompatibilityRequest],
+                    Awaitable[~.CheckCompatibilityResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "check_compatibility" not in self._stubs:
+            self._stubs["check_compatibility"] = self.grpc_channel.unary_unary(
+                "/google.analytics.data.v1beta.BetaAnalyticsData/CheckCompatibility",
+                request_serializer=analytics_data_api.CheckCompatibilityRequest.serialize,
+                response_deserializer=analytics_data_api.CheckCompatibilityResponse.deserialize,
+            )
+        return self._stubs["check_compatibility"]
+
 
 __all__ = ("BetaAnalyticsDataGrpcAsyncIOTransport",)

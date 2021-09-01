@@ -31,6 +31,12 @@ from google.analytics.data_v1beta.types.analytics_data_api import BatchRunReport
 from google.analytics.data_v1beta.types.analytics_data_api import (
     BatchRunReportsResponse,
 )
+from google.analytics.data_v1beta.types.analytics_data_api import (
+    CheckCompatibilityRequest,
+)
+from google.analytics.data_v1beta.types.analytics_data_api import (
+    CheckCompatibilityResponse,
+)
 from google.analytics.data_v1beta.types.analytics_data_api import GetMetadataRequest
 from google.analytics.data_v1beta.types.analytics_data_api import Metadata
 from google.analytics.data_v1beta.types.analytics_data_api import RunPivotReportRequest
@@ -49,6 +55,7 @@ from google.analytics.data_v1beta.types.data import CohortSpec
 from google.analytics.data_v1beta.types.data import CohortsRange
 from google.analytics.data_v1beta.types.data import DateRange
 from google.analytics.data_v1beta.types.data import Dimension
+from google.analytics.data_v1beta.types.data import DimensionCompatibility
 from google.analytics.data_v1beta.types.data import DimensionExpression
 from google.analytics.data_v1beta.types.data import DimensionHeader
 from google.analytics.data_v1beta.types.data import DimensionMetadata
@@ -57,6 +64,7 @@ from google.analytics.data_v1beta.types.data import Filter
 from google.analytics.data_v1beta.types.data import FilterExpression
 from google.analytics.data_v1beta.types.data import FilterExpressionList
 from google.analytics.data_v1beta.types.data import Metric
+from google.analytics.data_v1beta.types.data import MetricCompatibility
 from google.analytics.data_v1beta.types.data import MetricHeader
 from google.analytics.data_v1beta.types.data import MetricMetadata
 from google.analytics.data_v1beta.types.data import MetricValue
@@ -70,6 +78,7 @@ from google.analytics.data_v1beta.types.data import PropertyQuota
 from google.analytics.data_v1beta.types.data import QuotaStatus
 from google.analytics.data_v1beta.types.data import ResponseMetaData
 from google.analytics.data_v1beta.types.data import Row
+from google.analytics.data_v1beta.types.data import Compatibility
 from google.analytics.data_v1beta.types.data import MetricAggregation
 from google.analytics.data_v1beta.types.data import MetricType
 
@@ -80,6 +89,8 @@ __all__ = (
     "BatchRunPivotReportsResponse",
     "BatchRunReportsRequest",
     "BatchRunReportsResponse",
+    "CheckCompatibilityRequest",
+    "CheckCompatibilityResponse",
     "GetMetadataRequest",
     "Metadata",
     "RunPivotReportRequest",
@@ -94,6 +105,7 @@ __all__ = (
     "CohortsRange",
     "DateRange",
     "Dimension",
+    "DimensionCompatibility",
     "DimensionExpression",
     "DimensionHeader",
     "DimensionMetadata",
@@ -102,6 +114,7 @@ __all__ = (
     "FilterExpression",
     "FilterExpressionList",
     "Metric",
+    "MetricCompatibility",
     "MetricHeader",
     "MetricMetadata",
     "MetricValue",
@@ -115,6 +128,7 @@ __all__ = (
     "QuotaStatus",
     "ResponseMetaData",
     "Row",
+    "Compatibility",
     "MetricAggregation",
     "MetricType",
 )

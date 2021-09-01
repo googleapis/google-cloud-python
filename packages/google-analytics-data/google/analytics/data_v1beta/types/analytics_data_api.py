@@ -21,6 +21,8 @@ from google.analytics.data_v1beta.types import data
 __protobuf__ = proto.module(
     package="google.analytics.data.v1beta",
     manifest={
+        "CheckCompatibilityRequest",
+        "CheckCompatibilityResponse",
         "Metadata",
         "RunReportRequest",
         "RunReportResponse",
@@ -35,6 +37,74 @@ __protobuf__ = proto.module(
         "RunRealtimeReportResponse",
     },
 )
+
+
+class CheckCompatibilityRequest(proto.Message):
+    r"""The request for compatibility information for a report's dimensions
+    and metrics. Check compatibility provides a preview of the
+    compatibility of a report; fields shared with the ``runReport``
+    request should be the same values as in your ``runReport`` request.
+
+    Attributes:
+        property (str):
+            A Google Analytics GA4 property identifier whose events are
+            tracked. To learn more, see `where to find your Property
+            ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
+            ``property`` should be the same value as in your
+            ``runReport`` request.
+
+            Example: properties/1234
+
+            Set the Property ID to 0 for compatibility checking on
+            dimensions and metrics common to all properties. In this
+            special mode, this method will not return custom dimensions
+            and metrics.
+        dimensions (Sequence[google.analytics.data_v1beta.types.Dimension]):
+            The dimensions in this report. ``dimensions`` should be the
+            same value as in your ``runReport`` request.
+        metrics (Sequence[google.analytics.data_v1beta.types.Metric]):
+            The metrics in this report. ``metrics`` should be the same
+            value as in your ``runReport`` request.
+        dimension_filter (google.analytics.data_v1beta.types.FilterExpression):
+            The filter clause of dimensions. ``dimensionFilter`` should
+            be the same value as in your ``runReport`` request.
+        metric_filter (google.analytics.data_v1beta.types.FilterExpression):
+            The filter clause of metrics. ``metricFilter`` should be the
+            same value as in your ``runReport`` request
+        compatibility_filter (google.analytics.data_v1beta.types.Compatibility):
+            Filters the dimensions and metrics in the response to just
+            this compatibility. Commonly used as
+            ``”compatibilityFilter”: “COMPATIBLE”`` to only return
+            compatible dimensions & metrics.
+    """
+
+    property = proto.Field(proto.STRING, number=1,)
+    dimensions = proto.RepeatedField(proto.MESSAGE, number=2, message=data.Dimension,)
+    metrics = proto.RepeatedField(proto.MESSAGE, number=3, message=data.Metric,)
+    dimension_filter = proto.Field(
+        proto.MESSAGE, number=4, message=data.FilterExpression,
+    )
+    metric_filter = proto.Field(proto.MESSAGE, number=5, message=data.FilterExpression,)
+    compatibility_filter = proto.Field(proto.ENUM, number=6, enum=data.Compatibility,)
+
+
+class CheckCompatibilityResponse(proto.Message):
+    r"""The compatibility response with the compatibility of each
+    dimension & metric.
+
+    Attributes:
+        dimension_compatibilities (Sequence[google.analytics.data_v1beta.types.DimensionCompatibility]):
+            The compatibility of each dimension.
+        metric_compatibilities (Sequence[google.analytics.data_v1beta.types.MetricCompatibility]):
+            The compatibility of each metric.
+    """
+
+    dimension_compatibilities = proto.RepeatedField(
+        proto.MESSAGE, number=1, message=data.DimensionCompatibility,
+    )
+    metric_compatibilities = proto.RepeatedField(
+        proto.MESSAGE, number=2, message=data.MetricCompatibility,
+    )
 
 
 class Metadata(proto.Message):
@@ -81,15 +151,15 @@ class RunReportRequest(proto.Message):
             both date ranges. In a cohort request, this ``dateRanges``
             must be unspecified.
         dimension_filter (google.analytics.data_v1beta.types.FilterExpression):
-            The filter clause of dimensions. Dimensions
-            must be requested to be used in this filter.
-            Metrics cannot be used in this filter.
+            Dimension filters allow you to ask for only specific
+            dimension values in the report. To learn more, see
+            `Fundamentals of Dimension
+            Filters <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>`__
+            for examples. Metrics cannot be used in this filter.
         metric_filter (google.analytics.data_v1beta.types.FilterExpression):
             The filter clause of metrics. Applied at post
             aggregation phase, similar to SQL having-clause.
-            Metrics must be requested to be used in this
-            filter. Dimensions cannot be used in this
-            filter.
+            Dimensions cannot be used in this filter.
         offset (int):
             The row count of the start row. The first row is counted as
             row 0.

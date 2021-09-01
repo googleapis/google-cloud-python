@@ -21,6 +21,8 @@ from .types.analytics_data_api import BatchRunPivotReportsRequest
 from .types.analytics_data_api import BatchRunPivotReportsResponse
 from .types.analytics_data_api import BatchRunReportsRequest
 from .types.analytics_data_api import BatchRunReportsResponse
+from .types.analytics_data_api import CheckCompatibilityRequest
+from .types.analytics_data_api import CheckCompatibilityResponse
 from .types.analytics_data_api import GetMetadataRequest
 from .types.analytics_data_api import Metadata
 from .types.analytics_data_api import RunPivotReportRequest
@@ -35,6 +37,7 @@ from .types.data import CohortSpec
 from .types.data import CohortsRange
 from .types.data import DateRange
 from .types.data import Dimension
+from .types.data import DimensionCompatibility
 from .types.data import DimensionExpression
 from .types.data import DimensionHeader
 from .types.data import DimensionMetadata
@@ -43,6 +46,7 @@ from .types.data import Filter
 from .types.data import FilterExpression
 from .types.data import FilterExpressionList
 from .types.data import Metric
+from .types.data import MetricCompatibility
 from .types.data import MetricHeader
 from .types.data import MetricMetadata
 from .types.data import MetricValue
@@ -56,6 +60,7 @@ from .types.data import PropertyQuota
 from .types.data import QuotaStatus
 from .types.data import ResponseMetaData
 from .types.data import Row
+from .types.data import Compatibility
 from .types.data import MetricAggregation
 from .types.data import MetricType
 
@@ -66,12 +71,16 @@ __all__ = (
     "BatchRunReportsRequest",
     "BatchRunReportsResponse",
     "BetaAnalyticsDataClient",
+    "CheckCompatibilityRequest",
+    "CheckCompatibilityResponse",
     "Cohort",
     "CohortReportSettings",
     "CohortSpec",
     "CohortsRange",
+    "Compatibility",
     "DateRange",
     "Dimension",
+    "DimensionCompatibility",
     "DimensionExpression",
     "DimensionHeader",
     "DimensionMetadata",
@@ -83,6 +92,7 @@ __all__ = (
     "Metadata",
     "Metric",
     "MetricAggregation",
+    "MetricCompatibility",
     "MetricHeader",
     "MetricMetadata",
     "MetricType",

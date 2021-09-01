@@ -21,6 +21,7 @@ __protobuf__ = proto.module(
     manifest={
         "MetricAggregation",
         "MetricType",
+        "Compatibility",
         "DateRange",
         "MinuteRange",
         "Dimension",
@@ -48,6 +49,8 @@ __protobuf__ = proto.module(
         "QuotaStatus",
         "DimensionMetadata",
         "MetricMetadata",
+        "DimensionCompatibility",
+        "MetricCompatibility",
     },
 )
 
@@ -76,6 +79,13 @@ class MetricType(proto.Enum):
     TYPE_MILES = 11
     TYPE_METERS = 12
     TYPE_KILOMETERS = 13
+
+
+class Compatibility(proto.Enum):
+    r"""The compatibility types for a single dimension or metric."""
+    COMPATIBILITY_UNSPECIFIED = 0
+    COMPATIBLE = 1
+    INCOMPATIBLE = 2
 
 
 class DateRange(proto.Message):
@@ -993,6 +1003,10 @@ class DimensionMetadata(proto.Message):
         custom_definition (bool):
             True if the dimension is a custom dimension
             for this property.
+        category (str):
+            The display name of the category that this
+            dimension belongs to. Similar dimensions and
+            metrics are categorized together.
     """
 
     api_name = proto.Field(proto.STRING, number=1,)
@@ -1000,6 +1014,7 @@ class DimensionMetadata(proto.Message):
     description = proto.Field(proto.STRING, number=3,)
     deprecated_api_names = proto.RepeatedField(proto.STRING, number=4,)
     custom_definition = proto.Field(proto.BOOL, number=5,)
+    category = proto.Field(proto.STRING, number=7,)
 
 
 class MetricMetadata(proto.Message):
@@ -1030,6 +1045,10 @@ class MetricMetadata(proto.Message):
         custom_definition (bool):
             True if the metric is a custom metric for
             this property.
+        category (str):
+            The display name of the category that this
+            metrics belongs to. Similar dimensions and
+            metrics are categorized together.
     """
 
     api_name = proto.Field(proto.STRING, number=1,)
@@ -1039,6 +1058,51 @@ class MetricMetadata(proto.Message):
     type_ = proto.Field(proto.ENUM, number=5, enum="MetricType",)
     expression = proto.Field(proto.STRING, number=6,)
     custom_definition = proto.Field(proto.BOOL, number=7,)
+    category = proto.Field(proto.STRING, number=10,)
+
+
+class DimensionCompatibility(proto.Message):
+    r"""The compatibility for a single dimension.
+    Attributes:
+        dimension_metadata (google.analytics.data_v1beta.types.DimensionMetadata):
+            The dimension metadata contains the API name
+            for this compatibility information. The
+            dimension metadata also contains other helpful
+            information like the UI name and description.
+        compatibility (google.analytics.data_v1beta.types.Compatibility):
+            The compatibility of this dimension. If the
+            compatibility is COMPATIBLE, this dimension can
+            be successfully added to the report.
+    """
+
+    dimension_metadata = proto.Field(
+        proto.MESSAGE, number=1, optional=True, message="DimensionMetadata",
+    )
+    compatibility = proto.Field(
+        proto.ENUM, number=2, optional=True, enum="Compatibility",
+    )
+
+
+class MetricCompatibility(proto.Message):
+    r"""The compatibility for a single metric.
+    Attributes:
+        metric_metadata (google.analytics.data_v1beta.types.MetricMetadata):
+            The metric metadata contains the API name for
+            this compatibility information. The metric
+            metadata also contains other helpful information
+            like the UI name and description.
+        compatibility (google.analytics.data_v1beta.types.Compatibility):
+            The compatibility of this metric. If the
+            compatibility is COMPATIBLE, this metric can be
+            successfully added to the report.
+    """
+
+    metric_metadata = proto.Field(
+        proto.MESSAGE, number=1, optional=True, message="MetricMetadata",
+    )
+    compatibility = proto.Field(
+        proto.ENUM, number=2, optional=True, enum="Compatibility",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

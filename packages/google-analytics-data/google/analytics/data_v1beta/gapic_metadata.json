@@ -20,6 +20,11 @@
                 "batch_run_reports"
               ]
             },
+            "CheckCompatibility": {
+              "methods": [
+                "check_compatibility"
+              ]
+            },
             "GetMetadata": {
               "methods": [
                 "get_metadata"
@@ -53,6 +58,11 @@
             "BatchRunReports": {
               "methods": [
                 "batch_run_reports"
+              ]
+            },
+            "CheckCompatibility": {
+              "methods": [
+                "check_compatibility"
               ]
             },
             "GetMetadata": {
