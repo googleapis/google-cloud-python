@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [2.26.0](https://www.github.com/googleapis/python-bigquery/compare/v2.25.2...v2.26.0) (2021-09-01)
+
+
+### Features
+
+* set the X-Server-Timeout header when timeout is set ([#927](https://www.github.com/googleapis/python-bigquery/issues/927)) ([ba02f24](https://www.github.com/googleapis/python-bigquery/commit/ba02f248ba9c449c34859579a4011f4bfd2f4a93))
+
+
+### Bug Fixes
+
+* guard imports against unsupported pyarrow versions ([#934](https://www.github.com/googleapis/python-bigquery/issues/934)) ([b289076](https://www.github.com/googleapis/python-bigquery/commit/b28907693bbe889becc1b9c8963f0a7e1ee6c35a))
+
 ### [2.25.2](https://www.github.com/googleapis/python-bigquery/compare/v2.25.1...v2.25.2) (2021-08-31)
 
 
