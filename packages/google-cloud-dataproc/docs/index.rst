@@ -9,8 +9,6 @@ API Reference
 
    dataproc_v1/services
    dataproc_v1/types
-   dataproc_v1beta2/services
-   dataproc_v1beta2/types
 
 Migration Guide
 ---------------
