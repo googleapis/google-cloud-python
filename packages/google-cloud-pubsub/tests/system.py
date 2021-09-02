@@ -446,7 +446,11 @@ def test_subscriber_not_leaking_open_sockets(
         assert len(response.received_messages) == 3
 
     conn_count_end = len(current_process.connections())
-    assert conn_count_end == conn_count_start
+
+    # To avoid flakiness, use <= in the assertion, since on rare occasions additional
+    # sockets are closed, causing the == assertion to fail.
+    # https://github.com/googleapis/python-pubsub/issues/483#issuecomment-910122086
+    assert conn_count_end <= conn_count_start
 
 
 def test_synchronous_pull_no_deadline_error_if_no_messages(
