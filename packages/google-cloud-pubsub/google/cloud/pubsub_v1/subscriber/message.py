@@ -79,10 +79,12 @@ class Message(object):
             responsibility of :class:`BasePolicy` subclasses to do so.
 
         Args:
-            message (~.pubsub_v1.types.PubsubMessage): The message received
-                from Pub/Sub. For performance reasons it should be the the raw
-                protobuf message wrapped by the ``PubsubMessage`` class obtained
-                through the message's ``.pb()`` method.
+            message (`pubsub_v1.types.PubsubMessage._meta._pb`):
+                The message received from Pub/Sub. For performance reasons it should be
+                the raw protobuf message normally wrapped by
+                :class:`~pubsub_v1.types.PubsubMessage`. A raw message can be obtained
+                from a  :class:`~pubsub_v1.types.PubsubMessage` instance through the
+                latter's ``._pb`` attribute.
             ack_id (str): The ack_id received from Pub/Sub.
             delivery_attempt (int): The delivery attempt counter received
                 from Pub/Sub if a DeadLetterPolicy is set on the subscription,
