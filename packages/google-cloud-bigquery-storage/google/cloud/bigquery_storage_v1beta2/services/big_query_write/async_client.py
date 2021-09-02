@@ -331,9 +331,9 @@ class BigQueryWriteAsyncClient:
                     core_exceptions.ResourceExhausted,
                     core_exceptions.ServiceUnavailable,
                 ),
-                deadline=None,
+                deadline=86400.0,
             ),
-            default_timeout=None,
+            default_timeout=86400.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 

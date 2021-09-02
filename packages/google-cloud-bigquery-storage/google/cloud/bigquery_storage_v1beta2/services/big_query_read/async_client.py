@@ -199,7 +199,7 @@ class BigQueryReadAsyncClient:
         number of pre-filtered rows, so some filters can lead to
         lopsided assignments.
 
-        Read sessions automatically expire 24 hours after they
+        Read sessions automatically expire 6 hours after they
         are created and do not require manual clean-up by the
         caller.
 
