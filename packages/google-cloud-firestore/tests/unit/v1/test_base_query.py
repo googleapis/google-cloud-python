@@ -726,6 +726,14 @@ class TestBaseQuery(unittest.TestCase):
         ]
         self.assertEqual(query._normalize_orders(), expected)
 
+    def test__normalize_orders_w_name_orders_w_none_cursor(self):
+        collection = self._make_collection("here")
+        query = (
+            self._make_one(collection).order_by("__name__", "DESCENDING").start_at(None)
+        )
+        expected = [query._make_order("__name__", "DESCENDING")]
+        self.assertEqual(query._normalize_orders(), expected)
+
     def test__normalize_cursor_none(self):
         query = self._make_one(mock.sentinel.parent)
         self.assertIsNone(query._normalize_cursor(None, query._orders))

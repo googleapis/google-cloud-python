@@ -755,7 +755,7 @@ class BaseQuery(object):
 
             document_fields = values
 
-        if len(document_fields) > len(orders):
+        if document_fields and len(document_fields) > len(orders):
             msg = _MISMATCH_CURSOR_W_ORDER_BY.format(document_fields, order_keys)
             raise ValueError(msg)
 
