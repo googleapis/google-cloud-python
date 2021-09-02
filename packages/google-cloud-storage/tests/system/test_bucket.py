@@ -706,7 +706,7 @@ def test_new_bucket_w_ubla(
         bucket_acl.reload()
 
     bucket_acl.loaded = True  # Fake that we somehow loaded the ACL
-    bucket_acl.all().grant_read()
+    bucket_acl.group("cloud-developer-relations@google.com").grant_read()
     with pytest.raises(exceptions.BadRequest):
         bucket_acl.save()
 
@@ -724,7 +724,7 @@ def test_new_bucket_w_ubla(
         blob_acl.reload()
 
     blob_acl.loaded = True  # Fake that we somehow loaded the ACL
-    blob_acl.all().grant_read()
+    blob_acl.group("cloud-developer-relations@google.com").grant_read()
     with pytest.raises(exceptions.BadRequest):
         blob_acl.save()
 
