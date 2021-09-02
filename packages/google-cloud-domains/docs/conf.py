@@ -76,7 +76,7 @@ source_suffix = [".rst", ".md"]
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
 
-# The main toctree document.
+# The root toctree document.
 root_doc = "index"
 
 # General information about the project.
