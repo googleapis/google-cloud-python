@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+### [2.0.2](https://www.github.com/googleapis/google-resumable-media-python/compare/v2.0.1...v2.0.2) (2021-09-02)
+
+
+### Bug Fixes
+
+* temporarily pin google-crc32c to 1.1.2 to mitigate upstream issue affecting OS X Big Sur ([#264](https://www.github.com/googleapis/google-resumable-media-python/issues/264)) ([9fa344f](https://www.github.com/googleapis/google-resumable-media-python/commit/9fa344f42a99db1af27b8ca126a2ea6b3c01d837))
+
 ### [2.0.1](https://www.github.com/googleapis/google-resumable-media-python/compare/v2.0.0...v2.0.1) (2021-08-30)
 
 
