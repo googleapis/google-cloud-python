@@ -50,6 +50,11 @@ def test_init_default_client_info(creds):
         assert expected_client_info in user_agent
 
 
+def test_init_default_closed_state(creds):
+    client = subscriber.Client(credentials=creds)
+    assert not client.closed
+
+
 def test_init_w_custom_transport(creds):
     transport = SubscriberGrpcTransport(credentials=creds)
     client = subscriber.Client(transport=transport)
@@ -185,6 +190,7 @@ def test_close(creds):
         client.close()
 
     patched_close.assert_called()
+    assert client.closed
 
 
 def test_closes_channel_as_context_manager(creds):
@@ -196,6 +202,18 @@ def test_closes_channel_as_context_manager(creds):
             pass
 
     patched_close.assert_called()
+
+
+def test_context_manager_raises_if_closed(creds):
+    client = subscriber.Client(credentials=creds)
+
+    with mock.patch.object(client.api._transport.grpc_channel, "close"):
+        client.close()
+
+    expetect_msg = r"(?i).*closed.*cannot.*context manager.*"
+    with pytest.raises(RuntimeError, match=expetect_msg):
+        with client:
+            pass
 
 
 def test_streaming_pull_gapic_monkeypatch(creds):

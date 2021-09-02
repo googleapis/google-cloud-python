@@ -85,6 +85,7 @@ class Client(object):
         # Instantiate the underlying GAPIC client.
         self._api = subscriber_client.SubscriberClient(**kwargs)
         self._target = self._api._transport._host
+        self._closed = False
 
     @classmethod
     def from_service_account_file(cls, filename, **kwargs):
@@ -119,6 +120,14 @@ class Client(object):
     def api(self):
         """The underlying gapic API client."""
         return self._api
+
+    @property
+    def closed(self) -> bool:
+        """Return whether the client has been closed and cannot be used anymore.
+
+        .. versionadded:: 2.8.0
+        """
+        return self._closed
 
     def subscribe(
         self,
@@ -252,8 +261,11 @@ class Client(object):
         This method is idempotent.
         """
         self.api._transport.grpc_channel.close()
+        self._closed = True
 
     def __enter__(self):
+        if self._closed:
+            raise RuntimeError("Closed subscriber cannot be used as context manager.")
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
