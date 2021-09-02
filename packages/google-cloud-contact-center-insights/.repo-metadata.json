@@ -9,5 +9,6 @@
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-contact-center-insights",
     "distribution_name": "google-cloud-contact-center-insights",
-    "api_id": "contactcenterinsights.googleapis.com"
+    "api_id": "contactcenterinsights.googleapis.com",
+    "codeowner_team": "@googleapis/api-contact-center-insights"
 }
