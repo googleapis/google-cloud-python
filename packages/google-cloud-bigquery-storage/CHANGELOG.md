@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.7.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.6.3...v2.7.0) (2021-09-02)
+
+
+### Features
+
+* **v1beta2:** Align ReadRows timeout with other versions of the API ([#293](https://www.github.com/googleapis/python-bigquery-storage/issues/293)) ([43e36a1](https://www.github.com/googleapis/python-bigquery-storage/commit/43e36a13ece8d876763d88bad0252a1b2421c52a))
+
+
+### Documentation
+
+* **v1beta2:** Align session length with public documentation ([43e36a1](https://www.github.com/googleapis/python-bigquery-storage/commit/43e36a13ece8d876763d88bad0252a1b2421c52a))
+
 ### [2.6.3](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.6.2...v2.6.3) (2021-08-06)
 
 
