@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
 name: Run Django Spanner integration tests against emulator
 jobs:
