@@ -523,7 +523,7 @@ def bucket(client):
 @pytest.fixture
 def object(client, bucket):
     blob = client.bucket(bucket.name).blob(uuid.uuid4().hex)
-    blob.upload_from_string(_STRING_CONTENT, checksum="crc32c")
+    blob.upload_from_string(_STRING_CONTENT)
     blob.reload()
     yield blob
     try:
