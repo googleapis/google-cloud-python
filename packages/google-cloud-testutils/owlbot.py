@@ -36,14 +36,4 @@ s.move(
     ],
 )
 
-# Remove the replacements below once
-# https://github.com/googleapis/synthtool/pull/1188 is merged
-
-# Update googleapis/repo-automation-bots repo to main in .kokoro/*.sh files
-s.replace(
-    ".kokoro/*.sh",
-    "repo-automation-bots/tree/master",
-    "repo-automation-bots/tree/main",
-)
-
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
