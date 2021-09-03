@@ -201,6 +201,22 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def inventory_path(project: str, location: str, instance: str,) -> str:
+        """Returns a fully-qualified inventory string."""
+        return "projects/{project}/locations/{location}/instances/{instance}/inventory".format(
+            project=project, location=location, instance=instance,
+        )
+
+    @staticmethod
+    def parse_inventory_path(path: str) -> Dict[str, str]:
+        """Parses a inventory path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/instances/(?P<instance>.+?)/inventory$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def service_perimeter_path(access_policy: str, service_perimeter: str,) -> str:
         """Returns a fully-qualified service_perimeter string."""
         return "accessPolicies/{access_policy}/servicePerimeters/{service_perimeter}".format(
