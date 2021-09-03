@@ -319,6 +319,16 @@ class DocumentsGrpcAsyncIOTransport(DocumentsTransport):
 
         Creates a new document.
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        -  ``response``:
+           [Document][google.cloud.dialogflow.v2beta1.Document]
+
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
 
@@ -348,10 +358,19 @@ class DocumentsGrpcAsyncIOTransport(DocumentsTransport):
     ]:
         r"""Return a callable for the import documents method over gRPC.
 
-        Create documents by importing data from external
-        sources. Dialogflow supports up to 350 documents in each
-        request. If you try to import more, Dialogflow will
-        return an error.
+        Create documents by importing data from external sources.
+        Dialogflow supports up to 350 documents in each request. If you
+        try to import more, Dialogflow will return an error.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        -  ``response``:
+           [ImportDocumentsResponse][google.cloud.dialogflow.v2beta1.ImportDocumentsResponse]
 
         Returns:
             Callable[[~.ImportDocumentsRequest],
@@ -380,6 +399,16 @@ class DocumentsGrpcAsyncIOTransport(DocumentsTransport):
         r"""Return a callable for the delete document method over gRPC.
 
         Deletes the specified document.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
@@ -411,6 +440,16 @@ class DocumentsGrpcAsyncIOTransport(DocumentsTransport):
         r"""Return a callable for the update document method over gRPC.
 
         Updates the specified document.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        -  ``response``:
+           [Document][google.cloud.dialogflow.v2beta1.Document]
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
@@ -450,6 +489,16 @@ class DocumentsGrpcAsyncIOTransport(DocumentsTransport):
         be replaced with the custom metadata from Google Cloud Storage
         if the ``import_gcs_custom_metadata`` field is set to true in
         the request.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2beta1.KnowledgeOperationMetadata]
+        -  ``response``:
+           [Document][google.cloud.dialogflow.v2beta1.Document]
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.

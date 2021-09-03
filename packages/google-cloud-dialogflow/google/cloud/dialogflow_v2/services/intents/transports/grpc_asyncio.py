@@ -403,6 +403,16 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
 
         Updates/Creates multiple intents in the specified agent.
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [BatchUpdateIntentsResponse][google.cloud.dialogflow.v2.BatchUpdateIntentsResponse]
+
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
@@ -434,6 +444,16 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         r"""Return a callable for the batch delete intents method over gRPC.
 
         Deletes intents in the specified agent.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training

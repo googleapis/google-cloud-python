@@ -678,6 +678,16 @@ class AgentsClient(metaclass=AgentsClientMeta):
     ) -> operation.Operation:
         r"""Trains the specified agent.
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
@@ -775,6 +785,16 @@ class AgentsClient(metaclass=AgentsClientMeta):
     ) -> operation.Operation:
         r"""Exports the specified agent to a ZIP file.
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [ExportAgentResponse][google.cloud.dialogflow.v2beta1.ExportAgentResponse]
+
         Args:
             request (google.cloud.dialogflow_v2beta1.types.ExportAgentRequest):
                 The request object. The request message for
@@ -870,6 +890,19 @@ class AgentsClient(metaclass=AgentsClientMeta):
         and wait for the operation it returns in order to train
         explicitly.
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+
+        The operation only tracks when importing is complete, not when
+        it is done training.
+
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
@@ -954,6 +987,19 @@ class AgentsClient(metaclass=AgentsClientMeta):
         [TrainAgent][google.cloud.dialogflow.v2beta1.Agents.TrainAgent]
         and wait for the operation it returns in order to train
         explicitly.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+
+        The operation only tracks when restoring is complete, not when
+        it is done training.
 
         Note: You should always train an agent prior to sending it
         queries. See the `training

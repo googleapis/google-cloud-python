@@ -833,6 +833,16 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
     ) -> operation.Operation:
         r"""Updates/Creates multiple entity types in the specified agent.
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [BatchUpdateEntityTypesResponse][google.cloud.dialogflow.v2.BatchUpdateEntityTypesResponse]
+
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
@@ -902,6 +912,16 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes entity types in the specified agent.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -1011,6 +1031,16 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates multiple new entities in the specified entity type.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training
@@ -1132,6 +1162,16 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         type. This method does not affect entities in the entity type
         that aren't explicitly specified in the request.
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
@@ -1251,6 +1291,16 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes entities in the specified entity type.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/es/docs/how/long-running-operations>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train an agent prior to sending it
         queries. See the `training

@@ -527,9 +527,14 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
     ) -> operation.Operation:
         r"""Creates a new document.
 
-        Operation <response:
-        [Document][google.cloud.dialogflow.v2.Document], metadata:
-        [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]>
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
 
         Args:
             request (google.cloud.dialogflow_v2.types.CreateDocumentRequest):
@@ -629,9 +634,15 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
     ) -> operation.Operation:
         r"""Deletes the specified document.
 
-        Operation <response:
-        [google.protobuf.Empty][google.protobuf.Empty], metadata:
-        [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]>
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Args:
             request (google.cloud.dialogflow_v2.types.DeleteDocumentRequest):
@@ -726,9 +737,14 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
     ) -> operation.Operation:
         r"""Updates the specified document.
 
-        Operation <response:
-        [Document][google.cloud.dialogflow.v2.Document], metadata:
-        [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]>
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
 
         Args:
             request (google.cloud.dialogflow_v2.types.UpdateDocumentRequest):
@@ -835,12 +851,17 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         document has not changed, there still may be side effects
         because of internal implementation changes.
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
+
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
-
-        Operation <response:
-        [Document][google.cloud.dialogflow.v2.Document], metadata:
-        [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]>
 
         Args:
             request (google.cloud.dialogflow_v2.types.ReloadDocumentRequest):
