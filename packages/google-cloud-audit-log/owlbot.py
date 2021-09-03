@@ -37,10 +37,5 @@ s.move(templated_files / "CODE_OF_CONDUCT.md")
 s.move(templated_files / ".github")
 s.move(templated_files / ".gitignore")
 
-# Remove the replacement below once https://github.com/googleapis/synthtool/pull/1188 is merged
-
-# Update googleapis/repo-automation-bots repo to main in .kokoro/*.sh files
-s.replace(".kokoro/*.sh", "repo-automation-bots/tree/master", "repo-automation-bots/tree/main")
-
 # Add license headers
 python.fix_pb2_headers()
