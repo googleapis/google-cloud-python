@@ -113,9 +113,9 @@ Coding Style
    export GOOGLE_CLOUD_TESTING_BRANCH="main"
 
   By doing this, you are specifying the location of the most up-to-date
-  version of ``python-dataproc-metastore``. The the suggested remote name ``upstream``
-  should point to the official ``googleapis`` checkout and the
-  the branch should be the main branch on that remote (``main``).
+  version of ``python-dataproc-metastore``. The
+  remote name ``upstream`` should point to the official ``googleapis``
+  checkout and the branch should be the default branch on that remote (``main``).
 
 - This repository contains configuration for the
   `pre-commit <https://pre-commit.com/>`__ tool, which automates checking
