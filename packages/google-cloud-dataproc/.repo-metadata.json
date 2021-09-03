@@ -10,5 +10,6 @@
   "repo": "googleapis/python-dataproc",
   "distribution_name": "google-cloud-dataproc",
   "api_id": "dataproc.googleapis.com",
-  "requires_billing": true
+  "requires_billing": true,
+  "codeowner_team": "@googleapis/api-dataproc"
 }
