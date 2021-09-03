@@ -41,8 +41,10 @@ except (ImportError, AttributeError):  # pragma: NO COVER
     tqdm = None
 
 from google.cloud.bigquery import _helpers
+
+from ..helpers import make_connection
+
 from .helpers import _make_client
-from .helpers import _make_connection
 from .helpers import _make_job_resource
 
 
@@ -125,7 +127,7 @@ def test_to_dataframe_bqstorage_preserve_order(query, table_read_options_kwarg):
         },
         "totalRows": "4",
     }
-    connection = _make_connection(get_query_results_resource, job_resource)
+    connection = make_connection(get_query_results_resource, job_resource)
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(job_resource, client)
     bqstorage_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
@@ -207,7 +209,7 @@ def test_to_arrow():
     }
     done_resource = copy.deepcopy(begun_resource)
     done_resource["status"] = {"state": "DONE"}
-    connection = _make_connection(
+    connection = make_connection(
         begun_resource, query_resource, done_resource, tabledata_resource
     )
     client = _make_client(connection=connection)
@@ -252,7 +254,7 @@ def test_to_arrow_max_results_no_progress_bar():
     from google.cloud.bigquery.job import QueryJob as target_class
     from google.cloud.bigquery.schema import SchemaField
 
-    connection = _make_connection({})
+    connection = make_connection({})
     client = _make_client(connection=connection)
     begun_resource = _make_job_resource(job_type="query")
     job = target_class.from_api_repr(begun_resource, client)
@@ -299,7 +301,7 @@ def test_to_arrow_w_tqdm_w_query_plan():
         SchemaField("name", "STRING", mode="REQUIRED"),
         SchemaField("age", "INTEGER", mode="REQUIRED"),
     ]
-    connection = _make_connection({})
+    connection = make_connection({})
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(begun_resource, client)
 
@@ -356,7 +358,7 @@ def test_to_arrow_w_tqdm_w_pending_status():
         SchemaField("name", "STRING", mode="REQUIRED"),
         SchemaField("age", "INTEGER", mode="REQUIRED"),
     ]
-    connection = _make_connection({})
+    connection = make_connection({})
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(begun_resource, client)
 
@@ -408,7 +410,7 @@ def test_to_arrow_w_tqdm_wo_query_plan():
         SchemaField("name", "STRING", mode="REQUIRED"),
         SchemaField("age", "INTEGER", mode="REQUIRED"),
     ]
-    connection = _make_connection({})
+    connection = make_connection({})
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(begun_resource, client)
 
@@ -450,7 +452,7 @@ def _make_job(schema=(), rows=()):
     tabledata_resource = {"rows": [{"f": [{"v": v} for v in row]} for row in rows]}
     done_resource = copy.deepcopy(begun_resource)
     done_resource["status"] = {"state": "DONE"}
-    connection = _make_connection(
+    connection = make_connection(
         begun_resource, query_resource, done_resource, tabledata_resource
     )
     client = _make_client(connection=connection)
@@ -486,7 +488,7 @@ def test_to_dataframe_ddl_query():
         "jobReference": resource["jobReference"],
         "schema": {"fields": []},
     }
-    connection = _make_connection(query_resource)
+    connection = make_connection(query_resource)
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(resource, client)
 
@@ -514,7 +516,7 @@ def test_to_dataframe_bqstorage(table_read_options_kwarg):
             ]
         },
     }
-    connection = _make_connection(query_resource)
+    connection = make_connection(query_resource)
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(resource, client)
     bqstorage_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
@@ -562,7 +564,7 @@ def test_to_dataframe_bqstorage_no_pyarrow_compression():
         "totalRows": "4",
         "schema": {"fields": [{"name": "name", "type": "STRING", "mode": "NULLABLE"}]},
     }
-    connection = _make_connection(query_resource)
+    connection = make_connection(query_resource)
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(resource, client)
     bqstorage_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
@@ -632,7 +634,7 @@ def test_to_dataframe_column_dtypes():
     query_resource["rows"] = rows
     done_resource = copy.deepcopy(begun_resource)
     done_resource["status"] = {"state": "DONE"}
-    connection = _make_connection(
+    connection = make_connection(
         begun_resource, query_resource, done_resource, query_resource
     )
     client = _make_client(connection=connection)
@@ -673,7 +675,7 @@ def test_to_dataframe_column_date_dtypes():
     query_resource["rows"] = rows
     done_resource = copy.deepcopy(begun_resource)
     done_resource["status"] = {"state": "DONE"}
-    connection = _make_connection(
+    connection = make_connection(
         begun_resource, query_resource, done_resource, query_resource
     )
     client = _make_client(connection=connection)
@@ -702,7 +704,7 @@ def test_to_dataframe_with_progress_bar(tqdm_mock):
     }
     done_resource = copy.deepcopy(begun_resource)
     done_resource["status"] = {"state": "DONE"}
-    connection = _make_connection(
+    connection = make_connection(
         begun_resource, query_resource, done_resource, query_resource, query_resource,
     )
     client = _make_client(connection=connection)
@@ -735,7 +737,7 @@ def test_to_dataframe_w_tqdm_pending():
         {"f": [{"v": "Bhettye Rhubble"}, {"v": "27"}]},
     ]
 
-    connection = _make_connection({})
+    connection = make_connection({})
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(begun_resource, client)
 
@@ -791,7 +793,7 @@ def test_to_dataframe_w_tqdm():
         {"f": [{"v": "Bhettye Rhubble"}, {"v": "27"}]},
     ]
 
-    connection = _make_connection({})
+    connection = make_connection({})
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(begun_resource, client)
 
@@ -846,7 +848,7 @@ def test_to_dataframe_w_tqdm_max_results():
     ]
     rows = [{"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]}]
 
-    connection = _make_connection({})
+    connection = make_connection({})
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(begun_resource, client)
 

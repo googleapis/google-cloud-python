@@ -14,9 +14,10 @@
 
 import mock
 
+from ..helpers import make_connection
+
 from .helpers import _Base
 from .helpers import _make_client
-from .helpers import _make_connection
 
 
 class TestExtractJobConfig(_Base):
@@ -265,7 +266,7 @@ class TestExtractJob(_Base):
         del RESOURCE["etag"]
         del RESOURCE["selfLink"]
         del RESOURCE["user_email"]
-        conn = _make_connection(RESOURCE)
+        conn = make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = source_dataset.table(self.SOURCE_TABLE)
@@ -318,9 +319,9 @@ class TestExtractJob(_Base):
             "printHeader": False,
         }
         RESOURCE["configuration"]["extract"] = EXTRACT_CONFIGURATION
-        conn1 = _make_connection()
+        conn1 = make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _make_connection(RESOURCE)
+        conn2 = make_connection(RESOURCE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = source_dataset.table(self.SOURCE_TABLE)
@@ -353,7 +354,7 @@ class TestExtractJob(_Base):
 
     def test_exists_miss_w_bound_client(self):
         PATH = "/projects/%s/jobs/%s" % (self.PROJECT, self.JOB_ID)
-        conn = _make_connection()
+        conn = make_connection()
         client = _make_client(project=self.PROJECT, connection=conn)
         job = self._make_one(
             self.JOB_ID, self.TABLE_REF, [self.DESTINATION_URI], client
@@ -371,9 +372,9 @@ class TestExtractJob(_Base):
 
     def test_exists_hit_w_alternate_client(self):
         PATH = "/projects/%s/jobs/%s" % (self.PROJECT, self.JOB_ID)
-        conn1 = _make_connection()
+        conn1 = make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _make_connection({})
+        conn2 = make_connection({})
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         job = self._make_one(
             self.JOB_ID, self.TABLE_REF, [self.DESTINATION_URI], client1
@@ -395,7 +396,7 @@ class TestExtractJob(_Base):
 
         PATH = "/projects/%s/jobs/%s" % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
-        conn = _make_connection(RESOURCE)
+        conn = make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = source_dataset.table(self.SOURCE_TABLE)
@@ -416,9 +417,9 @@ class TestExtractJob(_Base):
 
         PATH = "/projects/%s/jobs/%s" % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
-        conn1 = _make_connection()
+        conn1 = make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _make_connection(RESOURCE)
+        conn2 = make_connection(RESOURCE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = source_dataset.table(self.SOURCE_TABLE)

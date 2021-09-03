@@ -16,9 +16,10 @@ import copy
 
 import mock
 
+from ..helpers import make_connection
+
 from .helpers import _Base
 from .helpers import _make_client
-from .helpers import _make_connection
 
 
 class TestLoadJob(_Base):
@@ -238,7 +239,7 @@ class TestLoadJob(_Base):
         begun_resource = self._make_resource()
         done_resource = copy.deepcopy(begun_resource)
         done_resource["status"] = {"state": "DONE"}
-        connection = _make_connection(begun_resource, done_resource)
+        connection = make_connection(begun_resource, done_resource)
         client = _make_client(self.PROJECT)
         client._connection = connection
 
@@ -421,7 +422,7 @@ class TestLoadJob(_Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_already_running(self):
-        conn = _make_connection()
+        conn = make_connection()
         client = _make_client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
         job._properties["status"] = {"state": "RUNNING"}
@@ -436,7 +437,7 @@ class TestLoadJob(_Base):
         del RESOURCE["etag"]
         del RESOURCE["selfLink"]
         del RESOURCE["user_email"]
-        conn = _make_connection(RESOURCE)
+        conn = make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
         path = "/projects/{}/jobs".format(self.PROJECT)
@@ -478,7 +479,7 @@ class TestLoadJob(_Base):
         del resource["etag"]
         del resource["selfLink"]
         del resource["user_email"]
-        conn = _make_connection(resource)
+        conn = make_connection(resource)
         client = _make_client(project=self.PROJECT, connection=conn)
         config = LoadJobConfig()
         config.autodetect = True
@@ -559,9 +560,9 @@ class TestLoadJob(_Base):
             "schemaUpdateOptions": [SchemaUpdateOption.ALLOW_FIELD_ADDITION],
         }
         RESOURCE["configuration"]["load"] = LOAD_CONFIGURATION
-        conn1 = _make_connection()
+        conn1 = make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _make_connection(RESOURCE)
+        conn2 = make_connection(RESOURCE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         full_name = SchemaField("full_name", "STRING", mode="REQUIRED")
         age = SchemaField("age", "INTEGER", mode="REQUIRED")
@@ -611,7 +612,7 @@ class TestLoadJob(_Base):
         resource["jobReference"]["projectId"] = "alternative-project"
         resource["jobReference"]["location"] = "US"
         job_ref = job._JobReference(self.JOB_ID, "alternative-project", "US")
-        conn = _make_connection(resource)
+        conn = make_connection(resource)
         client = _make_client(project=self.PROJECT, connection=conn)
         load_job = self._make_one(job_ref, [self.SOURCE1], self.TABLE_REF, client)
         with mock.patch(
@@ -634,7 +635,7 @@ class TestLoadJob(_Base):
 
     def test_exists_miss_w_bound_client(self):
         PATH = "/projects/%s/jobs/%s" % (self.PROJECT, self.JOB_ID)
-        conn = _make_connection()
+        conn = make_connection()
         client = _make_client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
         with mock.patch(
@@ -654,9 +655,9 @@ class TestLoadJob(_Base):
 
     def test_exists_hit_w_alternate_client(self):
         PATH = "/projects/%s/jobs/%s" % (self.PROJECT, self.JOB_ID)
-        conn1 = _make_connection()
+        conn1 = make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _make_connection({})
+        conn2 = make_connection({})
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client1)
         with mock.patch(
@@ -679,7 +680,7 @@ class TestLoadJob(_Base):
         from google.cloud.bigquery import job
 
         job_ref = job._JobReference("my-job-id", "other-project", "US")
-        conn = _make_connection()
+        conn = make_connection()
         client = _make_client(project=self.PROJECT, connection=conn)
         load_job = self._make_one(job_ref, [self.SOURCE1], self.TABLE_REF, client)
         with mock.patch(
@@ -701,7 +702,7 @@ class TestLoadJob(_Base):
     def test_reload_w_bound_client(self):
         PATH = "/projects/%s/jobs/%s" % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
-        conn = _make_connection(RESOURCE)
+        conn = make_connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
         with mock.patch(
@@ -719,9 +720,9 @@ class TestLoadJob(_Base):
     def test_reload_w_alternate_client(self):
         PATH = "/projects/%s/jobs/%s" % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource()
-        conn1 = _make_connection()
+        conn1 = make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _make_connection(RESOURCE)
+        conn2 = make_connection(RESOURCE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client1)
         with mock.patch(
@@ -744,7 +745,7 @@ class TestLoadJob(_Base):
         resource["jobReference"]["projectId"] = "alternative-project"
         resource["jobReference"]["location"] = "US"
         job_ref = job._JobReference(self.JOB_ID, "alternative-project", "US")
-        conn = _make_connection(resource)
+        conn = make_connection(resource)
         client = _make_client(project=self.PROJECT, connection=conn)
         load_job = self._make_one(job_ref, [self.SOURCE1], self.TABLE_REF, client)
         with mock.patch(
@@ -769,7 +770,7 @@ class TestLoadJob(_Base):
         PATH = "/projects/%s/jobs/%s/cancel" % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource(ended=True)
         RESPONSE = {"job": RESOURCE}
-        conn = _make_connection(RESPONSE)
+        conn = make_connection(RESPONSE)
         client = _make_client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
         with mock.patch(
@@ -788,9 +789,9 @@ class TestLoadJob(_Base):
         PATH = "/projects/%s/jobs/%s/cancel" % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._make_resource(ended=True)
         RESPONSE = {"job": RESOURCE}
-        conn1 = _make_connection()
+        conn1 = make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
-        conn2 = _make_connection(RESPONSE)
+        conn2 = make_connection(RESPONSE)
         client2 = _make_client(project=self.PROJECT, connection=conn2)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client1)
         with mock.patch(
@@ -813,7 +814,7 @@ class TestLoadJob(_Base):
         resource["jobReference"]["projectId"] = "alternative-project"
         resource["jobReference"]["location"] = "US"
         job_ref = job._JobReference(self.JOB_ID, "alternative-project", "US")
-        conn = _make_connection({"job": resource})
+        conn = make_connection({"job": resource})
         client = _make_client(project=self.PROJECT, connection=conn)
         load_job = self._make_one(job_ref, [self.SOURCE1], self.TABLE_REF, client)
         with mock.patch(
