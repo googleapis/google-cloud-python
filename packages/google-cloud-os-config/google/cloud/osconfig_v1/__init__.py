@@ -16,8 +16,14 @@
 
 from .services.os_config_service import OsConfigServiceClient
 from .services.os_config_service import OsConfigServiceAsyncClient
+from .services.os_config_zonal_service import OsConfigZonalServiceClient
+from .services.os_config_zonal_service import OsConfigZonalServiceAsyncClient
 
+from .types.inventory import GetInventoryRequest
 from .types.inventory import Inventory
+from .types.inventory import ListInventoriesRequest
+from .types.inventory import ListInventoriesResponse
+from .types.inventory import InventoryView
 from .types.osconfig_common import FixedOrPercent
 from .types.patch_deployments import CreatePatchDeploymentRequest
 from .types.patch_deployments import DeletePatchDeploymentRequest
@@ -51,10 +57,17 @@ from .types.patch_jobs import PatchRollout
 from .types.patch_jobs import WindowsUpdateSettings
 from .types.patch_jobs import YumSettings
 from .types.patch_jobs import ZypperSettings
+from .types.vulnerability import CVSSv3
+from .types.vulnerability import GetVulnerabilityReportRequest
+from .types.vulnerability import ListVulnerabilityReportsRequest
+from .types.vulnerability import ListVulnerabilityReportsResponse
+from .types.vulnerability import VulnerabilityReport
 
 __all__ = (
     "OsConfigServiceAsyncClient",
+    "OsConfigZonalServiceAsyncClient",
     "AptSettings",
+    "CVSSv3",
     "CancelPatchJobRequest",
     "CreatePatchDeploymentRequest",
     "DeletePatchDeploymentRequest",
@@ -63,20 +76,28 @@ __all__ = (
     "ExecutePatchJobRequest",
     "FixedOrPercent",
     "GcsObject",
+    "GetInventoryRequest",
     "GetPatchDeploymentRequest",
     "GetPatchJobRequest",
+    "GetVulnerabilityReportRequest",
     "GooSettings",
     "Instance",
     "Inventory",
+    "InventoryView",
+    "ListInventoriesRequest",
+    "ListInventoriesResponse",
     "ListPatchDeploymentsRequest",
     "ListPatchDeploymentsResponse",
     "ListPatchJobInstanceDetailsRequest",
     "ListPatchJobInstanceDetailsResponse",
     "ListPatchJobsRequest",
     "ListPatchJobsResponse",
+    "ListVulnerabilityReportsRequest",
+    "ListVulnerabilityReportsResponse",
     "MonthlySchedule",
     "OneTimeSchedule",
     "OsConfigServiceClient",
+    "OsConfigZonalServiceClient",
     "PatchConfig",
     "PatchDeployment",
     "PatchInstanceFilter",
@@ -84,6 +105,7 @@ __all__ = (
     "PatchJobInstanceDetails",
     "PatchRollout",
     "RecurringSchedule",
+    "VulnerabilityReport",
     "WeekDayOfMonth",
     "WeeklySchedule",
     "WindowsUpdateSettings",

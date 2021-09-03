@@ -13,7 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .inventory import Inventory
+from .inventory import (
+    GetInventoryRequest,
+    Inventory,
+    ListInventoriesRequest,
+    ListInventoriesResponse,
+    InventoryView,
+)
 from .osconfig_common import FixedOrPercent
 from .patch_deployments import (
     CreatePatchDeploymentRequest,
@@ -51,9 +57,20 @@ from .patch_jobs import (
     YumSettings,
     ZypperSettings,
 )
+from .vulnerability import (
+    CVSSv3,
+    GetVulnerabilityReportRequest,
+    ListVulnerabilityReportsRequest,
+    ListVulnerabilityReportsResponse,
+    VulnerabilityReport,
+)
 
 __all__ = (
+    "GetInventoryRequest",
     "Inventory",
+    "ListInventoriesRequest",
+    "ListInventoriesResponse",
+    "InventoryView",
     "FixedOrPercent",
     "CreatePatchDeploymentRequest",
     "DeletePatchDeploymentRequest",
@@ -87,4 +104,9 @@ __all__ = (
     "WindowsUpdateSettings",
     "YumSettings",
     "ZypperSettings",
+    "CVSSv3",
+    "GetVulnerabilityReportRequest",
+    "ListVulnerabilityReportsRequest",
+    "ListVulnerabilityReportsResponse",
+    "VulnerabilityReport",
 )

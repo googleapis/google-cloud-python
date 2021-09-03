@@ -20,13 +20,41 @@ from google.type import date_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.osconfig.v1", manifest={"Inventory",},
+    package="google.cloud.osconfig.v1",
+    manifest={
+        "InventoryView",
+        "Inventory",
+        "GetInventoryRequest",
+        "ListInventoriesRequest",
+        "ListInventoriesResponse",
+    },
 )
 
 
+class InventoryView(proto.Enum):
+    r"""The view for inventory objects."""
+    INVENTORY_VIEW_UNSPECIFIED = 0
+    BASIC = 1
+    FULL = 2
+
+
 class Inventory(proto.Message):
-    r"""The inventory details of a VM.
+    r"""This API resource represents the available inventory data for a
+    Compute Engine virtual machine (VM) instance at a given point in
+    time.
+
+    You can use this API resource to determine the inventory data of
+    your VM.
+
+    For more information, see `Information provided by OS inventory
+    management <https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected>`__.
+
     Attributes:
+        name (str):
+            Output only. The ``Inventory`` API resource name.
+
+            Format:
+            ``projects/{project_number}/locations/{location}/instances/{instance_id}/inventory``
         os_info (google.cloud.osconfig_v1.types.Inventory.OsInfo):
             Base level operating system information for
             the VM.
@@ -36,6 +64,9 @@ class Inventory(proto.Message):
             item.  The identifier is unique to each distinct
             and addressable inventory item and will change,
             when there is a new package version.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Timestamp of the last reported
+            inventory for the VM.
     """
 
     class OsInfo(proto.Message):
@@ -166,7 +197,7 @@ class Inventory(proto.Message):
             cos_package (google.cloud.osconfig_v1.types.Inventory.VersionedPackage):
                 Details of a COS package.
             windows_application (google.cloud.osconfig_v1.types.Inventory.WindowsApplication):
-                Details of a Windows Application
+                Details of Windows Application.
         """
 
         yum_package = proto.Field(
@@ -240,6 +271,25 @@ class Inventory(proto.Message):
         architecture = proto.Field(proto.STRING, number=2,)
         version = proto.Field(proto.STRING, number=3,)
 
+    class ZypperPatch(proto.Message):
+        r"""Details related to a Zypper Patch.
+        Attributes:
+            patch_name (str):
+                The name of the patch.
+            category (str):
+                The category of the patch.
+            severity (str):
+                The severity specified for this patch
+            summary (str):
+                Any summary information provided about this
+                patch.
+        """
+
+        patch_name = proto.Field(proto.STRING, number=5,)
+        category = proto.Field(proto.STRING, number=2,)
+        severity = proto.Field(proto.STRING, number=3,)
+        summary = proto.Field(proto.STRING, number=4,)
+
     class WindowsUpdatePackage(proto.Message):
         r"""Details related to a Windows Update package. Field data and names
         are taken from Windows Update API IUpdate Interface:
@@ -305,25 +355,6 @@ class Inventory(proto.Message):
             proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
         )
 
-    class ZypperPatch(proto.Message):
-        r"""Details related to a Zypper Patch.
-        Attributes:
-            patch_name (str):
-                The name of the patch.
-            category (str):
-                The category of the patch.
-            severity (str):
-                The severity specified for this patch
-            summary (str):
-                Any summary information provided about this
-                patch.
-        """
-
-        patch_name = proto.Field(proto.STRING, number=5,)
-        category = proto.Field(proto.STRING, number=2,)
-        severity = proto.Field(proto.STRING, number=3,)
-        summary = proto.Field(proto.STRING, number=4,)
-
     class WindowsQuickFixEngineeringPackage(proto.Message):
         r"""Information related to a Quick Fix Engineering package.
         Fields are taken from Windows QuickFixEngineering Interface and
@@ -385,8 +416,91 @@ class Inventory(proto.Message):
         install_date = proto.Field(proto.MESSAGE, number=4, message=date_pb2.Date,)
         help_link = proto.Field(proto.STRING, number=5,)
 
+    name = proto.Field(proto.STRING, number=3,)
     os_info = proto.Field(proto.MESSAGE, number=1, message=OsInfo,)
     items = proto.MapField(proto.STRING, proto.MESSAGE, number=2, message=Item,)
+    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+
+
+class GetInventoryRequest(proto.Message):
+    r"""A request message for getting inventory data for the
+    specified VM.
+
+    Attributes:
+        name (str):
+            Required. API resource name for inventory resource.
+
+            Format:
+            ``projects/{project}/locations/{location}/instances/{instance}/inventory``
+
+            For ``{project}``, either ``project-number`` or
+            ``project-id`` can be provided. For ``{instance}``, either
+            Compute Engine ``instance-id`` or ``instance-name`` can be
+            provided.
+        view (google.cloud.osconfig_v1.types.InventoryView):
+            Inventory view indicating what information
+            should be included in the inventory resource. If
+            unspecified, the default view is BASIC.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    view = proto.Field(proto.ENUM, number=2, enum="InventoryView",)
+
+
+class ListInventoriesRequest(proto.Message):
+    r"""A request message for listing inventory data for all VMs in
+    the specified location.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource name.
+
+            Format:
+            ``projects/{project}/locations/{location}/instances/-``
+
+            For ``{project}``, either ``project-number`` or
+            ``project-id`` can be provided.
+        view (google.cloud.osconfig_v1.types.InventoryView):
+            Inventory view indicating what information
+            should be included in the inventory resource. If
+            unspecified, the default view is BASIC.
+        page_size (int):
+            The maximum number of results to return.
+        page_token (str):
+            A pagination token returned from a previous call to
+            ``ListInventories`` that indicates where this listing should
+            continue from.
+        filter (str):
+            If provided, this field specifies the criteria that must be
+            met by a ``Inventory`` API resource to be included in the
+            response.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    view = proto.Field(proto.ENUM, number=2, enum="InventoryView",)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
+    filter = proto.Field(proto.STRING, number=5,)
+
+
+class ListInventoriesResponse(proto.Message):
+    r"""A response message for listing inventory data for all VMs in
+    a specified location.
+
+    Attributes:
+        inventories (Sequence[google.cloud.osconfig_v1.types.Inventory]):
+            List of inventory objects.
+        next_page_token (str):
+            The pagination token to retrieve the next
+            page of inventory objects.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    inventories = proto.RepeatedField(proto.MESSAGE, number=1, message="Inventory",)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

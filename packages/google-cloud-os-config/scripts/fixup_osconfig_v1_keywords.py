@@ -43,11 +43,15 @@ class osconfigCallTransformer(cst.CSTTransformer):
           'create_patch_deployment': ('parent', 'patch_deployment_id', 'patch_deployment', ),
           'delete_patch_deployment': ('name', ),
           'execute_patch_job': ('parent', 'instance_filter', 'description', 'patch_config', 'duration', 'dry_run', 'display_name', 'rollout', ),
+          'get_inventory': ('name', 'view', ),
           'get_patch_deployment': ('name', ),
           'get_patch_job': ('name', ),
+          'get_vulnerability_report': ('name', ),
+          'list_inventories': ('parent', 'view', 'page_size', 'page_token', 'filter', ),
           'list_patch_deployments': ('parent', 'page_size', 'page_token', ),
           'list_patch_job_instance_details': ('parent', 'page_size', 'page_token', 'filter', ),
           'list_patch_jobs': ('parent', 'page_size', 'page_token', 'filter', ),
+          'list_vulnerability_reports': ('parent', 'page_size', 'page_token', 'filter', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
