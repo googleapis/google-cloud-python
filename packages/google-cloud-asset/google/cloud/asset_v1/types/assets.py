@@ -39,6 +39,8 @@ __protobuf__ = proto.module(
         "ResourceSearchResult",
         "VersionedResource",
         "AttachedResource",
+        "RelatedResources",
+        "RelatedResource",
         "IamPolicySearchResult",
         "IamPolicyAnalysisState",
         "ConditionEvaluation",
@@ -575,6 +577,13 @@ class ResourceSearchResult(proto.Message):
             attributes of the attached resources are exposed in
             ``additional_attributes`` field, so as to allow users to
             search on them.
+        relationships (Sequence[google.cloud.asset_v1.types.ResourceSearchResult.RelationshipsEntry]):
+            A map of related resources of this resource, keyed by the
+            relationship type. A relationship type is in the format of
+            {SourceType}*{ACTION}*\ {DestType}. Example:
+            ``DISK_TO_INSTANCE``, ``DISK_TO_NETWORK``,
+            ``INSTANCE_TO_INSTANCEGROUP``. See `supported relationship
+            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#supported_relationship_types>`__.
         parent_asset_type (str):
             The type of this resource's immediate parent, if there is
             one.
@@ -614,6 +623,9 @@ class ResourceSearchResult(proto.Message):
     )
     attached_resources = proto.RepeatedField(
         proto.MESSAGE, number=20, message="AttachedResource",
+    )
+    relationships = proto.MapField(
+        proto.STRING, proto.MESSAGE, number=21, message="RelatedResources",
     )
     parent_asset_type = proto.Field(proto.STRING, number=103,)
 
@@ -674,6 +686,34 @@ class AttachedResource(proto.Message):
     versioned_resources = proto.RepeatedField(
         proto.MESSAGE, number=3, message="VersionedResource",
     )
+
+
+class RelatedResources(proto.Message):
+    r"""The related resources of the primary resource.
+    Attributes:
+        related_resources (Sequence[google.cloud.asset_v1.types.RelatedResource]):
+            The detailed related resources of the primary
+            resource.
+    """
+
+    related_resources = proto.RepeatedField(
+        proto.MESSAGE, number=1, message="RelatedResource",
+    )
+
+
+class RelatedResource(proto.Message):
+    r"""The detailed related resource.
+    Attributes:
+        asset_type (str):
+            The type of the asset. Example:
+            ``compute.googleapis.com/Instance``
+        full_resource_name (str):
+            The full resource name of the related resource. Example:
+            ``//compute.googleapis.com/projects/my_proj_123/zones/instance/instance123``
+    """
+
+    asset_type = proto.Field(proto.STRING, number=1,)
+    full_resource_name = proto.Field(proto.STRING, number=2,)
 
 
 class IamPolicySearchResult(proto.Message):

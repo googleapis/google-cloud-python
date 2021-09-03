@@ -63,6 +63,8 @@ from .types.assets import IamPolicyAnalysisState
 from .types.assets import IamPolicySearchResult
 from .types.assets import RelatedAsset
 from .types.assets import RelatedAssets
+from .types.assets import RelatedResource
+from .types.assets import RelatedResources
 from .types.assets import RelationshipAttributes
 from .types.assets import Resource
 from .types.assets import ResourceSearchResult
@@ -114,6 +116,8 @@ __all__ = (
     "PubsubDestination",
     "RelatedAsset",
     "RelatedAssets",
+    "RelatedResource",
+    "RelatedResources",
     "RelationshipAttributes",
     "Resource",
     "ResourceSearchResult",
