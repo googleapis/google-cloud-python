@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.8.0](https://www.github.com/googleapis/python-pubsub/compare/v2.7.1...v2.8.0) (2021-09-02)
+
+
+### Features
+
+* closed subscriber as context manager raises ([#488](https://www.github.com/googleapis/python-pubsub/issues/488)) ([a05a3f2](https://www.github.com/googleapis/python-pubsub/commit/a05a3f250cf8567ffe0d2eb3ecc45856a2bcd07c))
+
+
+### Documentation
+
+* clarify the types of Message parameters ([#486](https://www.github.com/googleapis/python-pubsub/issues/486)) ([633e91b](https://www.github.com/googleapis/python-pubsub/commit/633e91bbfc0a8f4f484089acff6812b754f40c75))
+
 ### [2.7.1](https://www.github.com/googleapis/python-pubsub/compare/v2.7.0...v2.7.1) (2021-08-13)
 
 
