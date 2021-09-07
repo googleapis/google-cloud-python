@@ -11,7 +11,7 @@ across the Cloud Resource Hierarchy.
 - `Product Documentation`_
 
 .. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-resource-settings.svg
    :target: https://pypi.org/project/google-cloud-resource-settings/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-resource-settings.svg
@@ -81,4 +81,4 @@ Next Steps
    APIs that we cover.
 
 .. _Resource Settings Product documentation:  https://cloud.google.com/resource-manager/docs/resource-settings/overview
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
