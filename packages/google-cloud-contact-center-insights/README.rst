@@ -9,7 +9,7 @@ Python client for `Contact Center AI Insights`_
 - `Product Documentation`_
 
 .. |beta| image:: https://img.shields.io/badge/support-beta-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-contact-center-insights.svg
    :target: https://pypi.org/project/google-cloud-contact-center-insights/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-contact-center-insights.svg
@@ -79,4 +79,4 @@ Next Steps
    APIs that we cover.
 
 .. _Contact Center AI Insights API Product documentation:  https://cloud.google.com/dialogflow/priv/docs/insights
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
