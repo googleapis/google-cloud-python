@@ -10,7 +10,7 @@ Python Client for BigQuery Connection
 - `Introduction to BigQuery external data sources`_
 
 .. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-connection.svg
    :target: https://pypi.org/project/google-cloud-bigquery-connection/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-connection.svg
@@ -81,4 +81,4 @@ Next Steps
    APIs that we cover.
 
 .. _BigQuery Connection API Product documentation:  https://cloud.google.com/bigquery/docs/reference/bigqueryconnection/rest
-.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
