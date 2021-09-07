@@ -9,7 +9,7 @@ Python Client for Secret Manager API
 - `Product Documentation`_
 
 .. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-secret-manager.svg
    :target: https://pypi.org/project/google-cloud-secret-manager/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-secret-manager.svg
@@ -91,4 +91,4 @@ Next Steps
    APIs that we cover.
 
 .. _Secret Manager API Product documentation:  https://cloud.google.com/secret-manager
-.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
