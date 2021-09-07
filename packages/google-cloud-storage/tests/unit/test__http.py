@@ -232,14 +232,14 @@ class TestConnection(unittest.TestCase):
     def test_duplicate_user_agent(self):
         # Regression test for issue #565
         from google.cloud._http import ClientInfo
-        from google.cloud.storage.client import Client
         from google.cloud.storage.batch import Batch
         from google.cloud.storage import __version__
 
         client_info = ClientInfo(user_agent="test/123")
-        client = Client(project="test-project", client_info=client_info)
-        conn = self._make_one(client, client_info)
+        conn = self._make_one(object(), client_info=client_info)
         expected_user_agent = "test/123 gcloud-python/{} ".format(__version__)
         self.assertEqual(conn._client_info.user_agent, expected_user_agent)
+
+        client = mock.Mock(_connection=conn, spec=["_connection"])
         batch = Batch(client)
         self.assertEqual(batch._client_info.user_agent, expected_user_agent)
