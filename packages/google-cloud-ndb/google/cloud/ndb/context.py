@@ -28,30 +28,36 @@ from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
 
 
-def _generate_context_ids():
-    """Generate a sequence of context ids.
+class _ContextIds:
+    """Iterator which generates a sequence of context ids.
 
     Useful for debugging complicated interactions among concurrent processes and
     threads.
 
-    The return value is a generator for strings that include the machine's "node",
-    acquired via `uuid.getnode()`, the current process id, and a sequence number which
-    increases monotonically starting from one in each process. The combination of all
-    three is sufficient to uniquely identify the context in which a particular piece of
-    code is being run. Each context, as it is created, is assigned the next id in this
-    sequence.  The context id is used by `utils.logging_debug` to grant insight into
-    where a debug logging statement is coming from in a cloud evironment.
-
-    Returns:
-        Generator[str]: Sequence of context ids.
+    Each value in the sequence is a string that include the machine's "node", acquired
+    via `uuid.getnode()`, the current process id, and a sequence number which increases
+    monotonically starting from one in each process. The combination of all three is
+    sufficient to uniquely identify the context in which a particular piece of code is
+    being run. Each context, as it is created, is assigned the next id in this sequence.
+    The context id is used by `utils.logging_debug` to grant insight into where a debug
+    logging statement is coming from in a cloud evironment.
     """
-    prefix = "{}-{}-".format(uuid.getnode(), os.getpid())
-    for sequence_number in itertools.count(1):  # pragma NO BRANCH
-        # pragma is required because this loop never exits (infinite sequence)
-        yield prefix + str(sequence_number)
+
+    def __init__(self):
+        self.prefix = "{}-{}-".format(uuid.getnode(), os.getpid())
+        self.counter = itertools.count(1)
+        self.lock = threading.Lock()
+
+    def __next__(self):
+        with self.lock:
+            sequence_number = next(self.counter)
+
+        return self.prefix + str(sequence_number)
+
+    next = __next__  # Python 2.7
 
 
-_context_ids = _generate_context_ids()
+_context_ids = _ContextIds()
 
 
 try:  # pragma: NO PY2 COVER

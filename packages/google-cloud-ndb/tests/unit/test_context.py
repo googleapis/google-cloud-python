@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import pytest
+import threading
 
 try:
     from unittest import mock
@@ -74,6 +75,38 @@ class TestContext:
         assert isinstance(context.eventloop, _eventloop.EventLoop)
         assert context.batches == {}
         assert context.transaction is None
+
+        node1, pid1, sequence_no1 = context.id.split("-")
+        node2, pid2, sequence_no2 = context_module.Context("client").id.split("-")
+        assert node1 == node2
+        assert pid1 == pid2
+        assert int(sequence_no2) - int(sequence_no1) == 1
+
+    def test_constructuor_concurrent_instantiation(self):
+        """Regression test for #716
+
+        This test non-deterministically tests a potential concurrency issue. Before the
+        bug this is a test for was fixed, it failed most of the time.
+
+        https://github.com/googleapis/python-ndb/issues/715
+        """
+        errors = []
+
+        def make_some():
+            try:
+                for _ in range(10000):
+                    context_module.Context("client")
+            except Exception as error:  # pragma: NO COVER
+                errors.append(error)
+
+        thread1 = threading.Thread(target=make_some)
+        thread2 = threading.Thread(target=make_some)
+        thread1.start()
+        thread2.start()
+        thread1.join()
+        thread2.join()
+
+        assert not errors
 
     def test_constructor_overrides(self):
         context = context_module.Context(
