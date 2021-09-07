@@ -9,7 +9,7 @@ Python Client for Web Security Scanner API
 - `Product Documentation`_
 
 .. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-websecurityscanner.svg
    :target: https://pypi.org/project/google-cloud-websecurityscanner/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-websecurityscanner.svg
