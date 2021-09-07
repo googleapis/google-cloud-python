@@ -11,7 +11,7 @@ within infrastructure and cloud native applications.
 - `Product Documentation`_
 
 .. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-private-ca.svg
    :target: https://pypi.org/project/google-cloud-private-ca/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-private-ca.svg
@@ -81,4 +81,4 @@ Next Steps
    APIs that we cover.
 
 .. _Certificate Authority Service Product documentation:  https://cloud.google.com/certificate-authority-service/docs
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
