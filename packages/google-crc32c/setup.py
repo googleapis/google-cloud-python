@@ -57,22 +57,30 @@ module = setuptools.Extension(
 )
 
 
-if CRC32C_PURE_PYTHON:
+def build_pure_python():
     setuptools.setup(
         packages=["google_crc32c"],
         package_dir={"": "src"},
         ext_modules=[],
     )
+
+
+def build_c_extension():
+    setuptools.setup(
+        packages=["google_crc32c"],
+        package_dir={"": "src"},
+        ext_modules=[module],
+        cmdclass={"build_ext": BuildExtWithDLL},
+    )
+
+
+if CRC32C_PURE_PYTHON:
+    build_pure_python()
 else:
     try:
-        setuptools.setup(
-            packages=["google_crc32c"],
-            package_dir={"": "src"},
-            ext_modules=[module],
-            cmdclass={"build_ext": BuildExtWithDLL},
-        )
+        build_c_extension()
     except SystemExit:
-        if "CRC32C_PURE_PYTHON" not in os.environ:
+        if CRC32C_PURE_PYTHON_EXPLICIT:
             # If build / install fails, it is likely a compilation error with
             # the C extension:  advise user how to enable the pure-Python
             # build.
@@ -81,4 +89,10 @@ else:
                 "To enable building / installing a pure-Python-only version, "
                 "set 'CRC32C_PURE_PYTHON=1' in the environment."
             )
-        raise
+            raise
+
+        logging.info(
+            "Compiling the C Extension for the crc32c library failed. "
+            "Falling back to pure Python build."
+        )
+        build_pure_python()

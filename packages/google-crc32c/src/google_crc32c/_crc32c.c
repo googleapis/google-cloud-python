@@ -6,14 +6,15 @@
 static PyObject *
 _crc32c_extend(PyObject *self, PyObject *args)
 {
+    unsigned long crc_input;
     uint32_t crc;
     const char *chunk;
     Py_ssize_t length;
 
-    if (!PyArg_ParseTuple(args, "ks#", &crc, &chunk, &length))
+    if (!PyArg_ParseTuple(args, "ky#", &crc_input, &chunk, &length))
         return NULL;
 
-    crc = crc32c_extend(crc, (const uint8_t*)chunk, length);
+    crc = crc32c_extend((uint32_t)crc_input, (const uint8_t*)chunk, length);
 
     return PyLong_FromUnsignedLong(crc);
 }
@@ -26,7 +27,7 @@ _crc32c_value(PyObject *self, PyObject *args)
     const char *chunk;
     Py_ssize_t length;
 
-    if (!PyArg_ParseTuple(args, "s#", &chunk, &length))
+    if (!PyArg_ParseTuple(args, "y#", &chunk, &length))
         return NULL;
 
     crc = crc32c_value((const uint8_t*)chunk, length);
