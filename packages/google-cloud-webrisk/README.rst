@@ -9,7 +9,7 @@ Python Client for Web Risk API
 - `Product Documentation`_
 
 .. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-webrisk.svg
    :target: https://pypi.org/project/google-cloud-webrisk/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-webrisk.svg
@@ -89,4 +89,4 @@ Next Steps
    APIs that we cover.
 
 .. _Web Risk API Product documentation:  https://cloud.google.com/web-risk
-.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
