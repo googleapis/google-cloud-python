@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import pathlib
+import re
 
 import pytest
 import test_utils.prefixer
@@ -61,6 +62,17 @@ def dataset_id(bigquery_client):
     bigquery_client.delete_dataset(dataset_id, delete_contents=True, not_found_ok=True)
 
 
+@pytest.fixture()
+def dataset_client(bigquery_client, dataset_id):
+    import google.cloud.bigquery.job
+
+    return bigquery.Client(
+        default_query_job_config=google.cloud.bigquery.job.QueryJobConfig(
+            default_dataset=f"{bigquery_client.project}.{dataset_id}",
+        )
+    )
+
+
 @pytest.fixture
 def table_id(dataset_id):
     return f"{dataset_id}.table_{helpers.temp_suffix()}"
@@ -98,3 +110,8 @@ def scalars_extreme_table(
     job.result()
     yield full_table_id
     bigquery_client.delete_table(full_table_id)
+
+
+@pytest.fixture
+def test_table_name(request, replace_non_anum=re.compile(r"[^a-zA-Z0-9_]").sub):
+    return replace_non_anum("_", request.node.name)

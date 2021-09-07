@@ -1696,3 +1696,26 @@ def test_bq_to_arrow_field_type_override(module_under_test):
         ).type
         == pyarrow.binary()
     )
+
+
+@pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
+@pytest.mark.parametrize(
+    "field_type, metadata",
+    [
+        ("datetime", {b"ARROW:extension:name": b"google:sqlType:datetime"}),
+        (
+            "geography",
+            {
+                b"ARROW:extension:name": b"google:sqlType:geography",
+                b"ARROW:extension:metadata": b'{"encoding": "WKT"}',
+            },
+        ),
+    ],
+)
+def test_bq_to_arrow_field_metadata(module_under_test, field_type, metadata):
+    assert (
+        module_under_test.bq_to_arrow_field(
+            schema.SchemaField("g", field_type)
+        ).metadata
+        == metadata
+    )

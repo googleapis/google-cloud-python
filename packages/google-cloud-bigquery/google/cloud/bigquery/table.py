@@ -1810,10 +1810,14 @@ class RowIterator(HTTPIterator):
             if owns_bqstorage_client:
                 bqstorage_client._transport.grpc_channel.close()
 
-        if record_batches:
+        if record_batches and bqstorage_client is not None:
             return pyarrow.Table.from_batches(record_batches)
         else:
-            # No records, use schema based on BigQuery schema.
+            # No records (not record_batches), use schema based on BigQuery schema
+            # **or**
+            # we used the REST API (bqstorage_client is None),
+            # which doesn't add arrow extension metadata, so we let
+            # `bq_to_arrow_schema` do it.
             arrow_schema = _pandas_helpers.bq_to_arrow_schema(self._schema)
             return pyarrow.Table.from_batches(record_batches, schema=arrow_schema)
 

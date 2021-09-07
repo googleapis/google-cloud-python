@@ -110,3 +110,62 @@ def test_list_rows_nullable_scalars_dtypes(
     timestamp_type = schema.field("timestamp_col").type
     assert timestamp_type.unit == "us"
     assert timestamp_type.tz is not None
+
+
+@pytest.mark.parametrize("do_insert", [True, False])
+def test_arrow_extension_types_same_for_storage_and_REST_APIs_894(
+    dataset_client, test_table_name, do_insert
+):
+    types = dict(
+        astring=("STRING", "'x'"),
+        astring9=("STRING(9)", "'x'"),
+        abytes=("BYTES", "b'x'"),
+        abytes9=("BYTES(9)", "b'x'"),
+        anumeric=("NUMERIC", "42"),
+        anumeric9=("NUMERIC(9)", "42"),
+        anumeric92=("NUMERIC(9,2)", "42"),
+        abignumeric=("BIGNUMERIC", "42e30"),
+        abignumeric49=("BIGNUMERIC(37)", "42e30"),
+        abignumeric492=("BIGNUMERIC(37,2)", "42e30"),
+        abool=("BOOL", "true"),
+        adate=("DATE", "'2021-09-06'"),
+        adatetime=("DATETIME", "'2021-09-06T09:57:26'"),
+        ageography=("GEOGRAPHY", "ST_GEOGFROMTEXT('point(0 0)')"),
+        # Can't get arrow data for interval :(
+        # ainterval=('INTERVAL', "make_interval(1, 2, 3, 4, 5, 6)"),
+        aint64=("INT64", "42"),
+        afloat64=("FLOAT64", "42.0"),
+        astruct=("STRUCT<v int64>", "struct(42)"),
+        atime=("TIME", "'1:2:3'"),
+        atimestamp=("TIMESTAMP", "'2021-09-06T09:57:26'"),
+    )
+    columns = ", ".join(f"{k} {t[0]}" for k, t in types.items())
+    dataset_client.query(f"create table {test_table_name} ({columns})").result()
+    if do_insert:
+        names = list(types)
+        values = ", ".join(types[name][1] for name in names)
+        names = ", ".join(names)
+        dataset_client.query(
+            f"insert into {test_table_name} ({names}) values ({values})"
+        ).result()
+    at = dataset_client.query(f"select * from {test_table_name}").result().to_arrow()
+    storage_api_metadata = {
+        at.field(i).name: at.field(i).metadata for i in range(at.num_columns)
+    }
+    at = (
+        dataset_client.query(f"select * from {test_table_name}")
+        .result()
+        .to_arrow(create_bqstorage_client=False)
+    )
+    rest_api_metadata = {
+        at.field(i).name: at.field(i).metadata for i in range(at.num_columns)
+    }
+
+    assert rest_api_metadata == storage_api_metadata
+    assert rest_api_metadata["adatetime"] == {
+        b"ARROW:extension:name": b"google:sqlType:datetime"
+    }
+    assert rest_api_metadata["ageography"] == {
+        b"ARROW:extension:name": b"google:sqlType:geography",
+        b"ARROW:extension:metadata": b'{"encoding": "WKT"}',
+    }

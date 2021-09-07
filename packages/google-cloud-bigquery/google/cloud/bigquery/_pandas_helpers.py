@@ -173,6 +173,13 @@ if pyarrow:
         pyarrow.decimal128(38, scale=9).id: "NUMERIC",
         pyarrow.decimal256(76, scale=38).id: "BIGNUMERIC",
     }
+    BQ_FIELD_TYPE_TO_ARROW_FIELD_METADATA = {
+        "GEOGRAPHY": {
+            b"ARROW:extension:name": b"google:sqlType:geography",
+            b"ARROW:extension:metadata": b'{"encoding": "WKT"}',
+        },
+        "DATETIME": {b"ARROW:extension:name": b"google:sqlType:datetime"},
+    }
 
 else:  # pragma: NO COVER
     BQ_TO_ARROW_SCALARS = {}  # pragma: NO COVER
@@ -227,7 +234,12 @@ def bq_to_arrow_field(bq_field, array_type=None):
         if array_type is not None:
             arrow_type = array_type  # For GEOGRAPHY, at least initially
         is_nullable = bq_field.mode.upper() == "NULLABLE"
-        return pyarrow.field(bq_field.name, arrow_type, nullable=is_nullable)
+        metadata = BQ_FIELD_TYPE_TO_ARROW_FIELD_METADATA.get(
+            bq_field.field_type.upper() if bq_field.field_type else ""
+        )
+        return pyarrow.field(
+            bq_field.name, arrow_type, nullable=is_nullable, metadata=metadata
+        )
 
     warnings.warn("Unable to determine type for field '{}'.".format(bq_field.name))
     return None
