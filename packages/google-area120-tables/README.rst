@@ -9,7 +9,7 @@ Python Client for Area 120 Tables
 - `Product Documentation`_
 
 .. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#alpha-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-area120-tables.svg
    :target: https://pypi.org/project/google-area120-tables/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-area120-tables.svg
@@ -79,4 +79,4 @@ Next Steps
    APIs that we cover.
 
 .. _Area 120 Tables API Product documentation:   https://area120.google.com
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
