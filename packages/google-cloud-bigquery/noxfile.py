@@ -214,7 +214,15 @@ def prerelease_deps(session):
     session.install(
         "--extra-index-url", "https://pypi.fury.io/arrow-nightlies/", "--pre", "pyarrow"
     )
-    session.install("--pre", "grpcio", "pandas")
+    session.install(
+        "--pre",
+        "google-api-core",
+        "google-cloud-bigquery-storage",
+        "google-cloud-core",
+        "google-resumable-media",
+        "grpcio",
+        "pandas",
+    )
     session.install(
         "freezegun",
         "google-cloud-datacatalog",
