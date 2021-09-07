@@ -11,7 +11,7 @@ machine learning, recommendation system, or Google Cloud.
 - `Product Documentation`_
 
 .. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-retail.svg
    :target: https://pypi.org/project/google-cloud-retail/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-retail.svg
@@ -81,4 +81,4 @@ Next Steps
    APIs that we cover.
 
 .. _Retail API Product documentation:  https://cloud.google.com/retail/docs
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
