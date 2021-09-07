@@ -10,7 +10,7 @@ retrieval of critical metadata about all of your software artifacts.
 - `Product Documentation`_
 
 .. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/grafeas.svg
    :target: https://pypi.org/project/grafeas/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/grafeas.svg
@@ -75,4 +75,4 @@ Next Steps
    APIs that we cover.
 
 .. _Grafeas API Product documentation:  https://grafeas.io/
-.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
