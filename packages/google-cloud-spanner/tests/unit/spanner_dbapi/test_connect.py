@@ -88,31 +88,6 @@ class Test_connect(unittest.TestCase):
         self.assertIs(connection.database, database)
         instance.database.assert_called_once_with(DATABASE, pool=pool)
 
-    def test_w_instance_not_found(self, mock_client):
-        from google.cloud.spanner_dbapi import connect
-
-        client = mock_client.return_value
-        instance = client.instance.return_value
-        instance.exists.return_value = False
-
-        with self.assertRaises(ValueError):
-            connect(INSTANCE, DATABASE)
-
-        instance.exists.assert_called_once_with()
-
-    def test_w_database_not_found(self, mock_client):
-        from google.cloud.spanner_dbapi import connect
-
-        client = mock_client.return_value
-        instance = client.instance.return_value
-        database = instance.database.return_value
-        database.exists.return_value = False
-
-        with self.assertRaises(ValueError):
-            connect(INSTANCE, DATABASE)
-
-        database.exists.assert_called_once_with()
-
     def test_w_credential_file_path(self, mock_client):
         from google.cloud.spanner_dbapi import connect
         from google.cloud.spanner_dbapi import Connection

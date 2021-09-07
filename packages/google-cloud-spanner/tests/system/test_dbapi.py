@@ -350,3 +350,10 @@ def test_DDL_commit(shared_instance, dbapi_database):
 
     cur.execute("DROP TABLE Singers")
     conn.commit()
+
+
+def test_ping(shared_instance, dbapi_database):
+    """Check connection validation method."""
+    conn = Connection(shared_instance, dbapi_database)
+    conn.validate()
+    conn.close()

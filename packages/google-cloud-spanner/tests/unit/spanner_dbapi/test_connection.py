@@ -624,3 +624,80 @@ class TestConnection(unittest.TestCase):
         compare_mock.assert_called_with(checksum, retried_checkum)
 
         run_mock.assert_called_with(statement, retried=True)
+
+    def test_validate_ok(self):
+        def exit_func(self, exc_type, exc_value, traceback):
+            pass
+
+        connection = self._make_connection()
+
+        # mock snapshot context manager
+        snapshot_obj = mock.Mock()
+        snapshot_obj.execute_sql = mock.Mock(return_value=[[1]])
+
+        snapshot_ctx = mock.Mock()
+        snapshot_ctx.__enter__ = mock.Mock(return_value=snapshot_obj)
+        snapshot_ctx.__exit__ = exit_func
+        snapshot_method = mock.Mock(return_value=snapshot_ctx)
+
+        connection.database.snapshot = snapshot_method
+
+        connection.validate()
+        snapshot_obj.execute_sql.assert_called_once_with("SELECT 1")
+
+    def test_validate_fail(self):
+        from google.cloud.spanner_dbapi.exceptions import OperationalError
+
+        def exit_func(self, exc_type, exc_value, traceback):
+            pass
+
+        connection = self._make_connection()
+
+        # mock snapshot context manager
+        snapshot_obj = mock.Mock()
+        snapshot_obj.execute_sql = mock.Mock(return_value=[[3]])
+
+        snapshot_ctx = mock.Mock()
+        snapshot_ctx.__enter__ = mock.Mock(return_value=snapshot_obj)
+        snapshot_ctx.__exit__ = exit_func
+        snapshot_method = mock.Mock(return_value=snapshot_ctx)
+
+        connection.database.snapshot = snapshot_method
+
+        with self.assertRaises(OperationalError):
+            connection.validate()
+
+        snapshot_obj.execute_sql.assert_called_once_with("SELECT 1")
+
+    def test_validate_error(self):
+        from google.cloud.exceptions import NotFound
+
+        def exit_func(self, exc_type, exc_value, traceback):
+            pass
+
+        connection = self._make_connection()
+
+        # mock snapshot context manager
+        snapshot_obj = mock.Mock()
+        snapshot_obj.execute_sql = mock.Mock(side_effect=NotFound("Not found"))
+
+        snapshot_ctx = mock.Mock()
+        snapshot_ctx.__enter__ = mock.Mock(return_value=snapshot_obj)
+        snapshot_ctx.__exit__ = exit_func
+        snapshot_method = mock.Mock(return_value=snapshot_ctx)
+
+        connection.database.snapshot = snapshot_method
+
+        with self.assertRaises(NotFound):
+            connection.validate()
+
+        snapshot_obj.execute_sql.assert_called_once_with("SELECT 1")
+
+    def test_validate_closed(self):
+        from google.cloud.spanner_dbapi.exceptions import InterfaceError
+
+        connection = self._make_connection()
+        connection.close()
+
+        with self.assertRaises(InterfaceError):
+            connection.validate()

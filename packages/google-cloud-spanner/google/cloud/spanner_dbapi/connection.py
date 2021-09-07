@@ -28,7 +28,7 @@ from google.cloud.spanner_dbapi._helpers import parse_insert
 from google.cloud.spanner_dbapi.checksum import _compare_checksums
 from google.cloud.spanner_dbapi.checksum import ResultsChecksum
 from google.cloud.spanner_dbapi.cursor import Cursor
-from google.cloud.spanner_dbapi.exceptions import InterfaceError
+from google.cloud.spanner_dbapi.exceptions import InterfaceError, OperationalError
 from google.cloud.spanner_dbapi.version import DEFAULT_USER_AGENT
 from google.cloud.spanner_dbapi.version import PY_VERSION
 
@@ -349,6 +349,30 @@ class Connection:
             ResultsChecksum() if retried else statement.checksum,
         )
 
+    def validate(self):
+        """
+        Execute a minimal request to check if the connection
+        is valid and the related database is reachable.
+
+        Raise an exception in case if the connection is closed,
+        invalid, target database is not found, or the request result
+        is incorrect.
+
+        :raises: :class:`InterfaceError`: if this connection is closed.
+        :raises: :class:`OperationalError`: if the request result is incorrect.
+        :raises: :class:`google.cloud.exceptions.NotFound`: if the linked instance
+                  or database doesn't exist.
+        """
+        self._raise_if_closed()
+
+        with self.database.snapshot() as snapshot:
+            result = list(snapshot.execute_sql("SELECT 1"))
+            if result != [[1]]:
+                raise OperationalError(
+                    "The checking query (SELECT 1) returned an unexpected result: %s. "
+                    "Expected: [[1]]" % result
+                )
+
     def __enter__(self):
         return self
 
@@ -399,9 +423,6 @@ def connect(
     :rtype: :class:`google.cloud.spanner_dbapi.connection.Connection`
     :returns: Connection object associated with the given Google Cloud Spanner
               resource.
-
-    :raises: :class:`ValueError` in case of given instance/database
-             doesn't exist.
     """
 
     client_info = ClientInfo(
@@ -418,14 +439,7 @@ def connect(
         )
 
     instance = client.instance(instance_id)
-    if not instance.exists():
-        raise ValueError("instance '%s' does not exist." % instance_id)
-
-    database = instance.database(database_id, pool=pool)
-    if not database.exists():
-        raise ValueError("database '%s' does not exist." % database_id)
-
-    conn = Connection(instance, database)
+    conn = Connection(instance, instance.database(database_id, pool=pool))
     if pool is not None:
         conn._own_pool = False
 
