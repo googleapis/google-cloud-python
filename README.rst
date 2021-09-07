@@ -277,6 +277,9 @@ Libraries
    * - `Storage <https://github.com/googleapis/python-storage>`_
      - |ga|
      - |PyPI-google-cloud-storage|
+   * - `Storage Transfer Service <https://github.com/googleapis/python-storage-transfer>`_
+     - |ga|
+     - |PyPI-google-cloud-storage-transfer|
    * - `TPU <https://github.com/googleapis/python-tpu>`_
      - |ga|
      - |PyPI-google-cloud-tpu|
@@ -403,9 +406,6 @@ Libraries
    * - `Spanner Django <https://github.com/googleapis/python-spanner-django>`_
      - |beta|
      - |PyPI-django-google-spanner|
-   * - `Storage Transfer Service <https://github.com/googleapis/python-storage-transfer>`_
-     - |beta|
-     - |PyPI-google-cloud-storage-transfer|
    * - `Transcoder <https://github.com/googleapis/python-video-transcoder>`_
      - |beta|
      - |PyPI-google-cloud-video-transcoder|
@@ -566,6 +566,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-monitoring
 .. |PyPI-google-cloud-storage| image:: https://img.shields.io/pypi/v/google-cloud-storage.svg
      :target: https://pypi.org/project/google-cloud-storage
+.. |PyPI-google-cloud-storage-transfer| image:: https://img.shields.io/pypi/v/google-cloud-storage-transfer.svg
+     :target: https://pypi.org/project/google-cloud-storage-transfer
 .. |PyPI-google-cloud-tpu| image:: https://img.shields.io/pypi/v/google-cloud-tpu.svg
      :target: https://pypi.org/project/google-cloud-tpu
 .. |PyPI-google-cloud-talent| image:: https://img.shields.io/pypi/v/google-cloud-talent.svg
@@ -650,8 +652,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-source-context
 .. |PyPI-django-google-spanner| image:: https://img.shields.io/pypi/v/django-google-spanner.svg
      :target: https://pypi.org/project/django-google-spanner
-.. |PyPI-google-cloud-storage-transfer| image:: https://img.shields.io/pypi/v/google-cloud-storage-transfer.svg
-     :target: https://pypi.org/project/google-cloud-storage-transfer
 .. |PyPI-google-cloud-video-transcoder| image:: https://img.shields.io/pypi/v/google-cloud-video-transcoder.svg
      :target: https://pypi.org/project/google-cloud-video-transcoder
 .. |PyPI-google-analytics-admin| image:: https://img.shields.io/pypi/v/google-analytics-admin.svg
