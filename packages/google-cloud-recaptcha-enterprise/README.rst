@@ -10,7 +10,7 @@ and automated account creation.
 - `Product Documentation`_
 
 .. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-recaptcha-enterprise.svg
    :target: https://pypi.org/project/google-cloud-recaptcha-enterprise/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-recaptcha-enterprise.svg
@@ -80,4 +80,4 @@ Next Steps
    APIs that we cover.
 
 .. _reCAPTCHA Enterprise API Product documentation:  https://cloud.google.com/recaptcha-enterprise/
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
