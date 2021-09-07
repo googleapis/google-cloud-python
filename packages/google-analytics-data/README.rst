@@ -9,7 +9,7 @@ Python Client for Analytics Data
 - `Product Documentation`_
 
 .. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-analytics-data.svg
    :target: https://pypi.org/project/google-analytics-data/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-analytics-data.svg
@@ -79,4 +79,4 @@ Next Steps
    APIs that we cover.
 
 .. _Analytics Data API Product documentation:   https://developers.google.com/analytics/
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
