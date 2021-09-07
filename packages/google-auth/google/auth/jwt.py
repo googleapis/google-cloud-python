@@ -190,7 +190,11 @@ def _verify_iat_and_exp(payload):
     # for clock skew.
     earliest = iat - _helpers.CLOCK_SKEW_SECS
     if now < earliest:
-        raise ValueError("Token used too early, {} < {}".format(now, iat))
+        raise ValueError(
+            "Token used too early, {} < {}. Check that your computer's clock is set correctly.".format(
+                now, iat
+            )
+        )
 
     # Make sure the token wasn't issued in the past.
     exp = payload["exp"]

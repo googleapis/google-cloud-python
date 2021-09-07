@@ -20,7 +20,7 @@ import datetime
 import urllib
 
 
-CLOCK_SKEW_SECS = 10  # 10 seconds
+CLOCK_SKEW_SECS = 60  # 60 seconds
 CLOCK_SKEW = datetime.timedelta(seconds=CLOCK_SKEW_SECS)
 
 
