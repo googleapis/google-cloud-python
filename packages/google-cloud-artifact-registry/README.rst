@@ -13,7 +13,7 @@ CI/CD tooling to set up automated pipelines.
 - `Product Documentation`_
 
 .. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-artifact-registry.svg
    :target: https://pypi.org/project/google-cloud-artifact-registry/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-artifact-registry.svg
@@ -81,4 +81,4 @@ Next Steps
    APIs that we cover.
 
 .. _Artifact Registry Product documentation:  https://cloud.google.com/artifact-registry/docs
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
