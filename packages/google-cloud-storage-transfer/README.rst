@@ -13,7 +13,7 @@ Python Client for Cloud Storage Transfer API
 - `Product Documentation`_
 
 .. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-storage-transfer.svg
    :target: https://pypi.org/project/google-cloud-storage-transfer/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage-transfer.svg
@@ -83,4 +83,4 @@ Next Steps
    APIs that we cover.
 
 .. _Storage Transfer Service Product documentation:  https://cloud.google.com/storage-transfer/docs
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
