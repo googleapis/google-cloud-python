@@ -7,7 +7,7 @@ Python Client for Phishing Protection API
 - `Product Documentation`_
 
 .. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-phishing-protection.svg
    :target: https://pypi.org/project/google-cloud-phishing-protection/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-phishing-protection.svg
@@ -87,4 +87,4 @@ Next Steps
    APIs that we cover.
 
 .. _Phishing Protection API Product documentation:  https://cloud.google.com/phishing-protection
-.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
