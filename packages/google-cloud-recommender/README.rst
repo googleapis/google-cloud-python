@@ -11,7 +11,7 @@ machine learning, and current resource usage.
 - `Product Documentation`_
 
 .. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-recommender.svg
    :target: https://pypi.org/project/google-cloud-recommender/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-recommender.svg
@@ -86,4 +86,4 @@ Next Steps
    APIs that we cover.
 
 .. _Recommender API Product documentation:  https://cloud.google.com/recommender
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
