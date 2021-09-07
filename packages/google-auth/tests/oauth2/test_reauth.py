@@ -270,6 +270,7 @@ def test_refresh_grant_failed():
                 "client_secret",
                 scopes=["foo", "bar"],
                 rapt_token="rapt_token",
+                enable_reauth_refresh=True,
             )
         assert excinfo.match(r"Bad request")
         mock_token_request.assert_called_with(
@@ -298,7 +299,12 @@ def test_refresh_grant_success():
             "google.oauth2.reauth.get_rapt_token", return_value="new_rapt_token"
         ):
             assert reauth.refresh_grant(
-                MOCK_REQUEST, "token_uri", "refresh_token", "client_id", "client_secret"
+                MOCK_REQUEST,
+                "token_uri",
+                "refresh_token",
+                "client_id",
+                "client_secret",
+                enable_reauth_refresh=True,
             ) == (
                 "access_token",
                 "refresh_token",
@@ -306,3 +312,18 @@ def test_refresh_grant_success():
                 {"access_token": "access_token"},
                 "new_rapt_token",
             )
+
+
+def test_refresh_grant_reauth_refresh_disabled():
+    with mock.patch(
+        "google.oauth2._client._token_endpoint_request_no_throw"
+    ) as mock_token_request:
+        mock_token_request.side_effect = [
+            (False, {"error": "invalid_grant", "error_subtype": "rapt_required"}),
+            (True, {"access_token": "access_token"}),
+        ]
+        with pytest.raises(exceptions.RefreshError) as excinfo:
+            reauth.refresh_grant(
+                MOCK_REQUEST, "token_uri", "refresh_token", "client_id", "client_secret"
+            )
+        assert excinfo.match(r"Reauthentication is needed")

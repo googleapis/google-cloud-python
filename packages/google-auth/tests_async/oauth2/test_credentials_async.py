@@ -43,6 +43,7 @@ class TestCredentials:
             token_uri=cls.TOKEN_URI,
             client_id=cls.CLIENT_ID,
             client_secret=cls.CLIENT_SECRET,
+            enable_reauth_refresh=True,
         )
 
     def test_default_state(self):
@@ -97,6 +98,7 @@ class TestCredentials:
             self.CLIENT_SECRET,
             None,
             None,
+            True,
         )
 
         # Check that the credentials have the token and expiry
@@ -169,6 +171,7 @@ class TestCredentials:
             self.CLIENT_SECRET,
             scopes,
             "old_rapt_token",
+            False,
         )
 
         # Check that the credentials have the token and expiry
@@ -231,6 +234,7 @@ class TestCredentials:
             self.CLIENT_SECRET,
             scopes,
             None,
+            False,
         )
 
         # Check that the credentials have the token and expiry
@@ -301,6 +305,7 @@ class TestCredentials:
             self.CLIENT_SECRET,
             scopes,
             None,
+            False,
         )
 
         # Check that the credentials have the token and expiry

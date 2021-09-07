@@ -318,7 +318,12 @@ async def test_refresh_grant_success():
             "google.oauth2._reauth_async.get_rapt_token", return_value="new_rapt_token"
         ):
             assert await _reauth_async.refresh_grant(
-                MOCK_REQUEST, "token_uri", "refresh_token", "client_id", "client_secret"
+                MOCK_REQUEST,
+                "token_uri",
+                "refresh_token",
+                "client_id",
+                "client_secret",
+                enable_reauth_refresh=True,
             ) == (
                 "access_token",
                 "refresh_token",
@@ -326,3 +331,19 @@ async def test_refresh_grant_success():
                 {"access_token": "access_token"},
                 "new_rapt_token",
             )
+
+
+@pytest.mark.asyncio
+async def test_refresh_grant_reauth_refresh_disabled():
+    with mock.patch(
+        "google.oauth2._client_async._token_endpoint_request_no_throw"
+    ) as mock_token_request:
+        mock_token_request.side_effect = [
+            (False, {"error": "invalid_grant", "error_subtype": "rapt_required"}),
+            (True, {"access_token": "access_token"}),
+        ]
+        with pytest.raises(exceptions.RefreshError) as excinfo:
+            assert await _reauth_async.refresh_grant(
+                MOCK_REQUEST, "token_uri", "refresh_token", "client_id", "client_secret"
+            )
+        assert excinfo.match(r"Reauthentication is needed")

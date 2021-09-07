@@ -275,6 +275,7 @@ def refresh_grant(
     client_secret,
     scopes=None,
     rapt_token=None,
+    enable_reauth_refresh=False,
 ):
     """Implements the reauthentication flow.
 
@@ -292,6 +293,9 @@ def refresh_grant(
             token has a wild card scope (e.g.
             'https://www.googleapis.com/auth/any-api').
         rapt_token (Optional(str)): The rapt token for reauth.
+        enable_reauth_refresh (Optional[bool]): Whether reauth refresh flow
+            should be used. The default value is False. This option is for
+            gcloud only, other users should use the default value.
 
     Returns:
         Tuple[str, Optional[str], Optional[datetime], Mapping[str, str], str]: The
@@ -324,6 +328,11 @@ def refresh_grant(
             or response_data.get("error_subtype") == _REAUTH_NEEDED_ERROR_RAPT_REQUIRED
         )
     ):
+        if not enable_reauth_refresh:
+            raise exceptions.RefreshError(
+                "Reauthentication is needed. Please run `gcloud auth login --update-adc` to reauthenticate."
+            )
+
         rapt_token = get_rapt_token(
             request, client_id, client_secret, refresh_token, token_uri, scopes=scopes
         )

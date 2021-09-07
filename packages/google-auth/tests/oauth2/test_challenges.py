@@ -130,3 +130,11 @@ def test_password_challenge(getpass_mock):
         assert challenges.PasswordChallenge().obtain_challenge_input({}) == {
             "credential": " "
         }
+
+
+def test_saml_challenge():
+    challenge = challenges.SamlChallenge()
+    assert challenge.is_locally_eligible
+    assert challenge.name == "SAML"
+    with pytest.raises(exceptions.ReauthSamlChallengeFailError):
+        challenge.obtain_challenge_input(None)

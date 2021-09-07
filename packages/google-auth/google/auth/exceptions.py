@@ -57,3 +57,7 @@ class ReauthFailError(RefreshError):
         super(ReauthFailError, self).__init__(
             "Reauthentication failed. {0}".format(message)
         )
+
+
+class ReauthSamlChallengeFailError(ReauthFailError):
+    """An exception for SAML reauth challenge failures."""

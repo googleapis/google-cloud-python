@@ -75,6 +75,7 @@ class Credentials(oauth2_credentials.Credentials):
             self._client_secret,
             scopes=self._scopes,
             rapt_token=self._rapt_token,
+            enable_reauth_refresh=self._enable_reauth_refresh,
         )
 
         self.token = access_token
