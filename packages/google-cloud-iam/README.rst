@@ -10,7 +10,7 @@ creation of service accounts, which you can use to authenticate to Google and ma
 - `Product Documentation`_
 
 .. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-iam.svg
    :target: https://pypi.org/project/google-cloud-iam/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-iam.svg
@@ -92,4 +92,4 @@ Next Steps
    APIs that we cover.
 
 .. _IAM API Product documentation:  https://cloud.google.com/iam
-.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
