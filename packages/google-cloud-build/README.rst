@@ -9,13 +9,13 @@ Python Client for Cloud Build API (`GA`_)
 - `Product Documentation`_
 
 .. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-build.svg
    :target: https://pypi.org/project/google-cloud-build/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-build.svg
    :target: https://pypi.org/project/google-cloud-build/
 
-.. _GA: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+.. _GA: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. _Cloud Build API: https://cloud.google.com/cloud-build
 .. _Client Library Documentation: https://googleapis.dev/python/cloudbuild/latest
 .. _Product Documentation:  https://cloud.google.com/cloud-build
@@ -90,4 +90,4 @@ Next Steps
    APIs that we cover.
 
 .. _Cloud Build API Product documentation:  https://cloud.google.com/cloud-build
-.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
