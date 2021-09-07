@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.5.0](https://www.github.com/googleapis/python-asset/compare/v3.4.0...v3.5.0) (2021-09-03)
+
+
+### Features
+
+* add inventory_path ([#283](https://www.github.com/googleapis/python-asset/issues/283)) ([fbb47e6](https://www.github.com/googleapis/python-asset/commit/fbb47e6487fe454ca84d2415cf756a87bf66739f))
+* **v1:** Add content type Relationship to support relationship search ([038febe](https://www.github.com/googleapis/python-asset/commit/038febe4c21d6ece23872e01cffc1110c59d6699))
+* **v1:** add relationships ([#281](https://www.github.com/googleapis/python-asset/issues/281)) ([038febe](https://www.github.com/googleapis/python-asset/commit/038febe4c21d6ece23872e01cffc1110c59d6699))
+
 ## [3.4.0](https://www.github.com/googleapis/python-asset/compare/v3.3.0...v3.4.0) (2021-08-17)
 
 
