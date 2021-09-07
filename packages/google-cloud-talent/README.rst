@@ -10,7 +10,7 @@ delete job postings, as well as search jobs based on keywords and filters.
 - `Product Documentation`_
 
 .. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-talent.svg
    :target: https://pypi.org/project/google-cloud-talent/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-talent.svg
@@ -90,4 +90,4 @@ Next Steps
    APIs that we cover.
 
 .. _Cloud Talent Solution API Product documentation:  https://cloud.google.com/jobs
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/main/README.rst
