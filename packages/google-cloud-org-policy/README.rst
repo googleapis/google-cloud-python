@@ -10,7 +10,7 @@ resources across the Cloud Resource Hierarchy.
 - `Product Documentation`_
 
 .. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-org-policy.svg
    :target: https://pypi.org/project/google-cloud-org-policy/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-org-policy.svg
@@ -80,4 +80,4 @@ Next Steps
    APIs that we cover.
 
 .. _Organization Policy Product documentation:  https://cloud.google.com/resource-manager/docs/organization-policy/overview
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
