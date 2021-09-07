@@ -105,7 +105,7 @@ def generate_table_contents(clients: List[CloudClient]) -> List[str]:
 
 
 REPO_METADATA_URL_FORMAT = (
-    "https://raw.githubusercontent.com/{repo_slug}/master/.repo-metadata.json"
+    "https://raw.githubusercontent.com/{repo_slug}/main/.repo-metadata.json"
 )
 
 

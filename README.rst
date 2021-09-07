@@ -10,7 +10,7 @@ Stability levels
 *******************
 
 The `development status classifier`_ on PyPI indicates the current stability
-of a package. 
+of a package.
 
 .. _development status classifier: https://pypi.org/classifiers/
 
@@ -670,14 +670,14 @@ Libraries
 .. API_TABLE_END
 
 .. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 
 .. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
 
 
 .. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#alpha-support
 
 
 Example Applications
@@ -696,12 +696,9 @@ Authentication
 
 
 With ``google-cloud-python`` we try to make authentication as painless as possible.
-Check out the `Authentication section`_ in our documentation to learn more.
-You may also find the `authentication document`_ shared by all the
-``google-cloud-*`` libraries to be helpful.
+Check out the `Getting started with authentication`_ in our documentation to learn more.
 
-.. _Authentication section: https://googleapis.dev/python/google-api-core/latest/auth.html
-.. _authentication document: https://github.com/googleapis/google-cloud-common/tree/master/authentication
+.. _Getting started with authentication: https://cloud.google.com/docs/authentication/getting-started
 
 
 
@@ -711,4 +708,4 @@ License
 
 Apache 2.0 - See `the LICENSE`_ for more information.
 
-.. _the LICENSE: https://github.com/googleapis/google-cloud-python/blob/master/LICENSE
+.. _the LICENSE: https://github.com/googleapis/google-cloud-python/blob/main/LICENSE
