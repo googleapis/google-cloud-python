@@ -10,7 +10,7 @@ projects programmatically.
 - `Product Documentation`_
 
 .. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-billing.svg
    :target: https://pypi.org/project/google-cloud-billing/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-billing.svg
@@ -80,4 +80,4 @@ Next Steps
    APIs that we cover.
 
 .. _Cloud Billing API Product documentation:  https://cloud.google.com/billing
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
