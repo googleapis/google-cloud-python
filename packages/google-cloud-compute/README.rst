@@ -9,7 +9,7 @@ Python Client for Compute Engine
 - `Product Documentation`_
 
 .. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#alpha-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-compute.svg
    :target: https://pypi.org/project/google-cloud-compute/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-compute.svg
@@ -79,4 +79,4 @@ Next Steps
    APIs that we cover.
 
 .. _Compute Engine API Product documentation:  https://cloud.google.com/compute/
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
