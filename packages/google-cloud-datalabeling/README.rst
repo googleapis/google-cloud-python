@@ -8,7 +8,7 @@ Python Client for Data Labeling API (`Beta`_)
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Beta: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _Beta: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/main/README.rst
 .. _Data Labeling API: https://cloud.google.com/data-labeling
 .. _Client Library Documentation: https://googleapis.dev/python/datalabeling/latest
 .. _Product Documentation:  https://cloud.google.com/data-labeling/docs/
@@ -85,4 +85,4 @@ Next Steps
    APIs that we cover.
 
 .. _Data Labeling API Product documentation:  https://cloud.google.com/data-labeling/docs
-.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _repository’s main README: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/main/README.rst
