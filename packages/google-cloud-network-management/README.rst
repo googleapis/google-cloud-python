@@ -9,7 +9,7 @@ Python Client for Network Management API
 - `Product Documentation`_
 
 .. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-network-management.svg
    :target: https://pypi.org/project/google-cloud-network-management/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-network-management.svg
@@ -79,4 +79,4 @@ Next Steps
    APIs that we cover.
 
 .. _Network Management API Product documentation:  https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/reference/networkmanagement/rest
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
