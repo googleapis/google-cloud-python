@@ -13,7 +13,7 @@ on-premises AD domain to the cloud.
 - `Product Documentation`_
 
 .. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-managed-identities.svg
    :target: https://pypi.org/project/google-cloud-managed-identities/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-managed-identities.svg
@@ -83,4 +83,4 @@ Next Steps
    APIs that we cover.
 
 .. _Managed Service for Microsoft Active Directory Product documentation:  https://cloud.google.com/managed-microsoft-ad/
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
