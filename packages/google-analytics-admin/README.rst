@@ -9,7 +9,7 @@ Python Client for Analytics Admin API
 - `Product Documentation`_
 
 .. |alpha| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-analytics-admin.svg
    :target: https://pypi.org/project/google-analytics-admin/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-analytics-admin.svg
