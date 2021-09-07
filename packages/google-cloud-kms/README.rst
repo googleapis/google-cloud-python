@@ -11,7 +11,7 @@ cloud resources and applications.
 - `Product Documentation`_
 
 .. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availabilityt
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availabilityt
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-kms.svg
    :target: https://pypi.org/project/google-cloud-kms/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-kms.svg
