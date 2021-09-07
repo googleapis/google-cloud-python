@@ -8,7 +8,7 @@ This package contains generated Python types for `google.cloud.source_context_v1
 - `Client Library Documentation`_
 
 .. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-source-context.svg
    :target: https://pypi.org/project/google-cloud-source-context/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-source-context.svg
