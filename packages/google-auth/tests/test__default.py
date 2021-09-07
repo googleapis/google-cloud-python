@@ -328,15 +328,18 @@ def test__get_explicit_environ_credentials_no_env():
     assert _default._get_explicit_environ_credentials() == (None, None)
 
 
+@pytest.mark.parametrize("quota_project_id", [None, "project-foo"])
 @LOAD_FILE_PATCH
-def test__get_explicit_environ_credentials(load, monkeypatch):
+def test__get_explicit_environ_credentials(load, quota_project_id, monkeypatch):
     monkeypatch.setenv(environment_vars.CREDENTIALS, "filename")
 
-    credentials, project_id = _default._get_explicit_environ_credentials()
+    credentials, project_id = _default._get_explicit_environ_credentials(
+        quota_project_id=quota_project_id
+    )
 
     assert credentials is MOCK_CREDENTIALS
     assert project_id is mock.sentinel.project_id
-    load.assert_called_with("filename")
+    load.assert_called_with("filename", quota_project_id=quota_project_id)
 
 
 @LOAD_FILE_PATCH
@@ -350,36 +353,40 @@ def test__get_explicit_environ_credentials_no_project_id(load, monkeypatch):
     assert project_id is None
 
 
+@pytest.mark.parametrize("quota_project_id", [None, "project-foo"])
 @mock.patch(
     "google.auth._cloud_sdk.get_application_default_credentials_path", autospec=True
 )
 @mock.patch("google.auth._default._get_gcloud_sdk_credentials", autospec=True)
 def test__get_explicit_environ_credentials_fallback_to_gcloud(
-    get_gcloud_creds, get_adc_path, monkeypatch
+    get_gcloud_creds, get_adc_path, quota_project_id, monkeypatch
 ):
     # Set explicit credentials path to cloud sdk credentials path.
     get_adc_path.return_value = "filename"
     monkeypatch.setenv(environment_vars.CREDENTIALS, "filename")
 
-    _default._get_explicit_environ_credentials()
+    _default._get_explicit_environ_credentials(quota_project_id=quota_project_id)
 
     # Check we fall back to cloud sdk flow since explicit credentials path is
     # cloud sdk credentials path
-    get_gcloud_creds.assert_called_once()
+    get_gcloud_creds.assert_called_with(quota_project_id=quota_project_id)
 
 
+@pytest.mark.parametrize("quota_project_id", [None, "project-foo"])
 @LOAD_FILE_PATCH
 @mock.patch(
     "google.auth._cloud_sdk.get_application_default_credentials_path", autospec=True
 )
-def test__get_gcloud_sdk_credentials(get_adc_path, load):
+def test__get_gcloud_sdk_credentials(get_adc_path, load, quota_project_id):
     get_adc_path.return_value = SERVICE_ACCOUNT_FILE
 
-    credentials, project_id = _default._get_gcloud_sdk_credentials()
+    credentials, project_id = _default._get_gcloud_sdk_credentials(
+        quota_project_id=quota_project_id
+    )
 
     assert credentials is MOCK_CREDENTIALS
     assert project_id is mock.sentinel.project_id
-    load.assert_called_with(SERVICE_ACCOUNT_FILE)
+    load.assert_called_with(SERVICE_ACCOUNT_FILE, quota_project_id=quota_project_id)
 
 
 @mock.patch(
@@ -779,3 +786,22 @@ def test_default_environ_external_credentials_bad_format(monkeypatch, tmpdir):
     assert excinfo.match(
         "Failed to load external account credentials from {}".format(str(filename))
     )
+
+
+@mock.patch(
+    "google.auth._cloud_sdk.get_application_default_credentials_path", autospec=True
+)
+def test_default_warning_without_quota_project_id_for_user_creds(get_adc_path):
+    get_adc_path.return_value = AUTHORIZED_USER_CLOUD_SDK_FILE
+
+    with pytest.warns(UserWarning, match="Cloud SDK"):
+        credentials, project_id = _default.default(quota_project_id=None)
+
+
+@mock.patch(
+    "google.auth._cloud_sdk.get_application_default_credentials_path", autospec=True
+)
+def test_default_no_warning_with_quota_project_id_for_user_creds(get_adc_path):
+    get_adc_path.return_value = AUTHORIZED_USER_CLOUD_SDK_FILE
+
+    credentials, project_id = _default.default(quota_project_id="project-foo")

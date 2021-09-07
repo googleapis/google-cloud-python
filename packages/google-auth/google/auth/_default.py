@@ -172,7 +172,7 @@ def load_credentials_from_file(
         )
 
 
-def _get_gcloud_sdk_credentials():
+def _get_gcloud_sdk_credentials(quota_project_id=None):
     """Gets the credentials and project ID from the Cloud SDK."""
     from google.auth import _cloud_sdk
 
@@ -185,7 +185,9 @@ def _get_gcloud_sdk_credentials():
         _LOGGER.debug("Cloud SDK credentials not found on disk; not using them")
         return None, None
 
-    credentials, project_id = load_credentials_from_file(credentials_filename)
+    credentials, project_id = load_credentials_from_file(
+        credentials_filename, quota_project_id=quota_project_id
+    )
 
     if not project_id:
         project_id = _cloud_sdk.get_project_id()
@@ -193,7 +195,7 @@ def _get_gcloud_sdk_credentials():
     return credentials, project_id
 
 
-def _get_explicit_environ_credentials():
+def _get_explicit_environ_credentials(quota_project_id=None):
     """Gets credentials from the GOOGLE_APPLICATION_CREDENTIALS environment
     variable."""
     from google.auth import _cloud_sdk
@@ -213,11 +215,11 @@ def _get_explicit_environ_credentials():
             "Explicit credentials path %s is the same as Cloud SDK credentials path, fall back to Cloud SDK credentials flow...",
             explicit_file,
         )
-        return _get_gcloud_sdk_credentials()
+        return _get_gcloud_sdk_credentials(quota_project_id=quota_project_id)
 
     if explicit_file is not None:
         credentials, project_id = load_credentials_from_file(
-            os.environ[environment_vars.CREDENTIALS]
+            os.environ[environment_vars.CREDENTIALS], quota_project_id=quota_project_id
         )
 
         return credentials, project_id
@@ -447,8 +449,8 @@ def default(scopes=None, request=None, quota_project_id=None, default_scopes=Non
         # with_scopes_if_required() below will ensure scopes/default scopes are
         # safely set on the returned credentials since requires_scopes will
         # guard against setting scopes on user credentials.
-        _get_explicit_environ_credentials,
-        _get_gcloud_sdk_credentials,
+        lambda: _get_explicit_environ_credentials(quota_project_id=quota_project_id),
+        lambda: _get_gcloud_sdk_credentials(quota_project_id=quota_project_id),
         _get_gae_credentials,
         lambda: _get_gce_credentials(request),
     )
