@@ -9,7 +9,7 @@ Python Client for Datastream
 - `Product Documentation`_
 
 .. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-datastream.svg
    :target: https://pypi.org/project/google-cloud-datastream/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datastream.svg
@@ -79,4 +79,4 @@ Next Steps
    APIs that we cover.
 
 .. _Datastream Product documentation:  https://cloud.google.com/datastream/docs
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
