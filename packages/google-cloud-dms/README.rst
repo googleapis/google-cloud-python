@@ -9,7 +9,7 @@ Python Client for Cloud Database Migration Service
 - `Product Documentation`_
 
 .. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-dms.svg
    :target: https://pypi.org/project/google-cloud-dms/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dms.svg
@@ -79,4 +79,4 @@ Next Steps
    APIs that we cover.
 
 .. _Cloud Database Migration Service Product documentation:  https://cloud.google.com/database-migration/
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
