@@ -11,7 +11,7 @@ Kubernetes technology.
 - `Product Documentation`_
 
 .. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-container.svg
    :target: https://pypi.org/project/google-cloud-container/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-container.svg
