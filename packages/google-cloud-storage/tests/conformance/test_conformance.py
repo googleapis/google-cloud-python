@@ -24,6 +24,7 @@ import pytest
 
 from google.cloud import storage
 from google.auth.credentials import AnonymousCredentials
+from google.cloud.storage.hmac_key import HMACKeyMetadata
 
 from . import _read_local_json
 
@@ -42,6 +43,9 @@ _CONF_TEST_SERVICE_ACCOUNT_EMAIL = (
 
 _STRING_CONTENT = "hello world"
 _BYTE_CONTENT = b"12345678"
+_BUCKET_ACL_PATCH_MSG = "BucketACL patch operations call storage.buckets.patch, but are never idempotent; Preconditions are irrelevant."
+_DEFAULT_OBJECT_ACL_PATCH_MSG = "DefaultObjectACL patch operations call storage.buckets.patch, but are never idempotent; Preconditions are irrelevant."
+_OBJECT_ACL_PATCH_MSG = "ObjectACL patch operations call storage.objects.patch, but are never idempotent; Preconditions are irrelevant."
 
 
 ########################################################################################################################################
@@ -171,6 +175,10 @@ def bucket_lock_retention_policy(client, _preconditions, **resources):
     bucket.lock_retention_policy()
 
 
+def client_get_service_account_email(client, _preconditions, **_):
+    client.get_service_account_email()
+
+
 def notification_create(client, _preconditions, **resources):
     bucket = client.get_bucket(resources.get("bucket").name)
     notification = bucket.notification()
@@ -217,8 +225,44 @@ def client_list_hmac_keys(client, _preconditions, **_):
         pass
 
 
-def client_get_service_account_email(client, _preconditions, **_):
-    client.get_service_account_email()
+def client_get_hmac_key_metadata(client, _preconditions, **resources):
+    access_id = resources.get("hmac_key").access_id
+    client.get_hmac_key_metadata(access_id=access_id)
+
+
+def hmac_key_exists(client, _preconditions, **resources):
+    access_id = resources.get("hmac_key").access_id
+    hmac_key = HMACKeyMetadata(client, access_id=access_id)
+    hmac_key.exists()
+
+
+def hmac_key_reload(client, _preconditions, **resources):
+    access_id = resources.get("hmac_key").access_id
+    hmac_key = HMACKeyMetadata(client, access_id=access_id)
+    hmac_key.reload()
+
+
+def hmac_key_delete(client, _preconditions, **resources):
+    access_id = resources.get("hmac_key").access_id
+    hmac_key = HMACKeyMetadata(client, access_id=access_id)
+    hmac_key.state = "INACTIVE"
+    hmac_key.update()
+    hmac_key.delete()
+
+
+def client_create_hmac_key(client, _preconditions, **_):
+    client.create_hmac_key(service_account_email=_CONF_TEST_SERVICE_ACCOUNT_EMAIL)
+
+
+def hmac_key_update(client, _preconditions, **resources):
+    access_id = resources.get("hmac_key").access_id
+    etag = resources.get("hmac_key").etag
+    hmac_key = HMACKeyMetadata(client, access_id=access_id)
+    if _preconditions:
+        pytest.skip("Etag is not yet supported")
+        hmac_key.etag = etag
+    hmac_key.state = "INACTIVE"
+    hmac_key.update()
 
 
 def bucket_patch(client, _preconditions, **resources):
@@ -423,6 +467,131 @@ def blob_create_resumable_upload_session(client, _preconditions, **resources):
         blob.create_resumable_upload_session()
 
 
+def blob_make_private(client, _preconditions, **resources):
+    if _preconditions:
+        pytest.skip(_OBJECT_ACL_PATCH_MSG)
+    bucket = resources.get("bucket")
+    object = resources.get("object")
+    blob = client.bucket(bucket.name).blob(object.name)
+    blob.make_private()
+
+
+def blob_make_public(client, _preconditions, **resources):
+    if _preconditions:
+        pytest.skip(_OBJECT_ACL_PATCH_MSG)
+    bucket = resources.get("bucket")
+    object = resources.get("object")
+    blob = client.bucket(bucket.name).blob(object.name)
+    blob.make_public()
+
+
+def bucket_make_private(client, _preconditions, **resources):
+    if _preconditions:
+        pytest.skip(_BUCKET_ACL_PATCH_MSG)
+    bucket = client.bucket(resources.get("bucket").name)
+    bucket.make_private()
+
+
+def bucket_make_public(client, _preconditions, **resources):
+    if _preconditions:
+        pytest.skip(_BUCKET_ACL_PATCH_MSG)
+    bucket = client.bucket(resources.get("bucket").name)
+    bucket.make_public()
+
+
+def bucket_acl_reload(client, _preconditions, **resources):
+    bucket = client.bucket(resources.get("bucket").name)
+    bucket.acl.reload()
+
+
+def bucket_acl_save(client, _preconditions, **resources):
+    if _preconditions:
+        pytest.skip(_BUCKET_ACL_PATCH_MSG)
+    bucket = client.bucket(resources.get("bucket").name)
+    bucket.acl.reload()
+    bucket.acl.user(_CONF_TEST_SERVICE_ACCOUNT_EMAIL).grant_owner()
+    bucket.acl.save()
+
+
+def bucket_acl_save_predefined(client, _preconditions, **resources):
+    if _preconditions:
+        pytest.skip(_BUCKET_ACL_PATCH_MSG)
+    bucket = client.bucket(resources.get("bucket").name)
+    bucket.acl.save_predefined("bucketOwnerFullControl")
+
+
+def bucket_acl_clear(client, _preconditions, **resources):
+    if _preconditions:
+        pytest.skip(_BUCKET_ACL_PATCH_MSG)
+    bucket = client.bucket(resources.get("bucket").name)
+    bucket.acl.clear()
+
+
+def default_object_acl_reload(client, _preconditions, **resources):
+    bucket = client.bucket(resources.get("bucket").name)
+    print(bucket.default_object_acl)
+    bucket.default_object_acl.reload()
+
+
+def default_object_acl_save(client, _preconditions, **resources):
+    if _preconditions:
+        pytest.skip(_DEFAULT_OBJECT_ACL_PATCH_MSG)
+    bucket = client.bucket(resources.get("bucket").name)
+    bucket.default_object_acl.reload()
+    bucket.default_object_acl.user(_CONF_TEST_SERVICE_ACCOUNT_EMAIL).grant_owner()
+    bucket.default_object_acl.save()
+
+
+def default_object_acl_save_predefined(client, _preconditions, **resources):
+    if _preconditions:
+        pytest.skip(_DEFAULT_OBJECT_ACL_PATCH_MSG)
+    bucket = client.bucket(resources.get("bucket").name)
+    bucket.default_object_acl.save_predefined("bucketOwnerFullControl")
+
+
+def default_object_acl_clear(client, _preconditions, **resources):
+    if _preconditions:
+        pytest.skip(_DEFAULT_OBJECT_ACL_PATCH_MSG)
+    bucket = client.bucket(resources.get("bucket").name)
+    bucket.default_object_acl.clear()
+
+
+def object_acl_reload(client, _preconditions, **resources):
+    bucket = resources.get("bucket")
+    object = resources.get("object")
+    blob = client.bucket(bucket.name).blob(object.name)
+    blob.acl.reload()
+
+
+def object_acl_save(client, _preconditions, **resources):
+    if _preconditions:
+        pytest.skip(_OBJECT_ACL_PATCH_MSG)
+    bucket = resources.get("bucket")
+    object = resources.get("object")
+    blob = client.bucket(bucket.name).blob(object.name)
+    blob.acl.reload()
+    blob.acl.user(_CONF_TEST_SERVICE_ACCOUNT_EMAIL).grant_owner()
+    blob.acl.save()
+
+
+def object_acl_save_predefined(client, _preconditions, **resources):
+    if _preconditions:
+        pytest.skip(_OBJECT_ACL_PATCH_MSG)
+    bucket = resources.get("bucket")
+    object = resources.get("object")
+    blob = client.bucket(bucket.name).blob(object.name)
+    blob.acl.save_predefined("bucketOwnerFullControl")
+
+
+def object_acl_clear(client, _preconditions, **resources):
+    if _preconditions:
+        pytest.skip(_OBJECT_ACL_PATCH_MSG)
+    bucket = resources.get("bucket")
+    object = resources.get("object")
+    blob = client.bucket(bucket.name).blob(object.name)
+    blob.acl.clear()
+
+
 ########################################################################################################################################
 ### Method Invocation Mapping ##########################################################################################################
 ########################################################################################################################################
@@ -434,7 +603,8 @@ def blob_create_resumable_upload_session(client, _preconditions, **resources):
 # read or just a metadata get).
 
 method_mapping = {
-    "storage.buckets.delete": [bucket_delete],  # S1 start
+    "storage.bucket_acl.list": [bucket_acl_reload],  # S1 start
+    "storage.buckets.delete": [bucket_delete],
     "storage.buckets.get": [
         client_get_bucket,
         bucket_reload,
@@ -446,6 +616,14 @@ method_mapping = {
     "storage.buckets.list": [client_list_buckets],
     "storage.buckets.lockRetentionPolicy": [bucket_lock_retention_policy],
     "storage.buckets.testIamPermissions": [bucket_test_iam_permissions],
+    "storage.default_object_acl.list": [default_object_acl_reload],
+    "storage.hmacKey.delete": [hmac_key_delete],
+    "storage.hmacKey.get": [
+        client_get_hmac_key_metadata,
+        hmac_key_exists,
+        hmac_key_reload,
+    ],
+    "storage.hmacKey.list": [client_list_hmac_keys],
     "storage.notifications.delete": [notification_delete],
     "storage.notifications.get": [
         bucket_get_notification,
@@ -453,6 +631,7 @@ method_mapping = {
         notification_reload,
     ],
     "storage.notifications.list": [bucket_list_notifications],
+    "storage.object_acl.list": [object_acl_reload],
     "storage.objects.get": [
         bucket_get_blob,
         blob_exists,
@@ -462,14 +641,22 @@ method_mapping = {
         blob_download_as_text,
         blobreader_read,
     ],
-    "storage.objects.list": [
-        client_list_blobs,
-        bucket_list_blobs,
-        bucket_delete,
-    ],  # S1 end
-    "storage.buckets.patch": [bucket_patch],  # S2/S3 start
+    "storage.objects.list": [client_list_blobs, bucket_list_blobs, bucket_delete],
+    "storage.serviceaccount.get": [client_get_service_account_email],  # S1 end
+    "storage.buckets.patch": [
+        bucket_patch,
+        bucket_make_public,
+        bucket_make_private,
+        bucket_acl_save,
+        bucket_acl_save_predefined,
+        bucket_acl_clear,
+        default_object_acl_save,
+        default_object_acl_save_predefined,
+        default_object_acl_clear,
+    ],  # S2/S3 start
     "storage.buckets.setIamPolicy": [bucket_set_iam_policy],
     "storage.buckets.update": [bucket_update],
+    "storage.hmacKey.update": [hmac_key_update],
     "storage.objects.compose": [blob_compose],
     "storage.objects.copy": [bucket_copy_blob, bucket_rename_blob],
     "storage.objects.delete": [
@@ -485,9 +672,18 @@ method_mapping = {
         blobwriter_write,
         blob_create_resumable_upload_session,
     ],
-    "storage.objects.patch": [blob_patch],
+    "storage.objects.patch": [
+        blob_patch,
+        object_acl_save,
+        object_acl_save_predefined,
+        object_acl_clear,
+        blob_make_private,
+        blob_make_public,
+    ],
     "storage.objects.rewrite": [blob_rewrite, blob_update_storage_class],
     "storage.objects.update": [blob_update],  # S2/S3 end
+    "storage.hmacKey.create": [client_create_hmac_key],  # S4 start
+    "storage.notifications.insert": [notification_create],
 }
 
 
@@ -715,7 +911,7 @@ for scenario in _CONFORMANCE_TESTS:
     id = scenario["id"]
     methods = scenario["methods"]
     cases = scenario["cases"]
-    for c in cases:
+    for i, c in enumerate(cases):
         for m in methods:
             method_name = m["name"]
             if method_name not in method_mapping:
@@ -723,7 +919,9 @@ for scenario in _CONFORMANCE_TESTS:
                 continue
 
             for lib_func in method_mapping[method_name]:
-                test_name = "test-S{}-{}-{}".format(id, method_name, lib_func.__name__)
+                test_name = "test-S{}-{}-{}-{}".format(
+                    id, method_name, lib_func.__name__, i
+                )
                 globals()[test_name] = functools.partial(
                     run_test_case, id, m, c, lib_func, host
                 )

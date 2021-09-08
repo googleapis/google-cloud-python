@@ -6,6 +6,12 @@
         "cases": [
           {
             "instructions": ["return-503", "return-503"]
+          },
+          {
+            "instructions": ["return-reset-connection", "return-reset-connection"]
+          },
+          {
+            "instructions": ["return-reset-connection", "return-503"]
           }
         ],
         "methods": [
@@ -41,6 +47,12 @@
         "cases": [
           {
             "instructions": ["return-503", "return-503"]
+          },
+          {
+            "instructions": ["return-reset-connection", "return-reset-connection"]
+          },
+          {
+            "instructions": ["return-reset-connection", "return-503"]
           }
         ],
         "methods": [
@@ -65,6 +77,9 @@
         "cases": [
           {
             "instructions": ["return-503"]
+          },
+          {
+            "instructions": ["return-reset-connection"]
           }
         ],
         "methods": [
@@ -85,13 +100,31 @@
       },
       {
         "id": 4,
-        "description": "non idempotent",
+        "description": "non_idempotent",
         "cases": [
           {
-            "instructions": []
+            "instructions": ["return-503"]
+          },
+          {
+            "instructions": ["return-reset-connection"]
           }
         ],
-        "methods": [],
+        "methods": [
+          {"name": "storage.bucket_acl.delete",             "resources": ["BUCKET"]},
+          {"name": "storage.bucket_acl.insert",             "resources": ["BUCKET"]},
+          {"name": "storage.bucket_acl.patch",              "resources": ["BUCKET"]},
+          {"name": "storage.bucket_acl.update",             "resources": ["BUCKET"]},
+          {"name": "storage.default_object_acl.delete",     "resources": ["BUCKET"]},
+          {"name": "storage.default_object_acl.insert",     "resources": ["BUCKET"]},
+          {"name": "storage.default_object_acl.patch",      "resources": ["BUCKET"]},
+          {"name": "storage.default_object_acl.update",     "resources": ["BUCKET"]},
+          {"name": "storage.hmacKey.create",                "resources": []},
+          {"name": "storage.notifications.insert",          "resources": ["BUCKET"]},
+          {"name": "storage.object_acl.delete",             "resources": ["BUCKET", "OBJECT"]},
+          {"name": "storage.object_acl.insert",             "resources": ["BUCKET", "OBJECT"]},
+          {"name": "storage.object_acl.patch",              "resources": ["BUCKET", "OBJECT"]},
+          {"name": "storage.object_acl.update",             "resources": ["BUCKET", "OBJECT"]}
+        ],
         "preconditionProvided": false,
         "expectSuccess": false
       }
