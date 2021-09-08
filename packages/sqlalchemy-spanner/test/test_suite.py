@@ -18,6 +18,7 @@ from datetime import timezone
 import decimal
 import operator
 import os
+import pkg_resources
 import pytest
 from unittest import mock
 
@@ -1525,3 +1526,23 @@ class InterleavedTablesTest(fixtures.TestBase):
         with mock.patch("google.cloud.spanner_dbapi.cursor.Cursor.execute") as execute:
             client.create(self._engine)
             execute.assert_called_once_with(EXP_QUERY, [])
+
+
+class UserAgentTest(fixtures.TestBase):
+    """Check that SQLAlchemy dialect uses correct user agent."""
+
+    def setUp(self):
+        self._engine = create_engine(
+            "spanner:///projects/appdev-soda-spanner-staging/instances/"
+            "sqlalchemy-dialect-test/databases/compliance-test"
+        )
+        self._metadata = MetaData(bind=self._engine)
+
+    def test_user_agent(self):
+        dist = pkg_resources.get_distribution("sqlalchemy-spanner")
+
+        with self._engine.connect() as connection:
+            assert (
+                connection.connection.instance._client._client_info.user_agent
+                == dist.project_name + "/" + dist.version
+            )
