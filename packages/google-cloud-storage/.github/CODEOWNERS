@@ -5,6 +5,6 @@
 # https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-syntax
 
 
-# The storage-dpe team is the default owner for anything not
+# The cloud-storage-dpe team is the default owner for anything not
 # explicitly taken by someone else.
-*                               @googleapis/storage-dpe @googleapis/yoshi-python
+*                               @googleapis/cloud-storage-dpe @googleapis/yoshi-python
