@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+### [1.42.1](https://www.github.com/googleapis/python-storage/compare/v1.42.0...v1.42.1) (2021-09-07)
+
+
+### Bug Fixes
+
+* do not append duplicates to user agent string ([#570](https://www.github.com/googleapis/python-storage/issues/570)) ([57cf3a1](https://www.github.com/googleapis/python-storage/commit/57cf3a1f27292939ed097ef8afa3f4392c4b83e0))
+
+
+### Documentation
+
+* pass explicit 'client' in '{Blob.Bucket}.from_string' examples ([#545](https://www.github.com/googleapis/python-storage/issues/545)) ([6eff22d](https://www.github.com/googleapis/python-storage/commit/6eff22db0e8c8689208ee52fa815f3ea00675094))
+
 ## [1.42.0](https://www.github.com/googleapis/python-storage/compare/v1.41.1...v1.42.0) (2021-08-05)
 
 
