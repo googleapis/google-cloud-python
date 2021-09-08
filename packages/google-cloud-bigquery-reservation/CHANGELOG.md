@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.2.2...v1.3.0) (2021-09-02)
+
+
+### Features
+
+* Deprecated SearchAssignments in favor of SearchAllAssignments ([#157](https://www.github.com/googleapis/python-bigquery-reservation/issues/157)) ([dacdf5a](https://www.github.com/googleapis/python-bigquery-reservation/commit/dacdf5ac37a802f0d00a30468720a3ce1f294985))
+
+
+### Documentation
+
+* samples for managing reservations ([#144](https://www.github.com/googleapis/python-bigquery-reservation/issues/144)) ([27b2564](https://www.github.com/googleapis/python-bigquery-reservation/commit/27b256440b2565369c900cd4728e38676f82fcfe))
+
 ### [1.2.2](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.2.1...v1.2.2) (2021-07-27)
 
 
