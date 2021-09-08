@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://www.github.com/googleapis/python-os-config/compare/v1.4.0...v1.5.0) (2021-09-07)
+
+
+### Features
+
+* add OSConfigZonalService API ([#116](https://www.github.com/googleapis/python-os-config/issues/116)) ([72bb90f](https://www.github.com/googleapis/python-os-config/commit/72bb90f67be410d981854f9a5f34fd31b1934693))
+
 ## [1.4.0](https://www.github.com/googleapis/python-os-config/compare/v1.3.2...v1.4.0) (2021-08-30)
 
 
