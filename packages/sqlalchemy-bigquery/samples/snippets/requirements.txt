@@ -9,7 +9,7 @@ click-plugins==1.1.1
 cligj==0.7.2
 contextvars==2.4
 dataclasses==0.6; python_version < '3.7'
-Deprecated==1.2.12
+Deprecated==1.2.13
 Fiona==1.8.20
 future==0.18.2
 GeoAlchemy2==0.9.4
@@ -19,11 +19,11 @@ google-auth==2.0.2
 google-cloud-bigquery==2.26.0
 google-cloud-bigquery-storage==2.7.0
 google-cloud-core==2.0.0
-google-crc32c==1.1.4
-google-resumable-media==2.0.1
+google-crc32c==1.1.2
+google-resumable-media==2.0.2
 googleapis-common-protos==1.53.0
 greenlet==1.1.1
-grpcio==1.39.0
+grpcio==1.40.0
 idna==3.2
 immutables==0.16
 importlib-metadata==4.8.1
