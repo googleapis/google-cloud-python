@@ -14,6 +14,18 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+## [1.2.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.1.0...v1.2.0) (2021-09-09)
+
+
+### Features
+
+* STRUCT and ARRAY support ([#318](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/318)) ([6624b10](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/6624b10ded73bbca6f40af73aaeaceb95c381b63))
+
+
+### Bug Fixes
+
+* the unnest function lost needed type information ([#298](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/298)) ([1233182](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/123318269876e7f76c7f0f2daa5f5b365026cd3f))
+
 ## [1.1.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.0.0...v1.1.0) (2021-08-25)
 
 
