@@ -18,9 +18,10 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
-from sqlalchemy_bigquery import BigQueryDialect
+import datetime
+import decimal
+
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import Table, MetaData, Column
 from sqlalchemy.ext.declarative import declarative_base
@@ -32,8 +33,8 @@ import packaging.version
 from pytz import timezone
 import pytest
 import sqlalchemy
-import datetime
-import decimal
+
+import sqlalchemy_bigquery
 
 ONE_ROW_CONTENTS_EXPANDED = [
     588,
@@ -98,17 +99,24 @@ SAMPLE_COLUMNS = [
     {"name": "bytes", "type": types.BINARY(), "nullable": True, "default": None},
     {
         "name": "record",
-        "type": types.JSON(),
+        "type": sqlalchemy_bigquery.STRUCT(name=types.String, age=types.Integer),
         "nullable": True,
         "default": None,
         "comment": "In Standard SQL this data type is a STRUCT<name STRING, age INT64>.",
     },
     {"name": "record.name", "type": types.String(), "nullable": True, "default": None},
     {"name": "record.age", "type": types.Integer(), "nullable": True, "default": None},
-    {"name": "nested_record", "type": types.JSON(), "nullable": True, "default": None},
+    {
+        "name": "nested_record",
+        "type": sqlalchemy_bigquery.STRUCT(
+            record=sqlalchemy_bigquery.STRUCT(name=types.String, age=types.Integer)
+        ),
+        "nullable": True,
+        "default": None,
+    },
     {
         "name": "nested_record.record",
-        "type": types.JSON(),
+        "type": sqlalchemy_bigquery.STRUCT(name=types.String, age=types.Integer),
         "nullable": True,
         "default": None,
     },
@@ -131,17 +139,6 @@ SAMPLE_COLUMNS = [
         "default": None,
     },
 ]
-
-
-@pytest.fixture(scope="session")
-def engine():
-    engine = create_engine("bigquery://", echo=True)
-    return engine
-
-
-@pytest.fixture(scope="session")
-def dialect():
-    return BigQueryDialect()
 
 
 @pytest.fixture(scope="session")

@@ -129,9 +129,6 @@ def test_typed_parameters(faux_conn, type_, val, btype, vrep):
 
     faux_conn.execute(table.insert().values(**{col_name: val}))
 
-    if btype.startswith("ARRAY<"):
-        btype = btype[6:-1]
-
     ptype = btype[: btype.index("(")] if "(" in btype else btype
 
     assert faux_conn.test_data["execute"][-1] == (
@@ -173,8 +170,12 @@ def test_typed_parameters(faux_conn, type_, val, btype, vrep):
     )
 
 
-def test_select_json(faux_conn, metadata):
-    table = sqlalchemy.Table("t", metadata, sqlalchemy.Column("x", sqlalchemy.JSON))
+def test_select_struct(faux_conn, metadata):
+    from sqlalchemy_bigquery import STRUCT
+
+    table = sqlalchemy.Table(
+        "t", metadata, sqlalchemy.Column("x", STRUCT(y=sqlalchemy.Integer)),
+    )
 
     faux_conn.ex("create table t (x RECORD)")
     faux_conn.ex("""insert into t values ('{"y": 1}')""")
@@ -430,3 +431,11 @@ def test_unnest_w_no_table_references(faux_conn, alias):
     assert " ".join(compiled.strip().split()) == (
         "SELECT `anon_1` FROM unnest(%(unnest_1)s) AS `anon_1`"
     )
+
+
+def test_array_indexing(engine, metadata):
+    t = sqlalchemy.Table(
+        "t", metadata, sqlalchemy.Column("a", sqlalchemy.ARRAY(sqlalchemy.String)),
+    )
+    got = str(sqlalchemy.select([t.c.a[0]]).compile(engine))
+    assert got == "SELECT `t`.`a`[OFFSET(%(a_1:INT64)s)] AS `anon_1` \nFROM `t`"

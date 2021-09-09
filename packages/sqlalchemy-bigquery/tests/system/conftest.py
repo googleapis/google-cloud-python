@@ -26,6 +26,8 @@ import sqlalchemy
 from google.cloud import bigquery
 import test_utils.prefixer
 
+from sqlalchemy_bigquery import BigQueryDialect
+
 prefixer = test_utils.prefixer.Prefixer("python-bigquery-sqlalchemy", "tests/system")
 
 DATA_DIR = pathlib.Path(__file__).parent / "data"
@@ -138,6 +140,17 @@ def cleanup_datasets(bigquery_client: bigquery.Client):
             bigquery_client.delete_dataset(
                 dataset, delete_contents=True, not_found_ok=True
             )
+
+
+@pytest.fixture(scope="session")
+def engine():
+    engine = sqlalchemy.create_engine("bigquery://", echo=True)
+    return engine
+
+
+@pytest.fixture(scope="session")
+def dialect():
+    return BigQueryDialect()
 
 
 @pytest.fixture

@@ -23,7 +23,7 @@ SQLAlchemy dialect for Google BigQuery
 from .version import __version__  # noqa
 
 from .base import BigQueryDialect, dialect  # noqa
-from .base import (
+from ._types import (
     ARRAY,
     BIGNUMERIC,
     BOOL,
@@ -38,6 +38,7 @@ from .base import (
     NUMERIC,
     RECORD,
     STRING,
+    STRUCT,
     TIME,
     TIMESTAMP,
 )
@@ -58,6 +59,7 @@ __all__ = [
     "NUMERIC",
     "RECORD",
     "STRING",
+    "STRUCT",
     "TIME",
     "TIMESTAMP",
 ]

@@ -43,7 +43,7 @@ Supported operations:
 <https://alembic.sqlalchemy.org/en/latest/ops.html#alembic.operations.Operations.rename_table>`_
 
 Note that some of the operations above have limited capability, again
-do to `BigQuery limitations
+due to `BigQuery limitations
 <https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language>`_.
 
 The `execute` operation allows access to BigQuery-specific

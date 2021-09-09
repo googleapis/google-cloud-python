@@ -165,8 +165,8 @@ def test_get_table_comment(faux_conn):
         ("STRING(42)", sqlalchemy.types.String(42), dict(max_length=42)),
         ("BYTES", sqlalchemy.types.BINARY(), ()),
         ("BYTES(42)", sqlalchemy.types.BINARY(42), dict(max_length=42)),
-        ("INT64", sqlalchemy.types.Integer, ()),
-        ("FLOAT64", sqlalchemy.types.Float, ()),
+        ("INT64", sqlalchemy.types.Integer(), ()),
+        ("FLOAT64", sqlalchemy.types.Float(), ()),
         ("NUMERIC", sqlalchemy.types.NUMERIC(), ()),
         ("NUMERIC(4)", sqlalchemy.types.NUMERIC(4), dict(precision=4)),
         ("NUMERIC(4, 2)", sqlalchemy.types.NUMERIC(4, 2), dict(precision=4, scale=2)),
@@ -177,11 +177,11 @@ def test_get_table_comment(faux_conn):
             sqlalchemy.types.NUMERIC(42, 2),
             dict(precision=42, scale=2),
         ),
-        ("BOOL", sqlalchemy.types.Boolean, ()),
-        ("TIMESTAMP", sqlalchemy.types.TIMESTAMP, ()),
-        ("DATE", sqlalchemy.types.DATE, ()),
-        ("TIME", sqlalchemy.types.TIME, ()),
-        ("DATETIME", sqlalchemy.types.DATETIME, ()),
+        ("BOOL", sqlalchemy.types.Boolean(), ()),
+        ("TIMESTAMP", sqlalchemy.types.TIMESTAMP(), ()),
+        ("DATE", sqlalchemy.types.DATE(), ()),
+        ("TIME", sqlalchemy.types.TIME(), ()),
+        ("DATETIME", sqlalchemy.types.DATETIME(), ()),
         ("THURSDAY", sqlalchemy.types.NullType, ()),
     ],
 )
@@ -207,6 +207,8 @@ def test_get_table_columns(faux_conn, btype, atype, extra):
 
 
 def test_get_table_columns_special_cases(faux_conn):
+    from sqlalchemy_bigquery import STRUCT
+
     cursor = faux_conn.connection.cursor()
     cursor.execute("create table foo (s STRING, n INT64 not null, r RECORD)")
     client = faux_conn.connection._client
@@ -218,10 +220,10 @@ def test_get_table_columns_special_cases(faux_conn):
     )
 
     actual = faux_conn.dialect.get_columns(faux_conn, "foo")
-    stype = actual[0].pop("type")
-    assert isinstance(stype, sqlalchemy.types.ARRAY)
-    assert isinstance(stype.item_type, sqlalchemy.types.String)
-    assert actual == [
+    for a in actual:
+        a["type"] = repr(a["type"])
+
+    expected = [
         {
             "comment": "a fine column",
             "default": None,
@@ -230,13 +232,14 @@ def test_get_table_columns_special_cases(faux_conn):
             "max_length": None,
             "precision": None,
             "scale": None,
+            "type": repr(sqlalchemy.types.ARRAY(sqlalchemy.types.String())),
         },
         {
             "comment": None,
             "default": None,
             "name": "n",
             "nullable": False,
-            "type": sqlalchemy.types.Integer,
+            "type": repr(sqlalchemy.types.Integer()),
             "max_length": None,
             "precision": None,
             "scale": None,
@@ -246,7 +249,9 @@ def test_get_table_columns_special_cases(faux_conn):
             "default": None,
             "name": "r",
             "nullable": True,
-            "type": sqlalchemy.types.JSON,
+            "type": repr(
+                STRUCT(i=sqlalchemy.types.Integer(), f=sqlalchemy.types.Float())
+            ),
             "max_length": None,
             "precision": None,
             "scale": None,
@@ -256,7 +261,7 @@ def test_get_table_columns_special_cases(faux_conn):
             "default": None,
             "name": "r.i",
             "nullable": True,
-            "type": sqlalchemy.types.Integer,
+            "type": repr(sqlalchemy.types.Integer()),
             "max_length": None,
             "precision": None,
             "scale": None,
@@ -266,12 +271,13 @@ def test_get_table_columns_special_cases(faux_conn):
             "default": None,
             "name": "r.f",
             "nullable": True,
-            "type": sqlalchemy.types.Float,
+            "type": repr(sqlalchemy.types.Float()),
             "max_length": None,
             "precision": None,
             "scale": None,
         },
     ]
+    assert actual == expected
 
 
 def test_has_table(faux_conn):

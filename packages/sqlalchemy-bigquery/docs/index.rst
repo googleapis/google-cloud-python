@@ -3,6 +3,7 @@
    :maxdepth: 2
 
    README
+   struct
    geography
    alembic
    reference

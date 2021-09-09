@@ -1,4 +1,4 @@
-# Copyright (c) 2017 The sqlalchemy-bigquery Authors
+# Copyright (c) 2021 The sqlalchemy-bigquery Authors
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -17,14 +17,11 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import importlib
 
+def test_struct(engine):
+    from . import STRUCT
 
-# https://docs.sqlalchemy.org/en/13/core/type_basics.html#vendor-specific-types
-def test_types_import():
-    """Demonstrate behavior of importing types independent of any other import."""
-    dialect_module = importlib.import_module("sqlalchemy_bigquery")
-    _types_module = importlib.import_module("sqlalchemy_bigquery._types")
-    custom_types = getattr(_types_module, "_type_map")
-    for type_name, type_value in custom_types.items():
-        assert getattr(dialect_module, type_name) == type_value
+    sixeses = STRUCT.example(engine)
+
+    for sixes in sixeses:
+        assert sorted(car.model for car in sixes) == ["Sebring", "Town and Counttry"]

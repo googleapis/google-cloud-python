@@ -95,7 +95,7 @@ class GEOGRAPHY(geoalchemy2.Geography):
             name = Column(String)
             geog = column(GEOGRAPHY)
 
-
+    See https://googleapis.dev/python/sqlalchemy-bigquery/latest/geography.html
     """
 
     def __init__(self):

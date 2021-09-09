@@ -30,7 +30,6 @@ import uuid
 from google import auth
 import google.api_core.exceptions
 from google.cloud.bigquery import dbapi
-from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import TableReference
 from google.api_core.exceptions import NotFound
 
@@ -40,7 +39,7 @@ import sqlalchemy.sql.functions
 import sqlalchemy.sql.sqltypes
 import sqlalchemy.sql.type_api
 from sqlalchemy.exc import NoSuchTableError
-from sqlalchemy import types, util
+from sqlalchemy import util
 from sqlalchemy.sql.compiler import (
     SQLCompiler,
     GenericTypeCompiler,
@@ -55,12 +54,7 @@ from sqlalchemy.sql import elements, selectable
 import re
 
 from .parse_url import parse_url
-from sqlalchemy_bigquery import _helpers
-
-try:
-    from .geography import GEOGRAPHY
-except ImportError:
-    pass
+from . import _helpers, _struct, _types
 
 FIELD_ILLEGAL_CHARACTERS = re.compile(r"[^\w]+")
 
@@ -115,49 +109,6 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
 
         result = self.quote(name)
         return result
-
-
-_type_map = {
-    "ARRAY": types.ARRAY,
-    "BIGNUMERIC": types.Numeric,
-    "BOOLEAN": types.Boolean,
-    "BOOL": types.Boolean,
-    "BYTES": types.BINARY,
-    "DATETIME": types.DATETIME,
-    "DATE": types.DATE,
-    "FLOAT64": types.Float,
-    "FLOAT": types.Float,
-    "INT64": types.Integer,
-    "INTEGER": types.Integer,
-    "NUMERIC": types.Numeric,
-    "RECORD": types.JSON,
-    "STRING": types.String,
-    "TIMESTAMP": types.TIMESTAMP,
-    "TIME": types.TIME,
-}
-
-# By convention, dialect-provided types are spelled with all upper case.
-ARRAY = _type_map["ARRAY"]
-BIGNUMERIC = _type_map["NUMERIC"]
-BOOLEAN = _type_map["BOOLEAN"]
-BOOL = _type_map["BOOL"]
-BYTES = _type_map["BYTES"]
-DATETIME = _type_map["DATETIME"]
-DATE = _type_map["DATE"]
-FLOAT64 = _type_map["FLOAT64"]
-FLOAT = _type_map["FLOAT"]
-INT64 = _type_map["INT64"]
-INTEGER = _type_map["INTEGER"]
-NUMERIC = _type_map["NUMERIC"]
-RECORD = _type_map["RECORD"]
-STRING = _type_map["STRING"]
-TIMESTAMP = _type_map["TIMESTAMP"]
-TIME = _type_map["TIME"]
-
-try:
-    _type_map["GEOGRAPHY"] = GEOGRAPHY
-except NameError:
-    pass
 
 
 class BigQueryExecutionContext(DefaultExecutionContext):
@@ -227,7 +178,7 @@ class BigQueryExecutionContext(DefaultExecutionContext):
         )
 
 
-class BigQueryCompiler(SQLCompiler):
+class BigQueryCompiler(_struct.SQLCompiler, SQLCompiler):
 
     compound_keywords = SQLCompiler.compound_keywords.copy()
     compound_keywords[selectable.CompoundSelect.UNION] = "UNION DISTINCT"
@@ -543,9 +494,6 @@ class BigQueryCompiler(SQLCompiler):
                 type_.scale = -t.exponent
 
         bq_type = self.dialect.type_compiler.process(type_)
-        if bq_type[-1] == ">" and bq_type.startswith("ARRAY<"):
-            # Values get arrayified at a lower level.
-            bq_type = bq_type[6:-1]
         bq_type = self.__remove_type_parameter(bq_type)
 
         assert_(param != "%s", f"Unexpected param: {param}")
@@ -565,6 +513,11 @@ class BigQueryCompiler(SQLCompiler):
             param = f"UNNEST({param})"
 
         return param
+
+    def visit_getitem_binary(self, binary, operator_, **kw):
+        left = self.process(binary.left, **kw)
+        right = self.process(binary.right, **kw)
+        return f"{left}[OFFSET({right})]"
 
 
 class BigQueryTypeCompiler(GenericTypeCompiler):
@@ -836,14 +789,6 @@ class BigQueryDialect(DefaultDialect):
         )
         return ([client], {})
 
-    def _json_deserializer(self, row):
-        """JSON deserializer for RECORD types.
-
-        The DB-API layer already deserializes JSON to a dictionary, so this
-        just returns the input.
-        """
-        return row
-
     def _get_table_or_view_names(self, connection, table_type, schema=None):
         current_schema = schema or self.dataset_id
         get_table_name = (
@@ -968,59 +913,9 @@ class BigQueryDialect(DefaultDialect):
         except NoSuchTableError:
             return False
 
-    def _get_columns_helper(self, columns, cur_columns):
-        """
-        Recurse into record type and return all the nested field names.
-        As contributed by @sumedhsakdeo on issue #17
-        """
-        results = []
-        for col in columns:
-            results += [col]
-            if col.field_type == "RECORD":
-                cur_columns.append(col)
-                fields = [
-                    SchemaField.from_api_repr(
-                        dict(f.to_api_repr(), name=f"{col.name}.{f.name}")
-                    )
-                    for f in col.fields
-                ]
-                results += self._get_columns_helper(fields, cur_columns)
-                cur_columns.pop()
-        return results
-
     def get_columns(self, connection, table_name, schema=None, **kw):
         table = self._get_table(connection, table_name, schema)
-        columns = self._get_columns_helper(table.schema, [])
-        result = []
-        for col in columns:
-            try:
-                coltype = _type_map[col.field_type]
-            except KeyError:
-                util.warn(
-                    "Did not recognize type '%s' of column '%s'"
-                    % (col.field_type, col.name)
-                )
-                coltype = types.NullType
-
-            if col.field_type.endswith("NUMERIC"):
-                coltype = coltype(precision=col.precision, scale=col.scale)
-            elif col.field_type == "STRING" or col.field_type == "BYTES":
-                coltype = coltype(col.max_length)
-
-            result.append(
-                {
-                    "name": col.name,
-                    "type": types.ARRAY(coltype) if col.mode == "REPEATED" else coltype,
-                    "nullable": col.mode == "NULLABLE" or col.mode == "REPEATED",
-                    "comment": col.description,
-                    "default": None,
-                    "precision": col.precision,
-                    "scale": col.scale,
-                    "max_length": col.max_length,
-                }
-            )
-
-        return result
+        return _types.get_columns(table.schema)
 
     def get_table_comment(self, connection, table_name, schema=None, **kw):
         table = self._get_table(connection, table_name, schema)
