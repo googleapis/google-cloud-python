@@ -156,14 +156,6 @@ def conftest_retry(session):
     """Run the retry conformance test suite."""
     conformance_test_path = os.path.join("tests", "conformance.py")
     conformance_test_folder_path = os.path.join("tests", "conformance")
-
-    # Environment check: Only run tests if the STORAGE_EMULATOR_HOST is set.
-    if (
-        os.environ.get("STORAGE_EMULATOR_HOST", _DEFAULT_STORAGE_HOST)
-        == _DEFAULT_STORAGE_HOST
-    ):
-        session.skip("Set STORAGE_EMULATOR_HOST to run, skipping")
-
     conformance_test_exists = os.path.exists(conformance_test_path)
     conformance_test_folder_exists = os.path.exists(conformance_test_folder_path)
     # Environment check: only run tests if found.

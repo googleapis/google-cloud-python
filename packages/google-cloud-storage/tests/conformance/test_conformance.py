@@ -21,6 +21,10 @@ import uuid
 import logging
 import functools
 import pytest
+import subprocess
+import time
+
+from six.moves.urllib import parse as urlparse
 
 from google.cloud import storage
 from google.auth.credentials import AnonymousCredentials
@@ -33,8 +37,16 @@ _CONFORMANCE_TESTS = _read_local_json("retry_strategy_test_data.json")[
     "retryStrategyTests"
 ]
 
-_STORAGE_EMULATOR_ENV_VAR = "STORAGE_EMULATOR_HOST"
-"""Environment variable defining host for Storage testbench emulator."""
+"""Environment variable or default host for Storage testbench emulator."""
+_HOST = os.environ.get("STORAGE_EMULATOR_HOST", "http://localhost:9000")
+_PORT = urlparse.urlsplit(_HOST).port
+
+"""The storage testbench docker image info and commands."""
+_DEFAULT_IMAGE_NAME = "gcr.io/cloud-devrel-public-resources/storage-testbench"
+_DEFAULT_IMAGE_TAG = "latest"
+_DOCKER_IMAGE = "{}:{}".format(_DEFAULT_IMAGE_NAME, _DEFAULT_IMAGE_TAG)
+_PULL_CMD = ["docker", "pull", _DOCKER_IMAGE]
+_RUN_CMD = ["docker", "run", "--rm", "-d", "-p", "{}:9000".format(_PORT), _DOCKER_IMAGE]
 
 _CONF_TEST_PROJECT_ID = "my-project-id"
 _CONF_TEST_SERVICE_ACCOUNT_EMAIL = (
@@ -694,11 +706,10 @@ method_mapping = {
 
 @pytest.fixture
 def client():
-    host = os.environ.get(_STORAGE_EMULATOR_ENV_VAR)
     client = storage.Client(
         project=_CONF_TEST_PROJECT_ID,
         credentials=AnonymousCredentials(),
-        client_options={"api_endpoint": host},
+        client_options={"api_endpoint": _HOST},
     )
     return client
 
@@ -900,28 +911,30 @@ def run_test_case(
 ### Run Conformance Tests for Retry Strategy ###########################################################################################
 ########################################################################################################################################
 
-for scenario in _CONFORMANCE_TESTS:
-    host = os.environ.get(_STORAGE_EMULATOR_ENV_VAR)
-    if host is None:
-        logging.error(
-            "This test must use the testbench emulator; set STORAGE_EMULATOR_HOST to run."
-        )
-        break
+# Pull storage-testbench docker image
+subprocess.run(_PULL_CMD)
+time.sleep(5)
 
-    id = scenario["id"]
-    methods = scenario["methods"]
-    cases = scenario["cases"]
-    for i, c in enumerate(cases):
-        for m in methods:
-            method_name = m["name"]
-            if method_name not in method_mapping:
-                logging.info("No tests for operation {}".format(method_name))
-                continue
+# Run docker image to start storage-testbench
+with subprocess.Popen(_RUN_CMD) as proc:
+    # Run retry conformance tests
+    for scenario in _CONFORMANCE_TESTS:
+        id = scenario["id"]
+        methods = scenario["methods"]
+        cases = scenario["cases"]
+        for i, c in enumerate(cases):
+            for m in methods:
+                method_name = m["name"]
+                if method_name not in method_mapping:
+                    logging.info("No tests for operation {}".format(method_name))
+                    continue
 
-            for lib_func in method_mapping[method_name]:
-                test_name = "test-S{}-{}-{}-{}".format(
-                    id, method_name, lib_func.__name__, i
-                )
-                globals()[test_name] = functools.partial(
-                    run_test_case, id, m, c, lib_func, host
-                )
+                for lib_func in method_mapping[method_name]:
+                    test_name = "test-S{}-{}-{}-{}".format(
+                        id, method_name, lib_func.__name__, i
+                    )
+                    globals()[test_name] = functools.partial(
+                        run_test_case, id, m, c, lib_func, _HOST
+                    )
+    time.sleep(5)
+    proc.kill()
