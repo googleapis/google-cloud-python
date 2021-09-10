@@ -28,14 +28,15 @@ dependencies = [
     # Until this issue is closed
     # https://github.com/googleapis/google-cloud-python/issues/10566
     "google-api-core[grpc] >= 1.26.0, <3.0.0dev",
-    "proto-plus >= 1.4.0",
+    "proto-plus >= 1.18.0",
     "packaging >= 14.3",
     "libcst >= 0.2.5",
 ]
 extras = {
-    "pandas": "pandas>=0.21.1",
-    "fastavro": "fastavro>=0.21.2",
-    "pyarrow": "pyarrow>=0.15.0",
+    "pandas": ["pandas>=0.21.1"],
+    "fastavro": ["fastavro>=0.21.2"],
+    "pyarrow": ["pyarrow>=0.15.0"],
+    "tests": ["freezegun"],
 }
 
 package_root = os.path.abspath(os.path.dirname(__file__))

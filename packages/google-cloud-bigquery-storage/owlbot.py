@@ -14,8 +14,6 @@
 
 """This script is used to synthesize generated parts of this library."""
 
-import re
-
 import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
@@ -39,7 +37,7 @@ for library in s.get_staging_dirs(default_version):
     # wraps it.
     s.replace(
         library / "google/cloud/bigquery_storage/__init__.py",
-        f"from google\.cloud\.bigquery_storage_{library.name}\.services.big_query_read.client import",
+        f"from google\\.cloud\\.bigquery_storage_{library.name}\\.services.big_query_read.client import",
         f"from google.cloud.bigquery_storage_{library.name} import",
     )
 
@@ -48,7 +46,7 @@ for library in s.get_staging_dirs(default_version):
     s.replace(
         library / "google/cloud/bigquery_storage/__init__.py",
         (
-            f"from google\.cloud\.bigquery_storage_{library.name}\.services.big_query_read.async_client "
+            f"from google\\.cloud\\.bigquery_storage_{library.name}\\.services.big_query_read.async_client "
             r"import BigQueryReadAsyncClient\n"
         ),
         "",
@@ -63,17 +61,17 @@ for library in s.get_staging_dirs(default_version):
     # entry point.
     s.replace(
         library / "google/cloud/bigquery_storage/__init__.py",
-        f"from google\.cloud\.bigquery_storage_{library.name}\.types\.arrow import ArrowRecordBatch",
+        f"from google\\.cloud\\.bigquery_storage_{library.name}\\.types\\.arrow import ArrowRecordBatch",
         (
             f"from google.cloud.bigquery_storage_{library.name} import types\n"
             f"from google.cloud.bigquery_storage_{library.name} import __version__\n"
-            "\g<0>"
+            "\\g<0>"
         ),
     )
     s.replace(
         library / "google/cloud/bigquery_storage/__init__.py",
         r"""["']ArrowRecordBatch["']""",
-        ('"__version__",\n' '    "types",\n' "    \g<0>"),
+        ('"__version__",\n' '    "types",\n' "    \\g<0>"),
     )
 
     # We want to expose all types through "google.cloud.bigquery_storage.types",
@@ -89,12 +87,12 @@ for library in s.get_staging_dirs(default_version):
     s.replace(
         library / f"google/cloud/bigquery_storage_{library.name}*/types/__init__.py",
         r"from \.stream import \(",
-        "\g<0>\n    DataFormat,",
+        "\\g<0>\n    DataFormat,",
     )
     s.replace(
         library / f"google/cloud/bigquery_storage_{library.name}*/types/__init__.py",
         r"""["']ReadSession["']""",
-        '"DataFormat",\n    \g<0>',
+        '"DataFormat",\n    \\g<0>',
     )
 
     # The append_rows method doesn't contain keyword arguments that build request
@@ -130,11 +128,12 @@ s.remove_staging_dirs()
 # Add templated files
 # ----------------------------------------------------------------------------
 extras = ["fastavro", "pandas", "pyarrow"]
+unit_test_extras = ["tests"] + extras
 
 templated_files = common.py_library(
     microgenerator=True,
     samples=True,
-    unit_test_extras=extras,
+    unit_test_extras=unit_test_extras,
     system_test_extras=extras,
     system_test_external_dependencies=["google-cloud-bigquery"],
     cov_level=95,
@@ -178,7 +177,7 @@ s.replace(
 )
 
 s.replace(
-    "CONTRIBUTING.rst", "remote \(``master``\)", "remote (``main``)",
+    "CONTRIBUTING.rst", "remote \\(``master``\\)", "remote (``main``)",
 )
 
 s.replace(

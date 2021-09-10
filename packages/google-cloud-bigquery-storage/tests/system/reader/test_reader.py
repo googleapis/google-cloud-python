@@ -19,6 +19,7 @@ import copy
 import datetime as dt
 import decimal
 import re
+import uuid
 
 from google.cloud import bigquery
 import pytest
@@ -28,6 +29,27 @@ from .. import helpers
 
 
 _TABLE_FORMAT = "projects/{}/datasets/{}/tables/{}"
+
+
+@pytest.fixture
+def table(project_id, dataset, bq_client):
+    from google.cloud import bigquery
+
+    schema = [
+        bigquery.SchemaField("first_name", "STRING", mode="NULLABLE"),
+        bigquery.SchemaField("last_name", "STRING", mode="NULLABLE"),
+        bigquery.SchemaField("age", "INTEGER", mode="NULLABLE"),
+    ]
+
+    unique_suffix = str(uuid.uuid4()).replace("-", "_")
+    table_id = "users_" + unique_suffix
+    table_id_full = f"{project_id}.{dataset.dataset_id}.{table_id}"
+    bq_table = bigquery.Table(table_id_full, schema=schema)
+    created_table = bq_client.create_table(bq_table)
+
+    yield created_table
+
+    bq_client.delete_table(created_table)
 
 
 def _to_bq_table_ref(table_name_string, partition_suffix=""):

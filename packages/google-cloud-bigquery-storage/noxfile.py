@@ -94,7 +94,7 @@ def default(session):
         constraints_path,
     )
 
-    session.install("-e", ".[fastavro,pandas,pyarrow]", "-c", constraints_path)
+    session.install("-e", ".[tests,fastavro,pandas,pyarrow]", "-c", constraints_path)
 
     # Run py.test against the unit tests.
     session.run(

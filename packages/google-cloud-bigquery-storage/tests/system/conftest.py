@@ -108,27 +108,6 @@ def dataset(project_id, bq_client):
     bq_client.delete_dataset(dataset, delete_contents=True)
 
 
-@pytest.fixture
-def table(project_id, dataset, bq_client):
-    from google.cloud import bigquery
-
-    schema = [
-        bigquery.SchemaField("first_name", "STRING", mode="NULLABLE"),
-        bigquery.SchemaField("last_name", "STRING", mode="NULLABLE"),
-        bigquery.SchemaField("age", "INTEGER", mode="NULLABLE"),
-    ]
-
-    unique_suffix = str(uuid.uuid4()).replace("-", "_")
-    table_id = "users_" + unique_suffix
-    table_id_full = f"{project_id}.{dataset.dataset_id}.{table_id}"
-    bq_table = bigquery.Table(table_id_full, schema=schema)
-    created_table = bq_client.create_table(bq_table)
-
-    yield created_table
-
-    bq_client.delete_table(created_table)
-
-
 @pytest.fixture(scope="session")
 def bq_client(credentials, use_mtls):
     if use_mtls:

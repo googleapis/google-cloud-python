@@ -19,12 +19,14 @@
 This is the base from which all interactions with the API occur.
 """
 
-from __future__ import absolute_import
-
 import google.api_core.gapic_v1.method
+import google.api_core.retry
 
 from google.cloud.bigquery_storage_v1 import reader
-from google.cloud.bigquery_storage_v1beta2.services import big_query_read
+from google.cloud.bigquery_storage_v1beta2.services import (
+    big_query_read,
+    big_query_write,
+)
 
 
 _SCOPES = (
@@ -135,3 +137,7 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
             offset,
             {"retry": retry, "timeout": timeout, "metadata": metadata},
         )
+
+
+class BigQueryWriteClient(big_query_write.BigQueryWriteClient):
+    __doc__ = big_query_write.BigQueryWriteClient.__doc__
