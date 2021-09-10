@@ -64,7 +64,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth._helpers.utcnow",
-        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
+        return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_refresh_success(self, get, utcnow):
@@ -98,7 +98,7 @@ class TestCredentials(object):
 
     @mock.patch(
         "google.auth._helpers.utcnow",
-        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
+        return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_refresh_success_with_scopes(self, get, utcnow):

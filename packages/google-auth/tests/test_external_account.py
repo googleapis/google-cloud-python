@@ -976,7 +976,9 @@ class TestCredentials(object):
         # Set the expiration to one second more than now plus the clock skew
         # accomodation. These credentials should be valid.
         credentials.expiry = (
-            datetime.datetime.min + _helpers.CLOCK_SKEW + datetime.timedelta(seconds=1)
+            datetime.datetime.min
+            + _helpers.REFRESH_THRESHOLD
+            + datetime.timedelta(seconds=1)
         )
 
         assert credentials.valid
@@ -1027,7 +1029,9 @@ class TestCredentials(object):
         # Set the expiration to one second more than now plus the clock skew
         # accomodation. These credentials should be valid.
         credentials.expiry = (
-            datetime.datetime.min + _helpers.CLOCK_SKEW + datetime.timedelta(seconds=1)
+            datetime.datetime.min
+            + _helpers.REFRESH_THRESHOLD
+            + datetime.timedelta(seconds=1)
         )
 
         assert credentials.valid

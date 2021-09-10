@@ -62,7 +62,7 @@ class TestCredentials:
     @mock.patch("google.oauth2._reauth_async.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
-        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
+        return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     @pytest.mark.asyncio
     async def test_refresh_success(self, unused_utcnow, refresh_grant):
@@ -124,7 +124,7 @@ class TestCredentials:
     @mock.patch("google.oauth2._reauth_async.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
-        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
+        return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     @pytest.mark.asyncio
     async def test_credentials_with_scopes_requested_refresh_success(
@@ -188,7 +188,7 @@ class TestCredentials:
     @mock.patch("google.oauth2._reauth_async.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
-        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
+        return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     @pytest.mark.asyncio
     async def test_credentials_with_scopes_returned_refresh_success(
@@ -251,7 +251,7 @@ class TestCredentials:
     @mock.patch("google.oauth2._reauth_async.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
-        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
+        return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     @pytest.mark.asyncio
     async def test_credentials_with_scopes_refresh_failure_raises_refresh_error(

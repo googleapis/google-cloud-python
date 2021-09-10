@@ -80,7 +80,7 @@ class TestAuthMetadataPlugin(object):
 
     def test_call_refresh(self):
         credentials = CredentialsStub()
-        credentials.expiry = datetime.datetime.min + _helpers.CLOCK_SKEW
+        credentials.expiry = datetime.datetime.min + _helpers.REFRESH_THRESHOLD
         request = mock.create_autospec(transport.Request)
 
         plugin = google.auth.transport.grpc.AuthMetadataPlugin(credentials, request)

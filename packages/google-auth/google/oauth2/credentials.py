@@ -270,7 +270,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
                 raise exceptions.RefreshError(
                     "The refresh_handler returned expiry is not a datetime object."
                 )
-            if _helpers.utcnow() >= expiry - _helpers.CLOCK_SKEW:
+            if _helpers.utcnow() >= expiry - _helpers.REFRESH_THRESHOLD:
                 raise exceptions.RefreshError(
                     "The credentials returned by the refresh_handler are "
                     "already expired."
@@ -359,7 +359,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
                 expiry.rstrip("Z").split(".")[0], "%Y-%m-%dT%H:%M:%S"
             )
         else:
-            expiry = _helpers.utcnow() - _helpers.CLOCK_SKEW
+            expiry = _helpers.utcnow() - _helpers.REFRESH_THRESHOLD
 
         # process scopes, which needs to be a seq
         if scopes is None and "scopes" in info:

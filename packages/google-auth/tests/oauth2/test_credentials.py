@@ -115,7 +115,7 @@ class TestCredentials(object):
     @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
-        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
+        return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     def test_refresh_success(self, unused_utcnow, refresh_grant):
         token = "token"
@@ -175,7 +175,7 @@ class TestCredentials(object):
     @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
-        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
+        return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     def test_refresh_with_refresh_token_and_refresh_handler(
         self, unused_utcnow, refresh_grant
@@ -361,7 +361,7 @@ class TestCredentials(object):
 
     @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
     def test_refresh_with_refresh_handler_expired_token(self, unused_utcnow):
-        expected_expiry = datetime.datetime.min + _helpers.CLOCK_SKEW
+        expected_expiry = datetime.datetime.min + _helpers.REFRESH_THRESHOLD
         # Simulate refresh handler returns an expired token.
         refresh_handler = mock.Mock(return_value=("TOKEN", expected_expiry))
         scopes = ["email", "profile"]
@@ -391,7 +391,7 @@ class TestCredentials(object):
     @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
-        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
+        return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     def test_credentials_with_scopes_requested_refresh_success(
         self, unused_utcnow, refresh_grant
@@ -457,7 +457,7 @@ class TestCredentials(object):
     @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
-        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
+        return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     def test_credentials_with_only_default_scopes_requested(
         self, unused_utcnow, refresh_grant
@@ -521,7 +521,7 @@ class TestCredentials(object):
     @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
-        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
+        return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     def test_credentials_with_scopes_returned_refresh_success(
         self, unused_utcnow, refresh_grant
@@ -588,7 +588,7 @@ class TestCredentials(object):
     @mock.patch("google.oauth2.reauth.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
-        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
+        return_value=datetime.datetime.min + _helpers.REFRESH_THRESHOLD,
     )
     def test_credentials_with_scopes_refresh_failure_raises_refresh_error(
         self, unused_utcnow, refresh_grant

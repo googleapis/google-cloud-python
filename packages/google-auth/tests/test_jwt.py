@@ -197,7 +197,7 @@ def test_decode_bad_token_too_early(token_factory):
         }
     )
     with pytest.raises(ValueError) as excinfo:
-        jwt.decode(token, PUBLIC_CERT_BYTES)
+        jwt.decode(token, PUBLIC_CERT_BYTES, clock_skew_in_seconds=59)
     assert excinfo.match(r"Token used too early")
 
 
@@ -210,8 +210,38 @@ def test_decode_bad_token_expired(token_factory):
         }
     )
     with pytest.raises(ValueError) as excinfo:
-        jwt.decode(token, PUBLIC_CERT_BYTES)
+        jwt.decode(token, PUBLIC_CERT_BYTES, clock_skew_in_seconds=59)
     assert excinfo.match(r"Token expired")
+
+
+def test_decode_success_with_no_clock_skew(token_factory):
+    token = token_factory(
+        claims={
+            "exp": _helpers.datetime_to_secs(
+                _helpers.utcnow() + datetime.timedelta(seconds=1)
+            ),
+            "iat": _helpers.datetime_to_secs(
+                _helpers.utcnow() - datetime.timedelta(seconds=1)
+            ),
+        }
+    )
+
+    jwt.decode(token, PUBLIC_CERT_BYTES)
+
+
+def test_decode_success_with_custom_clock_skew(token_factory):
+    token = token_factory(
+        claims={
+            "exp": _helpers.datetime_to_secs(
+                _helpers.utcnow() + datetime.timedelta(seconds=2)
+            ),
+            "iat": _helpers.datetime_to_secs(
+                _helpers.utcnow() - datetime.timedelta(seconds=2)
+            ),
+        }
+    )
+
+    jwt.decode(token, PUBLIC_CERT_BYTES, clock_skew_in_seconds=1)
 
 
 def test_decode_bad_token_wrong_audience(token_factory):

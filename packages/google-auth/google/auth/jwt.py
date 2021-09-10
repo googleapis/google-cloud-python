@@ -167,12 +167,14 @@ def decode_header(token):
     return header
 
 
-def _verify_iat_and_exp(payload):
+def _verify_iat_and_exp(payload, clock_skew_in_seconds=0):
     """Verifies the ``iat`` (Issued At) and ``exp`` (Expires) claims in a token
     payload.
 
     Args:
         payload (Mapping[str, str]): The JWT payload.
+        clock_skew_in_seconds (int): The clock skew used for `iat` and `exp`
+            validation.
 
     Raises:
         ValueError: if any checks failed.
@@ -188,7 +190,7 @@ def _verify_iat_and_exp(payload):
     iat = payload["iat"]
     # Err on the side of accepting a token that is slightly early to account
     # for clock skew.
-    earliest = iat - _helpers.CLOCK_SKEW_SECS
+    earliest = iat - clock_skew_in_seconds
     if now < earliest:
         raise ValueError(
             "Token used too early, {} < {}. Check that your computer's clock is set correctly.".format(
@@ -200,12 +202,12 @@ def _verify_iat_and_exp(payload):
     exp = payload["exp"]
     # Err on the side of accepting a token that is slightly out of date
     # to account for clow skew.
-    latest = exp + _helpers.CLOCK_SKEW_SECS
+    latest = exp + clock_skew_in_seconds
     if latest < now:
         raise ValueError("Token expired, {} < {}".format(latest, now))
 
 
-def decode(token, certs=None, verify=True, audience=None):
+def decode(token, certs=None, verify=True, audience=None, clock_skew_in_seconds=0):
     """Decode and verify a JWT.
 
     Args:
@@ -221,6 +223,8 @@ def decode(token, certs=None, verify=True, audience=None):
         audience (str or list): The audience claim, 'aud', that this JWT should
             contain. Or a list of audience claims. If None then the JWT's 'aud'
             parameter is not verified.
+        clock_skew_in_seconds (int): The clock skew used for `iat` and `exp`
+            validation.
 
     Returns:
         Mapping[str, str]: The deserialized JSON payload in the JWT.
@@ -271,7 +275,7 @@ def decode(token, certs=None, verify=True, audience=None):
         raise ValueError("Could not verify token signature.")
 
     # Verify the issued at and created times in the payload.
-    _verify_iat_and_exp(payload)
+    _verify_iat_and_exp(payload, clock_skew_in_seconds)
 
     # Check audience.
     if audience is not None:

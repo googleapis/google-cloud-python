@@ -45,7 +45,7 @@ def make_credentials():
             super(CredentialsImpl, self).__init__()
             self.token = "token"
             # Force refresh
-            self.expiry = datetime.datetime.min + _helpers.CLOCK_SKEW
+            self.expiry = datetime.datetime.min + _helpers.REFRESH_THRESHOLD
 
         def refresh(self, request):
             pass

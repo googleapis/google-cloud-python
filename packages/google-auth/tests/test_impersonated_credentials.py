@@ -211,11 +211,11 @@ class TestImpersonatedCredentials(object):
         credentials = self.make_credentials(lifetime=None)
 
         # Source credentials is refreshed only if it is expired within
-        # _helpers.CLOCK_SKEW from now. We add a time_skew to the expiry, so
+        # _helpers.REFRESH_THRESHOLD from now. We add a time_skew to the expiry, so
         # source credentials is refreshed only if time_skew <= 0.
         credentials._source_credentials.expiry = (
             _helpers.utcnow()
-            + _helpers.CLOCK_SKEW
+            + _helpers.REFRESH_THRESHOLD
             + datetime.timedelta(seconds=time_skew)
         )
         credentials._source_credentials.token = "Token"
@@ -238,7 +238,7 @@ class TestImpersonatedCredentials(object):
             assert not credentials.expired
 
             # Source credentials is refreshed only if it is expired within
-            # _helpers.CLOCK_SKEW
+            # _helpers.REFRESH_THRESHOLD
             if time_skew > 0:
                 source_cred_refresh.assert_not_called()
             else:
