@@ -4,6 +4,7 @@
 
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple
+from requests import __version__ as requests_version
 
 {% if service.has_lro %}
 from google.api_core import operations_v1
@@ -30,8 +31,14 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% endfilter %}
 
-from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
+from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
+    grpc_version=None,
+    rest_version=requests_version,
+)
 
 class {{ service.name }}RestTransport({{ service.name }}Transport):
     """REST backend transport for {{ service.name }}.
