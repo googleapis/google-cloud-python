@@ -63,6 +63,7 @@ exceeds this limit, no more retries will occur.
 
 RETRYABLE = (
     TOO_MANY_REQUESTS,  # 429
+    http.client.REQUEST_TIMEOUT,  # 408
     http.client.INTERNAL_SERVER_ERROR,  # 500
     http.client.BAD_GATEWAY,  # 502
     http.client.SERVICE_UNAVAILABLE,  # 503

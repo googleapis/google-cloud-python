@@ -198,15 +198,9 @@ class Test_wait_and_retry(object):
     @mock.patch("time.sleep")
     @mock.patch("random.randint")
     def test_success_with_retry(self, randint_mock, sleep_mock):
-        randint_mock.side_effect = [125, 625, 375]
-
-        status_codes = (
-            http.client.INTERNAL_SERVER_ERROR,
-            http.client.BAD_GATEWAY,
-            http.client.SERVICE_UNAVAILABLE,
-            http.client.NOT_FOUND,
-        )
+        status_codes = common.RETRYABLE + (http.client.NOT_FOUND,)
         responses = [_make_response(status_code) for status_code in status_codes]
+        randint_mock.side_effect = [75 * i for i in range(len(status_codes) - 1)]
 
         def raise_response():
             raise common.InvalidResponse(responses.pop(0))
@@ -222,22 +216,23 @@ class Test_wait_and_retry(object):
         assert ret_val.status_code == status_codes[-1]
         assert status_codes[-1] not in common.RETRYABLE
 
-        assert func.call_count == 4
-        assert func.mock_calls == [mock.call()] * 4
+        assert func.call_count == len(status_codes)
+        assert func.mock_calls == [mock.call()] * len(status_codes)
 
-        assert randint_mock.call_count == 3
-        assert randint_mock.mock_calls == [mock.call(0, 1000)] * 3
+        assert randint_mock.call_count == len(status_codes) - 1
+        assert randint_mock.mock_calls == [mock.call(0, 1000)] * (len(status_codes) - 1)
 
-        assert sleep_mock.call_count == 3
-        sleep_mock.assert_any_call(1.125)
-        sleep_mock.assert_any_call(2.625)
-        sleep_mock.assert_any_call(4.375)
+        assert sleep_mock.call_count == len(status_codes) - 1
+        wait = 1
+        multiplier = 2
+        for i in range(len(status_codes) - 1):
+            randint = i * 75 / 1000
+            sleep_mock.assert_any_call(wait + randint)
+            wait = wait * multiplier
 
     @mock.patch("time.sleep")
     @mock.patch("random.randint")
     def test_success_with_retry_custom_delay(self, randint_mock, sleep_mock):
-        randint_mock.side_effect = [125, 625, 375]
-
         status_codes = (
             http.client.INTERNAL_SERVER_ERROR,
             http.client.BAD_GATEWAY,
@@ -245,13 +240,18 @@ class Test_wait_and_retry(object):
             http.client.NOT_FOUND,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
+        randint_mock.side_effect = [75 * i for i in range(len(status_codes) - 1)]
 
         def raise_response():
             raise common.InvalidResponse(responses.pop(0))
 
         func = mock.Mock(side_effect=raise_response)
 
-        retry_strategy = common.RetryStrategy(initial_delay=3.0, multiplier=4)
+        initial_delay = 3.0
+        multiplier = 4
+        retry_strategy = common.RetryStrategy(
+            initial_delay=initial_delay, multiplier=multiplier
+        )
         try:
             _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
         except common.InvalidResponse as e:
@@ -260,26 +260,21 @@ class Test_wait_and_retry(object):
         assert ret_val.status_code == status_codes[-1]
         assert status_codes[-1] not in common.RETRYABLE
 
-        assert func.call_count == 4
-        assert func.mock_calls == [mock.call()] * 4
+        assert func.call_count == len(status_codes)
+        assert func.mock_calls == [mock.call()] * len(status_codes)
 
-        assert randint_mock.call_count == 3
-        assert randint_mock.mock_calls == [mock.call(0, 1000)] * 3
+        assert randint_mock.call_count == len(status_codes) - 1
+        assert randint_mock.mock_calls == [mock.call(0, 1000)] * (len(status_codes) - 1)
 
-        assert sleep_mock.call_count == 3
-        sleep_mock.assert_any_call(3.125)  # initial delay 3 + jitter 0.125
-        sleep_mock.assert_any_call(
-            12.625
-        )  # previous delay 3 * multiplier 4 + jitter 0.625
-        sleep_mock.assert_any_call(
-            48.375
-        )  # previous delay 12 * multiplier 4 + jitter 0.375
+        assert sleep_mock.call_count == len(status_codes) - 1
+        for i in range(len(status_codes) - 1):
+            randint = i * 75 / 1000
+            sleep_mock.assert_any_call(initial_delay + randint)
+            initial_delay = initial_delay * multiplier
 
     @mock.patch("time.sleep")
     @mock.patch("random.randint")
     def test_success_with_retry_connection_error(self, randint_mock, sleep_mock):
-        randint_mock.side_effect = [125, 625, 375]
-
         response = _make_response(http.client.NOT_FOUND)
         responses = [
             requests.exceptions.ConnectionError,
@@ -288,28 +283,30 @@ class Test_wait_and_retry(object):
             response,
         ]
         func = mock.Mock(side_effect=responses, spec=[])
+        randint_mock.side_effect = [125 * i for i in range(len(responses) - 1)]
 
         retry_strategy = common.RetryStrategy()
         ret_val = _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
 
         assert ret_val == responses[-1]
 
-        assert func.call_count == 4
-        assert func.mock_calls == [mock.call()] * 4
+        assert func.call_count == len(responses)
+        assert func.mock_calls == [mock.call()] * len(responses)
 
-        assert randint_mock.call_count == 3
-        assert randint_mock.mock_calls == [mock.call(0, 1000)] * 3
+        assert randint_mock.call_count == len(responses) - 1
+        assert randint_mock.mock_calls == [mock.call(0, 1000)] * (len(responses) - 1)
 
-        assert sleep_mock.call_count == 3
-        sleep_mock.assert_any_call(1.125)
-        sleep_mock.assert_any_call(2.625)
-        sleep_mock.assert_any_call(4.375)
+        assert sleep_mock.call_count == len(responses) - 1
+        wait = 1
+        multiplier = 2
+        for i in range(len(responses) - 1):
+            randint = i * 125 / 1000
+            sleep_mock.assert_any_call(wait + randint)
+            wait = wait * multiplier
 
     @mock.patch(u"time.sleep")
     @mock.patch(u"random.randint")
     def test_success_with_retry_chunked_encoding_error(self, randint_mock, sleep_mock):
-        randint_mock.side_effect = [125, 625, 375]
-
         response = _make_response(http.client.NOT_FOUND)
         responses = [
             requests.exceptions.ChunkedEncodingError,
@@ -317,27 +314,30 @@ class Test_wait_and_retry(object):
             response,
         ]
         func = mock.Mock(side_effect=responses, spec=[])
+        randint_mock.side_effect = [125 * i for i in range(len(responses) - 1)]
 
         retry_strategy = common.RetryStrategy()
         ret_val = _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
 
         assert ret_val == responses[-1]
 
-        assert func.call_count == 3
-        assert func.mock_calls == [mock.call()] * 3
+        assert func.call_count == len(responses)
+        assert func.mock_calls == [mock.call()] * len(responses)
 
-        assert randint_mock.call_count == 2
-        assert randint_mock.mock_calls == [mock.call(0, 1000)] * 2
+        assert randint_mock.call_count == len(responses) - 1
+        assert randint_mock.mock_calls == [mock.call(0, 1000)] * (len(responses) - 1)
 
-        assert sleep_mock.call_count == 2
-        sleep_mock.assert_any_call(1.125)
-        sleep_mock.assert_any_call(2.625)
+        assert sleep_mock.call_count == len(responses) - 1
+        wait = 1
+        multiplier = 2
+        for i in range(len(responses) - 1):
+            randint = i * 125 / 1000
+            sleep_mock.assert_any_call(wait + randint)
+            wait = wait * multiplier
 
     @mock.patch(u"time.sleep")
     @mock.patch(u"random.randint")
     def test_connection_import_error_failure(self, randint_mock, sleep_mock):
-        randint_mock.side_effect = [125, 625, 375]
-
         response = _make_response(http.client.NOT_FOUND)
         responses = [
             requests.exceptions.ConnectionError,
@@ -345,6 +345,7 @@ class Test_wait_and_retry(object):
             requests.exceptions.ConnectionError,
             response,
         ]
+        randint_mock.side_effect = [125 * i for i in range(len(responses) - 1)]
 
         with mock.patch(
             "google.resumable_media._helpers._get_connection_error_classes",
@@ -403,8 +404,6 @@ class Test_wait_and_retry(object):
     @mock.patch("time.sleep")
     @mock.patch("random.randint")
     def test_retry_exceeds_max_retries(self, randint_mock, sleep_mock):
-        randint_mock.side_effect = [875, 0, 375, 500, 500, 250, 125]
-
         status_codes = (
             http.client.SERVICE_UNAVAILABLE,
             http.client.GATEWAY_TIMEOUT,
@@ -415,13 +414,15 @@ class Test_wait_and_retry(object):
             common.TOO_MANY_REQUESTS,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
+        randint_mock.side_effect = [75 * i for i in range(len(responses))]
 
         def raise_response():
             raise common.InvalidResponse(responses.pop(0))
 
         func = mock.Mock(side_effect=raise_response)
 
-        retry_strategy = common.RetryStrategy(max_retries=6)
+        max_retries = 6
+        retry_strategy = common.RetryStrategy(max_retries=max_retries)
         try:
             _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
         except common.InvalidResponse as e:
@@ -430,31 +431,30 @@ class Test_wait_and_retry(object):
         assert ret_val.status_code == status_codes[-1]
         assert status_codes[-1] in common.RETRYABLE
 
-        assert func.call_count == 7
-        assert func.mock_calls == [mock.call()] * 7
+        assert func.call_count == max_retries + 1
+        assert func.mock_calls == [mock.call()] * (max_retries + 1)
 
-        assert randint_mock.call_count == 7
-        assert randint_mock.mock_calls == [mock.call(0, 1000)] * 7
+        assert randint_mock.call_count == max_retries + 1
+        assert randint_mock.mock_calls == [mock.call(0, 1000)] * (max_retries + 1)
 
-        assert sleep_mock.call_count == 6
-        sleep_mock.assert_any_call(1.875)
-        sleep_mock.assert_any_call(2.0)
-        sleep_mock.assert_any_call(4.375)
-        sleep_mock.assert_any_call(8.5)
-        sleep_mock.assert_any_call(16.5)
-        sleep_mock.assert_any_call(32.25)
+        assert sleep_mock.call_count == max_retries
+        wait = 1
+        multiplier = 2
+        for i in range(max_retries - 1):
+            randint = i * 75 / 1000
+            sleep_mock.assert_any_call(wait + randint)
+            wait = wait * multiplier
 
     @mock.patch("time.sleep")
     @mock.patch("random.randint")
     def test_retry_zero_max_retries(self, randint_mock, sleep_mock):
-        randint_mock.side_effect = [875, 0, 375]
-
         status_codes = (
             http.client.SERVICE_UNAVAILABLE,
             http.client.GATEWAY_TIMEOUT,
             common.TOO_MANY_REQUESTS,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
+        randint_mock.side_effect = [125 * i for i in range(len(status_codes))]
 
         def raise_response():
             raise common.InvalidResponse(responses.pop(0))
