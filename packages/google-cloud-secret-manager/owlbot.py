@@ -39,6 +39,23 @@ templated_files = common.py_library(
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
+# Fix type annotations for requests
+# Not needed once generator version is >=0.51.1
+# Generator version: https://github.com/googleapis/googleapis/blob/master/WORKSPACE#L227
+# Fix in generator: https://github.com/googleapis/gapic-generator-python/commit/49205d99dd440690b838c8eb3f6a695f35b061c2
+
+s.replace(
+    "google/**/*client.py",
+    "request: ([^U]*?) = None",
+    "request: Union[\g<1>, dict] = None",
+    
+)
+s.replace(
+    "google/**/*client.py",
+    "request \(:class:`(.*)`\):",
+    "request (Union[\g<1>, dict]):"
+)
+
 # ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------

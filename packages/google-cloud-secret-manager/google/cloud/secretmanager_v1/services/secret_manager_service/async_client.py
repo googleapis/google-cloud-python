@@ -183,7 +183,7 @@ class SecretManagerServiceAsyncClient:
 
     async def list_secrets(
         self,
-        request: service.ListSecretsRequest = None,
+        request: Union[service.ListSecretsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -193,7 +193,7 @@ class SecretManagerServiceAsyncClient:
         r"""Lists [Secrets][google.cloud.secretmanager.v1.Secret].
 
         Args:
-            request (:class:`google.cloud.secretmanager_v1.types.ListSecretsRequest`):
+            request (Union[google.cloud.secretmanager_v1.types.ListSecretsRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.ListSecrets][google.cloud.secretmanager.v1.SecretManagerService.ListSecrets].
             parent (:class:`str`):
@@ -265,7 +265,7 @@ class SecretManagerServiceAsyncClient:
 
     async def create_secret(
         self,
-        request: service.CreateSecretRequest = None,
+        request: Union[service.CreateSecretRequest, dict] = None,
         *,
         parent: str = None,
         secret_id: str = None,
@@ -279,7 +279,7 @@ class SecretManagerServiceAsyncClient:
         [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
 
         Args:
-            request (:class:`google.cloud.secretmanager_v1.types.CreateSecretRequest`):
+            request (Union[google.cloud.secretmanager_v1.types.CreateSecretRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.CreateSecret][google.cloud.secretmanager.v1.SecretManagerService.CreateSecret].
             parent (:class:`str`):
@@ -369,7 +369,7 @@ class SecretManagerServiceAsyncClient:
 
     async def add_secret_version(
         self,
-        request: service.AddSecretVersionRequest = None,
+        request: Union[service.AddSecretVersionRequest, dict] = None,
         *,
         parent: str = None,
         payload: resources.SecretPayload = None,
@@ -383,7 +383,7 @@ class SecretManagerServiceAsyncClient:
         [Secret][google.cloud.secretmanager.v1.Secret].
 
         Args:
-            request (:class:`google.cloud.secretmanager_v1.types.AddSecretVersionRequest`):
+            request (Union[google.cloud.secretmanager_v1.types.AddSecretVersionRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion].
             parent (:class:`str`):
@@ -456,7 +456,7 @@ class SecretManagerServiceAsyncClient:
 
     async def get_secret(
         self,
-        request: service.GetSecretRequest = None,
+        request: Union[service.GetSecretRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -467,7 +467,7 @@ class SecretManagerServiceAsyncClient:
         [Secret][google.cloud.secretmanager.v1.Secret].
 
         Args:
-            request (:class:`google.cloud.secretmanager_v1.types.GetSecretRequest`):
+            request (Union[google.cloud.secretmanager_v1.types.GetSecretRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.GetSecret][google.cloud.secretmanager.v1.SecretManagerService.GetSecret].
             name (:class:`str`):
@@ -546,7 +546,7 @@ class SecretManagerServiceAsyncClient:
         [Secret][google.cloud.secretmanager.v1.Secret].
 
         Args:
-            request (:class:`google.cloud.secretmanager_v1.types.UpdateSecretRequest`):
+            request (Union[google.cloud.secretmanager_v1.types.UpdateSecretRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.UpdateSecret][google.cloud.secretmanager.v1.SecretManagerService.UpdateSecret].
             secret (:class:`google.cloud.secretmanager_v1.types.Secret`):
@@ -623,7 +623,7 @@ class SecretManagerServiceAsyncClient:
 
     async def delete_secret(
         self,
-        request: service.DeleteSecretRequest = None,
+        request: Union[service.DeleteSecretRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -633,7 +633,7 @@ class SecretManagerServiceAsyncClient:
         r"""Deletes a [Secret][google.cloud.secretmanager.v1.Secret].
 
         Args:
-            request (:class:`google.cloud.secretmanager_v1.types.DeleteSecretRequest`):
+            request (Union[google.cloud.secretmanager_v1.types.DeleteSecretRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.DeleteSecret][google.cloud.secretmanager.v1.SecretManagerService.DeleteSecret].
             name (:class:`str`):
@@ -688,7 +688,7 @@ class SecretManagerServiceAsyncClient:
 
     async def list_secret_versions(
         self,
-        request: service.ListSecretVersionsRequest = None,
+        request: Union[service.ListSecretVersionsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -700,7 +700,7 @@ class SecretManagerServiceAsyncClient:
         This call does not return secret data.
 
         Args:
-            request (:class:`google.cloud.secretmanager_v1.types.ListSecretVersionsRequest`):
+            request (Union[google.cloud.secretmanager_v1.types.ListSecretVersionsRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.ListSecretVersions][google.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions].
             parent (:class:`str`):
@@ -773,7 +773,7 @@ class SecretManagerServiceAsyncClient:
 
     async def get_secret_version(
         self,
-        request: service.GetSecretVersionRequest = None,
+        request: Union[service.GetSecretVersionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -788,7 +788,7 @@ class SecretManagerServiceAsyncClient:
         [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 
         Args:
-            request (:class:`google.cloud.secretmanager_v1.types.GetSecretVersionRequest`):
+            request (Union[google.cloud.secretmanager_v1.types.GetSecretVersionRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.GetSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.GetSecretVersion].
             name (:class:`str`):
@@ -854,7 +854,7 @@ class SecretManagerServiceAsyncClient:
 
     async def access_secret_version(
         self,
-        request: service.AccessSecretVersionRequest = None,
+        request: Union[service.AccessSecretVersionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -870,7 +870,7 @@ class SecretManagerServiceAsyncClient:
         [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 
         Args:
-            request (:class:`google.cloud.secretmanager_v1.types.AccessSecretVersionRequest`):
+            request (Union[google.cloud.secretmanager_v1.types.AccessSecretVersionRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.AccessSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion].
             name (:class:`str`):
@@ -946,7 +946,7 @@ class SecretManagerServiceAsyncClient:
 
     async def disable_secret_version(
         self,
-        request: service.DisableSecretVersionRequest = None,
+        request: Union[service.DisableSecretVersionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -963,7 +963,7 @@ class SecretManagerServiceAsyncClient:
         [DISABLED][google.cloud.secretmanager.v1.SecretVersion.State.DISABLED].
 
         Args:
-            request (:class:`google.cloud.secretmanager_v1.types.DisableSecretVersionRequest`):
+            request (Union[google.cloud.secretmanager_v1.types.DisableSecretVersionRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.DisableSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.DisableSecretVersion].
             name (:class:`str`):
@@ -1026,7 +1026,7 @@ class SecretManagerServiceAsyncClient:
 
     async def enable_secret_version(
         self,
-        request: service.EnableSecretVersionRequest = None,
+        request: Union[service.EnableSecretVersionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1043,7 +1043,7 @@ class SecretManagerServiceAsyncClient:
         [ENABLED][google.cloud.secretmanager.v1.SecretVersion.State.ENABLED].
 
         Args:
-            request (:class:`google.cloud.secretmanager_v1.types.EnableSecretVersionRequest`):
+            request (Union[google.cloud.secretmanager_v1.types.EnableSecretVersionRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.EnableSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.EnableSecretVersion].
             name (:class:`str`):
@@ -1106,7 +1106,7 @@ class SecretManagerServiceAsyncClient:
 
     async def destroy_secret_version(
         self,
-        request: service.DestroySecretVersionRequest = None,
+        request: Union[service.DestroySecretVersionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1124,7 +1124,7 @@ class SecretManagerServiceAsyncClient:
         and irrevocably destroys the secret data.
 
         Args:
-            request (:class:`google.cloud.secretmanager_v1.types.DestroySecretVersionRequest`):
+            request (Union[google.cloud.secretmanager_v1.types.DestroySecretVersionRequest, dict]):
                 The request object. Request message for
                 [SecretManagerService.DestroySecretVersion][google.cloud.secretmanager.v1.SecretManagerService.DestroySecretVersion].
             name (:class:`str`):
@@ -1187,7 +1187,7 @@ class SecretManagerServiceAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1202,7 +1202,7 @@ class SecretManagerServiceAsyncClient:
         [Secret][google.cloud.secretmanager.v1.Secret].
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.SetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1298,7 +1298,7 @@ class SecretManagerServiceAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1309,7 +1309,7 @@ class SecretManagerServiceAsyncClient:
         have a policy set.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.GetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1405,7 +1405,7 @@ class SecretManagerServiceAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1421,7 +1421,7 @@ class SecretManagerServiceAsyncClient:
         warning.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
