@@ -1043,6 +1043,12 @@ class Test_AsyncJob(unittest.TestCase):
 
         self.assertTrue(job.cancelled())
 
+    def test_repr(self):
+        client = _make_client(project="project-foo")
+        job = self._make_one("job-99", client)
+        job._properties.setdefault("jobReference", {})["location"] = "ABC"
+        assert repr(job) == "_AsyncJob<project=project-foo, location=ABC, id=job-99>"
+
 
 class Test_JobConfig(unittest.TestCase):
     JOB_TYPE = "testing"

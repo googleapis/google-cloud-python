@@ -722,6 +722,14 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             and self.error_result.get("reason") == _STOPPED_REASON
         )
 
+    def __repr__(self):
+        result = (
+            f"{self.__class__.__name__}<"
+            f"project={self.project}, location={self.location}, id={self.job_id}"
+            ">"
+        )
+        return result
+
 
 class _JobConfig(object):
     """Abstract base class for job configuration objects.
