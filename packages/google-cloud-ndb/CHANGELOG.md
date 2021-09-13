@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.10.3](https://www.github.com/googleapis/python-ndb/compare/v1.10.2...v1.10.3) (2021-09-07)
+
+
+### Bug Fixes
+
+* use thread-safe iterator to generate context ids ([#716](https://www.github.com/googleapis/python-ndb/issues/716)) ([92ec8ac](https://www.github.com/googleapis/python-ndb/commit/92ec8ac7de8cd0f50d6104b9e514b4e933cfbb13)), closes [#715](https://www.github.com/googleapis/python-ndb/issues/715)
+
 ### [1.10.2](https://www.github.com/googleapis/python-ndb/compare/v1.10.1...v1.10.2) (2021-08-31)
 
 
