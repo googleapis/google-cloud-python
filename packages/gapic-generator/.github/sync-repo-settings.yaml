@@ -6,7 +6,6 @@ branchProtectionRules:
   isAdminEnforced: true
   requiredStatusCheckContexts:
     - 'cla/google'
-    - 'conventionalcommits.org'
     - 'docs'
     - 'mypy'
     - 'showcase (showcase)'
