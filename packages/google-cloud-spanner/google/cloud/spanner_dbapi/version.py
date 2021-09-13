@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pkg_resources
 import platform
 
 PY_VERSION = platform.python_version()
-VERSION = "2.2.0a1"
-DEFAULT_USER_AGENT = "django_spanner/" + VERSION
+VERSION = pkg_resources.get_distribution("google-cloud-spanner").version
+DEFAULT_USER_AGENT = "dbapi/" + VERSION
