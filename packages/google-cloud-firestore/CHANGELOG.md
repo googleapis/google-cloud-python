@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+### [2.3.2](https://www.github.com/googleapis/python-firestore/compare/v2.3.1...v2.3.2) (2021-09-09)
+
+
+### Bug Fixes
+
+* treat None cursors as a no-op. ([#440](https://www.github.com/googleapis/python-firestore/issues/440)) ([e7aed0f](https://www.github.com/googleapis/python-firestore/commit/e7aed0f585a59e877223a15a3c2fc7f0f49105ee))
+
 ### [2.3.1](https://www.github.com/googleapis/python-firestore/compare/v2.3.0...v2.3.1) (2021-08-30)
 
 
