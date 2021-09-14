@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.7.1](https://www.github.com/googleapis/python-secret-manager/compare/v2.7.0...v2.7.1) (2021-09-13)
+
+
+### Bug Fixes
+
+* add 'dict' type annotation to 'request' ([#193](https://www.github.com/googleapis/python-secret-manager/issues/193)) ([1d5fee4](https://www.github.com/googleapis/python-secret-manager/commit/1d5fee4fe825096947bb125ebcba72fdb6d463c6))
+
 ## [2.7.0](https://www.github.com/googleapis/python-secret-manager/compare/v2.6.0...v2.7.0) (2021-08-03)
 
 
