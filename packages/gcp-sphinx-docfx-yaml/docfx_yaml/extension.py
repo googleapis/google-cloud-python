@@ -1487,10 +1487,10 @@ def build_finished(app, exception):
     if len(pkg_toc_yaml) == 0 and len(app.env.markdown_pages) == 0:
         raise RuntimeError("No documentation for this module.")
 
+    pkg_toc_yaml = group_by_package(pkg_toc_yaml)
+
     # Perform additional disambiguation of the name
     disambiguated_names = disambiguate_toc_name(pkg_toc_yaml)
-
-    pkg_toc_yaml = group_by_package(pkg_toc_yaml)
 
     # Keeping uidname field carrys over onto the toc.yaml files, we need to
     # be keep using them but don't need them in the actual file
