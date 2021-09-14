@@ -18,6 +18,7 @@ import configparser
 import os
 import time
 
+from google.api_core.exceptions import ResourceExhausted
 from google.cloud.spanner_v1 import Client
 from google.cloud.spanner_v1.instance import Instance
 
@@ -37,8 +38,8 @@ else:
     CLIENT = Client(project=PROJECT)
 
 
-def reap_old_instances():
-    # Delete test instances that are older than four hours.
+def delete_stale_test_instances():
+    """Delete test instances that are older than four hours."""
     cutoff = int(time.time()) - 4 * 60 * 60
     instances_pbs = CLIENT.list_instances(
         "labels.python-spanner-sqlalchemy-systest:true"
@@ -50,11 +51,19 @@ def reap_old_instances():
         create_time = int(instance.labels["created"])
         if create_time > cutoff:
             continue
-        # Backups are not used in sqlalchemy dialect test, therefore instance can just be deleted.
-        instance.delete()
+        # Backups are not used in sqlalchemy dialect test,
+        # therefore instance can just be deleted.
+        try:
+            instance.delete()
+        except ResourceExhausted:
+            print(
+                "Unable to drop stale instance '{}'. May need manual delete.".format(
+                    instance.instance_id
+                )
+            )
 
 
-def prep_instance():
+def create_test_instance():
     configs = list(CLIENT.list_instance_configs())
     if not USE_EMULATOR:
         # Filter out non "us" locations
@@ -62,8 +71,12 @@ def prep_instance():
 
     instance_config = configs[0].name
     create_time = str(int(time.time()))
-    unique_resource_id = '%s%d' % ('-', 1000 * time.time())
-    instance_id = 'sqlalchemy-dialect-test' if USE_EMULATOR else "sqlalchemy-test" + unique_resource_id
+    unique_resource_id = "%s%d" % ("-", 1000 * time.time())
+    instance_id = (
+        "sqlalchemy-dialect-test"
+        if USE_EMULATOR
+        else "sqlalchemy-test" + unique_resource_id
+    )
     labels = {"python-spanner-sqlalchemy-systest": "true", "created": create_time}
 
     instance = CLIENT.instance(instance_id, instance_config, labels=labels)
@@ -86,5 +99,5 @@ def prep_instance():
         config.write(configfile)
 
 
-reap_old_instances()
-prep_instance()
+delete_stale_test_instances()
+create_test_instance()
