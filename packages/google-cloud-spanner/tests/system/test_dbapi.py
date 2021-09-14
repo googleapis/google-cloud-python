@@ -280,7 +280,7 @@ VALUES (%s, %s, %s, %s)
     conn.commit()
 
     cursor.executemany(
-        """SELECT * FROM contacts WHERE contact_id = @a1""", ({"a1": 1}, {"a1": 2}),
+        """SELECT * FROM contacts WHERE contact_id = %s""", ((1,), (2,)),
     )
     res = cursor.fetchall()
     conn.commit()
