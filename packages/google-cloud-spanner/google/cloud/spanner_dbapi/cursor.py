@@ -21,6 +21,7 @@ from google.api_core.exceptions import AlreadyExists
 from google.api_core.exceptions import FailedPrecondition
 from google.api_core.exceptions import InternalServerError
 from google.api_core.exceptions import InvalidArgument
+from google.api_core.exceptions import OutOfRange
 
 from collections import namedtuple
 
@@ -241,7 +242,7 @@ class Cursor(object):
                 self.connection.database.run_in_transaction(
                     self._do_execute_update, sql, args or None
                 )
-        except (AlreadyExists, FailedPrecondition) as e:
+        except (AlreadyExists, FailedPrecondition, OutOfRange) as e:
             raise IntegrityError(e.details if hasattr(e, "details") else e)
         except InvalidArgument as e:
             raise ProgrammingError(e.details if hasattr(e, "details") else e)

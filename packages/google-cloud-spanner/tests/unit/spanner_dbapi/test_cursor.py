@@ -251,6 +251,13 @@ class TestCursor(unittest.TestCase):
             with self.assertRaises(IntegrityError):
                 cursor.execute(sql="sql")
 
+        with mock.patch(
+            "google.cloud.spanner_dbapi.parse_utils.classify_stmt",
+            side_effect=exceptions.OutOfRange("message"),
+        ):
+            with self.assertRaises(IntegrityError):
+                cursor.execute("sql")
+
     def test_execute_invalid_argument(self):
         from google.api_core import exceptions
         from google.cloud.spanner_dbapi.exceptions import ProgrammingError
