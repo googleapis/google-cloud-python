@@ -262,3 +262,18 @@ class CommonPython:
                 found_log.source_location.get(field, None),
                 f"source_location[{field}] is unexpectedly not None",
             )
+
+    def test_pylogging_exception(self):
+        log_text = f"{inspect.currentframe().f_code.co_name}"
+        exception_text = "test_exception"
+        log_list = self.trigger_and_retrieve(log_text, "pylogging_exception",
+                exception_text=exception_text)
+        found_log = log_list[-1]
+
+        message = (found_log.payload.get("message", None)
+                    if isinstance(found_log.payload, dict)
+                    else str(found_log.payload))
+
+        self.assertIn(log_text, message)
+        self.assertIn(f"Exception: {exception_text}", message)
+        self.assertIn("Traceback (most recent call last):", message)

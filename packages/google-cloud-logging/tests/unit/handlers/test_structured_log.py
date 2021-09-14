@@ -119,6 +119,24 @@ class TestStructuredLogHandler(unittest.TestCase):
         result = handler.format(record)
         self.assertIn(expected_result, result)
 
+    def test_format_with_exception(self):
+        """
+        When logging a message with an exception, the stack trace should not be appended
+        """
+        import logging
+        import json
+
+        handler = self._make_one()
+        exception_tuple = (Exception, Exception(), None)
+        message = "test"
+        record = logging.LogRecord(
+            None, logging.INFO, None, None, message, None, exception_tuple
+        )
+        record.created = None
+        handler.filter(record)
+        result = json.loads(handler.format(record))
+        self.assertEqual(result["message"], f"{message}\nException")
+
     def test_format_with_line_break(self):
         """
         When logging a message containing \n, it should be properly escaped

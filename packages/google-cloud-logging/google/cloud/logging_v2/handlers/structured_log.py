@@ -62,9 +62,14 @@ class StructuredLogHandler(logging.StreamHandler):
         # let other formatters alter the message
         super_payload = None
         if record.msg:
+            # format the message using default handler behaviors
             super_payload = super(StructuredLogHandler, self).format(record)
         # properly break any formatting in string to make it json safe
         record._formatted_msg = json.dumps(super_payload or "")
+        # remove exception info to avoid duplicating it
+        # https://github.com/googleapis/python-logging/issues/382
+        record.exc_info = None
+        record.exc_text = None
         # convert to GCP structred logging format
         gcp_payload = self._gcp_formatter.format(record)
         return gcp_payload
