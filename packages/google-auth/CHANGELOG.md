@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.1.0](https://www.github.com/googleapis/google-auth-library-python/compare/v2.0.2...v2.1.0) (2021-09-10)
+
+
+### Features
+
+* Improve handling of clock skew ([#858](https://www.github.com/googleapis/google-auth-library-python/issues/858)) ([45c4491](https://www.github.com/googleapis/google-auth-library-python/commit/45c4491fb971c9edf590b27b9e271b7a23a1bba6))
+
+
+### Bug Fixes
+
+* add SAML challenge to reauth ([#819](https://www.github.com/googleapis/google-auth-library-python/issues/819)) ([13aed5f](https://www.github.com/googleapis/google-auth-library-python/commit/13aed5ffe3ba435004ab48202462452f04d7cb29))
+* disable warning if quota project id provided to auth.default() ([#856](https://www.github.com/googleapis/google-auth-library-python/issues/856)) ([11ebaeb](https://www.github.com/googleapis/google-auth-library-python/commit/11ebaeb9d7c0862916154cfb810238574507629a))
+* rename CLOCK_SKEW and separate client/server user case ([#863](https://www.github.com/googleapis/google-auth-library-python/issues/863)) ([738611b](https://www.github.com/googleapis/google-auth-library-python/commit/738611bd2914f0fd5fa8b49b65f56ef321829c85))
+
 ### [2.0.2](https://www.github.com/googleapis/google-auth-library-python/compare/v2.0.1...v2.0.2) (2021-08-25)
 
 
