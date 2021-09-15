@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.2](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.1.1...v1.1.2) (2021-09-14)
+
+
+### Bug Fixes
+
+* disambiguate after grouping by packages and versions ([#132](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/132)) ([53d68fe](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/53d68fe2a05302e4dc955157d9e08b9de33ec947))
+
 ### [1.1.1](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.1.0...v1.1.1) (2021-08-30)
 
 
