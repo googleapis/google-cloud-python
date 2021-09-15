@@ -36,6 +36,7 @@ from typing import (Any, cast, Dict, FrozenSet, Iterable, List, Mapping,
 from google.api import annotations_pb2      # type: ignore
 from google.api import client_pb2
 from google.api import field_behavior_pb2
+from google.api import http_pb2
 from google.api import resource_pb2
 from google.api_core import exceptions      # type: ignore
 from google.protobuf import descriptor_pb2  # type: ignore
@@ -707,6 +708,27 @@ class RetryInfo:
 
 
 @dataclasses.dataclass(frozen=True)
+class HttpRule:
+    """Representation of the method's http bindings."""
+    method: str
+    uri: str
+    body: Optional[str]
+
+    @classmethod
+    def try_parse_http_rule(cls, http_rule) -> Optional['HttpRule']:
+        method = http_rule.WhichOneof("pattern")
+        if method is None or method == "custom":
+            return None
+
+        uri = getattr(http_rule, method)
+        if not uri:
+            return None
+
+        body = http_rule.body or None
+        return cls(method, uri, body)
+
+
+@dataclasses.dataclass(frozen=True)
 class Method:
     """Description of a method (defined with the ``rpc`` keyword)."""
     method_pb: descriptor_pb2.MethodDescriptorProto
@@ -822,12 +844,21 @@ class Method:
         return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
 
     @property
-    def http_opt(self) -> Optional[Dict[str, str]]:
-        """Return the http option for this method.
+    def http_options(self) -> List[HttpRule]:
+        """Return a list of the http bindings for this method."""
+        http = self.options.Extensions[annotations_pb2.http]
+        http_options = [http] + list(http.additional_bindings)
+        opt_gen = (HttpRule.try_parse_http_rule(http_rule)
+                   for http_rule in http_options)
+        return [rule for rule in opt_gen if rule]
 
-        e.g. {'verb': 'post'
-              'url': '/some/path'
-              'body': '*'}
+    @property
+    def http_opt(self) -> Optional[Dict[str, str]]:
+        """Return the (main) http option for this method.
+
+          e.g. {'verb': 'post'
+                'url': '/some/path'
+                'body': '*'}
 
         """
         http: List[Tuple[descriptor_pb2.FieldDescriptorProto, str]]

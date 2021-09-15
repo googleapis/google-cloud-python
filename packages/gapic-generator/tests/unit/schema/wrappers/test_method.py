@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import collections
+import dataclasses
 from typing import Sequence
 
 from google.api import field_behavior_pb2
@@ -326,6 +327,86 @@ def test_method_path_params():
 def test_method_path_params_no_http_rule():
     method = make_method('DoSomething')
     assert method.path_params == []
+
+
+def test_method_http_options():
+    verbs = [
+        'get',
+        'put',
+        'post',
+        'delete',
+        'patch'
+    ]
+    for v in verbs:
+        http_rule = http_pb2.HttpRule(**{v: '/v1/{parent=projects/*}/topics'})
+        method = make_method('DoSomething', http_rule=http_rule)
+        assert [dataclasses.asdict(http) for http in method.http_options] == [{
+            'method': v,
+            'uri': '/v1/{parent=projects/*}/topics',
+            'body': None
+        }]
+
+
+def test_method_http_options_empty_http_rule():
+    http_rule = http_pb2.HttpRule()
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert method.http_options == []
+
+    http_rule = http_pb2.HttpRule(get='')
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert method.http_options == []
+
+
+def test_method_http_options_no_http_rule():
+    method = make_method('DoSomething')
+    assert method.path_params == []
+
+
+def test_method_http_options_body():
+    http_rule = http_pb2.HttpRule(
+        post='/v1/{parent=projects/*}/topics',
+        body='*'
+    )
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert [dataclasses.asdict(http) for http in method.http_options] == [{
+        'method': 'post',
+        'uri': '/v1/{parent=projects/*}/topics',
+        'body': '*'
+    }]
+
+
+def test_method_http_options_additional_bindings():
+    http_rule = http_pb2.HttpRule(
+        post='/v1/{parent=projects/*}/topics',
+        body='*',
+        additional_bindings=[
+            http_pb2.HttpRule(
+                post='/v1/{parent=projects/*/regions/*}/topics',
+                body='*',
+            ),
+            http_pb2.HttpRule(
+                post='/v1/projects/p1/topics',
+                body='body_field',
+            ),
+        ]
+    )
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert [dataclasses.asdict(http) for http in method.http_options] == [
+        {
+            'method': 'post',
+            'uri': '/v1/{parent=projects/*}/topics',
+            'body': '*'
+            },
+        {
+            'method': 'post',
+            'uri': '/v1/{parent=projects/*/regions/*}/topics',
+            'body': '*'
+            },
+        {
+            'method': 'post',
+            'uri': '/v1/projects/p1/topics',
+            'body': 'body_field'
+            }]
 
 
 def test_method_query_params():
