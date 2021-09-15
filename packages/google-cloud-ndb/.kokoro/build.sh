@@ -27,23 +27,27 @@ export PYTHONUNBUFFERED=1
 # Debug: show build environment
 env | grep KOKORO
 
-# Setup service account credentials.
-export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
+if [[ -f "${KOKORO_GFILE_DIR}/service-account.json" ]]; then
+  # Setup service account credentials.
+  export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
+fi
 
 # Setup project id.
 export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 
-# Configure local Redis to be used
-export REDIS_CACHE_URL=redis://localhost
-redis-server &
+if [[ -f "${KOKORO_GFILE_DIR}/service-account.json" ]]; then
+  # Configure local Redis to be used
+  export REDIS_CACHE_URL=redis://localhost
+  redis-server &
 
-# Configure local memcached to be used
-export MEMCACHED_HOSTS=127.0.0.1
-service memcached start
+  # Configure local memcached to be used
+  export MEMCACHED_HOSTS=127.0.0.1
+  service memcached start
 
-# Some system tests require indexes. Use gcloud to create them.
-gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$PROJECT_ID
-gcloud --quiet --verbosity=debug datastore indexes create tests/system/index.yaml
+  # Some system tests require indexes. Use gcloud to create them.
+  gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$PROJECT_ID
+  gcloud --quiet --verbosity=debug datastore indexes create tests/system/index.yaml
+fi
 
 
 # Remove old nox
