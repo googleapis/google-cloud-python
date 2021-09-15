@@ -84,8 +84,10 @@ This list of tuples can be used as the ``entity`` and ``role`` fields
 when sending metadata for ACLs to the API.
 """
 
+from google.cloud.storage._helpers import _add_generation_match_parameters
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
+from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
 
 
 class _ACLEntity(object):
@@ -465,7 +467,18 @@ class ACL(object):
         for entry in found.get("items", ()):
             self.add_entity(self.entity_from_dict(entry))
 
-    def _save(self, acl, predefined, client, timeout=_DEFAULT_TIMEOUT):
+    def _save(
+        self,
+        acl,
+        predefined,
+        client,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        timeout=_DEFAULT_TIMEOUT,
+        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+    ):
         """Helper for :meth:`save` and :meth:`save_predefined`.
 
         :type acl: :class:`google.cloud.storage.acl.ACL`, or a compatible list.
@@ -481,12 +494,28 @@ class ACL(object):
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
 
+        :type if_generation_match: long
+        :param if_generation_match:
+            (Optional) See :ref:`using-if-generation-match`
+
+        :type if_generation_not_match: long
+        :param if_generation_not_match:
+            (Optional) See :ref:`using-if-generation-not-match`
+
+        :type if_metageneration_match: long
+        :param if_metageneration_match:
+            (Optional) See :ref:`using-if-metageneration-match`
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match:
+            (Optional) See :ref:`using-if-metageneration-not-match`
+
         :type timeout: float or tuple
         :param timeout:
             (Optional) The amount of time, in seconds, to wait
             for the server response.  See: :ref:`configuring_timeouts`
 
-        :type retry: :class:`~google.api_core.retry.Retry`
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
@@ -500,6 +529,14 @@ class ACL(object):
         if self.user_project is not None:
             query_params["userProject"] = self.user_project
 
+        _add_generation_match_parameters(
+            query_params,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+        )
+
         path = self.save_path
 
         result = client._patch_resource(
@@ -507,7 +544,7 @@ class ACL(object):
             {self._URL_PATH_ELEM: list(acl)},
             query_params=query_params,
             timeout=timeout,
-            retry=None,
+            retry=retry,
         )
 
         self.entities.clear()
@@ -517,7 +554,17 @@ class ACL(object):
 
         self.loaded = True
 
-    def save(self, acl=None, client=None, timeout=_DEFAULT_TIMEOUT):
+    def save(
+        self,
+        acl=None,
+        client=None,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        timeout=_DEFAULT_TIMEOUT,
+        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+    ):
         """Save this ACL for the current bucket.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -531,10 +578,30 @@ class ACL(object):
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
 
+        :type if_generation_match: long
+        :param if_generation_match:
+            (Optional) See :ref:`using-if-generation-match`
+
+        :type if_generation_not_match: long
+        :param if_generation_not_match:
+            (Optional) See :ref:`using-if-generation-not-match`
+
+        :type if_metageneration_match: long
+        :param if_metageneration_match:
+            (Optional) See :ref:`using-if-metageneration-match`
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match:
+            (Optional) See :ref:`using-if-metageneration-not-match`
+
         :type timeout: float or tuple
         :param timeout:
             (Optional) The amount of time, in seconds, to wait
             for the server response.  See: :ref:`configuring_timeouts`
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry:
+            (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
         if acl is None:
             acl = self
@@ -543,9 +610,29 @@ class ACL(object):
             save_to_backend = True
 
         if save_to_backend:
-            self._save(acl, None, client, timeout=timeout)
+            self._save(
+                acl,
+                None,
+                client,
+                if_generation_match=if_generation_match,
+                if_generation_not_match=if_generation_not_match,
+                if_metageneration_match=if_metageneration_match,
+                if_metageneration_not_match=if_metageneration_not_match,
+                timeout=timeout,
+                retry=retry,
+            )
 
-    def save_predefined(self, predefined, client=None, timeout=_DEFAULT_TIMEOUT):
+    def save_predefined(
+        self,
+        predefined,
+        client=None,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        timeout=_DEFAULT_TIMEOUT,
+        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+    ):
         """Save this ACL for the current bucket using a predefined ACL.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -562,15 +649,54 @@ class ACL(object):
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
 
+        :type if_generation_match: long
+        :param if_generation_match:
+            (Optional) See :ref:`using-if-generation-match`
+
+        :type if_generation_not_match: long
+        :param if_generation_not_match:
+            (Optional) See :ref:`using-if-generation-not-match`
+
+        :type if_metageneration_match: long
+        :param if_metageneration_match:
+            (Optional) See :ref:`using-if-metageneration-match`
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match:
+            (Optional) See :ref:`using-if-metageneration-not-match`
+
         :type timeout: float or tuple
         :param timeout:
             (Optional) The amount of time, in seconds, to wait
             for the server response.  See: :ref:`configuring_timeouts`
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry:
+            (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
         predefined = self.validate_predefined(predefined)
-        self._save(None, predefined, client, timeout=timeout)
+        self._save(
+            None,
+            predefined,
+            client,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+            timeout=timeout,
+            retry=retry,
+        )
 
-    def clear(self, client=None, timeout=_DEFAULT_TIMEOUT):
+    def clear(
+        self,
+        client=None,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        timeout=_DEFAULT_TIMEOUT,
+        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+    ):
         """Remove all ACL entries.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -585,12 +711,41 @@ class ACL(object):
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
 
+        :type if_generation_match: long
+        :param if_generation_match:
+            (Optional) See :ref:`using-if-generation-match`
+
+        :type if_generation_not_match: long
+        :param if_generation_not_match:
+            (Optional) See :ref:`using-if-generation-not-match`
+
+        :type if_metageneration_match: long
+        :param if_metageneration_match:
+            (Optional) See :ref:`using-if-metageneration-match`
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match:
+            (Optional) See :ref:`using-if-metageneration-not-match`
+
         :type timeout: float or tuple
         :param timeout:
             (Optional) The amount of time, in seconds, to wait
             for the server response.  See: :ref:`configuring_timeouts`
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry:
+            (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
-        self.save([], client=client, timeout=timeout)
+        self.save(
+            [],
+            client=client,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+            timeout=timeout,
+            retry=retry,
+        )
 
 
 class BucketACL(ACL):

@@ -2839,7 +2839,14 @@ class Bucket(_PropertyMixin):
         return resp.get("permissions", [])
 
     def make_public(
-        self, recursive=False, future=False, client=None, timeout=_DEFAULT_TIMEOUT,
+        self,
+        recursive=False,
+        future=False,
+        client=None,
+        timeout=_DEFAULT_TIMEOUT,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
     ):
         """Update bucket's ACL, granting read access to anonymous users.
 
@@ -2860,6 +2867,18 @@ class Bucket(_PropertyMixin):
             (Optional) The amount of time, in seconds, to wait
             for the server response.  See: :ref:`configuring_timeouts`
 
+        :type if_metageneration_match: long
+        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
+                                        blob's current metageneration matches the given value.
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
+                                            blob's current metageneration does not match the given value.
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry:
+            (Optional) How to retry the RPC. See: :ref:`configuring_retries`
+
         :raises ValueError:
             If ``recursive`` is True, and the bucket contains more than 256
             blobs.  This is to prevent extremely long runtime of this
@@ -2869,14 +2888,26 @@ class Bucket(_PropertyMixin):
             for each blob.
         """
         self.acl.all().grant_read()
-        self.acl.save(client=client, timeout=timeout)
+        self.acl.save(
+            client=client,
+            timeout=timeout,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+            retry=retry,
+        )
 
         if future:
             doa = self.default_object_acl
             if not doa.loaded:
                 doa.reload(client=client, timeout=timeout)
             doa.all().grant_read()
-            doa.save(client=client, timeout=timeout)
+            doa.save(
+                client=client,
+                timeout=timeout,
+                if_metageneration_match=if_metageneration_match,
+                if_metageneration_not_match=if_metageneration_not_match,
+                retry=retry,
+            )
 
         if recursive:
             blobs = list(
@@ -2899,10 +2930,19 @@ class Bucket(_PropertyMixin):
 
             for blob in blobs:
                 blob.acl.all().grant_read()
-                blob.acl.save(client=client, timeout=timeout)
+                blob.acl.save(
+                    client=client, timeout=timeout,
+                )
 
     def make_private(
-        self, recursive=False, future=False, client=None, timeout=_DEFAULT_TIMEOUT,
+        self,
+        recursive=False,
+        future=False,
+        client=None,
+        timeout=_DEFAULT_TIMEOUT,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
     ):
         """Update bucket's ACL, revoking read access for anonymous users.
 
@@ -2924,6 +2964,16 @@ class Bucket(_PropertyMixin):
             (Optional) The amount of time, in seconds, to wait
             for the server response.  See: :ref:`configuring_timeouts`
 
+        :type if_metageneration_match: long
+        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
+                                        blob's current metageneration matches the given value.
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
+                                            blob's current metageneration does not match the given value.
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry:
+            (Optional) How to retry the RPC. See: :ref:`configuring_retries`
+
         :raises ValueError:
             If ``recursive`` is True, and the bucket contains more than 256
             blobs.  This is to prevent extremely long runtime of this
@@ -2933,14 +2983,26 @@ class Bucket(_PropertyMixin):
             for each blob.
         """
         self.acl.all().revoke_read()
-        self.acl.save(client=client, timeout=timeout)
+        self.acl.save(
+            client=client,
+            timeout=timeout,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+            retry=retry,
+        )
 
         if future:
             doa = self.default_object_acl
             if not doa.loaded:
                 doa.reload(client=client, timeout=timeout)
             doa.all().revoke_read()
-            doa.save(client=client, timeout=timeout)
+            doa.save(
+                client=client,
+                timeout=timeout,
+                if_metageneration_match=if_metageneration_match,
+                if_metageneration_not_match=if_metageneration_not_match,
+                retry=retry,
+            )
 
         if recursive:
             blobs = list(

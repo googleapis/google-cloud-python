@@ -246,6 +246,42 @@ def test_bucket_acls_iam_w_user_project(
     with_user_project.set_iam_policy(policy)
 
 
+def test_bucket_acls_w_metageneration_match(storage_client, buckets_to_delete):
+    wrong_metageneration_number = 9
+    bucket_name = _helpers.unique_name("acl-w-metageneration-match")
+    bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket_name)
+    buckets_to_delete.append(bucket)
+
+    # Exercise bucket ACL with metageneration match
+    acl = bucket.acl
+    acl.group("cloud-developer-relations@google.com").grant_read()
+    bucket.reload()
+
+    with pytest.raises(exceptions.PreconditionFailed):
+        acl.save(if_metageneration_match=wrong_metageneration_number)
+        assert (
+            "READER"
+            not in acl.group("cloud-developer-relations@google.com").get_roles()
+        )
+
+    acl.save(if_metageneration_match=bucket.metageneration)
+    assert "READER" in acl.group("cloud-developer-relations@google.com").get_roles()
+
+    # Exercise default object ACL w/ metageneration match
+    doa = bucket.default_object_acl
+    doa.group("cloud-developer-relations@google.com").grant_owner()
+    bucket.reload()
+
+    with pytest.raises(exceptions.PreconditionFailed):
+        doa.save(if_metageneration_match=wrong_metageneration_number)
+        assert (
+            "OWNER" not in doa.group("cloud-developer-relations@google.com").get_roles()
+        )
+
+    doa.save(if_metageneration_match=bucket.metageneration)
+    assert "OWNER" in doa.group("cloud-developer-relations@google.com").get_roles()
+
+
 def test_bucket_copy_blob(
     storage_client, buckets_to_delete, blobs_to_delete, user_project,
 ):

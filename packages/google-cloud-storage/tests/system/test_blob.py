@@ -373,6 +373,41 @@ def test_blob_acl_w_user_project(
     assert not acl.has_entity("allUsers")
 
 
+def test_blob_acl_w_metageneration_match(
+    shared_bucket, blobs_to_delete, file_data, service_account,
+):
+    wrong_metageneration_number = 9
+    wrong_generation_number = 6
+
+    blob = shared_bucket.blob("FilePatchACL")
+    info = file_data["simple"]
+    blob.upload_from_filename(info["path"])
+    blobs_to_delete.append(blob)
+
+    # Exercise blob ACL with metageneration/generation match
+    acl = blob.acl
+    blob.reload()
+
+    with pytest.raises(exceptions.PreconditionFailed):
+        acl.save_predefined(
+            "publicRead", if_metageneration_match=wrong_metageneration_number
+        )
+        assert "READER" not in acl.all().get_roles()
+
+    acl.save_predefined("publicRead", if_metageneration_match=blob.metageneration)
+    assert "READER" in acl.all().get_roles()
+
+    blob.reload()
+    del acl.entities["allUsers"]
+
+    with pytest.raises(exceptions.PreconditionFailed):
+        acl.save(if_generation_match=wrong_generation_number)
+        assert acl.has_entity("allUsers")
+
+    acl.save(if_generation_match=blob.generation)
+    assert not acl.has_entity("allUsers")
+
+
 def test_blob_acl_upload_predefined(
     shared_bucket, blobs_to_delete, file_data, service_account,
 ):
