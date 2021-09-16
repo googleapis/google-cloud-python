@@ -42,6 +42,7 @@ nox.options.sessions = [
     "lint_setup_py",
     "blacken",
     "docs",
+    "doctests",
 ]
 
 # Error if a python version is missing
@@ -207,6 +208,22 @@ def docs(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
+
+
+@nox.session(python="3.6")
+def doctests(session):
+    # Doctests run against Python 3.6 only.
+    # It is difficult to make doctests run against both Python 2 and Python 3
+    # because they test string output equivalence, which is difficult to
+    # make match (e.g. unicode literals starting with "u").
+
+    # Install all test dependencies, then install this package into the
+    # virtualenv's dist-packages.
+    session.install("mock", "pytest", "sphinx", "google-cloud-testutils")
+    session.install("-e", ".")
+
+    # Run py.test against the system tests.
+    session.run("py.test", "tests/doctests.py")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

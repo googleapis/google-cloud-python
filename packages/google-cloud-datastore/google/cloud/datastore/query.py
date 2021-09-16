@@ -215,13 +215,21 @@ class Query(object):
 
         where property is a property stored on the entity in the datastore
         and operator is one of ``OPERATORS``
-        (ie, ``=``, ``<``, ``<=``, ``>``, ``>=``)::
+        (ie, ``=``, ``<``, ``<=``, ``>``, ``>=``):
 
-          >>> from google.cloud import datastore
-          >>> client = datastore.Client()
-          >>> query = client.query(kind='Person')
-          >>> query = query.add_filter('name', '=', 'James')
-          >>> query = query.add_filter('age', '>', 50)
+        .. testsetup:: query-filter
+
+            import uuid
+
+            from google.cloud import datastore
+
+            client = datastore.Client()
+
+        .. doctest:: query-filter
+
+            >>> query = client.query(kind='Person')
+            >>> query = query.add_filter('name', '=', 'James')
+            >>> query = query.add_filter('age', '>', 50)
 
         :type property_name: str
         :param property_name: A property name.
@@ -349,16 +357,37 @@ class Query(object):
     ):
         """Execute the Query; return an iterator for the matching entities.
 
-        For example::
+        For example:
 
-          >>> from google.cloud import datastore
-          >>> client = datastore.Client()
-          >>> query = client.query(kind='Person')
-          >>> result = query.add_filter('name', '=', 'Sally').fetch()
-          >>> list(result)
-          [<Entity object>, <Entity object>, ...]
-          >>> list(query.fetch(1))
-          [<Entity object>]
+        .. testsetup:: query-fetch
+
+            import uuid
+
+            from google.cloud import datastore
+
+            unique = str(uuid.uuid4())[0:8]
+            client = datastore.Client(namespace='ns{}'.format(unique))
+
+
+        .. doctest:: query-fetch
+
+            >>> andy = datastore.Entity(client.key('Person', 1234))
+            >>> andy['name'] = 'Andy'
+            >>> sally = datastore.Entity(client.key('Person', 2345))
+            >>> sally['name'] = 'Sally'
+            >>> bobby = datastore.Entity(client.key('Person', 3456))
+            >>> bobby['name'] = 'Bobby'
+            >>> client.put_multi([andy, sally, bobby])
+            >>> query = client.query(kind='Person')
+            >>> result = list(query.add_filter('name', '=', 'Sally').fetch())
+            >>> result
+            [<Entity('Person', 2345) {'name': 'Sally'}>]
+
+        .. testcleanup:: query-fetch
+
+            client.delete(andy.key)
+            client.delete(sally.key)
+            client.delete(bobby.key)
 
         :type limit: int
         :param limit: (Optional) limit passed through to the iterator.

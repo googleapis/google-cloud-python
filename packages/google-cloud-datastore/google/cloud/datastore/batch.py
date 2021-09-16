@@ -32,31 +32,58 @@ class Batch(object):
 
     For example, the following snippet of code will put the two ``save``
     operations and the ``delete`` operation into the same mutation, and send
-    them to the server in a single API request::
+    them to the server in a single API request:
 
-      >>> from google.cloud import datastore
-      >>> client = datastore.Client()
-      >>> batch = client.batch()
-      >>> batch.begin()
-      >>> batch.put(entity1)
-      >>> batch.put(entity2)
-      >>> batch.delete(key3)
-      >>> batch.commit()
+    .. testsetup:: batch
+
+        import uuid
+
+        from google.cloud import datastore
+
+        unique = str(uuid.uuid4())[0:8]
+        client = datastore.Client(namespace='ns{}'.format(unique))
+
+    .. doctest:: batch
+
+        >>> entity1 = datastore.Entity(client.key('EntityKind', 1234))
+        >>> entity2 = datastore.Entity(client.key('EntityKind', 2345))
+        >>> key3 = client.key('EntityKind', 3456)
+        >>> batch = client.batch()
+        >>> batch.begin()
+        >>> batch.put(entity1)
+        >>> batch.put(entity2)
+        >>> batch.delete(key3)
+        >>> batch.commit()
 
     You can also use a batch as a context manager, in which case
     :meth:`commit` will be called automatically if its block exits without
-    raising an exception::
+    raising an exception:
 
-      >>> with batch:
-      ...     batch.put(entity1)
-      ...     batch.put(entity2)
-      ...     batch.delete(key3)
+    .. doctest:: batch
 
-    By default, no updates will be sent if the block exits with an error::
+        >>> with client.batch() as batch:
+        ...     batch.put(entity1)
+        ...     batch.put(entity2)
+        ...     batch.delete(key3)
 
-      >>> with batch:
-      ...     do_some_work(batch)
-      ...     raise Exception()  # rolls back
+    By default, no updates will be sent if the block exits with an error:
+
+    .. doctest:: batch
+
+        >>> def do_some_work(batch):
+        ...    return
+        >>> with client.batch() as batch:
+        ...     do_some_work(batch)
+        ...     raise Exception()  # rolls back
+        Traceback (most recent call last):
+          ...
+        Exception
+
+    .. testcleanup:: txn
+
+        with client.batch() as batch:
+            batch.delete(client.key('EntityKind', 1234))
+            batch.delete(client.key('EntityKind', 2345))
 
     :type client: :class:`google.cloud.datastore.client.Client`
     :param client: The client used to connect to datastore.

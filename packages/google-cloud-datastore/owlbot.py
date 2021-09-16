@@ -109,6 +109,48 @@ assert 1 == s.replace(
 """,
 )
 
+# Add nox session to exercise doctests
+assert 1 == s.replace(
+    "noxfile.py",
+    r"""\
+    "blacken",
+    "docs",
+""",
+    """\
+    "blacken",
+    "docs",
+    "doctests",
+""",
+)
+
+assert 1 == s.replace(
+    "noxfile.py",
+    r"""\
+@nox.session\(python=DEFAULT_PYTHON_VERSION\)
+def docfx\(session\):
+""",
+    """\
+@nox.session(python="3.6")
+def doctests(session):
+    # Doctests run against Python 3.6 only.
+    # It is difficult to make doctests run against both Python 2 and Python 3
+    # because they test string output equivalence, which is difficult to
+    # make match (e.g. unicode literals starting with "u").
+
+    # Install all test dependencies, then install this package into the
+    # virtualenv's dist-packages.
+    session.install("mock", "pytest", "sphinx", "google-cloud-testutils")
+    session.install("-e", ".")
+
+    # Run py.test against the system tests.
+    session.run("py.test", "tests/doctests.py")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def docfx(session):
+""",
+)
+
 # Add documentation about creating indexes and populating data for system
 # tests.
 assert 1 == s.replace(
@@ -152,4 +194,3 @@ Test Coverage
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
-

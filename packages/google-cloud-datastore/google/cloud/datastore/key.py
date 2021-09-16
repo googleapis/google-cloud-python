@@ -598,6 +598,8 @@ def _get_flat_path(path_pb):
 
     For example
 
+    .. code:: python
+
         Element {
           type: "parent"
           id: 59

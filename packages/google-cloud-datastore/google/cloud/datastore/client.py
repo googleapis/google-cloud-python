@@ -757,36 +757,37 @@ class Client(ClientWithProject):
 
         .. testsetup:: query
 
-            import os
             import uuid
 
             from google.cloud import datastore
 
-            unique = os.getenv('CIRCLE_BUILD_NUM', str(uuid.uuid4())[0:8])
+            unique = str(uuid.uuid4())[0:8]
             client = datastore.Client(namespace='ns{}'.format(unique))
-            query = client.query(kind='_Doctest')
 
-            def do_something(entity):
+            def do_something_with(entity):
                 pass
 
         .. doctest:: query
 
             >>> query = client.query(kind='MyKind')
             >>> query.add_filter('property', '=', 'val')
+            <google.cloud.datastore.query.Query object at ...>
 
         Using the query iterator
 
         .. doctest:: query
 
+            >>> filters = [('property', '=', 'val')]
+            >>> query = client.query(kind='MyKind', filters=filters)
             >>> query_iter = query.fetch()
             >>> for entity in query_iter:
-            ...     do_something(entity)
+            ...     do_something_with(entity)
 
         or manually page through results
 
-        .. doctest:: query-page
+        .. doctest:: query
 
-            >>> query_iter = query.fetch(start_cursor=cursor)
+            >>> query_iter = query.fetch()
             >>> pages = query_iter.pages
             >>>
             >>> first_page = next(pages)

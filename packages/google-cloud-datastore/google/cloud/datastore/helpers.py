@@ -313,10 +313,16 @@ def _pb_attr_value(val):
 
     For example:
 
-    >>> _pb_attr_value(1234)
-    ('integer_value', 1234)
-    >>> _pb_attr_value('my_string')
-    ('string_value', 'my_string')
+    .. testsetup:: pb-attr-value
+
+        from google.cloud.datastore.helpers import _pb_attr_value
+
+    .. doctest:: pb-attr-value
+
+        >>> _pb_attr_value(1234)
+        ('integer_value', 1234)
+        >>> _pb_attr_value('my_string')
+        ('string_value', 'my_string')
 
     :type val:
         :class:`datetime.datetime`, :class:`google.cloud.datastore.key.Key`,
