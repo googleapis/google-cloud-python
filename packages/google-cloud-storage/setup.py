@@ -37,7 +37,9 @@ dependencies = [
     "google-resumable-media >= 1.3.0, < 2.0dev; python_version<'3.0'",
     "google-resumable-media >= 1.3.0, < 3.0dev; python_version>='3.6'",
     "requests >= 2.18.0, < 3.0.0dev",
+    "protobuf < 3.18.0; python_version<'3.0'",
     "googleapis-common-protos < 1.53.0; python_version<'3.0'",
+    "six",
 ]
 extras = {}
 
