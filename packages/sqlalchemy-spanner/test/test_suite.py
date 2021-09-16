@@ -49,6 +49,7 @@ from sqlalchemy import String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relation
 from sqlalchemy.orm import Session
+from sqlalchemy.types import ARRAY
 from sqlalchemy.types import Integer
 from sqlalchemy.types import Numeric
 from sqlalchemy.types import Text
@@ -900,6 +901,33 @@ class ComponentReflectionTest(_ComponentReflectionTest):
         for typ in self._type_round_trip(LargeBinary(20)):
             assert isinstance(typ, LargeBinary)
             eq_(typ.length, 20)
+
+    @testing.requires.table_reflection
+    def test_array_reflection(self):
+        """Check array columns reflection."""
+        orig_meta = self.metadata
+
+        str_array = ARRAY(String(16))
+        int_array = ARRAY(Integer)
+        Table(
+            "arrays_test",
+            orig_meta,
+            Column("id", Integer, primary_key=True),
+            Column("str_array", str_array),
+            Column("int_array", int_array),
+        )
+        orig_meta.create_all()
+
+        # autoload the table and check its columns reflection
+        tab = Table("arrays_test", orig_meta, autoload=True)
+        col_types = [col.type for col in tab.columns]
+        for type_ in (
+            str_array,
+            int_array,
+        ):
+            assert type_ in col_types
+
+        tab.drop()
 
 
 class CompositeKeyReflectionTest(_CompositeKeyReflectionTest):

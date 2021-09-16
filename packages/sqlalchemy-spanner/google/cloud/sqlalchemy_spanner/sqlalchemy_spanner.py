@@ -42,6 +42,7 @@ _type_map = {
     "STRING": types.String,
     "TIME": types.TIME,
     "TIMESTAMP": types.TIMESTAMP,
+    "ARRAY": types.ARRAY,
 }
 
 _type_map_inv = {
@@ -476,27 +477,42 @@ ORDER BY
             columns = snap.execute_sql(sql)
 
             for col in columns:
-                if col[1].startswith("STRING"):
-                    end = col[1].index(")")
-                    size = int_from_size(col[1][7:end])
-                    type_ = _type_map["STRING"](length=size)
-                # add test creating a table with bytes
-                elif col[1].startswith("BYTES"):
-                    end = col[1].index(")")
-                    size = int_from_size(col[1][6:end])
-                    type_ = _type_map["BYTES"](length=size)
-                else:
-                    type_ = _type_map[col[1]]
-
                 cols_desc.append(
                     {
                         "name": col[0],
-                        "type": type_,
+                        "type": self._designate_type(col[1]),
                         "nullable": col[2] == "YES",
                         "default": None,
                     }
                 )
         return cols_desc
+
+    def _designate_type(self, str_repr):
+        """
+        Designate an SQLAlchemy data type from a Spanner
+        string representation.
+
+        Args:
+            str_repr (str): String representation of a type.
+
+        Returns:
+            An SQLAlchemy data type.
+        """
+        if str_repr.startswith("STRING"):
+            end = str_repr.index(")")
+            size = int_from_size(str_repr[7:end])
+            return _type_map["STRING"](length=size)
+        # add test creating a table with bytes
+        elif str_repr.startswith("BYTES"):
+            end = str_repr.index(")")
+            size = int_from_size(str_repr[6:end])
+            return _type_map["BYTES"](length=size)
+        elif str_repr.startswith("ARRAY"):
+            inner_type_str = str_repr[6:-1]
+            inner_type = self._designate_type(inner_type_str)
+            return _type_map["ARRAY"](inner_type)
+        else:
+            return _type_map[str_repr]
 
     @engine_to_connection
     def get_indexes(self, connection, table_name, schema=None, **kw):
