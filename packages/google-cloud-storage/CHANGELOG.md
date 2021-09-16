@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+### [1.42.2](https://www.github.com/googleapis/python-storage/compare/v1.42.1...v1.42.2) (2021-09-16)
+
+
+### Bug Fixes
+
+* add preconditions and retry config support to ACL patch operationss ([#586](https://www.github.com/googleapis/python-storage/issues/586)) ([4333caf](https://www.github.com/googleapis/python-storage/commit/4333caf3674d78b3dfbc161a796abac604d57953))
+* add unpinned protobuf for python3 ([#592](https://www.github.com/googleapis/python-storage/issues/592)) ([53f7ad0](https://www.github.com/googleapis/python-storage/commit/53f7ad0204ad425011da9162d1a78f8276c837eb))
+* pin six as a required dependency ([#589](https://www.github.com/googleapis/python-storage/issues/589)) ([9ca97bf](https://www.github.com/googleapis/python-storage/commit/9ca97bf9139c71cd033c78af73da904b27d8ff50))
+
 ### [1.42.1](https://www.github.com/googleapis/python-storage/compare/v1.42.0...v1.42.1) (2021-09-07)
 
 
