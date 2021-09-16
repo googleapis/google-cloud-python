@@ -50,6 +50,10 @@ class RecaptchaEnterpriseServiceAsyncClient:
     )
     key_path = staticmethod(RecaptchaEnterpriseServiceClient.key_path)
     parse_key_path = staticmethod(RecaptchaEnterpriseServiceClient.parse_key_path)
+    metrics_path = staticmethod(RecaptchaEnterpriseServiceClient.metrics_path)
+    parse_metrics_path = staticmethod(
+        RecaptchaEnterpriseServiceClient.parse_metrics_path
+    )
     common_billing_account_path = staticmethod(
         RecaptchaEnterpriseServiceClient.common_billing_account_path
     )
@@ -266,7 +270,7 @@ class RecaptchaEnterpriseServiceAsyncClient:
     ) -> recaptchaenterprise.AnnotateAssessmentResponse:
         r"""Annotates a previously created Assessment to provide
         additional information on whether the event turned out
-        to be authentic or fradulent.
+        to be authentic or fraudulent.
 
         Args:
             request (:class:`google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest`):
@@ -281,8 +285,11 @@ class RecaptchaEnterpriseServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             annotation (:class:`google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest.Annotation`):
-                Required. The annotation that will be
-                assigned to the Event.
+                Optional. The annotation that will be
+                assigned to the Event. This field can be
+                left empty to provide reasons that apply
+                to an event without concluding whether
+                the event is legitimate or fraudulent.
 
                 This corresponds to the ``annotation`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -583,6 +590,131 @@ class RecaptchaEnterpriseServiceAsyncClient:
         await rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,
         )
+
+    async def migrate_key(
+        self,
+        request: recaptchaenterprise.MigrateKeyRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> recaptchaenterprise.Key:
+        r"""Migrates an existing key from reCAPTCHA to reCAPTCHA
+        Enterprise. Once a key is migrated, it can be used from
+        either product. SiteVerify requests are billed as
+        CreateAssessment calls. You must be authenticated as one
+        of the current owners of the reCAPTCHA Site Key, and
+        your user must have the reCAPTCHA Enterprise Admin IAM
+        role in the destination project.
+
+        Args:
+            request (:class:`google.cloud.recaptchaenterprise_v1.types.MigrateKeyRequest`):
+                The request object. The migrate key request message.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recaptchaenterprise_v1.types.Key:
+                A key used to identify and configure
+                applications (web and/or mobile) that
+                use reCAPTCHA Enterprise.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = recaptchaenterprise.MigrateKeyRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.migrate_key,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def get_metrics(
+        self,
+        request: recaptchaenterprise.GetMetricsRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> recaptchaenterprise.Metrics:
+        r"""Get some aggregated metrics for a Key. This data can
+        be used to build dashboards.
+
+        Args:
+            request (:class:`google.cloud.recaptchaenterprise_v1.types.GetMetricsRequest`):
+                The request object. The get metrics request message.
+            name (:class:`str`):
+                Required. The name of the requested
+                metrics, in the format
+                "projects/{project}/keys/{key}/metrics".
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recaptchaenterprise_v1.types.Metrics:
+                Metrics for a single Key.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = recaptchaenterprise.GetMetricsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_metrics,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
 
 
 try:

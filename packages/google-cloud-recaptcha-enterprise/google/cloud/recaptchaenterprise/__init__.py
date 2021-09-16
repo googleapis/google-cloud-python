@@ -32,6 +32,9 @@ from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
 )
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import Assessment
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    ChallengeMetrics,
+)
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     CreateAssessmentRequest,
 )
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
@@ -42,6 +45,9 @@ from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
 )
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import Event
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import GetKeyRequest
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    GetMetricsRequest,
+)
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import IOSKeySettings
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import Key
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
@@ -50,7 +56,16 @@ from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     ListKeysResponse,
 )
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import Metrics
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    MigrateKeyRequest,
+)
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import RiskAnalysis
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    ScoreDistribution,
+)
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import ScoreMetrics
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import TestingOptions
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     TokenProperties,
 )
@@ -66,16 +81,23 @@ __all__ = (
     "AnnotateAssessmentRequest",
     "AnnotateAssessmentResponse",
     "Assessment",
+    "ChallengeMetrics",
     "CreateAssessmentRequest",
     "CreateKeyRequest",
     "DeleteKeyRequest",
     "Event",
     "GetKeyRequest",
+    "GetMetricsRequest",
     "IOSKeySettings",
     "Key",
     "ListKeysRequest",
     "ListKeysResponse",
+    "Metrics",
+    "MigrateKeyRequest",
     "RiskAnalysis",
+    "ScoreDistribution",
+    "ScoreMetrics",
+    "TestingOptions",
     "TokenProperties",
     "UpdateKeyRequest",
     "WebKeySettings",

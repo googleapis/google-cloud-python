@@ -35,10 +35,17 @@ __protobuf__ = proto.module(
         "GetKeyRequest",
         "UpdateKeyRequest",
         "DeleteKeyRequest",
+        "MigrateKeyRequest",
+        "GetMetricsRequest",
+        "Metrics",
         "Key",
+        "TestingOptions",
         "WebKeySettings",
         "AndroidKeySettings",
         "IOSKeySettings",
+        "ScoreDistribution",
+        "ScoreMetrics",
+        "ChallengeMetrics",
     },
 )
 
@@ -66,20 +73,40 @@ class AnnotateAssessmentRequest(proto.Message):
             Assessment, in the format
             "projects/{project}/assessments/{assessment}".
         annotation (google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest.Annotation):
-            Required. The annotation that will be
-            assigned to the Event.
+            Optional. The annotation that will be
+            assigned to the Event. This field can be left
+            empty to provide reasons that apply to an event
+            without concluding whether the event is
+            legitimate or fraudulent.
+        reasons (Sequence[google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest.Reason]):
+            Optional. Optional reasons for the annotation
+            that will be assigned to the Event.
     """
 
     class Annotation(proto.Enum):
-        r"""Enum that reprensents the types of annotations."""
+        r"""Enum that represents the types of annotations."""
         ANNOTATION_UNSPECIFIED = 0
         LEGITIMATE = 1
         FRAUDULENT = 2
         PASSWORD_CORRECT = 3
         PASSWORD_INCORRECT = 4
 
+    class Reason(proto.Enum):
+        r"""Enum that represents potential reasons for annotating an
+        assessment.
+        """
+        REASON_UNSPECIFIED = 0
+        CHARGEBACK = 1
+        PAYMENT_HEURISTICS = 2
+        INITIATED_TWO_FACTOR = 7
+        PASSED_TWO_FACTOR = 3
+        FAILED_TWO_FACTOR = 4
+        CORRECT_PASSWORD = 5
+        INCORRECT_PASSWORD = 6
+
     name = proto.Field(proto.STRING, number=1,)
     annotation = proto.Field(proto.ENUM, number=2, enum=Annotation,)
+    reasons = proto.RepeatedField(proto.ENUM, number=3, enum=Reason,)
 
 
 class AnnotateAssessmentResponse(proto.Message):
@@ -155,9 +182,7 @@ class RiskAnalysis(proto.Message):
     """
 
     class ClassificationReason(proto.Enum):
-        r"""LINT.IfChange(classification_reason) Reasons contributing to the
-        risk analysis verdict.
-        """
+        r"""Reasons contributing to the risk analysis verdict."""
         CLASSIFICATION_REASON_UNSPECIFIED = 0
         AUTOMATION = 1
         UNEXPECTED_ENVIRONMENT = 2
@@ -193,15 +218,14 @@ class TokenProperties(proto.Message):
     """
 
     class InvalidReason(proto.Enum):
-        r"""LINT.IfChange
-        Enum that represents the types of invalid token reasons.
-        """
+        r"""Enum that represents the types of invalid token reasons."""
         INVALID_REASON_UNSPECIFIED = 0
         UNKNOWN_INVALID_REASON = 1
         MALFORMED = 2
         EXPIRED = 3
         DUPE = 4
         MISSING = 5
+        BROWSER_ERROR = 6
 
     valid = proto.Field(proto.BOOL, number=1,)
     invalid_reason = proto.Field(proto.ENUM, number=2, enum=InvalidReason,)
@@ -281,7 +305,7 @@ class UpdateKeyRequest(proto.Message):
         key (google.cloud.recaptchaenterprise_v1.types.Key):
             Required. The key to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. The mask to control which field of
+            Optional. The mask to control which fields of
             the key get updated. If the mask is not present,
             all fields will be updated.
     """
@@ -301,6 +325,58 @@ class DeleteKeyRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1,)
+
+
+class MigrateKeyRequest(proto.Message):
+    r"""The migrate key request message.
+    Attributes:
+        name (str):
+            Required. The name of the key to be migrated,
+            in the format "projects/{project}/keys/{key}".
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class GetMetricsRequest(proto.Message):
+    r"""The get metrics request message.
+    Attributes:
+        name (str):
+            Required. The name of the requested metrics,
+            in the format
+            "projects/{project}/keys/{key}/metrics".
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class Metrics(proto.Message):
+    r"""Metrics for a single Key.
+    Attributes:
+        name (str):
+            Output only. The name of the metrics, in the
+            format "projects/{project}/keys/{key}/metrics".
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Inclusive start time aligned to a day (UTC).
+        score_metrics (Sequence[google.cloud.recaptchaenterprise_v1.types.ScoreMetrics]):
+            Metrics will be continuous and in order by
+            dates, and in the granularity of day. All Key
+            types should have score-based data.
+        challenge_metrics (Sequence[google.cloud.recaptchaenterprise_v1.types.ChallengeMetrics]):
+            Metrics will be continuous and in order by
+            dates, and in the granularity of day. Only
+            challenge-based keys (CHECKBOX, INVISIBLE), will
+            have challenge-based data.
+    """
+
+    name = proto.Field(proto.STRING, number=4,)
+    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    score_metrics = proto.RepeatedField(
+        proto.MESSAGE, number=2, message="ScoreMetrics",
+    )
+    challenge_metrics = proto.RepeatedField(
+        proto.MESSAGE, number=3, message="ChallengeMetrics",
+    )
 
 
 class Key(proto.Message):
@@ -324,13 +400,15 @@ class Key(proto.Message):
             Settings for keys that can be used by iOS
             apps.
         labels (Sequence[google.cloud.recaptchaenterprise_v1.types.Key.LabelsEntry]):
-            Optional. See <a
+            See <a
             href="https://cloud.google.com/recaptcha-
             enterprise/docs/labels"> Creating and managing
             labels</a>.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp corresponding to the creation
             of this Key.
+        testing_options (google.cloud.recaptchaenterprise_v1.types.TestingOptions):
+            Options for user acceptance testing.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -349,6 +427,33 @@ class Key(proto.Message):
     )
     labels = proto.MapField(proto.STRING, proto.STRING, number=6,)
     create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
+    testing_options = proto.Field(proto.MESSAGE, number=9, message="TestingOptions",)
+
+
+class TestingOptions(proto.Message):
+    r"""Options for user acceptance testing.
+    Attributes:
+        testing_score (float):
+            All assessments for this Key will return this
+            score. Must be between 0 (likely not legitimate)
+            and 1 (likely legitimate) inclusive.
+        testing_challenge (google.cloud.recaptchaenterprise_v1.types.TestingOptions.TestingChallenge):
+            For challenge-based keys only (CHECKBOX,
+            INVISIBLE), all challenge requests for this site
+            will return nocaptcha if NOCAPTCHA, or an
+            unsolvable challenge if CHALLENGE.
+    """
+
+    class TestingChallenge(proto.Enum):
+        r"""Enum that represents the challenge option for challenge-based
+        (CHECKBOX, INVISIBLE) testing keys.
+        """
+        TESTING_CHALLENGE_UNSPECIFIED = 0
+        NOCAPTCHA = 1
+        UNSOLVABLE_CHALLENGE = 2
+
+    testing_score = proto.Field(proto.FLOAT, number=1,)
+    testing_challenge = proto.Field(proto.ENUM, number=2, enum=TestingChallenge,)
 
 
 class WebKeySettings(proto.Message):
@@ -366,7 +471,8 @@ class WebKeySettings(proto.Message):
             or 'subdomain.example.com'
         allow_amp_traffic (bool):
             Required. Whether this key can be used on AMP
-            (Accelerated Mobile Pages) websites.
+            (Accelerated Mobile Pages) websites. This can
+            only be set for the SCORE integration type.
         integration_type (google.cloud.recaptchaenterprise_v1.types.WebKeySettings.IntegrationType):
             Required. Describes how this key is
             integrated with the website.
@@ -405,24 +511,90 @@ class WebKeySettings(proto.Message):
 class AndroidKeySettings(proto.Message):
     r"""Settings specific to keys that can be used by Android apps.
     Attributes:
+        allow_all_package_names (bool):
+            If set to true, it means allowed_package_names will not be
+            enforced.
         allowed_package_names (Sequence[str]):
             Android package names of apps allowed to use
             the key. Example: 'com.companyname.appname'
     """
 
+    allow_all_package_names = proto.Field(proto.BOOL, number=2,)
     allowed_package_names = proto.RepeatedField(proto.STRING, number=1,)
 
 
 class IOSKeySettings(proto.Message):
     r"""Settings specific to keys that can be used by iOS apps.
     Attributes:
+        allow_all_bundle_ids (bool):
+            If set to true, it means allowed_bundle_ids will not be
+            enforced.
         allowed_bundle_ids (Sequence[str]):
             iOS bundle ids of apps allowed to use the
             key. Example:
             'com.companyname.productname.appname'
     """
 
+    allow_all_bundle_ids = proto.Field(proto.BOOL, number=2,)
     allowed_bundle_ids = proto.RepeatedField(proto.STRING, number=1,)
+
+
+class ScoreDistribution(proto.Message):
+    r"""Score distribution.
+    Attributes:
+        score_buckets (Sequence[google.cloud.recaptchaenterprise_v1.types.ScoreDistribution.ScoreBucketsEntry]):
+            Map key is score value multiplied by 100. The scores are
+            discrete values between [0, 1]. The maximum number of
+            buckets is on order of a few dozen, but typically much lower
+            (ie. 10).
+    """
+
+    score_buckets = proto.MapField(proto.INT32, proto.INT64, number=1,)
+
+
+class ScoreMetrics(proto.Message):
+    r"""Metrics related to scoring.
+    Attributes:
+        overall_metrics (google.cloud.recaptchaenterprise_v1.types.ScoreDistribution):
+            Aggregated score metrics for all traffic.
+        action_metrics (Sequence[google.cloud.recaptchaenterprise_v1.types.ScoreMetrics.ActionMetricsEntry]):
+            Action-based metrics. The map key is the
+            action name which specified by the site owners
+            at time of the "execute" client-side call.
+            Populated only for SCORE keys.
+    """
+
+    overall_metrics = proto.Field(proto.MESSAGE, number=1, message="ScoreDistribution",)
+    action_metrics = proto.MapField(
+        proto.STRING, proto.MESSAGE, number=2, message="ScoreDistribution",
+    )
+
+
+class ChallengeMetrics(proto.Message):
+    r"""Metrics related to challenges.
+    Attributes:
+        pageload_count (int):
+            Count of reCAPTCHA checkboxes or badges
+            rendered. This is mostly equivalent to a count
+            of pageloads for pages that include reCAPTCHA.
+        nocaptcha_count (int):
+            Count of nocaptchas (successful verification
+            without a challenge) issued.
+        failed_count (int):
+            Count of submitted challenge solutions that
+            were incorrect or otherwise deemed suspicious
+            such that a subsequent challenge was triggered.
+        passed_count (int):
+            Count of nocaptchas (successful verification
+            without a challenge) plus submitted challenge
+            solutions that were correct and resulted in
+            verification.
+    """
+
+    pageload_count = proto.Field(proto.INT64, number=1,)
+    nocaptcha_count = proto.Field(proto.INT64, number=2,)
+    failed_count = proto.Field(proto.INT64, number=3,)
+    passed_count = proto.Field(proto.INT64, number=4,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
