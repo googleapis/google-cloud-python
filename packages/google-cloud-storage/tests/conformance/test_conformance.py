@@ -26,8 +26,9 @@ import time
 
 from six.moves.urllib import parse as urlparse
 
-from google.cloud import storage
 from google.auth.credentials import AnonymousCredentials
+from google.cloud import storage
+from google.cloud.exceptions import NotFound
 from google.cloud.storage.hmac_key import HMACKeyMetadata
 
 from . import _read_local_json
@@ -55,9 +56,6 @@ _CONF_TEST_SERVICE_ACCOUNT_EMAIL = (
 
 _STRING_CONTENT = "hello world"
 _BYTE_CONTENT = b"12345678"
-_BUCKET_ACL_PATCH_MSG = "BucketACL patch operations call storage.buckets.patch, but are never idempotent; Preconditions are irrelevant."
-_DEFAULT_OBJECT_ACL_PATCH_MSG = "DefaultObjectACL patch operations call storage.buckets.patch, but are never idempotent; Preconditions are irrelevant."
-_OBJECT_ACL_PATCH_MSG = "ObjectACL patch operations call storage.objects.patch, but are never idempotent; Preconditions are irrelevant."
 
 
 ########################################################################################################################################
@@ -192,7 +190,7 @@ def client_get_service_account_email(client, _preconditions, **_):
 
 
 def notification_create(client, _preconditions, **resources):
-    bucket = client.get_bucket(resources.get("bucket").name)
+    bucket = client.bucket(resources.get("bucket").name)
     notification = bucket.notification()
     notification.create()
 
@@ -278,8 +276,8 @@ def hmac_key_update(client, _preconditions, **resources):
 
 
 def bucket_patch(client, _preconditions, **resources):
-    bucket = client.get_bucket(resources.get("bucket").name)
-    metageneration = bucket.metageneration
+    bucket = client.bucket(resources.get("bucket").name)
+    metageneration = resources.get("bucket").metageneration
     bucket.storage_class = "COLDLINE"
     if _preconditions:
         bucket.patch(if_metageneration_match=metageneration)
@@ -288,8 +286,8 @@ def bucket_patch(client, _preconditions, **resources):
 
 
 def bucket_update(client, _preconditions, **resources):
-    bucket = client.get_bucket(resources.get("bucket").name)
-    metageneration = bucket.metageneration
+    bucket = client.bucket(resources.get("bucket").name)
+    metageneration = resources.get("bucket").metageneration
     bucket._properties = {"storageClass": "STANDARD"}
     if _preconditions:
         bucket.update(if_metageneration_match=metageneration)
@@ -298,7 +296,7 @@ def bucket_update(client, _preconditions, **resources):
 
 
 def bucket_set_iam_policy(client, _preconditions, **resources):
-    bucket = client.get_bucket(resources.get("bucket").name)
+    bucket = client.bucket(resources.get("bucket").name)
     role = "roles/storage.objectViewer"
     member = _CONF_TEST_SERVICE_ACCOUNT_EMAIL
 
@@ -480,35 +478,43 @@ def blob_create_resumable_upload_session(client, _preconditions, **resources):
 
 
 def blob_make_private(client, _preconditions, **resources):
-    if _preconditions:
-        pytest.skip(_OBJECT_ACL_PATCH_MSG)
     bucket = resources.get("bucket")
     object = resources.get("object")
     blob = client.bucket(bucket.name).blob(object.name)
-    blob.make_private()
+    if _preconditions:
+        blob.make_private(if_metageneration_match=object.metageneration)
+    else:
+        blob.make_private()
 
 
 def blob_make_public(client, _preconditions, **resources):
-    if _preconditions:
-        pytest.skip(_OBJECT_ACL_PATCH_MSG)
     bucket = resources.get("bucket")
     object = resources.get("object")
     blob = client.bucket(bucket.name).blob(object.name)
-    blob.make_public()
+    if _preconditions:
+        blob.make_public(if_metageneration_match=object.metageneration)
+    else:
+        blob.make_public()
 
 
 def bucket_make_private(client, _preconditions, **resources):
-    if _preconditions:
-        pytest.skip(_BUCKET_ACL_PATCH_MSG)
     bucket = client.bucket(resources.get("bucket").name)
-    bucket.make_private()
+    if _preconditions:
+        bucket.make_private(
+            if_metageneration_match=resources.get("bucket").metageneration
+        )
+    else:
+        bucket.make_private()
 
 
 def bucket_make_public(client, _preconditions, **resources):
-    if _preconditions:
-        pytest.skip(_BUCKET_ACL_PATCH_MSG)
     bucket = client.bucket(resources.get("bucket").name)
-    bucket.make_public()
+    if _preconditions:
+        bucket.make_public(
+            if_metageneration_match=resources.get("bucket").metageneration
+        )
+    else:
+        bucket.make_public()
 
 
 def bucket_acl_reload(client, _preconditions, **resources):
@@ -517,55 +523,68 @@ def bucket_acl_reload(client, _preconditions, **resources):
 
 
 def bucket_acl_save(client, _preconditions, **resources):
-    if _preconditions:
-        pytest.skip(_BUCKET_ACL_PATCH_MSG)
     bucket = client.bucket(resources.get("bucket").name)
-    bucket.acl.reload()
     bucket.acl.user(_CONF_TEST_SERVICE_ACCOUNT_EMAIL).grant_owner()
-    bucket.acl.save()
+    if _preconditions:
+        bucket.acl.save(if_metageneration_match=resources.get("bucket").metageneration)
+    else:
+        bucket.acl.save()
 
 
 def bucket_acl_save_predefined(client, _preconditions, **resources):
-    if _preconditions:
-        pytest.skip(_BUCKET_ACL_PATCH_MSG)
     bucket = client.bucket(resources.get("bucket").name)
-    bucket.acl.save_predefined("bucketOwnerFullControl")
+    if _preconditions:
+        bucket.acl.save_predefined(
+            "bucketOwnerFullControl",
+            if_metageneration_match=resources.get("bucket").metageneration,
+        )
+    else:
+        bucket.acl.save_predefined("bucketOwnerFullControl")
 
 
 def bucket_acl_clear(client, _preconditions, **resources):
-    if _preconditions:
-        pytest.skip(_BUCKET_ACL_PATCH_MSG)
     bucket = client.bucket(resources.get("bucket").name)
-    bucket.acl.clear()
+    if _preconditions:
+        bucket.acl.clear(if_metageneration_match=resources.get("bucket").metageneration)
+    else:
+        bucket.acl.clear()
 
 
 def default_object_acl_reload(client, _preconditions, **resources):
     bucket = client.bucket(resources.get("bucket").name)
-    print(bucket.default_object_acl)
     bucket.default_object_acl.reload()
 
 
 def default_object_acl_save(client, _preconditions, **resources):
-    if _preconditions:
-        pytest.skip(_DEFAULT_OBJECT_ACL_PATCH_MSG)
     bucket = client.bucket(resources.get("bucket").name)
-    bucket.default_object_acl.reload()
     bucket.default_object_acl.user(_CONF_TEST_SERVICE_ACCOUNT_EMAIL).grant_owner()
-    bucket.default_object_acl.save()
+    if _preconditions:
+        bucket.default_object_acl.save(
+            if_metageneration_match=resources.get("bucket").metageneration
+        )
+    else:
+        bucket.default_object_acl.save()
 
 
 def default_object_acl_save_predefined(client, _preconditions, **resources):
-    if _preconditions:
-        pytest.skip(_DEFAULT_OBJECT_ACL_PATCH_MSG)
     bucket = client.bucket(resources.get("bucket").name)
-    bucket.default_object_acl.save_predefined("bucketOwnerFullControl")
+    if _preconditions:
+        bucket.default_object_acl.save_predefined(
+            "bucketOwnerFullControl",
+            if_metageneration_match=resources.get("bucket").metageneration,
+        )
+    else:
+        bucket.default_object_acl.save_predefined("bucketOwnerFullControl")
 
 
 def default_object_acl_clear(client, _preconditions, **resources):
-    if _preconditions:
-        pytest.skip(_DEFAULT_OBJECT_ACL_PATCH_MSG)
     bucket = client.bucket(resources.get("bucket").name)
-    bucket.default_object_acl.clear()
+    if _preconditions:
+        bucket.default_object_acl.clear(
+            if_metageneration_match=resources.get("bucket").metageneration
+        )
+    else:
+        bucket.default_object_acl.clear()
 
 
 def object_acl_reload(client, _preconditions, **resources):
@@ -576,32 +595,36 @@ def object_acl_reload(client, _preconditions, **resources):
 
 
 def object_acl_save(client, _preconditions, **resources):
-    if _preconditions:
-        pytest.skip(_OBJECT_ACL_PATCH_MSG)
     bucket = resources.get("bucket")
     object = resources.get("object")
     blob = client.bucket(bucket.name).blob(object.name)
-    blob.acl.reload()
     blob.acl.user(_CONF_TEST_SERVICE_ACCOUNT_EMAIL).grant_owner()
-    blob.acl.save()
+    if _preconditions:
+        blob.acl.save(if_metageneration_match=object.metageneration)
+    else:
+        blob.acl.save()
 
 
 def object_acl_save_predefined(client, _preconditions, **resources):
-    if _preconditions:
-        pytest.skip(_OBJECT_ACL_PATCH_MSG)
     bucket = resources.get("bucket")
     object = resources.get("object")
     blob = client.bucket(bucket.name).blob(object.name)
-    blob.acl.save_predefined("bucketOwnerFullControl")
+    if _preconditions:
+        blob.acl.save_predefined(
+            "bucketOwnerFullControl", if_metageneration_match=object.metageneration
+        )
+    else:
+        blob.acl.save_predefined("bucketOwnerFullControl")
 
 
 def object_acl_clear(client, _preconditions, **resources):
-    if _preconditions:
-        pytest.skip(_OBJECT_ACL_PATCH_MSG)
     bucket = resources.get("bucket")
     object = resources.get("object")
     blob = client.bucket(bucket.name).blob(object.name)
-    blob.acl.clear()
+    if _preconditions:
+        blob.acl.clear(if_metageneration_match=object.metageneration)
+    else:
+        blob.acl.clear()
 
 
 ########################################################################################################################################
@@ -721,9 +744,7 @@ def bucket(client):
     yield bucket
     try:
         bucket.delete(force=True)
-    except Exception:
-        # in cases where resources are deleted within the test
-        # TODO(cathyo@): narrow except to NotFound once the emulator response issue is resolved
+    except NotFound:  # in cases where bucket is deleted within the test
         pass
 
 
@@ -735,7 +756,7 @@ def object(client, bucket):
     yield blob
     try:
         blob.delete()
-    except Exception:  # in cases where resources are deleted within the test
+    except NotFound:  # in cases where object is deleted within the test
         pass
 
 
@@ -747,7 +768,7 @@ def notification(client, bucket):
     yield notification
     try:
         notification.delete()
-    except Exception:  # in cases where resources are deleted within the test
+    except NotFound:  # in cases where notification is deleted within the test
         pass
 
 
@@ -762,7 +783,7 @@ def hmac_key(client):
         hmac_key.state = "INACTIVE"
         hmac_key.update()
         hmac_key.delete()
-    except Exception:  # in cases where resources are deleted within the test
+    except NotFound:  # in cases where hmac_key is deleted within the test
         pass
 
 
