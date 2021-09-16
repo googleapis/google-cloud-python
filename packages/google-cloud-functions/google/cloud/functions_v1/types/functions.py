@@ -268,9 +268,23 @@ class HttpsTrigger(proto.Message):
         url (str):
             Output only. The deployed url for the
             function.
+        security_level (google.cloud.functions_v1.types.HttpsTrigger.SecurityLevel):
+            The security level for the function.
     """
 
+    class SecurityLevel(proto.Enum):
+        r"""Available security level settings.
+
+        This controls the methods to enforce security (HTTPS) on a URL.
+
+        If unspecified, SECURE_OPTIONAL will be used.
+        """
+        SECURITY_LEVEL_UNSPECIFIED = 0
+        SECURE_ALWAYS = 1
+        SECURE_OPTIONAL = 2
+
     url = proto.Field(proto.STRING, number=1,)
+    security_level = proto.Field(proto.ENUM, number=2, enum=SecurityLevel,)
 
 
 class EventTrigger(proto.Message):
