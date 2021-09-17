@@ -1214,8 +1214,12 @@ class Test__get_sub_prop(unittest.TestCase):
     def test_w_missing_key_explicit_default(self):
         self.assertEqual(self._call_fut({"key2": 2}, ["key1"], default=1), 1)
 
-    def test_w_matching_single_key(self):
+    def test_w_matching_single_key_in_sequence(self):
         self.assertEqual(self._call_fut({"key1": 1}, ["key1"]), 1)
+
+    def test_w_matching_single_string_key(self):
+        data = {"k": {"e": {"y": "foo"}}, "key": "bar"}
+        self.assertEqual(self._call_fut(data, "key"), "bar")
 
     def test_w_matching_first_key_missing_second_key(self):
         self.assertIsNone(self._call_fut({"key1": {"key3": 3}}, ["key1", "key2"]))
@@ -1230,10 +1234,15 @@ class Test__set_sub_prop(unittest.TestCase):
 
         return _set_sub_prop(container, keys, value)
 
-    def test_w_empty_container_single_key(self):
+    def test_w_empty_container_single_key_in_sequence(self):
         container = {}
         self._call_fut(container, ["key1"], "value")
         self.assertEqual(container, {"key1": "value"})
+
+    def test_w_empty_container_single_string_key(self):
+        container = {}
+        self._call_fut(container, "key", "value")
+        self.assertEqual(container, {"key": "value"})
 
     def test_w_empty_container_nested_keys(self):
         container = {}

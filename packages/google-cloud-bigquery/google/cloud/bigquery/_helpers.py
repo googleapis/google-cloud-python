@@ -672,8 +672,9 @@ def _get_sub_prop(container, keys, default=None):
         container (Dict):
             A dictionary which may contain other dictionaries as values.
         keys (Iterable):
-            A sequence of keys to attempt to get the value for. Each item in
-            the sequence represents a deeper nesting. The first key is for
+            A sequence of keys to attempt to get the value for. If ``keys`` is a
+            string, it is treated as sequence containing a single string key. Each item
+            in the sequence represents a deeper nesting. The first key is for
             the top level. If there is a dictionary there, the second key
             attempts to get the value within that, and so on.
         default (Optional[object]):
@@ -700,6 +701,9 @@ def _get_sub_prop(container, keys, default=None):
     Returns:
         object: The value if present or the default.
     """
+    if isinstance(keys, str):
+        keys = [keys]
+
     sub_val = container
     for key in keys:
         if key not in sub_val:
@@ -715,8 +719,9 @@ def _set_sub_prop(container, keys, value):
         container (Dict):
             A dictionary which may contain other dictionaries as values.
         keys (Iterable):
-            A sequence of keys to attempt to set the value for. Each item in
-            the sequence represents a deeper nesting. The first key is for
+            A sequence of keys to attempt to set the value for. If ``keys`` is a
+            string, it is treated as sequence containing a single string key. Each item
+            in the sequence represents a deeper nesting. The first key is for
             the top level. If there is a dictionary there, the second key
             attempts to get the value within that, and so on.
         value (object): Value to set within the container.
@@ -743,6 +748,9 @@ def _set_sub_prop(container, keys, value):
         >>> container
         {'key': {'subkey': 'new'}}
     """
+    if isinstance(keys, str):
+        keys = [keys]
+
     sub_val = container
     for key in keys[:-1]:
         if key not in sub_val:

@@ -69,6 +69,7 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
     import geopandas
     import pyarrow
     from google.cloud import bigquery_storage
+    from google.cloud.bigquery.dataset import DatasetReference
 
 
 _NO_PANDAS_ERROR = (
@@ -126,45 +127,93 @@ def _view_use_legacy_sql_getter(table):
         return True
 
 
-class TableReference(object):
+class _TableBase:
+    """Base class for Table-related classes with common functionality."""
+
+    _PROPERTY_TO_API_FIELD = {
+        "dataset_id": ["tableReference", "datasetId"],
+        "project": ["tableReference", "projectId"],
+        "table_id": ["tableReference", "tableId"],
+    }
+
+    def __init__(self):
+        self._properties = {}
+
+    @property
+    def project(self) -> str:
+        """Project bound to the table."""
+        return _helpers._get_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["project"]
+        )
+
+    @property
+    def dataset_id(self) -> str:
+        """ID of dataset containing the table."""
+        return _helpers._get_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["dataset_id"]
+        )
+
+    @property
+    def table_id(self) -> str:
+        """The table ID."""
+        return _helpers._get_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["table_id"]
+        )
+
+    @property
+    def path(self) -> str:
+        """URL path for the table's APIs."""
+        return (
+            f"/projects/{self.project}/datasets/{self.dataset_id}"
+            f"/tables/{self.table_id}"
+        )
+
+    def __eq__(self, other):
+        if isinstance(other, _TableBase):
+            return (
+                self.project == other.project
+                and self.dataset_id == other.dataset_id
+                and self.table_id == other.table_id
+            )
+        else:
+            return NotImplemented
+
+    def __hash__(self):
+        return hash((self.project, self.dataset_id, self.table_id))
+
+
+class TableReference(_TableBase):
     """TableReferences are pointers to tables.
 
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablereference
 
     Args:
-        dataset_ref (google.cloud.bigquery.dataset.DatasetReference):
-            A pointer to the dataset
-        table_id (str): The ID of the table
+        dataset_ref: A pointer to the dataset
+        table_id: The ID of the table
     """
 
-    def __init__(self, dataset_ref, table_id):
-        self._project = dataset_ref.project
-        self._dataset_id = dataset_ref.dataset_id
-        self._table_id = table_id
+    _PROPERTY_TO_API_FIELD = {
+        "dataset_id": "datasetId",
+        "project": "projectId",
+        "table_id": "tableId",
+    }
 
-    @property
-    def project(self):
-        """str: Project bound to the table"""
-        return self._project
+    def __init__(self, dataset_ref: "DatasetReference", table_id: str):
+        self._properties = {}
 
-    @property
-    def dataset_id(self):
-        """str: ID of dataset containing the table."""
-        return self._dataset_id
-
-    @property
-    def table_id(self):
-        """str: The table ID."""
-        return self._table_id
-
-    @property
-    def path(self):
-        """str: URL path for the table's APIs."""
-        return "/projects/%s/datasets/%s/tables/%s" % (
-            self._project,
-            self._dataset_id,
-            self._table_id,
+        _helpers._set_sub_prop(
+            self._properties,
+            self._PROPERTY_TO_API_FIELD["project"],
+            dataset_ref.project,
+        )
+        _helpers._set_sub_prop(
+            self._properties,
+            self._PROPERTY_TO_API_FIELD["dataset_id"],
+            dataset_ref.dataset_id,
+        )
+        _helpers._set_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["table_id"], table_id,
         )
 
     @classmethod
@@ -233,11 +282,7 @@ class TableReference(object):
         Returns:
             Dict[str, object]: Table reference represented as an API resource
         """
-        return {
-            "projectId": self._project,
-            "datasetId": self._dataset_id,
-            "tableId": self._table_id,
-        }
+        return copy.deepcopy(self._properties)
 
     def to_bqstorage(self) -> str:
         """Construct a BigQuery Storage API representation of this table.
@@ -257,42 +302,13 @@ class TableReference(object):
             str: A reference to this table in the BigQuery Storage API.
         """
 
-        table_id, _, _ = self._table_id.partition("@")
+        table_id, _, _ = self.table_id.partition("@")
         table_id, _, _ = table_id.partition("$")
 
-        table_ref = "projects/{}/datasets/{}/tables/{}".format(
-            self._project, self._dataset_id, table_id,
+        table_ref = (
+            f"projects/{self.project}/datasets/{self.dataset_id}/tables/{table_id}"
         )
-
         return table_ref
-
-    def _key(self):
-        """A tuple key that uniquely describes this field.
-
-        Used to compute this instance's hashcode and evaluate equality.
-
-        Returns:
-            Tuple[str]: The contents of this :class:`DatasetReference`.
-        """
-        return (self._project, self._dataset_id, self._table_id)
-
-    def __eq__(self, other):
-        if isinstance(other, (Table, TableListItem)):
-            return (
-                self.project == other.project
-                and self.dataset_id == other.dataset_id
-                and self.table_id == other.table_id
-            )
-        elif isinstance(other, TableReference):
-            return self._key() == other._key()
-        else:
-            return NotImplemented
-
-    def __ne__(self, other):
-        return not self == other
-
-    def __hash__(self):
-        return hash(self._key())
 
     def __str__(self):
         return f"{self.project}.{self.dataset_id}.{self.table_id}"
@@ -300,11 +316,11 @@ class TableReference(object):
     def __repr__(self):
         from google.cloud.bigquery.dataset import DatasetReference
 
-        dataset_ref = DatasetReference(self._project, self._dataset_id)
-        return "TableReference({}, '{}')".format(repr(dataset_ref), self._table_id)
+        dataset_ref = DatasetReference(self.project, self.dataset_id)
+        return f"TableReference({dataset_ref!r}, '{self.table_id}')"
 
 
-class Table(object):
+class Table(_TableBase):
     """Tables represent a set of rows whose values correspond to a schema.
 
     See
@@ -325,9 +341,9 @@ class Table(object):
     """
 
     _PROPERTY_TO_API_FIELD = {
+        **_TableBase._PROPERTY_TO_API_FIELD,
         "clustering_fields": "clustering",
         "created": "creationTime",
-        "dataset_id": ["tableReference", "datasetId"],
         "description": "description",
         "encryption_configuration": "encryptionConfiguration",
         "etag": "etag",
@@ -346,14 +362,12 @@ class Table(object):
         "num_rows": "numRows",
         "partition_expiration": "timePartitioning",
         "partitioning_type": "timePartitioning",
-        "project": ["tableReference", "projectId"],
         "range_partitioning": "rangePartitioning",
         "time_partitioning": "timePartitioning",
         "schema": "schema",
         "snapshot_definition": "snapshotDefinition",
         "streaming_buffer": "streamingBuffer",
         "self_link": "selfLink",
-        "table_id": ["tableReference", "tableId"],
         "time_partitioning": "timePartitioning",
         "type": "type",
         "view_use_legacy_sql": "view",
@@ -368,37 +382,7 @@ class Table(object):
         if schema is not None:
             self.schema = schema
 
-    @property
-    def project(self):
-        """str: Project bound to the table."""
-        return _helpers._get_sub_prop(
-            self._properties, self._PROPERTY_TO_API_FIELD["project"]
-        )
-
-    @property
-    def dataset_id(self):
-        """str: ID of dataset containing the table."""
-        return _helpers._get_sub_prop(
-            self._properties, self._PROPERTY_TO_API_FIELD["dataset_id"]
-        )
-
-    @property
-    def table_id(self):
-        """str: ID of the table."""
-        return _helpers._get_sub_prop(
-            self._properties, self._PROPERTY_TO_API_FIELD["table_id"]
-        )
-
     reference = property(_reference_getter)
-
-    @property
-    def path(self):
-        """str: URL path for the table's APIs."""
-        return "/projects/%s/datasets/%s/tables/%s" % (
-            self.project,
-            self.dataset_id,
-            self.table_id,
-        )
 
     @property
     def require_partition_filter(self):
@@ -1040,29 +1024,11 @@ class Table(object):
         """Generate a resource for ``update``."""
         return _helpers._build_resource_from_properties(self, filter_fields)
 
-    def __eq__(self, other):
-        if isinstance(other, Table):
-            return (
-                self._properties["tableReference"]
-                == other._properties["tableReference"]
-            )
-        elif isinstance(other, (TableReference, TableListItem)):
-            return (
-                self.project == other.project
-                and self.dataset_id == other.dataset_id
-                and self.table_id == other.table_id
-            )
-        else:
-            return NotImplemented
-
-    def __hash__(self):
-        return hash((self.project, self.dataset_id, self.table_id))
-
     def __repr__(self):
         return "Table({})".format(repr(self.reference))
 
 
-class TableListItem(object):
+class TableListItem(_TableBase):
     """A read-only table resource from a list operation.
 
     For performance reasons, the BigQuery API only includes some of the table
@@ -1125,21 +1091,6 @@ class TableListItem(object):
             return google.cloud._helpers._datetime_from_microseconds(
                 1000.0 * float(expiration_time)
             )
-
-    @property
-    def project(self):
-        """str: Project bound to the table."""
-        return self._properties["tableReference"]["projectId"]
-
-    @property
-    def dataset_id(self):
-        """str: ID of dataset containing the table."""
-        return self._properties["tableReference"]["datasetId"]
-
-    @property
-    def table_id(self):
-        """str: ID of the table."""
-        return self._properties["tableReference"]["tableId"]
 
     reference = property(_reference_getter)
 
@@ -1275,19 +1226,6 @@ class TableListItem(object):
             Dict[str, object]: Table represented as an API resource
         """
         return copy.deepcopy(self._properties)
-
-    def __eq__(self, other):
-        if isinstance(other, (Table, TableReference, TableListItem)):
-            return (
-                self.project == other.project
-                and self.dataset_id == other.dataset_id
-                and self.table_id == other.table_id
-            )
-        else:
-            return NotImplemented
-
-    def __hash__(self):
-        return hash((self.project, self.dataset_id, self.table_id))
 
 
 def _row_from_mapping(mapping, schema):
