@@ -1,5 +1,4 @@
-
-name: Presubmit
+name: Build / test wheels (presubmit)
 
 on:
   pull_request:
@@ -7,128 +6,195 @@ on:
       - main
 
 jobs:
-  build-source-distribution:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-    - name: Build
-      run: python setup.py sdist
-    - uses: actions/upload-artifact@v2
-      with:
-        name: python-package-distributions
-        path: dist
 
-  build-linux:
-    runs-on: ubuntu-latest
+  build-wheels-linux:
+    name: ${{ matrix.os }}
     strategy:
       matrix:
-        # 3.10 is not yet available in manylinux docker images.
-        # https://github.com/pypa/manylinux
-        # python: [3.6, 3.7, 3.8, 3.9, 3.10-dev]
-        python: [3.6, 3.7, 3.8, 3.9, 3.10-dev]
-      # It is possible 3.10-dev will fail when the other versions are green.
-      # Turn off fast fail so if 3.10 fails the other required versions have
-      # the opportunity to pass.
-      fail-fast: false
+        os:
+        - ubuntu-20.04
+    runs-on: ${{ matrix.os }}
+
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade setuptools pip wheel
-    - name: Build
+        submodules: 'recursive'
+
+    - name: Build Wheels
+      uses: pypa/cibuildwheel@v2.1.1
       env:
-        BUILD_PYTHON: ${{ matrix.python }}
-        CRC32C_PURE_PYTHON: "0"
-      run: |
-        ./scripts/manylinux/build.sh
-    - name: Test Import
-      run: |
-        pip install --no-index --find-links=wheels google-crc32c
-        python ./scripts/check_crc32c_extension.py
-    - name: Run tests
-      run: |
-        pip install pytest
-        python -m pytest tests
+        # For presubmit, just build / test the most common arch
+        CIBW_ARCHS: native
+        # For presubmit, skip build / test for pypy
+        CIBW_SKIP: pp37*
+        CIBW_ENVIRONMENT: >
+            CRC32C_PURE_PYTHON="0"
+            CRC32C_INSTALL_PREFIX="$(pwd)/usr"
+        CIBW_BUILD_VERBOSITY: 1
+        # Build the C library inside CIBW so that the manylinux image is
+        # used to link the share library;  otherwise, our extension wouldn't
+        # be able to link with it.
+        CIBW_BEFORE_BUILD: >
+            python -m pip install --upgrade setuptools pip wheel &&
+            python -m pip install cmake &&
+            cmake -S google_crc32c -B build \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DCRC32C_BUILD_TESTS=no \
+                -DCRC32C_BUILD_BENCHMARKS=no \
+                -DBUILD_SHARED_LIBS=yes \
+                -DCMAKE_INSTALL_PREFIX:PATH=$(pwd)/usr &&
+            make -C build all install
+        CIBW_TEST_REQUIRES: pytest
+        CIBW_TEST_COMMAND: py.test -v {project}/tests/
+
     - uses: actions/upload-artifact@v2
       with:
         name: python-package-distributions
-        path: ./wheels/google_crc32c*.whl
+        path: wheelhouse/
 
-  build-macos:
-    runs-on: macos-latest
+  build-wheels-macos:
+    name: ${{ matrix.os }}
     strategy:
       matrix:
-        python: [3.6, 3.7, 3.8, 3.9, 3.10-dev]
-      # It is possible 3.10-dev will fail when the other versions are green.
-      # Turn off fast fail so if 3.10 fails the other required versions have
-      # the opportunity to pass.
-      fail-fast: false
+        os:
+        - macos-10.15
+       # Wheels port forward
+       #- macos-11
+    runs-on: ${{ matrix.os }}
     steps:
+
     - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade setuptools pip wheel
-    - name: Build
+        submodules: 'recursive'
+
+    - name: Get C library hash
+      id: get-c-lib-hash
+      run:
+        echo "::set-output name=hash::$(git -C google_crc32c log -n 1 --pretty=%H)"
+
+    - id: load-cache
+      name: Load cached C library
+      uses: actions/cache@v2
+      with:
+        path: ${{ github.workspace }}/usr
+        key:
+            libcrc32c-${{ matrix.os }}-${{ steps.get-c-lib-hash.outputs.hash }}
+
+    - name: Build C Library
+      if: steps.load-cache.outputs.cache-hit != 'true'
+      run: >
+        python -m pip install --upgrade setuptools pip wheel &&
+        python -m pip install cmake &&
+        cmake -S google_crc32c -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 \
+            -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
+            -DCRC32C_BUILD_TESTS=no \
+            -DCRC32C_BUILD_BENCHMARKS=no \
+            -DBUILD_SHARED_LIBS=yes \
+            -DCMAKE_INSTALL_PREFIX:PATH=${{ github.workspace }}/usr \
+            -DCMAKE_INSTALL_NAME_DIR:PATH=${{ github.workspace }}/usr/lib &&
+        make -C build all install
+
+    - name: Build Wheels
+      uses: pypa/cibuildwheel@v2.1.1
       env:
-        CRC32C_PURE_PYTHON: "0"
-      run: |
-        ./scripts/osx/build_gh_action.sh
-    - name: Test Import
-      run: |
-        pip install --no-index --find-links=wheels google-crc32c
-        python ./scripts/check_crc32c_extension.py
-    - name: Run tests
-      run: |
-        pip install pytest
-        python -m pytest tests
+        # For presubmit, just build / test the most common arch
+        CIBW_ARCHS: native
+        # For presubmit, skip build / test for pypy
+        CIBW_SKIP: pp37*
+        CIBW_ENVIRONMENT: >
+            CRC32C_PURE_PYTHON="0"
+            CRC32C_INSTALL_PREFIX="$(pwd)/usr"
+        CIBW_BUILD_VERBOSITY: 1
+        CIBW_TEST_REQUIRES: pytest
+        CIBW_TEST_COMMAND: py.test -v {project}/tests/
+
     - uses: actions/upload-artifact@v2
       with:
         name: python-package-distributions
-        path: ./wheels/google_crc32c*.whl
+        path: wheelhouse/
 
-  build-windows:
-    runs-on: windows-latest
+  build-wheels-windows:
+    name: ${{ matrix.os }} ( ${{ matrix.platform }} )
+
     strategy:
       matrix:
-        python: [3.6, 3.7, 3.8, 3.9, 3.10-dev]
-      # It is possible 3.10-dev will fail when the other versions are green.
-      # Turn off fast fail so if 3.10 fails the other required versions have
-      # the opportunity to pass.
-      fail-fast: false
+        os:
+        - windows-2019
+        platform:
+        # For presubmit, just build / test the most common platform
+        - x64
+       #- Win32
+
+    runs-on: ${{ matrix.os }}
+
     steps:
+
     - uses: actions/checkout@v2
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
       with:
-        # Use 16.x
-        vs-version: '[16.0, 17.0)'
-    - name: Set up Python
-      uses: actions/setup-python@v2
+        submodules: 'recursive'
+
+    - name: Get C library hash
+      id: get-c-lib-hash
+      run:
+        echo "::set-output name=hash::$(git -C google_crc32c log -n 1 --pretty=%H)"
+
+    - id: load-cache
+      name: Load cached C library
+      uses: actions/cache@v2
       with:
-        python-version: ${{ matrix.python }}
-    - name: Install dependencies
+        path: ${{ github.workspace }}\usr
+        key:
+            libcrc32c-${{ matrix.os }}-${{ matrix.platform }}-${{ steps.get-c-lib-hash.outputs.hash }}
+
+    - name: Build C Library
+      if: steps.load-cache.outputs.cache-hit != 'true'
       run: |
+        echo "::group::Install cmake"
         python -m pip install --upgrade setuptools pip wheel
-    - name: Build
+        python -m pip install cmake
+        echo "::endgroup::"
+        echo "::group::Run cmake to initialze build tree"
+        cmake -S google_crc32c -B build -G "Visual Studio 16 2019" -A ${{ matrix.platform }} -DCRC32C_BUILD_BENCHMARKS=no -DCRC32C_BUILD_TESTS=no -DBUILD_SHARED_LIBS=no -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCRC32C_USE_GLOG=0
+        echo "::endgroup::"
+        echo "::group::Run cmake to build library"
+        cmake --build build --verbose --config Release
+        echo "::endgroup::"
+        echo "::group::Run cmake to install library"
+        cmake --install build --verbose --config Release --prefix=${{ github.workspace }}\usr\
+        echo "::endgroup::"
+
+    # Passing through ${{ github.workspace }} to CIBW_ENVIRONMENT mangles
+    # backslashes:  compute a variant which uses only forward-slashses.
+    - id: crc32c-install-prefix
+      name: Dead-reckon a CIBW-compatible install prefix
+      shell: bash
+      run: |
+        python -c "import os; workspace = '/'.join(os.getenv('GITHUB_WORKSPACE').split(os.sep)); pfx = f'{workspace}/usr'; print(f'::set-output name=prefix::{pfx}')"
+
+    - id: platform-arch
+      name: Map platform -> wheel arch
+      shell: bash
+      run: |
+        if [[ "${{ matrix.platform }}" == "Win32" ]]; then
+            echo "::set-output name=arch::x86"
+        else
+            echo "::set-output name=arch::AMD64"
+        fi
+
+    - name: Build Wheels
+      uses: pypa/cibuildwheel@v2.1.1
       env:
-        CRC32C_PURE_PYTHON: "0"
-      run: |
-        where python
-        ./scripts/windows/build.bat ${{ matrix.python }}
-    - name: Test Import
-      run: |
-        ./scripts/windows/test.bat ${{ matrix.python }}
+        CIBW_ARCHS_WINDOWS: ${{ steps.platform-arch.outputs.arch }}
+        # For presubmit, skip build / test for pypy
+        CIBW_SKIP: pp37*
+        CIBW_ENVIRONMENT: CRC32C_PURE_PYTHON="0" CRC32C_INSTALL_PREFIX="${{ steps.crc32c-install-prefix.outputs.prefix }}"
+        CIBW_BUILD_VERBOSITY: 3
+        CIBW_TEST_REQUIRES: pytest
+        CIBW_TEST_COMMAND: py.test -v {project}/tests
+
     - uses: actions/upload-artifact@v2
       with:
         name: python-package-distributions
-        path: ./wheels/google_crc32c*.whl
+        path: wheelhouse/
