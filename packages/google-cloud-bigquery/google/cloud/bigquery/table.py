@@ -2251,7 +2251,10 @@ class _EmptyRowIterator(RowIterator):
         """
         if geopandas is None:
             raise ValueError(_NO_GEOPANDAS_ERROR)
-        return geopandas.GeoDataFrame(crs=_COORDINATE_REFERENCE_SYSTEM)
+
+        # Since an empty GeoDataFrame has no geometry column, we do not CRS on it,
+        # because that's deprecated.
+        return geopandas.GeoDataFrame()
 
     def to_dataframe_iterable(
         self,

@@ -1866,8 +1866,7 @@ class Test_EmptyRowIterator(unittest.TestCase):
         df = row_iterator.to_geodataframe(create_bqstorage_client=False)
         self.assertIsInstance(df, geopandas.GeoDataFrame)
         self.assertEqual(len(df), 0)  # verify the number of rows
-        self.assertEqual(df.crs.srs, "EPSG:4326")
-        self.assertEqual(df.crs.name, "WGS 84")
+        self.assertIsNone(df.crs)
 
 
 class TestRowIterator(unittest.TestCase):
@@ -4027,8 +4026,14 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df.name.dtype.name, "object")
         self.assertEqual(df.geog.dtype.name, "geometry")
         self.assertIsInstance(df.geog, geopandas.GeoSeries)
-        self.assertEqual(list(map(str, df.area)), ["0.0", "nan", "0.5"])
-        self.assertEqual(list(map(str, df.geog.area)), ["0.0", "nan", "0.5"])
+
+        with warnings.catch_warnings():
+            # Computing the area on a GeoDataFrame that uses a geographic Coordinate
+            # Reference System (CRS) produces a warning that we are not interested in.
+            warnings.filterwarnings("ignore", category=UserWarning)
+            self.assertEqual(list(map(str, df.area)), ["0.0", "nan", "0.5"])
+            self.assertEqual(list(map(str, df.geog.area)), ["0.0", "nan", "0.5"])
+
         self.assertEqual(df.crs.srs, "EPSG:4326")
         self.assertEqual(df.crs.name, "WGS 84")
         self.assertEqual(df.geog.crs.srs, "EPSG:4326")
@@ -4099,8 +4104,14 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df.geog.dtype.name, "geometry")
         self.assertEqual(df.geog2.dtype.name, "object")
         self.assertIsInstance(df.geog, geopandas.GeoSeries)
-        self.assertEqual(list(map(str, df.area)), ["0.0", "nan", "0.5"])
-        self.assertEqual(list(map(str, df.geog.area)), ["0.0", "nan", "0.5"])
+
+        with warnings.catch_warnings():
+            # Computing the area on a GeoDataFrame that uses a geographic Coordinate
+            # Reference System (CRS) produces a warning that we are not interested in.
+            warnings.filterwarnings("ignore", category=UserWarning)
+            self.assertEqual(list(map(str, df.area)), ["0.0", "nan", "0.5"])
+            self.assertEqual(list(map(str, df.geog.area)), ["0.0", "nan", "0.5"])
+
         self.assertEqual(
             [v.__class__.__name__ for v in df.geog], ["Point", "NoneType", "Polygon"]
         )
@@ -4110,10 +4121,14 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(
             [v.__class__.__name__ for v in df.geog2], ["Point", "Point", "Point"]
         )
+
         # and can easily be converted to a GeoSeries
-        self.assertEqual(
-            list(map(str, geopandas.GeoSeries(df.geog2).area)), ["0.0", "0.0", "0.0"]
-        )
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=UserWarning)
+            self.assertEqual(
+                list(map(str, geopandas.GeoSeries(df.geog2).area)),
+                ["0.0", "0.0", "0.0"],
+            )
 
     @unittest.skipIf(geopandas is None, "Requires `geopandas`")
     @mock.patch("google.cloud.bigquery.table.RowIterator.to_dataframe")
@@ -4165,8 +4180,14 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df.name.dtype.name, "object")
         self.assertEqual(df.g.dtype.name, "geometry")
         self.assertIsInstance(df.g, geopandas.GeoSeries)
-        self.assertEqual(list(map(str, df.area)), ["0.0"])
-        self.assertEqual(list(map(str, df.g.area)), ["0.0"])
+
+        with warnings.catch_warnings():
+            # Computing the area on a GeoDataFrame that uses a geographic Coordinate
+            # Reference System (CRS) produces a warning that we are not interested in.
+            warnings.filterwarnings("ignore", category=UserWarning)
+            self.assertEqual(list(map(str, df.area)), ["0.0"])
+            self.assertEqual(list(map(str, df.g.area)), ["0.0"])
+
         self.assertEqual([v.__class__.__name__ for v in df.g], ["Point"])
 
 

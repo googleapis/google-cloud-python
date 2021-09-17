@@ -54,3 +54,8 @@ def disable_add_server_timeout_header(request):
             noop_add_server_timeout_header,
         ):
             yield
+
+
+def pytest_configure(config):
+    # Explicitly register custom test markers to avoid warnings.
+    config.addinivalue_line("markers", "enable_add_server_timeout_header")
