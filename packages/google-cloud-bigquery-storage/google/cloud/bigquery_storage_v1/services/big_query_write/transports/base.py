@@ -48,12 +48,12 @@ except AttributeError:
         _GOOGLE_AUTH_VERSION = None
 
 
-class BigQueryReadTransport(abc.ABC):
-    """Abstract transport class for BigQueryRead."""
+class BigQueryWriteTransport(abc.ABC):
+    """Abstract transport class for BigQueryWrite."""
 
     AUTH_SCOPES = (
         "https://www.googleapis.com/auth/bigquery",
-        "https://www.googleapis.com/auth/bigquery.readonly",
+        "https://www.googleapis.com/auth/bigquery.insertdata",
         "https://www.googleapis.com/auth/cloud-platform",
     )
 
@@ -159,8 +159,8 @@ class BigQueryReadTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.create_read_session: gapic_v1.method.wrap_method(
-                self.create_read_session,
+            self.create_write_stream: gapic_v1.method.wrap_method(
+                self.create_write_stream,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -174,8 +174,8 @@ class BigQueryReadTransport(abc.ABC):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.read_rows: gapic_v1.method.wrap_method(
-                self.read_rows,
+            self.append_rows: gapic_v1.method.wrap_method(
+                self.append_rows,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -188,39 +188,127 @@ class BigQueryReadTransport(abc.ABC):
                 default_timeout=86400.0,
                 client_info=client_info,
             ),
-            self.split_read_stream: gapic_v1.method.wrap_method(
-                self.split_read_stream, default_timeout=None, client_info=client_info,
+            self.get_write_stream: gapic_v1.method.wrap_method(
+                self.get_write_stream,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.finalize_write_stream: gapic_v1.method.wrap_method(
+                self.finalize_write_stream,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.batch_commit_write_streams: gapic_v1.method.wrap_method(
+                self.batch_commit_write_streams,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.flush_rows: gapic_v1.method.wrap_method(
+                self.flush_rows,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
+                client_info=client_info,
             ),
         }
 
     @property
-    def create_read_session(
+    def create_write_stream(
         self,
     ) -> Callable[
-        [storage.CreateReadSessionRequest],
-        Union[stream.ReadSession, Awaitable[stream.ReadSession]],
+        [storage.CreateWriteStreamRequest],
+        Union[stream.WriteStream, Awaitable[stream.WriteStream]],
     ]:
         raise NotImplementedError()
 
     @property
-    def read_rows(
+    def append_rows(
         self,
     ) -> Callable[
-        [storage.ReadRowsRequest],
-        Union[storage.ReadRowsResponse, Awaitable[storage.ReadRowsResponse]],
+        [storage.AppendRowsRequest],
+        Union[storage.AppendRowsResponse, Awaitable[storage.AppendRowsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def split_read_stream(
+    def get_write_stream(
         self,
     ) -> Callable[
-        [storage.SplitReadStreamRequest],
+        [storage.GetWriteStreamRequest],
+        Union[stream.WriteStream, Awaitable[stream.WriteStream]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def finalize_write_stream(
+        self,
+    ) -> Callable[
+        [storage.FinalizeWriteStreamRequest],
         Union[
-            storage.SplitReadStreamResponse, Awaitable[storage.SplitReadStreamResponse]
+            storage.FinalizeWriteStreamResponse,
+            Awaitable[storage.FinalizeWriteStreamResponse],
         ],
     ]:
         raise NotImplementedError()
 
+    @property
+    def batch_commit_write_streams(
+        self,
+    ) -> Callable[
+        [storage.BatchCommitWriteStreamsRequest],
+        Union[
+            storage.BatchCommitWriteStreamsResponse,
+            Awaitable[storage.BatchCommitWriteStreamsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
 
-__all__ = ("BigQueryReadTransport",)
+    @property
+    def flush_rows(
+        self,
+    ) -> Callable[
+        [storage.FlushRowsRequest],
+        Union[storage.FlushRowsResponse, Awaitable[storage.FlushRowsResponse]],
+    ]:
+        raise NotImplementedError()
+
+
+__all__ = ("BigQueryWriteTransport",)

@@ -17,7 +17,17 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Iterable, Sequence, Tuple, Type, Union
+from typing import (
+    Callable,
+    Dict,
+    Optional,
+    Iterable,
+    Iterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -30,29 +40,29 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.bigquery_storage_v1.types import arrow
-from google.cloud.bigquery_storage_v1.types import avro
 from google.cloud.bigquery_storage_v1.types import storage
 from google.cloud.bigquery_storage_v1.types import stream
+from google.cloud.bigquery_storage_v1.types import table
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import BigQueryReadTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc import BigQueryReadGrpcTransport
-from .transports.grpc_asyncio import BigQueryReadGrpcAsyncIOTransport
+from google.rpc import status_pb2  # type: ignore
+from .transports.base import BigQueryWriteTransport, DEFAULT_CLIENT_INFO
+from .transports.grpc import BigQueryWriteGrpcTransport
+from .transports.grpc_asyncio import BigQueryWriteGrpcAsyncIOTransport
 
 
-class BigQueryReadClientMeta(type):
-    """Metaclass for the BigQueryRead client.
+class BigQueryWriteClientMeta(type):
+    """Metaclass for the BigQueryWrite client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
 
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[BigQueryReadTransport]]
-    _transport_registry["grpc"] = BigQueryReadGrpcTransport
-    _transport_registry["grpc_asyncio"] = BigQueryReadGrpcAsyncIOTransport
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[BigQueryWriteTransport]]
+    _transport_registry["grpc"] = BigQueryWriteGrpcTransport
+    _transport_registry["grpc_asyncio"] = BigQueryWriteGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[BigQueryReadTransport]:
+    def get_transport_class(cls, label: str = None,) -> Type[BigQueryWriteTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -71,9 +81,11 @@ class BigQueryReadClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
-    """BigQuery Read API.
-    The Read API can be used to read data from BigQuery.
+class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
+    """BigQuery Write API.
+    The Write API can be used to write data to BigQuery.
+    For supplementary information about the Write API, see:
+    https://cloud.google.com/bigquery/docs/write-api
     """
 
     @staticmethod
@@ -122,7 +134,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            BigQueryReadClient: The constructed client.
+            BigQueryWriteClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -140,7 +152,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            BigQueryReadClient: The constructed client.
+            BigQueryWriteClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -149,48 +161,14 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> BigQueryReadTransport:
+    def transport(self) -> BigQueryWriteTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            BigQueryReadTransport: The transport used by the client
+            BigQueryWriteTransport: The transport used by the client
                 instance.
         """
         return self._transport
-
-    @staticmethod
-    def read_session_path(project: str, location: str, session: str,) -> str:
-        """Returns a fully-qualified read_session string."""
-        return "projects/{project}/locations/{location}/sessions/{session}".format(
-            project=project, location=location, session=session,
-        )
-
-    @staticmethod
-    def parse_read_session_path(path: str) -> Dict[str, str]:
-        """Parses a read_session path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sessions/(?P<session>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def read_stream_path(
-        project: str, location: str, session: str, stream: str,
-    ) -> str:
-        """Returns a fully-qualified read_stream string."""
-        return "projects/{project}/locations/{location}/sessions/{session}/streams/{stream}".format(
-            project=project, location=location, session=session, stream=stream,
-        )
-
-    @staticmethod
-    def parse_read_stream_path(path: str) -> Dict[str, str]:
-        """Parses a read_stream path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sessions/(?P<session>.+?)/streams/(?P<stream>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
 
     @staticmethod
     def table_path(project: str, dataset: str, table: str,) -> str:
@@ -204,6 +182,22 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         """Parses a table path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/datasets/(?P<dataset>.+?)/tables/(?P<table>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def write_stream_path(project: str, dataset: str, table: str, stream: str,) -> str:
+        """Returns a fully-qualified write_stream string."""
+        return "projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}".format(
+            project=project, dataset=dataset, table=table, stream=stream,
+        )
+
+    @staticmethod
+    def parse_write_stream_path(path: str) -> Dict[str, str]:
+        """Parses a write_stream path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/datasets/(?P<dataset>.+?)/tables/(?P<table>.+?)/streams/(?P<stream>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -271,11 +265,11 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, BigQueryReadTransport, None] = None,
+        transport: Union[str, BigQueryWriteTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the big query read client.
+        """Instantiates the big query write client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -283,7 +277,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, BigQueryReadTransport]): The
+            transport (Union[str, BigQueryWriteTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
@@ -358,8 +352,8 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, BigQueryReadTransport):
-            # transport is a BigQueryReadTransport instance.
+        if isinstance(transport, BigQueryWriteTransport):
+            # transport is a BigQueryWriteTransport instance.
             if credentials or client_options.credentials_file:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -387,74 +381,39 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
                 ),
             )
 
-    def create_read_session(
+    def create_write_stream(
         self,
-        request: storage.CreateReadSessionRequest = None,
+        request: storage.CreateWriteStreamRequest = None,
         *,
         parent: str = None,
-        read_session: stream.ReadSession = None,
-        max_stream_count: int = None,
+        write_stream: stream.WriteStream = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> stream.ReadSession:
-        r"""Creates a new read session. A read session divides
-        the contents of a BigQuery table into one or more
-        streams, which can then be used to read data from the
-        table. The read session also specifies properties of the
-        data to be read, such as a list of columns or a push-
-        down filter describing the rows to be returned.
-
-        A particular row can be read by at most one stream. When
-        the caller has reached the end of each stream in the
-        session, then all the data in the table has been read.
-
-        Data is assigned to each stream such that roughly the
-        same number of rows can be read from each stream.
-        Because the server-side unit for assigning data is
-        collections of rows, the API does not guarantee that
-        each stream will return the same number or rows.
-        Additionally, the limits are enforced based on the
-        number of pre-filtered rows, so some filters can lead to
-        lopsided assignments.
-
-        Read sessions automatically expire 6 hours after they
-        are created and do not require manual clean-up by the
-        caller.
+    ) -> stream.WriteStream:
+        r"""Creates a write stream to the given table. Additionally, every
+        table has a special stream named '_default' to which data can be
+        written. This stream doesn't need to be created using
+        CreateWriteStream. It is a stream that can be used
+        simultaneously by any number of clients. Data written to this
+        stream is considered committed as soon as an acknowledgement is
+        received.
 
         Args:
-            request (google.cloud.bigquery_storage_v1.types.CreateReadSessionRequest):
+            request (google.cloud.bigquery_storage_v1.types.CreateWriteStreamRequest):
                 The request object. Request message for
-                `CreateReadSession`.
+                `CreateWriteStream`.
             parent (str):
-                Required. The request project that owns the session, in
-                the form of ``projects/{project_id}``.
+                Required. Reference to the table to which the stream
+                belongs, in the format of
+                ``projects/{project}/datasets/{dataset}/tables/{table}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            read_session (google.cloud.bigquery_storage_v1.types.ReadSession):
-                Required. Session to be created.
-                This corresponds to the ``read_session`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            max_stream_count (int):
-                Max initial number of streams. If
-                unset or zero, the server will provide a
-                value of streams so as to produce
-                reasonable throughput. Must be non-
-                negative. The number of streams may be
-                lower than the requested number,
-                depending on the amount parallelism that
-                is reasonable for the table. Error will
-                be returned if the max count is greater
-                than the current system max limit of
-                1,000.
-
-                Streams must be read starting from
-                offset 0.
-
-                This corresponds to the ``max_stream_count`` field
+            write_stream (google.cloud.bigquery_storage_v1.types.WriteStream):
+                Required. Stream to be created.
+                This corresponds to the ``write_stream`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -464,13 +423,16 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.bigquery_storage_v1.types.ReadSession:
-                Information about the ReadSession.
+            google.cloud.bigquery_storage_v1.types.WriteStream:
+                Information about a single stream
+                that gets data inside the storage
+                system.
+
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, read_session, max_stream_count])
+        has_flattened_params = any([parent, write_stream])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -478,30 +440,26 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a storage.CreateReadSessionRequest.
+        # in a storage.CreateWriteStreamRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, storage.CreateReadSessionRequest):
-            request = storage.CreateReadSessionRequest(request)
+        if not isinstance(request, storage.CreateWriteStreamRequest):
+            request = storage.CreateWriteStreamRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
                 request.parent = parent
-            if read_session is not None:
-                request.read_session = read_session
-            if max_stream_count is not None:
-                request.max_stream_count = max_stream_count
+            if write_stream is not None:
+                request.write_stream = write_stream
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_read_session]
+        rpc = self._transport._wrapped_methods[self._transport.create_write_stream]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("read_session.table", request.read_session.table),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
@@ -510,41 +468,101 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         # Done; return the response.
         return response
 
-    def read_rows(
+    def append_rows(
         self,
-        request: storage.ReadRowsRequest = None,
+        requests: Iterator[storage.AppendRowsRequest] = None,
         *,
-        read_stream: str = None,
-        offset: int = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> Iterable[storage.ReadRowsResponse]:
-        r"""Reads rows from the stream in the format prescribed
-        by the ReadSession. Each response contains one or more
-        table rows, up to a maximum of 100 MiB per response;
-        read requests which attempt to read individual rows
-        larger than 100 MiB will fail.
+    ) -> Iterable[storage.AppendRowsResponse]:
+        r"""Appends data to the given stream.
 
-        Each request also returns a set of stream statistics
-        reflecting the current state of the stream.
+        If ``offset`` is specified, the ``offset`` is checked against
+        the end of stream. The server returns ``OUT_OF_RANGE`` in
+        ``AppendRowsResponse`` if an attempt is made to append to an
+        offset beyond the current end of the stream or
+        ``ALREADY_EXISTS`` if user provides an ``offset`` that has
+        already been written to. User can retry with adjusted offset
+        within the same RPC connection. If ``offset`` is not specified,
+        append happens at the end of the stream.
+
+        The response contains an optional offset at which the append
+        happened. No offset information will be returned for appends to
+        a default stream.
+
+        Responses are received in the same order in which requests are
+        sent. There will be one response for each successful inserted
+        request. Responses may optionally embed error information if the
+        originating AppendRequest was not successfully processed.
+
+        The specifics of when successfully appended data is made visible
+        to the table are governed by the type of stream:
+
+        -  For COMMITTED streams (which includes the default stream),
+           data is visible immediately upon successful append.
+
+        -  For BUFFERED streams, data is made visible via a subsequent
+           ``FlushRows`` rpc which advances a cursor to a newer offset
+           in the stream.
+
+        -  For PENDING streams, data is not made visible until the
+           stream itself is finalized (via the ``FinalizeWriteStream``
+           rpc), and the stream is explicitly committed via the
+           ``BatchCommitWriteStreams`` rpc.
 
         Args:
-            request (google.cloud.bigquery_storage_v1.types.ReadRowsRequest):
-                The request object. Request message for `ReadRows`.
-            read_stream (str):
-                Required. Stream to read rows from.
-                This corresponds to the ``read_stream`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            offset (int):
-                The offset requested must be less
-                than the last row read from Read.
-                Requesting a larger offset is undefined.
-                If not specified, start reading from
-                offset zero.
+            requests (Iterator[google.cloud.bigquery_storage_v1.types.AppendRowsRequest]):
+                The request object iterator. Request message for `AppendRows`.
+                Due to the nature of AppendRows being a bidirectional
+                streaming RPC, certain parts of the AppendRowsRequest
+                need only be specified for the first request sent each
+                time the gRPC network connection is opened/reopened.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
-                This corresponds to the ``offset`` field
+        Returns:
+            Iterable[google.cloud.bigquery_storage_v1.types.AppendRowsResponse]:
+                Response message for AppendRows.
+        """
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.append_rows]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(()),)
+
+        # Send the request.
+        response = rpc(requests, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def get_write_stream(
+        self,
+        request: storage.GetWriteStreamRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> stream.WriteStream:
+        r"""Gets information about a write stream.
+
+        Args:
+            request (google.cloud.bigquery_storage_v1.types.GetWriteStreamRequest):
+                The request object. Request message for
+                `GetWriteStreamRequest`.
+            name (str):
+                Required. Name of the stream to get, in the form of
+                ``projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}``.
+
+                This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -554,15 +572,16 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            Iterable[google.cloud.bigquery_storage_v1.types.ReadRowsResponse]:
-                Response from calling ReadRows may include row data, progress and
-                   throttling information.
+            google.cloud.bigquery_storage_v1.types.WriteStream:
+                Information about a single stream
+                that gets data inside the storage
+                system.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([read_stream, offset])
+        has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -570,88 +589,250 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a storage.ReadRowsRequest.
+        # in a storage.GetWriteStreamRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, storage.ReadRowsRequest):
-            request = storage.ReadRowsRequest(request)
+        if not isinstance(request, storage.GetWriteStreamRequest):
+            request = storage.GetWriteStreamRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-            if read_stream is not None:
-                request.read_stream = read_stream
-            if offset is not None:
-                request.offset = offset
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.read_rows]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("read_stream", request.read_stream),)
-            ),
-        )
-
-        # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    def split_read_stream(
-        self,
-        request: storage.SplitReadStreamRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> storage.SplitReadStreamResponse:
-        r"""Splits a given ``ReadStream`` into two ``ReadStream`` objects.
-        These ``ReadStream`` objects are referred to as the primary and
-        the residual streams of the split. The original ``ReadStream``
-        can still be read from in the same manner as before. Both of the
-        returned ``ReadStream`` objects can also be read from, and the
-        rows returned by both child streams will be the same as the rows
-        read from the original stream.
-
-        Moreover, the two child streams will be allocated back-to-back
-        in the original ``ReadStream``. Concretely, it is guaranteed
-        that for streams original, primary, and residual, that
-        original[0-j] = primary[0-j] and original[j-n] = residual[0-m]
-        once the streams have been read to completion.
-
-        Args:
-            request (google.cloud.bigquery_storage_v1.types.SplitReadStreamRequest):
-                The request object. Request message for
-                `SplitReadStream`.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse:
-                Response message for SplitReadStream.
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a storage.SplitReadStreamRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, storage.SplitReadStreamRequest):
-            request = storage.SplitReadStreamRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.split_read_stream]
+        rpc = self._transport._wrapped_methods[self._transport.get_write_stream]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def finalize_write_stream(
+        self,
+        request: storage.FinalizeWriteStreamRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> storage.FinalizeWriteStreamResponse:
+        r"""Finalize a write stream so that no new data can be appended to
+        the stream. Finalize is not supported on the '_default' stream.
+
+        Args:
+            request (google.cloud.bigquery_storage_v1.types.FinalizeWriteStreamRequest):
+                The request object. Request message for invoking
+                `FinalizeWriteStream`.
+            name (str):
+                Required. Name of the stream to finalize, in the form of
+                ``projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bigquery_storage_v1.types.FinalizeWriteStreamResponse:
+                Response message for FinalizeWriteStream.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a storage.FinalizeWriteStreamRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, storage.FinalizeWriteStreamRequest):
+            request = storage.FinalizeWriteStreamRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.finalize_write_stream]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def batch_commit_write_streams(
+        self,
+        request: storage.BatchCommitWriteStreamsRequest = None,
+        *,
+        parent: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> storage.BatchCommitWriteStreamsResponse:
+        r"""Atomically commits a group of ``PENDING`` streams that belong to
+        the same ``parent`` table.
+
+        Streams must be finalized before commit and cannot be committed
+        multiple times. Once a stream is committed, data in the stream
+        becomes available for read operations.
+
+        Args:
+            request (google.cloud.bigquery_storage_v1.types.BatchCommitWriteStreamsRequest):
+                The request object. Request message for
+                `BatchCommitWriteStreams`.
+            parent (str):
+                Required. Parent table that all the streams should
+                belong to, in the form of
+                ``projects/{project}/datasets/{dataset}/tables/{table}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bigquery_storage_v1.types.BatchCommitWriteStreamsResponse:
+                Response message for BatchCommitWriteStreams.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a storage.BatchCommitWriteStreamsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, storage.BatchCommitWriteStreamsRequest):
+            request = storage.BatchCommitWriteStreamsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.batch_commit_write_streams
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def flush_rows(
+        self,
+        request: storage.FlushRowsRequest = None,
+        *,
+        write_stream: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> storage.FlushRowsResponse:
+        r"""Flushes rows to a BUFFERED stream.
+
+        If users are appending rows to BUFFERED stream, flush operation
+        is required in order for the rows to become available for
+        reading. A Flush operation flushes up to any previously flushed
+        offset in a BUFFERED stream, to the offset specified in the
+        request.
+
+        Flush is not supported on the \_default stream, since it is not
+        BUFFERED.
+
+        Args:
+            request (google.cloud.bigquery_storage_v1.types.FlushRowsRequest):
+                The request object. Request message for `FlushRows`.
+            write_stream (str):
+                Required. The stream that is the
+                target of the flush operation.
+
+                This corresponds to the ``write_stream`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bigquery_storage_v1.types.FlushRowsResponse:
+                Respond message for FlushRows.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([write_stream])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a storage.FlushRowsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, storage.FlushRowsRequest):
+            request = storage.FlushRowsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if write_stream is not None:
+                request.write_stream = write_stream
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.flush_rows]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("write_stream", request.write_stream),)
+            ),
         )
 
         # Send the request.
@@ -671,4 +852,4 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("BigQueryReadClient",)
+__all__ = ("BigQueryWriteClient",)

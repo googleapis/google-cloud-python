@@ -197,7 +197,7 @@ class BigQueryReadAsyncClient:
         number of pre-filtered rows, so some filters can lead to
         lopsided assignments.
 
-        Read sessions automatically expire 24 hours after they
+        Read sessions automatically expire 6 hours after they
         are created and do not require manual clean-up by the
         caller.
 
@@ -441,17 +441,7 @@ class BigQueryReadAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.split_read_stream,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=600.0,
-            ),
-            default_timeout=600.0,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
