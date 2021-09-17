@@ -14,6 +14,7 @@
 
 import logging
 import os
+import platform
 import shutil
 import setuptools
 import setuptools.command.build_ext
@@ -28,18 +29,21 @@ CRC32C_PURE_PYTHON = os.getenv("CRC32C_PURE_PYTHON") not in _FALSE_OPTIONS
 
 
 def copy_dll(build_lib):
-    if os.name != "nt":
-        return
-
+    return #  trying static build of C library.
     install_prefix = os.environ.get("CRC32C_INSTALL_PREFIX")
-    if install_prefix is None:
-        return
 
-    installed_dll = os.path.join(install_prefix, "bin", _DLL_FILENAME)
-    lib_dlls = os.path.join(build_lib, "google_crc32c", _EXTRA_DLL)
-    os.makedirs(lib_dlls, exist_ok=True)
-    relocated_dll = os.path.join(lib_dlls, _DLL_FILENAME)
-    shutil.copyfile(installed_dll, relocated_dll)
+    if os.name == "nt" and install_prefix is not None:
+        assert os.path.isdir(install_prefix)
+
+        installed_dll = os.path.join(install_prefix, "bin", _DLL_FILENAME)
+        assert os.path.isfile(installed_dll)
+
+        lib_dlls = os.path.join(build_lib, "google_crc32c", _EXTRA_DLL)
+        os.makedirs(lib_dlls, exist_ok=True)
+        relocated_dll = os.path.join(lib_dlls, _DLL_FILENAME)
+
+        shutil.copyfile(installed_dll, relocated_dll)
+        assert os.path.isfile(relocated_dll)
 
 
 class BuildExtWithDLL(setuptools.command.build_ext.build_ext):
@@ -47,14 +51,6 @@ class BuildExtWithDLL(setuptools.command.build_ext.build_ext):
         copy_dll(self.build_lib)
         result = setuptools.command.build_ext.build_ext.run(self)
         return result
-
-
-module_path = os.path.join("src", "google_crc32c", "_crc32c.c")
-module = setuptools.Extension(
-    "google_crc32c._crc32c",
-    sources=[os.path.normcase(module_path)],
-    libraries=["crc32c"],
-)
 
 
 def build_pure_python():
@@ -66,6 +62,46 @@ def build_pure_python():
 
 
 def build_c_extension():
+    install_prefix = os.getenv("CRC32C_INSTALL_PREFIX")
+    if install_prefix is not None:
+        install_prefix = os.path.normcase(install_prefix)
+        print(f"#### using local install of 'crc32c': {install_prefix!r}")
+        #assert os.path.isdir(install_prefix)
+        install_prefix = os.path.realpath(install_prefix)
+        include_dirs = [os.path.join(install_prefix, "include")]
+        library_dirs = [os.path.join(install_prefix, "lib")]
+
+        if platform.system() == "Linux":
+            library_dirs.append(os.path.join(install_prefix, "lib64"))
+
+        if os.name == "nt":
+            library_dirs.append(os.path.join(install_prefix, "bin"))
+            kwargs = {
+                "include_dirs": include_dirs,
+                "library_dirs": library_dirs,
+            }
+        else:
+            runtime_library_dirs = library_dirs[:]
+            kwargs = {
+                "include_dirs": include_dirs,
+                "library_dirs": library_dirs,
+                "runtime_library_dirs": runtime_library_dirs,
+            }
+    else:
+        print("#### using global install of 'crc32c'")
+        kwargs = {}
+
+    module_path = os.path.join("src", "google_crc32c", "_crc32c.c")
+    sources=[os.path.normcase(module_path)]
+    print(f"##### sources: {sources}")
+    print(f"##### module kwargs: {kwargs}")
+    module = setuptools.Extension(
+        "google_crc32c._crc32c",
+        sources=sources,
+        libraries=["crc32c"],
+        **kwargs
+    )
+
     setuptools.setup(
         packages=["google_crc32c"],
         package_dir={"": "src"},
