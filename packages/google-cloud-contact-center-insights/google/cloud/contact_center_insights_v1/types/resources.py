@@ -737,15 +737,21 @@ class IssueModel(proto.Message):
         r"""Configs for the input data used to create the issue model.
         Attributes:
             medium (google.cloud.contact_center_insights_v1.types.Conversation.Medium):
-                Required. Medium of conversations used in
-                training data.
+                Medium of conversations used in training data. This field is
+                being deprecated. To specify the medium to be used in
+                training a new issue model, set the ``medium`` field on
+                ``filter``.
             training_conversations_count (int):
                 Output only. Number of conversations used in
                 training. Output only.
+            filter (str):
+                A filter to reduce the conversations used for
+                training the model to a specific subset.
         """
 
         medium = proto.Field(proto.ENUM, number=1, enum="Conversation.Medium",)
         training_conversations_count = proto.Field(proto.INT64, number=2,)
+        filter = proto.Field(proto.STRING, number=3,)
 
     name = proto.Field(proto.STRING, number=1,)
     display_name = proto.Field(proto.STRING, number=2,)
@@ -857,6 +863,9 @@ class PhraseMatcher(proto.Message):
             The role whose utterances the phrase matcher should be
             matched against. If the role is ROLE_UNSPECIFIED it will be
             matched against any utterances in the transcript.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The most recent time at which
+            the phrase matcher was updated.
     """
 
     class PhraseMatcherType(proto.Enum):
@@ -884,6 +893,9 @@ class PhraseMatcher(proto.Message):
     )
     role_match = proto.Field(
         proto.ENUM, number=10, enum="ConversationParticipant.Role",
+    )
+    update_time = proto.Field(
+        proto.MESSAGE, number=11, message=timestamp_pb2.Timestamp,
     )
 
 
