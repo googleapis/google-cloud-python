@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.9.0](https://www.github.com/googleapis/python-speech/compare/v2.8.0...v2.9.0) (2021-09-20)
+
+
+### Features
+
+* add output_config request field ([#252](https://www.github.com/googleapis/python-speech/issues/252)) ([b9f856e](https://www.github.com/googleapis/python-speech/commit/b9f856e93cbb926e9531639a9bb50c654ff1033e))
+
+
+### Documentation
+
+* **samples:** fixed model adaptation sample to correctly refer to custom classes ([#246](https://www.github.com/googleapis/python-speech/issues/246)) ([5fa2433](https://www.github.com/googleapis/python-speech/commit/5fa243358ec5688a40ef0d5abf3802acfa931ea7))
+
 ## [2.8.0](https://www.github.com/googleapis/python-speech/compare/v2.7.0...v2.8.0) (2021-08-19)
 
 
