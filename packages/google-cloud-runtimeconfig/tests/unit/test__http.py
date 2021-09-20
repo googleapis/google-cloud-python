@@ -33,8 +33,8 @@ class TestConnection(unittest.TestCase):
         self.assertIs(conn._client, client)
 
     def test_build_api_url_no_extra_query_params(self):
-        from six.moves.urllib.parse import parse_qsl
-        from six.moves.urllib.parse import urlsplit
+        from urllib.parse import parse_qsl
+        from urllib.parse import urlsplit
 
         conn = self._make_one(object())
         uri = conn.build_api_url("/foo")
@@ -47,8 +47,8 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(parms, {})
 
     def test_build_api_url_w_custom_endpoint(self):
-        from six.moves.urllib.parse import parse_qsl
-        from six.moves.urllib.parse import urlsplit
+        from urllib.parse import parse_qsl
+        from urllib.parse import urlsplit
 
         custom_endpoint = "https://foo-runtimeconfig.googleapis.com"
         conn = self._make_one(object(), api_endpoint=custom_endpoint)
@@ -62,8 +62,8 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(parms, {})
 
     def test_build_api_url_w_extra_query_params(self):
-        from six.moves.urllib.parse import parse_qsl
-        from six.moves.urllib.parse import urlsplit
+        from urllib.parse import parse_qsl
+        from urllib.parse import urlsplit
 
         conn = self._make_one(object())
         uri = conn.build_api_url("/foo", {"bar": "baz"})
