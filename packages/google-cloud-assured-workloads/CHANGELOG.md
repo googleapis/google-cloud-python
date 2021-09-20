@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://www.github.com/googleapis/python-assured-workloads/compare/v0.6.0...v0.7.0) (2021-09-20)
+
+
+### Features
+
+* assuredworkloads v1 public protos ([#82](https://www.github.com/googleapis/python-assured-workloads/issues/82)) ([04dd627](https://www.github.com/googleapis/python-assured-workloads/commit/04dd627d5d3862b055d661c2a1bf9a0f6b5fc4e4))
+
 ## [0.6.0](https://www.github.com/googleapis/python-assured-workloads/compare/v0.5.0...v0.6.0) (2021-08-30)
 
 
