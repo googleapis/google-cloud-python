@@ -39,7 +39,7 @@ def partition(
 class speechCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'long_running_recognize': ('config', 'audio', ),
+          'long_running_recognize': ('config', 'audio', 'output_config', ),
           'recognize': ('config', 'audio', ),
           'streaming_recognize': ('streaming_config', 'audio_content', ),
     }
