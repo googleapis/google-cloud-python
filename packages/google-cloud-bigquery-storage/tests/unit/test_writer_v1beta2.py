@@ -20,6 +20,7 @@ import pytest
 from google.api_core import exceptions
 from google.cloud.bigquery_storage_v1beta2.services import big_query_write
 from google.cloud.bigquery_storage_v1beta2 import types as gapic_types
+from google.cloud.bigquery_storage_v1beta2 import exceptions as bqstorage_exceptions
 from google.protobuf import descriptor_pb2
 
 
@@ -42,6 +43,14 @@ def test_constructor_and_default_state(module_under_test):
 
     # Private state
     assert manager._client is mock_client
+
+
+def test_close_before_open(module_under_test):
+    mock_client = mock.create_autospec(big_query_write.BigQueryWriteClient)
+    manager = module_under_test.AppendRowsStream(mock_client, REQUEST_TEMPLATE)
+    manager.close()
+    with pytest.raises(bqstorage_exceptions.StreamClosedError):
+        manager.send(object())
 
 
 @mock.patch("google.api_core.bidi.BidiRpc", autospec=True)

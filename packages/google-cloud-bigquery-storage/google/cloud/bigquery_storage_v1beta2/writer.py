@@ -259,21 +259,12 @@ class AppendRowsStream(object):
 
         This method is idempotent. Additional calls will have no effect.
 
-        The method does not block, it delegates the shutdown operations to a background
-        thread.
-
         Args:
             reason: The reason to close this. If ``None``, this is considered
                 an "intentional" shutdown. This is passed to the callbacks
                 specified via :meth:`add_close_callback`.
         """
-        self._regular_shutdown_thread = threading.Thread(
-            name=_REGULAR_SHUTDOWN_THREAD_NAME,
-            daemon=True,
-            target=self._shutdown,
-            kwargs={"reason": reason},
-        )
-        self._regular_shutdown_thread.start()
+        self._shutdown(reason=reason)
 
     def _shutdown(self, reason: Optional[Exception] = None):
         """Run the actual shutdown sequence (stop the stream and all helper threads).
@@ -293,7 +284,8 @@ class AppendRowsStream(object):
                 self._consumer.stop()
             self._consumer = None
 
-            self._rpc.close()
+            if self._rpc is not None:
+                self._rpc.close()
             self._rpc = None
             self._closed = True
             _LOGGER.debug("Finished stopping manager.")
