@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+### [0.32.5](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.4...v0.32.5) (2021-09-20)
+
+
+### Bug Fixes
+
+* remove six ([#105](https://www.github.com/googleapis/python-runtimeconfig/issues/105)) ([152b9c6](https://www.github.com/googleapis/python-runtimeconfig/commit/152b9c6316c2dcc482106997b6ee6944ee6d0245))
+
 ### [0.32.4](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.3...v0.32.4) (2021-08-13)
 
 
