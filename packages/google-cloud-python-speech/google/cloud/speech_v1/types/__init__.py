@@ -30,6 +30,7 @@ from .cloud_speech import (
     StreamingRecognitionResult,
     StreamingRecognizeRequest,
     StreamingRecognizeResponse,
+    TranscriptOutputConfig,
     WordInfo,
 )
 
@@ -50,5 +51,6 @@ __all__ = (
     "StreamingRecognitionResult",
     "StreamingRecognizeRequest",
     "StreamingRecognizeResponse",
+    "TranscriptOutputConfig",
     "WordInfo",
 )
