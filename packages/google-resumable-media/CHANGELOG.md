@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+### [2.0.3](https://www.github.com/googleapis/google-resumable-media-python/compare/v2.0.2...v2.0.3) (2021-09-20)
+
+
+### Bug Fixes
+
+* add REQUEST_TIMEOUT 408 as retryable code ([#270](https://www.github.com/googleapis/google-resumable-media-python/issues/270)) ([d0ad0aa](https://www.github.com/googleapis/google-resumable-media-python/commit/d0ad0aade5f4e7c8efed4f4339fc31fb3304fd3c))
+* un-pin google-crc32c ([#267](https://www.github.com/googleapis/google-resumable-media-python/issues/267)) ([6b03a13](https://www.github.com/googleapis/google-resumable-media-python/commit/6b03a13717e1d4d18186bdf2146d5b452d9e3237))
+
 ### [2.0.2](https://www.github.com/googleapis/google-resumable-media-python/compare/v2.0.1...v2.0.2) (2021-09-02)
 
 
