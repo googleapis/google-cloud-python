@@ -13,36 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-from google.cloud.assuredworkloads_v1.services.assured_workloads_service.client import (
-    AssuredWorkloadsServiceClient,
-)
-from google.cloud.assuredworkloads_v1.services.assured_workloads_service.async_client import (
-    AssuredWorkloadsServiceAsyncClient,
-)
-
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
+from .assuredworkloads import (
     CreateWorkloadOperationMetadata,
-)
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     CreateWorkloadRequest,
-)
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     DeleteWorkloadRequest,
-)
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import GetWorkloadRequest
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import ListWorkloadsRequest
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
+    GetWorkloadRequest,
+    ListWorkloadsRequest,
     ListWorkloadsResponse,
-)
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     UpdateWorkloadRequest,
+    Workload,
 )
-from google.cloud.assuredworkloads_v1.types.assuredworkloads import Workload
 
 __all__ = (
-    "AssuredWorkloadsServiceClient",
-    "AssuredWorkloadsServiceAsyncClient",
     "CreateWorkloadOperationMetadata",
     "CreateWorkloadRequest",
     "DeleteWorkloadRequest",
