@@ -412,7 +412,6 @@ class TestManagedZone(unittest.TestCase):
         self.assertEqual(req["path"], "/%s" % PATH)
 
     def test_list_resource_record_sets_defaults(self):
-        import six
         from google.cloud.dns.resource_record_set import ResourceRecordSet
 
         PATH = "projects/%s/managedZones/%s/rrsets" % (self.PROJECT, self.ZONE_NAME)
@@ -450,7 +449,7 @@ class TestManagedZone(unittest.TestCase):
 
         iterator = zone.list_resource_record_sets()
         self.assertIs(zone, iterator.zone)
-        page = six.next(iterator.pages)
+        page = next(iterator.pages)
         rrsets = list(page)
         token = iterator.next_page_token
 
@@ -469,7 +468,6 @@ class TestManagedZone(unittest.TestCase):
         self.assertEqual(req["path"], "/%s" % PATH)
 
     def test_list_resource_record_sets_explicit(self):
-        import six
         from google.cloud.dns.resource_record_set import ResourceRecordSet
 
         PATH = "projects/%s/managedZones/%s/rrsets" % (self.PROJECT, self.ZONE_NAME)
@@ -510,7 +508,7 @@ class TestManagedZone(unittest.TestCase):
             max_results=3, page_token=TOKEN, client=client2
         )
         self.assertIs(zone, iterator.zone)
-        page = six.next(iterator.pages)
+        page = next(iterator.pages)
         rrsets = list(page)
         token = iterator.next_page_token
 
@@ -574,7 +572,6 @@ class TestManagedZone(unittest.TestCase):
         return result
 
     def test_list_changes_defaults(self):
-        import six
         from google.cloud.dns.changes import Changes
         from google.cloud.dns.resource_record_set import ResourceRecordSet
 
@@ -590,7 +587,7 @@ class TestManagedZone(unittest.TestCase):
 
         iterator = zone.list_changes()
         self.assertIs(zone, iterator.zone)
-        page = six.next(iterator.pages)
+        page = next(iterator.pages)
         changes = list(page)
         token = iterator.next_page_token
 
@@ -625,7 +622,6 @@ class TestManagedZone(unittest.TestCase):
         self.assertEqual(req["path"], "/%s" % (path,))
 
     def test_list_changes_explicit(self):
-        import six
         from google.cloud.dns.changes import Changes
         from google.cloud.dns.resource_record_set import ResourceRecordSet
 
@@ -644,7 +640,7 @@ class TestManagedZone(unittest.TestCase):
             max_results=3, page_token=page_token, client=client2
         )
         self.assertIs(zone, iterator.zone)
-        page = six.next(iterator.pages)
+        page = next(iterator.pages)
         changes = list(page)
         token = iterator.next_page_token
 

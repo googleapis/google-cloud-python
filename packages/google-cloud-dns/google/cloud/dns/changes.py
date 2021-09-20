@@ -14,8 +14,6 @@
 
 """Define API ResourceRecordSets."""
 
-import six
-
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
 from google.cloud.dns.resource_record_set import ResourceRecordSet
@@ -105,7 +103,7 @@ class Changes(object):
         :type value: str
         :param value: New name for the changeset.
         """
-        if not isinstance(value, six.string_types):
+        if not isinstance(value, str):
             raise ValueError("Pass a string")
         self._properties["id"] = value
 

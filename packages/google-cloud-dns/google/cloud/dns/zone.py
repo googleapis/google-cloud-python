@@ -14,8 +14,6 @@
 
 """Define API ManagedZones."""
 
-import six
-
 from google.api_core import page_iterator
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
@@ -143,7 +141,7 @@ class ManagedZone(object):
 
         :raises: ValueError for invalid value types.
         """
-        if not isinstance(value, six.string_types) and value is not None:
+        if not isinstance(value, str) and value is not None:
             raise ValueError("Pass a string, or None")
         self._properties["description"] = value
 
@@ -170,7 +168,7 @@ class ManagedZone(object):
 
         :raises: ValueError for invalid value types.
         """
-        if not isinstance(value, six.string_types) and value is not None:
+        if not isinstance(value, str) and value is not None:
             raise ValueError("Pass a string, or None")
         self._properties["nameServerSet"] = value
 
