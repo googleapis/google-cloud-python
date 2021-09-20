@@ -15,7 +15,7 @@ and answer service for BigQuery data.
    `here <http://g.co/cloud/data-qna>`_.
 
 .. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#alpha-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-data-qna.svg
    :target: https://pypi.org/project/google-cloud-data-qna/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-data-qna.svg
@@ -85,5 +85,5 @@ Next Steps
    APIs that we cover.
 
 .. _Data QnA Product documentation: https://cloud.google.com/bigquery/docs/dataqna
-.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
