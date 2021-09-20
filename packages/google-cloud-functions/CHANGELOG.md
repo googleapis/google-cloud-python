@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-functions/compare/v1.0.4...v1.1.0) (2021-09-16)
+
+
+### Features
+
+* add SecurityLevel option on HttpsTrigger ([#109](https://www.github.com/googleapis/python-functions/issues/109)) ([91aa229](https://www.github.com/googleapis/python-functions/commit/91aa229a10b7a6fcdfeb03b2566f4f5a2702636e))
+
 ### [1.0.4](https://www.github.com/googleapis/python-functions/compare/v1.0.3...v1.0.4) (2021-08-30)
 
 
