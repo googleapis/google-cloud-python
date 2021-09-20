@@ -36,7 +36,7 @@ _LOGGER = logging.getLogger(__name__)
 _REGULAR_SHUTDOWN_THREAD_NAME = "Thread-RegularStreamShutdown"
 _RPC_ERROR_THREAD_NAME = "Thread-OnRpcTerminated"
 
-# open() takes between 0.25 and 0.4 seconds to be ready. Wait each loop before
+# _open() takes between 0.25 and 0.4 seconds to be ready. Wait each loop before
 # checking again. This interval was chosen to result in about 3 loops.
 _WRITE_OPEN_INTERVAL = 0.08
 
@@ -91,10 +91,14 @@ class AppendRowsStream(object):
         self._futures_queue = queue.Queue()
         self._inital_request_template = initial_request_template
         self._metadata = metadata
+
+        # Only one call to `send()` should attempt to open the RPC.
+        self._opening = threading.Lock()
+
         self._rpc = None
         self._stream_name = None
 
-        # The threads created in ``.open()``.
+        # The threads created in ``._open()``.
         self._consumer = None
 
     @property
@@ -113,7 +117,7 @@ class AppendRowsStream(object):
         """
         self._close_callbacks.append(callback)
 
-    def open(
+    def _open(
         self,
         initial_request: gapic_types.AppendRowsRequest,
         timeout: float = _DEFAULT_TIMEOUT,
@@ -221,9 +225,14 @@ class AppendRowsStream(object):
                 "This manager has been closed and can not be used."
             )
 
-        # If the manager hasn't been openned yet, automatically open it.
-        if not self.is_active:
-            return self.open(request)
+        # If the manager hasn't been openned yet, automatically open it. Only
+        # one call to `send()` should attempt to open the RPC. After `_open()`,
+        # the stream is active, unless something went wrong with the first call
+        # to open, in which case this send will fail anyway due to a closed
+        # RPC.
+        with self._opening:
+            if not self.is_active:
+                return self._open(request)
 
         # For each request, we expect exactly one response (in order). Add a
         # future to the queue so that when the response comes, the callback can
