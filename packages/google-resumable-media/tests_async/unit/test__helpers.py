@@ -261,12 +261,12 @@ class Test_wait_and_retry(object):
         status_codes = (
             http.client.SERVICE_UNAVAILABLE,
             http.client.GATEWAY_TIMEOUT,
-            common.TOO_MANY_REQUESTS,
+            http.client.TOO_MANY_REQUESTS,
             http.client.INTERNAL_SERVER_ERROR,
             http.client.SERVICE_UNAVAILABLE,
             http.client.BAD_GATEWAY,
             http.client.GATEWAY_TIMEOUT,
-            common.TOO_MANY_REQUESTS,
+            http.client.TOO_MANY_REQUESTS,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
         func = mock.AsyncMock(side_effect=responses, spec=[])

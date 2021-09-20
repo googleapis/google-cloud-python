@@ -18,7 +18,6 @@ import json
 
 import mock
 
-from google import resumable_media
 import google.resumable_media.requests.upload as upload_mod
 
 
@@ -254,9 +253,7 @@ class TestResumableUpload(object):
         upload._chunk_size = chunk_size
         # Make a fake 308 response.
         response_headers = {"range": "bytes=0-{:d}".format(chunk_size - 1)}
-        transport = self._chunk_mock(
-            resumable_media.PERMANENT_REDIRECT, response_headers
-        )
+        transport = self._chunk_mock(http.client.PERMANENT_REDIRECT, response_headers)
         # Check the state before the request.
         assert upload._bytes_uploaded == 0
 
@@ -290,9 +287,7 @@ class TestResumableUpload(object):
 
         # Make a fake 308 response.
         response_headers = {"range": "bytes=0-{:d}".format(chunk_size - 1)}
-        transport = self._chunk_mock(
-            resumable_media.PERMANENT_REDIRECT, response_headers
-        )
+        transport = self._chunk_mock(http.client.PERMANENT_REDIRECT, response_headers)
 
         # Make request and check the return value (against the mock).
         upload.transmit_next_chunk(transport, timeout=12.6)
@@ -320,7 +315,7 @@ class TestResumableUpload(object):
 
         end = 55555
         headers = {"range": "bytes=0-{:d}".format(end)}
-        transport = self._chunk_mock(resumable_media.PERMANENT_REDIRECT, headers)
+        transport = self._chunk_mock(http.client.PERMANENT_REDIRECT, headers)
 
         ret_val = upload.recover(transport)
         assert ret_val is transport.request.return_value

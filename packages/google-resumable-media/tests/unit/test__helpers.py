@@ -365,11 +365,11 @@ class Test_wait_and_retry(object):
         status_codes = (
             http.client.SERVICE_UNAVAILABLE,
             http.client.GATEWAY_TIMEOUT,
-            common.TOO_MANY_REQUESTS,
+            http.client.TOO_MANY_REQUESTS,
             http.client.INTERNAL_SERVER_ERROR,
             http.client.SERVICE_UNAVAILABLE,
             http.client.BAD_GATEWAY,
-            common.TOO_MANY_REQUESTS,
+            http.client.TOO_MANY_REQUESTS,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
 
@@ -407,11 +407,11 @@ class Test_wait_and_retry(object):
         status_codes = (
             http.client.SERVICE_UNAVAILABLE,
             http.client.GATEWAY_TIMEOUT,
-            common.TOO_MANY_REQUESTS,
+            http.client.TOO_MANY_REQUESTS,
             http.client.INTERNAL_SERVER_ERROR,
             http.client.SERVICE_UNAVAILABLE,
             http.client.BAD_GATEWAY,
-            common.TOO_MANY_REQUESTS,
+            http.client.TOO_MANY_REQUESTS,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
         randint_mock.side_effect = [75 * i for i in range(len(responses))]
@@ -451,7 +451,7 @@ class Test_wait_and_retry(object):
         status_codes = (
             http.client.SERVICE_UNAVAILABLE,
             http.client.GATEWAY_TIMEOUT,
-            common.TOO_MANY_REQUESTS,
+            http.client.TOO_MANY_REQUESTS,
         )
         responses = [_make_response(status_code) for status_code in status_codes]
         randint_mock.side_effect = [125 * i for i in range(len(status_codes))]

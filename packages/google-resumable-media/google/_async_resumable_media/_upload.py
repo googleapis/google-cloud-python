@@ -635,7 +635,7 @@ class ResumableUpload(UploadBase, sync_upload.ResumableUpload):
         """
         status_code = _helpers.require_status_code(
             response,
-            (http.client.OK, _async_resumable_media.PERMANENT_REDIRECT),
+            (http.client.OK, http.client.PERMANENT_REDIRECT),
             self._get_status_code,
             callback=self._make_invalid,
         )
@@ -776,7 +776,7 @@ class ResumableUpload(UploadBase, sync_upload.ResumableUpload):
         """
         _helpers.require_status_code(
             response,
-            (_async_resumable_media.PERMANENT_REDIRECT,),
+            (http.client.PERMANENT_REDIRECT,),
             self._get_status_code,
         )
         headers = self._get_headers(response)

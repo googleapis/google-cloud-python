@@ -19,7 +19,6 @@ import sys
 import mock
 import pytest
 
-from google import resumable_media
 from google.resumable_media import _helpers
 from google.resumable_media import _upload
 from google.resumable_media import common
@@ -721,7 +720,7 @@ class TestResumableUpload(object):
         assert len(error.args) == 5
         assert error.args[1] == response.status_code
         assert error.args[3] == http.client.OK
-        assert error.args[4] == resumable_media.PERMANENT_REDIRECT
+        assert error.args[4] == http.client.PERMANENT_REDIRECT
         # Make sure the upload is invalid after the failure.
         assert upload.invalid
 
@@ -754,7 +753,7 @@ class TestResumableUpload(object):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
         _fix_up_virtual(upload)
 
-        response = _make_response(status_code=resumable_media.PERMANENT_REDIRECT)
+        response = _make_response(status_code=http.client.PERMANENT_REDIRECT)
         # Make sure the upload is valid before the failure.
         assert not upload.invalid
         with pytest.raises(common.InvalidResponse) as exc_info:
@@ -776,7 +775,7 @@ class TestResumableUpload(object):
         assert not upload.invalid
         headers = {"range": "nights 1-81"}
         response = _make_response(
-            status_code=resumable_media.PERMANENT_REDIRECT, headers=headers
+            status_code=http.client.PERMANENT_REDIRECT, headers=headers
         )
         with pytest.raises(common.InvalidResponse) as exc_info:
             upload._process_response(response, 81)
@@ -797,7 +796,7 @@ class TestResumableUpload(object):
         assert upload._bytes_uploaded == 0
         headers = {"range": "bytes=0-171"}
         response = _make_response(
-            status_code=resumable_media.PERMANENT_REDIRECT, headers=headers
+            status_code=http.client.PERMANENT_REDIRECT, headers=headers
         )
         ret_val = upload._process_response(response, 172)
         assert ret_val is None
@@ -975,7 +974,7 @@ class TestResumableUpload(object):
         assert error.response is response
         assert len(error.args) == 4
         assert error.args[1] == response.status_code
-        assert error.args[3] == resumable_media.PERMANENT_REDIRECT
+        assert error.args[3] == http.client.PERMANENT_REDIRECT
         # Make sure still invalid.
         assert upload.invalid
 
@@ -988,7 +987,7 @@ class TestResumableUpload(object):
         upload._bytes_uploaded = mock.sentinel.not_zero
         assert upload.bytes_uploaded != 0
 
-        response = _make_response(status_code=resumable_media.PERMANENT_REDIRECT)
+        response = _make_response(status_code=http.client.PERMANENT_REDIRECT)
         ret_val = upload._process_recover_response(response)
         assert ret_val is None
         # Check the state of ``upload`` after.
@@ -1006,7 +1005,7 @@ class TestResumableUpload(object):
 
         headers = {"range": "bites=9-11"}
         response = _make_response(
-            status_code=resumable_media.PERMANENT_REDIRECT, headers=headers
+            status_code=http.client.PERMANENT_REDIRECT, headers=headers
         )
         with pytest.raises(common.InvalidResponse) as exc_info:
             upload._process_recover_response(response)
@@ -1032,7 +1031,7 @@ class TestResumableUpload(object):
         end = 11
         headers = {"range": "bytes=0-{:d}".format(end)}
         response = _make_response(
-            status_code=resumable_media.PERMANENT_REDIRECT, headers=headers
+            status_code=http.client.PERMANENT_REDIRECT, headers=headers
         )
         ret_val = upload._process_recover_response(response)
         assert ret_val is None

@@ -25,35 +25,39 @@ _SLEEP_RETRY_ERROR_MSG = (
 
 UPLOAD_CHUNK_SIZE = 262144  # 256 * 1024
 """int: Chunks in a resumable upload must come in multiples of 256 KB."""
-PERMANENT_REDIRECT = 308
+
+PERMANENT_REDIRECT = http.client.PERMANENT_REDIRECT
 """int: Permanent redirect status code.
+
+.. note::
+   This is a backward-compatibility alias.
 
 It is used by Google services to indicate some (but not all) of
 a resumable upload has been completed.
-
-``http.client.PERMANENT_REDIRECT`` was added in Python 3.5, so
-can't be used in a "general" code base.
 
 For more information, see `RFC 7238`_.
 
 .. _RFC 7238: https://tools.ietf.org/html/rfc7238
 """
-TOO_MANY_REQUESTS = 429
+
+TOO_MANY_REQUESTS = http.client.TOO_MANY_REQUESTS
 """int: Status code indicating rate-limiting.
 
-``http.client.TOO_MANY_REQUESTS`` was added in Python 3.3, so
-can't be used in a "general" code base.
+.. note::
+   This is a backward-compatibility alias.
 
 For more information, see `RFC 6585`_.
 
 .. _RFC 6585: https://tools.ietf.org/html/rfc6585#section-4
 """
+
 MAX_SLEEP = 64.0
 """float: Maximum amount of time allowed between requests.
 
 Used during the retry process for sleep after a failed request.
 Chosen since it is the power of two nearest to one minute.
 """
+
 MAX_CUMULATIVE_RETRY = 600.0
 """float: Maximum total sleep time allowed during retry process.
 
@@ -62,7 +66,7 @@ exceeds this limit, no more retries will occur.
 """
 
 RETRYABLE = (
-    TOO_MANY_REQUESTS,  # 429
+    http.client.TOO_MANY_REQUESTS,  # 429
     http.client.REQUEST_TIMEOUT,  # 408
     http.client.INTERNAL_SERVER_ERROR,  # 500
     http.client.BAD_GATEWAY,  # 502

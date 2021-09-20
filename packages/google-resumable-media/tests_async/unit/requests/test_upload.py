@@ -13,13 +13,13 @@
 # limitations under the License.
 
 import aiohttp
+import http.client
 import io
 import json
 import pytest
 
 import mock
 
-from google import _async_resumable_media
 import google._async_resumable_media.requests.upload as upload_mod
 from tests.unit.requests import test_upload as sync_test
 
@@ -301,9 +301,7 @@ class TestResumableUpload(object):
         upload._chunk_size = chunk_size
         # Make a fake 308 response.
         response_headers = {"range": "bytes=0-{:d}".format(chunk_size - 1)}
-        transport = self._chunk_mock(
-            _async_resumable_media.PERMANENT_REDIRECT, response_headers
-        )
+        transport = self._chunk_mock(http.client.PERMANENT_REDIRECT, response_headers)
         # Check the state before the request.
         assert upload._bytes_uploaded == 0
 
@@ -337,9 +335,7 @@ class TestResumableUpload(object):
         upload._chunk_size = chunk_size
         # Make a fake 308 response.
         response_headers = {"range": "bytes=0-{:d}".format(chunk_size - 1)}
-        transport = self._chunk_mock(
-            _async_resumable_media.PERMANENT_REDIRECT, response_headers
-        )
+        transport = self._chunk_mock(http.client.PERMANENT_REDIRECT, response_headers)
         # Check the state before the request.
         assert upload._bytes_uploaded == 0
 
@@ -372,7 +368,7 @@ class TestResumableUpload(object):
 
         end = 55555
         headers = {"range": "bytes=0-{:d}".format(end)}
-        transport = self._chunk_mock(_async_resumable_media.PERMANENT_REDIRECT, headers)
+        transport = self._chunk_mock(http.client.PERMANENT_REDIRECT, headers)
 
         ret_val = await upload.recover(transport)
         assert ret_val is transport.request.return_value

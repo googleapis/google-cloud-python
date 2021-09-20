@@ -476,7 +476,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
            ...
            >>> error
            InvalidResponse('Request failed with status code', 400,
-                           'Expected one of', <HTTPStatus.OK: 200>, 308)
+                           'Expected one of', <HTTPStatus.OK: 200>, <HTTPStatus.PERMANENT_REDIRECT: 308>)
            >>> error.response
            <Response [400]>
 
@@ -496,7 +496,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
 
         Raises:
             ~google.resumable_media.common.InvalidResponse: If the status
-                code is not 200 or 308.
+                code is not 200 or http.client.PERMANENT_REDIRECT.
             ~google.resumable_media.common.DataCorruption: If this is the final
                 chunk, a checksum validation was requested, and the checksum
                 does not match or is not available.

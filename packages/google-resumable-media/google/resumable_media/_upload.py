@@ -670,7 +670,7 @@ class ResumableUpload(UploadBase):
         """
         status_code = _helpers.require_status_code(
             response,
-            (http.client.OK, resumable_media.PERMANENT_REDIRECT),
+            (http.client.OK, http.client.PERMANENT_REDIRECT),
             self._get_status_code,
             callback=self._make_invalid,
         )
@@ -814,7 +814,7 @@ class ResumableUpload(UploadBase):
         .. _sans-I/O: https://sans-io.readthedocs.io/
         """
         _helpers.require_status_code(
-            response, (resumable_media.PERMANENT_REDIRECT,), self._get_status_code
+            response, (http.client.PERMANENT_REDIRECT,), self._get_status_code
         )
         headers = self._get_headers(response)
         if _helpers.RANGE_HEADER in headers:
