@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.0.0...v1.1.0) (2021-09-16)
+
+
+### Features
+
+* add GetMetrics and MigrateKey methods to reCAPTCHA enterprise API ([#119](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/119)) ([6c8bf2f](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/6c8bf2f7f9fabb7fb23257fe5978ba59160d6875))
+
 ## [1.0.0](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.4.2...v1.0.0) (2021-08-03)
 
 
