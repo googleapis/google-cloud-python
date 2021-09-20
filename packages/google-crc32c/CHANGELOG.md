@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-crc32c/#history
 
+## [1.2.0](https://www.github.com/googleapis/python-crc32c/compare/v1.1.5...v1.2.0) (2021-09-17)
+
+
+### Features
+
+* build wheels using CIBuildWheel ([#103](https://www.github.com/googleapis/python-crc32c/issues/103)) ([55eb731](https://www.github.com/googleapis/python-crc32c/commit/55eb7310b0a0f424da33f4b6d3b4b50e02c323eb))
+
+
+### Documentation
+
+* update list of supported wheel platforms / architectures ([#105](https://www.github.com/googleapis/python-crc32c/issues/105)) ([edc8d2d](https://www.github.com/googleapis/python-crc32c/commit/edc8d2dbe643f0c2bf1180f855e1585b0e81bdba))
+
 ### [1.1.5](https://www.github.com/googleapis/python-crc32c/compare/v1.1.4...v1.1.5) (2021-09-07)
 
 
