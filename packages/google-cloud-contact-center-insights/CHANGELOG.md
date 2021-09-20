@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.2.0...v0.3.0) (2021-09-20)
+
+
+### Features
+
+* add new issue model API methods ([#25](https://www.github.com/googleapis/python-contact-center-insights/issues/25)) ([16a9bdd](https://www.github.com/googleapis/python-contact-center-insights/commit/16a9bdd90987c82300cf5f3ff03aac05a27e61e9))
+* display_name is the display name for the assigned issue ([#32](https://www.github.com/googleapis/python-contact-center-insights/issues/32)) ([5b0fa8e](https://www.github.com/googleapis/python-contact-center-insights/commit/5b0fa8e4047f1f5f7115393b9f7fd1aeaa7ac74d))
+* filter is used to filter conversations used for issue model training feat: update_time is used to indicate when the phrase matcher was updated ([#48](https://www.github.com/googleapis/python-contact-center-insights/issues/48)) ([92b9f30](https://www.github.com/googleapis/python-contact-center-insights/commit/92b9f30b3231a8b5ca7c3a9e9da6e5b4db40c568))
+* support Dialogflow and user-specified participant IDs ([16a9bdd](https://www.github.com/googleapis/python-contact-center-insights/commit/16a9bdd90987c82300cf5f3ff03aac05a27e61e9))
+
+
+### Documentation
+
+* update pubsub_notification_settings docs ([16a9bdd](https://www.github.com/googleapis/python-contact-center-insights/commit/16a9bdd90987c82300cf5f3ff03aac05a27e61e9))
+
 ## [0.2.0](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.1.1...v0.2.0) (2021-07-24)
 
 
