@@ -19,7 +19,6 @@
 import copy
 import logging
 import pkg_resources
-import six
 
 from google.api_core.gapic_v1 import client_info
 
@@ -63,9 +62,9 @@ def to_proto_value(value):
         # This check needs to happen before isinstance(value, int),
         # isinstance(value, int) returns True when value is bool.
         return struct_pb2.Value(bool_value=value), None
-    elif isinstance(value, six.integer_types) or isinstance(value, float):
+    elif isinstance(value, int) or isinstance(value, float):
         return struct_pb2.Value(number_value=value), None
-    elif isinstance(value, six.string_types) or isinstance(value, six.text_type):
+    elif isinstance(value, str):
         return struct_pb2.Value(string_value=value), None
     elif isinstance(value, dict):
         struct_value = struct_pb2.Struct()

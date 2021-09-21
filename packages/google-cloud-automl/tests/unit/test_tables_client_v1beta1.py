@@ -1714,12 +1714,15 @@ class TestTablesClient(object):
         assert prediction_client_kwargs["credentials"] == credentials_mock
 
     def test_prediction_client_client_info(self):
+        credentials_mock = mock.Mock()
         client_info_mock = mock.Mock()
         patch_prediction_client = mock.patch(
             "google.cloud.automl_v1beta1.services.tables.tables_client.PredictionServiceClient"
         )
         with patch_prediction_client as MockPredictionClient:
-            automl_v1beta1.TablesClient(client_info=client_info_mock)
+            automl_v1beta1.TablesClient(
+                credentials=credentials_mock, client_info=client_info_mock,
+            )
         _, prediction_client_kwargs = MockPredictionClient.call_args
         assert "client_info" in prediction_client_kwargs
         assert prediction_client_kwargs["client_info"] == client_info_mock
