@@ -60,7 +60,7 @@ on ``DEFAULT_RETRY``. For example, to change the deadline to 30 seconds,
 pass ``retry=bigquery.DEFAULT_RETRY.with_deadline(30)``.
 """
 
-DEFAULT_TIMEOUT = 5.0 * 60.0
+DEFAULT_TIMEOUT = None
 """The default API timeout.
 
 This is the time to wait per request. To adjust the total wait time, set a
