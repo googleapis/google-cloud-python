@@ -1,4 +1,4 @@
-name: Build / test wheels (presubmit)
+name: "Presubmit: build and test wheels"
 
 on:
   pull_request:
