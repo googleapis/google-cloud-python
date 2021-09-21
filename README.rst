@@ -157,9 +157,6 @@ Libraries
    * - `Document Understanding API <https://github.com/googleapis/python-documentai>`_
      - |ga|
      - |PyPI-google-cloud-documentai|
-   * - `Eventarc <https://github.com/googleapis/python-eventarc>`_
-     - |ga|
-     - |PyPI-google-cloud-eventarc|
    * - `Firestore <https://github.com/googleapis/python-firestore>`_
      - |ga|
      - |PyPI-google-cloud-firestore|
@@ -337,9 +334,6 @@ Libraries
    * - `BigQuery Logging Protos <https://github.com/googleapis/python-bigquery-logging>`_
      - |beta|
      - |PyPI-google-cloud-bigquery-logging|
-   * - `BigQuery connector for pandas <https://github.com/googleapis/python-bigquery-pandas>`_
-     - |beta|
-     - |PyPI-pandas-gbq|
    * - `Binary Authorization <https://github.com/googleapis/python-binary-authorization>`_
      - |beta|
      - |PyPI-google-cloud-binary-authorization|
@@ -352,9 +346,6 @@ Libraries
    * - `Data Labeling <https://github.com/googleapis/python-datalabeling>`_
      - |beta|
      - |PyPI-google-cloud-datalabeling|
-   * - `Dataflow <https://github.com/googleapis/python-dataflow-client>`_
-     - |beta|
-     - |PyPI-google-cloud-dataflow-client|
    * - `Domains <https://github.com/googleapis/python-domains>`_
      - |beta|
      - |PyPI-google-cloud-domains|
@@ -486,8 +477,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-dialogflow-cx
 .. |PyPI-google-cloud-documentai| image:: https://img.shields.io/pypi/v/google-cloud-documentai.svg
      :target: https://pypi.org/project/google-cloud-documentai
-.. |PyPI-google-cloud-eventarc| image:: https://img.shields.io/pypi/v/google-cloud-eventarc.svg
-     :target: https://pypi.org/project/google-cloud-eventarc
 .. |PyPI-google-cloud-firestore| image:: https://img.shields.io/pypi/v/google-cloud-firestore.svg
      :target: https://pypi.org/project/google-cloud-firestore
 .. |PyPI-google-cloud-functions| image:: https://img.shields.io/pypi/v/google-cloud-functions.svg
@@ -606,8 +595,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-audit-log
 .. |PyPI-google-cloud-bigquery-logging| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-logging.svg
      :target: https://pypi.org/project/google-cloud-bigquery-logging
-.. |PyPI-pandas-gbq| image:: https://img.shields.io/pypi/v/pandas-gbq.svg
-     :target: https://pypi.org/project/pandas-gbq
 .. |PyPI-google-cloud-binary-authorization| image:: https://img.shields.io/pypi/v/google-cloud-binary-authorization.svg
      :target: https://pypi.org/project/google-cloud-binary-authorization
 .. |PyPI-google-cloud-orchestration-airflow| image:: https://img.shields.io/pypi/v/google-cloud-orchestration-airflow.svg
@@ -616,8 +603,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-contact-center-insights
 .. |PyPI-google-cloud-datalabeling| image:: https://img.shields.io/pypi/v/google-cloud-datalabeling.svg
      :target: https://pypi.org/project/google-cloud-datalabeling
-.. |PyPI-google-cloud-dataflow-client| image:: https://img.shields.io/pypi/v/google-cloud-dataflow-client.svg
-     :target: https://pypi.org/project/google-cloud-dataflow-client
 .. |PyPI-google-cloud-domains| image:: https://img.shields.io/pypi/v/google-cloud-domains.svg
      :target: https://pypi.org/project/google-cloud-domains
 .. |PyPI-google-cloud-error-reporting| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
