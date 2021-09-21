@@ -22,8 +22,6 @@
 import copy
 import datetime
 
-import six
-
 import google.cloud.monitoring_v3 as monitoring_v3
 from google.cloud.monitoring_v3 import _dataframe
 from google.cloud.monitoring_v3 import types
@@ -599,7 +597,7 @@ class _Filter(object):
 def _build_label_filter(category, *args, **kwargs):
     """Construct a filter string to filter on metric or resource labels."""
     terms = list(args)
-    for key, value in six.iteritems(kwargs):
+    for key, value in kwargs.items():
         if value is None:
             continue
 
