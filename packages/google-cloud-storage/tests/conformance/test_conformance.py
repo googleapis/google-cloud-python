@@ -14,15 +14,16 @@
 
 """Conformance tests for retry. Verifies correct behavior around retryable errors, idempotency and preconditions."""
 
-import os
-import requests
-import tempfile
-import uuid
-import logging
 import functools
-import pytest
+import logging
+import os
 import subprocess
+import tempfile
 import time
+import uuid
+
+import pytest
+import requests
 
 from six.moves.urllib import parse as urlparse
 
@@ -34,9 +35,7 @@ from google.cloud.storage.hmac_key import HMACKeyMetadata
 from . import _read_local_json
 
 
-_CONFORMANCE_TESTS = _read_local_json("retry_strategy_test_data.json")[
-    "retryStrategyTests"
-]
+_CONFORMANCE_TESTS = _read_local_json("retry_strategy_test_data.json")["retryTests"]
 
 """Environment variable or default host for Storage testbench emulator."""
 _HOST = os.environ.get("STORAGE_EMULATOR_HOST", "http://localhost:9000")
