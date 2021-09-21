@@ -58,6 +58,7 @@ class Credentials(external_account.Credentials):
         quota_project_id=None,
         scopes=None,
         default_scopes=None,
+        workforce_pool_user_project=None,
     ):
         """Instantiates an external account credentials object from a file/URL.
 
@@ -95,6 +96,11 @@ class Credentials(external_account.Credentials):
                 authorization grant.
             default_scopes (Optional[Sequence[str]]): Default scopes passed by a
                 Google client library. Use 'scopes' for user-defined scopes.
+            workforce_pool_user_project (Optona[str]): The optional workforce pool user
+                project number when the credential corresponds to a workforce pool and not
+                a workload identity pool. The underlying principal must still have
+                serviceusage.services.use IAM permission to use the project for
+                billing/quota.
 
         Raises:
             google.auth.exceptions.RefreshError: If an error is encountered during
@@ -117,6 +123,7 @@ class Credentials(external_account.Credentials):
             quota_project_id=quota_project_id,
             scopes=scopes,
             default_scopes=default_scopes,
+            workforce_pool_user_project=workforce_pool_user_project,
         )
         if not isinstance(credential_source, Mapping):
             self._credential_source_file = None
@@ -255,6 +262,7 @@ class Credentials(external_account.Credentials):
             client_secret=info.get("client_secret"),
             credential_source=info.get("credential_source"),
             quota_project_id=info.get("quota_project_id"),
+            workforce_pool_user_project=info.get("workforce_pool_user_project"),
             **kwargs
         )
 
