@@ -28,6 +28,13 @@ description = "Pandas Data Types for SQL systems (BigQuery, Spanner)"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 4 - Beta"
 
+dependencies = [
+    "packaging >= 14.3",
+    "pandas",
+    "pyarrow",
+    "numpy",
+]
+
 package_root = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(package_root, "db_dtypes", "version.py")) as f:
     version = re.search('__version__ = "([^"]+)"', f.read()).group(1)
@@ -65,6 +72,5 @@ setup(
     platforms="Posix; MacOS X; Windows",
     install_requires=[],
     python_requires=">=3.6, <3.10",
-    tests_require=["packaging", "pytz"],
-    entry_points={"sqlalchemy.dialects": ["bigquery = db_dtypes:BigQueryDialect"]},
+    tests_require=["pytest"],
 )

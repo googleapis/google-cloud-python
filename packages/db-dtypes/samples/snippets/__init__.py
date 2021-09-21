@@ -1,4 +1,4 @@
-# Copyright (c) 2017 The db-dtypes Authors
+# Copyright (c) 2021 The sqlalchemy-bigquery Authors
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -17,12 +17,4 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-from sqlalchemy.dialects import registry
-
-registry.register("bigquery", "db_dtypes", "BigQueryDialect")
-
-# sqlalchemy's dialect-testing machinery wants an entry like this.
-# This seems to be based around dialects maybe having multiple drivers
-# and wanting to test drover-specific URLs, but doesn't seem to make
-# much sense for dialects with only one driver. ¯\_(ツ)_/¯
-registry.register("bigquery.bigquery", "db_dtypes", "BigQueryDialect")
+__version__ = "1.0.0-a1"
