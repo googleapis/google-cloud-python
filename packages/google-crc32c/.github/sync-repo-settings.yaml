@@ -28,9 +28,6 @@ branchProtectionRules:
   requiresStrictStatusChecks: true
   # List of required status check contexts that must pass for commits to be accepted to matching branches.
   requiredStatusCheckContexts:
-    - 'Build / test wheels (presubmit) / ubuntu-20.04 (pull_request)'
-    - 'Build / test wheels (presubmit) / macos-10.15 (pull_request)'
-    - 'Build / test wheels (presubmit) / windows-2019 ( x64 ) (pull_request)'
     - 'cla/google'
 # List of explicit permissions to add (additive only)
 permissionRules:
