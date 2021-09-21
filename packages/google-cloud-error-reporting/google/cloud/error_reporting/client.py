@@ -17,8 +17,6 @@
 import os
 import traceback
 
-import six
-
 try:
     from google.cloud.error_reporting._gapic import make_report_error_api
 except ImportError:  # pragma: NO COVER
@@ -268,7 +266,7 @@ class Client(ClientWithProject):
             # strip out None values
             payload["context"]["httpRequest"] = {
                 key: value
-                for key, value in six.iteritems(http_context_dict)
+                for key, value in http_context_dict.items()
                 if value is not None
             }
         if user:
