@@ -22,11 +22,10 @@ from __future__ import print_function
 import atexit
 import datetime
 import logging
+import queue
 import sys
 import threading
 import time
-
-from six.moves import queue
 
 from google.cloud.logging_v2 import _helpers
 from google.cloud.logging_v2.handlers.transports.base import Transport

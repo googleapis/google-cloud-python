@@ -14,10 +14,10 @@
 
 import time
 import logging
+import queue
 import unittest
 
 import mock
-from six.moves import queue
 
 
 class TestBackgroundThreadHandler(unittest.TestCase):
@@ -379,7 +379,6 @@ class Test_Worker(unittest.TestCase):
         # _get_many invokes queue.get() followed by queue._get(). It fails
         # the "change detector" test in that way. However, this is still a
         # useful test to verify the queue timeout is appropriately calculated.
-        from six.moves import queue
         from google.cloud.logging_v2.handlers.transports import background_thread
 
         # Use monotonically increasing time.
