@@ -1,6 +1,6 @@
 {
   "extends": [
-    "config:base"
+    "config:base", ":disableDependencyDashboard"
   ],
   "ignorePaths": [".pre-commit-config.yaml", "scripts/dev-requirements.txt"],
   "pip_requirements": {
