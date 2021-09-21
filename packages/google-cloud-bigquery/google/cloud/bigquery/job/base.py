@@ -357,6 +357,11 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def transaction_info(self) -> Optional[TransactionInfo]:
         """Information of the multi-statement transaction if this job is part of one.
 
+        Since a scripting query job can execute multiple transactions, this
+        property is only expected on child jobs. Use the
+        :meth:`google.cloud.bigquery.client.Client.list_jobs` method with the
+        ``parent_job`` parameter to iterate over child jobs.
+
         .. versionadded:: 2.24.0
         """
         info = self._properties.get("statistics", {}).get("transactionInfo")
