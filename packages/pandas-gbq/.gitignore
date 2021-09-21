@@ -1,94 +1,64 @@
-#########################################
-# Editor temporary/working/backup files #
-.#*
-*\#*\#
-[#]*#
-*~
-*$
-*.bak
-*flymake*
-*.kdev4
-*.log
-*.swp
-*.pdb
-.project
-.pydevproject
-.settings
-.idea
-.vagrant
-.noseids
-.ipynb_checkpoints
-.tags
-.pytest_cache
-.testmon*
-.vscode/
-.env
+*.py[cod]
+*.sw[op]
 
-# Docs #
-########
-docs/source/_build
-
-# Coverage #
-############
-.coverage
-coverage.xml
-coverage_html_report
-.pytest_cache
-
-# Compiled source #
-###################
-*.a
-*.com
-*.class
-*.dll
-*.exe
-*.pxi
-*.o
-*.py[ocd]
+# C extensions
 *.so
-.build_cache_dir
-MANIFEST
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+.eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
 __pycache__
 
-# Python files #
-################
-# setup.py working directory
-build
-# setup.py dist directory
-dist
-# Egg metadata
-*.egg-info
-.eggs
-.pypirc
+# Installer logs
+pip-log.txt
 
-# tox testing tool
-.tox
-# rope
-.ropeproject
-# wheel files
-*.whl
-**/wheelhouse/*
-pip-wheel-metadata
-
-# coverage
+# Unit test / coverage reports
 .coverage
-.testmondata
-.pytest_cache
 .nox
-
-# OS generated files #
-######################
-.directory
-.gdb_history
-.DS_Store
-ehthumbs.db
-Icon?
-Thumbs.db
-
-# caches #
 .cache
+.pytest_cache
 
-# Credentials #
-###############
-bigquery_credentials.dat
-ci/service_account.json
+
+# Mac
+.DS_Store
+
+# JetBrains
+.idea
+
+# VS Code
+.vscode
+
+# emacs
+*~
+
+# Built documentation
+docs/_build
+docs/source/_build
+bigquery/docs/generated
+docs.metadata
+
+# Virtual environment
+env/
+
+# Test logs
+coverage.xml
+*sponge_log.xml
+
+# System test environment variables.
+system_tests/local_test_setup
+
+# Make sure a generated file isn't accidentally committed.
+pylintrc
+pylintrc.test

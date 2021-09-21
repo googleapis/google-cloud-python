@@ -81,10 +81,7 @@ def load_chunks(
 
         if FEATURES.bigquery_has_from_dataframe_with_csv:
             client.load_table_from_dataframe(
-                chunk,
-                destination_table_ref,
-                job_config=job_config,
-                location=location,
+                chunk, destination_table_ref, job_config=job_config, location=location,
             ).result()
         else:
             try:

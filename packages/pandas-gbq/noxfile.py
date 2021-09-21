@@ -14,30 +14,48 @@ import shutil
 import nox
 
 
-supported_pythons = ["3.7", "3.8"]
-system_test_pythons = ["3.7", "3.8"]
-latest_python = "3.8"
+BLACK_VERSION = "black==19.10b0"
+BLACK_PATHS = ["docs", "pandas_gbq", "tests", "noxfile.py", "setup.py"]
 
-# Use a consistent version of black so CI is deterministic.
-# Should match Stickler: https://stickler-ci.com/docs#black
-black_package = "black==20.8b1"
+DEFAULT_PYTHON_VERSION = "3.8"
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9"]
 
 
-@nox.session(python=latest_python)
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
-    session.install(black_package, "flake8")
-    session.run("flake8", "pandas_gbq")
-    session.run("flake8", "tests")
-    session.run("black", "--check", ".")
+    """Run linters.
+    Returns a failure if the linters find linting errors or sufficiently
+    serious code quality issues.
+    """
+    session.install("flake8", BLACK_VERSION)
+    session.run(
+        "black", "--check", *BLACK_PATHS,
+    )
+    session.run("flake8", "pandas_gbq", "tests")
 
 
-@nox.session(python=latest_python)
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    session.install(black_package)
-    session.run("black", ".")
+    """Run black. Format code to uniform standard."""
+    session.install(BLACK_VERSION)
+    session.run(
+        "black", *BLACK_PATHS,
+    )
 
 
-@nox.session(python=supported_pythons)
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def lint_setup_py(session):
+    """Verify that setup.py is valid (including RST check)."""
+    session.install("docutils", "pygments")
+    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
+
+
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     session.install("pytest", "pytest-cov")
     session.install(
@@ -56,18 +74,23 @@ def unit(session):
         "--cov=tests.unit",
         "--cov-report",
         "xml:/tmp/pytest-cov.xml",
-        *session.posargs
+        *session.posargs,
     )
 
 
-@nox.session(python=latest_python)
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
+    """Run the final coverage report.
+    This outputs the coverage report aggregating coverage from the unit
+    test runs (not system test runs), and then erases coverage data.
+    """
     session.install("coverage", "pytest-cov")
     session.run("coverage", "report", "--show-missing", "--fail-under=73")
+
     session.run("coverage", "erase")
 
 
-@nox.session(python=latest_python)
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def docs(session):
     """Build the docs."""
 
@@ -89,7 +112,7 @@ def docs(session):
     )
 
 
-@nox.session(python=system_test_pythons)
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
     session.install("pytest", "pytest-cov")
     session.install(
@@ -111,5 +134,5 @@ def system(session):
         os.path.join(".", "tests", "system"),
         os.path.join(".", "samples", "tests"),
         "-v",
-        *additional_args
+        *additional_args,
     )

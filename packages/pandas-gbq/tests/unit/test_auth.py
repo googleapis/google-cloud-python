@@ -51,13 +51,9 @@ def test_get_credentials_load_user_no_default(monkeypatch):
         return (None, None)
 
     monkeypatch.setattr(google.auth, "default", mock_default_credentials)
-    mock_user_credentials = mock.create_autospec(
-        google.auth.credentials.Credentials
-    )
+    mock_user_credentials = mock.create_autospec(google.auth.credentials.Credentials)
 
-    mock_cache = mock.create_autospec(
-        pydata_google_auth.cache.CredentialsCache
-    )
+    mock_cache = mock.create_autospec(pydata_google_auth.cache.CredentialsCache)
     mock_cache.load.return_value = mock_user_credentials
 
     monkeypatch.setattr(auth, "get_credentials_cache", lambda _: mock_cache)
@@ -71,6 +67,4 @@ def test_get_credentials_cache_w_reauth():
     import pydata_google_auth.cache
 
     cache = auth.get_credentials_cache(True)
-    assert isinstance(
-        cache, pydata_google_auth.cache.WriteOnlyCredentialsCache
-    )
+    assert isinstance(cache, pydata_google_auth.cache.WriteOnlyCredentialsCache)

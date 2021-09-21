@@ -56,13 +56,9 @@ def test_encode_chunk_with_floats():
         StringIO(input_csv), header=None, float_precision="round_trip"
     )
     csv_buffer = load.encode_chunk(input_df)
-    round_trip = pandas.read_csv(
-        csv_buffer, header=None, float_precision="round_trip"
-    )
+    round_trip = pandas.read_csv(csv_buffer, header=None, float_precision="round_trip")
     pandas.testing.assert_frame_equal(
-        round_trip,
-        input_df,
-        check_exact=True,
+        round_trip, input_df, check_exact=True,
     )
 
 
@@ -95,9 +91,7 @@ def test_encode_chunks_with_chunksize_none():
     assert len(chunk.index) == 6
 
 
-@pytest.mark.parametrize(
-    ["bigquery_has_from_dataframe_with_csv"], [(True,), (False,)]
-)
+@pytest.mark.parametrize(["bigquery_has_from_dataframe_with_csv"], [(True,), (False,)])
 def test_load_chunks_omits_policy_tags(
     monkeypatch, mock_bigquery_client, bigquery_has_from_dataframe_with_csv
 ):
@@ -118,14 +112,10 @@ def test_load_chunks_omits_policy_tags(
         "my-project.my_dataset.my_table"
     )
     schema = {
-        "fields": [
-            {"name": "col1", "type": "INT64", "policyTags": ["tag1", "tag2"]}
-        ]
+        "fields": [{"name": "col1", "type": "INT64", "policyTags": ["tag1", "tag2"]}]
     }
 
-    _ = list(
-        load.load_chunks(mock_bigquery_client, df, destination, schema=schema)
-    )
+    _ = list(load.load_chunks(mock_bigquery_client, df, destination, schema=schema))
 
     mock_load = load_method(mock_bigquery_client)
     assert mock_load.called

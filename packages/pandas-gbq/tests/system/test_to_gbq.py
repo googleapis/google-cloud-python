@@ -19,9 +19,7 @@ def method_under_test(credentials):
     return functools.partial(pandas_gbq.to_gbq, credentials=credentials)
 
 
-def test_float_round_trip(
-    method_under_test, random_dataset_id, bigquery_client
-):
+def test_float_round_trip(method_under_test, random_dataset_id, bigquery_client):
     """Ensure that 64-bit floating point numbers are unchanged.
 
     See: https://github.com/pydata/pandas-gbq/issues/326
@@ -47,7 +45,5 @@ def test_float_round_trip(
     round_trip = bigquery_client.list_rows(table_id).to_dataframe()
     round_trip_floats = round_trip["float_col"].sort_values()
     pandas.testing.assert_series_equal(
-        round_trip_floats,
-        input_floats,
-        check_exact=True,
+        round_trip_floats, input_floats, check_exact=True,
     )

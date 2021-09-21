@@ -23,9 +23,7 @@ SCOPES = ["https://www.googleapis.com/auth/bigquery"]
 # machine.
 #
 # See: https://cloud.google.com/docs/authentication/end-user for details.
-CLIENT_ID = (
-    "725825577420-unm2gnkiprugilg743tkbig250f4sfsj.apps.googleusercontent.com"
-)
+CLIENT_ID = "725825577420-unm2gnkiprugilg743tkbig250f4sfsj.apps.googleusercontent.com"
 CLIENT_SECRET = "4hqze9yI8fxShls8eJWkeMdJ"
 
 
@@ -60,8 +58,7 @@ def get_credentials_cache(reauth):
 
     if reauth:
         return pydata_google_auth.cache.WriteOnlyCredentialsCache(
-            dirname=CREDENTIALS_CACHE_DIRNAME,
-            filename=CREDENTIALS_CACHE_FILENAME,
+            dirname=CREDENTIALS_CACHE_DIRNAME, filename=CREDENTIALS_CACHE_FILENAME,
         )
     return pydata_google_auth.cache.ReadWriteCredentialsCache(
         dirname=CREDENTIALS_CACHE_DIRNAME, filename=CREDENTIALS_CACHE_FILENAME

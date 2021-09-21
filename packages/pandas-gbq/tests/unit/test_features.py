@@ -23,9 +23,7 @@ def fresh_bigquery_version(monkeypatch):
         ("2.12.0", True),
     ],
 )
-def test_bigquery_has_from_dataframe_with_csv(
-    monkeypatch, bigquery_version, expected
-):
+def test_bigquery_has_from_dataframe_with_csv(monkeypatch, bigquery_version, expected):
     import google.cloud.bigquery
 
     monkeypatch.setattr(google.cloud.bigquery, "__version__", bigquery_version)

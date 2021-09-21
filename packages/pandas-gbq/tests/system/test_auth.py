@@ -52,9 +52,7 @@ def _check_if_can_get_correct_default_credentials():
     import pandas_gbq.gbq
 
     try:
-        credentials, project = google.auth.default(
-            scopes=pandas_gbq.auth.SCOPES
-        )
+        credentials, project = google.auth.default(scopes=pandas_gbq.auth.SCOPES)
     except (DefaultCredentialsError, IOError):
         return False
 
@@ -68,9 +66,7 @@ def test_should_be_able_to_get_valid_credentials(project_id, private_key_path):
 
 
 @pytest.mark.local_auth
-def test_get_credentials_bad_file_returns_user_credentials(
-    project_id, monkeypatch
-):
+def test_get_credentials_bad_file_returns_user_credentials(project_id, monkeypatch):
     import google.auth
     from google.auth.credentials import Credentials
 

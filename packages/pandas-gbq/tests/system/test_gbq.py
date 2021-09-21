@@ -27,9 +27,7 @@ import pandas_gbq.schema
 TABLE_ID = "new_test"
 PANDAS_VERSION = pkg_resources.parse_version(pandas.__version__)
 NULLABLE_INT_PANDAS_VERSION = pkg_resources.parse_version("0.24.0")
-NULLABLE_INT_MESSAGE = (
-    "Require pandas 0.24+ in order to use nullable integer type."
-)
+NULLABLE_INT_MESSAGE = "Require pandas 0.24+ in order to use nullable integer type."
 
 
 def test_imports():
@@ -43,8 +41,7 @@ def make_mixed_dataframe_v2(test_size):
     ints = np.random.randint(1, 10, size=(1, test_size))
     strs = np.random.randint(1, 10, size=(1, test_size)).astype(str)
     times = [
-        datetime.datetime.now(pytz.timezone("US/Arizona"))
-        for t in range(test_size)
+        datetime.datetime.now(pytz.timezone("US/Arizona")) for t in range(test_size)
     ]
     return DataFrame(
         {
@@ -58,9 +55,7 @@ def make_mixed_dataframe_v2(test_size):
     )
 
 
-def get_schema(
-    gbq_connector: gbq.GbqConnector, dataset_id: str, table_id: str
-):
+def get_schema(gbq_connector: gbq.GbqConnector, dataset_id: str, table_id: str):
     """Retrieve the schema of the table
 
     Obtain from BigQuery the field names and field types
@@ -82,17 +77,14 @@ def get_schema(
 
     bqclient = gbq_connector.client
     table_ref = bigquery.TableReference(
-        bigquery.DatasetReference(bqclient.project, dataset_id),
-        table_id,
+        bigquery.DatasetReference(bqclient.project, dataset_id), table_id,
     )
 
     try:
         table = bqclient.get_table(table_ref)
         remote_schema = table.schema
 
-        remote_fields = [
-            field_remote.to_api_repr() for field_remote in remote_schema
-        ]
+        remote_fields = [field_remote.to_api_repr() for field_remote in remote_schema]
         for field in remote_fields:
             field["type"] = field["type"].upper()
             field["mode"] = field["mode"].upper()
@@ -197,11 +189,7 @@ class TestReadGBQIntegration(object):
         tm.assert_frame_equal(
             df,
             DataFrame(
-                {
-                    "nullable_integer": pandas.Series(
-                        [1, pandas.NA], dtype="Int64"
-                    )
-                }
+                {"nullable_integer": pandas.Series([1, pandas.NA], dtype="Int64")}
             ),
         )
 
@@ -232,11 +220,7 @@ class TestReadGBQIntegration(object):
         tm.assert_frame_equal(
             df,
             DataFrame(
-                {
-                    "nullable_long": pandas.Series(
-                        [1 << 62, pandas.NA], dtype="Int64"
-                    )
-                }
+                {"nullable_long": pandas.Series([1 << 62, pandas.NA], dtype="Int64")}
             ),
         )
 
@@ -253,10 +237,7 @@ class TestReadGBQIntegration(object):
             dtypes={"null_integer": "Int64"},
         )
         tm.assert_frame_equal(
-            df,
-            DataFrame(
-                {"null_integer": pandas.Series([pandas.NA], dtype="Int64")}
-            ),
+            df, DataFrame({"null_integer": pandas.Series([pandas.NA], dtype="Int64")}),
         )
 
     def test_should_properly_handle_valid_floats(self, project_id):
@@ -295,9 +276,7 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="legacy",
         )
-        tm.assert_frame_equal(
-            df, DataFrame({"valid_double": [pi * 10 ** 307]})
-        )
+        tm.assert_frame_equal(df, DataFrame({"valid_double": [pi * 10 ** 307]}))
 
     def test_should_properly_handle_nullable_doubles(self, project_id):
         from math import pi
@@ -329,11 +308,7 @@ class TestReadGBQIntegration(object):
 
     def test_should_properly_handle_date(self, project_id):
         query = "SELECT DATE(2003, 1, 4) AS date_col"
-        df = gbq.read_gbq(
-            query,
-            project_id=project_id,
-            credentials=self.credentials,
-        )
+        df = gbq.read_gbq(query, project_id=project_id, credentials=self.credentials,)
         expected = DataFrame(
             {
                 "date_col": pandas.Series(
@@ -344,12 +319,10 @@ class TestReadGBQIntegration(object):
         tm.assert_frame_equal(df, expected)
 
     def test_should_properly_handle_time(self, project_id):
-        query = "SELECT TIME_ADD(TIME(3, 14, 15), INTERVAL 926589 MICROSECOND) AS time_col"
-        df = gbq.read_gbq(
-            query,
-            project_id=project_id,
-            credentials=self.credentials,
+        query = (
+            "SELECT TIME_ADD(TIME(3, 14, 15), INTERVAL 926589 MICROSECOND) AS time_col"
         )
+        df = gbq.read_gbq(query, project_id=project_id, credentials=self.credentials,)
         expected = DataFrame(
             {
                 "time_col": pandas.Series(
@@ -368,13 +341,10 @@ class TestReadGBQIntegration(object):
             dialect="legacy",
         )
         expected = DataFrame(
-            {"unix_epoch": ["1970-01-01T00:00:00.000000Z"]},
-            dtype="datetime64[ns]",
+            {"unix_epoch": ["1970-01-01T00:00:00.000000Z"]}, dtype="datetime64[ns]",
         )
         if expected["unix_epoch"].dt.tz is None:
-            expected["unix_epoch"] = expected["unix_epoch"].dt.tz_localize(
-                "UTC"
-            )
+            expected["unix_epoch"] = expected["unix_epoch"].dt.tz_localize("UTC")
         tm.assert_frame_equal(df, expected)
 
     def test_should_properly_handle_arbitrary_timestamp(self, project_id):
@@ -390,9 +360,9 @@ class TestReadGBQIntegration(object):
             dtype="datetime64[ns]",
         )
         if expected["valid_timestamp"].dt.tz is None:
-            expected["valid_timestamp"] = expected[
-                "valid_timestamp"
-            ].dt.tz_localize("UTC")
+            expected["valid_timestamp"] = expected["valid_timestamp"].dt.tz_localize(
+                "UTC"
+            )
         tm.assert_frame_equal(df, expected)
 
     def test_should_properly_handle_datetime_unix_epoch(self, project_id):
@@ -405,9 +375,7 @@ class TestReadGBQIntegration(object):
         )
         tm.assert_frame_equal(
             df,
-            DataFrame(
-                {"unix_epoch": ["1970-01-01T00:00:00"]}, dtype="datetime64[ns]"
-            ),
+            DataFrame({"unix_epoch": ["1970-01-01T00:00:00"]}, dtype="datetime64[ns]"),
         )
 
     def test_should_properly_handle_arbitrary_datetime(self, project_id):
@@ -419,10 +387,7 @@ class TestReadGBQIntegration(object):
             dialect="legacy",
         )
         tm.assert_frame_equal(
-            df,
-            DataFrame(
-                {"valid_timestamp": [np.datetime64("2004-09-15T05:00:00")]}
-            ),
+            df, DataFrame({"valid_timestamp": [np.datetime64("2004-09-15T05:00:00")]}),
         )
 
     @pytest.mark.parametrize(
@@ -435,9 +400,7 @@ class TestReadGBQIntegration(object):
             ("FALSE", pandas.api.types.is_bool_dtype),
         ],
     )
-    def test_return_correct_types(
-        self, project_id, expression, is_expected_dtype
-    ):
+    def test_return_correct_types(self, project_id, expression, is_expected_dtype):
         """
         All type checks can be added to this function using additional
         parameters, rather than creating additional functions.
@@ -464,9 +427,7 @@ class TestReadGBQIntegration(object):
             dialect="legacy",
         )
         expected = DataFrame({"null_timestamp": [NaT]}, dtype="datetime64[ns]")
-        expected["null_timestamp"] = expected["null_timestamp"].dt.tz_localize(
-            "UTC"
-        )
+        expected["null_timestamp"] = expected["null_timestamp"].dt.tz_localize("UTC")
         tm.assert_frame_equal(df, expected)
 
     def test_should_properly_handle_null_datetime(self, project_id):
@@ -525,9 +486,9 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="legacy",
         )
-        correct_frame = DataFrame(
-            {"string_1": ["a"], "string_2": ["b"]}
-        ).set_index("string_1")
+        correct_frame = DataFrame({"string_1": ["a"], "string_2": ["b"]}).set_index(
+            "string_1"
+        )
         assert result_frame.index.name == correct_frame.index.name
 
     def test_column_order(self, project_id):
@@ -672,8 +633,7 @@ class TestReadGBQIntegration(object):
             "iso_time": pandas.Series([], dtype="datetime64[ns]"),
         }
         expected_result = DataFrame(
-            empty_columns,
-            columns=["name", "number", "is_hurricane", "iso_time"],
+            empty_columns, columns=["name", "number", "is_hurricane", "iso_time"],
         )
         tm.assert_frame_equal(df, expected_result, check_index_type=False)
 
@@ -712,8 +672,7 @@ class TestReadGBQIntegration(object):
 
     def test_standard_sql(self, project_id):
         standard_sql = (
-            "SELECT DISTINCT id FROM "
-            "`publicdata.samples.wikipedia` LIMIT 10"
+            "SELECT DISTINCT id FROM " "`publicdata.samples.wikipedia` LIMIT 10"
         )
 
         # Test that a standard sql statement fails when using
@@ -828,9 +787,7 @@ class TestReadGBQIntegration(object):
                 dialect="legacy",
             )
 
-    def test_configuration_raises_value_error_with_multiple_config(
-        self, project_id
-    ):
+    def test_configuration_raises_value_error_with_multiple_config(self, project_id):
         sql_statement = "SELECT 1"
         config = {
             "query": {"query": sql_statement, "useQueryCache": False},
@@ -900,8 +857,7 @@ class TestReadGBQIntegration(object):
             dialect="standard",
         )
         expected = DataFrame(
-            [[1, {"letter": "a", "num": 1}]],
-            columns=["int_field", "struct_field"],
+            [[1, {"letter": "a", "num": 1}]], columns=["int_field", "struct_field"],
         )
         tm.assert_frame_equal(df, expected)
 
@@ -914,8 +870,7 @@ class TestReadGBQIntegration(object):
             dialect="standard",
         )
         tm.assert_frame_equal(
-            df,
-            DataFrame([[["a", "x", "b", "y", "c", "z"]]], columns=["letters"]),
+            df, DataFrame([[["a", "x", "b", "y", "c", "z"]]], columns=["letters"]),
         )
 
     def test_array_length_zero(self, project_id):
@@ -934,8 +889,7 @@ class TestReadGBQIntegration(object):
             dialect="standard",
         )
         expected = DataFrame(
-            [["a", [""], 1], ["b", [], 0]],
-            columns=["letter", "array_field", "len"],
+            [["a", [""], 1], ["b", [], 0]], columns=["letter", "array_field", "len"],
         )
         tm.assert_frame_equal(df, expected)
 
@@ -958,10 +912,7 @@ class TestReadGBQIntegration(object):
             dialect="standard",
         )
         tm.assert_frame_equal(
-            df,
-            DataFrame(
-                [["a", [1, 3]], ["b", [2]]], columns=["letter", "numbers"]
-            ),
+            df, DataFrame([["a", [1, 3]], ["b", [2]]], columns=["letter", "numbers"]),
         )
 
     def test_array_of_floats(self, project_id):
@@ -972,9 +923,7 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="standard",
         )
-        tm.assert_frame_equal(
-            df, DataFrame([[[1.1, 2.2, 3.3], 4]], columns=["a", "b"])
-        )
+        tm.assert_frame_equal(df, DataFrame([[[1.1, 2.2, 3.3], 4]], columns=["a", "b"]))
 
     def test_tokyo(self, tokyo_dataset, tokyo_table, project_id):
         df = gbq.read_gbq(
@@ -998,9 +947,7 @@ class TestToGBQIntegration(object):
         self.credentials = credentials
         self.gbq_connector = gbq.GbqConnector(project, credentials=credentials)
         self.bqclient = self.gbq_connector.client
-        self.table = gbq._Table(
-            project, random_dataset_id, credentials=credentials
-        )
+        self.table = gbq._Table(project, random_dataset_id, credentials=credentials)
         self.destination_table = "{}.{}".format(random_dataset_id, TABLE_ID)
 
     def test_upload_data(self, project_id):
@@ -1044,10 +991,7 @@ class TestToGBQIntegration(object):
     def test_upload_empty_data_with_schema(self, project_id):
         test_id = "data_with_0_rows"
         df = DataFrame(
-            {
-                "a": pandas.Series(dtype="int64"),
-                "b": pandas.Series(dtype="object"),
-            }
+            {"a": pandas.Series(dtype="int64"), "b": pandas.Series(dtype="object")}
         )
 
         gbq.to_gbq(
@@ -1244,9 +1188,7 @@ class TestToGBQIntegration(object):
     def test_upload_chinese_unicode_data(self, project_id):
         test_id = "2"
         test_size = 6
-        df = DataFrame(
-            np.random.randn(6, 4), index=range(6), columns=list("ABCD")
-        )
+        df = DataFrame(np.random.randn(6, 4), index=range(6), columns=list("ABCD"))
         df["s"] = u"信用卡"
 
         gbq.to_gbq(
@@ -1419,9 +1361,7 @@ class TestToGBQIntegration(object):
             self.gbq_connector, dataset, table, dict(fields=test_schema)
         )
 
-    def test_upload_data_with_invalid_user_schema_raises_error(
-        self, project_id
-    ):
+    def test_upload_data_with_invalid_user_schema_raises_error(self, project_id):
         df = tm.makeMixedDataFrame()
         test_id = "19"
         test_schema = [
@@ -1440,9 +1380,7 @@ class TestToGBQIntegration(object):
                 table_schema=test_schema,
             )
 
-    def test_upload_data_with_missing_schema_fields_raises_error(
-        self, project_id
-    ):
+    def test_upload_data_with_missing_schema_fields_raises_error(self, project_id):
         df = tm.makeMixedDataFrame()
         test_id = "20"
         test_schema = [
@@ -1464,9 +1402,7 @@ class TestToGBQIntegration(object):
         test_id = "21"
         test_size = 6
         df = DataFrame(
-            np.random.randn(test_size, 4),
-            index=range(test_size),
-            columns=list("ABCD"),
+            np.random.randn(test_size, 4), index=range(test_size), columns=list("ABCD"),
         )
         df["times"] = pandas.Series(
             [
@@ -1524,9 +1460,7 @@ class TestToGBQIntegration(object):
             self.gbq_connector, dataset, table, dict(fields=test_schema)
         )
 
-    def test_upload_data_tokyo(
-        self, project_id, tokyo_dataset, bigquery_client
-    ):
+    def test_upload_data_tokyo(self, project_id, tokyo_dataset, bigquery_client):
         from google.cloud import bigquery
 
         test_size = 10
@@ -1544,8 +1478,7 @@ class TestToGBQIntegration(object):
 
         table = bigquery_client.get_table(
             bigquery.TableReference(
-                bigquery.DatasetReference(project_id, tokyo_dataset),
-                "to_gbq_test",
+                bigquery.DatasetReference(project_id, tokyo_dataset), "to_gbq_test",
             )
         )
         assert table.num_rows > 0
@@ -1573,9 +1506,7 @@ class TestToGBQIntegration(object):
 
         table = bigquery_client.get_table(
             bigquery.TableReference(
-                bigquery.DatasetReference(
-                    project_id, non_existing_tokyo_dataset
-                ),
+                bigquery.DatasetReference(project_id, non_existing_tokyo_dataset),
                 "to_gbq_test",
             )
         )
@@ -1585,15 +1516,11 @@ class TestToGBQIntegration(object):
 # _Dataset tests
 
 
-def test_create_dataset(
-    bigquery_client, gbq_dataset, random_dataset_id, project_id
-):
+def test_create_dataset(bigquery_client, gbq_dataset, random_dataset_id, project_id):
     from google.cloud import bigquery
 
     gbq_dataset.create(random_dataset_id)
-    dataset_reference = bigquery.DatasetReference(
-        project_id, random_dataset_id
-    )
+    dataset_reference = bigquery.DatasetReference(project_id, random_dataset_id)
     assert bigquery_client.get_dataset(dataset_reference) is not None
 
 
@@ -1684,9 +1611,7 @@ def test_verify_schema_allows_flexible_column_order(gbq_table, gbq_connector):
     }
 
     gbq_table.create(table_id, test_schema_1)
-    assert verify_schema(
-        gbq_connector, gbq_table.dataset_id, table_id, test_schema_2
-    )
+    assert verify_schema(gbq_connector, gbq_table.dataset_id, table_id, test_schema_2)
 
 
 def test_verify_schema_fails_different_data_type(gbq_table, gbq_connector):
@@ -1759,9 +1684,7 @@ def test_verify_schema_ignores_field_mode(gbq_table, gbq_connector):
     }
 
     gbq_table.create(table_id, test_schema_1)
-    assert verify_schema(
-        gbq_connector, gbq_table.dataset_id, table_id, test_schema_2
-    )
+    assert verify_schema(gbq_connector, gbq_table.dataset_id, table_id, test_schema_2)
 
 
 def test_retrieve_schema(gbq_table, gbq_connector):
@@ -1769,24 +1692,9 @@ def test_retrieve_schema(gbq_table, gbq_connector):
     table_id = "test_retrieve_schema"
     test_schema = {
         "fields": [
-            {
-                "name": "A",
-                "type": "FLOAT",
-                "mode": "NULLABLE",
-                "description": None,
-            },
-            {
-                "name": "B",
-                "type": "FLOAT",
-                "mode": "NULLABLE",
-                "description": None,
-            },
-            {
-                "name": "C",
-                "type": "STRING",
-                "mode": "NULLABLE",
-                "description": None,
-            },
+            {"name": "A", "type": "FLOAT", "mode": "NULLABLE", "description": None},
+            {"name": "B", "type": "FLOAT", "mode": "NULLABLE", "description": None},
+            {"name": "C", "type": "STRING", "mode": "NULLABLE", "description": None},
             {
                 "name": "D",
                 "type": "TIMESTAMP",
@@ -1813,24 +1721,9 @@ def test_to_gbq_does_not_override_mode(gbq_table, gbq_connector):
     table_id = "test_to_gbq_does_not_override_mode"
     table_schema = {
         "fields": [
-            {
-                "mode": "REQUIRED",
-                "name": "A",
-                "type": "FLOAT",
-                "description": "A",
-            },
-            {
-                "mode": "NULLABLE",
-                "name": "B",
-                "type": "FLOAT",
-                "description": "B",
-            },
-            {
-                "mode": "NULLABLE",
-                "name": "C",
-                "type": "STRING",
-                "description": "C",
-            },
+            {"mode": "REQUIRED", "name": "A", "type": "FLOAT", "description": "A"},
+            {"mode": "NULLABLE", "name": "B", "type": "FLOAT", "description": "B"},
+            {"mode": "NULLABLE", "name": "C", "type": "STRING", "description": "C"},
         ]
     }
 
@@ -1842,6 +1735,4 @@ def test_to_gbq_does_not_override_mode(gbq_table, gbq_connector):
         if_exists="append",
     )
 
-    assert verify_schema(
-        gbq_connector, gbq_table.dataset_id, table_id, table_schema
-    )
+    assert verify_schema(gbq_connector, gbq_table.dataset_id, table_id, table_schema)

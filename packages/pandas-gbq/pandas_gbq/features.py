@@ -28,9 +28,7 @@ class Features:
         self._bigquery_installed_version = pkg_resources.parse_version(
             google.cloud.bigquery.__version__
         )
-        bigquery_minimum_version = pkg_resources.parse_version(
-            BIGQUERY_MINIMUM_VERSION
-        )
+        bigquery_minimum_version = pkg_resources.parse_version(BIGQUERY_MINIMUM_VERSION)
 
         if self._bigquery_installed_version < bigquery_minimum_version:
             raise ImportError(
@@ -67,9 +65,7 @@ class Features:
         bigquery_from_dataframe_version = pkg_resources.parse_version(
             BIGQUERY_FROM_DATAFRAME_CSV_VERSION
         )
-        return (
-            self.bigquery_installed_version >= bigquery_from_dataframe_version
-        )
+        return self.bigquery_installed_version >= bigquery_from_dataframe_version
 
     @property
     def pandas_installed_version(self):
@@ -79,9 +75,7 @@ class Features:
         if self._pandas_installed_version is not None:
             return self._pandas_installed_version
 
-        self._pandas_installed_version = pkg_resources.parse_version(
-            pandas.__version__
-        )
+        self._pandas_installed_version = pkg_resources.parse_version(pandas.__version__)
         return self._pandas_installed_version
 
     @property

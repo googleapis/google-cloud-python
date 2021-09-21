@@ -70,9 +70,7 @@ master_doc = "index"
 
 # General information about the project.
 project = u"pandas-gbq"
-copyright = u"2017-{}, PyData Development Team".format(
-    datetime.datetime.now().year
-)
+copyright = u"2017-{}, PyData Development Team".format(datetime.datetime.now().year)
 author = u"PyData Development Team"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -102,8 +100,13 @@ language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-# This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = [
+    "_build",
+    "**/.nox/**/*",
+    "samples/AUTHORING_GUIDE.md",
+    "samples/CONTRIBUTING.md",
+    "samples/snippets/README.rst",
+]
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
@@ -335,9 +338,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, "pandas-gbq", u"pandas-gbq Documentation", [author], 1)
-]
+man_pages = [(master_doc, "pandas-gbq", u"pandas-gbq Documentation", [author], 1)]
 
 # If true, show URL addresses after external links.
 #

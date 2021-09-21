@@ -24,21 +24,12 @@ def module_under_test():
                 {"name": "B", "type": "FLOAT64"},
                 {"name": "C", "type": "STRING"},
             ],
-            [
-                {"name": "A", "type": "FLOAT64"},
-                {"name": "B", "type": "FLOAT"},
-            ],
+            [{"name": "A", "type": "FLOAT64"}, {"name": "B", "type": "FLOAT"}],
         ),
         # Original schema from API may contain legacy SQL datatype names.
         # https://github.com/pydata/pandas-gbq/issues/322
-        (
-            [{"name": "A", "type": "INTEGER"}],
-            [{"name": "A", "type": "INT64"}],
-        ),
-        (
-            [{"name": "A", "type": "BOOL"}],
-            [{"name": "A", "type": "BOOLEAN"}],
-        ),
+        ([{"name": "A", "type": "INTEGER"}], [{"name": "A", "type": "INT64"}],),
+        ([{"name": "A", "type": "BOOL"}], [{"name": "A", "type": "BOOLEAN"}],),
         (
             # TODO: include sub-fields when struct uploads are supported.
             [{"name": "A", "type": "STRUCT"}],
@@ -65,10 +56,7 @@ def test_schema_is_subset_fails_if_not_subset(module_under_test):
         ]
     }
     tested_schema = {
-        "fields": [
-            {"name": "A", "type": "FLOAT"},
-            {"name": "C", "type": "FLOAT"},
-        ]
+        "fields": [{"name": "A", "type": "FLOAT"}, {"name": "C", "type": "FLOAT"}]
     }
     assert not module_under_test.schema_is_subset(table_schema, tested_schema)
 
@@ -160,8 +148,6 @@ def test_generate_bq_schema(module_under_test, dataframe, expected_schema):
         ),
     ],
 )
-def test_update_schema(
-    module_under_test, schema_old, schema_new, expected_output
-):
+def test_update_schema(module_under_test, schema_old, schema_new, expected_output):
     output = module_under_test.update_schema(schema_old, schema_new)
     assert output == expected_output

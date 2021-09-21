@@ -21,9 +21,7 @@ def to_pandas_gbq(client_schema):
     """Given a sequence of :class:`google.cloud.bigquery.schema.SchemaField`,
     return a schema in pandas-gbq API format.
     """
-    remote_fields = [
-        field_remote.to_api_repr() for field_remote in client_schema
-    ]
+    remote_fields = [field_remote.to_api_repr() for field_remote in client_schema]
     for field in remote_fields:
         field["type"] = field["type"].upper()
         field["mode"] = field["mode"].upper()
@@ -39,9 +37,7 @@ def to_google_cloud_bigquery(pandas_gbq_schema):
 
     # Need to convert from JSON representation to format used by client library.
     schema = add_default_nullable_mode(pandas_gbq_schema)
-    return [
-        bigquery.SchemaField.from_api_repr(field) for field in schema["fields"]
-    ]
+    return [bigquery.SchemaField.from_api_repr(field) for field in schema["fields"]]
 
 
 def _clean_schema_fields(fields):
@@ -110,10 +106,7 @@ def generate_bq_schema(dataframe, default_type="STRING"):
     fields = []
     for column_name, dtype in dataframe.dtypes.iteritems():
         fields.append(
-            {
-                "name": column_name,
-                "type": type_mapping.get(dtype.kind, default_type),
-            }
+            {"name": column_name, "type": type_mapping.get(dtype.kind, default_type)}
         )
 
     return {"fields": fields}
