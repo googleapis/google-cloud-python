@@ -132,7 +132,6 @@ class TestDirectRow(unittest.TestCase):
         timestamp=None,
         timestamp_micros=-1,
     ):
-        import six
         import struct
 
         row_key = b"row_key"
@@ -144,7 +143,7 @@ class TestDirectRow(unittest.TestCase):
         self.assertEqual(row._pb_mutations, [])
         row.set_cell(column_family_id, column, value, timestamp=timestamp)
 
-        if isinstance(value, six.integer_types):
+        if isinstance(value, int):
             value = struct.pack(">q", value)
         expected_pb = _MutationPB(
             set_cell=_MutationSetCellPB(

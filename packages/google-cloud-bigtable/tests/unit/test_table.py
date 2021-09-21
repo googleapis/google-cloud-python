@@ -1589,13 +1589,12 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         return response
 
     def _make_responses(self, codes):
-        import six
         from google.cloud.bigtable_v2.types.bigtable import MutateRowsResponse
         from google.rpc.status_pb2 import Status
 
         entries = [
             MutateRowsResponse.Entry(index=i, status=Status(code=codes[i]))
-            for i in six.moves.xrange(len(codes))
+            for i in range(len(codes))
         ]
         return MutateRowsResponse(entries=entries)
 

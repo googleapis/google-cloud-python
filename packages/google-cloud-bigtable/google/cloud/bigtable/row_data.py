@@ -16,7 +16,6 @@
 
 
 import copy
-import six
 
 import grpc
 
@@ -169,8 +168,8 @@ class PartialRowData(object):
         :returns: Dictionary containing all the data in the cells of this row.
         """
         result = {}
-        for column_family_id, columns in six.iteritems(self._cells):
-            for column_qual, cells in six.iteritems(columns):
+        for column_family_id, columns in self._cells.items():
+            for column_qual, cells in columns.items():
                 key = _to_bytes(column_family_id) + b":" + _to_bytes(column_qual)
                 result[key] = cells
         return result
@@ -467,7 +466,7 @@ class PartialRowsData(object):
 
     def _read_next(self):
         """Helper for :meth:`__iter__`."""
-        return six.next(self.response_iterator)
+        return next(self.response_iterator)
 
     def _read_next_response(self):
         """Helper for :meth:`__iter__`."""

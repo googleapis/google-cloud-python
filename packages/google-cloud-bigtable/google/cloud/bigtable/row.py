@@ -17,8 +17,6 @@
 
 import struct
 
-import six
-
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _to_bytes
@@ -151,7 +149,7 @@ class _SetDeleteRow(Row):
                       :meth:`_get_mutations`.
         """
         column = _to_bytes(column)
-        if isinstance(value, six.integer_types):
+        if isinstance(value, int):
             value = _PACK_I64(value)
         value = _to_bytes(value)
         if timestamp is None:
