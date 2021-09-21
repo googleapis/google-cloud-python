@@ -13,7 +13,7 @@
 # limitations under the License.
 
 docker:
-  image: gcr.io/repo-automation-bots/owlbot-python:latest
+  image: gcr.io/cloud-devrel-public-resources/owlbot-python:latest
 
 begin-after-commit-hash: b5412bb83fa37372067353eb46dee44fb8e1eed5
 
