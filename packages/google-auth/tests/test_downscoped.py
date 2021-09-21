@@ -13,12 +13,12 @@
 # limitations under the License.
 
 import datetime
+import http.client
 import json
+import urllib
 
 import mock
 import pytest
-from six.moves import http_client
-from six.moves import urllib
 
 from google.auth import _helpers
 from google.auth import credentials
@@ -461,7 +461,7 @@ class TestCredentials(object):
         )
 
     @staticmethod
-    def make_mock_request(data, status=http_client.OK):
+    def make_mock_request(data, status=http.client.OK):
         response = mock.create_autospec(transport.Response, instance=True)
         response.status = status
         response.data = json.dumps(data).encode("utf-8")
@@ -521,7 +521,7 @@ class TestCredentials(object):
             "requested_token_type": REQUESTED_TOKEN_TYPE,
             "options": urllib.parse.quote(json.dumps(CREDENTIAL_ACCESS_BOUNDARY_JSON)),
         }
-        request = self.make_mock_request(status=http_client.OK, data=response)
+        request = self.make_mock_request(status=http.client.OK, data=response)
         source_credentials = SourceCredentials()
         credentials = self.make_credentials(source_credentials=source_credentials)
 
@@ -563,7 +563,7 @@ class TestCredentials(object):
             "requested_token_type": REQUESTED_TOKEN_TYPE,
             "options": urllib.parse.quote(json.dumps(CREDENTIAL_ACCESS_BOUNDARY_JSON)),
         }
-        request = self.make_mock_request(status=http_client.OK, data=response)
+        request = self.make_mock_request(status=http.client.OK, data=response)
         credentials = self.make_credentials(source_credentials=source_credentials)
 
         # Spy on calls to source credentials refresh to confirm the expected request
@@ -583,7 +583,7 @@ class TestCredentials(object):
 
     def test_refresh_token_exchange_error(self):
         request = self.make_mock_request(
-            status=http_client.BAD_REQUEST, data=ERROR_RESPONSE
+            status=http.client.BAD_REQUEST, data=ERROR_RESPONSE
         )
         credentials = self.make_credentials()
 
@@ -612,7 +612,7 @@ class TestCredentials(object):
 
     def test_apply_without_quota_project_id(self):
         headers = {}
-        request = self.make_mock_request(status=http_client.OK, data=SUCCESS_RESPONSE)
+        request = self.make_mock_request(status=http.client.OK, data=SUCCESS_RESPONSE)
         credentials = self.make_credentials()
 
         credentials.refresh(request)
@@ -624,7 +624,7 @@ class TestCredentials(object):
 
     def test_apply_with_quota_project_id(self):
         headers = {"other": "header-value"}
-        request = self.make_mock_request(status=http_client.OK, data=SUCCESS_RESPONSE)
+        request = self.make_mock_request(status=http.client.OK, data=SUCCESS_RESPONSE)
         credentials = self.make_credentials(quota_project_id=QUOTA_PROJECT_ID)
 
         credentials.refresh(request)
@@ -638,7 +638,7 @@ class TestCredentials(object):
 
     def test_before_request(self):
         headers = {"other": "header-value"}
-        request = self.make_mock_request(status=http_client.OK, data=SUCCESS_RESPONSE)
+        request = self.make_mock_request(status=http.client.OK, data=SUCCESS_RESPONSE)
         credentials = self.make_credentials()
 
         # First call should call refresh, setting the token.
@@ -662,7 +662,7 @@ class TestCredentials(object):
     @mock.patch("google.auth._helpers.utcnow")
     def test_before_request_expired(self, utcnow):
         headers = {}
-        request = self.make_mock_request(status=http_client.OK, data=SUCCESS_RESPONSE)
+        request = self.make_mock_request(status=http.client.OK, data=SUCCESS_RESPONSE)
         credentials = self.make_credentials()
         credentials.token = "token"
         utcnow.return_value = datetime.datetime.min
