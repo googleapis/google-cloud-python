@@ -419,6 +419,7 @@ class TestBundleBuilder(_CollectionQueryMixin, unittest.TestCase):
         """Some SDKs (Node) serialize Timestamp values to
         '{"seconds": 123, "nanos": 456}', instead of an ISO-formatted string.
         This tests deserialization from that format."""
+        from google.protobuf.json_format import ParseError
 
         client = _test_helpers.make_client(project_name="fir-bundles-test")
 
@@ -441,7 +442,10 @@ class TestBundleBuilder(_CollectionQueryMixin, unittest.TestCase):
         )
 
         self.assertRaises(
-            ValueError, _helpers.deserialize_bundle, _serialized, client=client,
+            (ValueError, ParseError),  # protobuf 3.18.0 raises ParseError
+            _helpers.deserialize_bundle,
+            _serialized,
+            client=client,
         )
 
         # The following assertions would test deserialization of NodeJS bundles

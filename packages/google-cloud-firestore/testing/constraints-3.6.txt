@@ -8,4 +8,5 @@
 google-api-core==1.26.0
 google-cloud-core==1.4.1
 proto-plus==1.10.0
+protobuf==3.12.0  # transitive from `google-api-core`
 google-auth==1.24.0  # TODO: remove when google-auth>=1.25.0 is required through google-api-core

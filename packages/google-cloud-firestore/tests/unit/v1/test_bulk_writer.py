@@ -18,6 +18,7 @@ from typing import List, NoReturn, Optional, Tuple, Type
 
 from google.rpc import status_pb2
 import aiounittest  # type: ignore
+import mock
 
 from google.cloud.firestore_v1._helpers import build_timestamp, ExistsOption
 from google.cloud.firestore_v1.async_client import AsyncClient
@@ -82,35 +83,43 @@ class NoSendBulkWriter(BulkWriter):
         return FakeThreadPoolExecutor()
 
 
+def _make_credentials():
+    from google.auth.credentials import Credentials
+
+    return mock.create_autospec(Credentials, project_id="project-id")
+
+
 class _SyncClientMixin:
     """Mixin which helps a `_BaseBulkWriterTests` subclass simulate usage of
     synchronous Clients, Collections, DocumentReferences, etc."""
 
-    def _get_client_class(self) -> Type:
-        return Client
+    @staticmethod
+    def _make_client() -> Client:
+        return Client(credentials=_make_credentials(), project="project-id")
 
 
 class _AsyncClientMixin:
     """Mixin which helps a `_BaseBulkWriterTests` subclass simulate usage of
     AsyncClients, AsyncCollections, AsyncDocumentReferences, etc."""
 
-    def _get_client_class(self) -> Type:
-        return AsyncClient
+    @staticmethod
+    def _make_client() -> AsyncClient:
+        return AsyncClient(credentials=_make_credentials(), project="project-id")
 
 
 class _BaseBulkWriterTests:
-    def setUp(self):
-        self.client: BaseClient = self._get_client_class()()
-
+    @staticmethod
     def _get_document_reference(
-        self, collection_name: Optional[str] = "col", id: Optional[str] = None,
+        client: BaseClient,
+        collection_name: Optional[str] = "col",
+        id: Optional[str] = None,
     ) -> Type:
-        return self.client.collection(collection_name).document(id)
+        return client.collection(collection_name).document(id)
 
-    def _doc_iter(self, num: int, ids: Optional[List[str]] = None):
+    def _doc_iter(self, client, num: int, ids: Optional[List[str]] = None):
         for _ in range(num):
             id: Optional[str] = ids[_] if ids else None
-            yield self._get_document_reference(id=id), {"id": _}
+            yield self._get_document_reference(client, id=id), {"id": _}
 
     def _verify_bw_activity(self, bw: BulkWriter, counts: List[Tuple[int, int]]):
         """
@@ -143,8 +152,9 @@ class _BaseBulkWriterTests:
         self.assertEqual(len(bw._operations), 0)
 
     def test_create_calls_send_correctly(self):
-        bw = NoSendBulkWriter(self.client)
-        for ref, data in self._doc_iter(101):
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
+        for ref, data in self._doc_iter(client, 101):
             bw.create(ref, data)
         bw.flush()
         # Full batches with 20 items should have been sent 5 times, and a 1-item
@@ -152,8 +162,9 @@ class _BaseBulkWriterTests:
         self._verify_bw_activity(bw, [(20, 5,), (1, 1,)])
 
     def test_delete_calls_send_correctly(self):
-        bw = NoSendBulkWriter(self.client)
-        for ref, _ in self._doc_iter(101):
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
+        for ref, _ in self._doc_iter(client, 101):
             bw.delete(ref)
         bw.flush()
         # Full batches with 20 items should have been sent 5 times, and a 1-item
@@ -161,8 +172,9 @@ class _BaseBulkWriterTests:
         self._verify_bw_activity(bw, [(20, 5,), (1, 1,)])
 
     def test_delete_separates_batch(self):
-        bw = NoSendBulkWriter(self.client)
-        ref = self._get_document_reference(id="asdf")
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
+        ref = self._get_document_reference(client, id="asdf")
         bw.create(ref, {})
         bw.delete(ref)
         bw.flush()
@@ -170,8 +182,9 @@ class _BaseBulkWriterTests:
         self._verify_bw_activity(bw, [(1, 2,)])
 
     def test_set_calls_send_correctly(self):
-        bw = NoSendBulkWriter(self.client)
-        for ref, data in self._doc_iter(101):
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
+        for ref, data in self._doc_iter(client, 101):
             bw.set(ref, data)
         bw.flush()
         # Full batches with 20 items should have been sent 5 times, and a 1-item
@@ -179,8 +192,9 @@ class _BaseBulkWriterTests:
         self._verify_bw_activity(bw, [(20, 5,), (1, 1,)])
 
     def test_update_calls_send_correctly(self):
-        bw = NoSendBulkWriter(self.client)
-        for ref, data in self._doc_iter(101):
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
+        for ref, data in self._doc_iter(client, 101):
             bw.update(ref, data)
         bw.flush()
         # Full batches with 20 items should have been sent 5 times, and a 1-item
@@ -188,8 +202,9 @@ class _BaseBulkWriterTests:
         self._verify_bw_activity(bw, [(20, 5,), (1, 1,)])
 
     def test_update_separates_batch(self):
-        bw = NoSendBulkWriter(self.client)
-        ref = self._get_document_reference(id="asdf")
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
+        ref = self._get_document_reference(client, id="asdf")
         bw.create(ref, {})
         bw.update(ref, {"field": "value"})
         bw.flush()
@@ -198,7 +213,8 @@ class _BaseBulkWriterTests:
         self._verify_bw_activity(bw, [(1, 2,)])
 
     def test_invokes_success_callbacks_successfully(self):
-        bw = NoSendBulkWriter(self.client)
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
         bw._fail_indices = []
         bw._sent_batches = 0
         bw._sent_documents = 0
@@ -218,7 +234,7 @@ class _BaseBulkWriterTests:
         bw.on_write_result(_on_write)
         bw.on_batch_result(_on_batch)
 
-        for ref, data in self._doc_iter(101):
+        for ref, data in self._doc_iter(client, 101):
             bw.create(ref, data)
         bw.flush()
 
@@ -227,7 +243,8 @@ class _BaseBulkWriterTests:
         self.assertEqual(len(bw._operations), 0)
 
     def test_invokes_error_callbacks_successfully(self):
-        bw = NoSendBulkWriter(self.client)
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
         # First document in each batch will "fail"
         bw._fail_indices = [0]
         bw._sent_batches = 0
@@ -253,7 +270,7 @@ class _BaseBulkWriterTests:
         bw.on_write_result(_on_write)
         bw.on_write_error(_on_error)
 
-        for ref, data in self._doc_iter(1):
+        for ref, data in self._doc_iter(client, 1):
             bw.create(ref, data)
         bw.flush()
 
@@ -263,8 +280,9 @@ class _BaseBulkWriterTests:
         self.assertEqual(len(bw._operations), 0)
 
     def test_invokes_error_callbacks_successfully_multiple_retries(self):
+        client = self._make_client()
         bw = NoSendBulkWriter(
-            self.client, options=BulkWriterOptions(retry=BulkRetry.immediate),
+            client, options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
         bw._fail_indices = [0]
@@ -291,7 +309,7 @@ class _BaseBulkWriterTests:
         bw.on_write_result(_on_write)
         bw.on_write_error(_on_error)
 
-        for ref, data in self._doc_iter(2):
+        for ref, data in self._doc_iter(client, 2):
             bw.create(ref, data)
         bw.flush()
 
@@ -301,8 +319,9 @@ class _BaseBulkWriterTests:
         self.assertEqual(len(bw._operations), 0)
 
     def test_default_error_handler(self):
+        client = self._make_client()
         bw = NoSendBulkWriter(
-            self.client, options=BulkWriterOptions(retry=BulkRetry.immediate),
+            client, options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         bw._attempts = 0
 
@@ -314,14 +333,15 @@ class _BaseBulkWriterTests:
 
         # First document in each batch will "fail"
         bw._fail_indices = [0]
-        for ref, data in self._doc_iter(1):
+        for ref, data in self._doc_iter(client, 1):
             bw.create(ref, data)
         bw.flush()
         self.assertEqual(bw._attempts, 15)
 
     def test_handles_errors_and_successes_correctly(self):
+        client = self._make_client()
         bw = NoSendBulkWriter(
-            self.client, options=BulkWriterOptions(retry=BulkRetry.immediate),
+            client, options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
         bw._fail_indices = [0]
@@ -348,7 +368,7 @@ class _BaseBulkWriterTests:
         bw.on_write_result(_on_write)
         bw.on_write_error(_on_error)
 
-        for ref, data in self._doc_iter(40):
+        for ref, data in self._doc_iter(client, 40):
             bw.create(ref, data)
         bw.flush()
 
@@ -359,8 +379,9 @@ class _BaseBulkWriterTests:
         self.assertEqual(len(bw._operations), 0)
 
     def test_create_retriable(self):
+        client = self._make_client()
         bw = NoSendBulkWriter(
-            self.client, options=BulkWriterOptions(retry=BulkRetry.immediate),
+            client, options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
         bw._fail_indices = [0]
@@ -376,7 +397,7 @@ class _BaseBulkWriterTests:
 
         bw.on_write_error(_on_error)
 
-        for ref, data in self._doc_iter(1):
+        for ref, data in self._doc_iter(client, 1):
             bw.create(ref, data)
         bw.flush()
 
@@ -384,8 +405,9 @@ class _BaseBulkWriterTests:
         self.assertEqual(len(bw._operations), 0)
 
     def test_delete_retriable(self):
+        client = self._make_client()
         bw = NoSendBulkWriter(
-            self.client, options=BulkWriterOptions(retry=BulkRetry.immediate),
+            client, options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
         bw._fail_indices = [0]
@@ -401,7 +423,7 @@ class _BaseBulkWriterTests:
 
         bw.on_write_error(_on_error)
 
-        for ref, _ in self._doc_iter(1):
+        for ref, _ in self._doc_iter(client, 1):
             bw.delete(ref)
         bw.flush()
 
@@ -409,8 +431,9 @@ class _BaseBulkWriterTests:
         self.assertEqual(len(bw._operations), 0)
 
     def test_set_retriable(self):
+        client = self._make_client()
         bw = NoSendBulkWriter(
-            self.client, options=BulkWriterOptions(retry=BulkRetry.immediate),
+            client, options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
         bw._fail_indices = [0]
@@ -426,7 +449,7 @@ class _BaseBulkWriterTests:
 
         bw.on_write_error(_on_error)
 
-        for ref, data in self._doc_iter(1):
+        for ref, data in self._doc_iter(client, 1):
             bw.set(ref, data)
         bw.flush()
 
@@ -434,8 +457,9 @@ class _BaseBulkWriterTests:
         self.assertEqual(len(bw._operations), 0)
 
     def test_update_retriable(self):
+        client = self._make_client()
         bw = NoSendBulkWriter(
-            self.client, options=BulkWriterOptions(retry=BulkRetry.immediate),
+            client, options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
         bw._fail_indices = [0]
@@ -451,7 +475,7 @@ class _BaseBulkWriterTests:
 
         bw.on_write_error(_on_error)
 
-        for ref, data in self._doc_iter(1):
+        for ref, data in self._doc_iter(client, 1):
             bw.update(ref, data)
         bw.flush()
 
@@ -459,10 +483,9 @@ class _BaseBulkWriterTests:
         self.assertEqual(len(bw._operations), 0)
 
     def test_serial_calls_send_correctly(self):
-        bw = NoSendBulkWriter(
-            self.client, options=BulkWriterOptions(mode=SendMode.serial)
-        )
-        for ref, data in self._doc_iter(101):
+        client = self._make_client()
+        bw = NoSendBulkWriter(client, options=BulkWriterOptions(mode=SendMode.serial))
+        for ref, data in self._doc_iter(client, 101):
             bw.create(ref, data)
         bw.flush()
         # Full batches with 20 items should have been sent 5 times, and a 1-item
@@ -470,8 +493,9 @@ class _BaseBulkWriterTests:
         self._verify_bw_activity(bw, [(20, 5,), (1, 1,)])
 
     def test_separates_same_document(self):
-        bw = NoSendBulkWriter(self.client)
-        for ref, data in self._doc_iter(2, ["same-id", "same-id"]):
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
+        for ref, data in self._doc_iter(client, 2, ["same-id", "same-id"]):
             bw.create(ref, data)
         bw.flush()
         # Seeing the same document twice should lead to separate batches
@@ -479,8 +503,9 @@ class _BaseBulkWriterTests:
         self._verify_bw_activity(bw, [(1, 2,)])
 
     def test_separates_same_document_different_operation(self):
-        bw = NoSendBulkWriter(self.client)
-        for ref, data in self._doc_iter(1, ["same-id"]):
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
+        for ref, data in self._doc_iter(client, 1, ["same-id"]):
             bw.create(ref, data)
             bw.set(ref, data)
         bw.flush()
@@ -489,47 +514,54 @@ class _BaseBulkWriterTests:
         self._verify_bw_activity(bw, [(1, 2,)])
 
     def test_ensure_sending_repeatedly_callable(self):
-        bw = NoSendBulkWriter(self.client)
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
         bw._is_sending = True
         bw._ensure_sending()
 
     def test_flush_close_repeatedly_callable(self):
-        bw = NoSendBulkWriter(self.client)
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
         bw.flush()
         bw.flush()
         bw.close()
 
     def test_flush_sends_in_progress(self):
-        bw = NoSendBulkWriter(self.client)
-        bw.create(self._get_document_reference(), {"whatever": "you want"})
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
+        bw.create(self._get_document_reference(client), {"whatever": "you want"})
         bw.flush()
         self._verify_bw_activity(bw, [(1, 1,)])
 
     def test_flush_sends_all_queued_batches(self):
-        bw = NoSendBulkWriter(self.client)
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
         for _ in range(2):
-            bw.create(self._get_document_reference(), {"whatever": "you want"})
+            bw.create(self._get_document_reference(client), {"whatever": "you want"})
             bw._queued_batches.append(bw._operations)
             bw._reset_operations()
         bw.flush()
         self._verify_bw_activity(bw, [(1, 2,)])
 
     def test_cannot_add_after_close(self):
-        bw = NoSendBulkWriter(self.client)
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
         bw.close()
         self.assertRaises(Exception, bw._verify_not_closed)
 
     def test_multiple_flushes(self):
-        bw = NoSendBulkWriter(self.client)
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
         bw.flush()
         bw.flush()
 
     def test_update_raises_with_bad_option(self):
-        bw = NoSendBulkWriter(self.client)
+        client = self._make_client()
+        bw = NoSendBulkWriter(client)
         self.assertRaises(
             ValueError,
             bw.update,
-            self._get_document_reference("id"),
+            self._get_document_reference(client, "id"),
             {},
             option=ExistsOption(exists=True),
         )
@@ -548,8 +580,12 @@ class TestAsyncBulkWriter(
 
 
 class TestScheduling(unittest.TestCase):
+    @staticmethod
+    def _make_client() -> Client:
+        return Client(credentials=_make_credentials(), project="project-id")
+
     def test_max_in_flight_honored(self):
-        bw = NoSendBulkWriter(Client())
+        bw = NoSendBulkWriter(self._make_client())
         # Calling this method sets up all the internal timekeeping machinery
         bw._rate_limiter.take_tokens(20)
 
@@ -571,7 +607,7 @@ class TestScheduling(unittest.TestCase):
         now = datetime.datetime.now()
         one_second_from_now = now + datetime.timedelta(seconds=1)
 
-        db = Client()
+        db = self._make_client()
         operation = BulkWriterCreateOperation(
             reference=db.collection("asdf").document("asdf"),
             document_data={"does.not": "matter"},
