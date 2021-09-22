@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 import collections
+import io
 import json
 
 try:
@@ -31,7 +32,6 @@ try:
     import pyarrow
 except ImportError:  # pragma: NO COVER
     pyarrow = None
-import six
 
 try:
     import pyarrow
@@ -400,7 +400,7 @@ class ReadRowsIterable(object):
             if isinstance(field_info["type"], list):
                 type_info = next(item for item in field_info["type"] if item != "null")
 
-            if isinstance(type_info, six.string_types):
+            if isinstance(type_info, str):
                 field_dtype = type_map.get(type_info, "object")
             else:
                 logical_type = type_info.get("logicalType")
@@ -461,7 +461,7 @@ class ReadRowsPage(object):
         self._parse_rows()
         if self._remaining > 0:
             self._remaining -= 1
-        return six.next(self._iter_rows)
+        return next(self._iter_rows)
 
     # Alias needed for Python 2/3 support.
     __next__ = next
@@ -652,7 +652,7 @@ class _AvroStreamParser(_StreamParser):
                 A sequence of rows, represented as dictionaries.
         """
         self._parse_fastavro()
-        messageio = six.BytesIO(message.avro_rows.serialized_binary_rows)
+        messageio = io.BytesIO(message.avro_rows.serialized_binary_rows)
         while True:
             # Loop in a while loop because schemaless_reader can only read
             # a single record.

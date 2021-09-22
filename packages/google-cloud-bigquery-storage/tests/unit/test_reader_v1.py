@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import itertools
+import io
 import json
 from unittest import mock
 
@@ -22,7 +23,6 @@ import fastavro
 import pandas
 import pandas.testing
 import pytest
-import six
 
 import google.api_core.exceptions
 from google.cloud.bigquery_storage import types
@@ -68,7 +68,7 @@ def _bq_to_avro_blocks(bq_blocks, avro_schema_json):
     avro_blocks = []
     first_message = True
     for block in bq_blocks:
-        blockio = six.BytesIO()
+        blockio = io.BytesIO()
         for row in block:
             fastavro.schemaless_writer(blockio, avro_schema, row)
         response = types.ReadRowsResponse()
