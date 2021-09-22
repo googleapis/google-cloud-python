@@ -1568,3 +1568,27 @@ def test_watch_query_order(client, cleanup):
         raise AssertionError(
             "5 docs expected in snapshot method " + str(on_snapshot.last_doc_count)
         )
+
+
+def test_repro_429(client, cleanup):
+    # See: https://github.com/googleapis/python-firestore/issues/429
+    now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+    collection = client.collection("repro-429" + UNIQUE_RESOURCE_ID)
+
+    document_ids = [f"doc-{doc_id:02d}" for doc_id in range(30)]
+    for document_id in document_ids:
+        data = {"now": now, "paymentId": None}
+        _, document = collection.add(data, document_id)
+        cleanup(document.delete)
+
+    query = collection.where("paymentId", "==", None).limit(10).order_by("__name__")
+
+    last_snapshot = None
+    for snapshot in query.stream():
+        print(f"id: {snapshot.id}")
+        last_snapshot = snapshot
+
+    query2 = query.start_after(last_snapshot)
+
+    for snapshot in query2.stream():
+        print(f"id: {snapshot.id}")

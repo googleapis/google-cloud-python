@@ -704,9 +704,12 @@ class BaseQuery(object):
             ]
             order_keys = [order.field.field_path for order in orders]
             for filter_ in self._field_filters:
-                field = filter_.field.field_path
-                if filter_.op in should_order and field not in order_keys:
-                    orders.append(self._make_order(field, "ASCENDING"))
+                # FieldFilter.Operator should not compare equal to
+                # UnaryFilter.Operator, but it does
+                if isinstance(filter_.op, StructuredQuery.FieldFilter.Operator):
+                    field = filter_.field.field_path
+                    if filter_.op in should_order and field not in order_keys:
+                        orders.append(self._make_order(field, "ASCENDING"))
             if not orders:
                 orders.append(self._make_order("__name__", "ASCENDING"))
             else:

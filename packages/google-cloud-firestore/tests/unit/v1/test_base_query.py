@@ -726,6 +726,17 @@ class TestBaseQuery(unittest.TestCase):
         ]
         self.assertEqual(query._normalize_orders(), expected)
 
+    def test__normalize_orders_wo_orders_w_snapshot_cursor_w_isnull_where(self):
+        values = {"a": 7, "b": "foo"}
+        docref = self._make_docref("here", "doc_id")
+        snapshot = self._make_snapshot(docref, values)
+        collection = self._make_collection("here")
+        query = self._make_one(collection).where("c", "==", None).end_at(snapshot)
+        expected = [
+            query._make_order("__name__", "ASCENDING"),
+        ]
+        self.assertEqual(query._normalize_orders(), expected)
+
     def test__normalize_orders_w_name_orders_w_none_cursor(self):
         collection = self._make_collection("here")
         query = (
