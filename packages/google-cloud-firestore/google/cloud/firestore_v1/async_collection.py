@@ -107,8 +107,8 @@ class AsyncCollectionReference(BaseCollectionReference):
                 * A document reference for the created document.
 
         Raises:
-            ~google.cloud.exceptions.Conflict: If ``document_id`` is provided
-                and the document already exists.
+            :class:`google.cloud.exceptions.Conflict`:
+                If ``document_id`` is provided and the document already exists.
         """
         document_ref, kwargs = self._prep_add(
             document_data, document_id, retry, timeout,

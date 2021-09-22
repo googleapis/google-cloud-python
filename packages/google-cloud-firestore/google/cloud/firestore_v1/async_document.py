@@ -84,7 +84,7 @@ class AsyncDocumentReference(BaseDocumentReference):
                 A write result contains an ``update_time`` field.
 
         Raises:
-            :class:`~google.cloud.exceptions.Conflict`:
+            :class:`google.cloud.exceptions.Conflict`:
                 If the document already exists.
         """
         batch, kwargs = self._prep_create(document_data, retry, timeout)
@@ -282,7 +282,8 @@ class AsyncDocumentReference(BaseDocumentReference):
             result contains an ``update_time`` field.
 
         Raises:
-            ~google.cloud.exceptions.NotFound: If the document does not exist.
+            :class:`google.cloud.exceptions.NotFound`:
+                If the document does not exist.
         """
         batch, kwargs = self._prep_update(field_updates, option, retry, timeout)
         write_results = await batch.commit(**kwargs)

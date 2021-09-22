@@ -135,7 +135,7 @@ def render_field_path(field_names: Iterable[str]):
     names. It is used to represent a nested field. For example,
     in the data
 
-    .. code-block: python
+    .. code-block:: python
 
        data = {
           'aa': {
@@ -149,7 +149,7 @@ def render_field_path(field_names: Iterable[str]):
     ``data['aa']['bb']['cc']``.
 
     Args:
-        field_names (Iterable[str, ...]): The list of field names.
+        field_names: The list of field names.
 
     Returns:
         str: The ``.``-delimited field path.
