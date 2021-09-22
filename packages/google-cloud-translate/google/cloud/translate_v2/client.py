@@ -15,8 +15,6 @@
 """Client for interacting with the Google Cloud Translation API."""
 
 
-import six
-
 import google.api_core.client_options
 from google.cloud.client import Client as BaseClient
 
@@ -153,7 +151,7 @@ class Client(BaseClient):
                  in it.
         """
         single_value = False
-        if isinstance(values, six.string_types):
+        if isinstance(values, str):
             single_value = True
             values = [values]
 
@@ -247,13 +245,13 @@ class Client(BaseClient):
                  values and translations differ.
         """
         single_value = False
-        if isinstance(values, six.string_types):
+        if isinstance(values, str):
             single_value = True
             values = [values]
 
         if target_language is None:
             target_language = self.target_language
-        if isinstance(customization_ids, six.string_types):
+        if isinstance(customization_ids, str):
             customization_ids = [customization_ids]
 
         data = {
@@ -272,7 +270,7 @@ class Client(BaseClient):
             raise ValueError(
                 "Expected iterations to have same length", values, translations
             )
-        for value, translation in six.moves.zip(values, translations):
+        for value, translation in zip(values, translations):
             translation["input"] = value
 
         if single_value:
