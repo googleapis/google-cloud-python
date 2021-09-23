@@ -14,15 +14,13 @@
 
 """This script is used to synthesize generated parts of this library."""
 
-import os
-
 import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
 common = gcp.CommonTemplates()
 
-default_version = "v1beta1"
+default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
     # Rename package to 'google-cloud-binary-authorization'
@@ -31,6 +29,39 @@ for library in s.get_staging_dirs(default_version):
         "google-cloud-binaryauthorization",
         "google-cloud-binary-authorization",
     )
+
+    if library.name == "v1":
+        # Fix import of grafeas
+        s.replace(
+            [library / "google/**/*.py", library / "tests/**/*.py"],
+            "from grafeas.v1",
+            "from grafeas.grafeas_v1",
+        )
+
+        s.replace(
+            [library / "google/**/*.py", library / "tests/**/*.py"],
+            "from grafeas.grafeas_v1 import attestation_pb2",
+            "from grafeas.grafeas_v1.types import attestation",
+        )
+
+        s.replace(
+            [library / "google/**/*.py", library / "tests/**/*.py"],
+            "from grafeas.grafeas_v1 import common_pb2",
+            "from grafeas.grafeas_v1.types import common",
+        )
+
+        s.replace(
+            [library / "google/**/*.py", library / "tests/**/*.py"],
+            "message=attestation_pb2",
+            "message=attestation",
+        )
+
+        s.replace(
+            [library / "google/**/*.py", library / "tests/**/*.py"],
+            "grafeas.v1.attestation_pb2.AttestationOccurrence",
+            "grafeas.grafeas_v1.types.attestation.AttestationOccurrence",
+        )
+
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
 s.remove_staging_dirs()
@@ -44,60 +75,6 @@ python.py_samples(skip_readmes=True)
 s.move(
     templated_files,
     excludes=[".coveragerc"],  # the microgenerator has a good coveragerc file
-)
-
-# Remove the replacements below once https://github.com/googleapis/synthtool/pull/1188 is merged
-
-# Update googleapis/repo-automation-bots repo to main in .kokoro/*.sh files
-s.replace(".kokoro/*.sh", "repo-automation-bots/tree/master", "repo-automation-bots/tree/main")
-
-# Customize CONTRIBUTING.rst to replace master with main
-s.replace(
-    "CONTRIBUTING.rst",
-    "fetch and merge changes from upstream into master",
-    "fetch and merge changes from upstream into main",
-)
-
-s.replace(
-    "CONTRIBUTING.rst",
-    "git merge upstream/master",
-    "git merge upstream/main",
-)
-
-s.replace(
-    "CONTRIBUTING.rst",
-    """export GOOGLE_CLOUD_TESTING_BRANCH=\"master\"""",
-    """export GOOGLE_CLOUD_TESTING_BRANCH=\"main\"""",
-)
-
-s.replace(
-    "CONTRIBUTING.rst",
-    "remote \(``master``\)",
-    "remote (``main``)",
-)
-
-s.replace(
-    "CONTRIBUTING.rst",
-    "blob/master/CONTRIBUTING.rst",
-    "blob/main/CONTRIBUTING.rst",
-)
-
-s.replace(
-    "CONTRIBUTING.rst",
-    "blob/master/noxfile.py",
-    "blob/main/noxfile.py",
-)
-
-s.replace(
-    "docs/conf.py",
-    "master_doc",
-    "root_doc",
-)
-
-s.replace(
-    "docs/conf.py",
-    "# The master toctree document.",
-    "# The root toctree document.",
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

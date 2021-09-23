@@ -36,7 +36,7 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/python-documentai",
+    url="https://github.com/googleapis/python-binary-authorization",
     packages=[
         package
         for package in setuptools.PEP420PackageFinder.find()
@@ -50,8 +50,9 @@ setuptools.setup(
         # Until this issue is closed
         # https://github.com/googleapis/google-cloud-python/issues/10566
         "google-api-core[grpc] >= 1.26.0, <3.0.0dev",
-        "proto-plus >= 1.4.0",
+        "proto-plus >= 1.15.0",
         "packaging >= 14.3",
+        "grafeas >= 1.1.2",
     ),
     python_requires=">=3.6",
     classifiers=[
