@@ -16,7 +16,7 @@
 set -eo pipefail
 
 if [[ -z "${PROJECT_ROOT:-}" ]]; then
-    PROJECT_ROOT="github/python-bigquery-sqlalchemy"
+    PROJECT_ROOT="github/python-db-dtypes-pandas"
 fi
 
 cd "${PROJECT_ROOT}"

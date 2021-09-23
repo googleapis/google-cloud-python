@@ -31,6 +31,7 @@ templated_files = common.py_library(
     unit_test_python_versions=["3.6", "3.7", "3.8", "3.9"],
     system_test_python_versions=["3.8"],
     cov_level=100,
+    intersphinx_dependencies={"pandas": "http://pandas.pydata.org/pandas-docs/dev"},
 )
 s.move(templated_files, excludes=["docs/multiprocessing.rst"])
 
@@ -65,6 +66,7 @@ place_before(
     "nox.options.stop_on_first_error = True",
 )
 
+# There are no system tests for this package.
 old_sessions = """
     "unit",
     "system",
@@ -76,8 +78,6 @@ new_sessions = """
     "lint",
     "unit",
     "cover",
-    "system",
-    "compliance",
 """
 
 s.replace(["noxfile.py"], old_sessions, new_sessions)

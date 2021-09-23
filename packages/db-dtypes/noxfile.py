@@ -28,9 +28,7 @@ BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["docs", "db_dtypes", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
-
-# We're using two Python versions to test with sqlalchemy 1.3 and 1.4.
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.8", "3.9"]
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
@@ -40,8 +38,6 @@ nox.options.sessions = [
     "lint",
     "unit",
     "cover",
-    "system",
-    "compliance",
     "lint_setup_py",
     "blacken",
     "docs",
@@ -98,13 +94,7 @@ def default(session):
         constraints_path,
     )
 
-    if session.python == "3.8":
-        extras = "[tests,alembic]"
-    elif session.python == "3.9":
-        extras = "[tests,geography]"
-    else:
-        extras = "[tests]"
-    session.install("-e", f".{extras}", "-c", constraints_path)
+    session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the unit tests.
     session.run(
@@ -156,13 +146,7 @@ def system(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install("mock", "pytest", "google-cloud-testutils", "-c", constraints_path)
-    if session.python == "3.8":
-        extras = "[tests,alembic]"
-    elif session.python == "3.9":
-        extras = "[tests,geography]"
-    else:
-        extras = "[tests]"
-    session.install("-e", f".{extras}", "-c", constraints_path)
+    session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the system tests.
     if system_test_exists:
@@ -183,56 +167,6 @@ def system(session):
         )
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-def compliance(session):
-    """Run the SQLAlchemy dialect-compliance system tests"""
-    constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
-    )
-    system_test_folder_path = os.path.join("tests", "sqlalchemy_dialect_compliance")
-
-    if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false":
-        session.skip("RUN_COMPLIANCE_TESTS is set to false, skipping")
-    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
-        session.skip("Credentials must be set via environment variable")
-    if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
-        session.install("pyopenssl")
-    if not os.path.exists(system_test_folder_path):
-        session.skip("Compliance tests were not found")
-
-    session.install("--pre", "grpcio")
-
-    session.install(
-        "mock",
-        "pytest",
-        "pytest-rerunfailures",
-        "google-cloud-testutils",
-        "-c",
-        constraints_path,
-    )
-    if session.python == "3.8":
-        extras = "[tests,alembic]"
-    elif session.python == "3.9":
-        extras = "[tests,geography]"
-    else:
-        extras = "[tests]"
-    session.install("-e", f".{extras}", "-c", constraints_path)
-
-    session.run(
-        "py.test",
-        "-vv",
-        f"--junitxml=compliance_{session.python}_sponge_log.xml",
-        "--reruns=3",
-        "--reruns-delay=60",
-        "--only-rerun=403 Exceeded rate limits",
-        "--only-rerun=409 Already Exists",
-        "--only-rerun=404 Not found",
-        "--only-rerun=400 Cannot execute DML over a non-existent table",
-        system_test_folder_path,
-        *session.posargs,
-    )
-
-
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
     """Run the final coverage report.
@@ -251,9 +185,7 @@ def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".")
-    session.install(
-        "sphinx==4.0.1", "alabaster", "geoalchemy2", "shapely", "recommonmark"
-    )
+    session.install("sphinx==4.0.1", "alabaster", "recommonmark")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
@@ -276,12 +208,7 @@ def docfx(session):
 
     session.install("-e", ".")
     session.install(
-        "sphinx==4.0.1",
-        "alabaster",
-        "geoalchemy2",
-        "shapely",
-        "recommonmark",
-        "gcp-sphinx-docfx-yaml",
+        "sphinx==4.0.1", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml"
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
