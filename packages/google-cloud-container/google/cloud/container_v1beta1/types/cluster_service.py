@@ -19,21 +19,27 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import code_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
     package="google.container.v1beta1",
     manifest={
+        "PrivateIPv6GoogleAccess",
         "DatapathProvider",
         "UpgradeResourceType",
         "LinuxNodeConfig",
         "NodeKubeletConfig",
         "NodeConfig",
+        "NodeNetworkConfig",
         "ShieldedInstanceConfig",
         "SandboxConfig",
         "EphemeralStorageConfig",
         "ReservationAffinity",
         "NodeTaint",
+        "NodeTaints",
+        "NodeLabels",
+        "NetworkTags",
         "MasterAuth",
         "ClientCertificateConfig",
         "AddonsConfig",
@@ -58,6 +64,8 @@ __protobuf__ = proto.module(
         "AuthenticatorGroupsConfig",
         "ClusterTelemetry",
         "Cluster",
+        "NodePoolDefaults",
+        "NodeConfigDefaults",
         "ClusterUpdate",
         "Operation",
         "OperationProgress",
@@ -81,6 +89,7 @@ __protobuf__ = proto.module(
         "ListOperationsResponse",
         "GetServerConfigRequest",
         "ServerConfig",
+        "WindowsVersions",
         "CreateNodePoolRequest",
         "DeleteNodePoolRequest",
         "ListNodePoolsRequest",
@@ -114,6 +123,7 @@ __protobuf__ = proto.module(
         "Location",
         "StatusCondition",
         "NetworkConfig",
+        "ServiceExternalIPsConfig",
         "ListUsableSubnetworksRequest",
         "ListUsableSubnetworksResponse",
         "UsableSubnetworkSecondaryRange",
@@ -121,11 +131,15 @@ __protobuf__ = proto.module(
         "VerticalPodAutoscaling",
         "DefaultSnatStatus",
         "IntraNodeVisibilityConfig",
+        "ILBSubsettingConfig",
+        "DNSConfig",
         "MaxPodsConstraint",
         "WorkloadIdentityConfig",
+        "WorkloadCertificates",
         "DatabaseEncryption",
         "ResourceUsageExportConfig",
         "ShieldedNodes",
+        "VirtualNIC",
         "GetOpenIDConfigRequest",
         "GetOpenIDConfigResponse",
         "GetJSONWebKeysRequest",
@@ -134,11 +148,28 @@ __protobuf__ = proto.module(
         "ReleaseChannel",
         "TpuConfig",
         "Master",
+        "Autopilot",
         "NotificationConfig",
         "ConfidentialNodes",
         "UpgradeEvent",
+        "UpgradeAvailableEvent",
+        "IdentityServiceConfig",
+        "LoggingConfig",
+        "LoggingComponentConfig",
+        "MonitoringConfig",
+        "MonitoringComponentConfig",
     },
 )
+
+
+class PrivateIPv6GoogleAccess(proto.Enum):
+    r"""PrivateIPv6GoogleAccess controls whether and how the pods can
+    communicate with Google Services through gRPC over IPv6.
+    """
+    PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED = 0
+    PRIVATE_IPV6_GOOGLE_ACCESS_DISABLED = 1
+    PRIVATE_IPV6_GOOGLE_ACCESS_TO_GOOGLE = 2
+    PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL = 3
 
 
 class DatapathProvider(proto.Enum):
@@ -291,10 +322,6 @@ class NodeConfig(proto.Message):
             -  "install-ssh-psm1"
             -  "user-profile-psm1"
 
-            The following keys are reserved for Windows nodes:
-
-            -  "serial-port-logging-enable"
-
             Values are free-form strings, and only have meaning as
             interpreted by the image running in the instance. The only
             restriction placed on them is that each value's size must be
@@ -400,6 +427,8 @@ class NodeConfig(proto.Message):
             Parameters for the ephemeral storage
             filesystem. If unspecified, ephemeral storage is
             backed by the boot disk.
+        gvnic (google.cloud.container_v1beta1.types.VirtualNIC):
+            Enable or disable gvnic on the node pool.
     """
 
     machine_type = proto.Field(proto.STRING, number=1,)
@@ -437,6 +466,62 @@ class NodeConfig(proto.Message):
     ephemeral_storage_config = proto.Field(
         proto.MESSAGE, number=24, message="EphemeralStorageConfig",
     )
+    gvnic = proto.Field(proto.MESSAGE, number=29, message="VirtualNIC",)
+
+
+class NodeNetworkConfig(proto.Message):
+    r"""Parameters for node pool-level network config.
+    Attributes:
+        create_pod_range (bool):
+            Input only. Whether to create a new range for pod IPs in
+            this node pool. Defaults are provided for ``pod_range`` and
+            ``pod_ipv4_cidr_block`` if they are not specified.
+
+            If neither ``create_pod_range`` or ``pod_range`` are
+            specified, the cluster-level default
+            (``ip_allocation_policy.cluster_ipv4_cidr_block``) is used.
+
+            Only applicable if ``ip_allocation_policy.use_ip_aliases``
+            is true.
+
+            This field cannot be changed after the node pool has been
+            created.
+        pod_range (str):
+            The ID of the secondary range for pod IPs. If
+            ``create_pod_range`` is true, this ID is used for the new
+            range. If ``create_pod_range`` is false, uses an existing
+            secondary range with this ID.
+
+            Only applicable if ``ip_allocation_policy.use_ip_aliases``
+            is true.
+
+            This field cannot be changed after the node pool has been
+            created.
+        pod_ipv4_cidr_block (str):
+            The IP address range for pod IPs in this node pool.
+
+            Only applicable if ``create_pod_range`` is true.
+
+            Set to blank to have a range chosen with the default size.
+
+            Set to /netmask (e.g. ``/14``) to have a range chosen with a
+            specific netmask.
+
+            Set to a
+            `CIDR <https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
+            notation (e.g. ``10.96.0.0/14``) to pick a specific range to
+            use.
+
+            Only applicable if ``ip_allocation_policy.use_ip_aliases``
+            is true.
+
+            This field cannot be changed after the node pool has been
+            created.
+    """
+
+    create_pod_range = proto.Field(proto.BOOL, number=4,)
+    pod_range = proto.Field(proto.STRING, number=5,)
+    pod_ipv4_cidr_block = proto.Field(proto.STRING, number=6,)
 
 
 class ShieldedInstanceConfig(proto.Message):
@@ -562,6 +647,43 @@ class NodeTaint(proto.Message):
     key = proto.Field(proto.STRING, number=1,)
     value = proto.Field(proto.STRING, number=2,)
     effect = proto.Field(proto.ENUM, number=3, enum=Effect,)
+
+
+class NodeTaints(proto.Message):
+    r"""Collection of Kubernetes `node
+    taints <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration>`__.
+
+    Attributes:
+        taints (Sequence[google.cloud.container_v1beta1.types.NodeTaint]):
+            List of node taints.
+    """
+
+    taints = proto.RepeatedField(proto.MESSAGE, number=1, message="NodeTaint",)
+
+
+class NodeLabels(proto.Message):
+    r"""Collection of node-level `Kubernetes
+    labels <https://kubernetes.io/docs/concepts/overview/working-with-objects/labels>`__.
+
+    Attributes:
+        labels (Sequence[google.cloud.container_v1beta1.types.NodeLabels.LabelsEntry]):
+            Map of node label keys and node label values.
+    """
+
+    labels = proto.MapField(proto.STRING, proto.STRING, number=1,)
+
+
+class NetworkTags(proto.Message):
+    r"""Collection of Compute Engine network tags that can be applied to a
+    node's underlying VM instance. (See ``tags`` field in
+    ```NodeConfig`` </kubernetes-engine/docs/reference/rest/v1/NodeConfig>`__).
+
+    Attributes:
+        tags (Sequence[str]):
+            List of network tags.
+    """
+
+    tags = proto.RepeatedField(proto.STRING, number=1,)
 
 
 class MasterAuth(proto.Message):
@@ -798,9 +920,7 @@ class ConfigConnectorConfig(proto.Message):
 
 
 class GcePersistentDiskCsiDriverConfig(proto.Message):
-    r"""Configuration for the Compute Engine PD CSI driver. This
-    option can only be enabled at cluster creation time.
-
+    r"""Configuration for the Compute Engine PD CSI driver.
     Attributes:
         enabled (bool):
             Whether the Compute Engine PD CSI driver is
@@ -1378,6 +1498,9 @@ class Cluster(proto.Message):
         workload_identity_config (google.cloud.container_v1beta1.types.WorkloadIdentityConfig):
             Configuration for the use of Kubernetes
             Service Accounts in GCP IAM policies.
+        workload_certificates (google.cloud.container_v1beta1.types.WorkloadCertificates):
+            Configuration for issuance of mTLS keys and
+            certificates to Kubernetes pods.
         cluster_telemetry (google.cloud.container_v1beta1.types.ClusterTelemetry):
             Telemetry integration for the cluster.
         tpu_config (google.cloud.container_v1beta1.types.TpuConfig):
@@ -1386,6 +1509,8 @@ class Cluster(proto.Message):
             Notification configuration of the cluster.
         confidential_nodes (google.cloud.container_v1beta1.types.ConfidentialNodes):
             Configuration of Confidential Nodes
+        identity_service_config (google.cloud.container_v1beta1.types.IdentityServiceConfig):
+            Configuration for Identity Service component.
         self_link (str):
             [Output only] Server-defined URL for the resource.
         zone (str):
@@ -1481,6 +1606,18 @@ class Cluster(proto.Message):
             state.
         master (google.cloud.container_v1beta1.types.Master):
             Configuration for master components.
+        autopilot (google.cloud.container_v1beta1.types.Autopilot):
+            Autopilot configuration for the cluster.
+        id (str):
+            Output only. Unique id for the cluster.
+        node_pool_defaults (google.cloud.container_v1beta1.types.NodePoolDefaults):
+            Default NodePool settings for the entire
+            cluster. These settings are overridden if
+            specified on the specific NodePool object.
+        logging_config (google.cloud.container_v1beta1.types.LoggingConfig):
+            Logging configuration for the cluster.
+        monitoring_config (google.cloud.container_v1beta1.types.MonitoringConfig):
+            Monitoring configuration for the cluster.
     """
 
     class Status(proto.Enum):
@@ -1550,6 +1687,9 @@ class Cluster(proto.Message):
     workload_identity_config = proto.Field(
         proto.MESSAGE, number=43, message="WorkloadIdentityConfig",
     )
+    workload_certificates = proto.Field(
+        proto.MESSAGE, number=52, message="WorkloadCertificates",
+    )
     cluster_telemetry = proto.Field(
         proto.MESSAGE, number=46, message="ClusterTelemetry",
     )
@@ -1559,6 +1699,9 @@ class Cluster(proto.Message):
     )
     confidential_nodes = proto.Field(
         proto.MESSAGE, number=50, message="ConfidentialNodes",
+    )
+    identity_service_config = proto.Field(
+        proto.MESSAGE, number=54, message="IdentityServiceConfig",
     )
     self_link = proto.Field(proto.STRING, number=100,)
     zone = proto.Field(proto.STRING, number=101,)
@@ -1584,6 +1727,32 @@ class Cluster(proto.Message):
         proto.MESSAGE, number=118, message="StatusCondition",
     )
     master = proto.Field(proto.MESSAGE, number=124, message="Master",)
+    autopilot = proto.Field(proto.MESSAGE, number=128, message="Autopilot",)
+    id = proto.Field(proto.STRING, number=129,)
+    node_pool_defaults = proto.Field(
+        proto.MESSAGE, number=131, optional=True, message="NodePoolDefaults",
+    )
+    logging_config = proto.Field(proto.MESSAGE, number=132, message="LoggingConfig",)
+    monitoring_config = proto.Field(
+        proto.MESSAGE, number=133, message="MonitoringConfig",
+    )
+
+
+class NodePoolDefaults(proto.Message):
+    r"""Subset of Nodepool message that has defaults.
+    Attributes:
+        node_config_defaults (google.cloud.container_v1beta1.types.NodeConfigDefaults):
+            Subset of NodeConfig message that has
+            defaults.
+    """
+
+    node_config_defaults = proto.Field(
+        proto.MESSAGE, number=1, message="NodeConfigDefaults",
+    )
+
+
+class NodeConfigDefaults(proto.Message):
+    r"""Subset of NodeConfig message that has defaults.    """
 
 
 class ClusterUpdate(proto.Message):
@@ -1693,9 +1862,15 @@ class ClusterUpdate(proto.Message):
             The desired release channel configuration.
         desired_tpu_config (google.cloud.container_v1beta1.types.TpuConfig):
             The desired Cloud TPU configuration.
+        desired_l4ilb_subsetting_config (google.cloud.container_v1beta1.types.ILBSubsettingConfig):
+            The desired L4 Internal Load Balancer
+            Subsetting configuration.
         desired_datapath_provider (google.cloud.container_v1beta1.types.DatapathProvider):
             The desired datapath provider for the
             cluster.
+        desired_private_ipv6_google_access (google.cloud.container_v1beta1.types.PrivateIPv6GoogleAccess):
+            The desired state of IPv6 connectivity to
+            Google Services.
         desired_notification_config (google.cloud.container_v1beta1.types.NotificationConfig):
             The desired notification configuration.
         desired_master_version (str):
@@ -1716,13 +1891,29 @@ class ClusterUpdate(proto.Message):
             Configuration of etcd encryption.
         desired_workload_identity_config (google.cloud.container_v1beta1.types.WorkloadIdentityConfig):
             Configuration for Workload Identity.
+        desired_workload_certificates (google.cloud.container_v1beta1.types.WorkloadCertificates):
+            Configuration for issuance of mTLS keys and
+            certificates to Kubernetes pods.
         desired_shielded_nodes (google.cloud.container_v1beta1.types.ShieldedNodes):
             Configuration for Shielded Nodes.
         desired_master (google.cloud.container_v1beta1.types.Master):
             Configuration for master components.
+        desired_dns_config (google.cloud.container_v1beta1.types.DNSConfig):
+            DNSConfig contains clusterDNS config for this
+            cluster.
+        desired_service_external_ips_config (google.cloud.container_v1beta1.types.ServiceExternalIPsConfig):
+            ServiceExternalIPsConfig specifies the config
+            for the use of Services with ExternalIPs field.
         desired_authenticator_groups_config (google.cloud.container_v1beta1.types.AuthenticatorGroupsConfig):
             AuthenticatorGroupsConfig specifies the
             config for the cluster security groups settings.
+        desired_logging_config (google.cloud.container_v1beta1.types.LoggingConfig):
+            The desired logging configuration.
+        desired_monitoring_config (google.cloud.container_v1beta1.types.MonitoringConfig):
+            The desired monitoring configuration.
+        desired_identity_service_config (google.cloud.container_v1beta1.types.IdentityServiceConfig):
+            The desired Identity Service component
+            configuration.
     """
 
     desired_node_version = proto.Field(proto.STRING, number=4,)
@@ -1771,8 +1962,14 @@ class ClusterUpdate(proto.Message):
         proto.MESSAGE, number=31, message="ReleaseChannel",
     )
     desired_tpu_config = proto.Field(proto.MESSAGE, number=38, message="TpuConfig",)
+    desired_l4ilb_subsetting_config = proto.Field(
+        proto.MESSAGE, number=39, message="ILBSubsettingConfig",
+    )
     desired_datapath_provider = proto.Field(
         proto.ENUM, number=50, enum="DatapathProvider",
+    )
+    desired_private_ipv6_google_access = proto.Field(
+        proto.ENUM, number=51, enum="PrivateIPv6GoogleAccess",
     )
     desired_notification_config = proto.Field(
         proto.MESSAGE, number=55, message="NotificationConfig",
@@ -1784,12 +1981,28 @@ class ClusterUpdate(proto.Message):
     desired_workload_identity_config = proto.Field(
         proto.MESSAGE, number=47, message="WorkloadIdentityConfig",
     )
+    desired_workload_certificates = proto.Field(
+        proto.MESSAGE, number=61, message="WorkloadCertificates",
+    )
     desired_shielded_nodes = proto.Field(
         proto.MESSAGE, number=48, message="ShieldedNodes",
     )
     desired_master = proto.Field(proto.MESSAGE, number=52, message="Master",)
+    desired_dns_config = proto.Field(proto.MESSAGE, number=53, message="DNSConfig",)
+    desired_service_external_ips_config = proto.Field(
+        proto.MESSAGE, number=60, message="ServiceExternalIPsConfig",
+    )
     desired_authenticator_groups_config = proto.Field(
         proto.MESSAGE, number=63, message="AuthenticatorGroupsConfig",
+    )
+    desired_logging_config = proto.Field(
+        proto.MESSAGE, number=64, message="LoggingConfig",
+    )
+    desired_monitoring_config = proto.Field(
+        proto.MESSAGE, number=65, message="MonitoringConfig",
+    )
+    desired_identity_service_config = proto.Field(
+        proto.MESSAGE, number=66, message="IdentityServiceConfig",
     )
 
 
@@ -2090,11 +2303,28 @@ class UpdateNodePoolRequest(proto.Message):
         upgrade_settings (google.cloud.container_v1beta1.types.NodePool.UpgradeSettings):
             Upgrade settings control disruption and speed
             of the upgrade.
+        tags (google.cloud.container_v1beta1.types.NetworkTags):
+            The desired network tags to be applied to all nodes in the
+            node pool. If this field is not present, the tags will not
+            be changed. Otherwise, the existing network tags will be
+            *replaced* with the provided tags.
+        taints (google.cloud.container_v1beta1.types.NodeTaints):
+            The desired node taints to be applied to all nodes in the
+            node pool. If this field is not present, the taints will not
+            be changed. Otherwise, the existing node taints will be
+            *replaced* with the provided taints.
+        labels (google.cloud.container_v1beta1.types.NodeLabels):
+            The desired node labels to be applied to all nodes in the
+            node pool. If this field is not present, the labels will not
+            be changed. Otherwise, the existing node labels will be
+            *replaced* with the provided labels.
         linux_node_config (google.cloud.container_v1beta1.types.LinuxNodeConfig):
             Parameters that can be configured on Linux
             nodes.
         kubelet_config (google.cloud.container_v1beta1.types.NodeKubeletConfig):
             Node kubelet configs.
+        gvnic (google.cloud.container_v1beta1.types.VirtualNIC):
+            Enable or disable gvnic on the node pool.
     """
 
     project_id = proto.Field(proto.STRING, number=1,)
@@ -2111,10 +2341,14 @@ class UpdateNodePoolRequest(proto.Message):
     upgrade_settings = proto.Field(
         proto.MESSAGE, number=15, message="NodePool.UpgradeSettings",
     )
+    tags = proto.Field(proto.MESSAGE, number=16, message="NetworkTags",)
+    taints = proto.Field(proto.MESSAGE, number=17, message="NodeTaints",)
+    labels = proto.Field(proto.MESSAGE, number=18, message="NodeLabels",)
     linux_node_config = proto.Field(
         proto.MESSAGE, number=19, message="LinuxNodeConfig",
     )
     kubelet_config = proto.Field(proto.MESSAGE, number=20, message="NodeKubeletConfig",)
+    gvnic = proto.Field(proto.MESSAGE, number=29, message="VirtualNIC",)
 
 
 class SetNodePoolAutoscalingRequest(proto.Message):
@@ -2631,6 +2865,9 @@ class ServerConfig(proto.Message):
             order.
         channels (Sequence[google.cloud.container_v1beta1.types.ServerConfig.ReleaseChannelConfig]):
             List of release channel configurations.
+        windows_version_maps (Sequence[google.cloud.container_v1beta1.types.ServerConfig.WindowsVersionMapsEntry]):
+            Maps of Kubernetes version and supported
+            Windows server versions.
     """
 
     class ReleaseChannelConfig(proto.Message):
@@ -2679,6 +2916,36 @@ class ServerConfig(proto.Message):
     valid_master_versions = proto.RepeatedField(proto.STRING, number=6,)
     channels = proto.RepeatedField(
         proto.MESSAGE, number=9, message=ReleaseChannelConfig,
+    )
+    windows_version_maps = proto.MapField(
+        proto.STRING, proto.MESSAGE, number=10, message="WindowsVersions",
+    )
+
+
+class WindowsVersions(proto.Message):
+    r"""Windows server versions.
+    Attributes:
+        windows_versions (Sequence[google.cloud.container_v1beta1.types.WindowsVersions.WindowsVersion]):
+            List of Windows server versions.
+    """
+
+    class WindowsVersion(proto.Message):
+        r"""Windows server version.
+        Attributes:
+            image_type (str):
+                Windows server image type
+            os_version (str):
+                Windows server build number
+            support_end_date (google.type.date_pb2.Date):
+                Mainstream support end date
+        """
+
+        image_type = proto.Field(proto.STRING, number=1,)
+        os_version = proto.Field(proto.STRING, number=2,)
+        support_end_date = proto.Field(proto.MESSAGE, number=3, message=date_pb2.Date,)
+
+    windows_versions = proto.RepeatedField(
+        proto.MESSAGE, number=1, message=WindowsVersion,
     )
 
 
@@ -2823,6 +3090,30 @@ class NodePool(proto.Message):
     to them, which may be used to reference them during pod
     scheduling. They may also be resized up or down, to accommodate
     the workload.
+    These upgrade settings control the level of parallelism and the
+    level of disruption caused by an upgrade.
+
+    maxUnavailable controls the number of nodes that can be
+    simultaneously unavailable.
+
+    maxSurge controls the number of additional nodes that can be
+    added to the node pool temporarily for the time of the upgrade
+    to increase the number of available nodes.
+
+    (maxUnavailable + maxSurge) determines the level of parallelism
+    (how many nodes are being upgraded at the same time).
+
+    Note: upgrades inevitably introduce some disruption since
+    workloads need to be moved from old nodes to new, upgraded ones.
+    Even if maxUnavailable=0, this holds true. (Disruption stays
+    within the limits of PodDisruptionBudget, if it is configured.)
+
+    Consider a hypothetical node pool with 5 nodes having
+    maxSurge=2, maxUnavailable=1. This means the upgrade process
+    upgrades 3 nodes simultaneously. It creates 2 additional
+    (upgraded) nodes, then it brings down 3 old (not yet upgraded)
+    nodes at the same time. This ensures that there are always at
+    least 4 nodes available.
 
     Attributes:
         name (str):
@@ -2846,6 +3137,10 @@ class NodePool(proto.Message):
 
             Warning: changing node pool locations will result in nodes
             being added and/or removed.
+        network_config (google.cloud.container_v1beta1.types.NodeNetworkConfig):
+            Networking configuration for this NodePool.
+            If specified, it overrides the cluster-level
+            defaults.
         self_link (str):
             [Output only] Server-defined URL for the resource.
         version (str):
@@ -2893,31 +3188,7 @@ class NodePool(proto.Message):
         ERROR = 6
 
     class UpgradeSettings(proto.Message):
-        r"""These upgrade settings control the level of parallelism and
-        the level of disruption caused by an upgrade.
-
-        maxUnavailable controls the number of nodes that can be
-        simultaneously unavailable.
-
-        maxSurge controls the number of additional nodes that can be
-        added to the node pool temporarily for the time of the upgrade
-        to increase the number of available nodes.
-
-        (maxUnavailable + maxSurge) determines the level of parallelism
-        (how many nodes are being upgraded at the same time).
-
-        Note: upgrades inevitably introduce some disruption since
-        workloads need to be moved from old nodes to new, upgraded ones.
-        Even if maxUnavailable=0, this holds true. (Disruption stays
-        within the limits of PodDisruptionBudget, if it is configured.)
-
-        Consider a hypothetical node pool with 5 nodes having
-        maxSurge=2, maxUnavailable=1. This means the upgrade process
-        upgrades 3 nodes simultaneously. It creates 2 additional
-        (upgraded) nodes, then it brings down 3 old (not yet upgraded)
-        nodes at the same time. This ensures that there are always at
-        least 4 nodes available.
-
+        r"""
         Attributes:
             max_surge (int):
                 The maximum number of nodes that can be
@@ -2937,6 +3208,7 @@ class NodePool(proto.Message):
     config = proto.Field(proto.MESSAGE, number=2, message="NodeConfig",)
     initial_node_count = proto.Field(proto.INT32, number=3,)
     locations = proto.RepeatedField(proto.STRING, number=13,)
+    network_config = proto.Field(proto.MESSAGE, number=14, message="NodeNetworkConfig",)
     self_link = proto.Field(proto.STRING, number=100,)
     version = proto.Field(proto.STRING, number=101,)
     instance_group_urls = proto.RepeatedField(proto.STRING, number=102,)
@@ -3171,9 +3443,7 @@ class SetNodePoolManagementRequest(proto.Message):
 
 
 class SetNodePoolSizeRequest(proto.Message):
-    r"""SetNodePoolSizeRequest sets the size a node
-    pool.
-
+    r"""SetNodePoolSizeRequest sets the size of a node pool.
     Attributes:
         project_id (str):
             Required. Deprecated. The Google Developers Console `project
@@ -3366,8 +3636,7 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
             KMS Keys please see:
             https://cloud.google.com/compute/docs/disks/customer-managed-encryption
         image_type (str):
-            The image type to use for node created by
-            NodeAutoprovisioning.
+            The image type to use for NAP created node.
     """
 
     oauth_scopes = proto.RepeatedField(proto.STRING, number=1,)
@@ -3420,7 +3689,7 @@ class NodePoolAutoscaling(proto.Message):
             max_node_count.
         max_node_count (int):
             Maximum number of nodes in the NodePool. Must be >=
-            min_node_count. There has to enough quota to scale up the
+            min_node_count. There has to be enough quota to scale up the
             cluster.
         autoprovisioned (bool):
             Can this node pool be deleted automatically.
@@ -3592,10 +3861,15 @@ class AcceleratorConfig(proto.Message):
             The accelerator type resource name. List of supported
             accelerators
             `here <https://cloud.google.com/compute/docs/gpus>`__
+        gpu_partition_size (str):
+            Size of partitions to create on the GPU. Valid values are
+            described in the NVIDIA `mig user
+            guide <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning>`__.
     """
 
     accelerator_count = proto.Field(proto.INT64, number=1,)
     accelerator_type = proto.Field(proto.STRING, number=2,)
+    gpu_partition_size = proto.Field(proto.STRING, number=3,)
 
 
 class WorkloadMetadataConfig(proto.Message):
@@ -3783,12 +4057,14 @@ class StatusCondition(proto.Message):
 
     class Code(proto.Enum):
         r"""Code for each condition"""
+        _pb_options = {"deprecated": True}
         UNKNOWN = 0
         GCE_STOCKOUT = 1
         GKE_SERVICE_ACCOUNT_DELETED = 2
         GCE_QUOTA_EXCEEDED = 3
         SET_BY_OPERATOR = 4
         CLOUD_KMS_KEY_ERROR = 7
+        CA_EXPIRING = 9
 
     code = proto.Field(proto.ENUM, number=1, enum=Code,)
     message = proto.Field(proto.STRING, number=2,)
@@ -3820,10 +4096,25 @@ class NetworkConfig(proto.Message):
             is disabled. When disabled is set to false, default IP
             masquerade rules will be applied to the nodes to prevent
             sNAT on cluster internal traffic.
+        enable_l4ilb_subsetting (bool):
+            Whether L4ILB Subsetting is enabled for this
+            cluster.
         datapath_provider (google.cloud.container_v1beta1.types.DatapathProvider):
             The desired datapath provider for this
             cluster. By default, uses the IPTables-based
             kube-proxy implementation.
+        private_ipv6_google_access (google.cloud.container_v1beta1.types.PrivateIPv6GoogleAccess):
+            The desired state of IPv6 connectivity to
+            Google Services. By default, no private IPv6
+            access to or from Google Services (all access
+            will be via IPv4)
+        dns_config (google.cloud.container_v1beta1.types.DNSConfig):
+            DNSConfig contains clusterDNS config for this
+            cluster.
+        service_external_ips_config (google.cloud.container_v1beta1.types.ServiceExternalIPsConfig):
+            ServiceExternalIPsConfig specifies if
+            services with externalIPs field are blocked or
+            not.
     """
 
     network = proto.Field(proto.STRING, number=1,)
@@ -3832,7 +4123,26 @@ class NetworkConfig(proto.Message):
     default_snat_status = proto.Field(
         proto.MESSAGE, number=7, message="DefaultSnatStatus",
     )
+    enable_l4ilb_subsetting = proto.Field(proto.BOOL, number=10,)
     datapath_provider = proto.Field(proto.ENUM, number=11, enum="DatapathProvider",)
+    private_ipv6_google_access = proto.Field(
+        proto.ENUM, number=12, enum="PrivateIPv6GoogleAccess",
+    )
+    dns_config = proto.Field(proto.MESSAGE, number=13, message="DNSConfig",)
+    service_external_ips_config = proto.Field(
+        proto.MESSAGE, number=15, message="ServiceExternalIPsConfig",
+    )
+
+
+class ServiceExternalIPsConfig(proto.Message):
+    r"""Config to block services with externalIPs field.
+    Attributes:
+        enabled (bool):
+            Whether Services with ExternalIPs field are
+            allowed or not.
+    """
+
+    enabled = proto.Field(proto.BOOL, number=1,)
 
 
 class ListUsableSubnetworksRequest(proto.Message):
@@ -3995,6 +4305,53 @@ class IntraNodeVisibilityConfig(proto.Message):
     enabled = proto.Field(proto.BOOL, number=1,)
 
 
+class ILBSubsettingConfig(proto.Message):
+    r"""ILBSubsettingConfig contains the desired config of L4
+    Internal LoadBalancer subsetting on this cluster.
+
+    Attributes:
+        enabled (bool):
+            Enables l4 ILB subsetting for this cluster
+    """
+
+    enabled = proto.Field(proto.BOOL, number=1,)
+
+
+class DNSConfig(proto.Message):
+    r"""DNSConfig contains the desired set of options for configuring
+    clusterDNS.
+
+    Attributes:
+        cluster_dns (google.cloud.container_v1beta1.types.DNSConfig.Provider):
+            cluster_dns indicates which in-cluster DNS provider should
+            be used.
+        cluster_dns_scope (google.cloud.container_v1beta1.types.DNSConfig.DNSScope):
+            cluster_dns_scope indicates the scope of access to cluster
+            DNS records.
+        cluster_dns_domain (str):
+            cluster_dns_domain is the suffix used for all cluster
+            service records.
+    """
+
+    class Provider(proto.Enum):
+        r"""Provider lists the various in-cluster DNS providers."""
+        PROVIDER_UNSPECIFIED = 0
+        PLATFORM_DEFAULT = 1
+        CLOUD_DNS = 2
+
+    class DNSScope(proto.Enum):
+        r"""DNSScope lists the various scopes of access to cluster DNS
+        records.
+        """
+        DNS_SCOPE_UNSPECIFIED = 0
+        CLUSTER_SCOPE = 1
+        VPC_SCOPE = 2
+
+    cluster_dns = proto.Field(proto.ENUM, number=1, enum=Provider,)
+    cluster_dns_scope = proto.Field(proto.ENUM, number=2, enum=DNSScope,)
+    cluster_dns_domain = proto.Field(proto.STRING, number=3,)
+
+
 class MaxPodsConstraint(proto.Message):
     r"""Constraints applied to pods.
     Attributes:
@@ -4025,6 +4382,30 @@ class WorkloadIdentityConfig(proto.Message):
     identity_namespace = proto.Field(proto.STRING, number=1,)
     workload_pool = proto.Field(proto.STRING, number=2,)
     identity_provider = proto.Field(proto.STRING, number=3,)
+
+
+class WorkloadCertificates(proto.Message):
+    r"""Configuration for issuance of mTLS keys and certificates to
+    Kubernetes pods.
+
+    Attributes:
+        enable_certificates (google.protobuf.wrappers_pb2.BoolValue):
+            enable_certificates controls issuance of workload mTLS
+            certificates.
+
+            If set, the GKE Workload Identity Certificates controller
+            and node agent will be deployed in the cluster, which can
+            then be configured by creating a WorkloadCertificateConfig
+            Custom Resource.
+
+            Requires Workload Identity
+            ([workload_pool][google.container.v1beta1.WorkloadIdentityConfig.workload_pool]
+            must be non-empty).
+    """
+
+    enable_certificates = proto.Field(
+        proto.MESSAGE, number=1, message=wrappers_pb2.BoolValue,
+    )
 
 
 class DatabaseEncryption(proto.Message):
@@ -4103,6 +4484,17 @@ class ShieldedNodes(proto.Message):
         enabled (bool):
             Whether Shielded Nodes features are enabled
             on all nodes in this cluster.
+    """
+
+    enabled = proto.Field(proto.BOOL, number=1,)
+
+
+class VirtualNIC(proto.Message):
+    r"""Configuration of gVNIC feature.
+    Attributes:
+        enabled (bool):
+            Whether gVNIC features are enabled in the
+            node pool.
     """
 
     enabled = proto.Field(proto.BOOL, number=1,)
@@ -4263,6 +4655,18 @@ class Master(proto.Message):
     r"""Master is the configuration for components on master.    """
 
 
+class Autopilot(proto.Message):
+    r"""Autopilot is the configuration for Autopilot settings on the
+    cluster.
+
+    Attributes:
+        enabled (bool):
+            Enable Autopilot
+    """
+
+    enabled = proto.Field(proto.BOOL, number=1,)
+
+
 class NotificationConfig(proto.Message):
     r"""NotificationConfig is the configuration of notifications.
     Attributes:
@@ -4306,23 +4710,19 @@ class UpgradeEvent(proto.Message):
 
     Attributes:
         resource_type (google.cloud.container_v1beta1.types.UpgradeResourceType):
-            Required. The resource type that is
-            upgrading.
+            The resource type that is upgrading.
         operation (str):
-            Required. The operation associated with this
-            upgrade.
+            The operation associated with this upgrade.
         operation_start_time (google.protobuf.timestamp_pb2.Timestamp):
-            Required. The time when the operation was
-            started.
+            The time when the operation was started.
         current_version (str):
-            Required. The current version before the
-            upgrade.
+            The current version before the upgrade.
         target_version (str):
-            Required. The target version for the upgrade.
+            The target version for the upgrade.
         resource (str):
-            Optional. Optional relative path to the
-            resource. For example in node pool upgrades, the
-            relative path of the node pool.
+            Optional relative path to the resource. For
+            example in node pool upgrades, the relative path
+            of the node pool.
     """
 
     resource_type = proto.Field(proto.ENUM, number=1, enum="UpgradeResourceType",)
@@ -4333,6 +4733,108 @@ class UpgradeEvent(proto.Message):
     current_version = proto.Field(proto.STRING, number=4,)
     target_version = proto.Field(proto.STRING, number=5,)
     resource = proto.Field(proto.STRING, number=6,)
+
+
+class UpgradeAvailableEvent(proto.Message):
+    r"""UpgradeAvailableEvent is a notification sent to customers
+    when a new available version is released.
+
+    Attributes:
+        version (str):
+            The release version available for upgrade.
+        resource_type (google.cloud.container_v1beta1.types.UpgradeResourceType):
+            The resource type of the release version.
+        release_channel (google.cloud.container_v1beta1.types.ReleaseChannel):
+            The release channel of the version. If empty,
+            it means a non-channel release.
+        resource (str):
+            Optional relative path to the resource. For
+            example, the relative path of the node pool.
+        windows_versions (google.cloud.container_v1beta1.types.WindowsVersions):
+            Windows node versions info.
+    """
+
+    version = proto.Field(proto.STRING, number=1,)
+    resource_type = proto.Field(proto.ENUM, number=2, enum="UpgradeResourceType",)
+    release_channel = proto.Field(proto.MESSAGE, number=3, message="ReleaseChannel",)
+    resource = proto.Field(proto.STRING, number=4,)
+    windows_versions = proto.Field(proto.MESSAGE, number=5, message="WindowsVersions",)
+
+
+class IdentityServiceConfig(proto.Message):
+    r"""IdentityServiceConfig is configuration for Identity Service
+    which allows customers to use external identity providers with
+    the K8S API
+
+    Attributes:
+        enabled (bool):
+            Whether to enable the Identity Service
+            component
+    """
+
+    enabled = proto.Field(proto.BOOL, number=1,)
+
+
+class LoggingConfig(proto.Message):
+    r"""LoggingConfig is cluster logging configuration.
+    Attributes:
+        component_config (google.cloud.container_v1beta1.types.LoggingComponentConfig):
+            Logging components configuration
+    """
+
+    component_config = proto.Field(
+        proto.MESSAGE, number=1, message="LoggingComponentConfig",
+    )
+
+
+class LoggingComponentConfig(proto.Message):
+    r"""LoggingComponentConfig is cluster logging component
+    configuration.
+
+    Attributes:
+        enable_components (Sequence[google.cloud.container_v1beta1.types.LoggingComponentConfig.Component]):
+            Select components to collect logs. An empty
+            set would disable all logging.
+    """
+
+    class Component(proto.Enum):
+        r"""GKE components exposing logs"""
+        COMPONENT_UNSPECIFIED = 0
+        SYSTEM_COMPONENTS = 1
+        WORKLOADS = 2
+
+    enable_components = proto.RepeatedField(proto.ENUM, number=1, enum=Component,)
+
+
+class MonitoringConfig(proto.Message):
+    r"""MonitoringConfig is cluster monitoring configuration.
+    Attributes:
+        component_config (google.cloud.container_v1beta1.types.MonitoringComponentConfig):
+            Monitoring components configuration
+    """
+
+    component_config = proto.Field(
+        proto.MESSAGE, number=1, message="MonitoringComponentConfig",
+    )
+
+
+class MonitoringComponentConfig(proto.Message):
+    r"""MonitoringComponentConfig is cluster monitoring component
+    configuration.
+
+    Attributes:
+        enable_components (Sequence[google.cloud.container_v1beta1.types.MonitoringComponentConfig.Component]):
+            Select components to collect metrics. An
+            empty set would disable all monitoring.
+    """
+
+    class Component(proto.Enum):
+        r"""GKE components exposing metrics"""
+        COMPONENT_UNSPECIFIED = 0
+        SYSTEM_COMPONENTS = 1
+        WORKLOADS = 2
+
+    enable_components = proto.RepeatedField(proto.ENUM, number=1, enum=Component,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -20,6 +20,7 @@ from .services.cluster_manager import ClusterManagerAsyncClient
 from .types.cluster_service import AcceleratorConfig
 from .types.cluster_service import AddonsConfig
 from .types.cluster_service import AuthenticatorGroupsConfig
+from .types.cluster_service import Autopilot
 from .types.cluster_service import AutoprovisioningNodePoolDefaults
 from .types.cluster_service import AutoUpgradeOptions
 from .types.cluster_service import BinaryAuthorization
@@ -41,6 +42,7 @@ from .types.cluster_service import DefaultSnatStatus
 from .types.cluster_service import DeleteClusterRequest
 from .types.cluster_service import DeleteNodePoolRequest
 from .types.cluster_service import DnsCacheConfig
+from .types.cluster_service import DNSConfig
 from .types.cluster_service import EphemeralStorageConfig
 from .types.cluster_service import GcePersistentDiskCsiDriverConfig
 from .types.cluster_service import GetClusterRequest
@@ -53,6 +55,8 @@ from .types.cluster_service import GetOperationRequest
 from .types.cluster_service import GetServerConfigRequest
 from .types.cluster_service import HorizontalPodAutoscaling
 from .types.cluster_service import HttpLoadBalancing
+from .types.cluster_service import IdentityServiceConfig
+from .types.cluster_service import ILBSubsettingConfig
 from .types.cluster_service import IntraNodeVisibilityConfig
 from .types.cluster_service import IPAllocationPolicy
 from .types.cluster_service import IstioConfig
@@ -72,21 +76,31 @@ from .types.cluster_service import ListOperationsResponse
 from .types.cluster_service import ListUsableSubnetworksRequest
 from .types.cluster_service import ListUsableSubnetworksResponse
 from .types.cluster_service import Location
+from .types.cluster_service import LoggingComponentConfig
+from .types.cluster_service import LoggingConfig
 from .types.cluster_service import MaintenancePolicy
 from .types.cluster_service import MaintenanceWindow
 from .types.cluster_service import Master
 from .types.cluster_service import MasterAuth
 from .types.cluster_service import MasterAuthorizedNetworksConfig
 from .types.cluster_service import MaxPodsConstraint
+from .types.cluster_service import MonitoringComponentConfig
+from .types.cluster_service import MonitoringConfig
 from .types.cluster_service import NetworkConfig
 from .types.cluster_service import NetworkPolicy
 from .types.cluster_service import NetworkPolicyConfig
+from .types.cluster_service import NetworkTags
 from .types.cluster_service import NodeConfig
+from .types.cluster_service import NodeConfigDefaults
 from .types.cluster_service import NodeKubeletConfig
+from .types.cluster_service import NodeLabels
 from .types.cluster_service import NodeManagement
+from .types.cluster_service import NodeNetworkConfig
 from .types.cluster_service import NodePool
 from .types.cluster_service import NodePoolAutoscaling
+from .types.cluster_service import NodePoolDefaults
 from .types.cluster_service import NodeTaint
+from .types.cluster_service import NodeTaints
 from .types.cluster_service import NotificationConfig
 from .types.cluster_service import Operation
 from .types.cluster_service import OperationProgress
@@ -101,6 +115,7 @@ from .types.cluster_service import ResourceUsageExportConfig
 from .types.cluster_service import RollbackNodePoolUpgradeRequest
 from .types.cluster_service import SandboxConfig
 from .types.cluster_service import ServerConfig
+from .types.cluster_service import ServiceExternalIPsConfig
 from .types.cluster_service import SetAddonsConfigRequest
 from .types.cluster_service import SetLabelsRequest
 from .types.cluster_service import SetLegacyAbacRequest
@@ -122,13 +137,18 @@ from .types.cluster_service import TpuConfig
 from .types.cluster_service import UpdateClusterRequest
 from .types.cluster_service import UpdateMasterRequest
 from .types.cluster_service import UpdateNodePoolRequest
+from .types.cluster_service import UpgradeAvailableEvent
 from .types.cluster_service import UpgradeEvent
 from .types.cluster_service import UsableSubnetwork
 from .types.cluster_service import UsableSubnetworkSecondaryRange
 from .types.cluster_service import VerticalPodAutoscaling
+from .types.cluster_service import VirtualNIC
+from .types.cluster_service import WindowsVersions
+from .types.cluster_service import WorkloadCertificates
 from .types.cluster_service import WorkloadIdentityConfig
 from .types.cluster_service import WorkloadMetadataConfig
 from .types.cluster_service import DatapathProvider
+from .types.cluster_service import PrivateIPv6GoogleAccess
 from .types.cluster_service import UpgradeResourceType
 
 __all__ = (
@@ -137,6 +157,7 @@ __all__ = (
     "AddonsConfig",
     "AuthenticatorGroupsConfig",
     "AutoUpgradeOptions",
+    "Autopilot",
     "AutoprovisioningNodePoolDefaults",
     "BinaryAuthorization",
     "CancelOperationRequest",
@@ -152,6 +173,7 @@ __all__ = (
     "ConfigConnectorConfig",
     "CreateClusterRequest",
     "CreateNodePoolRequest",
+    "DNSConfig",
     "DailyMaintenanceWindow",
     "DatabaseEncryption",
     "DatapathProvider",
@@ -171,7 +193,9 @@ __all__ = (
     "GetServerConfigRequest",
     "HorizontalPodAutoscaling",
     "HttpLoadBalancing",
+    "ILBSubsettingConfig",
     "IPAllocationPolicy",
+    "IdentityServiceConfig",
     "IntraNodeVisibilityConfig",
     "IstioConfig",
     "Jwk",
@@ -190,27 +214,38 @@ __all__ = (
     "ListUsableSubnetworksRequest",
     "ListUsableSubnetworksResponse",
     "Location",
+    "LoggingComponentConfig",
+    "LoggingConfig",
     "MaintenancePolicy",
     "MaintenanceWindow",
     "Master",
     "MasterAuth",
     "MasterAuthorizedNetworksConfig",
     "MaxPodsConstraint",
+    "MonitoringComponentConfig",
+    "MonitoringConfig",
     "NetworkConfig",
     "NetworkPolicy",
     "NetworkPolicyConfig",
+    "NetworkTags",
     "NodeConfig",
+    "NodeConfigDefaults",
     "NodeKubeletConfig",
+    "NodeLabels",
     "NodeManagement",
+    "NodeNetworkConfig",
     "NodePool",
     "NodePoolAutoscaling",
+    "NodePoolDefaults",
     "NodeTaint",
+    "NodeTaints",
     "NotificationConfig",
     "Operation",
     "OperationProgress",
     "PodSecurityPolicyConfig",
     "PrivateClusterConfig",
     "PrivateClusterMasterGlobalAccessConfig",
+    "PrivateIPv6GoogleAccess",
     "RecurringTimeWindow",
     "ReleaseChannel",
     "ReservationAffinity",
@@ -219,6 +254,7 @@ __all__ = (
     "RollbackNodePoolUpgradeRequest",
     "SandboxConfig",
     "ServerConfig",
+    "ServiceExternalIPsConfig",
     "SetAddonsConfigRequest",
     "SetLabelsRequest",
     "SetLegacyAbacRequest",
@@ -240,11 +276,15 @@ __all__ = (
     "UpdateClusterRequest",
     "UpdateMasterRequest",
     "UpdateNodePoolRequest",
+    "UpgradeAvailableEvent",
     "UpgradeEvent",
     "UpgradeResourceType",
     "UsableSubnetwork",
     "UsableSubnetworkSecondaryRange",
     "VerticalPodAutoscaling",
+    "VirtualNIC",
+    "WindowsVersions",
+    "WorkloadCertificates",
     "WorkloadIdentityConfig",
     "WorkloadMetadataConfig",
 )

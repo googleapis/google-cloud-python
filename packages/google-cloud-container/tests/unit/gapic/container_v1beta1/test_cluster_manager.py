@@ -759,6 +759,7 @@ def test_get_cluster(
             location="location_value",
             enable_tpu=True,
             tpu_ipv4_cidr_block="tpu_ipv4_cidr_block_value",
+            id="id_value",
         )
         response = client.get_cluster(request)
 
@@ -799,6 +800,7 @@ def test_get_cluster(
     assert response.location == "location_value"
     assert response.enable_tpu is True
     assert response.tpu_ipv4_cidr_block == "tpu_ipv4_cidr_block_value"
+    assert response.id == "id_value"
 
 
 def test_get_cluster_from_dict():
@@ -867,6 +869,7 @@ async def test_get_cluster_async(
                 location="location_value",
                 enable_tpu=True,
                 tpu_ipv4_cidr_block="tpu_ipv4_cidr_block_value",
+                id="id_value",
             )
         )
         response = await client.get_cluster(request)
@@ -908,6 +911,7 @@ async def test_get_cluster_async(
     assert response.location == "location_value"
     assert response.enable_tpu is True
     assert response.tpu_ipv4_cidr_block == "tpu_ipv4_cidr_block_value"
+    assert response.id == "id_value"
 
 
 @pytest.mark.asyncio
