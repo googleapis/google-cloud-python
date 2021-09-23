@@ -349,30 +349,35 @@ def decode_value(
         NotImplementedError: If the ``value_type`` is ``reference_value``.
         ValueError: If the ``value_type`` is unknown.
     """
-    value_type = value._pb.WhichOneof("value_type")
+    value_pb = getattr(value, "_pb", value)
+    value_type = value_pb.WhichOneof("value_type")
 
     if value_type == "null_value":
         return None
     elif value_type == "boolean_value":
-        return value.boolean_value
+        return value_pb.boolean_value
     elif value_type == "integer_value":
-        return value.integer_value
+        return value_pb.integer_value
     elif value_type == "double_value":
-        return value.double_value
+        return value_pb.double_value
     elif value_type == "timestamp_value":
-        return DatetimeWithNanoseconds.from_timestamp_pb(value._pb.timestamp_value)
+        return DatetimeWithNanoseconds.from_timestamp_pb(value_pb.timestamp_value)
     elif value_type == "string_value":
-        return value.string_value
+        return value_pb.string_value
     elif value_type == "bytes_value":
-        return value.bytes_value
+        return value_pb.bytes_value
     elif value_type == "reference_value":
-        return reference_value_to_document(value.reference_value, client)
+        return reference_value_to_document(value_pb.reference_value, client)
     elif value_type == "geo_point_value":
-        return GeoPoint(value.geo_point_value.latitude, value.geo_point_value.longitude)
+        return GeoPoint(
+            value_pb.geo_point_value.latitude, value_pb.geo_point_value.longitude
+        )
     elif value_type == "array_value":
-        return [decode_value(element, client) for element in value.array_value.values]
+        return [
+            decode_value(element, client) for element in value_pb.array_value.values
+        ]
     elif value_type == "map_value":
-        return decode_dict(value.map_value.fields, client)
+        return decode_dict(value_pb.map_value.fields, client)
     else:
         raise ValueError("Unknown ``value_type``", value_type)
 
@@ -391,7 +396,9 @@ def decode_dict(value_fields, client) -> dict:
             str, bytes, dict, ~google.cloud.Firestore.GeoPoint]]: A dictionary
         of native Python values converted from the ``value_fields``.
     """
-    return {key: decode_value(value, client) for key, value in value_fields.items()}
+    value_fields_pb = getattr(value_fields, "_pb", value_fields)
+
+    return {key: decode_value(value, client) for key, value in value_fields_pb.items()}
 
 
 def get_doc_id(document_pb, expected_prefix) -> str:
