@@ -50,7 +50,8 @@ class Customer(proto.Message):
             will receive a notification with credentials
             when you create an admin.google.com account.
             Secondary emails are also recovery email
-            addresses.
+            addresses. Alternate emails are optional when
+            you create Team customers.
         domain (str):
             Required. The customer's primary domain. Must
             match the primary contact email's domain.
@@ -100,8 +101,10 @@ class ContactInfo(proto.Message):
     Attributes:
         first_name (str):
             The customer account contact's first name.
+            Optional for Team customers.
         last_name (str):
             The customer account contact's last name.
+            Optional for Team customers.
         display_name (str):
             Output only. The customer account contact's
             display name, formatted as a combination of the
@@ -110,7 +113,8 @@ class ContactInfo(proto.Message):
             The customer account's contact email.
             Required for entitlements that create
             admin.google.com accounts, and serves as the
-            customer's username for those accounts.
+            customer's username for those accounts. Use this
+            email to invite Team customers.
         title (str):
             Optional. The customer account contact's job
             title.

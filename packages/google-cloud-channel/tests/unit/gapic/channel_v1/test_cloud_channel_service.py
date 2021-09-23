@@ -1719,6 +1719,168 @@ async def test_delete_customer_flattened_error_async():
         )
 
 
+def test_import_customer(
+    transport: str = "grpc", request_type=service.ImportCustomerRequest
+):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = customers.Customer(
+            name="name_value",
+            org_display_name="org_display_name_value",
+            alternate_email="alternate_email_value",
+            domain="domain_value",
+            cloud_identity_id="cloud_identity_id_value",
+            language_code="language_code_value",
+            channel_partner_id="channel_partner_id_value",
+        )
+        response = client.import_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ImportCustomerRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, customers.Customer)
+    assert response.name == "name_value"
+    assert response.org_display_name == "org_display_name_value"
+    assert response.alternate_email == "alternate_email_value"
+    assert response.domain == "domain_value"
+    assert response.cloud_identity_id == "cloud_identity_id_value"
+    assert response.language_code == "language_code_value"
+    assert response.channel_partner_id == "channel_partner_id_value"
+
+
+def test_import_customer_from_dict():
+    test_import_customer(request_type=dict)
+
+
+def test_import_customer_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_customer), "__call__") as call:
+        client.import_customer()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ImportCustomerRequest()
+
+
+@pytest.mark.asyncio
+async def test_import_customer_async(
+    transport: str = "grpc_asyncio", request_type=service.ImportCustomerRequest
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_customer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            customers.Customer(
+                name="name_value",
+                org_display_name="org_display_name_value",
+                alternate_email="alternate_email_value",
+                domain="domain_value",
+                cloud_identity_id="cloud_identity_id_value",
+                language_code="language_code_value",
+                channel_partner_id="channel_partner_id_value",
+            )
+        )
+        response = await client.import_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ImportCustomerRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, customers.Customer)
+    assert response.name == "name_value"
+    assert response.org_display_name == "org_display_name_value"
+    assert response.alternate_email == "alternate_email_value"
+    assert response.domain == "domain_value"
+    assert response.cloud_identity_id == "cloud_identity_id_value"
+    assert response.language_code == "language_code_value"
+    assert response.channel_partner_id == "channel_partner_id_value"
+
+
+@pytest.mark.asyncio
+async def test_import_customer_async_from_dict():
+    await test_import_customer_async(request_type=dict)
+
+
+def test_import_customer_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ImportCustomerRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_customer), "__call__") as call:
+        call.return_value = customers.Customer()
+        client.import_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_import_customer_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ImportCustomerRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_customer), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(customers.Customer())
+        await client.import_customer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
 def test_provision_cloud_identity(
     transport: str = "grpc", request_type=service.ProvisionCloudIdentityRequest
 ):
@@ -7367,6 +7529,7 @@ def test_cloud_channel_service_base_transport():
         "create_customer",
         "update_customer",
         "delete_customer",
+        "import_customer",
         "provision_cloud_identity",
         "list_entitlements",
         "list_transferable_skus",

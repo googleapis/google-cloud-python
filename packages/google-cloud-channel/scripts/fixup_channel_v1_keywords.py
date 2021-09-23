@@ -52,6 +52,7 @@ class channelCallTransformer(cst.CSTTransformer):
           'get_channel_partner_link': ('name', 'view', ),
           'get_customer': ('name', ),
           'get_entitlement': ('name', ),
+          'import_customer': ('domain', 'cloud_identity_id', 'parent', 'overwrite_if_exists', 'auth_token', 'channel_partner_id', 'customer', ),
           'list_channel_partner_links': ('parent', 'page_size', 'page_token', 'view', ),
           'list_customers': ('parent', 'page_size', 'page_token', ),
           'list_entitlements': ('parent', 'page_size', 'page_token', ),

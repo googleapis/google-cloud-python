@@ -512,6 +512,48 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
         return self._stubs["delete_customer"]
 
     @property
+    def import_customer(
+        self,
+    ) -> Callable[[service.ImportCustomerRequest], customers.Customer]:
+        r"""Return a callable for the import customer method over gRPC.
+
+        Imports a [Customer][google.cloud.channel.v1.Customer] from the
+        Cloud Identity associated with the provided Cloud Identity ID or
+        domain before a TransferEntitlements call. If a linked Customer
+        already exists and overwrite_if_exists is true, it will update
+        that Customer's data.
+
+        Possible error codes:
+
+        -  PERMISSION_DENIED: The reseller account making the request is
+           different from the reseller account in the API request.
+        -  NOT_FOUND: Cloud Identity doesn't exist or was deleted.
+        -  INVALID_ARGUMENT: Required parameters are missing, or the
+           auth_token is expired or invalid.
+        -  ALREADY_EXISTS: A customer already exists and has conflicting
+           critical fields. Requires an overwrite.
+
+        Return value: The [Customer][google.cloud.channel.v1.Customer].
+
+        Returns:
+            Callable[[~.ImportCustomerRequest],
+                    ~.Customer]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "import_customer" not in self._stubs:
+            self._stubs["import_customer"] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/ImportCustomer",
+                request_serializer=service.ImportCustomerRequest.serialize,
+                response_deserializer=customers.Customer.deserialize,
+            )
+        return self._stubs["import_customer"]
+
+    @property
     def provision_cloud_identity(
         self,
     ) -> Callable[[service.ProvisionCloudIdentityRequest], operations_pb2.Operation]:

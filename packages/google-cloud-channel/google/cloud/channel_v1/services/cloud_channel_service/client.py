@@ -863,6 +863,72 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
             request, retry=retry, timeout=timeout, metadata=metadata,
         )
 
+    def import_customer(
+        self,
+        request: service.ImportCustomerRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> customers.Customer:
+        r"""Imports a [Customer][google.cloud.channel.v1.Customer] from the
+        Cloud Identity associated with the provided Cloud Identity ID or
+        domain before a TransferEntitlements call. If a linked Customer
+        already exists and overwrite_if_exists is true, it will update
+        that Customer's data.
+
+        Possible error codes:
+
+        -  PERMISSION_DENIED: The reseller account making the request is
+           different from the reseller account in the API request.
+        -  NOT_FOUND: Cloud Identity doesn't exist or was deleted.
+        -  INVALID_ARGUMENT: Required parameters are missing, or the
+           auth_token is expired or invalid.
+        -  ALREADY_EXISTS: A customer already exists and has conflicting
+           critical fields. Requires an overwrite.
+
+        Return value: The [Customer][google.cloud.channel.v1.Customer].
+
+        Args:
+            request (google.cloud.channel_v1.types.ImportCustomerRequest):
+                The request object. Request message for
+                [CloudChannelService.ImportCustomer][google.cloud.channel.v1.CloudChannelService.ImportCustomer]
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.channel_v1.types.Customer:
+                Entity representing a customer of a
+                reseller or distributor.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.ImportCustomerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.ImportCustomerRequest):
+            request = service.ImportCustomerRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.import_customer]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
     def provision_cloud_identity(
         self,
         request: service.ProvisionCloudIdentityRequest = None,

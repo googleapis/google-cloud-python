@@ -71,6 +71,7 @@ from .types.service import DeleteCustomerRequest
 from .types.service import GetChannelPartnerLinkRequest
 from .types.service import GetCustomerRequest
 from .types.service import GetEntitlementRequest
+from .types.service import ImportCustomerRequest
 from .types.service import ListChannelPartnerLinksRequest
 from .types.service import ListChannelPartnerLinksResponse
 from .types.service import ListCustomersRequest
@@ -146,6 +147,7 @@ __all__ = (
     "GetChannelPartnerLinkRequest",
     "GetCustomerRequest",
     "GetEntitlementRequest",
+    "ImportCustomerRequest",
     "ListChannelPartnerLinksRequest",
     "ListChannelPartnerLinksResponse",
     "ListCustomersRequest",
