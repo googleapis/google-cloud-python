@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/googleapis/python-channel/compare/v1.2.3...v1.3.0) (2021-09-23)
+
+
+### Features
+
+* add ImportCustomer ([#90](https://www.github.com/googleapis/python-channel/issues/90)) ([2bb2d89](https://www.github.com/googleapis/python-channel/commit/2bb2d8987da8a6138bef45c5fd278cb25235cfa7))
+
 ### [1.2.3](https://www.github.com/googleapis/python-channel/compare/v1.2.2...v1.2.3) (2021-08-31)
 
 
