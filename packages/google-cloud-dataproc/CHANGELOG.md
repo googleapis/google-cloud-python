@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [2.6.0](https://www.github.com/googleapis/python-dataproc/compare/v2.5.0...v2.6.0) (2021-09-21)
+
+
+### Features
+
+* delete deprecated Dataproc v1beta2 API client ([#253](https://www.github.com/googleapis/python-dataproc/issues/253)) ([b0db6da](https://www.github.com/googleapis/python-dataproc/commit/b0db6da6221ed37ab2d8903fff8befb788fa55d5))
+
+
+### Documentation
+
+* update cluster sample ([#218](https://www.github.com/googleapis/python-dataproc/issues/218)) ([80706f9](https://www.github.com/googleapis/python-dataproc/commit/80706f93b32007efe43ca4740a20f924fb6e9f54))
+
 ## [2.5.0](https://www.github.com/googleapis/python-dataproc/compare/v2.4.0...v2.5.0) (2021-07-24)
 
 
