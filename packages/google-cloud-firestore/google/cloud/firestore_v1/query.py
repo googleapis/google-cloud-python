@@ -20,6 +20,7 @@ a more common way to create a query than direct usage of the constructor.
 """
 from google.cloud import firestore_v1
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
+from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 
@@ -208,6 +209,29 @@ class Query(BaseQuery):
             ):
                 return
 
+    def _get_stream_iterator(self, transaction, retry, timeout):
+        """Helper method for :meth:`stream`."""
+        request, expected_prefix, kwargs = self._prep_stream(
+            transaction, retry, timeout,
+        )
+
+        response_iterator = self._client._firestore_api.run_query(
+            request=request, metadata=self._client._rpc_metadata, **kwargs,
+        )
+
+        return response_iterator, expected_prefix
+
+    def _retry_query_after_exception(self, exc, retry, transaction):
+        """Helper method for :meth:`stream`."""
+        if transaction is None:  # no snapshot-based retry inside transaction
+            if retry is gapic_v1.method.DEFAULT:
+                transport = self._client._firestore_api._transport
+                gapic_callable = transport.run_query
+                retry = gapic_callable._retry
+            return retry._predicate(exc)
+
+        return False
+
     def stream(
         self,
         transaction=None,
@@ -244,15 +268,28 @@ class Query(BaseQuery):
             :class:`~google.cloud.firestore_v1.document.DocumentSnapshot`:
             The next document that fulfills the query.
         """
-        request, expected_prefix, kwargs = self._prep_stream(
+        response_iterator, expected_prefix = self._get_stream_iterator(
             transaction, retry, timeout,
         )
 
-        response_iterator = self._client._firestore_api.run_query(
-            request=request, metadata=self._client._rpc_metadata, **kwargs,
-        )
+        last_snapshot = None
 
-        for response in response_iterator:
+        while True:
+            try:
+                response = next(response_iterator, None)
+            except exceptions.GoogleAPICallError as exc:
+                if self._retry_query_after_exception(exc, retry, transaction):
+                    new_query = self.start_after(last_snapshot)
+                    response_iterator, _ = new_query._get_stream_iterator(
+                        transaction, retry, timeout,
+                    )
+                    continue
+                else:
+                    raise
+
+            if response is None:  # EOI
+                break
+
             if self._all_descendants:
                 snapshot = _collection_group_query_response_to_snapshot(
                     response, self._parent
@@ -262,6 +299,7 @@ class Query(BaseQuery):
                     response, self._parent, expected_prefix
                 )
             if snapshot is not None:
+                last_snapshot = snapshot
                 yield snapshot
 
     def on_snapshot(self, callback: Callable) -> Watch:
