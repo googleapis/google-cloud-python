@@ -39,15 +39,15 @@ def partition(
 class redisCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_instance': ('parent', 'instance_id', 'instance', ),
-          'delete_instance': ('name', ),
-          'export_instance': ('name', 'output_config', ),
-          'failover_instance': ('name', 'data_protection_mode', ),
-          'get_instance': ('name', ),
-          'import_instance': ('name', 'input_config', ),
-          'list_instances': ('parent', 'page_size', 'page_token', ),
-          'update_instance': ('update_mask', 'instance', ),
-          'upgrade_instance': ('name', 'redis_version', ),
+        'create_instance': ('parent', 'instance_id', 'instance', ),
+        'delete_instance': ('name', ),
+        'export_instance': ('name', 'output_config', ),
+        'failover_instance': ('name', 'data_protection_mode', ),
+        'get_instance': ('name', ),
+        'import_instance': ('name', 'input_config', ),
+        'list_instances': ('parent', 'page_size', 'page_token', ),
+        'update_instance': ('update_mask', 'instance', ),
+        'upgrade_instance': ('name', 'redis_version', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -66,7 +66,7 @@ class redisCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
