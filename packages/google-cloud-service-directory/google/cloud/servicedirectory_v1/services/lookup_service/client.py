@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -372,7 +372,7 @@ class LookupServiceClient(metaclass=LookupServiceClientMeta):
 
     def resolve_service(
         self,
-        request: lookup_service.ResolveServiceRequest = None,
+        request: Union[lookup_service.ResolveServiceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -383,7 +383,7 @@ class LookupServiceClient(metaclass=LookupServiceClientMeta):
         considered an active developer method.
 
         Args:
-            request (google.cloud.servicedirectory_v1.types.ResolveServiceRequest):
+            request (Union[google.cloud.servicedirectory_v1.types.ResolveServiceRequest, dict]):
                 The request object. The request message for
                 [LookupService.ResolveService][google.cloud.servicedirectory.v1.LookupService.ResolveService].
                 Looks up a service by its name, returns the service and
