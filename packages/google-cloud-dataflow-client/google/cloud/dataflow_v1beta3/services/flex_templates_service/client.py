@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -340,7 +340,7 @@ class FlexTemplatesServiceClient(metaclass=FlexTemplatesServiceClientMeta):
 
     def launch_flex_template(
         self,
-        request: templates.LaunchFlexTemplateRequest = None,
+        request: Union[templates.LaunchFlexTemplateRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -349,7 +349,7 @@ class FlexTemplatesServiceClient(metaclass=FlexTemplatesServiceClientMeta):
         r"""Launch a job with a FlexTemplate.
 
         Args:
-            request (google.cloud.dataflow_v1beta3.types.LaunchFlexTemplateRequest):
+            request (Union[google.cloud.dataflow_v1beta3.types.LaunchFlexTemplateRequest, dict]):
                 The request object. A request to launch a Cloud Dataflow
                 job from a FlexTemplate.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

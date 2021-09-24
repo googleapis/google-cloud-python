@@ -39,24 +39,24 @@ def partition(
 class dataflowCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'aggregated_list_jobs': ('filter', 'project_id', 'view', 'page_size', 'page_token', 'location', ),
-          'check_active_jobs': ('project_id', ),
-          'create_job': ('project_id', 'job', 'view', 'replace_job_id', 'location', ),
-          'create_job_from_template': ('project_id', 'job_name', 'gcs_path', 'parameters', 'environment', 'location', ),
-          'delete_snapshot': ('project_id', 'snapshot_id', 'location', ),
-          'get_job': ('project_id', 'job_id', 'view', 'location', ),
-          'get_job_execution_details': ('project_id', 'job_id', 'location', 'page_size', 'page_token', ),
-          'get_job_metrics': ('project_id', 'job_id', 'start_time', 'location', ),
-          'get_snapshot': ('project_id', 'snapshot_id', 'location', ),
-          'get_stage_execution_details': ('project_id', 'job_id', 'location', 'stage_id', 'page_size', 'page_token', 'start_time', 'end_time', ),
-          'get_template': ('project_id', 'gcs_path', 'view', 'location', ),
-          'launch_flex_template': ('project_id', 'launch_parameter', 'location', 'validate_only', ),
-          'launch_template': ('project_id', 'validate_only', 'gcs_path', 'dynamic_template', 'launch_parameters', 'location', ),
-          'list_job_messages': ('project_id', 'job_id', 'minimum_importance', 'page_size', 'page_token', 'start_time', 'end_time', 'location', ),
-          'list_jobs': ('filter', 'project_id', 'view', 'page_size', 'page_token', 'location', ),
-          'list_snapshots': ('project_id', 'job_id', 'location', ),
-          'snapshot_job': ('project_id', 'job_id', 'ttl', 'location', 'snapshot_sources', 'description', ),
-          'update_job': ('project_id', 'job_id', 'job', 'location', ),
+        'aggregated_list_jobs': ('filter', 'project_id', 'view', 'page_size', 'page_token', 'location', ),
+        'check_active_jobs': ('project_id', ),
+        'create_job': ('project_id', 'job', 'view', 'replace_job_id', 'location', ),
+        'create_job_from_template': ('project_id', 'job_name', 'gcs_path', 'parameters', 'environment', 'location', ),
+        'delete_snapshot': ('project_id', 'snapshot_id', 'location', ),
+        'get_job': ('project_id', 'job_id', 'view', 'location', ),
+        'get_job_execution_details': ('project_id', 'job_id', 'location', 'page_size', 'page_token', ),
+        'get_job_metrics': ('project_id', 'job_id', 'start_time', 'location', ),
+        'get_snapshot': ('project_id', 'snapshot_id', 'location', ),
+        'get_stage_execution_details': ('project_id', 'job_id', 'location', 'stage_id', 'page_size', 'page_token', 'start_time', 'end_time', ),
+        'get_template': ('project_id', 'gcs_path', 'view', 'location', ),
+        'launch_flex_template': ('project_id', 'launch_parameter', 'location', 'validate_only', ),
+        'launch_template': ('project_id', 'validate_only', 'gcs_path', 'dynamic_template', 'launch_parameters', 'location', ),
+        'list_job_messages': ('project_id', 'job_id', 'minimum_importance', 'page_size', 'page_token', 'start_time', 'end_time', 'location', ),
+        'list_jobs': ('filter', 'project_id', 'view', 'page_size', 'page_token', 'location', ),
+        'list_snapshots': ('project_id', 'job_id', 'location', ),
+        'snapshot_job': ('project_id', 'job_id', 'ttl', 'location', 'snapshot_sources', 'description', ),
+        'update_job': ('project_id', 'job_id', 'job', 'location', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -75,7 +75,7 @@ class dataflowCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

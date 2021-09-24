@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -339,7 +339,7 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
 
     def get_job_metrics(
         self,
-        request: metrics.GetJobMetricsRequest = None,
+        request: Union[metrics.GetJobMetricsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -356,7 +356,7 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
         ``us-central1``.
 
         Args:
-            request (google.cloud.dataflow_v1beta3.types.GetJobMetricsRequest):
+            request (Union[google.cloud.dataflow_v1beta3.types.GetJobMetricsRequest, dict]):
                 The request object. Request to get job metrics.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -399,7 +399,7 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
 
     def get_job_execution_details(
         self,
-        request: metrics.GetJobExecutionDetailsRequest = None,
+        request: Union[metrics.GetJobExecutionDetailsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -411,7 +411,7 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
         without notice.
 
         Args:
-            request (google.cloud.dataflow_v1beta3.types.GetJobExecutionDetailsRequest):
+            request (Union[google.cloud.dataflow_v1beta3.types.GetJobExecutionDetailsRequest, dict]):
                 The request object. Request to get job execution
                 details.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -457,7 +457,7 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
 
     def get_stage_execution_details(
         self,
-        request: metrics.GetStageExecutionDetailsRequest = None,
+        request: Union[metrics.GetStageExecutionDetailsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -470,7 +470,7 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
         without notice.
 
         Args:
-            request (google.cloud.dataflow_v1beta3.types.GetStageExecutionDetailsRequest):
+            request (Union[google.cloud.dataflow_v1beta3.types.GetStageExecutionDetailsRequest, dict]):
                 The request object. Request to get information about a
                 particular execution stage of a job. Currently only
                 tracked for Batch jobs.

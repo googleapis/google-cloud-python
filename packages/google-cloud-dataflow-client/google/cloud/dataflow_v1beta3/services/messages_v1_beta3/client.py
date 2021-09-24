@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -338,7 +338,7 @@ class MessagesV1Beta3Client(metaclass=MessagesV1Beta3ClientMeta):
 
     def list_job_messages(
         self,
-        request: messages.ListJobMessagesRequest = None,
+        request: Union[messages.ListJobMessagesRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -355,7 +355,7 @@ class MessagesV1Beta3Client(metaclass=MessagesV1Beta3ClientMeta):
         ``us-central1``.
 
         Args:
-            request (google.cloud.dataflow_v1beta3.types.ListJobMessagesRequest):
+            request (Union[google.cloud.dataflow_v1beta3.types.ListJobMessagesRequest, dict]):
                 The request object. Request to list job messages.
                 Up to max_results messages will be returned in the time
                 range specified starting with the oldest messages first.
