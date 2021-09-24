@@ -39,21 +39,21 @@ def partition(
 class network_securityCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_authorization_policy': ('parent', 'authorization_policy_id', 'authorization_policy', ),
-          'create_client_tls_policy': ('parent', 'client_tls_policy_id', 'client_tls_policy', ),
-          'create_server_tls_policy': ('parent', 'server_tls_policy_id', 'server_tls_policy', ),
-          'delete_authorization_policy': ('name', ),
-          'delete_client_tls_policy': ('name', ),
-          'delete_server_tls_policy': ('name', ),
-          'get_authorization_policy': ('name', ),
-          'get_client_tls_policy': ('name', ),
-          'get_server_tls_policy': ('name', ),
-          'list_authorization_policies': ('parent', 'page_size', 'page_token', ),
-          'list_client_tls_policies': ('parent', 'page_size', 'page_token', ),
-          'list_server_tls_policies': ('parent', 'page_size', 'page_token', ),
-          'update_authorization_policy': ('authorization_policy', 'update_mask', ),
-          'update_client_tls_policy': ('client_tls_policy', 'update_mask', ),
-          'update_server_tls_policy': ('server_tls_policy', 'update_mask', ),
+        'create_authorization_policy': ('parent', 'authorization_policy_id', 'authorization_policy', ),
+        'create_client_tls_policy': ('parent', 'client_tls_policy_id', 'client_tls_policy', ),
+        'create_server_tls_policy': ('parent', 'server_tls_policy_id', 'server_tls_policy', ),
+        'delete_authorization_policy': ('name', ),
+        'delete_client_tls_policy': ('name', ),
+        'delete_server_tls_policy': ('name', ),
+        'get_authorization_policy': ('name', ),
+        'get_client_tls_policy': ('name', ),
+        'get_server_tls_policy': ('name', ),
+        'list_authorization_policies': ('parent', 'page_size', 'page_token', ),
+        'list_client_tls_policies': ('parent', 'page_size', 'page_token', ),
+        'list_server_tls_policies': ('parent', 'page_size', 'page_token', ),
+        'update_authorization_policy': ('authorization_policy', 'update_mask', ),
+        'update_client_tls_policy': ('client_tls_policy', 'update_mask', ),
+        'update_server_tls_policy': ('server_tls_policy', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -72,7 +72,7 @@ class network_securityCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
