@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.4.2](https://www.github.com/googleapis/python-containeranalysis/compare/v2.4.1...v2.4.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([42c8c64](https://www.github.com/googleapis/python-containeranalysis/commit/42c8c646630810189a971796c921b30a2d2b419f))
+
 ### [2.4.1](https://www.github.com/googleapis/python-containeranalysis/compare/v2.4.0...v2.4.1) (2021-07-26)
 
 
