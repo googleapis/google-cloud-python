@@ -88,6 +88,7 @@ from google.cloud.bigquery.routine import RoutineArgument
 from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.routine import RoutineType
 from google.cloud.bigquery.schema import SchemaField
+from google.cloud.bigquery.schema import PolicyTagList
 from google.cloud.bigquery.table import PartitionRange
 from google.cloud.bigquery.table import RangePartitioning
 from google.cloud.bigquery.table import Row
@@ -140,6 +141,7 @@ __all__ = [
     "RoutineReference",
     # Shared helpers
     "SchemaField",
+    "PolicyTagList",
     "UDFResource",
     "ExternalConfig",
     "BigtableOptions",

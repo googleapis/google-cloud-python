@@ -128,6 +128,7 @@ Schema
     :toctree: generated
 
     schema.SchemaField
+    schema.PolicyTagList
 
 
 Query
