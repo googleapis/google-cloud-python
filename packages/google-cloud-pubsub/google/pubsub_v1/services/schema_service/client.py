@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -350,7 +350,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
     def create_schema(
         self,
-        request: gp_schema.CreateSchemaRequest = None,
+        request: Union[gp_schema.CreateSchemaRequest, dict] = None,
         *,
         parent: str = None,
         schema: gp_schema.Schema = None,
@@ -362,7 +362,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         r"""Creates a schema.
 
         Args:
-            request (google.pubsub_v1.types.CreateSchemaRequest):
+            request (Union[google.pubsub_v1.types.CreateSchemaRequest, dict]):
                 The request object. Request for the CreateSchema method.
             parent (str):
                 Required. The name of the project in which to create the
@@ -445,7 +445,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
     def get_schema(
         self,
-        request: schema.GetSchemaRequest = None,
+        request: Union[schema.GetSchemaRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -455,7 +455,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         r"""Gets a schema.
 
         Args:
-            request (google.pubsub_v1.types.GetSchemaRequest):
+            request (Union[google.pubsub_v1.types.GetSchemaRequest, dict]):
                 The request object. Request for the GetSchema method.
             name (str):
                 Required. The name of the schema to get. Format is
@@ -513,7 +513,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
     def list_schemas(
         self,
-        request: schema.ListSchemasRequest = None,
+        request: Union[schema.ListSchemasRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -523,7 +523,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         r"""Lists schemas in a project.
 
         Args:
-            request (google.pubsub_v1.types.ListSchemasRequest):
+            request (Union[google.pubsub_v1.types.ListSchemasRequest, dict]):
                 The request object. Request for the `ListSchemas`
                 method.
             parent (str):
@@ -592,7 +592,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
     def delete_schema(
         self,
-        request: schema.DeleteSchemaRequest = None,
+        request: Union[schema.DeleteSchemaRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -602,7 +602,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         r"""Deletes a schema.
 
         Args:
-            request (google.pubsub_v1.types.DeleteSchemaRequest):
+            request (Union[google.pubsub_v1.types.DeleteSchemaRequest, dict]):
                 The request object. Request for the `DeleteSchema`
                 method.
             name (str):
@@ -656,7 +656,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
     def validate_schema(
         self,
-        request: gp_schema.ValidateSchemaRequest = None,
+        request: Union[gp_schema.ValidateSchemaRequest, dict] = None,
         *,
         parent: str = None,
         schema: gp_schema.Schema = None,
@@ -667,7 +667,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         r"""Validates a schema.
 
         Args:
-            request (google.pubsub_v1.types.ValidateSchemaRequest):
+            request (Union[google.pubsub_v1.types.ValidateSchemaRequest, dict]):
                 The request object. Request for the `ValidateSchema`
                 method.
             parent (str):
@@ -737,7 +737,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
 
     def validate_message(
         self,
-        request: schema.ValidateMessageRequest = None,
+        request: Union[schema.ValidateMessageRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -746,7 +746,7 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         r"""Validates a message against a schema.
 
         Args:
-            request (google.pubsub_v1.types.ValidateMessageRequest):
+            request (Union[google.pubsub_v1.types.ValidateMessageRequest, dict]):
                 The request object. Request for the `ValidateMessage`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
