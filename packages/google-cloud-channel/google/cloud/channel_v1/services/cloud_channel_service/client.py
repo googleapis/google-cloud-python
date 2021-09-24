@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -436,7 +436,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def list_customers(
         self,
-        request: service.ListCustomersRequest = None,
+        request: Union[service.ListCustomersRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -456,7 +456,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         if there are no customers.
 
         Args:
-            request (google.cloud.channel_v1.types.ListCustomersRequest):
+            request (Union[google.cloud.channel_v1.types.ListCustomersRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.ListCustomers][google.cloud.channel.v1.CloudChannelService.ListCustomers]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -506,7 +506,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def get_customer(
         self,
-        request: service.GetCustomerRequest = None,
+        request: Union[service.GetCustomerRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -529,7 +529,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         resource.
 
         Args:
-            request (google.cloud.channel_v1.types.GetCustomerRequest):
+            request (Union[google.cloud.channel_v1.types.GetCustomerRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.GetCustomer][google.cloud.channel.v1.CloudChannelService.GetCustomer].
             name (str):
@@ -591,7 +591,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def check_cloud_identity_accounts_exist(
         self,
-        request: service.CheckCloudIdentityAccountsExistRequest = None,
+        request: Union[service.CheckCloudIdentityAccountsExistRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -619,7 +619,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         resources match the domain.
 
         Args:
-            request (google.cloud.channel_v1.types.CheckCloudIdentityAccountsExistRequest):
+            request (Union[google.cloud.channel_v1.types.CheckCloudIdentityAccountsExistRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.CheckCloudIdentityAccountsExist][google.cloud.channel.v1.CloudChannelService.CheckCloudIdentityAccountsExist].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -662,7 +662,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def create_customer(
         self,
-        request: service.CreateCustomerRequest = None,
+        request: Union[service.CreateCustomerRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -684,7 +684,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [Customer][google.cloud.channel.v1.Customer] resource.
 
         Args:
-            request (google.cloud.channel_v1.types.CreateCustomerRequest):
+            request (Union[google.cloud.channel_v1.types.CreateCustomerRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.CreateCustomer][google.cloud.channel.v1.CloudChannelService.CreateCustomer]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -725,7 +725,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def update_customer(
         self,
-        request: service.UpdateCustomerRequest = None,
+        request: Union[service.UpdateCustomerRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -747,7 +747,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [Customer][google.cloud.channel.v1.Customer] resource.
 
         Args:
-            request (google.cloud.channel_v1.types.UpdateCustomerRequest):
+            request (Union[google.cloud.channel_v1.types.UpdateCustomerRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.UpdateCustomer][google.cloud.channel.v1.CloudChannelService.UpdateCustomer].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -790,7 +790,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def delete_customer(
         self,
-        request: service.DeleteCustomerRequest = None,
+        request: Union[service.DeleteCustomerRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -811,7 +811,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
            resource found for the name in the request.
 
         Args:
-            request (google.cloud.channel_v1.types.DeleteCustomerRequest):
+            request (Union[google.cloud.channel_v1.types.DeleteCustomerRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.DeleteCustomer][google.cloud.channel.v1.CloudChannelService.DeleteCustomer].
             name (str):
@@ -865,7 +865,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def import_customer(
         self,
-        request: service.ImportCustomerRequest = None,
+        request: Union[service.ImportCustomerRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -890,7 +890,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         Return value: The [Customer][google.cloud.channel.v1.Customer].
 
         Args:
-            request (google.cloud.channel_v1.types.ImportCustomerRequest):
+            request (Union[google.cloud.channel_v1.types.ImportCustomerRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.ImportCustomer][google.cloud.channel.v1.CloudChannelService.ImportCustomer]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -931,7 +931,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def provision_cloud_identity(
         self,
-        request: service.ProvisionCloudIdentityRequest = None,
+        request: Union[service.ProvisionCloudIdentityRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -962,7 +962,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
         Args:
-            request (google.cloud.channel_v1.types.ProvisionCloudIdentityRequest):
+            request (Union[google.cloud.channel_v1.types.ProvisionCloudIdentityRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.ProvisionCloudIdentity][google.cloud.channel.v1.CloudChannelService.ProvisionCloudIdentity]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1014,7 +1014,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def list_entitlements(
         self,
-        request: service.ListEntitlementsRequest = None,
+        request: Union[service.ListEntitlementsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1034,7 +1034,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [Entitlement][google.cloud.channel.v1.Entitlement]s.
 
         Args:
-            request (google.cloud.channel_v1.types.ListEntitlementsRequest):
+            request (Union[google.cloud.channel_v1.types.ListEntitlementsRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.ListEntitlements][google.cloud.channel.v1.CloudChannelService.ListEntitlements]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1084,7 +1084,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def list_transferable_skus(
         self,
-        request: service.ListTransferableSkusRequest = None,
+        request: Union[service.ListTransferableSkusRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1115,7 +1115,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [TransferableSku][google.cloud.channel.v1.TransferableSku].
 
         Args:
-            request (google.cloud.channel_v1.types.ListTransferableSkusRequest):
+            request (Union[google.cloud.channel_v1.types.ListTransferableSkusRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.ListTransferableSkus][google.cloud.channel.v1.CloudChannelService.ListTransferableSkus]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1165,7 +1165,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def list_transferable_offers(
         self,
-        request: service.ListTransferableOffersRequest = None,
+        request: Union[service.ListTransferableOffersRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1198,7 +1198,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         for the given customer and SKU.
 
         Args:
-            request (google.cloud.channel_v1.types.ListTransferableOffersRequest):
+            request (Union[google.cloud.channel_v1.types.ListTransferableOffersRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.ListTransferableOffers][google.cloud.channel.v1.CloudChannelService.ListTransferableOffers]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1248,7 +1248,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def get_entitlement(
         self,
-        request: service.GetEntitlementRequest = None,
+        request: Union[service.GetEntitlementRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1269,7 +1269,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [Entitlement][google.cloud.channel.v1.Entitlement] resource.
 
         Args:
-            request (google.cloud.channel_v1.types.GetEntitlementRequest):
+            request (Union[google.cloud.channel_v1.types.GetEntitlementRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.GetEntitlement][google.cloud.channel.v1.CloudChannelService.GetEntitlement].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1310,7 +1310,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def create_entitlement(
         self,
-        request: service.CreateEntitlementRequest = None,
+        request: Union[service.CreateEntitlementRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1363,7 +1363,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
         Args:
-            request (google.cloud.channel_v1.types.CreateEntitlementRequest):
+            request (Union[google.cloud.channel_v1.types.CreateEntitlementRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.CreateEntitlement][google.cloud.channel.v1.CloudChannelService.CreateEntitlement]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1416,7 +1416,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def change_parameters(
         self,
-        request: service.ChangeParametersRequest = None,
+        request: Union[service.ChangeParametersRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1449,7 +1449,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
         Args:
-            request (google.cloud.channel_v1.types.ChangeParametersRequest):
+            request (Union[google.cloud.channel_v1.types.ChangeParametersRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.ChangeParametersRequest][].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1502,7 +1502,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def change_renewal_settings(
         self,
-        request: service.ChangeRenewalSettingsRequest = None,
+        request: Union[service.ChangeRenewalSettingsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1537,7 +1537,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
         Args:
-            request (google.cloud.channel_v1.types.ChangeRenewalSettingsRequest):
+            request (Union[google.cloud.channel_v1.types.ChangeRenewalSettingsRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.ChangeRenewalSettings][google.cloud.channel.v1.CloudChannelService.ChangeRenewalSettings].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1590,7 +1590,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def change_offer(
         self,
-        request: service.ChangeOfferRequest = None,
+        request: Union[service.ChangeOfferRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1621,7 +1621,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
         Args:
-            request (google.cloud.channel_v1.types.ChangeOfferRequest):
+            request (Union[google.cloud.channel_v1.types.ChangeOfferRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.ChangeOffer][google.cloud.channel.v1.CloudChannelService.ChangeOffer].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1674,7 +1674,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def start_paid_service(
         self,
-        request: service.StartPaidServiceRequest = None,
+        request: Union[service.StartPaidServiceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1708,7 +1708,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
         Args:
-            request (google.cloud.channel_v1.types.StartPaidServiceRequest):
+            request (Union[google.cloud.channel_v1.types.StartPaidServiceRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.StartPaidService][google.cloud.channel.v1.CloudChannelService.StartPaidService].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1761,7 +1761,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def suspend_entitlement(
         self,
-        request: service.SuspendEntitlementRequest = None,
+        request: Union[service.SuspendEntitlementRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1792,7 +1792,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
         Args:
-            request (google.cloud.channel_v1.types.SuspendEntitlementRequest):
+            request (Union[google.cloud.channel_v1.types.SuspendEntitlementRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.SuspendEntitlement][google.cloud.channel.v1.CloudChannelService.SuspendEntitlement].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1845,7 +1845,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def cancel_entitlement(
         self,
-        request: service.CancelEntitlementRequest = None,
+        request: Union[service.CancelEntitlementRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1881,7 +1881,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
         Args:
-            request (google.cloud.channel_v1.types.CancelEntitlementRequest):
+            request (Union[google.cloud.channel_v1.types.CancelEntitlementRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.CancelEntitlement][google.cloud.channel.v1.CloudChannelService.CancelEntitlement].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1943,7 +1943,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def activate_entitlement(
         self,
-        request: service.ActivateEntitlementRequest = None,
+        request: Union[service.ActivateEntitlementRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1981,7 +1981,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
         Args:
-            request (google.cloud.channel_v1.types.ActivateEntitlementRequest):
+            request (Union[google.cloud.channel_v1.types.ActivateEntitlementRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.ActivateEntitlement][google.cloud.channel.v1.CloudChannelService.ActivateEntitlement].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2034,7 +2034,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def transfer_entitlements(
         self,
-        request: service.TransferEntitlementsRequest = None,
+        request: Union[service.TransferEntitlementsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -2078,7 +2078,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
         Args:
-            request (google.cloud.channel_v1.types.TransferEntitlementsRequest):
+            request (Union[google.cloud.channel_v1.types.TransferEntitlementsRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.TransferEntitlements][google.cloud.channel.v1.CloudChannelService.TransferEntitlements].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2130,7 +2130,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def transfer_entitlements_to_google(
         self,
-        request: service.TransferEntitlementsToGoogleRequest = None,
+        request: Union[service.TransferEntitlementsToGoogleRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -2174,7 +2174,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
         Args:
-            request (google.cloud.channel_v1.types.TransferEntitlementsToGoogleRequest):
+            request (Union[google.cloud.channel_v1.types.TransferEntitlementsToGoogleRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.TransferEntitlementsToGoogle][google.cloud.channel.v1.CloudChannelService.TransferEntitlementsToGoogle].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2238,7 +2238,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def list_channel_partner_links(
         self,
-        request: service.ListChannelPartnerLinksRequest = None,
+        request: Union[service.ListChannelPartnerLinksRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -2261,7 +2261,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         resources.
 
         Args:
-            request (google.cloud.channel_v1.types.ListChannelPartnerLinksRequest):
+            request (Union[google.cloud.channel_v1.types.ListChannelPartnerLinksRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.ListChannelPartnerLinks][google.cloud.channel.v1.CloudChannelService.ListChannelPartnerLinks]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2313,7 +2313,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def get_channel_partner_link(
         self,
-        request: service.GetChannelPartnerLinkRequest = None,
+        request: Union[service.GetChannelPartnerLinkRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -2337,7 +2337,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         resource.
 
         Args:
-            request (google.cloud.channel_v1.types.GetChannelPartnerLinkRequest):
+            request (Union[google.cloud.channel_v1.types.GetChannelPartnerLinkRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.GetChannelPartnerLink][google.cloud.channel.v1.CloudChannelService.GetChannelPartnerLink].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2379,7 +2379,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def create_channel_partner_link(
         self,
-        request: service.CreateChannelPartnerLinkRequest = None,
+        request: Union[service.CreateChannelPartnerLinkRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -2412,7 +2412,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         resource.
 
         Args:
-            request (google.cloud.channel_v1.types.CreateChannelPartnerLinkRequest):
+            request (Union[google.cloud.channel_v1.types.CreateChannelPartnerLinkRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.CreateChannelPartnerLink][google.cloud.channel.v1.CloudChannelService.CreateChannelPartnerLink]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2456,7 +2456,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def update_channel_partner_link(
         self,
-        request: service.UpdateChannelPartnerLinkRequest = None,
+        request: Union[service.UpdateChannelPartnerLinkRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -2489,7 +2489,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         resource.
 
         Args:
-            request (google.cloud.channel_v1.types.UpdateChannelPartnerLinkRequest):
+            request (Union[google.cloud.channel_v1.types.UpdateChannelPartnerLinkRequest, dict]):
                 The request object. Request message for
                 [CloudChannelService.UpdateChannelPartnerLink][google.cloud.channel.v1.CloudChannelService.UpdateChannelPartnerLink]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2533,7 +2533,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def lookup_offer(
         self,
-        request: service.LookupOfferRequest = None,
+        request: Union[service.LookupOfferRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -2554,7 +2554,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         resource.
 
         Args:
-            request (google.cloud.channel_v1.types.LookupOfferRequest):
+            request (Union[google.cloud.channel_v1.types.LookupOfferRequest, dict]):
                 The request object. Request message for LookupOffer.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -2599,7 +2599,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def list_products(
         self,
-        request: service.ListProductsRequest = None,
+        request: Union[service.ListProductsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -2613,7 +2613,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
            invalid.
 
         Args:
-            request (google.cloud.channel_v1.types.ListProductsRequest):
+            request (Union[google.cloud.channel_v1.types.ListProductsRequest, dict]):
                 The request object. Request message for ListProducts.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -2655,7 +2655,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def list_skus(
         self,
-        request: service.ListSkusRequest = None,
+        request: Union[service.ListSkusRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -2669,7 +2669,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
            invalid.
 
         Args:
-            request (google.cloud.channel_v1.types.ListSkusRequest):
+            request (Union[google.cloud.channel_v1.types.ListSkusRequest, dict]):
                 The request object. Request message for ListSkus.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -2717,7 +2717,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def list_offers(
         self,
-        request: service.ListOffersRequest = None,
+        request: Union[service.ListOffersRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -2731,7 +2731,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
            invalid.
 
         Args:
-            request (google.cloud.channel_v1.types.ListOffersRequest):
+            request (Union[google.cloud.channel_v1.types.ListOffersRequest, dict]):
                 The request object. Request message for ListOffers.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -2779,7 +2779,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def list_purchasable_skus(
         self,
-        request: service.ListPurchasableSkusRequest = None,
+        request: Union[service.ListPurchasableSkusRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -2798,7 +2798,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
            invalid.
 
         Args:
-            request (google.cloud.channel_v1.types.ListPurchasableSkusRequest):
+            request (Union[google.cloud.channel_v1.types.ListPurchasableSkusRequest, dict]):
                 The request object. Request message for
                 ListPurchasableSkus.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2848,7 +2848,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def list_purchasable_offers(
         self,
-        request: service.ListPurchasableOffersRequest = None,
+        request: Union[service.ListPurchasableOffersRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -2867,7 +2867,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
            invalid.
 
         Args:
-            request (google.cloud.channel_v1.types.ListPurchasableOffersRequest):
+            request (Union[google.cloud.channel_v1.types.ListPurchasableOffersRequest, dict]):
                 The request object. Request message for
                 ListPurchasableOffers.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2917,7 +2917,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def register_subscriber(
         self,
-        request: service.RegisterSubscriberRequest = None,
+        request: Union[service.RegisterSubscriberRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -2944,7 +2944,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         address.
 
         Args:
-            request (google.cloud.channel_v1.types.RegisterSubscriberRequest):
+            request (Union[google.cloud.channel_v1.types.RegisterSubscriberRequest, dict]):
                 The request object. Request Message for
                 RegisterSubscriber.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2985,7 +2985,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def unregister_subscriber(
         self,
-        request: service.UnregisterSubscriberRequest = None,
+        request: Union[service.UnregisterSubscriberRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -3015,7 +3015,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         wasn't registered with the topic.
 
         Args:
-            request (google.cloud.channel_v1.types.UnregisterSubscriberRequest):
+            request (Union[google.cloud.channel_v1.types.UnregisterSubscriberRequest, dict]):
                 The request object. Request Message for
                 UnregisterSubscriber.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -3056,7 +3056,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
     def list_subscribers(
         self,
-        request: service.ListSubscribersRequest = None,
+        request: Union[service.ListSubscribersRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -3081,7 +3081,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         Return value: A list of service email addresses.
 
         Args:
-            request (google.cloud.channel_v1.types.ListSubscribersRequest):
+            request (Union[google.cloud.channel_v1.types.ListSubscribersRequest, dict]):
                 The request object. Request Message for ListSubscribers.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
