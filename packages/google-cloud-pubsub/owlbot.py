@@ -309,6 +309,17 @@ for library in s.get_staging_dirs(default_version):
         ("\g<1>timeout (TimeoutType):\n" "\g<1>    \g<2>\n"),
     )
 
+    # Override the default max retry deadline for publisher methods.
+    count = s.replace(
+        library / f"google/pubsub_{library.name}/services/publisher/transports/base.py",
+        r"deadline=60\.0",
+        "deadline=600.0",
+    )
+    if count < 9:
+        raise Exception(
+            "Default retry deadline not overriden for all publisher methods."
+        )
+
     # The namespace package declaration in google/cloud/__init__.py should be excluded
     # from coverage.
     count = s.replace(
