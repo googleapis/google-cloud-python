@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -333,7 +333,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
 
     def list_voices(
         self,
-        request: cloud_tts.ListVoicesRequest = None,
+        request: Union[cloud_tts.ListVoicesRequest, dict] = None,
         *,
         language_code: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -343,7 +343,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
         r"""Returns a list of Voice supported for synthesis.
 
         Args:
-            request (google.cloud.texttospeech_v1.types.ListVoicesRequest):
+            request (Union[google.cloud.texttospeech_v1.types.ListVoicesRequest, dict]):
                 The request object. The top-level message sent by the
                 client for the `ListVoices` method.
             language_code (str):
@@ -406,7 +406,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
 
     def synthesize_speech(
         self,
-        request: cloud_tts.SynthesizeSpeechRequest = None,
+        request: Union[cloud_tts.SynthesizeSpeechRequest, dict] = None,
         *,
         input: cloud_tts.SynthesisInput = None,
         voice: cloud_tts.VoiceSelectionParams = None,
@@ -419,7 +419,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
         after all text input has been processed.
 
         Args:
-            request (google.cloud.texttospeech_v1.types.SynthesizeSpeechRequest):
+            request (Union[google.cloud.texttospeech_v1.types.SynthesizeSpeechRequest, dict]):
                 The request object. The top-level message sent by the
                 client for the `SynthesizeSpeech` method.
             input (google.cloud.texttospeech_v1.types.SynthesisInput):
