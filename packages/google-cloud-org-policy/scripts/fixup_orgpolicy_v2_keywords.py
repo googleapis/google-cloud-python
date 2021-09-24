@@ -39,13 +39,13 @@ def partition(
 class orgpolicyCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_policy': ('parent', 'policy', ),
-          'delete_policy': ('name', ),
-          'get_effective_policy': ('name', ),
-          'get_policy': ('name', ),
-          'list_constraints': ('parent', 'page_size', 'page_token', ),
-          'list_policies': ('parent', 'page_size', 'page_token', ),
-          'update_policy': ('policy', ),
+        'create_policy': ('parent', 'policy', ),
+        'delete_policy': ('name', ),
+        'get_effective_policy': ('name', ),
+        'get_policy': ('name', ),
+        'list_constraints': ('parent', 'page_size', 'page_token', ),
+        'list_policies': ('parent', 'page_size', 'page_token', ),
+        'update_policy': ('policy', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -64,7 +64,7 @@ class orgpolicyCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
