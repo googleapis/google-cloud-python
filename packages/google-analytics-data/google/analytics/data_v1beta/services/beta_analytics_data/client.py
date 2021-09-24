@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -349,7 +349,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
     def run_report(
         self,
-        request: analytics_data_api.RunReportRequest = None,
+        request: Union[analytics_data_api.RunReportRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -366,7 +366,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         criteria, such as country or event name.
 
         Args:
-            request (google.analytics.data_v1beta.types.RunReportRequest):
+            request (Union[google.analytics.data_v1beta.types.RunReportRequest, dict]):
                 The request object. The request to generate a report.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -406,7 +406,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
     def run_pivot_report(
         self,
-        request: analytics_data_api.RunPivotReportRequest = None,
+        request: Union[analytics_data_api.RunPivotReportRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -420,7 +420,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         dissect your data.
 
         Args:
-            request (google.analytics.data_v1beta.types.RunPivotReportRequest):
+            request (Union[google.analytics.data_v1beta.types.RunPivotReportRequest, dict]):
                 The request object. The request to generate a pivot
                 report.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -461,7 +461,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
     def batch_run_reports(
         self,
-        request: analytics_data_api.BatchRunReportsRequest = None,
+        request: Union[analytics_data_api.BatchRunReportsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -471,7 +471,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         be for the same GA4 Property.
 
         Args:
-            request (google.analytics.data_v1beta.types.BatchRunReportsRequest):
+            request (Union[google.analytics.data_v1beta.types.BatchRunReportsRequest, dict]):
                 The request object. The batch request containing
                 multiple report requests.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -512,7 +512,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
     def batch_run_pivot_reports(
         self,
-        request: analytics_data_api.BatchRunPivotReportsRequest = None,
+        request: Union[analytics_data_api.BatchRunPivotReportsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -522,7 +522,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         reports must be for the same GA4 Property.
 
         Args:
-            request (google.analytics.data_v1beta.types.BatchRunPivotReportsRequest):
+            request (Union[google.analytics.data_v1beta.types.BatchRunPivotReportsRequest, dict]):
                 The request object. The batch request containing
                 multiple pivot report requests.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -563,7 +563,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
     def get_metadata(
         self,
-        request: analytics_data_api.GetMetadataRequest = None,
+        request: Union[analytics_data_api.GetMetadataRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -583,7 +583,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         such as ``country`` and ``totalUsers``.
 
         Args:
-            request (google.analytics.data_v1beta.types.GetMetadataRequest):
+            request (Union[google.analytics.data_v1beta.types.GetMetadataRequest, dict]):
                 The request object. Request for a property's dimension
                 and metric metadata.
             name (str):
@@ -654,7 +654,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
     def run_realtime_report(
         self,
-        request: analytics_data_api.RunRealtimeReportRequest = None,
+        request: Union[analytics_data_api.RunRealtimeReportRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -666,7 +666,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         last 30 minutes.
 
         Args:
-            request (google.analytics.data_v1beta.types.RunRealtimeReportRequest):
+            request (Union[google.analytics.data_v1beta.types.RunRealtimeReportRequest, dict]):
                 The request object. The request to generate a realtime
                 report.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -707,7 +707,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
     def check_compatibility(
         self,
-        request: analytics_data_api.CheckCompatibilityRequest = None,
+        request: Union[analytics_data_api.CheckCompatibilityRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -726,7 +726,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         for Core reports.
 
         Args:
-            request (google.analytics.data_v1beta.types.CheckCompatibilityRequest):
+            request (Union[google.analytics.data_v1beta.types.CheckCompatibilityRequest, dict]):
                 The request object. The request for compatibility
                 information for a report's dimensions and metrics. Check
                 compatibility provides a preview of the compatibility of
