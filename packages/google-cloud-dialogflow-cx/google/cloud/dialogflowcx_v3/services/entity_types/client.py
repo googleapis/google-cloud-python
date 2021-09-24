@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -356,7 +356,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
     def list_entity_types(
         self,
-        request: entity_type.ListEntityTypesRequest = None,
+        request: Union[entity_type.ListEntityTypesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -367,7 +367,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         agent.
 
         Args:
-            request (google.cloud.dialogflowcx_v3.types.ListEntityTypesRequest):
+            request (Union[google.cloud.dialogflowcx_v3.types.ListEntityTypesRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes].
             parent (str):
@@ -438,7 +438,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
     def get_entity_type(
         self,
-        request: entity_type.GetEntityTypeRequest = None,
+        request: Union[entity_type.GetEntityTypeRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -448,7 +448,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         r"""Retrieves the specified entity type.
 
         Args:
-            request (google.cloud.dialogflowcx_v3.types.GetEntityTypeRequest):
+            request (Union[google.cloud.dialogflowcx_v3.types.GetEntityTypeRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.GetEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.GetEntityType].
             name (str):
@@ -541,7 +541,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
     def create_entity_type(
         self,
-        request: gcdc_entity_type.CreateEntityTypeRequest = None,
+        request: Union[gcdc_entity_type.CreateEntityTypeRequest, dict] = None,
         *,
         parent: str = None,
         entity_type: gcdc_entity_type.EntityType = None,
@@ -556,7 +556,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
-            request (google.cloud.dialogflowcx_v3.types.CreateEntityTypeRequest):
+            request (Union[google.cloud.dialogflowcx_v3.types.CreateEntityTypeRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.CreateEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.CreateEntityType].
             parent (str):
@@ -656,7 +656,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
     def update_entity_type(
         self,
-        request: gcdc_entity_type.UpdateEntityTypeRequest = None,
+        request: Union[gcdc_entity_type.UpdateEntityTypeRequest, dict] = None,
         *,
         entity_type: gcdc_entity_type.EntityType = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -671,7 +671,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
-            request (google.cloud.dialogflowcx_v3.types.UpdateEntityTypeRequest):
+            request (Union[google.cloud.dialogflowcx_v3.types.UpdateEntityTypeRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.UpdateEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.UpdateEntityType].
             entity_type (google.cloud.dialogflowcx_v3.types.EntityType):
@@ -773,7 +773,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
     def delete_entity_type(
         self,
-        request: entity_type.DeleteEntityTypeRequest = None,
+        request: Union[entity_type.DeleteEntityTypeRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -787,7 +787,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
-            request (google.cloud.dialogflowcx_v3.types.DeleteEntityTypeRequest):
+            request (Union[google.cloud.dialogflowcx_v3.types.DeleteEntityTypeRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.DeleteEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.DeleteEntityType].
             name (str):

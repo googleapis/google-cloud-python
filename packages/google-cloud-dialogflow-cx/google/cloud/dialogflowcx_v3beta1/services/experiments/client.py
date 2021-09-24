@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -380,7 +380,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
 
     def list_experiments(
         self,
-        request: experiment.ListExperimentsRequest = None,
+        request: Union[experiment.ListExperimentsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -391,7 +391,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.ListExperimentsRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.ListExperimentsRequest, dict]):
                 The request object. The request message for
                 [Experiments.ListExperiments][google.cloud.dialogflow.cx.v3beta1.Experiments.ListExperiments].
             parent (str):
@@ -463,7 +463,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
 
     def get_experiment(
         self,
-        request: experiment.GetExperimentRequest = None,
+        request: Union[experiment.GetExperimentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -474,7 +474,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.GetExperimentRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.GetExperimentRequest, dict]):
                 The request object. The request message for
                 [Experiments.GetExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.GetExperiment].
             name (str):
@@ -537,7 +537,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
 
     def create_experiment(
         self,
-        request: gcdc_experiment.CreateExperimentRequest = None,
+        request: Union[gcdc_experiment.CreateExperimentRequest, dict] = None,
         *,
         parent: str = None,
         experiment: gcdc_experiment.Experiment = None,
@@ -551,7 +551,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.CreateExperimentRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateExperimentRequest, dict]):
                 The request object. The request message for
                 [Experiments.CreateExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.CreateExperiment].
             parent (str):
@@ -623,7 +623,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
 
     def update_experiment(
         self,
-        request: gcdc_experiment.UpdateExperimentRequest = None,
+        request: Union[gcdc_experiment.UpdateExperimentRequest, dict] = None,
         *,
         experiment: gcdc_experiment.Experiment = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -635,7 +635,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.UpdateExperimentRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateExperimentRequest, dict]):
                 The request object. The request message for
                 [Experiments.UpdateExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.UpdateExperiment].
             experiment (google.cloud.dialogflowcx_v3beta1.types.Experiment):
@@ -705,7 +705,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
 
     def delete_experiment(
         self,
-        request: experiment.DeleteExperimentRequest = None,
+        request: Union[experiment.DeleteExperimentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -716,7 +716,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.DeleteExperimentRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteExperimentRequest, dict]):
                 The request object. The request message for
                 [Experiments.DeleteExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.DeleteExperiment].
             name (str):
@@ -772,7 +772,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
 
     def start_experiment(
         self,
-        request: experiment.StartExperimentRequest = None,
+        request: Union[experiment.StartExperimentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -785,7 +785,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         RUNNING.
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.StartExperimentRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.StartExperimentRequest, dict]):
                 The request object. The request message for
                 [Experiments.StartExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.StartExperiment].
             name (str):
@@ -847,7 +847,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
 
     def stop_experiment(
         self,
-        request: experiment.StopExperimentRequest = None,
+        request: Union[experiment.StopExperimentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -860,7 +860,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         DONE.
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.StopExperimentRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.StopExperimentRequest, dict]):
                 The request object. The request message for
                 [Experiments.StopExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.StopExperiment].
             name (str):

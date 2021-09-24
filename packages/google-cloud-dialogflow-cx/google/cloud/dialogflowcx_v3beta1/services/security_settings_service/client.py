@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -400,7 +400,9 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     def create_security_settings(
         self,
-        request: gcdc_security_settings.CreateSecuritySettingsRequest = None,
+        request: Union[
+            gcdc_security_settings.CreateSecuritySettingsRequest, dict
+        ] = None,
         *,
         parent: str = None,
         security_settings: gcdc_security_settings.SecuritySettings = None,
@@ -411,7 +413,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         r"""Create security settings in the specified location.
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.CreateSecuritySettingsRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateSecuritySettingsRequest, dict]):
                 The request object. The request message for
                 [SecuritySettings.CreateSecuritySettings][].
             parent (str):
@@ -489,7 +491,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     def get_security_settings(
         self,
-        request: security_settings.GetSecuritySettingsRequest = None,
+        request: Union[security_settings.GetSecuritySettingsRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -501,7 +503,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         The returned settings may be stale by up to 1 minute.
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.GetSecuritySettingsRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.GetSecuritySettingsRequest, dict]):
                 The request object. The request message for
                 [SecuritySettingsService.GetSecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService.GetSecuritySettings].
             name (str):
@@ -566,7 +568,9 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     def update_security_settings(
         self,
-        request: gcdc_security_settings.UpdateSecuritySettingsRequest = None,
+        request: Union[
+            gcdc_security_settings.UpdateSecuritySettingsRequest, dict
+        ] = None,
         *,
         security_settings: gcdc_security_settings.SecuritySettings = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -578,7 +582,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.UpdateSecuritySettingsRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateSecuritySettingsRequest, dict]):
                 The request object. The request message for
                 [SecuritySettingsService.UpdateSecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService.UpdateSecuritySettings].
             security_settings (google.cloud.dialogflowcx_v3beta1.types.SecuritySettings):
@@ -657,7 +661,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     def list_security_settings(
         self,
-        request: security_settings.ListSecuritySettingsRequest = None,
+        request: Union[security_settings.ListSecuritySettingsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -668,7 +672,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         specified location.
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.ListSecuritySettingsRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.ListSecuritySettingsRequest, dict]):
                 The request object. The request message for
                 [SecuritySettings.ListSecuritySettings][].
             parent (str):
@@ -739,7 +743,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     def delete_security_settings(
         self,
-        request: security_settings.DeleteSecuritySettingsRequest = None,
+        request: Union[security_settings.DeleteSecuritySettingsRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -750,7 +754,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.DeleteSecuritySettingsRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteSecuritySettingsRequest, dict]):
                 The request object. The request message for
                 [SecuritySettings.DeleteSecuritySettings][].
             name (str):

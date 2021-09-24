@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -372,7 +372,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
 
     def list_intents(
         self,
-        request: intent.ListIntentsRequest = None,
+        request: Union[intent.ListIntentsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -383,7 +383,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         agent.
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.ListIntentsRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.ListIntentsRequest, dict]):
                 The request object. The request message for
                 [Intents.ListIntents][google.cloud.dialogflow.cx.v3beta1.Intents.ListIntents].
             parent (str):
@@ -453,7 +453,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
 
     def get_intent(
         self,
-        request: intent.GetIntentRequest = None,
+        request: Union[intent.GetIntentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -463,7 +463,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         r"""Retrieves the specified intent.
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.GetIntentRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.GetIntentRequest, dict]):
                 The request object. The request message for
                 [Intents.GetIntent][google.cloud.dialogflow.cx.v3beta1.Intents.GetIntent].
             name (str):
@@ -529,7 +529,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
 
     def create_intent(
         self,
-        request: gcdc_intent.CreateIntentRequest = None,
+        request: Union[gcdc_intent.CreateIntentRequest, dict] = None,
         *,
         parent: str = None,
         intent: gcdc_intent.Intent = None,
@@ -544,7 +544,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.CreateIntentRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateIntentRequest, dict]):
                 The request object. The request message for
                 [Intents.CreateIntent][google.cloud.dialogflow.cx.v3beta1.Intents.CreateIntent].
             parent (str):
@@ -617,7 +617,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
 
     def update_intent(
         self,
-        request: gcdc_intent.UpdateIntentRequest = None,
+        request: Union[gcdc_intent.UpdateIntentRequest, dict] = None,
         *,
         intent: gcdc_intent.Intent = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -632,7 +632,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.UpdateIntentRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateIntentRequest, dict]):
                 The request object. The request message for
                 [Intents.UpdateIntent][google.cloud.dialogflow.cx.v3beta1.Intents.UpdateIntent].
             intent (google.cloud.dialogflowcx_v3beta1.types.Intent):
@@ -708,7 +708,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
 
     def delete_intent(
         self,
-        request: intent.DeleteIntentRequest = None,
+        request: Union[intent.DeleteIntentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -722,7 +722,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
-            request (google.cloud.dialogflowcx_v3beta1.types.DeleteIntentRequest):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteIntentRequest, dict]):
                 The request object. The request message for
                 [Intents.DeleteIntent][google.cloud.dialogflow.cx.v3beta1.Intents.DeleteIntent].
             name (str):

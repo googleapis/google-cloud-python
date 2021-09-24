@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -444,7 +444,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def list_agents(
         self,
-        request: agent.ListAgentsRequest = None,
+        request: Union[agent.ListAgentsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -455,7 +455,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         location.
 
         Args:
-            request (google.cloud.dialogflowcx_v3.types.ListAgentsRequest):
+            request (Union[google.cloud.dialogflowcx_v3.types.ListAgentsRequest, dict]):
                 The request object. The request message for
                 [Agents.ListAgents][google.cloud.dialogflow.cx.v3.Agents.ListAgents].
             parent (str):
@@ -525,7 +525,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def get_agent(
         self,
-        request: agent.GetAgentRequest = None,
+        request: Union[agent.GetAgentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -535,7 +535,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         r"""Retrieves the specified agent.
 
         Args:
-            request (google.cloud.dialogflowcx_v3.types.GetAgentRequest):
+            request (Union[google.cloud.dialogflowcx_v3.types.GetAgentRequest, dict]):
                 The request object. The request message for
                 [Agents.GetAgent][google.cloud.dialogflow.cx.v3.Agents.GetAgent].
             name (str):
@@ -608,7 +608,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def create_agent(
         self,
-        request: gcdc_agent.CreateAgentRequest = None,
+        request: Union[gcdc_agent.CreateAgentRequest, dict] = None,
         *,
         parent: str = None,
         agent: gcdc_agent.Agent = None,
@@ -623,7 +623,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
-            request (google.cloud.dialogflowcx_v3.types.CreateAgentRequest):
+            request (Union[google.cloud.dialogflowcx_v3.types.CreateAgentRequest, dict]):
                 The request object. The request message for
                 [Agents.CreateAgent][google.cloud.dialogflow.cx.v3.Agents.CreateAgent].
             parent (str):
@@ -703,7 +703,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def update_agent(
         self,
-        request: gcdc_agent.UpdateAgentRequest = None,
+        request: Union[gcdc_agent.UpdateAgentRequest, dict] = None,
         *,
         agent: gcdc_agent.Agent = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -718,7 +718,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
-            request (google.cloud.dialogflowcx_v3.types.UpdateAgentRequest):
+            request (Union[google.cloud.dialogflowcx_v3.types.UpdateAgentRequest, dict]):
                 The request object. The request message for
                 [Agents.UpdateAgent][google.cloud.dialogflow.cx.v3.Agents.UpdateAgent].
             agent (google.cloud.dialogflowcx_v3.types.Agent):
@@ -801,7 +801,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def delete_agent(
         self,
-        request: agent.DeleteAgentRequest = None,
+        request: Union[agent.DeleteAgentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -811,7 +811,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         r"""Deletes the specified agent.
 
         Args:
-            request (google.cloud.dialogflowcx_v3.types.DeleteAgentRequest):
+            request (Union[google.cloud.dialogflowcx_v3.types.DeleteAgentRequest, dict]):
                 The request object. The request message for
                 [Agents.DeleteAgent][google.cloud.dialogflow.cx.v3.Agents.DeleteAgent].
             name (str):
@@ -865,7 +865,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def export_agent(
         self,
-        request: agent.ExportAgentRequest = None,
+        request: Union[agent.ExportAgentRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -883,7 +883,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
            [ExportAgentResponse][google.cloud.dialogflow.cx.v3.ExportAgentResponse]
 
         Args:
-            request (google.cloud.dialogflowcx_v3.types.ExportAgentRequest):
+            request (Union[google.cloud.dialogflowcx_v3.types.ExportAgentRequest, dict]):
                 The request object. The request message for
                 [Agents.ExportAgent][google.cloud.dialogflow.cx.v3.Agents.ExportAgent].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -936,7 +936,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def restore_agent(
         self,
-        request: agent.RestoreAgentRequest = None,
+        request: Union[agent.RestoreAgentRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -953,7 +953,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
-            request (google.cloud.dialogflowcx_v3.types.RestoreAgentRequest):
+            request (Union[google.cloud.dialogflowcx_v3.types.RestoreAgentRequest, dict]):
                 The request object. The request message for
                 [Agents.RestoreAgent][google.cloud.dialogflow.cx.v3.Agents.RestoreAgent].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1015,7 +1015,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def validate_agent(
         self,
-        request: agent.ValidateAgentRequest = None,
+        request: Union[agent.ValidateAgentRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1027,7 +1027,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         completed to get the complete validation results.
 
         Args:
-            request (google.cloud.dialogflowcx_v3.types.ValidateAgentRequest):
+            request (Union[google.cloud.dialogflowcx_v3.types.ValidateAgentRequest, dict]):
                 The request object. The request message for
                 [Agents.ValidateAgent][google.cloud.dialogflow.cx.v3.Agents.ValidateAgent].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1068,7 +1068,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def get_agent_validation_result(
         self,
-        request: agent.GetAgentValidationResultRequest = None,
+        request: Union[agent.GetAgentValidationResultRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1079,7 +1079,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         validation is performed when ValidateAgent is called.
 
         Args:
-            request (google.cloud.dialogflowcx_v3.types.GetAgentValidationResultRequest):
+            request (Union[google.cloud.dialogflowcx_v3.types.GetAgentValidationResultRequest, dict]):
                 The request object. The request message for
                 [Agents.GetAgentValidationResult][google.cloud.dialogflow.cx.v3.Agents.GetAgentValidationResult].
             name (str):
