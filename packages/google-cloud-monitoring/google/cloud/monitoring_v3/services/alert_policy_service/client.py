@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -385,7 +385,7 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
 
     def list_alert_policies(
         self,
-        request: alert_service.ListAlertPoliciesRequest = None,
+        request: Union[alert_service.ListAlertPoliciesRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -396,7 +396,7 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
         workspace.
 
         Args:
-            request (google.cloud.monitoring_v3.types.ListAlertPoliciesRequest):
+            request (Union[google.cloud.monitoring_v3.types.ListAlertPoliciesRequest, dict]):
                 The request object. The protocol for the
                 `ListAlertPolicies` request.
             name (str):
@@ -476,7 +476,7 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
 
     def get_alert_policy(
         self,
-        request: alert_service.GetAlertPolicyRequest = None,
+        request: Union[alert_service.GetAlertPolicyRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -486,7 +486,7 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
         r"""Gets a single alerting policy.
 
         Args:
-            request (google.cloud.monitoring_v3.types.GetAlertPolicyRequest):
+            request (Union[google.cloud.monitoring_v3.types.GetAlertPolicyRequest, dict]):
                 The request object. The protocol for the
                 `GetAlertPolicy` request.
             name (str):
@@ -554,7 +554,7 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
 
     def create_alert_policy(
         self,
-        request: alert_service.CreateAlertPolicyRequest = None,
+        request: Union[alert_service.CreateAlertPolicyRequest, dict] = None,
         *,
         name: str = None,
         alert_policy: alert.AlertPolicy = None,
@@ -565,7 +565,7 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
         r"""Creates a new alerting policy.
 
         Args:
-            request (google.cloud.monitoring_v3.types.CreateAlertPolicyRequest):
+            request (Union[google.cloud.monitoring_v3.types.CreateAlertPolicyRequest, dict]):
                 The request object. The protocol for the
                 `CreateAlertPolicy` request.
             name (str):
@@ -655,7 +655,7 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
 
     def delete_alert_policy(
         self,
-        request: alert_service.DeleteAlertPolicyRequest = None,
+        request: Union[alert_service.DeleteAlertPolicyRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -665,7 +665,7 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
         r"""Deletes an alerting policy.
 
         Args:
-            request (google.cloud.monitoring_v3.types.DeleteAlertPolicyRequest):
+            request (Union[google.cloud.monitoring_v3.types.DeleteAlertPolicyRequest, dict]):
                 The request object. The protocol for the
                 `DeleteAlertPolicy` request.
             name (str):
@@ -725,7 +725,7 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
 
     def update_alert_policy(
         self,
-        request: alert_service.UpdateAlertPolicyRequest = None,
+        request: Union[alert_service.UpdateAlertPolicyRequest, dict] = None,
         *,
         update_mask: field_mask_pb2.FieldMask = None,
         alert_policy: alert.AlertPolicy = None,
@@ -739,7 +739,7 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
         via ``updateMask``. Returns the updated alerting policy.
 
         Args:
-            request (google.cloud.monitoring_v3.types.UpdateAlertPolicyRequest):
+            request (Union[google.cloud.monitoring_v3.types.UpdateAlertPolicyRequest, dict]):
                 The request object. The protocol for the
                 `UpdateAlertPolicy` request.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):

@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -365,7 +365,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
 
     def list_uptime_check_configs(
         self,
-        request: uptime_service.ListUptimeCheckConfigsRequest = None,
+        request: Union[uptime_service.ListUptimeCheckConfigsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -377,7 +377,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         configurations).
 
         Args:
-            request (google.cloud.monitoring_v3.types.ListUptimeCheckConfigsRequest):
+            request (Union[google.cloud.monitoring_v3.types.ListUptimeCheckConfigsRequest, dict]):
                 The request object. The protocol for the
                 `ListUptimeCheckConfigs` request.
             parent (str):
@@ -454,7 +454,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
 
     def get_uptime_check_config(
         self,
-        request: uptime_service.GetUptimeCheckConfigRequest = None,
+        request: Union[uptime_service.GetUptimeCheckConfigRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -464,7 +464,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         r"""Gets a single Uptime check configuration.
 
         Args:
-            request (google.cloud.monitoring_v3.types.GetUptimeCheckConfigRequest):
+            request (Union[google.cloud.monitoring_v3.types.GetUptimeCheckConfigRequest, dict]):
                 The request object. The protocol for the
                 `GetUptimeCheckConfig` request.
             name (str):
@@ -530,7 +530,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
 
     def create_uptime_check_config(
         self,
-        request: uptime_service.CreateUptimeCheckConfigRequest = None,
+        request: Union[uptime_service.CreateUptimeCheckConfigRequest, dict] = None,
         *,
         parent: str = None,
         uptime_check_config: uptime.UptimeCheckConfig = None,
@@ -541,7 +541,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         r"""Creates a new Uptime check configuration.
 
         Args:
-            request (google.cloud.monitoring_v3.types.CreateUptimeCheckConfigRequest):
+            request (Union[google.cloud.monitoring_v3.types.CreateUptimeCheckConfigRequest, dict]):
                 The request object. The protocol for the
                 `CreateUptimeCheckConfig` request.
             parent (str):
@@ -619,7 +619,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
 
     def update_uptime_check_config(
         self,
-        request: uptime_service.UpdateUptimeCheckConfigRequest = None,
+        request: Union[uptime_service.UpdateUptimeCheckConfigRequest, dict] = None,
         *,
         uptime_check_config: uptime.UptimeCheckConfig = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -633,7 +633,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         configuration.
 
         Args:
-            request (google.cloud.monitoring_v3.types.UpdateUptimeCheckConfigRequest):
+            request (Union[google.cloud.monitoring_v3.types.UpdateUptimeCheckConfigRequest, dict]):
                 The request object. The protocol for the
                 `UpdateUptimeCheckConfig` request.
             uptime_check_config (google.cloud.monitoring_v3.types.UptimeCheckConfig):
@@ -710,7 +710,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
 
     def delete_uptime_check_config(
         self,
-        request: uptime_service.DeleteUptimeCheckConfigRequest = None,
+        request: Union[uptime_service.DeleteUptimeCheckConfigRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -723,7 +723,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         that would be rendered invalid by the deletion.
 
         Args:
-            request (google.cloud.monitoring_v3.types.DeleteUptimeCheckConfigRequest):
+            request (Union[google.cloud.monitoring_v3.types.DeleteUptimeCheckConfigRequest, dict]):
                 The request object. The protocol for the
                 `DeleteUptimeCheckConfig` request.
             name (str):
@@ -783,7 +783,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
 
     def list_uptime_check_ips(
         self,
-        request: uptime_service.ListUptimeCheckIpsRequest = None,
+        request: Union[uptime_service.ListUptimeCheckIpsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -793,7 +793,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         from
 
         Args:
-            request (google.cloud.monitoring_v3.types.ListUptimeCheckIpsRequest):
+            request (Union[google.cloud.monitoring_v3.types.ListUptimeCheckIpsRequest, dict]):
                 The request object. The protocol for the
                 `ListUptimeCheckIps` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

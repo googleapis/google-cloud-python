@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -379,7 +379,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
 
     def create_service(
         self,
-        request: service_service.CreateServiceRequest = None,
+        request: Union[service_service.CreateServiceRequest, dict] = None,
         *,
         parent: str = None,
         service: gm_service.Service = None,
@@ -390,7 +390,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         r"""Create a ``Service``.
 
         Args:
-            request (google.cloud.monitoring_v3.types.CreateServiceRequest):
+            request (Union[google.cloud.monitoring_v3.types.CreateServiceRequest, dict]):
                 The request object. The `CreateService` request.
             parent (str):
                 Required. Resource
@@ -466,7 +466,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
 
     def get_service(
         self,
-        request: service_service.GetServiceRequest = None,
+        request: Union[service_service.GetServiceRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -476,7 +476,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         r"""Get the named ``Service``.
 
         Args:
-            request (google.cloud.monitoring_v3.types.GetServiceRequest):
+            request (Union[google.cloud.monitoring_v3.types.GetServiceRequest, dict]):
                 The request object. The `GetService` request.
             name (str):
                 Required. Resource name of the ``Service``. The format
@@ -544,7 +544,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
 
     def list_services(
         self,
-        request: service_service.ListServicesRequest = None,
+        request: Union[service_service.ListServicesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -554,7 +554,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         r"""List ``Service``\ s for this workspace.
 
         Args:
-            request (google.cloud.monitoring_v3.types.ListServicesRequest):
+            request (Union[google.cloud.monitoring_v3.types.ListServicesRequest, dict]):
                 The request object. The `ListServices` request.
             parent (str):
                 Required. Resource name of the parent containing the
@@ -629,7 +629,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
 
     def update_service(
         self,
-        request: service_service.UpdateServiceRequest = None,
+        request: Union[service_service.UpdateServiceRequest, dict] = None,
         *,
         service: gm_service.Service = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -639,7 +639,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         r"""Update this ``Service``.
 
         Args:
-            request (google.cloud.monitoring_v3.types.UpdateServiceRequest):
+            request (Union[google.cloud.monitoring_v3.types.UpdateServiceRequest, dict]):
                 The request object. The `UpdateService` request.
             service (google.cloud.monitoring_v3.types.Service):
                 Required. The ``Service`` to draw updates from. The
@@ -705,7 +705,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
 
     def delete_service(
         self,
-        request: service_service.DeleteServiceRequest = None,
+        request: Union[service_service.DeleteServiceRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -715,7 +715,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         r"""Soft delete this ``Service``.
 
         Args:
-            request (google.cloud.monitoring_v3.types.DeleteServiceRequest):
+            request (Union[google.cloud.monitoring_v3.types.DeleteServiceRequest, dict]):
                 The request object. The `DeleteService` request.
             name (str):
                 Required. Resource name of the ``Service`` to delete.
@@ -772,7 +772,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
 
     def create_service_level_objective(
         self,
-        request: service_service.CreateServiceLevelObjectiveRequest = None,
+        request: Union[service_service.CreateServiceLevelObjectiveRequest, dict] = None,
         *,
         parent: str = None,
         service_level_objective: service.ServiceLevelObjective = None,
@@ -783,7 +783,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         r"""Create a ``ServiceLevelObjective`` for the given ``Service``.
 
         Args:
-            request (google.cloud.monitoring_v3.types.CreateServiceLevelObjectiveRequest):
+            request (Union[google.cloud.monitoring_v3.types.CreateServiceLevelObjectiveRequest, dict]):
                 The request object. The `CreateServiceLevelObjective`
                 request.
             parent (str):
@@ -871,7 +871,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
 
     def get_service_level_objective(
         self,
-        request: service_service.GetServiceLevelObjectiveRequest = None,
+        request: Union[service_service.GetServiceLevelObjectiveRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -881,7 +881,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         r"""Get a ``ServiceLevelObjective`` by name.
 
         Args:
-            request (google.cloud.monitoring_v3.types.GetServiceLevelObjectiveRequest):
+            request (Union[google.cloud.monitoring_v3.types.GetServiceLevelObjectiveRequest, dict]):
                 The request object. The `GetServiceLevelObjective`
                 request.
             name (str):
@@ -959,7 +959,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
 
     def list_service_level_objectives(
         self,
-        request: service_service.ListServiceLevelObjectivesRequest = None,
+        request: Union[service_service.ListServiceLevelObjectivesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -969,7 +969,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         r"""List the ``ServiceLevelObjective``\ s for the given ``Service``.
 
         Args:
-            request (google.cloud.monitoring_v3.types.ListServiceLevelObjectivesRequest):
+            request (Union[google.cloud.monitoring_v3.types.ListServiceLevelObjectivesRequest, dict]):
                 The request object. The `ListServiceLevelObjectives`
                 request.
             parent (str):
@@ -1046,7 +1046,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
 
     def update_service_level_objective(
         self,
-        request: service_service.UpdateServiceLevelObjectiveRequest = None,
+        request: Union[service_service.UpdateServiceLevelObjectiveRequest, dict] = None,
         *,
         service_level_objective: service.ServiceLevelObjective = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1056,7 +1056,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         r"""Update the given ``ServiceLevelObjective``.
 
         Args:
-            request (google.cloud.monitoring_v3.types.UpdateServiceLevelObjectiveRequest):
+            request (Union[google.cloud.monitoring_v3.types.UpdateServiceLevelObjectiveRequest, dict]):
                 The request object. The `UpdateServiceLevelObjective`
                 request.
             service_level_objective (google.cloud.monitoring_v3.types.ServiceLevelObjective):
@@ -1138,7 +1138,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
 
     def delete_service_level_objective(
         self,
-        request: service_service.DeleteServiceLevelObjectiveRequest = None,
+        request: Union[service_service.DeleteServiceLevelObjectiveRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1148,7 +1148,7 @@ class ServiceMonitoringServiceClient(metaclass=ServiceMonitoringServiceClientMet
         r"""Delete the given ``ServiceLevelObjective``.
 
         Args:
-            request (google.cloud.monitoring_v3.types.DeleteServiceLevelObjectiveRequest):
+            request (Union[google.cloud.monitoring_v3.types.DeleteServiceLevelObjectiveRequest, dict]):
                 The request object. The `DeleteServiceLevelObjective`
                 request.
             name (str):
