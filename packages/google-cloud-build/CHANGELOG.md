@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+### [3.5.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.5.0...v3.5.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([925a436](https://www.github.com/googleapis/python-cloudbuild/commit/925a436ebc38266e04ad694243b60dbf0af9ad2a))
+
 ## [3.5.0](https://www.github.com/googleapis/python-cloudbuild/compare/v3.4.0...v3.5.0) (2021-08-27)
 
 
