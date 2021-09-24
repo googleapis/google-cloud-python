@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -365,7 +365,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
     def delete_posix_account(
         self,
-        request: oslogin.DeletePosixAccountRequest = None,
+        request: Union[oslogin.DeletePosixAccountRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -375,7 +375,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         r"""Deletes a POSIX account.
 
         Args:
-            request (google.cloud.oslogin_v1.types.DeletePosixAccountRequest):
+            request (Union[google.cloud.oslogin_v1.types.DeletePosixAccountRequest, dict]):
                 The request object. A request message for deleting a
                 POSIX account entry.
             name (str):
@@ -431,7 +431,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
     def delete_ssh_public_key(
         self,
-        request: oslogin.DeleteSshPublicKeyRequest = None,
+        request: Union[oslogin.DeleteSshPublicKeyRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -441,7 +441,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         r"""Deletes an SSH public key.
 
         Args:
-            request (google.cloud.oslogin_v1.types.DeleteSshPublicKeyRequest):
+            request (Union[google.cloud.oslogin_v1.types.DeleteSshPublicKeyRequest, dict]):
                 The request object. A request message for deleting an
                 SSH public key.
             name (str):
@@ -497,7 +497,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
     def get_login_profile(
         self,
-        request: oslogin.GetLoginProfileRequest = None,
+        request: Union[oslogin.GetLoginProfileRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -508,7 +508,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         to a virtual machine on Google Compute Engine.
 
         Args:
-            request (google.cloud.oslogin_v1.types.GetLoginProfileRequest):
+            request (Union[google.cloud.oslogin_v1.types.GetLoginProfileRequest, dict]):
                 The request object. A request message for retrieving the
                 login profile information for a user.
             name (str):
@@ -570,7 +570,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
     def get_ssh_public_key(
         self,
-        request: oslogin.GetSshPublicKeyRequest = None,
+        request: Union[oslogin.GetSshPublicKeyRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -580,7 +580,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         r"""Retrieves an SSH public key.
 
         Args:
-            request (google.cloud.oslogin_v1.types.GetSshPublicKeyRequest):
+            request (Union[google.cloud.oslogin_v1.types.GetSshPublicKeyRequest, dict]):
                 The request object. A request message for retrieving an
                 SSH public key.
             name (str):
@@ -643,7 +643,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
     def import_ssh_public_key(
         self,
-        request: oslogin.ImportSshPublicKeyRequest = None,
+        request: Union[oslogin.ImportSshPublicKeyRequest, dict] = None,
         *,
         parent: str = None,
         ssh_public_key: common.SshPublicKey = None,
@@ -658,7 +658,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         profile.
 
         Args:
-            request (google.cloud.oslogin_v1.types.ImportSshPublicKeyRequest):
+            request (Union[google.cloud.oslogin_v1.types.ImportSshPublicKeyRequest, dict]):
                 The request object. A request message for importing an
                 SSH public key.
             parent (str):
@@ -737,7 +737,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
     def update_ssh_public_key(
         self,
-        request: oslogin.UpdateSshPublicKeyRequest = None,
+        request: Union[oslogin.UpdateSshPublicKeyRequest, dict] = None,
         *,
         name: str = None,
         ssh_public_key: common.SshPublicKey = None,
@@ -750,7 +750,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         information. This method supports patch semantics.
 
         Args:
-            request (google.cloud.oslogin_v1.types.UpdateSshPublicKeyRequest):
+            request (Union[google.cloud.oslogin_v1.types.UpdateSshPublicKeyRequest, dict]):
                 The request object. A request message for updating an
                 SSH public key.
             name (str):

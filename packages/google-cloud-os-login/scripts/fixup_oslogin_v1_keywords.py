@@ -39,12 +39,12 @@ def partition(
 class osloginCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'delete_posix_account': ('name', ),
-          'delete_ssh_public_key': ('name', ),
-          'get_login_profile': ('name', 'project_id', 'system_id', ),
-          'get_ssh_public_key': ('name', ),
-          'import_ssh_public_key': ('parent', 'ssh_public_key', 'project_id', ),
-          'update_ssh_public_key': ('name', 'ssh_public_key', 'update_mask', ),
+        'delete_posix_account': ('name', ),
+        'delete_ssh_public_key': ('name', ),
+        'get_login_profile': ('name', 'project_id', 'system_id', ),
+        'get_ssh_public_key': ('name', ),
+        'import_ssh_public_key': ('parent', 'ssh_public_key', 'project_id', ),
+        'update_ssh_public_key': ('name', 'ssh_public_key', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -63,7 +63,7 @@ class osloginCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
