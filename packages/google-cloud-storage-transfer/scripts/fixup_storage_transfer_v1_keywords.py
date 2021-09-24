@@ -39,14 +39,14 @@ def partition(
 class storage_transferCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_transfer_job': ('transfer_job', ),
-          'get_google_service_account': ('project_id', ),
-          'get_transfer_job': ('job_name', 'project_id', ),
-          'list_transfer_jobs': ('filter', 'page_size', 'page_token', ),
-          'pause_transfer_operation': ('name', ),
-          'resume_transfer_operation': ('name', ),
-          'run_transfer_job': ('job_name', 'project_id', ),
-          'update_transfer_job': ('job_name', 'project_id', 'transfer_job', 'update_transfer_job_field_mask', ),
+        'create_transfer_job': ('transfer_job', ),
+        'get_google_service_account': ('project_id', ),
+        'get_transfer_job': ('job_name', 'project_id', ),
+        'list_transfer_jobs': ('filter', 'page_size', 'page_token', ),
+        'pause_transfer_operation': ('name', ),
+        'resume_transfer_operation': ('name', ),
+        'run_transfer_job': ('job_name', 'project_id', ),
+        'update_transfer_job': ('job_name', 'project_id', 'transfer_job', 'update_transfer_job_field_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -65,7 +65,7 @@ class storage_transferCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
