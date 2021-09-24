@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -363,7 +363,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
     def generate_access_token(
         self,
-        request: common.GenerateAccessTokenRequest = None,
+        request: Union[common.GenerateAccessTokenRequest, dict] = None,
         *,
         name: str = None,
         delegates: Sequence[str] = None,
@@ -377,7 +377,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         account.
 
         Args:
-            request (google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest):
+            request (Union[google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest, dict]):
                 The request object.
             name (str):
                 Required. The resource name of the service account for
@@ -485,7 +485,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
     def generate_id_token(
         self,
-        request: common.GenerateIdTokenRequest = None,
+        request: Union[common.GenerateIdTokenRequest, dict] = None,
         *,
         name: str = None,
         delegates: Sequence[str] = None,
@@ -499,7 +499,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         account.
 
         Args:
-            request (google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest):
+            request (Union[google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest, dict]):
                 The request object.
             name (str):
                 Required. The resource name of the service account for
@@ -601,7 +601,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
     def sign_blob(
         self,
-        request: common.SignBlobRequest = None,
+        request: Union[common.SignBlobRequest, dict] = None,
         *,
         name: str = None,
         delegates: Sequence[str] = None,
@@ -614,7 +614,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         private key.
 
         Args:
-            request (google.cloud.iam_credentials_v1.types.SignBlobRequest):
+            request (Union[google.cloud.iam_credentials_v1.types.SignBlobRequest, dict]):
                 The request object.
             name (str):
                 Required. The resource name of the service account for
@@ -703,7 +703,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
     def sign_jwt(
         self,
-        request: common.SignJwtRequest = None,
+        request: Union[common.SignJwtRequest, dict] = None,
         *,
         name: str = None,
         delegates: Sequence[str] = None,
@@ -716,7 +716,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         private key.
 
         Args:
-            request (google.cloud.iam_credentials_v1.types.SignJwtRequest):
+            request (Union[google.cloud.iam_credentials_v1.types.SignJwtRequest, dict]):
                 The request object.
             name (str):
                 Required. The resource name of the service account for
