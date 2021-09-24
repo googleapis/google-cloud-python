@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -340,7 +340,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
 
     def list_traces(
         self,
-        request: trace.ListTracesRequest = None,
+        request: Union[trace.ListTracesRequest, dict] = None,
         *,
         project_id: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -351,7 +351,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         filter conditions.
 
         Args:
-            request (google.cloud.trace_v1.types.ListTracesRequest):
+            request (Union[google.cloud.trace_v1.types.ListTracesRequest, dict]):
                 The request object. The request message for the
                 `ListTraces` method. All fields are required unless
                 specified.
@@ -415,7 +415,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
 
     def get_trace(
         self,
-        request: trace.GetTraceRequest = None,
+        request: Union[trace.GetTraceRequest, dict] = None,
         *,
         project_id: str = None,
         trace_id: str = None,
@@ -426,7 +426,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         r"""Gets a single trace by its ID.
 
         Args:
-            request (google.cloud.trace_v1.types.GetTraceRequest):
+            request (Union[google.cloud.trace_v1.types.GetTraceRequest, dict]):
                 The request object. The request message for the
                 `GetTrace` method.
             project_id (str):
@@ -491,7 +491,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
 
     def patch_traces(
         self,
-        request: trace.PatchTracesRequest = None,
+        request: Union[trace.PatchTracesRequest, dict] = None,
         *,
         project_id: str = None,
         traces: trace.Traces = None,
@@ -508,7 +508,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         a new trace is created.
 
         Args:
-            request (google.cloud.trace_v1.types.PatchTracesRequest):
+            request (Union[google.cloud.trace_v1.types.PatchTracesRequest, dict]):
                 The request object. The request message for the
                 `PatchTraces` method.
             project_id (str):

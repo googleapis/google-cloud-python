@@ -39,8 +39,8 @@ def partition(
 class traceCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'batch_write_spans': ('name', 'spans', ),
-          'create_span': ('name', 'span_id', 'display_name', 'start_time', 'end_time', 'parent_span_id', 'attributes', 'stack_trace', 'time_events', 'links', 'status', 'same_process_as_parent_span', 'child_span_count', 'span_kind', ),
+        'batch_write_spans': ('name', 'spans', ),
+        'create_span': ('name', 'span_id', 'display_name', 'start_time', 'end_time', 'parent_span_id', 'attributes', 'stack_trace', 'time_events', 'links', 'status', 'same_process_as_parent_span', 'child_span_count', 'span_kind', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -59,7 +59,7 @@ class traceCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

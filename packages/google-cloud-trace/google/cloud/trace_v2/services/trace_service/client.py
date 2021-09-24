@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -359,7 +359,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
 
     def batch_write_spans(
         self,
-        request: tracing.BatchWriteSpansRequest = None,
+        request: Union[tracing.BatchWriteSpansRequest, dict] = None,
         *,
         name: str = None,
         spans: Sequence[trace.Span] = None,
@@ -371,7 +371,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         update existing spans.
 
         Args:
-            request (google.cloud.trace_v2.types.BatchWriteSpansRequest):
+            request (Union[google.cloud.trace_v2.types.BatchWriteSpansRequest, dict]):
                 The request object. The request message for the
                 `BatchWriteSpans` method.
             name (str):
@@ -435,7 +435,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
 
     def create_span(
         self,
-        request: trace.Span = None,
+        request: Union[trace.Span, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -444,7 +444,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         r"""Creates a new span.
 
         Args:
-            request (google.cloud.trace_v2.types.Span):
+            request (Union[google.cloud.trace_v2.types.Span, dict]):
                 The request object. A span represents a single operation
                 within a trace. Spans can be nested to form a trace
                 tree. Often, a trace contains a root span that describes

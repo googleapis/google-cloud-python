@@ -39,9 +39,9 @@ def partition(
 class traceCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'get_trace': ('project_id', 'trace_id', ),
-          'list_traces': ('project_id', 'view', 'page_size', 'page_token', 'start_time', 'end_time', 'filter', 'order_by', ),
-          'patch_traces': ('project_id', 'traces', ),
+        'get_trace': ('project_id', 'trace_id', ),
+        'list_traces': ('project_id', 'view', 'page_size', 'page_token', 'start_time', 'end_time', 'filter', 'order_by', ),
+        'patch_traces': ('project_id', 'traces', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -60,7 +60,7 @@ class traceCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
