@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -358,7 +358,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def search_domains(
         self,
-        request: domains.SearchDomainsRequest = None,
+        request: Union[domains.SearchDomainsRequest, dict] = None,
         *,
         location: str = None,
         query: str = None,
@@ -374,7 +374,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         confirm availability.
 
         Args:
-            request (google.cloud.domains_v1beta1.types.SearchDomainsRequest):
+            request (Union[google.cloud.domains_v1beta1.types.SearchDomainsRequest, dict]):
                 The request object. Request for the `SearchDomains`
                 method.
             location (str):
@@ -442,7 +442,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def retrieve_register_parameters(
         self,
-        request: domains.RetrieveRegisterParametersRequest = None,
+        request: Union[domains.RetrieveRegisterParametersRequest, dict] = None,
         *,
         location: str = None,
         domain_name: str = None,
@@ -455,7 +455,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         call ``RegisterDomain``.
 
         Args:
-            request (google.cloud.domains_v1beta1.types.RetrieveRegisterParametersRequest):
+            request (Union[google.cloud.domains_v1beta1.types.RetrieveRegisterParametersRequest, dict]):
                 The request object. Request for the
                 `RetrieveRegisterParameters` method.
             location (str):
@@ -526,7 +526,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def register_domain(
         self,
-        request: domains.RegisterDomainRequest = None,
+        request: Union[domains.RegisterDomainRequest, dict] = None,
         *,
         parent: str = None,
         registration: domains.Registration = None,
@@ -551,7 +551,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         and retry registration.
 
         Args:
-            request (google.cloud.domains_v1beta1.types.RegisterDomainRequest):
+            request (Union[google.cloud.domains_v1beta1.types.RegisterDomainRequest, dict]):
                 The request object. Request for the `RegisterDomain`
                 method.
             parent (str):
@@ -651,7 +651,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def list_registrations(
         self,
-        request: domains.ListRegistrationsRequest = None,
+        request: Union[domains.ListRegistrationsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -661,7 +661,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         r"""Lists the ``Registration`` resources in a project.
 
         Args:
-            request (google.cloud.domains_v1beta1.types.ListRegistrationsRequest):
+            request (Union[google.cloud.domains_v1beta1.types.ListRegistrationsRequest, dict]):
                 The request object. Request for the `ListRegistrations`
                 method.
             parent (str):
@@ -731,7 +731,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def get_registration(
         self,
-        request: domains.GetRegistrationRequest = None,
+        request: Union[domains.GetRegistrationRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -741,7 +741,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         r"""Gets the details of a ``Registration`` resource.
 
         Args:
-            request (google.cloud.domains_v1beta1.types.GetRegistrationRequest):
+            request (Union[google.cloud.domains_v1beta1.types.GetRegistrationRequest, dict]):
                 The request object. Request for the `GetRegistration`
                 method.
             name (str):
@@ -810,7 +810,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def update_registration(
         self,
-        request: domains.UpdateRegistrationRequest = None,
+        request: Union[domains.UpdateRegistrationRequest, dict] = None,
         *,
         registration: domains.Registration = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -829,7 +829,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
            ``ConfigureContactSettings``
 
         Args:
-            request (google.cloud.domains_v1beta1.types.UpdateRegistrationRequest):
+            request (Union[google.cloud.domains_v1beta1.types.UpdateRegistrationRequest, dict]):
                 The request object. Request for the `UpdateRegistration`
                 method.
             registration (google.cloud.domains_v1beta1.types.Registration):
@@ -919,7 +919,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def configure_management_settings(
         self,
-        request: domains.ConfigureManagementSettingsRequest = None,
+        request: Union[domains.ConfigureManagementSettingsRequest, dict] = None,
         *,
         registration: str = None,
         management_settings: domains.ManagementSettings = None,
@@ -931,7 +931,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         r"""Updates a ``Registration``'s management settings.
 
         Args:
-            request (google.cloud.domains_v1beta1.types.ConfigureManagementSettingsRequest):
+            request (Union[google.cloud.domains_v1beta1.types.ConfigureManagementSettingsRequest, dict]):
                 The request object. Request for the
                 `ConfigureManagementSettings` method.
             registration (str):
@@ -1033,7 +1033,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def configure_dns_settings(
         self,
-        request: domains.ConfigureDnsSettingsRequest = None,
+        request: Union[domains.ConfigureDnsSettingsRequest, dict] = None,
         *,
         registration: str = None,
         dns_settings: domains.DnsSettings = None,
@@ -1045,7 +1045,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         r"""Updates a ``Registration``'s DNS settings.
 
         Args:
-            request (google.cloud.domains_v1beta1.types.ConfigureDnsSettingsRequest):
+            request (Union[google.cloud.domains_v1beta1.types.ConfigureDnsSettingsRequest, dict]):
                 The request object. Request for the
                 `ConfigureDnsSettings` method.
             registration (str):
@@ -1152,7 +1152,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def configure_contact_settings(
         self,
-        request: domains.ConfigureContactSettingsRequest = None,
+        request: Union[domains.ConfigureContactSettingsRequest, dict] = None,
         *,
         registration: str = None,
         contact_settings: domains.ContactSettings = None,
@@ -1165,7 +1165,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         require confirmation by the domain's registrant contact .
 
         Args:
-            request (google.cloud.domains_v1beta1.types.ConfigureContactSettingsRequest):
+            request (Union[google.cloud.domains_v1beta1.types.ConfigureContactSettingsRequest, dict]):
                 The request object. Request for the
                 `ConfigureContactSettings` method.
             registration (str):
@@ -1267,7 +1267,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def export_registration(
         self,
-        request: domains.ExportRegistrationRequest = None,
+        request: Union[domains.ExportRegistrationRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1290,7 +1290,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
            Domains to renew the domain if needed.
 
         Args:
-            request (google.cloud.domains_v1beta1.types.ExportRegistrationRequest):
+            request (Union[google.cloud.domains_v1beta1.types.ExportRegistrationRequest, dict]):
                 The request object. Request for the `ExportRegistration`
                 method.
             name (str):
@@ -1369,7 +1369,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def delete_registration(
         self,
-        request: domains.DeleteRegistrationRequest = None,
+        request: Union[domains.DeleteRegistrationRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1385,7 +1385,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         -  ``state`` is ``REGISTRATION_FAILED``
 
         Args:
-            request (google.cloud.domains_v1beta1.types.DeleteRegistrationRequest):
+            request (Union[google.cloud.domains_v1beta1.types.DeleteRegistrationRequest, dict]):
                 The request object. Request for the `DeleteRegistration`
                 method.
             name (str):
@@ -1467,7 +1467,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def retrieve_authorization_code(
         self,
-        request: domains.RetrieveAuthorizationCodeRequest = None,
+        request: Union[domains.RetrieveAuthorizationCodeRequest, dict] = None,
         *,
         registration: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1481,7 +1481,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         the initial domain registration.
 
         Args:
-            request (google.cloud.domains_v1beta1.types.RetrieveAuthorizationCodeRequest):
+            request (Union[google.cloud.domains_v1beta1.types.RetrieveAuthorizationCodeRequest, dict]):
                 The request object. Request for the
                 `RetrieveAuthorizationCode` method.
             registration (str):
@@ -1545,7 +1545,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
     def reset_authorization_code(
         self,
-        request: domains.ResetAuthorizationCodeRequest = None,
+        request: Union[domains.ResetAuthorizationCodeRequest, dict] = None,
         *,
         registration: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1559,7 +1559,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         the initial domain registration.
 
         Args:
-            request (google.cloud.domains_v1beta1.types.ResetAuthorizationCodeRequest):
+            request (Union[google.cloud.domains_v1beta1.types.ResetAuthorizationCodeRequest, dict]):
                 The request object. Request for the
                 `ResetAuthorizationCode` method.
             registration (str):

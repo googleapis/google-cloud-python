@@ -39,19 +39,19 @@ def partition(
 class domainsCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'configure_contact_settings': ('registration', 'update_mask', 'contact_settings', 'contact_notices', 'validate_only', ),
-          'configure_dns_settings': ('registration', 'update_mask', 'dns_settings', 'validate_only', ),
-          'configure_management_settings': ('registration', 'update_mask', 'management_settings', ),
-          'delete_registration': ('name', ),
-          'export_registration': ('name', ),
-          'get_registration': ('name', ),
-          'list_registrations': ('parent', 'page_size', 'page_token', 'filter', ),
-          'register_domain': ('parent', 'registration', 'yearly_price', 'domain_notices', 'contact_notices', 'validate_only', ),
-          'reset_authorization_code': ('registration', ),
-          'retrieve_authorization_code': ('registration', ),
-          'retrieve_register_parameters': ('domain_name', 'location', ),
-          'search_domains': ('query', 'location', ),
-          'update_registration': ('update_mask', 'registration', ),
+        'configure_contact_settings': ('registration', 'update_mask', 'contact_settings', 'contact_notices', 'validate_only', ),
+        'configure_dns_settings': ('registration', 'update_mask', 'dns_settings', 'validate_only', ),
+        'configure_management_settings': ('registration', 'update_mask', 'management_settings', ),
+        'delete_registration': ('name', ),
+        'export_registration': ('name', ),
+        'get_registration': ('name', ),
+        'list_registrations': ('parent', 'page_size', 'page_token', 'filter', ),
+        'register_domain': ('parent', 'registration', 'yearly_price', 'domain_notices', 'contact_notices', 'validate_only', ),
+        'reset_authorization_code': ('registration', ),
+        'retrieve_authorization_code': ('registration', ),
+        'retrieve_register_parameters': ('domain_name', 'location', ),
+        'search_domains': ('query', 'location', ),
+        'update_registration': ('update_mask', 'registration', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -70,7 +70,7 @@ class domainsCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
