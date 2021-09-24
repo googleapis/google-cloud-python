@@ -5,6 +5,20 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+### [2.3.3](https://www.github.com/googleapis/python-firestore/compare/v2.3.2...v2.3.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([32bc180](https://www.github.com/googleapis/python-firestore/commit/32bc18080346d21dc1e0a4a7142707f6888c5359))
+* harden 'query.stream' against retriable exceptions ([#456](https://www.github.com/googleapis/python-firestore/issues/456)) ([0dca32f](https://www.github.com/googleapis/python-firestore/commit/0dca32f054e274c4d8cc2cc05f4c8b91aee9e183))
+* unbreak query orders w/ non-orderable operators ([#453](https://www.github.com/googleapis/python-firestore/issues/453)) ([2dbbba0](https://www.github.com/googleapis/python-firestore/commit/2dbbba027659322e60be248726c96c06e7a9e441))
+
+
+### Performance Improvements
+
+* strip proto wrappers in '_helpers.decode_{value,dict}' ([#458](https://www.github.com/googleapis/python-firestore/issues/458)) ([335e2c4](https://www.github.com/googleapis/python-firestore/commit/335e2c432e3d5377c2e5fb504ff8d4a319dec63c))
+
 ### [2.3.2](https://www.github.com/googleapis/python-firestore/compare/v2.3.1...v2.3.2) (2021-09-09)
 
 
