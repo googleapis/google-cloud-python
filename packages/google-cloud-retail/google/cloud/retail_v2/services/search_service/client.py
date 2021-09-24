@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -378,7 +378,7 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
 
     def search(
         self,
-        request: search_service.SearchRequest = None,
+        request: Union[search_service.SearchRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -392,7 +392,7 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
         sales if you are interested in using Retail Search.
 
         Args:
-            request (google.cloud.retail_v2.types.SearchRequest):
+            request (Union[google.cloud.retail_v2.types.SearchRequest, dict]):
                 The request object. Request message for
                 [SearchService.Search][google.cloud.retail.v2.SearchService.Search]
                 method.
