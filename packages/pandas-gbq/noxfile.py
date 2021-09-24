@@ -92,12 +92,12 @@ def cover(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def docs(session):
-    """Build the docs."""
+    """Build the docs for this library."""
 
-    session.install("-r", os.path.join("docs", "requirements-docs.txt"))
     session.install("-e", ".")
+    session.install("sphinx==4.0.1", "alabaster", "recommonmark")
 
-    shutil.rmtree(os.path.join("docs", "source", "_build"), ignore_errors=True)
+    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
         "sphinx-build",
         "-W",  # warnings as errors
@@ -106,9 +106,9 @@ def docs(session):
         "-b",
         "html",
         "-d",
-        os.path.join("docs", "source", "_build", "doctrees", ""),
-        os.path.join("docs", "source", ""),
-        os.path.join("docs", "source", "_build", "html", ""),
+        os.path.join("docs", "_build", "doctrees", ""),
+        os.path.join("docs", ""),
+        os.path.join("docs", "_build", "html", ""),
     )
 
 
@@ -132,7 +132,7 @@ def system(session):
     session.run(
         "pytest",
         os.path.join(".", "tests", "system"),
-        os.path.join(".", "samples", "tests"),
+        os.path.join(".", "samples", "snippets"),
         "-v",
         *additional_args,
     )

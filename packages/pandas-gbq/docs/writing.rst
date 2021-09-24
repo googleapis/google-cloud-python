@@ -6,7 +6,7 @@ Writing Tables
 Use the :func:`pandas_gbq.to_gbq` function to write a
 :class:`pandas.DataFrame` object to a BigQuery table.
 
-.. literalinclude:: samples/to_gbq_simple.py
+.. literalinclude:: samples/snippets/to_gbq_simple.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_pandas_gbq_to_gbq_simple]

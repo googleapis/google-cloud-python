@@ -6,7 +6,7 @@ Reading Tables
 Use the :func:`pandas_gbq.read_gbq` function to run a BigQuery query and
 download the results as a :class:`pandas.DataFrame` object.
 
-.. literalinclude:: samples/read_gbq_simple.py
+.. literalinclude:: samples/snippets/read_gbq_simple.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_pandas_gbq_read_gbq_simple]
@@ -37,7 +37,7 @@ The ``dialect`` argument can be used to indicate whether to use
 BigQuery's ``'legacy'`` SQL or BigQuery's ``'standard'`` SQL. The
 default value is ``'standard'``.
 
-.. literalinclude:: samples/read_gbq_legacy.py
+.. literalinclude:: samples/snippets/read_gbq_legacy.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_pandas_gbq_read_gbq_legacy]

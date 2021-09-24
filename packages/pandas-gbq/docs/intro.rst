@@ -27,7 +27,7 @@ Reading data from BigQuery
 Use the :func:`pandas_gbq.read_gbq` function to run a BigQuery query and
 download the results as a :class:`pandas.DataFrame` object.
 
-.. literalinclude:: samples/read_gbq_simple.py
+.. literalinclude:: samples/snippets/read_gbq_simple.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_pandas_gbq_read_gbq_simple]
@@ -44,7 +44,7 @@ longer queries. IPython & Jupyter by default attach a handler to the logger.
 If you're running in another process and want to see logs, or you want to see
 more verbose logs, you can do something like:
 
-.. code-block:: ipython
+.. code-block:: python
 
    import logging
    logger = logging.getLogger('pandas_gbq')
@@ -57,7 +57,7 @@ Writing data to BigQuery
 Use the :func:`pandas_gbq.to_gbq` function to write a
 :class:`pandas.DataFrame` object to a BigQuery table.
 
-.. literalinclude:: samples/to_gbq_simple.py
+.. literalinclude:: samples/snippets/to_gbq_simple.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_pandas_gbq_to_gbq_simple]

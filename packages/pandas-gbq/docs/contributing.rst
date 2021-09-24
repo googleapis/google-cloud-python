@@ -335,7 +335,7 @@ Documenting your code
 ---------------------
 
 Changes should follow convential commits.  The release-please bot uses the
-commit message to create an ongoing change log. 
+commit message to create an ongoing change log.
 
 If your code is an enhancement, it is most likely necessary to add usage
 examples to the existing documentation. Further, to let users know when

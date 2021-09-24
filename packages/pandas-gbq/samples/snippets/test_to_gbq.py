@@ -4,7 +4,7 @@
 
 """System tests for to_gbq code samples."""
 
-from .. import to_gbq_simple
+from . import to_gbq_simple
 
 
 def test_to_gbq_simple(project_id, bigquery_client, random_dataset_id):
