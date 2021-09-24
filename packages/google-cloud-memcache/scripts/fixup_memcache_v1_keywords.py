@@ -39,13 +39,13 @@ def partition(
 class memcacheCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'apply_parameters': ('name', 'node_ids', 'apply_all', ),
-          'create_instance': ('parent', 'instance_id', 'instance', ),
-          'delete_instance': ('name', ),
-          'get_instance': ('name', ),
-          'list_instances': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'update_instance': ('update_mask', 'instance', ),
-          'update_parameters': ('name', 'update_mask', 'parameters', ),
+        'apply_parameters': ('name', 'node_ids', 'apply_all', ),
+        'create_instance': ('parent', 'instance_id', 'instance', ),
+        'delete_instance': ('name', ),
+        'get_instance': ('name', ),
+        'list_instances': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'update_instance': ('update_mask', 'instance', ),
+        'update_parameters': ('name', 'update_mask', 'parameters', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -64,7 +64,7 @@ class memcacheCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
