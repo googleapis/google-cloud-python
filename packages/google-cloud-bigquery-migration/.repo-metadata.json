@@ -1,0 +1,14 @@
+{
+    "name": "bigquerymigration",
+    "name_pretty": "Google BigQuery Migration",
+    "product_documentation": "https://cloud.google.com/bigquery/docs/reference/migration/",
+    "client_documentation": "https://googleapis.dev/python/bigquerymigration/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
+    "release_level": "alpha",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-bigquery-migration",
+    "distribution_name": "google-cloud-bigquery-migration",
+    "api_id": "bigquerymigration.googleapis.com",
+    "requires_billing": true
+  }
