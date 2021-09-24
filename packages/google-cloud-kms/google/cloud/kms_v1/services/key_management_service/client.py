@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -472,7 +472,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def list_key_rings(
         self,
-        request: service.ListKeyRingsRequest = None,
+        request: Union[service.ListKeyRingsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -483,7 +483,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.ListKeyRingsRequest):
+            request (Union[google.cloud.kms_v1.types.ListKeyRingsRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.ListKeyRings][google.cloud.kms.v1.KeyManagementService.ListKeyRings].
             parent (str):
@@ -554,7 +554,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def list_crypto_keys(
         self,
-        request: service.ListCryptoKeysRequest = None,
+        request: Union[service.ListCryptoKeysRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -565,7 +565,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.ListCryptoKeysRequest):
+            request (Union[google.cloud.kms_v1.types.ListCryptoKeysRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.ListCryptoKeys][google.cloud.kms.v1.KeyManagementService.ListCryptoKeys].
             parent (str):
@@ -636,7 +636,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def list_crypto_key_versions(
         self,
-        request: service.ListCryptoKeyVersionsRequest = None,
+        request: Union[service.ListCryptoKeyVersionsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -647,7 +647,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest):
+            request (Union[google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.ListCryptoKeyVersions][google.cloud.kms.v1.KeyManagementService.ListCryptoKeyVersions].
             parent (str):
@@ -719,7 +719,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def list_import_jobs(
         self,
-        request: service.ListImportJobsRequest = None,
+        request: Union[service.ListImportJobsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -730,7 +730,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.ListImportJobsRequest):
+            request (Union[google.cloud.kms_v1.types.ListImportJobsRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.ListImportJobs][google.cloud.kms.v1.KeyManagementService.ListImportJobs].
             parent (str):
@@ -801,7 +801,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def get_key_ring(
         self,
-        request: service.GetKeyRingRequest = None,
+        request: Union[service.GetKeyRingRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -813,7 +813,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.GetKeyRingRequest):
+            request (Union[google.cloud.kms_v1.types.GetKeyRingRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.GetKeyRing][google.cloud.kms.v1.KeyManagementService.GetKeyRing].
             name (str):
@@ -875,7 +875,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def get_crypto_key(
         self,
-        request: service.GetCryptoKeyRequest = None,
+        request: Union[service.GetCryptoKeyRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -889,7 +889,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.GetCryptoKeyRequest):
+            request (Union[google.cloud.kms_v1.types.GetCryptoKeyRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.GetCryptoKey][google.cloud.kms.v1.KeyManagementService.GetCryptoKey].
             name (str):
@@ -957,7 +957,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def get_crypto_key_version(
         self,
-        request: service.GetCryptoKeyVersionRequest = None,
+        request: Union[service.GetCryptoKeyVersionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -969,7 +969,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.GetCryptoKeyVersionRequest):
+            request (Union[google.cloud.kms_v1.types.GetCryptoKeyVersionRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.GetCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.GetCryptoKeyVersion].
             name (str):
@@ -1043,7 +1043,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def get_public_key(
         self,
-        request: service.GetPublicKeyRequest = None,
+        request: Union[service.GetPublicKeyRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1060,7 +1060,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.GetPublicKeyRequest):
+            request (Union[google.cloud.kms_v1.types.GetPublicKeyRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
             name (str):
@@ -1123,7 +1123,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def get_import_job(
         self,
-        request: service.GetImportJobRequest = None,
+        request: Union[service.GetImportJobRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1135,7 +1135,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.GetImportJobRequest):
+            request (Union[google.cloud.kms_v1.types.GetImportJobRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.GetImportJob][google.cloud.kms.v1.KeyManagementService.GetImportJob].
             name (str):
@@ -1240,7 +1240,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def create_key_ring(
         self,
-        request: service.CreateKeyRingRequest = None,
+        request: Union[service.CreateKeyRingRequest, dict] = None,
         *,
         parent: str = None,
         key_ring_id: str = None,
@@ -1254,7 +1254,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.CreateKeyRingRequest):
+            request (Union[google.cloud.kms_v1.types.CreateKeyRingRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.CreateKeyRing][google.cloud.kms.v1.KeyManagementService.CreateKeyRing].
             parent (str):
@@ -1335,7 +1335,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def create_crypto_key(
         self,
-        request: service.CreateCryptoKeyRequest = None,
+        request: Union[service.CreateCryptoKeyRequest, dict] = None,
         *,
         parent: str = None,
         crypto_key_id: str = None,
@@ -1353,7 +1353,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.CreateCryptoKeyRequest):
+            request (Union[google.cloud.kms_v1.types.CreateCryptoKeyRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.CreateCryptoKey][google.cloud.kms.v1.KeyManagementService.CreateCryptoKey].
             parent (str):
@@ -1439,7 +1439,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def create_crypto_key_version(
         self,
-        request: service.CreateCryptoKeyVersionRequest = None,
+        request: Union[service.CreateCryptoKeyVersionRequest, dict] = None,
         *,
         parent: str = None,
         crypto_key_version: resources.CryptoKeyVersion = None,
@@ -1458,7 +1458,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.CreateCryptoKeyVersionRequest):
+            request (Union[google.cloud.kms_v1.types.CreateCryptoKeyVersionRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion].
             parent (str):
@@ -1544,7 +1544,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def import_crypto_key_version(
         self,
-        request: service.ImportCryptoKeyVersionRequest = None,
+        request: Union[service.ImportCryptoKeyVersionRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1563,7 +1563,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest):
+            request (Union[google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1617,7 +1617,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def create_import_job(
         self,
-        request: service.CreateImportJobRequest = None,
+        request: Union[service.CreateImportJobRequest, dict] = None,
         *,
         parent: str = None,
         import_job_id: str = None,
@@ -1634,7 +1634,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.CreateImportJobRequest):
+            request (Union[google.cloud.kms_v1.types.CreateImportJobRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.CreateImportJob][google.cloud.kms.v1.KeyManagementService.CreateImportJob].
             parent (str):
@@ -1757,7 +1757,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def update_crypto_key(
         self,
-        request: service.UpdateCryptoKeyRequest = None,
+        request: Union[service.UpdateCryptoKeyRequest, dict] = None,
         *,
         crypto_key: resources.CryptoKey = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -1769,7 +1769,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.UpdateCryptoKeyRequest):
+            request (Union[google.cloud.kms_v1.types.UpdateCryptoKeyRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.UpdateCryptoKey][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKey].
             crypto_key (google.cloud.kms_v1.types.CryptoKey):
@@ -1847,7 +1847,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def update_crypto_key_version(
         self,
-        request: service.UpdateCryptoKeyVersionRequest = None,
+        request: Union[service.UpdateCryptoKeyVersionRequest, dict] = None,
         *,
         crypto_key_version: resources.CryptoKeyVersion = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -1872,7 +1872,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.UpdateCryptoKeyVersionRequest):
+            request (Union[google.cloud.kms_v1.types.UpdateCryptoKeyVersionRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.UpdateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyVersion].
             crypto_key_version (google.cloud.kms_v1.types.CryptoKeyVersion):
@@ -1958,7 +1958,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def update_crypto_key_primary_version(
         self,
-        request: service.UpdateCryptoKeyPrimaryVersionRequest = None,
+        request: Union[service.UpdateCryptoKeyPrimaryVersionRequest, dict] = None,
         *,
         name: str = None,
         crypto_key_version_id: str = None,
@@ -1975,7 +1975,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.UpdateCryptoKeyPrimaryVersionRequest):
+            request (Union[google.cloud.kms_v1.types.UpdateCryptoKeyPrimaryVersionRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.UpdateCryptoKeyPrimaryVersion][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryVersion].
             name (str):
@@ -2054,7 +2054,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def destroy_crypto_key_version(
         self,
-        request: service.DestroyCryptoKeyVersionRequest = None,
+        request: Union[service.DestroyCryptoKeyVersionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2087,7 +2087,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.DestroyCryptoKeyVersionRequest):
+            request (Union[google.cloud.kms_v1.types.DestroyCryptoKeyVersionRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.DestroyCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.DestroyCryptoKeyVersion].
             name (str):
@@ -2162,7 +2162,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def restore_crypto_key_version(
         self,
-        request: service.RestoreCryptoKeyVersionRequest = None,
+        request: Union[service.RestoreCryptoKeyVersionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2184,7 +2184,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.RestoreCryptoKeyVersionRequest):
+            request (Union[google.cloud.kms_v1.types.RestoreCryptoKeyVersionRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion].
             name (str):
@@ -2259,7 +2259,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def encrypt(
         self,
-        request: service.EncryptRequest = None,
+        request: Union[service.EncryptRequest, dict] = None,
         *,
         name: str = None,
         plaintext: bytes = None,
@@ -2275,7 +2275,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.EncryptRequest):
+            request (Union[google.cloud.kms_v1.types.EncryptRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
             name (str):
@@ -2361,7 +2361,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def decrypt(
         self,
-        request: service.DecryptRequest = None,
+        request: Union[service.DecryptRequest, dict] = None,
         *,
         name: str = None,
         ciphertext: bytes = None,
@@ -2377,7 +2377,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.DecryptRequest):
+            request (Union[google.cloud.kms_v1.types.DecryptRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt].
             name (str):
@@ -2449,7 +2449,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def asymmetric_sign(
         self,
-        request: service.AsymmetricSignRequest = None,
+        request: Union[service.AsymmetricSignRequest, dict] = None,
         *,
         name: str = None,
         digest: service.Digest = None,
@@ -2466,7 +2466,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.AsymmetricSignRequest):
+            request (Union[google.cloud.kms_v1.types.AsymmetricSignRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign].
             name (str):
@@ -2539,7 +2539,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def asymmetric_decrypt(
         self,
-        request: service.AsymmetricDecryptRequest = None,
+        request: Union[service.AsymmetricDecryptRequest, dict] = None,
         *,
         name: str = None,
         ciphertext: bytes = None,
@@ -2557,7 +2557,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.AsymmetricDecryptRequest):
+            request (Union[google.cloud.kms_v1.types.AsymmetricDecryptRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt].
             name (str):
@@ -2629,7 +2629,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def mac_sign(
         self,
-        request: service.MacSignRequest = None,
+        request: Union[service.MacSignRequest, dict] = None,
         *,
         name: str = None,
         data: bytes = None,
@@ -2645,7 +2645,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.MacSignRequest):
+            request (Union[google.cloud.kms_v1.types.MacSignRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.MacSign][google.cloud.kms.v1.KeyManagementService.MacSign].
             name (str):
@@ -2717,7 +2717,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def mac_verify(
         self,
-        request: service.MacVerifyRequest = None,
+        request: Union[service.MacVerifyRequest, dict] = None,
         *,
         name: str = None,
         data: bytes = None,
@@ -2734,7 +2734,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.MacVerifyRequest):
+            request (Union[google.cloud.kms_v1.types.MacVerifyRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.MacVerify][google.cloud.kms.v1.KeyManagementService.MacVerify].
             name (str):
@@ -2813,7 +2813,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
     def generate_random_bytes(
         self,
-        request: service.GenerateRandomBytesRequest = None,
+        request: Union[service.GenerateRandomBytesRequest, dict] = None,
         *,
         location: str = None,
         length_bytes: int = None,
@@ -2827,7 +2827,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (google.cloud.kms_v1.types.GenerateRandomBytesRequest):
+            request (Union[google.cloud.kms_v1.types.GenerateRandomBytesRequest, dict]):
                 The request object. Request message for
                 [KeyManagementService.GenerateRandomBytes][google.cloud.kms.v1.KeyManagementService.GenerateRandomBytes].
             location (str):
