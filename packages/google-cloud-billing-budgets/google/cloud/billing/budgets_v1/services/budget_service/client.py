@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -354,7 +354,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
 
     def create_budget(
         self,
-        request: budget_service.CreateBudgetRequest = None,
+        request: Union[budget_service.CreateBudgetRequest, dict] = None,
         *,
         parent: str = None,
         budget: budget_model.Budget = None,
@@ -368,7 +368,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         create.
 
         Args:
-            request (google.cloud.billing.budgets_v1.types.CreateBudgetRequest):
+            request (Union[google.cloud.billing.budgets_v1.types.CreateBudgetRequest, dict]):
                 The request object. Request for CreateBudget
             parent (str):
                 Required. The name of the billing account to create the
@@ -443,7 +443,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
 
     def update_budget(
         self,
-        request: budget_service.UpdateBudgetRequest = None,
+        request: Union[budget_service.UpdateBudgetRequest, dict] = None,
         *,
         budget: budget_model.Budget = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -458,7 +458,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         changed by this method.
 
         Args:
-            request (google.cloud.billing.budgets_v1.types.UpdateBudgetRequest):
+            request (Union[google.cloud.billing.budgets_v1.types.UpdateBudgetRequest, dict]):
                 The request object. Request for UpdateBudget
             budget (google.cloud.billing.budgets_v1.types.Budget):
                 Required. The updated budget object.
@@ -541,7 +541,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
 
     def get_budget(
         self,
-        request: budget_service.GetBudgetRequest = None,
+        request: Union[budget_service.GetBudgetRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -556,7 +556,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         Cloud Console.
 
         Args:
-            request (google.cloud.billing.budgets_v1.types.GetBudgetRequest):
+            request (Union[google.cloud.billing.budgets_v1.types.GetBudgetRequest, dict]):
                 The request object. Request for GetBudget
             name (str):
                 Required. Name of budget to get. Values are of the form
@@ -623,7 +623,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
 
     def list_budgets(
         self,
-        request: budget_service.ListBudgetsRequest = None,
+        request: Union[budget_service.ListBudgetsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -638,7 +638,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         Cloud Console.
 
         Args:
-            request (google.cloud.billing.budgets_v1.types.ListBudgetsRequest):
+            request (Union[google.cloud.billing.budgets_v1.types.ListBudgetsRequest, dict]):
                 The request object. Request for ListBudgets
             parent (str):
                 Required. Name of billing account to list budgets under.
@@ -707,7 +707,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
 
     def delete_budget(
         self,
-        request: budget_service.DeleteBudgetRequest = None,
+        request: Union[budget_service.DeleteBudgetRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -718,7 +718,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         deleted.
 
         Args:
-            request (google.cloud.billing.budgets_v1.types.DeleteBudgetRequest):
+            request (Union[google.cloud.billing.budgets_v1.types.DeleteBudgetRequest, dict]):
                 The request object. Request for DeleteBudget
             name (str):
                 Required. Name of the budget to delete. Values are of

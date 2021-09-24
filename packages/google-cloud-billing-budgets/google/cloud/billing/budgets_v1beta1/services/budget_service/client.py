@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -353,7 +353,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
 
     def create_budget(
         self,
-        request: budget_service.CreateBudgetRequest = None,
+        request: Union[budget_service.CreateBudgetRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -365,7 +365,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         number of budgets you can create.
 
         Args:
-            request (google.cloud.billing.budgets_v1beta1.types.CreateBudgetRequest):
+            request (Union[google.cloud.billing.budgets_v1beta1.types.CreateBudgetRequest, dict]):
                 The request object. Request for CreateBudget
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -412,7 +412,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
 
     def update_budget(
         self,
-        request: budget_service.UpdateBudgetRequest = None,
+        request: Union[budget_service.UpdateBudgetRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -425,7 +425,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         changed by this method.
 
         Args:
-            request (google.cloud.billing.budgets_v1beta1.types.UpdateBudgetRequest):
+            request (Union[google.cloud.billing.budgets_v1beta1.types.UpdateBudgetRequest, dict]):
                 The request object. Request for UpdateBudget
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -474,7 +474,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
 
     def get_budget(
         self,
-        request: budget_service.GetBudgetRequest = None,
+        request: Union[budget_service.GetBudgetRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -488,7 +488,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         Cloud Console.
 
         Args:
-            request (google.cloud.billing.budgets_v1beta1.types.GetBudgetRequest):
+            request (Union[google.cloud.billing.budgets_v1beta1.types.GetBudgetRequest, dict]):
                 The request object. Request for GetBudget
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -535,7 +535,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
 
     def list_budgets(
         self,
-        request: budget_service.ListBudgetsRequest = None,
+        request: Union[budget_service.ListBudgetsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -549,7 +549,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         Cloud Console.
 
         Args:
-            request (google.cloud.billing.budgets_v1beta1.types.ListBudgetsRequest):
+            request (Union[google.cloud.billing.budgets_v1beta1.types.ListBudgetsRequest, dict]):
                 The request object. Request for ListBudgets
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -597,7 +597,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
 
     def delete_budget(
         self,
-        request: budget_service.DeleteBudgetRequest = None,
+        request: Union[budget_service.DeleteBudgetRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -607,7 +607,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         deleted.
 
         Args:
-            request (google.cloud.billing.budgets_v1beta1.types.DeleteBudgetRequest):
+            request (Union[google.cloud.billing.budgets_v1beta1.types.DeleteBudgetRequest, dict]):
                 The request object. Request for DeleteBudget
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
