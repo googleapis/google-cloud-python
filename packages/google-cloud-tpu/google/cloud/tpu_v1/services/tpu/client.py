@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -391,7 +391,7 @@ class TpuClient(metaclass=TpuClientMeta):
 
     def list_nodes(
         self,
-        request: cloud_tpu.ListNodesRequest = None,
+        request: Union[cloud_tpu.ListNodesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -401,7 +401,7 @@ class TpuClient(metaclass=TpuClientMeta):
         r"""Lists nodes.
 
         Args:
-            request (google.cloud.tpu_v1.types.ListNodesRequest):
+            request (Union[google.cloud.tpu_v1.types.ListNodesRequest, dict]):
                 The request object. Request for
                 [ListNodes][google.cloud.tpu.v1.Tpu.ListNodes].
             parent (str):
@@ -469,7 +469,7 @@ class TpuClient(metaclass=TpuClientMeta):
 
     def get_node(
         self,
-        request: cloud_tpu.GetNodeRequest = None,
+        request: Union[cloud_tpu.GetNodeRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -479,7 +479,7 @@ class TpuClient(metaclass=TpuClientMeta):
         r"""Gets the details of a node.
 
         Args:
-            request (google.cloud.tpu_v1.types.GetNodeRequest):
+            request (Union[google.cloud.tpu_v1.types.GetNodeRequest, dict]):
                 The request object. Request for
                 [GetNode][google.cloud.tpu.v1.Tpu.GetNode].
             name (str):
@@ -536,7 +536,7 @@ class TpuClient(metaclass=TpuClientMeta):
 
     def create_node(
         self,
-        request: cloud_tpu.CreateNodeRequest = None,
+        request: Union[cloud_tpu.CreateNodeRequest, dict] = None,
         *,
         parent: str = None,
         node: cloud_tpu.Node = None,
@@ -548,7 +548,7 @@ class TpuClient(metaclass=TpuClientMeta):
         r"""Creates a node.
 
         Args:
-            request (google.cloud.tpu_v1.types.CreateNodeRequest):
+            request (Union[google.cloud.tpu_v1.types.CreateNodeRequest, dict]):
                 The request object. Request for
                 [CreateNode][google.cloud.tpu.v1.Tpu.CreateNode].
             parent (str):
@@ -631,7 +631,7 @@ class TpuClient(metaclass=TpuClientMeta):
 
     def delete_node(
         self,
-        request: cloud_tpu.DeleteNodeRequest = None,
+        request: Union[cloud_tpu.DeleteNodeRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -641,7 +641,7 @@ class TpuClient(metaclass=TpuClientMeta):
         r"""Deletes a node.
 
         Args:
-            request (google.cloud.tpu_v1.types.DeleteNodeRequest):
+            request (Union[google.cloud.tpu_v1.types.DeleteNodeRequest, dict]):
                 The request object. Request for
                 [DeleteNode][google.cloud.tpu.v1.Tpu.DeleteNode].
             name (str):
@@ -710,7 +710,7 @@ class TpuClient(metaclass=TpuClientMeta):
 
     def reimage_node(
         self,
-        request: cloud_tpu.ReimageNodeRequest = None,
+        request: Union[cloud_tpu.ReimageNodeRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -719,7 +719,7 @@ class TpuClient(metaclass=TpuClientMeta):
         r"""Reimages a node's OS.
 
         Args:
-            request (google.cloud.tpu_v1.types.ReimageNodeRequest):
+            request (Union[google.cloud.tpu_v1.types.ReimageNodeRequest, dict]):
                 The request object. Request for
                 [ReimageNode][google.cloud.tpu.v1.Tpu.ReimageNode].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -770,7 +770,7 @@ class TpuClient(metaclass=TpuClientMeta):
 
     def stop_node(
         self,
-        request: cloud_tpu.StopNodeRequest = None,
+        request: Union[cloud_tpu.StopNodeRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -779,7 +779,7 @@ class TpuClient(metaclass=TpuClientMeta):
         r"""Stops a node.
 
         Args:
-            request (google.cloud.tpu_v1.types.StopNodeRequest):
+            request (Union[google.cloud.tpu_v1.types.StopNodeRequest, dict]):
                 The request object. Request for
                 [StopNode][google.cloud.tpu.v1.Tpu.StopNode].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -830,7 +830,7 @@ class TpuClient(metaclass=TpuClientMeta):
 
     def start_node(
         self,
-        request: cloud_tpu.StartNodeRequest = None,
+        request: Union[cloud_tpu.StartNodeRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -839,7 +839,7 @@ class TpuClient(metaclass=TpuClientMeta):
         r"""Starts a node.
 
         Args:
-            request (google.cloud.tpu_v1.types.StartNodeRequest):
+            request (Union[google.cloud.tpu_v1.types.StartNodeRequest, dict]):
                 The request object. Request for
                 [StartNode][google.cloud.tpu.v1.Tpu.StartNode].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -890,7 +890,7 @@ class TpuClient(metaclass=TpuClientMeta):
 
     def list_tensor_flow_versions(
         self,
-        request: cloud_tpu.ListTensorFlowVersionsRequest = None,
+        request: Union[cloud_tpu.ListTensorFlowVersionsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -900,7 +900,7 @@ class TpuClient(metaclass=TpuClientMeta):
         r"""List TensorFlow versions supported by this API.
 
         Args:
-            request (google.cloud.tpu_v1.types.ListTensorFlowVersionsRequest):
+            request (Union[google.cloud.tpu_v1.types.ListTensorFlowVersionsRequest, dict]):
                 The request object. Request for
                 [ListTensorFlowVersions][google.cloud.tpu.v1.Tpu.ListTensorFlowVersions].
             parent (str):
@@ -970,7 +970,7 @@ class TpuClient(metaclass=TpuClientMeta):
 
     def get_tensor_flow_version(
         self,
-        request: cloud_tpu.GetTensorFlowVersionRequest = None,
+        request: Union[cloud_tpu.GetTensorFlowVersionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -980,7 +980,7 @@ class TpuClient(metaclass=TpuClientMeta):
         r"""Gets TensorFlow Version.
 
         Args:
-            request (google.cloud.tpu_v1.types.GetTensorFlowVersionRequest):
+            request (Union[google.cloud.tpu_v1.types.GetTensorFlowVersionRequest, dict]):
                 The request object. Request for
                 [GetTensorFlowVersion][google.cloud.tpu.v1.Tpu.GetTensorFlowVersion].
             name (str):
@@ -1039,7 +1039,7 @@ class TpuClient(metaclass=TpuClientMeta):
 
     def list_accelerator_types(
         self,
-        request: cloud_tpu.ListAcceleratorTypesRequest = None,
+        request: Union[cloud_tpu.ListAcceleratorTypesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1049,7 +1049,7 @@ class TpuClient(metaclass=TpuClientMeta):
         r"""Lists accelerator types supported by this API.
 
         Args:
-            request (google.cloud.tpu_v1.types.ListAcceleratorTypesRequest):
+            request (Union[google.cloud.tpu_v1.types.ListAcceleratorTypesRequest, dict]):
                 The request object. Request for
                 [ListAcceleratorTypes][google.cloud.tpu.v1.Tpu.ListAcceleratorTypes].
             parent (str):
@@ -1117,7 +1117,7 @@ class TpuClient(metaclass=TpuClientMeta):
 
     def get_accelerator_type(
         self,
-        request: cloud_tpu.GetAcceleratorTypeRequest = None,
+        request: Union[cloud_tpu.GetAcceleratorTypeRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1127,7 +1127,7 @@ class TpuClient(metaclass=TpuClientMeta):
         r"""Gets AcceleratorType.
 
         Args:
-            request (google.cloud.tpu_v1.types.GetAcceleratorTypeRequest):
+            request (Union[google.cloud.tpu_v1.types.GetAcceleratorTypeRequest, dict]):
                 The request object. Request for
                 [GetAcceleratorType][google.cloud.tpu.v1.Tpu.GetAcceleratorType].
             name (str):

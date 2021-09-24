@@ -39,17 +39,17 @@ def partition(
 class tpuCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_node': ('parent', 'node', 'node_id', ),
-          'delete_node': ('name', ),
-          'get_accelerator_type': ('name', ),
-          'get_node': ('name', ),
-          'get_tensor_flow_version': ('name', ),
-          'list_accelerator_types': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'list_nodes': ('parent', 'page_size', 'page_token', ),
-          'list_tensor_flow_versions': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'reimage_node': ('name', 'tensorflow_version', ),
-          'start_node': ('name', ),
-          'stop_node': ('name', ),
+        'create_node': ('parent', 'node', 'node_id', ),
+        'delete_node': ('name', ),
+        'get_accelerator_type': ('name', ),
+        'get_node': ('name', ),
+        'get_tensor_flow_version': ('name', ),
+        'list_accelerator_types': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_nodes': ('parent', 'page_size', 'page_token', ),
+        'list_tensor_flow_versions': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'reimage_node': ('name', 'tensorflow_version', ),
+        'start_node': ('name', ),
+        'stop_node': ('name', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -68,7 +68,7 @@ class tpuCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
