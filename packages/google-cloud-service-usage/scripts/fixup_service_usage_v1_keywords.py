@@ -39,12 +39,12 @@ def partition(
 class service_usageCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'batch_enable_services': ('parent', 'service_ids', ),
-          'batch_get_services': ('parent', 'names', ),
-          'disable_service': ('name', 'disable_dependent_services', 'check_if_service_has_usage', ),
-          'enable_service': ('name', ),
-          'get_service': ('name', ),
-          'list_services': ('parent', 'page_size', 'page_token', 'filter', ),
+        'batch_enable_services': ('parent', 'service_ids', ),
+        'batch_get_services': ('parent', 'names', ),
+        'disable_service': ('name', 'disable_dependent_services', 'check_if_service_has_usage', ),
+        'enable_service': ('name', ),
+        'get_service': ('name', ),
+        'list_services': ('parent', 'page_size', 'page_token', 'filter', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -63,7 +63,7 @@ class service_usageCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

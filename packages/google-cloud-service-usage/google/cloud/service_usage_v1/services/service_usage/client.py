@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -343,7 +343,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
     def enable_service(
         self,
-        request: serviceusage.EnableServiceRequest = None,
+        request: Union[serviceusage.EnableServiceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -353,7 +353,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
         project.
 
         Args:
-            request (google.cloud.service_usage_v1.types.EnableServiceRequest):
+            request (Union[google.cloud.service_usage_v1.types.EnableServiceRequest, dict]):
                 The request object. Request message for the
                 `EnableService` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -406,7 +406,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
     def disable_service(
         self,
-        request: serviceusage.DisableServiceRequest = None,
+        request: Union[serviceusage.DisableServiceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -422,7 +422,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
         currently enabled.
 
         Args:
-            request (google.cloud.service_usage_v1.types.DisableServiceRequest):
+            request (Union[google.cloud.service_usage_v1.types.DisableServiceRequest, dict]):
                 The request object. Request message for the
                 `DisableService` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -475,7 +475,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
     def get_service(
         self,
-        request: serviceusage.GetServiceRequest = None,
+        request: Union[serviceusage.GetServiceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -485,7 +485,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
         for a given service.
 
         Args:
-            request (google.cloud.service_usage_v1.types.GetServiceRequest):
+            request (Union[google.cloud.service_usage_v1.types.GetServiceRequest, dict]):
                 The request object. Request message for the `GetService`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -526,7 +526,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
     def list_services(
         self,
-        request: serviceusage.ListServicesRequest = None,
+        request: Union[serviceusage.ListServicesRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -548,7 +548,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
         capability.
 
         Args:
-            request (google.cloud.service_usage_v1.types.ListServicesRequest):
+            request (Union[google.cloud.service_usage_v1.types.ListServicesRequest, dict]):
                 The request object. Request message for the
                 `ListServices` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -597,7 +597,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
     def batch_enable_services(
         self,
-        request: serviceusage.BatchEnableServicesRequest = None,
+        request: Union[serviceusage.BatchEnableServicesRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -609,7 +609,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
         ``EnableService`` method instead.
 
         Args:
-            request (google.cloud.service_usage_v1.types.BatchEnableServicesRequest):
+            request (Union[google.cloud.service_usage_v1.types.BatchEnableServicesRequest, dict]):
                 The request object. Request message for the
                 `BatchEnableServices` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -662,7 +662,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
 
     def batch_get_services(
         self,
-        request: serviceusage.BatchGetServicesRequest = None,
+        request: Union[serviceusage.BatchGetServicesRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -672,7 +672,7 @@ class ServiceUsageClient(metaclass=ServiceUsageClientMeta):
         for a given list of services.
 
         Args:
-            request (google.cloud.service_usage_v1.types.BatchGetServicesRequest):
+            request (Union[google.cloud.service_usage_v1.types.BatchGetServicesRequest, dict]):
                 The request object. Request message for the
                 `BatchGetServices` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
