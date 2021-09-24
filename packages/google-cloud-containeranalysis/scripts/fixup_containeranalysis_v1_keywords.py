@@ -39,10 +39,10 @@ def partition(
 class containeranalysisCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'get_iam_policy': ('resource', 'options', ),
-          'get_vulnerability_occurrences_summary': ('parent', 'filter', ),
-          'set_iam_policy': ('resource', 'policy', ),
-          'test_iam_permissions': ('resource', 'permissions', ),
+        'get_iam_policy': ('resource', 'options', ),
+        'get_vulnerability_occurrences_summary': ('parent', 'filter', ),
+        'set_iam_policy': ('resource', 'policy', ),
+        'test_iam_permissions': ('resource', 'permissions', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -61,7 +61,7 @@ class containeranalysisCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
