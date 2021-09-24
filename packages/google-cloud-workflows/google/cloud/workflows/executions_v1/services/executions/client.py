@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -371,7 +371,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
 
     def list_executions(
         self,
-        request: executions.ListExecutionsRequest = None,
+        request: Union[executions.ListExecutionsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -385,7 +385,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         first).
 
         Args:
-            request (google.cloud.workflows.executions_v1.types.ListExecutionsRequest):
+            request (Union[google.cloud.workflows.executions_v1.types.ListExecutionsRequest, dict]):
                 The request object. Request for the
                 [ListExecutions][]
                 method.
@@ -459,7 +459,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
 
     def create_execution(
         self,
-        request: executions.CreateExecutionRequest = None,
+        request: Union[executions.CreateExecutionRequest, dict] = None,
         *,
         parent: str = None,
         execution: executions.Execution = None,
@@ -471,7 +471,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         the given workflow.
 
         Args:
-            request (google.cloud.workflows.executions_v1.types.CreateExecutionRequest):
+            request (Union[google.cloud.workflows.executions_v1.types.CreateExecutionRequest, dict]):
                 The request object. Request for the
                 [CreateExecution][google.cloud.workflows.executions.v1.Executions.CreateExecution]
                 method.
@@ -544,7 +544,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
 
     def get_execution(
         self,
-        request: executions.GetExecutionRequest = None,
+        request: Union[executions.GetExecutionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -554,7 +554,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         r"""Returns an execution of the given name.
 
         Args:
-            request (google.cloud.workflows.executions_v1.types.GetExecutionRequest):
+            request (Union[google.cloud.workflows.executions_v1.types.GetExecutionRequest, dict]):
                 The request object. Request for the
                 [GetExecution][google.cloud.workflows.executions.v1.Executions.GetExecution]
                 method.
@@ -617,7 +617,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
 
     def cancel_execution(
         self,
-        request: executions.CancelExecutionRequest = None,
+        request: Union[executions.CancelExecutionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -627,7 +627,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         r"""Cancels an execution of the given name.
 
         Args:
-            request (google.cloud.workflows.executions_v1.types.CancelExecutionRequest):
+            request (Union[google.cloud.workflows.executions_v1.types.CancelExecutionRequest, dict]):
                 The request object. Request for the
                 [CancelExecution][google.cloud.workflows.executions.v1.Executions.CancelExecution]
                 method.
