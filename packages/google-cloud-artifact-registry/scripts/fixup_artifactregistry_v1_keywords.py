@@ -39,27 +39,9 @@ def partition(
 class artifactregistryCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'create_repository': ('parent', 'repository_id', 'repository', ),
-        'create_tag': ('parent', 'tag_id', 'tag', ),
-        'delete_package': ('name', ),
-        'delete_repository': ('name', ),
-        'delete_tag': ('name', ),
-        'delete_version': ('name', 'force', ),
-        'get_file': ('name', ),
-        'get_iam_policy': ('resource', 'options', ),
-        'get_package': ('name', ),
         'get_repository': ('name', ),
-        'get_tag': ('name', ),
-        'get_version': ('name', 'view', ),
-        'list_files': ('parent', 'filter', 'page_size', 'page_token', ),
-        'list_packages': ('parent', 'page_size', 'page_token', ),
+        'list_docker_images': ('parent', 'page_size', 'page_token', ),
         'list_repositories': ('parent', 'page_size', 'page_token', ),
-        'list_tags': ('parent', 'filter', 'page_size', 'page_token', ),
-        'list_versions': ('parent', 'page_size', 'page_token', 'view', ),
-        'set_iam_policy': ('resource', 'policy', ),
-        'test_iam_permissions': ('resource', 'permissions', ),
-        'update_repository': ('repository', 'update_mask', ),
-        'update_tag': ('tag', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

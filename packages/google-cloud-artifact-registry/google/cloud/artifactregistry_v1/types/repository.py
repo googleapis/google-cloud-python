@@ -15,20 +15,16 @@
 #
 import proto  # type: ignore
 
-from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.devtools.artifactregistry.v1beta2",
+    package="google.devtools.artifactregistry.v1",
     manifest={
         "Repository",
         "ListRepositoriesRequest",
         "ListRepositoriesResponse",
         "GetRepositoryRequest",
-        "CreateRepositoryRequest",
-        "UpdateRepositoryRequest",
-        "DeleteRepositoryRequest",
     },
 )
 
@@ -41,13 +37,13 @@ class Repository(proto.Message):
             The name of the repository, for example:
             "projects/p1/locations/us-
             central1/repositories/repo1".
-        format_ (google.cloud.artifactregistry_v1beta2.types.Repository.Format):
+        format_ (google.cloud.artifactregistry_v1.types.Repository.Format):
             The format of packages that are stored in the
             repository.
         description (str):
             The user-provided description of the
             repository.
-        labels (Sequence[google.cloud.artifactregistry_v1beta2.types.Repository.LabelsEntry]):
+        labels (Sequence[google.cloud.artifactregistry_v1.types.Repository.LabelsEntry]):
             Labels with user-defined metadata.
             This field may contain up to 64 entries. Label
             keys and values may be no longer than 63
@@ -73,6 +69,11 @@ class Repository(proto.Message):
         r"""A package format."""
         FORMAT_UNSPECIFIED = 0
         DOCKER = 1
+        MAVEN = 2
+        NPM = 3
+        APT = 5
+        YUM = 6
+        PYTHON = 8
 
     name = proto.Field(proto.STRING, number=1,)
     format_ = proto.Field(proto.ENUM, number=2, enum=Format,)
@@ -88,11 +89,10 @@ class ListRepositoriesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            The name of the parent resource whose
-            repositories will be listed.
+            Required. The name of the parent resource
+            whose repositories will be listed.
         page_size (int):
             The maximum number of repositories to return.
-            Maximum page size is 10,000.
         page_token (str):
             The next_page_token value returned from a previous list
             request, if any.
@@ -107,7 +107,7 @@ class ListRepositoriesResponse(proto.Message):
     r"""The response from listing repositories.
 
     Attributes:
-        repositories (Sequence[google.cloud.artifactregistry_v1beta2.types.Repository]):
+        repositories (Sequence[google.cloud.artifactregistry_v1.types.Repository]):
             The repositories returned.
         next_page_token (str):
             The token to retrieve the next page of
@@ -128,55 +128,8 @@ class GetRepositoryRequest(proto.Message):
 
     Attributes:
         name (str):
-            The name of the repository to retrieve.
-    """
-
-    name = proto.Field(proto.STRING, number=1,)
-
-
-class CreateRepositoryRequest(proto.Message):
-    r"""The request to create a new repository.
-
-    Attributes:
-        parent (str):
-            The name of the parent resource where the
-            repository will be created.
-        repository_id (str):
-            The repository id to use for this repository.
-        repository (google.cloud.artifactregistry_v1beta2.types.Repository):
-            The repository to be created.
-    """
-
-    parent = proto.Field(proto.STRING, number=1,)
-    repository_id = proto.Field(proto.STRING, number=2,)
-    repository = proto.Field(proto.MESSAGE, number=3, message="Repository",)
-
-
-class UpdateRepositoryRequest(proto.Message):
-    r"""The request to update a repository.
-
-    Attributes:
-        repository (google.cloud.artifactregistry_v1beta2.types.Repository):
-            The repository that replaces the resource on
-            the server.
-        update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The update mask applies to the resource. For the
-            ``FieldMask`` definition, see
-            https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-    """
-
-    repository = proto.Field(proto.MESSAGE, number=1, message="Repository",)
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
-    )
-
-
-class DeleteRepositoryRequest(proto.Message):
-    r"""The request to delete a repository.
-
-    Attributes:
-        name (str):
-            The name of the repository to delete.
+            Required. The name of the repository to
+            retrieve.
     """
 
     name = proto.Field(proto.STRING, number=1,)

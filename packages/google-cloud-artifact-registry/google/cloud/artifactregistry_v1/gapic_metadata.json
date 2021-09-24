@@ -1,0 +1,53 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.artifactregistry_v1",
+  "protoPackage": "google.devtools.artifactregistry.v1",
+  "schema": "1.0",
+  "services": {
+    "ArtifactRegistry": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ArtifactRegistryClient",
+          "rpcs": {
+            "GetRepository": {
+              "methods": [
+                "get_repository"
+              ]
+            },
+            "ListDockerImages": {
+              "methods": [
+                "list_docker_images"
+              ]
+            },
+            "ListRepositories": {
+              "methods": [
+                "list_repositories"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ArtifactRegistryAsyncClient",
+          "rpcs": {
+            "GetRepository": {
+              "methods": [
+                "get_repository"
+              ]
+            },
+            "ListDockerImages": {
+              "methods": [
+                "list_docker_images"
+              ]
+            },
+            "ListRepositories": {
+              "methods": [
+                "list_repositories"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

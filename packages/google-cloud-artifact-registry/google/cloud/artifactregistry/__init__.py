@@ -14,87 +14,29 @@
 # limitations under the License.
 #
 
-from google.cloud.artifactregistry_v1beta2.services.artifact_registry.client import (
+from google.cloud.artifactregistry_v1.services.artifact_registry.client import (
     ArtifactRegistryClient,
 )
-from google.cloud.artifactregistry_v1beta2.services.artifact_registry.async_client import (
+from google.cloud.artifactregistry_v1.services.artifact_registry.async_client import (
     ArtifactRegistryAsyncClient,
 )
 
-from google.cloud.artifactregistry_v1beta2.types.file import File
-from google.cloud.artifactregistry_v1beta2.types.file import GetFileRequest
-from google.cloud.artifactregistry_v1beta2.types.file import Hash
-from google.cloud.artifactregistry_v1beta2.types.file import ListFilesRequest
-from google.cloud.artifactregistry_v1beta2.types.file import ListFilesResponse
-from google.cloud.artifactregistry_v1beta2.types.package import DeletePackageRequest
-from google.cloud.artifactregistry_v1beta2.types.package import GetPackageRequest
-from google.cloud.artifactregistry_v1beta2.types.package import ListPackagesRequest
-from google.cloud.artifactregistry_v1beta2.types.package import ListPackagesResponse
-from google.cloud.artifactregistry_v1beta2.types.package import Package
-from google.cloud.artifactregistry_v1beta2.types.repository import (
-    CreateRepositoryRequest,
-)
-from google.cloud.artifactregistry_v1beta2.types.repository import (
-    DeleteRepositoryRequest,
-)
-from google.cloud.artifactregistry_v1beta2.types.repository import GetRepositoryRequest
-from google.cloud.artifactregistry_v1beta2.types.repository import (
-    ListRepositoriesRequest,
-)
-from google.cloud.artifactregistry_v1beta2.types.repository import (
-    ListRepositoriesResponse,
-)
-from google.cloud.artifactregistry_v1beta2.types.repository import Repository
-from google.cloud.artifactregistry_v1beta2.types.repository import (
-    UpdateRepositoryRequest,
-)
-from google.cloud.artifactregistry_v1beta2.types.service import OperationMetadata
-from google.cloud.artifactregistry_v1beta2.types.tag import CreateTagRequest
-from google.cloud.artifactregistry_v1beta2.types.tag import DeleteTagRequest
-from google.cloud.artifactregistry_v1beta2.types.tag import GetTagRequest
-from google.cloud.artifactregistry_v1beta2.types.tag import ListTagsRequest
-from google.cloud.artifactregistry_v1beta2.types.tag import ListTagsResponse
-from google.cloud.artifactregistry_v1beta2.types.tag import Tag
-from google.cloud.artifactregistry_v1beta2.types.tag import UpdateTagRequest
-from google.cloud.artifactregistry_v1beta2.types.version import DeleteVersionRequest
-from google.cloud.artifactregistry_v1beta2.types.version import GetVersionRequest
-from google.cloud.artifactregistry_v1beta2.types.version import ListVersionsRequest
-from google.cloud.artifactregistry_v1beta2.types.version import ListVersionsResponse
-from google.cloud.artifactregistry_v1beta2.types.version import Version
-from google.cloud.artifactregistry_v1beta2.types.version import VersionView
+from google.cloud.artifactregistry_v1.types.artifact import DockerImage
+from google.cloud.artifactregistry_v1.types.artifact import ListDockerImagesRequest
+from google.cloud.artifactregistry_v1.types.artifact import ListDockerImagesResponse
+from google.cloud.artifactregistry_v1.types.repository import GetRepositoryRequest
+from google.cloud.artifactregistry_v1.types.repository import ListRepositoriesRequest
+from google.cloud.artifactregistry_v1.types.repository import ListRepositoriesResponse
+from google.cloud.artifactregistry_v1.types.repository import Repository
 
 __all__ = (
     "ArtifactRegistryClient",
     "ArtifactRegistryAsyncClient",
-    "File",
-    "GetFileRequest",
-    "Hash",
-    "ListFilesRequest",
-    "ListFilesResponse",
-    "DeletePackageRequest",
-    "GetPackageRequest",
-    "ListPackagesRequest",
-    "ListPackagesResponse",
-    "Package",
-    "CreateRepositoryRequest",
-    "DeleteRepositoryRequest",
+    "DockerImage",
+    "ListDockerImagesRequest",
+    "ListDockerImagesResponse",
     "GetRepositoryRequest",
     "ListRepositoriesRequest",
     "ListRepositoriesResponse",
     "Repository",
-    "UpdateRepositoryRequest",
-    "OperationMetadata",
-    "CreateTagRequest",
-    "DeleteTagRequest",
-    "GetTagRequest",
-    "ListTagsRequest",
-    "ListTagsResponse",
-    "Tag",
-    "UpdateTagRequest",
-    "DeleteVersionRequest",
-    "GetVersionRequest",
-    "ListVersionsRequest",
-    "ListVersionsResponse",
-    "Version",
-    "VersionView",
 )
