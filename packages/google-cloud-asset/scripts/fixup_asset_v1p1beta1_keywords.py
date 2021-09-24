@@ -39,8 +39,8 @@ def partition(
 class assetCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'search_all_iam_policies': ('scope', 'query', 'page_size', 'page_token', ),
-          'search_all_resources': ('scope', 'query', 'asset_types', 'page_size', 'page_token', 'order_by', ),
+        'search_all_iam_policies': ('scope', 'query', 'page_size', 'page_token', ),
+        'search_all_resources': ('scope', 'query', 'asset_types', 'page_size', 'page_token', 'order_by', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -59,7 +59,7 @@ class assetCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

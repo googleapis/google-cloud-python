@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -335,7 +335,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def search_all_resources(
         self,
-        request: asset_service.SearchAllResourcesRequest = None,
+        request: Union[asset_service.SearchAllResourcesRequest, dict] = None,
         *,
         scope: str = None,
         query: str = None,
@@ -353,7 +353,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         requested scope, otherwise it will be rejected.
 
         Args:
-            request (google.cloud.asset_v1p1beta1.types.SearchAllResourcesRequest):
+            request (Union[google.cloud.asset_v1p1beta1.types.SearchAllResourcesRequest, dict]):
                 The request object. Search all resources request.
             scope (str):
                 Required. The relative name of an asset. The search is
@@ -445,7 +445,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def search_all_iam_policies(
         self,
-        request: asset_service.SearchAllIamPoliciesRequest = None,
+        request: Union[asset_service.SearchAllIamPoliciesRequest, dict] = None,
         *,
         scope: str = None,
         query: str = None,
@@ -463,7 +463,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         requested scope, otherwise it will be rejected.
 
         Args:
-            request (google.cloud.asset_v1p1beta1.types.SearchAllIamPoliciesRequest):
+            request (Union[google.cloud.asset_v1p1beta1.types.SearchAllIamPoliciesRequest, dict]):
                 The request object. Search all IAM policies request.
             scope (str):
                 Required. The relative name of an asset. The search is

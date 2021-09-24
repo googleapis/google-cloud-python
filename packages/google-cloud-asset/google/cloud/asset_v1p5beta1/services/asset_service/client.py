@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -383,7 +383,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def list_assets(
         self,
-        request: asset_service.ListAssetsRequest = None,
+        request: Union[asset_service.ListAssetsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -393,7 +393,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         paged results in response.
 
         Args:
-            request (google.cloud.asset_v1p5beta1.types.ListAssetsRequest):
+            request (Union[google.cloud.asset_v1p5beta1.types.ListAssetsRequest, dict]):
                 The request object. ListAssets request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -344,7 +344,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def create_feed(
         self,
-        request: asset_service.CreateFeedRequest = None,
+        request: Union[asset_service.CreateFeedRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -356,7 +356,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         updates.
 
         Args:
-            request (google.cloud.asset_v1p2beta1.types.CreateFeedRequest):
+            request (Union[google.cloud.asset_v1p2beta1.types.CreateFeedRequest, dict]):
                 The request object. Create asset feed request.
             parent (str):
                 Required. The name of the
@@ -428,7 +428,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def get_feed(
         self,
-        request: asset_service.GetFeedRequest = None,
+        request: Union[asset_service.GetFeedRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -438,7 +438,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Gets details about an asset feed.
 
         Args:
-            request (google.cloud.asset_v1p2beta1.types.GetFeedRequest):
+            request (Union[google.cloud.asset_v1p2beta1.types.GetFeedRequest, dict]):
                 The request object. Get asset feed request.
             name (str):
                 Required. The name of the Feed and it must be in the
@@ -505,7 +505,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def list_feeds(
         self,
-        request: asset_service.ListFeedsRequest = None,
+        request: Union[asset_service.ListFeedsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -516,7 +516,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         project/folder/organization.
 
         Args:
-            request (google.cloud.asset_v1p2beta1.types.ListFeedsRequest):
+            request (Union[google.cloud.asset_v1p2beta1.types.ListFeedsRequest, dict]):
                 The request object. List asset feeds request.
             parent (str):
                 Required. The parent
@@ -578,7 +578,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def update_feed(
         self,
-        request: asset_service.UpdateFeedRequest = None,
+        request: Union[asset_service.UpdateFeedRequest, dict] = None,
         *,
         feed: asset_service.Feed = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -588,7 +588,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Updates an asset feed configuration.
 
         Args:
-            request (google.cloud.asset_v1p2beta1.types.UpdateFeedRequest):
+            request (Union[google.cloud.asset_v1p2beta1.types.UpdateFeedRequest, dict]):
                 The request object. Update asset feed request.
             feed (google.cloud.asset_v1p2beta1.types.Feed):
                 Required. The new values of feed details. It must match
@@ -658,7 +658,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def delete_feed(
         self,
-        request: asset_service.DeleteFeedRequest = None,
+        request: Union[asset_service.DeleteFeedRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -668,7 +668,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Deletes an asset feed.
 
         Args:
-            request (google.cloud.asset_v1p2beta1.types.DeleteFeedRequest):
+            request (Union[google.cloud.asset_v1p2beta1.types.DeleteFeedRequest, dict]):
                 The request object.
             name (str):
                 Required. The name of the feed and it must be in the

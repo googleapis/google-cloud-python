@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -336,7 +336,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def analyze_iam_policy(
         self,
-        request: asset_service.AnalyzeIamPolicyRequest = None,
+        request: Union[asset_service.AnalyzeIamPolicyRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -348,7 +348,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         matching the request.
 
         Args:
-            request (google.cloud.asset_v1p4beta1.types.AnalyzeIamPolicyRequest):
+            request (Union[google.cloud.asset_v1p4beta1.types.AnalyzeIamPolicyRequest, dict]):
                 The request object. A request message for
                 [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1p4beta1.AssetService.AnalyzeIamPolicy].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -391,7 +391,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
     def export_iam_policy_analysis(
         self,
-        request: asset_service.ExportIamPolicyAnalysisRequest = None,
+        request: Union[asset_service.ExportIamPolicyAnalysisRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -404,7 +404,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         the request to help callers to map responses to requests.
 
         Args:
-            request (google.cloud.asset_v1p4beta1.types.ExportIamPolicyAnalysisRequest):
+            request (Union[google.cloud.asset_v1p4beta1.types.ExportIamPolicyAnalysisRequest, dict]):
                 The request object. A request message for
                 [AssetService.ExportIamPolicyAnalysis][google.cloud.asset.v1p4beta1.AssetService.ExportIamPolicyAnalysis].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

@@ -39,8 +39,8 @@ def partition(
 class assetCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'analyze_iam_policy': ('analysis_query', 'options', ),
-          'export_iam_policy_analysis': ('analysis_query', 'output_config', 'options', ),
+        'analyze_iam_policy': ('analysis_query', 'options', ),
+        'export_iam_policy_analysis': ('analysis_query', 'output_config', 'options', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -59,7 +59,7 @@ class assetCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
