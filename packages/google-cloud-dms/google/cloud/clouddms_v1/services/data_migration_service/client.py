@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -380,7 +380,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def list_migration_jobs(
         self,
-        request: clouddms.ListMigrationJobsRequest = None,
+        request: Union[clouddms.ListMigrationJobsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -390,7 +390,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         r"""Lists migration jobs in a given project and location.
 
         Args:
-            request (google.cloud.clouddms_v1.types.ListMigrationJobsRequest):
+            request (Union[google.cloud.clouddms_v1.types.ListMigrationJobsRequest, dict]):
                 The request object. Retrieve a list of all migration
                 jobs in a given project and location.
             parent (str):
@@ -460,7 +460,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def get_migration_job(
         self,
-        request: clouddms.GetMigrationJobRequest = None,
+        request: Union[clouddms.GetMigrationJobRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -470,7 +470,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         r"""Gets details of a single migration job.
 
         Args:
-            request (google.cloud.clouddms_v1.types.GetMigrationJobRequest):
+            request (Union[google.cloud.clouddms_v1.types.GetMigrationJobRequest, dict]):
                 The request object. Request message for
                 'GetMigrationJob' request.
             name (str):
@@ -531,7 +531,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def create_migration_job(
         self,
-        request: clouddms.CreateMigrationJobRequest = None,
+        request: Union[clouddms.CreateMigrationJobRequest, dict] = None,
         *,
         parent: str = None,
         migration_job: clouddms_resources.MigrationJob = None,
@@ -544,7 +544,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         location.
 
         Args:
-            request (google.cloud.clouddms_v1.types.CreateMigrationJobRequest):
+            request (Union[google.cloud.clouddms_v1.types.CreateMigrationJobRequest, dict]):
                 The request object. Request message to create a new
                 Database Migration Service migration job in the
                 specified project and region.
@@ -637,7 +637,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def update_migration_job(
         self,
-        request: clouddms.UpdateMigrationJobRequest = None,
+        request: Union[clouddms.UpdateMigrationJobRequest, dict] = None,
         *,
         migration_job: clouddms_resources.MigrationJob = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -648,7 +648,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         r"""Updates the parameters of a single migration job.
 
         Args:
-            request (google.cloud.clouddms_v1.types.UpdateMigrationJobRequest):
+            request (Union[google.cloud.clouddms_v1.types.UpdateMigrationJobRequest, dict]):
                 The request object. Request message for
                 'UpdateMigrationJob' request.
             migration_job (google.cloud.clouddms_v1.types.MigrationJob):
@@ -734,7 +734,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def delete_migration_job(
         self,
-        request: clouddms.DeleteMigrationJobRequest = None,
+        request: Union[clouddms.DeleteMigrationJobRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -744,7 +744,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         r"""Deletes a single migration job.
 
         Args:
-            request (google.cloud.clouddms_v1.types.DeleteMigrationJobRequest):
+            request (Union[google.cloud.clouddms_v1.types.DeleteMigrationJobRequest, dict]):
                 The request object. Request message for
                 'DeleteMigrationJob' request.
             name (str):
@@ -826,7 +826,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def start_migration_job(
         self,
-        request: clouddms.StartMigrationJobRequest = None,
+        request: Union[clouddms.StartMigrationJobRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -835,7 +835,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         r"""Start an already created migration job.
 
         Args:
-            request (google.cloud.clouddms_v1.types.StartMigrationJobRequest):
+            request (Union[google.cloud.clouddms_v1.types.StartMigrationJobRequest, dict]):
                 The request object. Request message for
                 'StartMigrationJob' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -888,7 +888,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def stop_migration_job(
         self,
-        request: clouddms.StopMigrationJobRequest = None,
+        request: Union[clouddms.StopMigrationJobRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -897,7 +897,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         r"""Stops a running migration job.
 
         Args:
-            request (google.cloud.clouddms_v1.types.StopMigrationJobRequest):
+            request (Union[google.cloud.clouddms_v1.types.StopMigrationJobRequest, dict]):
                 The request object. Request message for
                 'StopMigrationJob' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -950,7 +950,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def resume_migration_job(
         self,
-        request: clouddms.ResumeMigrationJobRequest = None,
+        request: Union[clouddms.ResumeMigrationJobRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -960,7 +960,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         is resumable (was stopped during CDC phase).
 
         Args:
-            request (google.cloud.clouddms_v1.types.ResumeMigrationJobRequest):
+            request (Union[google.cloud.clouddms_v1.types.ResumeMigrationJobRequest, dict]):
                 The request object. Request message for
                 'ResumeMigrationJob' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1013,7 +1013,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def promote_migration_job(
         self,
-        request: clouddms.PromoteMigrationJobRequest = None,
+        request: Union[clouddms.PromoteMigrationJobRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1024,7 +1024,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         standalone database.
 
         Args:
-            request (google.cloud.clouddms_v1.types.PromoteMigrationJobRequest):
+            request (Union[google.cloud.clouddms_v1.types.PromoteMigrationJobRequest, dict]):
                 The request object. Request message for
                 'PromoteMigrationJob' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1077,7 +1077,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def verify_migration_job(
         self,
-        request: clouddms.VerifyMigrationJobRequest = None,
+        request: Union[clouddms.VerifyMigrationJobRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1088,7 +1088,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         prerequisites are met.
 
         Args:
-            request (google.cloud.clouddms_v1.types.VerifyMigrationJobRequest):
+            request (Union[google.cloud.clouddms_v1.types.VerifyMigrationJobRequest, dict]):
                 The request object. Request message for
                 'VerifyMigrationJob' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1141,7 +1141,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def restart_migration_job(
         self,
-        request: clouddms.RestartMigrationJobRequest = None,
+        request: Union[clouddms.RestartMigrationJobRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1152,7 +1152,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         starting the migration process from scratch.
 
         Args:
-            request (google.cloud.clouddms_v1.types.RestartMigrationJobRequest):
+            request (Union[google.cloud.clouddms_v1.types.RestartMigrationJobRequest, dict]):
                 The request object. Request message for
                 'RestartMigrationJob' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1205,7 +1205,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def generate_ssh_script(
         self,
-        request: clouddms.GenerateSshScriptRequest = None,
+        request: Union[clouddms.GenerateSshScriptRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1215,7 +1215,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         reverse SSH connectivity.
 
         Args:
-            request (google.cloud.clouddms_v1.types.GenerateSshScriptRequest):
+            request (Union[google.cloud.clouddms_v1.types.GenerateSshScriptRequest, dict]):
                 The request object. Request message for
                 'GenerateSshScript' request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1258,7 +1258,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def list_connection_profiles(
         self,
-        request: clouddms.ListConnectionProfilesRequest = None,
+        request: Union[clouddms.ListConnectionProfilesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1269,7 +1269,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         project and location.
 
         Args:
-            request (google.cloud.clouddms_v1.types.ListConnectionProfilesRequest):
+            request (Union[google.cloud.clouddms_v1.types.ListConnectionProfilesRequest, dict]):
                 The request object. Request message for
                 'ListConnectionProfiles' request.
             parent (str):
@@ -1339,7 +1339,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def get_connection_profile(
         self,
-        request: clouddms.GetConnectionProfileRequest = None,
+        request: Union[clouddms.GetConnectionProfileRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1349,7 +1349,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         r"""Gets details of a single connection profile.
 
         Args:
-            request (google.cloud.clouddms_v1.types.GetConnectionProfileRequest):
+            request (Union[google.cloud.clouddms_v1.types.GetConnectionProfileRequest, dict]):
                 The request object. Request message for
                 'GetConnectionProfile' request.
             name (str):
@@ -1408,7 +1408,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def create_connection_profile(
         self,
-        request: clouddms.CreateConnectionProfileRequest = None,
+        request: Union[clouddms.CreateConnectionProfileRequest, dict] = None,
         *,
         parent: str = None,
         connection_profile: clouddms_resources.ConnectionProfile = None,
@@ -1421,7 +1421,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         and location.
 
         Args:
-            request (google.cloud.clouddms_v1.types.CreateConnectionProfileRequest):
+            request (Union[google.cloud.clouddms_v1.types.CreateConnectionProfileRequest, dict]):
                 The request object. Request message for
                 'CreateConnectionProfile' request.
             parent (str):
@@ -1513,7 +1513,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def update_connection_profile(
         self,
-        request: clouddms.UpdateConnectionProfileRequest = None,
+        request: Union[clouddms.UpdateConnectionProfileRequest, dict] = None,
         *,
         connection_profile: clouddms_resources.ConnectionProfile = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -1525,7 +1525,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         profile.
 
         Args:
-            request (google.cloud.clouddms_v1.types.UpdateConnectionProfileRequest):
+            request (Union[google.cloud.clouddms_v1.types.UpdateConnectionProfileRequest, dict]):
                 The request object. Request message for
                 'UpdateConnectionProfile' request.
             connection_profile (google.cloud.clouddms_v1.types.ConnectionProfile):
@@ -1612,7 +1612,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
 
     def delete_connection_profile(
         self,
-        request: clouddms.DeleteConnectionProfileRequest = None,
+        request: Union[clouddms.DeleteConnectionProfileRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1625,7 +1625,7 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         jobs.
 
         Args:
-            request (google.cloud.clouddms_v1.types.DeleteConnectionProfileRequest):
+            request (Union[google.cloud.clouddms_v1.types.DeleteConnectionProfileRequest, dict]):
                 The request object. Request message for
                 'DeleteConnectionProfile' request.
             name (str):
