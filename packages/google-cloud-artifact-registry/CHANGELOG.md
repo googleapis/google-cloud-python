@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.3...v0.4.0) (2021-09-24)
+
+
+### Features
+
+* add Artifact Registry v1  ([#80](https://www.github.com/googleapis/python-artifact-registry/issues/80)) ([43413eb](https://www.github.com/googleapis/python-artifact-registry/commit/43413ebd0d6823233573ab88c0340e4165ee4487))
+* set artifactregistry_v1 as the default import ([43413eb](https://www.github.com/googleapis/python-artifact-registry/commit/43413ebd0d6823233573ab88c0340e4165ee4487))
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([43413eb](https://www.github.com/googleapis/python-artifact-registry/commit/43413ebd0d6823233573ab88c0340e4165ee4487))
+
 ### [0.3.3](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.2...v0.3.3) (2021-07-27)
 
 
