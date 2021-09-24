@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -418,7 +418,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
     def list_insights(
         self,
-        request: recommender_service.ListInsightsRequest = None,
+        request: Union[recommender_service.ListInsightsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -430,7 +430,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         type.
 
         Args:
-            request (google.cloud.recommender_v1.types.ListInsightsRequest):
+            request (Union[google.cloud.recommender_v1.types.ListInsightsRequest, dict]):
                 The request object. Request for the `ListInsights`
                 method.
             parent (str):
@@ -508,7 +508,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
     def get_insight(
         self,
-        request: recommender_service.GetInsightRequest = None,
+        request: Union[recommender_service.GetInsightRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -519,7 +519,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         permission for the specified insight type.
 
         Args:
-            request (google.cloud.recommender_v1.types.GetInsightRequest):
+            request (Union[google.cloud.recommender_v1.types.GetInsightRequest, dict]):
                 The request object. Request to the `GetInsight` method.
             name (str):
                 Required. Name of the insight.
@@ -579,7 +579,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
     def mark_insight_accepted(
         self,
-        request: recommender_service.MarkInsightAcceptedRequest = None,
+        request: Union[recommender_service.MarkInsightAcceptedRequest, dict] = None,
         *,
         name: str = None,
         state_metadata: Sequence[
@@ -600,7 +600,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         specified insight.
 
         Args:
-            request (google.cloud.recommender_v1.types.MarkInsightAcceptedRequest):
+            request (Union[google.cloud.recommender_v1.types.MarkInsightAcceptedRequest, dict]):
                 The request object. Request for the
                 `MarkInsightAccepted` method.
             name (str):
@@ -679,7 +679,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
     def list_recommendations(
         self,
-        request: recommender_service.ListRecommendationsRequest = None,
+        request: Union[recommender_service.ListRecommendationsRequest, dict] = None,
         *,
         parent: str = None,
         filter: str = None,
@@ -691,7 +691,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         recommender.*.list IAM permission for the specified recommender.
 
         Args:
-            request (google.cloud.recommender_v1.types.ListRecommendationsRequest):
+            request (Union[google.cloud.recommender_v1.types.ListRecommendationsRequest, dict]):
                 The request object. Request for the
                 `ListRecommendations` method.
             parent (str):
@@ -780,7 +780,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
     def get_recommendation(
         self,
-        request: recommender_service.GetRecommendationRequest = None,
+        request: Union[recommender_service.GetRecommendationRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -791,7 +791,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         recommender.*.get IAM permission for the specified recommender.
 
         Args:
-            request (google.cloud.recommender_v1.types.GetRecommendationRequest):
+            request (Union[google.cloud.recommender_v1.types.GetRecommendationRequest, dict]):
                 The request object. Request to the `GetRecommendation`
                 method.
             name (str):
@@ -852,7 +852,9 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
     def mark_recommendation_claimed(
         self,
-        request: recommender_service.MarkRecommendationClaimedRequest = None,
+        request: Union[
+            recommender_service.MarkRecommendationClaimedRequest, dict
+        ] = None,
         *,
         name: str = None,
         state_metadata: Sequence[
@@ -876,7 +878,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         specified recommender.
 
         Args:
-            request (google.cloud.recommender_v1.types.MarkRecommendationClaimedRequest):
+            request (Union[google.cloud.recommender_v1.types.MarkRecommendationClaimedRequest, dict]):
                 The request object. Request for the
                 `MarkRecommendationClaimed` Method.
             name (str):
@@ -962,7 +964,9 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
     def mark_recommendation_succeeded(
         self,
-        request: recommender_service.MarkRecommendationSucceededRequest = None,
+        request: Union[
+            recommender_service.MarkRecommendationSucceededRequest, dict
+        ] = None,
         *,
         name: str = None,
         state_metadata: Sequence[
@@ -986,7 +990,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         specified recommender.
 
         Args:
-            request (google.cloud.recommender_v1.types.MarkRecommendationSucceededRequest):
+            request (Union[google.cloud.recommender_v1.types.MarkRecommendationSucceededRequest, dict]):
                 The request object. Request for the
                 `MarkRecommendationSucceeded` Method.
             name (str):
@@ -1072,7 +1076,9 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
     def mark_recommendation_failed(
         self,
-        request: recommender_service.MarkRecommendationFailedRequest = None,
+        request: Union[
+            recommender_service.MarkRecommendationFailedRequest, dict
+        ] = None,
         *,
         name: str = None,
         state_metadata: Sequence[
@@ -1096,7 +1102,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         specified recommender.
 
         Args:
-            request (google.cloud.recommender_v1.types.MarkRecommendationFailedRequest):
+            request (Union[google.cloud.recommender_v1.types.MarkRecommendationFailedRequest, dict]):
                 The request object. Request for the
                 `MarkRecommendationFailed` Method.
             name (str):

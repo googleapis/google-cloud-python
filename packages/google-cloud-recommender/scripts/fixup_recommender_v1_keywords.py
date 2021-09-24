@@ -39,14 +39,14 @@ def partition(
 class recommenderCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'get_insight': ('name', ),
-          'get_recommendation': ('name', ),
-          'list_insights': ('parent', 'page_size', 'page_token', 'filter', ),
-          'list_recommendations': ('parent', 'page_size', 'page_token', 'filter', ),
-          'mark_insight_accepted': ('name', 'etag', 'state_metadata', ),
-          'mark_recommendation_claimed': ('name', 'etag', 'state_metadata', ),
-          'mark_recommendation_failed': ('name', 'etag', 'state_metadata', ),
-          'mark_recommendation_succeeded': ('name', 'etag', 'state_metadata', ),
+        'get_insight': ('name', ),
+        'get_recommendation': ('name', ),
+        'list_insights': ('parent', 'page_size', 'page_token', 'filter', ),
+        'list_recommendations': ('parent', 'page_size', 'page_token', 'filter', ),
+        'mark_insight_accepted': ('name', 'etag', 'state_metadata', ),
+        'mark_recommendation_claimed': ('name', 'etag', 'state_metadata', ),
+        'mark_recommendation_failed': ('name', 'etag', 'state_metadata', ),
+        'mark_recommendation_succeeded': ('name', 'etag', 'state_metadata', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -65,7 +65,7 @@ class recommenderCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
