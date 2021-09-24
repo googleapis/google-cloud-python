@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -337,7 +337,7 @@ class IamCheckerClient(metaclass=IamCheckerClientMeta):
 
     def troubleshoot_iam_policy(
         self,
-        request: checker.TroubleshootIamPolicyRequest = None,
+        request: Union[checker.TroubleshootIamPolicyRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -348,7 +348,7 @@ class IamCheckerClient(metaclass=IamCheckerClientMeta):
         does not have that permission.
 
         Args:
-            request (google.cloud.policytroubleshooter_v1.types.TroubleshootIamPolicyRequest):
+            request (Union[google.cloud.policytroubleshooter_v1.types.TroubleshootIamPolicyRequest, dict]):
                 The request object. Request for
                 [TroubleshootIamPolicy][google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
