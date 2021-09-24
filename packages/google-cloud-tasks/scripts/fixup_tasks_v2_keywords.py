@@ -39,22 +39,22 @@ def partition(
 class tasksCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_queue': ('parent', 'queue', ),
-          'create_task': ('parent', 'task', 'response_view', ),
-          'delete_queue': ('name', ),
-          'delete_task': ('name', ),
-          'get_iam_policy': ('resource', 'options', ),
-          'get_queue': ('name', ),
-          'get_task': ('name', 'response_view', ),
-          'list_queues': ('parent', 'filter', 'page_size', 'page_token', ),
-          'list_tasks': ('parent', 'response_view', 'page_size', 'page_token', ),
-          'pause_queue': ('name', ),
-          'purge_queue': ('name', ),
-          'resume_queue': ('name', ),
-          'run_task': ('name', 'response_view', ),
-          'set_iam_policy': ('resource', 'policy', ),
-          'test_iam_permissions': ('resource', 'permissions', ),
-          'update_queue': ('queue', 'update_mask', ),
+        'create_queue': ('parent', 'queue', ),
+        'create_task': ('parent', 'task', 'response_view', ),
+        'delete_queue': ('name', ),
+        'delete_task': ('name', ),
+        'get_iam_policy': ('resource', 'options', ),
+        'get_queue': ('name', ),
+        'get_task': ('name', 'response_view', ),
+        'list_queues': ('parent', 'filter', 'page_size', 'page_token', ),
+        'list_tasks': ('parent', 'response_view', 'page_size', 'page_token', ),
+        'pause_queue': ('name', ),
+        'purge_queue': ('name', ),
+        'resume_queue': ('name', ),
+        'run_task': ('name', 'response_view', ),
+        'set_iam_policy': ('resource', 'policy', ),
+        'test_iam_permissions': ('resource', 'permissions', ),
+        'update_queue': ('queue', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -73,7 +73,7 @@ class tasksCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
