@@ -39,13 +39,13 @@ def partition(
 class accessapprovalCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'approve_approval_request': ('name', 'expire_time', ),
-          'delete_access_approval_settings': ('name', ),
-          'dismiss_approval_request': ('name', ),
-          'get_access_approval_settings': ('name', ),
-          'get_approval_request': ('name', ),
-          'list_approval_requests': ('parent', 'filter', 'page_size', 'page_token', ),
-          'update_access_approval_settings': ('settings', 'update_mask', ),
+        'approve_approval_request': ('name', 'expire_time', ),
+        'delete_access_approval_settings': ('name', ),
+        'dismiss_approval_request': ('name', ),
+        'get_access_approval_settings': ('name', ),
+        'get_approval_request': ('name', ),
+        'list_approval_requests': ('parent', 'filter', 'page_size', 'page_token', ),
+        'update_access_approval_settings': ('settings', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -64,7 +64,7 @@ class accessapprovalCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
