@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -340,7 +340,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
     def list_services(
         self,
-        request: appengine.ListServicesRequest = None,
+        request: Union[appengine.ListServicesRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -349,7 +349,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         r"""Lists all the services in the application.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.ListServicesRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.ListServicesRequest, dict]):
                 The request object. Request message for
                 `Services.ListServices`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -398,7 +398,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
     def get_service(
         self,
-        request: appengine.GetServiceRequest = None,
+        request: Union[appengine.GetServiceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -408,7 +408,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         service.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.GetServiceRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.GetServiceRequest, dict]):
                 The request object. Request message for
                 `Services.GetService`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -459,7 +459,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
     def update_service(
         self,
-        request: appengine.UpdateServiceRequest = None,
+        request: Union[appengine.UpdateServiceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -468,7 +468,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         r"""Updates the configuration of the specified service.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.UpdateServiceRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.UpdateServiceRequest, dict]):
                 The request object. Request message for
                 `Services.UpdateService`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -526,7 +526,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
     def delete_service(
         self,
-        request: appengine.DeleteServiceRequest = None,
+        request: Union[appengine.DeleteServiceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -536,7 +536,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         versions.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.DeleteServiceRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.DeleteServiceRequest, dict]):
                 The request object. Request message for
                 `Services.DeleteService`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

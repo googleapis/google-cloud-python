@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -346,7 +346,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
     def list_ingress_rules(
         self,
-        request: appengine.ListIngressRulesRequest = None,
+        request: Union[appengine.ListIngressRulesRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -355,7 +355,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
         r"""Lists the firewall rules of an application.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.ListIngressRulesRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.ListIngressRulesRequest, dict]):
                 The request object. Request message for
                 `Firewall.ListIngressRules`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -404,7 +404,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
     def batch_update_ingress_rules(
         self,
-        request: appengine.BatchUpdateIngressRulesRequest = None,
+        request: Union[appengine.BatchUpdateIngressRulesRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -419,7 +419,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
         end of the list.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.BatchUpdateIngressRulesRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.BatchUpdateIngressRulesRequest, dict]):
                 The request object. Request message for
                 `Firewall.BatchUpdateIngressRules`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -460,7 +460,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
     def create_ingress_rule(
         self,
-        request: appengine.CreateIngressRuleRequest = None,
+        request: Union[appengine.CreateIngressRuleRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -469,7 +469,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
         r"""Creates a firewall rule for the application.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.CreateIngressRuleRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.CreateIngressRuleRequest, dict]):
                 The request object. Request message for
                 `Firewall.CreateIngressRule`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -512,7 +512,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
     def get_ingress_rule(
         self,
-        request: appengine.GetIngressRuleRequest = None,
+        request: Union[appengine.GetIngressRuleRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -521,7 +521,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
         r"""Gets the specified firewall rule.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.GetIngressRuleRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.GetIngressRuleRequest, dict]):
                 The request object. Request message for
                 `Firewall.GetIngressRule`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -564,7 +564,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
     def update_ingress_rule(
         self,
-        request: appengine.UpdateIngressRuleRequest = None,
+        request: Union[appengine.UpdateIngressRuleRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -573,7 +573,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
         r"""Updates the specified firewall rule.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.UpdateIngressRuleRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.UpdateIngressRuleRequest, dict]):
                 The request object. Request message for
                 `Firewall.UpdateIngressRule`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -616,7 +616,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
 
     def delete_ingress_rule(
         self,
-        request: appengine.DeleteIngressRuleRequest = None,
+        request: Union[appengine.DeleteIngressRuleRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -625,7 +625,7 @@ class FirewallClient(metaclass=FirewallClientMeta):
         r"""Deletes the specified firewall rule.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.DeleteIngressRuleRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.DeleteIngressRuleRequest, dict]):
                 The request object. Request message for
                 `Firewall.DeleteIngressRule`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

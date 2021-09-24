@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -343,7 +343,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def list_versions(
         self,
-        request: appengine.ListVersionsRequest = None,
+        request: Union[appengine.ListVersionsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -352,7 +352,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         r"""Lists the versions of a service.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.ListVersionsRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.ListVersionsRequest, dict]):
                 The request object. Request message for
                 `Versions.ListVersions`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -401,7 +401,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def get_version(
         self,
-        request: appengine.GetVersionRequest = None,
+        request: Union[appengine.GetVersionRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -412,7 +412,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         parameter to get the full resource.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.GetVersionRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.GetVersionRequest, dict]):
                 The request object. Request message for
                 `Versions.GetVersion`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -454,7 +454,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def create_version(
         self,
-        request: appengine.CreateVersionRequest = None,
+        request: Union[appengine.CreateVersionRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -463,7 +463,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         r"""Deploys code and resource files to a new version.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.CreateVersionRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.CreateVersionRequest, dict]):
                 The request object. Request message for
                 `Versions.CreateVersion`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -514,7 +514,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def update_version(
         self,
-        request: appengine.UpdateVersionRequest = None,
+        request: Union[appengine.UpdateVersionRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -558,7 +558,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         -  ```manual_scaling.instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#manualscaling>`__
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.UpdateVersionRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.UpdateVersionRequest, dict]):
                 The request object. Request message for
                 `Versions.UpdateVersion`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -609,7 +609,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def delete_version(
         self,
-        request: appengine.DeleteVersionRequest = None,
+        request: Union[appengine.DeleteVersionRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -618,7 +618,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         r"""Deletes an existing Version resource.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.DeleteVersionRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.DeleteVersionRequest, dict]):
                 The request object. Request message for
                 `Versions.DeleteVersion`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

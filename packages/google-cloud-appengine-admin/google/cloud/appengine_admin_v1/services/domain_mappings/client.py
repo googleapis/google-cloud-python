@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -341,7 +341,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
 
     def list_domain_mappings(
         self,
-        request: appengine.ListDomainMappingsRequest = None,
+        request: Union[appengine.ListDomainMappingsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -350,7 +350,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
         r"""Lists the domain mappings on an application.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.ListDomainMappingsRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.ListDomainMappingsRequest, dict]):
                 The request object. Request message for
                 `DomainMappings.ListDomainMappings`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -399,7 +399,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
 
     def get_domain_mapping(
         self,
-        request: appengine.GetDomainMappingRequest = None,
+        request: Union[appengine.GetDomainMappingRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -408,7 +408,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
         r"""Gets the specified domain mapping.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.GetDomainMappingRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.GetDomainMappingRequest, dict]):
                 The request object. Request message for
                 `DomainMappings.GetDomainMapping`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -449,7 +449,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
 
     def create_domain_mapping(
         self,
-        request: appengine.CreateDomainMappingRequest = None,
+        request: Union[appengine.CreateDomainMappingRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -461,7 +461,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
         ```AuthorizedDomains.ListAuthorizedDomains`` <>`__.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.CreateDomainMappingRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.CreateDomainMappingRequest, dict]):
                 The request object. Request message for
                 `DomainMappings.CreateDomainMapping`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -513,7 +513,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
 
     def update_domain_mapping(
         self,
-        request: appengine.UpdateDomainMappingRequest = None,
+        request: Union[appengine.UpdateDomainMappingRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -526,7 +526,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
         ``DomainMapping`` resource.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.UpdateDomainMappingRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.UpdateDomainMappingRequest, dict]):
                 The request object. Request message for
                 `DomainMappings.UpdateDomainMapping`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -578,7 +578,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
 
     def delete_domain_mapping(
         self,
-        request: appengine.DeleteDomainMappingRequest = None,
+        request: Union[appengine.DeleteDomainMappingRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -589,7 +589,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
         ``DomainMapping`` resource.
 
         Args:
-            request (google.cloud.appengine_admin_v1.types.DeleteDomainMappingRequest):
+            request (Union[google.cloud.appengine_admin_v1.types.DeleteDomainMappingRequest, dict]):
                 The request object. Request message for
                 `DomainMappings.DeleteDomainMapping`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
