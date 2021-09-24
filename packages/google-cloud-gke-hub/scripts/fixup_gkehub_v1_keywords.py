@@ -39,17 +39,17 @@ def partition(
 class gkehubCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_feature': ('parent', 'feature_id', 'resource', 'request_id', ),
-          'create_membership': ('parent', 'membership_id', 'resource', 'request_id', ),
-          'delete_feature': ('name', 'force', 'request_id', ),
-          'delete_membership': ('name', 'request_id', ),
-          'generate_connect_manifest': ('name', 'namespace', 'proxy', 'version', 'is_upgrade', 'registry', 'image_pull_secret_content', ),
-          'get_feature': ('name', ),
-          'get_membership': ('name', ),
-          'list_features': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'list_memberships': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'update_feature': ('name', 'update_mask', 'resource', 'request_id', ),
-          'update_membership': ('name', 'update_mask', 'resource', 'request_id', ),
+        'create_feature': ('parent', 'feature_id', 'resource', 'request_id', ),
+        'create_membership': ('parent', 'membership_id', 'resource', 'request_id', ),
+        'delete_feature': ('name', 'force', 'request_id', ),
+        'delete_membership': ('name', 'request_id', ),
+        'generate_connect_manifest': ('name', 'namespace', 'proxy', 'version', 'is_upgrade', 'registry', 'image_pull_secret_content', ),
+        'get_feature': ('name', ),
+        'get_membership': ('name', ),
+        'list_features': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_memberships': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'update_feature': ('name', 'update_mask', 'resource', 'request_id', ),
+        'update_membership': ('name', 'update_mask', 'resource', 'request_id', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -68,7 +68,7 @@ class gkehubCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
