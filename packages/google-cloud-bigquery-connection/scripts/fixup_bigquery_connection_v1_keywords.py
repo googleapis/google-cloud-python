@@ -39,14 +39,14 @@ def partition(
 class bigquery_connectionCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_connection': ('parent', 'connection', 'connection_id', ),
-          'delete_connection': ('name', ),
-          'get_connection': ('name', ),
-          'get_iam_policy': ('resource', 'options', ),
-          'list_connections': ('parent', 'page_size', 'page_token', ),
-          'set_iam_policy': ('resource', 'policy', ),
-          'test_iam_permissions': ('resource', 'permissions', ),
-          'update_connection': ('name', 'connection', 'update_mask', ),
+        'create_connection': ('parent', 'connection', 'connection_id', ),
+        'delete_connection': ('name', ),
+        'get_connection': ('name', ),
+        'get_iam_policy': ('resource', 'options', ),
+        'list_connections': ('parent', 'page_size', 'page_token', ),
+        'set_iam_policy': ('resource', 'policy', ),
+        'test_iam_permissions': ('resource', 'permissions', ),
+        'update_connection': ('name', 'connection', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -65,7 +65,7 @@ class bigquery_connectionCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
