@@ -39,16 +39,16 @@ def partition(
 class networkconnectivityCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_hub': ('parent', 'hub', 'hub_id', 'request_id', ),
-          'create_spoke': ('parent', 'spoke', 'spoke_id', 'request_id', ),
-          'delete_hub': ('name', 'request_id', ),
-          'delete_spoke': ('name', 'request_id', ),
-          'get_hub': ('name', ),
-          'get_spoke': ('name', ),
-          'list_hubs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'list_spokes': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'update_hub': ('hub', 'update_mask', 'request_id', ),
-          'update_spoke': ('spoke', 'update_mask', 'request_id', ),
+        'create_hub': ('parent', 'hub', 'hub_id', 'request_id', ),
+        'create_spoke': ('parent', 'spoke', 'spoke_id', 'request_id', ),
+        'delete_hub': ('name', 'request_id', ),
+        'delete_spoke': ('name', 'request_id', ),
+        'get_hub': ('name', ),
+        'get_spoke': ('name', ),
+        'list_hubs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_spokes': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'update_hub': ('hub', 'update_mask', 'request_id', ),
+        'update_spoke': ('spoke', 'update_mask', 'request_id', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -67,7 +67,7 @@ class networkconnectivityCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
