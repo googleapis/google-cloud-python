@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -346,7 +346,7 @@ class PhishingProtectionServiceV1Beta1Client(
 
     def report_phishing(
         self,
-        request: phishingprotection.ReportPhishingRequest = None,
+        request: Union[phishingprotection.ReportPhishingRequest, dict] = None,
         *,
         parent: str = None,
         uri: str = None,
@@ -365,7 +365,7 @@ class PhishingProtectionServiceV1Beta1Client(
         in the future.
 
         Args:
-            request (google.cloud.phishingprotection_v1beta1.types.ReportPhishingRequest):
+            request (Union[google.cloud.phishingprotection_v1beta1.types.ReportPhishingRequest, dict]):
                 The request object. The ReportPhishing request message.
             parent (str):
                 Required. The name of the project for which the report
