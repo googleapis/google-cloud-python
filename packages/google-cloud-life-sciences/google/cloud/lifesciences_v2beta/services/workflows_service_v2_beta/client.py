@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -341,7 +341,7 @@ class WorkflowsServiceV2BetaClient(metaclass=WorkflowsServiceV2BetaClientMeta):
 
     def run_pipeline(
         self,
-        request: workflows.RunPipelineRequest = None,
+        request: Union[workflows.RunPipelineRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -367,7 +367,7 @@ class WorkflowsServiceV2BetaClient(metaclass=WorkflowsServiceV2BetaClientMeta):
         -  ``lifesciences.workflows.run``
 
         Args:
-            request (google.cloud.lifesciences_v2beta.types.RunPipelineRequest):
+            request (Union[google.cloud.lifesciences_v2beta.types.RunPipelineRequest, dict]):
                 The request object. The arguments to the `RunPipeline`
                 method. The requesting user must have the
                 `iam.serviceAccounts.actAs` permission for the Cloud
