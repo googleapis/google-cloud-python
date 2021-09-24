@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -339,7 +339,7 @@ class VideoIntelligenceServiceClient(metaclass=VideoIntelligenceServiceClientMet
 
     def annotate_video(
         self,
-        request: video_intelligence.AnnotateVideoRequest = None,
+        request: Union[video_intelligence.AnnotateVideoRequest, dict] = None,
         *,
         input_uri: str = None,
         features: Sequence[video_intelligence.Feature] = None,
@@ -354,7 +354,7 @@ class VideoIntelligenceServiceClient(metaclass=VideoIntelligenceServiceClientMet
         contains ``AnnotateVideoResponse`` (results).
 
         Args:
-            request (google.cloud.videointelligence_v1beta2.types.AnnotateVideoRequest):
+            request (Union[google.cloud.videointelligence_v1beta2.types.AnnotateVideoRequest, dict]):
                 The request object. Video annotation request.
             input_uri (str):
                 Input video location. Currently, only `Google Cloud

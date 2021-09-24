@@ -39,8 +39,8 @@ def partition(
 class videointelligenceCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'annotate_video': ('features', 'input_uri', 'input_content', 'video_context', 'output_uri', 'location_id', ),
-          'streaming_annotate_video': ('video_config', 'input_content', ),
+        'annotate_video': ('features', 'input_uri', 'input_content', 'video_context', 'output_uri', 'location_id', ),
+        'streaming_annotate_video': ('video_config', 'input_content', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -59,7 +59,7 @@ class videointelligenceCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
