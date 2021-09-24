@@ -39,13 +39,13 @@ def partition(
 class essential_contactsCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'compute_contacts': ('parent', 'notification_categories', 'page_size', 'page_token', ),
-          'create_contact': ('parent', 'contact', ),
-          'delete_contact': ('name', ),
-          'get_contact': ('name', ),
-          'list_contacts': ('parent', 'page_size', 'page_token', ),
-          'send_test_message': ('contacts', 'resource', 'notification_category', ),
-          'update_contact': ('contact', 'update_mask', ),
+        'compute_contacts': ('parent', 'notification_categories', 'page_size', 'page_token', ),
+        'create_contact': ('parent', 'contact', ),
+        'delete_contact': ('name', ),
+        'get_contact': ('name', ),
+        'list_contacts': ('parent', 'page_size', 'page_token', ),
+        'send_test_message': ('contacts', 'resource', 'notification_category', ),
+        'update_contact': ('contact', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -64,7 +64,7 @@ class essential_contactsCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -356,7 +356,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
     def create_contact(
         self,
-        request: service.CreateContactRequest = None,
+        request: Union[service.CreateContactRequest, dict] = None,
         *,
         parent: str = None,
         contact: service.Contact = None,
@@ -367,7 +367,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         r"""Adds a new contact for a resource.
 
         Args:
-            request (google.cloud.essential_contacts_v1.types.CreateContactRequest):
+            request (Union[google.cloud.essential_contacts_v1.types.CreateContactRequest, dict]):
                 The request object. Request message for the
                 CreateContact method.
             parent (str):
@@ -439,7 +439,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
     def update_contact(
         self,
-        request: service.UpdateContactRequest = None,
+        request: Union[service.UpdateContactRequest, dict] = None,
         *,
         contact: service.Contact = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -451,7 +451,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         Note: A contact's email address cannot be changed.
 
         Args:
-            request (google.cloud.essential_contacts_v1.types.UpdateContactRequest):
+            request (Union[google.cloud.essential_contacts_v1.types.UpdateContactRequest, dict]):
                 The request object. Request message for the
                 UpdateContact method.
             contact (google.cloud.essential_contacts_v1.types.Contact):
@@ -526,7 +526,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
     def list_contacts(
         self,
-        request: service.ListContactsRequest = None,
+        request: Union[service.ListContactsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -536,7 +536,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         r"""Lists the contacts that have been set on a resource.
 
         Args:
-            request (google.cloud.essential_contacts_v1.types.ListContactsRequest):
+            request (Union[google.cloud.essential_contacts_v1.types.ListContactsRequest, dict]):
                 The request object. Request message for the ListContacts
                 method.
             parent (str):
@@ -607,7 +607,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
     def get_contact(
         self,
-        request: service.GetContactRequest = None,
+        request: Union[service.GetContactRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -617,7 +617,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         r"""Gets a single contact.
 
         Args:
-            request (google.cloud.essential_contacts_v1.types.GetContactRequest):
+            request (Union[google.cloud.essential_contacts_v1.types.GetContactRequest, dict]):
                 The request object. Request message for the GetContact
                 method.
             name (str):
@@ -680,7 +680,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
     def delete_contact(
         self,
-        request: service.DeleteContactRequest = None,
+        request: Union[service.DeleteContactRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -690,7 +690,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         r"""Deletes a contact.
 
         Args:
-            request (google.cloud.essential_contacts_v1.types.DeleteContactRequest):
+            request (Union[google.cloud.essential_contacts_v1.types.DeleteContactRequest, dict]):
                 The request object. Request message for the
                 DeleteContact method.
             name (str):
@@ -746,7 +746,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
     def compute_contacts(
         self,
-        request: service.ComputeContactsRequest = None,
+        request: Union[service.ComputeContactsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -757,7 +757,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         including contacts inherited from any parent resources.
 
         Args:
-            request (google.cloud.essential_contacts_v1.types.ComputeContactsRequest):
+            request (Union[google.cloud.essential_contacts_v1.types.ComputeContactsRequest, dict]):
                 The request object. Request message for the
                 ComputeContacts method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -807,7 +807,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
     def send_test_message(
         self,
-        request: service.SendTestMessageRequest = None,
+        request: Union[service.SendTestMessageRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -817,7 +817,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         contact to verify that it has been configured correctly.
 
         Args:
-            request (google.cloud.essential_contacts_v1.types.SendTestMessageRequest):
+            request (Union[google.cloud.essential_contacts_v1.types.SendTestMessageRequest, dict]):
                 The request object. Request message for the
                 SendTestMessage method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
