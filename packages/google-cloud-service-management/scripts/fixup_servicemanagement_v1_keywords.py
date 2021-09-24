@@ -39,21 +39,21 @@ def partition(
 class servicemanagementCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_service': ('service', ),
-          'create_service_config': ('service_name', 'service_config', ),
-          'create_service_rollout': ('service_name', 'rollout', ),
-          'delete_service': ('service_name', ),
-          'disable_service': ('service_name', 'consumer_id', ),
-          'enable_service': ('service_name', 'consumer_id', ),
-          'generate_config_report': ('new_config', 'old_config', ),
-          'get_service': ('service_name', ),
-          'get_service_config': ('service_name', 'config_id', 'view', ),
-          'get_service_rollout': ('service_name', 'rollout_id', ),
-          'list_service_configs': ('service_name', 'page_token', 'page_size', ),
-          'list_service_rollouts': ('service_name', 'filter', 'page_token', 'page_size', ),
-          'list_services': ('producer_project_id', 'page_size', 'page_token', 'consumer_id', ),
-          'submit_config_source': ('service_name', 'config_source', 'validate_only', ),
-          'undelete_service': ('service_name', ),
+        'create_service': ('service', ),
+        'create_service_config': ('service_name', 'service_config', ),
+        'create_service_rollout': ('service_name', 'rollout', ),
+        'delete_service': ('service_name', ),
+        'disable_service': ('service_name', 'consumer_id', ),
+        'enable_service': ('service_name', 'consumer_id', ),
+        'generate_config_report': ('new_config', 'old_config', ),
+        'get_service': ('service_name', ),
+        'get_service_config': ('service_name', 'config_id', 'view', ),
+        'get_service_rollout': ('service_name', 'rollout_id', ),
+        'list_service_configs': ('service_name', 'page_token', 'page_size', ),
+        'list_service_rollouts': ('service_name', 'filter', 'page_token', 'page_size', ),
+        'list_services': ('producer_project_id', 'page_size', 'page_token', 'consumer_id', ),
+        'submit_config_source': ('service_name', 'config_source', 'validate_only', ),
+        'undelete_service': ('service_name', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -72,7 +72,7 @@ class servicemanagementCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

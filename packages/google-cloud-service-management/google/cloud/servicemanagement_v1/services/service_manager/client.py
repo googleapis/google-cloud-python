@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 import warnings
 
@@ -366,7 +366,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
     def list_services(
         self,
-        request: servicemanager.ListServicesRequest = None,
+        request: Union[servicemanager.ListServicesRequest, dict] = None,
         *,
         producer_project_id: str = None,
         consumer_id: str = None,
@@ -385,7 +385,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         ``consumer_id`` must have the format of "project:{PROJECT-ID}".
 
         Args:
-            request (google.cloud.servicemanagement_v1.types.ListServicesRequest):
+            request (Union[google.cloud.servicemanagement_v1.types.ListServicesRequest, dict]):
                 The request object. Request message for `ListServices`
                 method.
             producer_project_id (str):
@@ -461,7 +461,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
     def get_service(
         self,
-        request: servicemanager.GetServiceRequest = None,
+        request: Union[servicemanager.GetServiceRequest, dict] = None,
         *,
         service_name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -472,7 +472,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         unless the service is public.
 
         Args:
-            request (google.cloud.servicemanagement_v1.types.GetServiceRequest):
+            request (Union[google.cloud.servicemanagement_v1.types.GetServiceRequest, dict]):
                 The request object. Request message for `GetService`
                 method.
             service_name (str):
@@ -529,7 +529,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
     def create_service(
         self,
-        request: servicemanager.CreateServiceRequest = None,
+        request: Union[servicemanager.CreateServiceRequest, dict] = None,
         *,
         service: resources.ManagedService = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -542,7 +542,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         Operation<response: ManagedService>
 
         Args:
-            request (google.cloud.servicemanagement_v1.types.CreateServiceRequest):
+            request (Union[google.cloud.servicemanagement_v1.types.CreateServiceRequest, dict]):
                 The request object. Request message for CreateService
                 method.
             service (google.cloud.servicemanagement_v1.types.ManagedService):
@@ -607,7 +607,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
     def delete_service(
         self,
-        request: servicemanager.DeleteServiceRequest = None,
+        request: Union[servicemanager.DeleteServiceRequest, dict] = None,
         *,
         service_name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -624,7 +624,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         Operation<response: google.protobuf.Empty>
 
         Args:
-            request (google.cloud.servicemanagement_v1.types.DeleteServiceRequest):
+            request (Union[google.cloud.servicemanagement_v1.types.DeleteServiceRequest, dict]):
                 The request object. Request message for DeleteService
                 method.
             service_name (str):
@@ -702,7 +702,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
     def undelete_service(
         self,
-        request: servicemanager.UndeleteServiceRequest = None,
+        request: Union[servicemanager.UndeleteServiceRequest, dict] = None,
         *,
         service_name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -718,7 +718,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         Operation<response: UndeleteServiceResponse>
 
         Args:
-            request (google.cloud.servicemanagement_v1.types.UndeleteServiceRequest):
+            request (Union[google.cloud.servicemanagement_v1.types.UndeleteServiceRequest, dict]):
                 The request object. Request message for UndeleteService
                 method.
             service_name (str):
@@ -786,7 +786,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
     def list_service_configs(
         self,
-        request: servicemanager.ListServiceConfigsRequest = None,
+        request: Union[servicemanager.ListServiceConfigsRequest, dict] = None,
         *,
         service_name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -797,7 +797,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         managed service, from the newest to the oldest.
 
         Args:
-            request (google.cloud.servicemanagement_v1.types.ListServiceConfigsRequest):
+            request (Union[google.cloud.servicemanagement_v1.types.ListServiceConfigsRequest, dict]):
                 The request object. Request message for
                 ListServiceConfigs method.
             service_name (str):
@@ -863,7 +863,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
     def get_service_config(
         self,
-        request: servicemanager.GetServiceConfigRequest = None,
+        request: Union[servicemanager.GetServiceConfigRequest, dict] = None,
         *,
         service_name: str = None,
         config_id: str = None,
@@ -876,7 +876,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         service.
 
         Args:
-            request (google.cloud.servicemanagement_v1.types.GetServiceConfigRequest):
+            request (Union[google.cloud.servicemanagement_v1.types.GetServiceConfigRequest, dict]):
                 The request object. Request message for GetServiceConfig
                 method.
             service_name (str):
@@ -971,7 +971,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
     def create_service_config(
         self,
-        request: servicemanager.CreateServiceConfigRequest = None,
+        request: Union[servicemanager.CreateServiceConfigRequest, dict] = None,
         *,
         service_name: str = None,
         service_config: service_pb2.Service = None,
@@ -990,7 +990,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         rest will be deleted eventually.
 
         Args:
-            request (google.cloud.servicemanagement_v1.types.CreateServiceConfigRequest):
+            request (Union[google.cloud.servicemanagement_v1.types.CreateServiceConfigRequest, dict]):
                 The request object. Request message for
                 CreateServiceConfig method.
             service_name (str):
@@ -1073,7 +1073,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
     def submit_config_source(
         self,
-        request: servicemanager.SubmitConfigSourceRequest = None,
+        request: Union[servicemanager.SubmitConfigSourceRequest, dict] = None,
         *,
         service_name: str = None,
         config_source: resources.ConfigSource = None,
@@ -1097,7 +1097,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         Operation<response: SubmitConfigSourceResponse>
 
         Args:
-            request (google.cloud.servicemanagement_v1.types.SubmitConfigSourceRequest):
+            request (Union[google.cloud.servicemanagement_v1.types.SubmitConfigSourceRequest, dict]):
                 The request object. Request message for
                 SubmitConfigSource method.
             service_name (str):
@@ -1185,7 +1185,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
     def list_service_rollouts(
         self,
-        request: servicemanager.ListServiceRolloutsRequest = None,
+        request: Union[servicemanager.ListServiceRolloutsRequest, dict] = None,
         *,
         service_name: str = None,
         filter: str = None,
@@ -1198,7 +1198,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         oldest.
 
         Args:
-            request (google.cloud.servicemanagement_v1.types.ListServiceRolloutsRequest):
+            request (Union[google.cloud.servicemanagement_v1.types.ListServiceRolloutsRequest, dict]):
                 The request object. Request message for
                 'ListServiceRollouts'
             service_name (str):
@@ -1280,7 +1280,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
     def get_service_rollout(
         self,
-        request: servicemanager.GetServiceRolloutRequest = None,
+        request: Union[servicemanager.GetServiceRolloutRequest, dict] = None,
         *,
         service_name: str = None,
         rollout_id: str = None,
@@ -1292,7 +1292,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         [rollout][google.api.servicemanagement.v1.Rollout].
 
         Args:
-            request (google.cloud.servicemanagement_v1.types.GetServiceRolloutRequest):
+            request (Union[google.cloud.servicemanagement_v1.types.GetServiceRolloutRequest, dict]):
                 The request object. Request message for
                 GetServiceRollout method.
             service_name (str):
@@ -1362,7 +1362,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
     def create_service_rollout(
         self,
-        request: servicemanager.CreateServiceRolloutRequest = None,
+        request: Union[servicemanager.CreateServiceRolloutRequest, dict] = None,
         *,
         service_name: str = None,
         rollout: resources.Rollout = None,
@@ -1389,7 +1389,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         Operation<response: Rollout>
 
         Args:
-            request (google.cloud.servicemanagement_v1.types.CreateServiceRolloutRequest):
+            request (Union[google.cloud.servicemanagement_v1.types.CreateServiceRolloutRequest, dict]):
                 The request object. Request message for
                 'CreateServiceRollout'
             service_name (str):
@@ -1467,7 +1467,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
     def generate_config_report(
         self,
-        request: servicemanager.GenerateConfigReportRequest = None,
+        request: Union[servicemanager.GenerateConfigReportRequest, dict] = None,
         *,
         new_config: any_pb2.Any = None,
         old_config: any_pb2.Any = None,
@@ -1489,7 +1489,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         the last pushed service configuration.
 
         Args:
-            request (google.cloud.servicemanagement_v1.types.GenerateConfigReportRequest):
+            request (Union[google.cloud.servicemanagement_v1.types.GenerateConfigReportRequest, dict]):
                 The request object. Request message for
                 GenerateConfigReport method.
             new_config (google.protobuf.any_pb2.Any):
@@ -1561,7 +1561,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
     def enable_service(
         self,
-        request: servicemanager.EnableServiceRequest = None,
+        request: Union[servicemanager.EnableServiceRequest, dict] = None,
         *,
         service_name: str = None,
         consumer_id: str = None,
@@ -1578,7 +1578,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         Operation<response: EnableServiceResponse>
 
         Args:
-            request (google.cloud.servicemanagement_v1.types.EnableServiceRequest):
+            request (Union[google.cloud.servicemanagement_v1.types.EnableServiceRequest, dict]):
                 The request object. Request message for EnableService
                 method.
             service_name (str):
@@ -1666,7 +1666,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
     def disable_service(
         self,
-        request: servicemanager.DisableServiceRequest = None,
+        request: Union[servicemanager.DisableServiceRequest, dict] = None,
         *,
         service_name: str = None,
         consumer_id: str = None,
@@ -1683,7 +1683,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         Operation<response: DisableServiceResponse>
 
         Args:
-            request (google.cloud.servicemanagement_v1.types.DisableServiceRequest):
+            request (Union[google.cloud.servicemanagement_v1.types.DisableServiceRequest, dict]):
                 The request object. Request message for DisableService
                 method.
             service_name (str):
