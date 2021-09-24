@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -358,7 +358,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     def create_environment(
         self,
-        request: environments.CreateEnvironmentRequest = None,
+        request: Union[environments.CreateEnvironmentRequest, dict] = None,
         *,
         parent: str = None,
         environment: environments.Environment = None,
@@ -369,7 +369,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Create a new environment.
 
         Args:
-            request (google.cloud.orchestration.airflow.service_v1beta1.types.CreateEnvironmentRequest):
+            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.CreateEnvironmentRequest, dict]):
                 The request object. Create a new environment.
             parent (str):
                 The parent must be of the form
@@ -447,7 +447,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     def get_environment(
         self,
-        request: environments.GetEnvironmentRequest = None,
+        request: Union[environments.GetEnvironmentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -457,7 +457,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Get an existing environment.
 
         Args:
-            request (google.cloud.orchestration.airflow.service_v1beta1.types.GetEnvironmentRequest):
+            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.GetEnvironmentRequest, dict]):
                 The request object. Get an environment.
             name (str):
                 The resource name of the environment
@@ -518,7 +518,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     def list_environments(
         self,
-        request: environments.ListEnvironmentsRequest = None,
+        request: Union[environments.ListEnvironmentsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -528,7 +528,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""List environments.
 
         Args:
-            request (google.cloud.orchestration.airflow.service_v1beta1.types.ListEnvironmentsRequest):
+            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.ListEnvironmentsRequest, dict]):
                 The request object. List environments in a project and
                 location.
             parent (str):
@@ -599,7 +599,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     def update_environment(
         self,
-        request: environments.UpdateEnvironmentRequest = None,
+        request: Union[environments.UpdateEnvironmentRequest, dict] = None,
         *,
         name: str = None,
         environment: environments.Environment = None,
@@ -611,7 +611,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Update an environment.
 
         Args:
-            request (google.cloud.orchestration.airflow.service_v1beta1.types.UpdateEnvironmentRequest):
+            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.UpdateEnvironmentRequest, dict]):
                 The request object. Update an environment.
             name (str):
                 The relative resource name of the
@@ -882,7 +882,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     def delete_environment(
         self,
-        request: environments.DeleteEnvironmentRequest = None,
+        request: Union[environments.DeleteEnvironmentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -892,7 +892,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Delete an environment.
 
         Args:
-            request (google.cloud.orchestration.airflow.service_v1beta1.types.DeleteEnvironmentRequest):
+            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.DeleteEnvironmentRequest, dict]):
                 The request object. Delete an environment.
             name (str):
                 The environment to delete, in the
@@ -974,7 +974,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     def restart_web_server(
         self,
-        request: environments.RestartWebServerRequest = None,
+        request: Union[environments.RestartWebServerRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -983,7 +983,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Restart Airflow web server.
 
         Args:
-            request (google.cloud.orchestration.airflow.service_v1beta1.types.RestartWebServerRequest):
+            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.RestartWebServerRequest, dict]):
                 The request object. Restart Airflow web server.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1034,7 +1034,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     def check_upgrade(
         self,
-        request: environments.CheckUpgradeRequest = None,
+        request: Union[environments.CheckUpgradeRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1046,7 +1046,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         returned Operation.
 
         Args:
-            request (google.cloud.orchestration.airflow.service_v1beta1.types.CheckUpgradeRequest):
+            request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.CheckUpgradeRequest, dict]):
                 The request object. Request to check whether image
                 upgrade will succeed.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

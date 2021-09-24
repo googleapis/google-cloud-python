@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -334,7 +334,7 @@ class ImageVersionsClient(metaclass=ImageVersionsClientMeta):
 
     def list_image_versions(
         self,
-        request: image_versions.ListImageVersionsRequest = None,
+        request: Union[image_versions.ListImageVersionsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -344,7 +344,7 @@ class ImageVersionsClient(metaclass=ImageVersionsClientMeta):
         r"""List ImageVersions for provided location.
 
         Args:
-            request (google.cloud.orchestration.airflow.service_v1.types.ListImageVersionsRequest):
+            request (Union[google.cloud.orchestration.airflow.service_v1.types.ListImageVersionsRequest, dict]):
                 The request object. List ImageVersions in a project and
                 location.
             parent (str):
