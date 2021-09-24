@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -351,7 +351,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
 
     def list_tag_keys(
         self,
-        request: tag_keys.ListTagKeysRequest = None,
+        request: Union[tag_keys.ListTagKeysRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -361,7 +361,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         r"""Lists all TagKeys for a parent resource.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.ListTagKeysRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.ListTagKeysRequest, dict]):
                 The request object. The request message for listing all
                 TagKeys under a parent resource.
             parent (str):
@@ -425,7 +425,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
 
     def get_tag_key(
         self,
-        request: tag_keys.GetTagKeyRequest = None,
+        request: Union[tag_keys.GetTagKeyRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -437,7 +437,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         not have permission to view it.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.GetTagKeyRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.GetTagKeyRequest, dict]):
                 The request object. The request message for getting a
                 TagKey.
             name (str):
@@ -498,7 +498,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
 
     def create_tag_key(
         self,
-        request: tag_keys.CreateTagKeyRequest = None,
+        request: Union[tag_keys.CreateTagKeyRequest, dict] = None,
         *,
         tag_key: tag_keys.TagKey = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -512,7 +512,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         given time.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.CreateTagKeyRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.CreateTagKeyRequest, dict]):
                 The request object. The request message for creating a
                 TagKey.
             tag_key (google.cloud.resourcemanager_v3.types.TagKey):
@@ -579,7 +579,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
 
     def update_tag_key(
         self,
-        request: tag_keys.UpdateTagKeyRequest = None,
+        request: Union[tag_keys.UpdateTagKeyRequest, dict] = None,
         *,
         tag_key: tag_keys.TagKey = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -590,7 +590,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         r"""Updates the attributes of the TagKey resource.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.UpdateTagKeyRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.UpdateTagKeyRequest, dict]):
                 The request object. The request message for updating a
                 TagKey.
             tag_key (google.cloud.resourcemanager_v3.types.TagKey):
@@ -678,7 +678,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
 
     def delete_tag_key(
         self,
-        request: tag_keys.DeleteTagKeyRequest = None,
+        request: Union[tag_keys.DeleteTagKeyRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -689,7 +689,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         has any child TagValues.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.DeleteTagKeyRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.DeleteTagKeyRequest, dict]):
                 The request object. The request message for deleting a
                 TagKey.
             name (str):
@@ -763,7 +763,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
 
     def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -778,7 +778,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         permission on the specified TagKey.
 
         Args:
-            request (google.iam.v1.iam_policy_pb2.GetIamPolicyRequest):
+            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (str):
@@ -893,7 +893,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
 
     def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -907,7 +907,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         identified tagValue.
 
         Args:
-            request (google.iam.v1.iam_policy_pb2.SetIamPolicyRequest):
+            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (str):
@@ -1022,7 +1022,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
@@ -1037,7 +1037,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         There are no permissions required for making this API call.
 
         Args:
-            request (google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest):
+            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (str):

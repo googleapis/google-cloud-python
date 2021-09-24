@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -351,7 +351,7 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
 
     def list_tag_bindings(
         self,
-        request: tag_bindings.ListTagBindingsRequest = None,
+        request: Union[tag_bindings.ListTagBindingsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -366,7 +366,7 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
         https://cloud.google.com/apis/design/resource_names#full_resource_name
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.ListTagBindingsRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.ListTagBindingsRequest, dict]):
                 The request object. The request message to list all
                 TagBindings for a parent.
             parent (str):
@@ -431,7 +431,7 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
 
     def create_tag_binding(
         self,
-        request: tag_bindings.CreateTagBindingRequest = None,
+        request: Union[tag_bindings.CreateTagBindingRequest, dict] = None,
         *,
         tag_binding: tag_bindings.TagBinding = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -442,7 +442,7 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
         resource (currently project, folder, or organization).
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.CreateTagBindingRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.CreateTagBindingRequest, dict]):
                 The request object. The request message to create a
                 TagBinding.
             tag_binding (google.cloud.resourcemanager_v3.types.TagBinding):
@@ -510,7 +510,7 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
 
     def delete_tag_binding(
         self,
-        request: tag_bindings.DeleteTagBindingRequest = None,
+        request: Union[tag_bindings.DeleteTagBindingRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -520,7 +520,7 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
         r"""Deletes a TagBinding.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.DeleteTagBindingRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.DeleteTagBindingRequest, dict]):
                 The request object. The request message to delete a
                 TagBinding.
             name (str):

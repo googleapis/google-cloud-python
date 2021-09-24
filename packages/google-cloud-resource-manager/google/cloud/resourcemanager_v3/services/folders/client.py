@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -355,7 +355,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
 
     def get_folder(
         self,
-        request: folders.GetFolderRequest = None,
+        request: Union[folders.GetFolderRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -369,7 +369,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         the identified folder.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.GetFolderRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.GetFolderRequest, dict]):
                 The request object. The GetFolder request message.
             name (str):
                 Required. The resource name of the folder to retrieve.
@@ -430,7 +430,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
 
     def list_folders(
         self,
-        request: folders.ListFoldersRequest = None,
+        request: Union[folders.ListFoldersRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -446,7 +446,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         parent.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.ListFoldersRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.ListFoldersRequest, dict]):
                 The request object. The ListFolders request message.
             parent (str):
                 Required. The resource name of the organization or
@@ -513,7 +513,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
 
     def search_folders(
         self,
-        request: folders.SearchFoldersRequest = None,
+        request: Union[folders.SearchFoldersRequest, dict] = None,
         *,
         query: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -529,7 +529,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         permission ``resourcemanager.folders.get``.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.SearchFoldersRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.SearchFoldersRequest, dict]):
                 The request object. The request message for searching
                 folders.
             query (str):
@@ -624,7 +624,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
 
     def create_folder(
         self,
-        request: folders.CreateFolderRequest = None,
+        request: Union[folders.CreateFolderRequest, dict] = None,
         *,
         folder: folders.Folder = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -662,7 +662,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         permission on the identified parent.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.CreateFolderRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.CreateFolderRequest, dict]):
                 The request object. The CreateFolder request message.
             folder (google.cloud.resourcemanager_v3.types.Folder):
                 Required. The folder being created,
@@ -728,7 +728,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
 
     def update_folder(
         self,
-        request: folders.UpdateFolderRequest = None,
+        request: Union[folders.UpdateFolderRequest, dict] = None,
         *,
         folder: folders.Folder = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -756,7 +756,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         returned in the Status.details field.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.UpdateFolderRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.UpdateFolderRequest, dict]):
                 The request object. The request sent to the
                 [UpdateFolder][google.cloud.resourcemanager.v3.Folder.UpdateFolder]
                 method.
@@ -844,7 +844,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
 
     def move_folder(
         self,
-        request: folders.MoveFolderRequest = None,
+        request: Union[folders.MoveFolderRequest, dict] = None,
         *,
         name: str = None,
         destination_parent: str = None,
@@ -872,7 +872,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         current and proposed new parent.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.MoveFolderRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.MoveFolderRequest, dict]):
                 The request object. The MoveFolder request message.
             name (str):
                 Required. The resource name of the Folder to move. Must
@@ -953,7 +953,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
 
     def delete_folder(
         self,
-        request: folders.DeleteFolderRequest = None,
+        request: Union[folders.DeleteFolderRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -974,7 +974,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         identified folder.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.DeleteFolderRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.DeleteFolderRequest, dict]):
                 The request object. The DeleteFolder request message.
             name (str):
                 Required. The resource name of the folder to be deleted.
@@ -1044,7 +1044,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
 
     def undelete_folder(
         self,
-        request: folders.UndeleteFolderRequest = None,
+        request: Union[folders.UndeleteFolderRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1066,7 +1066,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         identified folder.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.UndeleteFolderRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.UndeleteFolderRequest, dict]):
                 The request object. The UndeleteFolder request message.
             name (str):
                 Required. The resource name of the folder to undelete.
@@ -1136,7 +1136,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
 
     def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1151,7 +1151,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         identified folder.
 
         Args:
-            request (google.iam.v1.iam_policy_pb2.GetIamPolicyRequest):
+            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (str):
@@ -1266,7 +1266,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
 
     def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1280,7 +1280,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         identified folder.
 
         Args:
-            request (google.iam.v1.iam_policy_pb2.SetIamPolicyRequest):
+            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (str):
@@ -1395,7 +1395,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
@@ -1410,7 +1410,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
         There are no permissions required for making this API call.
 
         Args:
-            request (google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest):
+            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (str):

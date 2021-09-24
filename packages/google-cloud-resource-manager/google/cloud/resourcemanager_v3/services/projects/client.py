@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -351,7 +351,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def get_project(
         self,
-        request: projects.GetProjectRequest = None,
+        request: Union[projects.GetProjectRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -365,7 +365,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         for this project.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.GetProjectRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.GetProjectRequest, dict]):
                 The request object. The request sent to the
                 [GetProject][google.cloud.resourcemanager.v3.Projects.GetProject]
                 method.
@@ -429,7 +429,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def list_projects(
         self,
-        request: projects.ListProjectsRequest = None,
+        request: Union[projects.ListProjectsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -445,7 +445,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         the identified parent.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.ListProjectsRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.ListProjectsRequest, dict]):
                 The request object. The request sent to the
                 [ListProjects][google.cloud.resourcemanager.v3.Projects.ListProjects]
                 method.
@@ -521,7 +521,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def search_projects(
         self,
-        request: projects.SearchProjectsRequest = None,
+        request: Union[projects.SearchProjectsRequest, dict] = None,
         *,
         query: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -543,7 +543,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         method.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.SearchProjectsRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.SearchProjectsRequest, dict]):
                 The request object. The request sent to the
                 [SearchProjects][google.cloud.resourcemanager.v3.Projects.SearchProjects]
                 method.
@@ -651,7 +651,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def create_project(
         self,
-        request: projects.CreateProjectRequest = None,
+        request: Union[projects.CreateProjectRequest, dict] = None,
         *,
         project: projects.Project = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -666,7 +666,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         ``DeleteOperation``.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.CreateProjectRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.CreateProjectRequest, dict]):
                 The request object. The request sent to the
                 [CreateProject][google.cloud.resourcemanager.v3.Projects.CreateProject]
                 method.
@@ -741,7 +741,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def update_project(
         self,
-        request: projects.UpdateProjectRequest = None,
+        request: Union[projects.UpdateProjectRequest, dict] = None,
         *,
         project: projects.Project = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -758,7 +758,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         permission for this project.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.UpdateProjectRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.UpdateProjectRequest, dict]):
                 The request object. The request sent to the
                 [UpdateProject][google.cloud.resourcemanager.v3.Projects.UpdateProject]
                 method.
@@ -847,7 +847,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def move_project(
         self,
-        request: projects.MoveProjectRequest = None,
+        request: Union[projects.MoveProjectRequest, dict] = None,
         *,
         name: str = None,
         destination_parent: str = None,
@@ -869,7 +869,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         current and proposed new parent.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.MoveProjectRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.MoveProjectRequest, dict]):
                 The request object. The request sent to
                 [MoveProject][google.cloud.resourcemanager.v3.Projects.MoveProject]
                 method.
@@ -951,7 +951,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def delete_project(
         self,
-        request: projects.DeleteProjectRequest = None,
+        request: Union[projects.DeleteProjectRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -995,7 +995,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         permissions for this project.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.DeleteProjectRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.DeleteProjectRequest, dict]):
                 The request object. [DeleteProject][google.cloud.resourcemanager.v3.Projects.DeleteProject]
                 method.
             name (str):
@@ -1067,7 +1067,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def undelete_project(
         self,
-        request: projects.UndeleteProjectRequest = None,
+        request: Union[projects.UndeleteProjectRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1084,7 +1084,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         permission for this project.
 
         Args:
-            request (google.cloud.resourcemanager_v3.types.UndeleteProjectRequest):
+            request (Union[google.cloud.resourcemanager_v3.types.UndeleteProjectRequest, dict]):
                 The request object. The request sent to the
                 [UndeleteProject]
                 [google.cloud.resourcemanager.v3.Projects.UndeleteProject]
@@ -1160,7 +1160,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1172,7 +1172,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         the resource do not exist.
 
         Args:
-            request (google.iam.v1.iam_policy_pb2.GetIamPolicyRequest):
+            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (str):
@@ -1287,7 +1287,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1348,7 +1348,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
            API.
 
         Args:
-            request (google.iam.v1.iam_policy_pb2.SetIamPolicyRequest):
+            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (str):
@@ -1463,7 +1463,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
@@ -1475,7 +1475,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         specified project.
 
         Args:
-            request (google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest):
+            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (str):
