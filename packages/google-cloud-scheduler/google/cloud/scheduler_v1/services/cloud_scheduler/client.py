@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -372,7 +372,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def list_jobs(
         self,
-        request: cloudscheduler.ListJobsRequest = None,
+        request: Union[cloudscheduler.ListJobsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -382,7 +382,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         r"""Lists jobs.
 
         Args:
-            request (google.cloud.scheduler_v1.types.ListJobsRequest):
+            request (Union[google.cloud.scheduler_v1.types.ListJobsRequest, dict]):
                 The request object. Request message for listing jobs
                 using
                 [ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs].
@@ -453,7 +453,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def get_job(
         self,
-        request: cloudscheduler.GetJobRequest = None,
+        request: Union[cloudscheduler.GetJobRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -463,7 +463,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         r"""Gets a job.
 
         Args:
-            request (google.cloud.scheduler_v1.types.GetJobRequest):
+            request (Union[google.cloud.scheduler_v1.types.GetJobRequest, dict]):
                 The request object. Request message for
                 [GetJob][google.cloud.scheduler.v1.CloudScheduler.GetJob].
             name (str):
@@ -525,7 +525,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def create_job(
         self,
-        request: cloudscheduler.CreateJobRequest = None,
+        request: Union[cloudscheduler.CreateJobRequest, dict] = None,
         *,
         parent: str = None,
         job: gcs_job.Job = None,
@@ -536,7 +536,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         r"""Creates a job.
 
         Args:
-            request (google.cloud.scheduler_v1.types.CreateJobRequest):
+            request (Union[google.cloud.scheduler_v1.types.CreateJobRequest, dict]):
                 The request object. Request message for
                 [CreateJob][google.cloud.scheduler.v1.CloudScheduler.CreateJob].
             parent (str):
@@ -613,7 +613,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def update_job(
         self,
-        request: cloudscheduler.UpdateJobRequest = None,
+        request: Union[cloudscheduler.UpdateJobRequest, dict] = None,
         *,
         job: gcs_job.Job = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -635,7 +635,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         received.
 
         Args:
-            request (google.cloud.scheduler_v1.types.UpdateJobRequest):
+            request (Union[google.cloud.scheduler_v1.types.UpdateJobRequest, dict]):
                 The request object. Request message for
                 [UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob].
             job (google.cloud.scheduler_v1.types.Job):
@@ -711,7 +711,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def delete_job(
         self,
-        request: cloudscheduler.DeleteJobRequest = None,
+        request: Union[cloudscheduler.DeleteJobRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -721,7 +721,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         r"""Deletes a job.
 
         Args:
-            request (google.cloud.scheduler_v1.types.DeleteJobRequest):
+            request (Union[google.cloud.scheduler_v1.types.DeleteJobRequest, dict]):
                 The request object. Request message for deleting a job
                 using
                 [DeleteJob][google.cloud.scheduler.v1.CloudScheduler.DeleteJob].
@@ -776,7 +776,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def pause_job(
         self,
-        request: cloudscheduler.PauseJobRequest = None,
+        request: Union[cloudscheduler.PauseJobRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -797,7 +797,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         to be paused.
 
         Args:
-            request (google.cloud.scheduler_v1.types.PauseJobRequest):
+            request (Union[google.cloud.scheduler_v1.types.PauseJobRequest, dict]):
                 The request object. Request message for
                 [PauseJob][google.cloud.scheduler.v1.CloudScheduler.PauseJob].
             name (str):
@@ -859,7 +859,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def resume_job(
         self,
-        request: cloudscheduler.ResumeJobRequest = None,
+        request: Union[cloudscheduler.ResumeJobRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -879,7 +879,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         to be resumed.
 
         Args:
-            request (google.cloud.scheduler_v1.types.ResumeJobRequest):
+            request (Union[google.cloud.scheduler_v1.types.ResumeJobRequest, dict]):
                 The request object. Request message for
                 [ResumeJob][google.cloud.scheduler.v1.CloudScheduler.ResumeJob].
             name (str):
@@ -941,7 +941,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
 
     def run_job(
         self,
-        request: cloudscheduler.RunJobRequest = None,
+        request: Union[cloudscheduler.RunJobRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -953,7 +953,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         dispatch the job, even if the job is already running.
 
         Args:
-            request (google.cloud.scheduler_v1.types.RunJobRequest):
+            request (Union[google.cloud.scheduler_v1.types.RunJobRequest, dict]):
                 The request object. Request message for forcing a job to
                 run now using
                 [RunJob][google.cloud.scheduler.v1.CloudScheduler.RunJob].

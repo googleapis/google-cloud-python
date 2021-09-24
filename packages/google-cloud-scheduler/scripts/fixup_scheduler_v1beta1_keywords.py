@@ -39,14 +39,14 @@ def partition(
 class schedulerCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_job': ('parent', 'job', ),
-          'delete_job': ('name', ),
-          'get_job': ('name', ),
-          'list_jobs': ('parent', 'page_size', 'page_token', ),
-          'pause_job': ('name', ),
-          'resume_job': ('name', ),
-          'run_job': ('name', ),
-          'update_job': ('job', 'update_mask', ),
+        'create_job': ('parent', 'job', ),
+        'delete_job': ('name', ),
+        'get_job': ('name', ),
+        'list_jobs': ('parent', 'page_size', 'page_token', ),
+        'pause_job': ('name', ),
+        'resume_job': ('name', ),
+        'run_job': ('name', ),
+        'update_job': ('job', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -65,7 +65,7 @@ class schedulerCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
