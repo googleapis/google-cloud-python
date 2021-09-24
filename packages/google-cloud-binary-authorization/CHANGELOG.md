@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-binary-authorization/compare/v0.3.1...v0.4.0) (2021-09-24)
+
+
+### Features
+
+* add binaryauthorization v1 ([#74](https://www.github.com/googleapis/python-binary-authorization/issues/74)) ([cd828ec](https://www.github.com/googleapis/python-binary-authorization/commit/cd828ec45edb5a297607ea7e9f94c39e68ef2d7d))
+* set binaryauthorization_v1 as the default version ([cd828ec](https://www.github.com/googleapis/python-binary-authorization/commit/cd828ec45edb5a297607ea7e9f94c39e68ef2d7d))
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([7045df0](https://www.github.com/googleapis/python-binary-authorization/commit/7045df0313b0c6f05662745e90c28626d292d64e))
+* require grafeas>=1.1.2, proto-plus>=1.15.0 ([cd828ec](https://www.github.com/googleapis/python-binary-authorization/commit/cd828ec45edb5a297607ea7e9f94c39e68ef2d7d))
+
+
+### Documentation
+
+* fix broken links in README ([cd828ec](https://www.github.com/googleapis/python-binary-authorization/commit/cd828ec45edb5a297607ea7e9f94c39e68ef2d7d))
+
 ### [0.3.1](https://www.github.com/googleapis/python-binary-authorization/compare/v0.3.0...v0.3.1) (2021-07-26)
 
 
