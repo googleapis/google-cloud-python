@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -363,7 +363,7 @@ class CompletionClient(metaclass=CompletionClientMeta):
 
     def complete_query(
         self,
-        request: completion_service.CompleteQueryRequest = None,
+        request: Union[completion_service.CompleteQueryRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -374,7 +374,7 @@ class CompletionClient(metaclass=CompletionClientMeta):
         complete search box.
 
         Args:
-            request (google.cloud.talent_v4.types.CompleteQueryRequest):
+            request (Union[google.cloud.talent_v4.types.CompleteQueryRequest, dict]):
                 The request object. Auto-complete parameters.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

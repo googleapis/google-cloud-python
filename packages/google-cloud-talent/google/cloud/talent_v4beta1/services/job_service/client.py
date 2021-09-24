@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -374,7 +374,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def create_job(
         self,
-        request: job_service.CreateJobRequest = None,
+        request: Union[job_service.CreateJobRequest, dict] = None,
         *,
         parent: str = None,
         job: gct_job.Job = None,
@@ -387,7 +387,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         but it may take up to 5 minutes.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.CreateJobRequest):
+            request (Union[google.cloud.talent_v4beta1.types.CreateJobRequest, dict]):
                 The request object. Create job request.
             parent (str):
                 Required. The resource name of the tenant under which
@@ -462,7 +462,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def batch_create_jobs(
         self,
-        request: job_service.BatchCreateJobsRequest = None,
+        request: Union[job_service.BatchCreateJobsRequest, dict] = None,
         *,
         parent: str = None,
         jobs: Sequence[job.Job] = None,
@@ -473,7 +473,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         r"""Begins executing a batch create jobs operation.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.BatchCreateJobsRequest):
+            request (Union[google.cloud.talent_v4beta1.types.BatchCreateJobsRequest, dict]):
                 The request object. Request to create a batch of jobs.
             parent (str):
                 Required. The resource name of the tenant under which
@@ -559,7 +559,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def get_job(
         self,
-        request: job_service.GetJobRequest = None,
+        request: Union[job_service.GetJobRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -570,7 +570,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         recently EXPIRED within the last 90 days.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.GetJobRequest):
+            request (Union[google.cloud.talent_v4beta1.types.GetJobRequest, dict]):
                 The request object. Get job request.
             name (str):
                 Required. The resource name of the job to retrieve.
@@ -638,7 +638,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def update_job(
         self,
-        request: job_service.UpdateJobRequest = None,
+        request: Union[job_service.UpdateJobRequest, dict] = None,
         *,
         job: gct_job.Job = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -651,7 +651,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         minutes.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.UpdateJobRequest):
+            request (Union[google.cloud.talent_v4beta1.types.UpdateJobRequest, dict]):
                 The request object. Update job request.
             job (google.cloud.talent_v4beta1.types.Job):
                 Required. The Job to be updated.
@@ -711,7 +711,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def batch_update_jobs(
         self,
-        request: job_service.BatchUpdateJobsRequest = None,
+        request: Union[job_service.BatchUpdateJobsRequest, dict] = None,
         *,
         parent: str = None,
         jobs: Sequence[job.Job] = None,
@@ -722,7 +722,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         r"""Begins executing a batch update jobs operation.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest):
+            request (Union[google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest, dict]):
                 The request object. Request to update a batch of jobs.
             parent (str):
                 Required. The resource name of the tenant under which
@@ -808,7 +808,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def delete_job(
         self,
-        request: job_service.DeleteJobRequest = None,
+        request: Union[job_service.DeleteJobRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -820,7 +820,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         seconds, but it may take up to 5 minutes.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.DeleteJobRequest):
+            request (Union[google.cloud.talent_v4beta1.types.DeleteJobRequest, dict]):
                 The request object. Delete job request.
             name (str):
                 Required. The resource name of the job to be deleted.
@@ -879,7 +879,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def batch_delete_jobs(
         self,
-        request: job_service.BatchDeleteJobsRequest = None,
+        request: Union[job_service.BatchDeleteJobsRequest, dict] = None,
         *,
         parent: str = None,
         filter: str = None,
@@ -891,7 +891,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         filter.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.BatchDeleteJobsRequest):
+            request (Union[google.cloud.talent_v4beta1.types.BatchDeleteJobsRequest, dict]):
                 The request object. Batch delete jobs request.
             parent (str):
                 Required. The resource name of the tenant under which
@@ -969,7 +969,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def list_jobs(
         self,
-        request: job_service.ListJobsRequest = None,
+        request: Union[job_service.ListJobsRequest, dict] = None,
         *,
         parent: str = None,
         filter: str = None,
@@ -980,7 +980,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         r"""Lists jobs by filter.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.ListJobsRequest):
+            request (Union[google.cloud.talent_v4beta1.types.ListJobsRequest, dict]):
                 The request object. List jobs request.
             parent (str):
                 Required. The resource name of the tenant under which
@@ -1083,7 +1083,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def search_jobs(
         self,
-        request: job_service.SearchJobsRequest = None,
+        request: Union[job_service.SearchJobsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1098,7 +1098,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         has permission to search against.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.SearchJobsRequest):
+            request (Union[google.cloud.talent_v4beta1.types.SearchJobsRequest, dict]):
                 The request object. The Request body of the `SearchJobs`
                 call.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1147,7 +1147,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
     def search_jobs_for_alert(
         self,
-        request: job_service.SearchJobsRequest = None,
+        request: Union[job_service.SearchJobsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1168,7 +1168,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         permission to search against.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.SearchJobsRequest):
+            request (Union[google.cloud.talent_v4beta1.types.SearchJobsRequest, dict]):
                 The request object. The Request body of the `SearchJobs`
                 call.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

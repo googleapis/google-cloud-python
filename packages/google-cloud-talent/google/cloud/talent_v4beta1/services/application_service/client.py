@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -412,7 +412,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
 
     def create_application(
         self,
-        request: application_service.CreateApplicationRequest = None,
+        request: Union[application_service.CreateApplicationRequest, dict] = None,
         *,
         parent: str = None,
         application: gct_application.Application = None,
@@ -423,7 +423,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
         r"""Creates a new application entity.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.CreateApplicationRequest):
+            request (Union[google.cloud.talent_v4beta1.types.CreateApplicationRequest, dict]):
                 The request object. The Request of the CreateApplication
                 method.
             parent (str):
@@ -497,7 +497,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
 
     def get_application(
         self,
-        request: application_service.GetApplicationRequest = None,
+        request: Union[application_service.GetApplicationRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -507,7 +507,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
         r"""Retrieves specified application.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.GetApplicationRequest):
+            request (Union[google.cloud.talent_v4beta1.types.GetApplicationRequest, dict]):
                 The request object. Request for getting a application by
                 name.
             name (str):
@@ -573,7 +573,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
 
     def update_application(
         self,
-        request: application_service.UpdateApplicationRequest = None,
+        request: Union[application_service.UpdateApplicationRequest, dict] = None,
         *,
         application: gct_application.Application = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -583,7 +583,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
         r"""Updates specified application.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.UpdateApplicationRequest):
+            request (Union[google.cloud.talent_v4beta1.types.UpdateApplicationRequest, dict]):
                 The request object. Request for updating a specified
                 application.
             application (google.cloud.talent_v4beta1.types.Application):
@@ -647,7 +647,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
 
     def delete_application(
         self,
-        request: application_service.DeleteApplicationRequest = None,
+        request: Union[application_service.DeleteApplicationRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -657,7 +657,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
         r"""Deletes specified application.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.DeleteApplicationRequest):
+            request (Union[google.cloud.talent_v4beta1.types.DeleteApplicationRequest, dict]):
                 The request object. Request to delete a application.
             name (str):
                 Required. The resource name of the application to be
@@ -715,7 +715,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
 
     def list_applications(
         self,
-        request: application_service.ListApplicationsRequest = None,
+        request: Union[application_service.ListApplicationsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -725,7 +725,7 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
         r"""Lists all applications associated with the profile.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.ListApplicationsRequest):
+            request (Union[google.cloud.talent_v4beta1.types.ListApplicationsRequest, dict]):
                 The request object. List applications for which the
                 client has ACL visibility.
             parent (str):

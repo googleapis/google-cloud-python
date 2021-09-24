@@ -39,28 +39,28 @@ def partition(
 class talentCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'batch_create_jobs': ('parent', 'jobs', ),
-          'batch_delete_jobs': ('parent', 'names', ),
-          'batch_update_jobs': ('parent', 'jobs', 'update_mask', ),
-          'complete_query': ('tenant', 'query', 'page_size', 'language_codes', 'company', 'scope', 'type_', ),
-          'create_client_event': ('parent', 'client_event', ),
-          'create_company': ('parent', 'company', ),
-          'create_job': ('parent', 'job', ),
-          'create_tenant': ('parent', 'tenant', ),
-          'delete_company': ('name', ),
-          'delete_job': ('name', ),
-          'delete_tenant': ('name', ),
-          'get_company': ('name', ),
-          'get_job': ('name', ),
-          'get_tenant': ('name', ),
-          'list_companies': ('parent', 'page_token', 'page_size', 'require_open_jobs', ),
-          'list_jobs': ('parent', 'filter', 'page_token', 'page_size', 'job_view', ),
-          'list_tenants': ('parent', 'page_token', 'page_size', ),
-          'search_jobs': ('parent', 'request_metadata', 'search_mode', 'job_query', 'enable_broadening', 'histogram_queries', 'job_view', 'offset', 'max_page_size', 'page_token', 'order_by', 'diversification_level', 'custom_ranking_info', 'disable_keyword_match', 'keyword_match_mode', ),
-          'search_jobs_for_alert': ('parent', 'request_metadata', 'search_mode', 'job_query', 'enable_broadening', 'histogram_queries', 'job_view', 'offset', 'max_page_size', 'page_token', 'order_by', 'diversification_level', 'custom_ranking_info', 'disable_keyword_match', 'keyword_match_mode', ),
-          'update_company': ('company', 'update_mask', ),
-          'update_job': ('job', 'update_mask', ),
-          'update_tenant': ('tenant', 'update_mask', ),
+        'batch_create_jobs': ('parent', 'jobs', ),
+        'batch_delete_jobs': ('parent', 'names', ),
+        'batch_update_jobs': ('parent', 'jobs', 'update_mask', ),
+        'complete_query': ('tenant', 'query', 'page_size', 'language_codes', 'company', 'scope', 'type_', ),
+        'create_client_event': ('parent', 'client_event', ),
+        'create_company': ('parent', 'company', ),
+        'create_job': ('parent', 'job', ),
+        'create_tenant': ('parent', 'tenant', ),
+        'delete_company': ('name', ),
+        'delete_job': ('name', ),
+        'delete_tenant': ('name', ),
+        'get_company': ('name', ),
+        'get_job': ('name', ),
+        'get_tenant': ('name', ),
+        'list_companies': ('parent', 'page_token', 'page_size', 'require_open_jobs', ),
+        'list_jobs': ('parent', 'filter', 'page_token', 'page_size', 'job_view', ),
+        'list_tenants': ('parent', 'page_token', 'page_size', ),
+        'search_jobs': ('parent', 'request_metadata', 'search_mode', 'job_query', 'enable_broadening', 'histogram_queries', 'job_view', 'offset', 'max_page_size', 'page_token', 'order_by', 'diversification_level', 'custom_ranking_info', 'disable_keyword_match', 'keyword_match_mode', ),
+        'search_jobs_for_alert': ('parent', 'request_metadata', 'search_mode', 'job_query', 'enable_broadening', 'histogram_queries', 'job_view', 'offset', 'max_page_size', 'page_token', 'order_by', 'diversification_level', 'custom_ranking_info', 'disable_keyword_match', 'keyword_match_mode', ),
+        'update_company': ('company', 'update_mask', ),
+        'update_job': ('job', 'update_mask', ),
+        'update_tenant': ('tenant', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -79,7 +79,7 @@ class talentCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -373,7 +373,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
 
     def list_profiles(
         self,
-        request: profile_service.ListProfilesRequest = None,
+        request: Union[profile_service.ListProfilesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -383,7 +383,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
         r"""Lists profiles by filter. The order is unspecified.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.ListProfilesRequest):
+            request (Union[google.cloud.talent_v4beta1.types.ListProfilesRequest, dict]):
                 The request object. List profiles request.
             parent (str):
                 Required. The resource name of the tenant under which
@@ -455,7 +455,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
 
     def create_profile(
         self,
-        request: profile_service.CreateProfileRequest = None,
+        request: Union[profile_service.CreateProfileRequest, dict] = None,
         *,
         parent: str = None,
         profile: gct_profile.Profile = None,
@@ -466,7 +466,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
         r"""Creates and returns a new profile.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.CreateProfileRequest):
+            request (Union[google.cloud.talent_v4beta1.types.CreateProfileRequest, dict]):
                 The request object. Create profile request.
             parent (str):
                 Required. The name of the tenant this profile belongs
@@ -539,7 +539,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
 
     def get_profile(
         self,
-        request: profile_service.GetProfileRequest = None,
+        request: Union[profile_service.GetProfileRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -549,7 +549,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
         r"""Gets the specified profile.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.GetProfileRequest):
+            request (Union[google.cloud.talent_v4beta1.types.GetProfileRequest, dict]):
                 The request object. Get profile request.
             name (str):
                 Required. Resource name of the profile to get.
@@ -614,7 +614,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
 
     def update_profile(
         self,
-        request: profile_service.UpdateProfileRequest = None,
+        request: Union[profile_service.UpdateProfileRequest, dict] = None,
         *,
         profile: gct_profile.Profile = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -625,7 +625,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
         result.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.UpdateProfileRequest):
+            request (Union[google.cloud.talent_v4beta1.types.UpdateProfileRequest, dict]):
                 The request object. Update profile request
             profile (google.cloud.talent_v4beta1.types.Profile):
                 Required. Profile to be updated.
@@ -687,7 +687,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
 
     def delete_profile(
         self,
-        request: profile_service.DeleteProfileRequest = None,
+        request: Union[profile_service.DeleteProfileRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -699,7 +699,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
         or assignments associated.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.DeleteProfileRequest):
+            request (Union[google.cloud.talent_v4beta1.types.DeleteProfileRequest, dict]):
                 The request object. Delete profile request.
             name (str):
                 Required. Resource name of the profile to be deleted.
@@ -755,7 +755,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
 
     def search_profiles(
         self,
-        request: profile_service.SearchProfilesRequest = None,
+        request: Union[profile_service.SearchProfilesRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -772,7 +772,7 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
         for more information.
 
         Args:
-            request (google.cloud.talent_v4beta1.types.SearchProfilesRequest):
+            request (Union[google.cloud.talent_v4beta1.types.SearchProfilesRequest, dict]):
                 The request object. The request body of the
                 `SearchProfiles` call.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

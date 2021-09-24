@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -352,7 +352,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
 
     def create_tenant(
         self,
-        request: tenant_service.CreateTenantRequest = None,
+        request: Union[tenant_service.CreateTenantRequest, dict] = None,
         *,
         parent: str = None,
         tenant: gct_tenant.Tenant = None,
@@ -363,7 +363,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
         r"""Creates a new tenant entity.
 
         Args:
-            request (google.cloud.talent_v4.types.CreateTenantRequest):
+            request (Union[google.cloud.talent_v4.types.CreateTenantRequest, dict]):
                 The request object. The Request of the CreateTenant
                 method.
             parent (str):
@@ -439,7 +439,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
 
     def get_tenant(
         self,
-        request: tenant_service.GetTenantRequest = None,
+        request: Union[tenant_service.GetTenantRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -449,7 +449,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
         r"""Retrieves specified tenant.
 
         Args:
-            request (google.cloud.talent_v4.types.GetTenantRequest):
+            request (Union[google.cloud.talent_v4.types.GetTenantRequest, dict]):
                 The request object. Request for getting a tenant by
                 name.
             name (str):
@@ -519,7 +519,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
 
     def update_tenant(
         self,
-        request: tenant_service.UpdateTenantRequest = None,
+        request: Union[tenant_service.UpdateTenantRequest, dict] = None,
         *,
         tenant: gct_tenant.Tenant = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -530,7 +530,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
         r"""Updates specified tenant.
 
         Args:
-            request (google.cloud.talent_v4.types.UpdateTenantRequest):
+            request (Union[google.cloud.talent_v4.types.UpdateTenantRequest, dict]):
                 The request object. Request for updating a specified
                 tenant.
             tenant (google.cloud.talent_v4.types.Tenant):
@@ -617,7 +617,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
 
     def delete_tenant(
         self,
-        request: tenant_service.DeleteTenantRequest = None,
+        request: Union[tenant_service.DeleteTenantRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -627,7 +627,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
         r"""Deletes specified tenant.
 
         Args:
-            request (google.cloud.talent_v4.types.DeleteTenantRequest):
+            request (Union[google.cloud.talent_v4.types.DeleteTenantRequest, dict]):
                 The request object. Request to delete a tenant.
             name (str):
                 Required. The resource name of the tenant to be deleted.
@@ -683,7 +683,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
 
     def list_tenants(
         self,
-        request: tenant_service.ListTenantsRequest = None,
+        request: Union[tenant_service.ListTenantsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -693,7 +693,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
         r"""Lists all tenants associated with the project.
 
         Args:
-            request (google.cloud.talent_v4.types.ListTenantsRequest):
+            request (Union[google.cloud.talent_v4.types.ListTenantsRequest, dict]):
                 The request object. List tenants for which the client
                 has ACL visibility.
             parent (str):
