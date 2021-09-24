@@ -17,17 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import (
-    Callable,
-    Dict,
-    Optional,
-    Iterable,
-    Iterator,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -347,7 +337,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
 
     def recognize(
         self,
-        request: cloud_speech.RecognizeRequest = None,
+        request: Union[cloud_speech.RecognizeRequest, dict] = None,
         *,
         config: cloud_speech.RecognitionConfig = None,
         audio: cloud_speech.RecognitionAudio = None,
@@ -359,7 +349,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
         results after all audio has been sent and processed.
 
         Args:
-            request (google.cloud.speech_v1.types.RecognizeRequest):
+            request (Union[google.cloud.speech_v1.types.RecognizeRequest, dict]):
                 The request object. The top-level message sent by the
                 client for the `Recognize` method.
             config (google.cloud.speech_v1.types.RecognitionConfig):
@@ -425,7 +415,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
 
     def long_running_recognize(
         self,
-        request: cloud_speech.LongRunningRecognizeRequest = None,
+        request: Union[cloud_speech.LongRunningRecognizeRequest, dict] = None,
         *,
         config: cloud_speech.RecognitionConfig = None,
         audio: cloud_speech.RecognitionAudio = None,
@@ -441,7 +431,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
         `how-to <https://cloud.google.com/speech-to-text/docs/async-recognize>`__.
 
         Args:
-            request (google.cloud.speech_v1.types.LongRunningRecognizeRequest):
+            request (Union[google.cloud.speech_v1.types.LongRunningRecognizeRequest, dict]):
                 The request object. The top-level message sent by the
                 client for the `LongRunningRecognize` method.
             config (google.cloud.speech_v1.types.RecognitionConfig):
