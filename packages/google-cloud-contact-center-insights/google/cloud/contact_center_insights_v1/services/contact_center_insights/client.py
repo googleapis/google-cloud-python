@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -465,7 +465,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def create_conversation(
         self,
-        request: contact_center_insights.CreateConversationRequest = None,
+        request: Union[contact_center_insights.CreateConversationRequest, dict] = None,
         *,
         parent: str = None,
         conversation: resources.Conversation = None,
@@ -477,7 +477,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Creates a conversation.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.CreateConversationRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.CreateConversationRequest, dict]):
                 The request object. Request to create a conversation.
             parent (str):
                 Required. The parent resource of the
@@ -559,7 +559,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def update_conversation(
         self,
-        request: contact_center_insights.UpdateConversationRequest = None,
+        request: Union[contact_center_insights.UpdateConversationRequest, dict] = None,
         *,
         conversation: resources.Conversation = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -570,7 +570,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Updates a conversation.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.UpdateConversationRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.UpdateConversationRequest, dict]):
                 The request object. The request to update a
                 conversation.
             conversation (google.cloud.contact_center_insights_v1.types.Conversation):
@@ -638,7 +638,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def get_conversation(
         self,
-        request: contact_center_insights.GetConversationRequest = None,
+        request: Union[contact_center_insights.GetConversationRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -648,7 +648,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Gets a conversation.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.GetConversationRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.GetConversationRequest, dict]):
                 The request object. The request to get a conversation.
             name (str):
                 Required. The name of the
@@ -706,7 +706,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def list_conversations(
         self,
-        request: contact_center_insights.ListConversationsRequest = None,
+        request: Union[contact_center_insights.ListConversationsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -716,7 +716,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Lists conversations.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.ListConversationsRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.ListConversationsRequest, dict]):
                 The request object. Request to list conversations.
             parent (str):
                 Required. The parent resource of the
@@ -785,7 +785,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def delete_conversation(
         self,
-        request: contact_center_insights.DeleteConversationRequest = None,
+        request: Union[contact_center_insights.DeleteConversationRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -795,7 +795,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Deletes a conversation.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.DeleteConversationRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.DeleteConversationRequest, dict]):
                 The request object. The request to delete a
                 conversation.
             name (str):
@@ -849,7 +849,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def create_analysis(
         self,
-        request: contact_center_insights.CreateAnalysisRequest = None,
+        request: Union[contact_center_insights.CreateAnalysisRequest, dict] = None,
         *,
         parent: str = None,
         analysis: resources.Analysis = None,
@@ -861,7 +861,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         done when the analysis has completed.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.CreateAnalysisRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.CreateAnalysisRequest, dict]):
                 The request object. The request to create an analysis.
             parent (str):
                 Required. The parent resource of the
@@ -939,7 +939,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def get_analysis(
         self,
-        request: contact_center_insights.GetAnalysisRequest = None,
+        request: Union[contact_center_insights.GetAnalysisRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -949,7 +949,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Gets an analysis.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.GetAnalysisRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.GetAnalysisRequest, dict]):
                 The request object. The request to get an analysis.
             name (str):
                 Required. The name of the analysis to
@@ -1007,7 +1007,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def list_analyses(
         self,
-        request: contact_center_insights.ListAnalysesRequest = None,
+        request: Union[contact_center_insights.ListAnalysesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1017,7 +1017,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Lists analyses.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.ListAnalysesRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.ListAnalysesRequest, dict]):
                 The request object. The request to list analyses.
             parent (str):
                 Required. The parent resource of the
@@ -1085,7 +1085,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def delete_analysis(
         self,
-        request: contact_center_insights.DeleteAnalysisRequest = None,
+        request: Union[contact_center_insights.DeleteAnalysisRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1095,7 +1095,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Deletes an analysis.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.DeleteAnalysisRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.DeleteAnalysisRequest, dict]):
                 The request object. The request to delete an analysis.
             name (str):
                 Required. The name of the analysis to
@@ -1148,7 +1148,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def export_insights_data(
         self,
-        request: contact_center_insights.ExportInsightsDataRequest = None,
+        request: Union[contact_center_insights.ExportInsightsDataRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1159,7 +1159,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         request body.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.ExportInsightsDataRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.ExportInsightsDataRequest, dict]):
                 The request object. The request to export insights.
             parent (str):
                 Required. The parent resource to
@@ -1230,7 +1230,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def create_issue_model(
         self,
-        request: contact_center_insights.CreateIssueModelRequest = None,
+        request: Union[contact_center_insights.CreateIssueModelRequest, dict] = None,
         *,
         parent: str = None,
         issue_model: resources.IssueModel = None,
@@ -1241,7 +1241,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Creates an issue model.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.CreateIssueModelRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.CreateIssueModelRequest, dict]):
                 The request object. The request to create an issue
                 model.
             parent (str):
@@ -1320,7 +1320,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def update_issue_model(
         self,
-        request: contact_center_insights.UpdateIssueModelRequest = None,
+        request: Union[contact_center_insights.UpdateIssueModelRequest, dict] = None,
         *,
         issue_model: resources.IssueModel = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -1331,7 +1331,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Updates an issue model.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.UpdateIssueModelRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.UpdateIssueModelRequest, dict]):
                 The request object. The request to update an issue
                 model.
             issue_model (google.cloud.contact_center_insights_v1.types.IssueModel):
@@ -1399,7 +1399,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def get_issue_model(
         self,
-        request: contact_center_insights.GetIssueModelRequest = None,
+        request: Union[contact_center_insights.GetIssueModelRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1409,7 +1409,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Gets an issue model.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.GetIssueModelRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.GetIssueModelRequest, dict]):
                 The request object. The request to get an issue model.
             name (str):
                 Required. The name of the issue model
@@ -1467,7 +1467,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def list_issue_models(
         self,
-        request: contact_center_insights.ListIssueModelsRequest = None,
+        request: Union[contact_center_insights.ListIssueModelsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1477,7 +1477,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Lists issue models.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.ListIssueModelsRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.ListIssueModelsRequest, dict]):
                 The request object. Request to list issue models.
             parent (str):
                 Required. The parent resource of the
@@ -1535,7 +1535,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def delete_issue_model(
         self,
-        request: contact_center_insights.DeleteIssueModelRequest = None,
+        request: Union[contact_center_insights.DeleteIssueModelRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1545,7 +1545,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Deletes an issue model.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.DeleteIssueModelRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.DeleteIssueModelRequest, dict]):
                 The request object. The request to delete an issue
                 model.
             name (str):
@@ -1627,7 +1627,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def deploy_issue_model(
         self,
-        request: contact_center_insights.DeployIssueModelRequest = None,
+        request: Union[contact_center_insights.DeployIssueModelRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1639,7 +1639,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         analysis after it has been deployed.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.DeployIssueModelRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.DeployIssueModelRequest, dict]):
                 The request object. The request to deploy an issue
                 model.
             name (str):
@@ -1709,7 +1709,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def undeploy_issue_model(
         self,
-        request: contact_center_insights.UndeployIssueModelRequest = None,
+        request: Union[contact_center_insights.UndeployIssueModelRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1721,7 +1721,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         been undeployed.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.UndeployIssueModelRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.UndeployIssueModelRequest, dict]):
                 The request object. The request to undeploy an issue
                 model.
             name (str):
@@ -1793,7 +1793,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def get_issue(
         self,
-        request: contact_center_insights.GetIssueRequest = None,
+        request: Union[contact_center_insights.GetIssueRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1803,7 +1803,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Gets an issue.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.GetIssueRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.GetIssueRequest, dict]):
                 The request object. The request to get an issue.
             name (str):
                 Required. The name of the issue to
@@ -1861,7 +1861,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def list_issues(
         self,
-        request: contact_center_insights.ListIssuesRequest = None,
+        request: Union[contact_center_insights.ListIssuesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1871,7 +1871,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Lists issues.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.ListIssuesRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.ListIssuesRequest, dict]):
                 The request object. Request to list issues.
             parent (str):
                 Required. The parent resource of the
@@ -1929,7 +1929,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def update_issue(
         self,
-        request: contact_center_insights.UpdateIssueRequest = None,
+        request: Union[contact_center_insights.UpdateIssueRequest, dict] = None,
         *,
         issue: resources.Issue = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -1940,7 +1940,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Updates an issue.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.UpdateIssueRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.UpdateIssueRequest, dict]):
                 The request object. The request to update an issue.
             issue (google.cloud.contact_center_insights_v1.types.Issue):
                 Required. The new values for the
@@ -2007,7 +2007,9 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def calculate_issue_model_stats(
         self,
-        request: contact_center_insights.CalculateIssueModelStatsRequest = None,
+        request: Union[
+            contact_center_insights.CalculateIssueModelStatsRequest, dict
+        ] = None,
         *,
         issue_model: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2017,7 +2019,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Gets an issue model's statistics.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.CalculateIssueModelStatsRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.CalculateIssueModelStatsRequest, dict]):
                 The request object. Request to get statistics of an
                 issue model.
             issue_model (str):
@@ -2084,7 +2086,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def create_phrase_matcher(
         self,
-        request: contact_center_insights.CreatePhraseMatcherRequest = None,
+        request: Union[contact_center_insights.CreatePhraseMatcherRequest, dict] = None,
         *,
         parent: str = None,
         phrase_matcher: resources.PhraseMatcher = None,
@@ -2095,7 +2097,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Creates a phrase matcher.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.CreatePhraseMatcherRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.CreatePhraseMatcherRequest, dict]):
                 The request object. Request to create a phrase matcher.
             parent (str):
                 Required. The parent resource of the phrase matcher.
@@ -2165,7 +2167,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def get_phrase_matcher(
         self,
-        request: contact_center_insights.GetPhraseMatcherRequest = None,
+        request: Union[contact_center_insights.GetPhraseMatcherRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2175,7 +2177,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Gets a phrase matcher.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.GetPhraseMatcherRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.GetPhraseMatcherRequest, dict]):
                 The request object. The request to get a a phrase
                 matcher.
             name (str):
@@ -2234,7 +2236,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def list_phrase_matchers(
         self,
-        request: contact_center_insights.ListPhraseMatchersRequest = None,
+        request: Union[contact_center_insights.ListPhraseMatchersRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2244,7 +2246,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Lists phrase matchers.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.ListPhraseMatchersRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.ListPhraseMatchersRequest, dict]):
                 The request object. Request to list phrase matchers.
             parent (str):
                 Required. The parent resource of the
@@ -2313,7 +2315,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def delete_phrase_matcher(
         self,
-        request: contact_center_insights.DeletePhraseMatcherRequest = None,
+        request: Union[contact_center_insights.DeletePhraseMatcherRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2323,7 +2325,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Deletes a phrase matcher.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.DeletePhraseMatcherRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.DeletePhraseMatcherRequest, dict]):
                 The request object. The request to delete a phrase
                 matcher.
             name (str):
@@ -2377,7 +2379,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def calculate_stats(
         self,
-        request: contact_center_insights.CalculateStatsRequest = None,
+        request: Union[contact_center_insights.CalculateStatsRequest, dict] = None,
         *,
         location: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2387,7 +2389,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Gets conversation statistics.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.CalculateStatsRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.CalculateStatsRequest, dict]):
                 The request object. The request for calculating
                 conversation statistics.
             location (str):
@@ -2448,7 +2450,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def get_settings(
         self,
-        request: contact_center_insights.GetSettingsRequest = None,
+        request: Union[contact_center_insights.GetSettingsRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2458,7 +2460,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Gets project-level settings.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.GetSettingsRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.GetSettingsRequest, dict]):
                 The request object. The request to get project-level
                 settings.
             name (str):
@@ -2517,7 +2519,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     def update_settings(
         self,
-        request: contact_center_insights.UpdateSettingsRequest = None,
+        request: Union[contact_center_insights.UpdateSettingsRequest, dict] = None,
         *,
         settings: resources.Settings = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -2528,7 +2530,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Updates project-level settings.
 
         Args:
-            request (google.cloud.contact_center_insights_v1.types.UpdateSettingsRequest):
+            request (Union[google.cloud.contact_center_insights_v1.types.UpdateSettingsRequest, dict]):
                 The request object. The request to update project-level
                 settings.
             settings (google.cloud.contact_center_insights_v1.types.Settings):

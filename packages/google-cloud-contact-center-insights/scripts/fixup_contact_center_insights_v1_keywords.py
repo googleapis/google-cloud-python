@@ -39,34 +39,34 @@ def partition(
 class contact_center_insightsCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'calculate_issue_model_stats': ('issue_model', ),
-          'calculate_stats': ('location', 'filter', ),
-          'create_analysis': ('parent', 'analysis', ),
-          'create_conversation': ('parent', 'conversation', 'conversation_id', ),
-          'create_issue_model': ('parent', 'issue_model', ),
-          'create_phrase_matcher': ('parent', 'phrase_matcher', ),
-          'delete_analysis': ('name', ),
-          'delete_conversation': ('name', 'force', ),
-          'delete_issue_model': ('name', ),
-          'delete_phrase_matcher': ('name', ),
-          'deploy_issue_model': ('name', ),
-          'export_insights_data': ('parent', 'big_query_destination', 'filter', 'kms_key', ),
-          'get_analysis': ('name', ),
-          'get_conversation': ('name', 'view', ),
-          'get_issue': ('name', ),
-          'get_issue_model': ('name', ),
-          'get_phrase_matcher': ('name', ),
-          'get_settings': ('name', ),
-          'list_analyses': ('parent', 'page_size', 'page_token', 'filter', ),
-          'list_conversations': ('parent', 'page_size', 'page_token', 'filter', 'view', ),
-          'list_issue_models': ('parent', ),
-          'list_issues': ('parent', ),
-          'list_phrase_matchers': ('parent', 'page_size', 'page_token', 'filter', ),
-          'undeploy_issue_model': ('name', ),
-          'update_conversation': ('conversation', 'update_mask', ),
-          'update_issue': ('issue', 'update_mask', ),
-          'update_issue_model': ('issue_model', 'update_mask', ),
-          'update_settings': ('settings', 'update_mask', ),
+        'calculate_issue_model_stats': ('issue_model', ),
+        'calculate_stats': ('location', 'filter', ),
+        'create_analysis': ('parent', 'analysis', ),
+        'create_conversation': ('parent', 'conversation', 'conversation_id', ),
+        'create_issue_model': ('parent', 'issue_model', ),
+        'create_phrase_matcher': ('parent', 'phrase_matcher', ),
+        'delete_analysis': ('name', ),
+        'delete_conversation': ('name', 'force', ),
+        'delete_issue_model': ('name', ),
+        'delete_phrase_matcher': ('name', ),
+        'deploy_issue_model': ('name', ),
+        'export_insights_data': ('parent', 'big_query_destination', 'filter', 'kms_key', ),
+        'get_analysis': ('name', ),
+        'get_conversation': ('name', 'view', ),
+        'get_issue': ('name', ),
+        'get_issue_model': ('name', ),
+        'get_phrase_matcher': ('name', ),
+        'get_settings': ('name', ),
+        'list_analyses': ('parent', 'page_size', 'page_token', 'filter', ),
+        'list_conversations': ('parent', 'page_size', 'page_token', 'filter', 'view', ),
+        'list_issue_models': ('parent', ),
+        'list_issues': ('parent', ),
+        'list_phrase_matchers': ('parent', 'page_size', 'page_token', 'filter', ),
+        'undeploy_issue_model': ('name', ),
+        'update_conversation': ('conversation', 'update_mask', ),
+        'update_issue': ('issue', 'update_mask', ),
+        'update_issue_model': ('issue_model', 'update_mask', ),
+        'update_settings': ('settings', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -85,7 +85,7 @@ class contact_center_insightsCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
