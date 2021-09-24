@@ -39,27 +39,27 @@ def partition(
 class datastreamCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_connection_profile': ('parent', 'connection_profile_id', 'connection_profile', 'request_id', ),
-          'create_private_connection': ('parent', 'private_connection_id', 'private_connection', 'request_id', ),
-          'create_route': ('parent', 'route_id', 'route', 'request_id', ),
-          'create_stream': ('parent', 'stream_id', 'stream', 'request_id', 'validate_only', 'force', ),
-          'delete_connection_profile': ('name', 'request_id', ),
-          'delete_private_connection': ('name', 'request_id', 'force', ),
-          'delete_route': ('name', 'request_id', ),
-          'delete_stream': ('name', 'request_id', ),
-          'discover_connection_profile': ('parent', 'connection_profile', 'connection_profile_name', 'recursive', 'recursion_depth', 'oracle_rdbms', 'mysql_rdbms', ),
-          'fetch_errors': ('stream', ),
-          'fetch_static_ips': ('name', 'page_size', 'page_token', ),
-          'get_connection_profile': ('name', ),
-          'get_private_connection': ('name', ),
-          'get_route': ('name', ),
-          'get_stream': ('name', ),
-          'list_connection_profiles': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'list_private_connections': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'list_routes': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'list_streams': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'update_connection_profile': ('connection_profile', 'update_mask', 'request_id', ),
-          'update_stream': ('stream', 'update_mask', 'request_id', 'validate_only', 'force', ),
+        'create_connection_profile': ('parent', 'connection_profile_id', 'connection_profile', 'request_id', ),
+        'create_private_connection': ('parent', 'private_connection_id', 'private_connection', 'request_id', ),
+        'create_route': ('parent', 'route_id', 'route', 'request_id', ),
+        'create_stream': ('parent', 'stream_id', 'stream', 'request_id', 'validate_only', 'force', ),
+        'delete_connection_profile': ('name', 'request_id', ),
+        'delete_private_connection': ('name', 'request_id', 'force', ),
+        'delete_route': ('name', 'request_id', ),
+        'delete_stream': ('name', 'request_id', ),
+        'discover_connection_profile': ('parent', 'connection_profile', 'connection_profile_name', 'recursive', 'recursion_depth', 'oracle_rdbms', 'mysql_rdbms', ),
+        'fetch_errors': ('stream', ),
+        'fetch_static_ips': ('name', 'page_size', 'page_token', ),
+        'get_connection_profile': ('name', ),
+        'get_private_connection': ('name', ),
+        'get_route': ('name', ),
+        'get_stream': ('name', ),
+        'list_connection_profiles': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_private_connections': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_routes': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_streams': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'update_connection_profile': ('connection_profile', 'update_mask', 'request_id', ),
+        'update_stream': ('stream', 'update_mask', 'request_id', 'validate_only', 'force', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -78,7 +78,7 @@ class datastreamCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
