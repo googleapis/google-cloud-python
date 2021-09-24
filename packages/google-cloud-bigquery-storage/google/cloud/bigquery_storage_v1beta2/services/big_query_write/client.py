@@ -17,17 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import (
-    Callable,
-    Dict,
-    Optional,
-    Iterable,
-    Iterator,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -381,7 +371,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
     def create_write_stream(
         self,
-        request: storage.CreateWriteStreamRequest = None,
+        request: Union[storage.CreateWriteStreamRequest, dict] = None,
         *,
         parent: str = None,
         write_stream: stream.WriteStream = None,
@@ -398,7 +388,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         received.
 
         Args:
-            request (google.cloud.bigquery_storage_v1beta2.types.CreateWriteStreamRequest):
+            request (Union[google.cloud.bigquery_storage_v1beta2.types.CreateWriteStreamRequest, dict]):
                 The request object. Request message for
                 `CreateWriteStream`.
             parent (str):
@@ -526,7 +516,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
     def get_write_stream(
         self,
-        request: storage.GetWriteStreamRequest = None,
+        request: Union[storage.GetWriteStreamRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -536,7 +526,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         r"""Gets a write stream.
 
         Args:
-            request (google.cloud.bigquery_storage_v1beta2.types.GetWriteStreamRequest):
+            request (Union[google.cloud.bigquery_storage_v1beta2.types.GetWriteStreamRequest, dict]):
                 The request object. Request message for
                 `GetWriteStreamRequest`.
             name (str):
@@ -598,7 +588,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
     def finalize_write_stream(
         self,
-        request: storage.FinalizeWriteStreamRequest = None,
+        request: Union[storage.FinalizeWriteStreamRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -609,7 +599,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         the stream. Finalize is not supported on the '_default' stream.
 
         Args:
-            request (google.cloud.bigquery_storage_v1beta2.types.FinalizeWriteStreamRequest):
+            request (Union[google.cloud.bigquery_storage_v1beta2.types.FinalizeWriteStreamRequest, dict]):
                 The request object. Request message for invoking
                 `FinalizeWriteStream`.
             name (str):
@@ -668,7 +658,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
     def batch_commit_write_streams(
         self,
-        request: storage.BatchCommitWriteStreamsRequest = None,
+        request: Union[storage.BatchCommitWriteStreamsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -682,7 +672,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         operations.
 
         Args:
-            request (google.cloud.bigquery_storage_v1beta2.types.BatchCommitWriteStreamsRequest):
+            request (Union[google.cloud.bigquery_storage_v1beta2.types.BatchCommitWriteStreamsRequest, dict]):
                 The request object. Request message for
                 `BatchCommitWriteStreams`.
             parent (str):
@@ -744,7 +734,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
     def flush_rows(
         self,
-        request: storage.FlushRowsRequest = None,
+        request: Union[storage.FlushRowsRequest, dict] = None,
         *,
         write_stream: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -759,7 +749,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         \_default stream, since it is not BUFFERED.
 
         Args:
-            request (google.cloud.bigquery_storage_v1beta2.types.FlushRowsRequest):
+            request (Union[google.cloud.bigquery_storage_v1beta2.types.FlushRowsRequest, dict]):
                 The request object. Request message for `FlushRows`.
             write_stream (str):
                 Required. The stream that is the
