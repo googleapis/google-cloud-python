@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -370,7 +370,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
     def create_dashboard(
         self,
-        request: dashboards_service.CreateDashboardRequest = None,
+        request: Union[dashboards_service.CreateDashboardRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -385,7 +385,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         Management <https://cloud.google.com/iam>`__.
 
         Args:
-            request (google.cloud.monitoring_dashboard_v1.types.CreateDashboardRequest):
+            request (Union[google.cloud.monitoring_dashboard_v1.types.CreateDashboardRequest, dict]):
                 The request object. The `CreateDashboard` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -427,7 +427,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
     def list_dashboards(
         self,
-        request: dashboards_service.ListDashboardsRequest = None,
+        request: Union[dashboards_service.ListDashboardsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -441,7 +441,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         Management <https://cloud.google.com/iam>`__.
 
         Args:
-            request (google.cloud.monitoring_dashboard_v1.types.ListDashboardsRequest):
+            request (Union[google.cloud.monitoring_dashboard_v1.types.ListDashboardsRequest, dict]):
                 The request object. The `ListDashboards` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -489,7 +489,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
     def get_dashboard(
         self,
-        request: dashboards_service.GetDashboardRequest = None,
+        request: Union[dashboards_service.GetDashboardRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -503,7 +503,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         Management <https://cloud.google.com/iam>`__.
 
         Args:
-            request (google.cloud.monitoring_dashboard_v1.types.GetDashboardRequest):
+            request (Union[google.cloud.monitoring_dashboard_v1.types.GetDashboardRequest, dict]):
                 The request object. The `GetDashboard` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -545,7 +545,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
     def delete_dashboard(
         self,
-        request: dashboards_service.DeleteDashboardRequest = None,
+        request: Union[dashboards_service.DeleteDashboardRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -559,7 +559,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         Management <https://cloud.google.com/iam>`__.
 
         Args:
-            request (google.cloud.monitoring_dashboard_v1.types.DeleteDashboardRequest):
+            request (Union[google.cloud.monitoring_dashboard_v1.types.DeleteDashboardRequest, dict]):
                 The request object. The `DeleteDashboard` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -592,7 +592,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
 
     def update_dashboard(
         self,
-        request: dashboards_service.UpdateDashboardRequest = None,
+        request: Union[dashboards_service.UpdateDashboardRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -606,7 +606,7 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         Management <https://cloud.google.com/iam>`__.
 
         Args:
-            request (google.cloud.monitoring_dashboard_v1.types.UpdateDashboardRequest):
+            request (Union[google.cloud.monitoring_dashboard_v1.types.UpdateDashboardRequest, dict]):
                 The request object. The `UpdateDashboard` request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

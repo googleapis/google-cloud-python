@@ -39,11 +39,11 @@ def partition(
 class dashboardCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_dashboard': ('parent', 'dashboard', 'validate_only', ),
-          'delete_dashboard': ('name', ),
-          'get_dashboard': ('name', ),
-          'list_dashboards': ('parent', 'page_size', 'page_token', ),
-          'update_dashboard': ('dashboard', 'validate_only', ),
+        'create_dashboard': ('parent', 'dashboard', 'validate_only', ),
+        'delete_dashboard': ('name', ),
+        'get_dashboard': ('name', ),
+        'list_dashboards': ('parent', 'page_size', 'page_token', ),
+        'update_dashboard': ('dashboard', 'validate_only', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -62,7 +62,7 @@ class dashboardCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
