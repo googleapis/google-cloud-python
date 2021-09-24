@@ -39,19 +39,19 @@ def partition(
 class iapCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_brand': ('parent', 'brand', ),
-          'create_identity_aware_proxy_client': ('parent', 'identity_aware_proxy_client', ),
-          'delete_identity_aware_proxy_client': ('name', ),
-          'get_brand': ('name', ),
-          'get_iam_policy': ('resource', 'options', ),
-          'get_iap_settings': ('name', ),
-          'get_identity_aware_proxy_client': ('name', ),
-          'list_brands': ('parent', ),
-          'list_identity_aware_proxy_clients': ('parent', 'page_size', 'page_token', ),
-          'reset_identity_aware_proxy_client_secret': ('name', ),
-          'set_iam_policy': ('resource', 'policy', ),
-          'test_iam_permissions': ('resource', 'permissions', ),
-          'update_iap_settings': ('iap_settings', 'update_mask', ),
+        'create_brand': ('parent', 'brand', ),
+        'create_identity_aware_proxy_client': ('parent', 'identity_aware_proxy_client', ),
+        'delete_identity_aware_proxy_client': ('name', ),
+        'get_brand': ('name', ),
+        'get_iam_policy': ('resource', 'options', ),
+        'get_iap_settings': ('name', ),
+        'get_identity_aware_proxy_client': ('name', ),
+        'list_brands': ('parent', ),
+        'list_identity_aware_proxy_clients': ('parent', 'page_size', 'page_token', ),
+        'reset_identity_aware_proxy_client_secret': ('name', ),
+        'set_iam_policy': ('resource', 'policy', ),
+        'test_iam_permissions': ('resource', 'permissions', ),
+        'update_iap_settings': ('iap_settings', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -70,7 +70,7 @@ class iapCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
