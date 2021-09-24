@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.5.1](https://www.github.com/googleapis/python-video-transcoder/compare/v0.5.0...v0.5.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([81b1273](https://www.github.com/googleapis/python-video-transcoder/commit/81b127355c37c59a36a5da45a71f8c02d64ae592))
+
 ## [0.5.0](https://www.github.com/googleapis/python-video-transcoder/compare/v0.4.1...v0.5.0) (2021-08-07)
 
 
