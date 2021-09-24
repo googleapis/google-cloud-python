@@ -39,12 +39,12 @@ def partition(
 class dataqnaCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_question': ('parent', 'question', ),
-          'execute_question': ('name', 'interpretation_index', ),
-          'get_question': ('name', 'read_mask', ),
-          'get_user_feedback': ('name', ),
-          'suggest_queries': ('parent', 'scopes', 'query', 'suggestion_types', ),
-          'update_user_feedback': ('user_feedback', 'update_mask', ),
+        'create_question': ('parent', 'question', ),
+        'execute_question': ('name', 'interpretation_index', ),
+        'get_question': ('name', 'read_mask', ),
+        'get_user_feedback': ('name', ),
+        'suggest_queries': ('parent', 'scopes', 'query', 'suggestion_types', ),
+        'update_user_feedback': ('user_feedback', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -63,7 +63,7 @@ class dataqnaCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

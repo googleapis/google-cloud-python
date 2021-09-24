@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -408,7 +408,7 @@ class AutoSuggestionServiceClient(metaclass=AutoSuggestionServiceClientMeta):
 
     def suggest_queries(
         self,
-        request: auto_suggestion_service.SuggestQueriesRequest = None,
+        request: Union[auto_suggestion_service.SuggestQueriesRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -418,7 +418,7 @@ class AutoSuggestionServiceClient(metaclass=AutoSuggestionServiceClientMeta):
         AutoSuggestion tolerance should be less than 1 second.
 
         Args:
-            request (google.cloud.dataqna_v1alpha.types.SuggestQueriesRequest):
+            request (Union[google.cloud.dataqna_v1alpha.types.SuggestQueriesRequest, dict]):
                 The request object. Request for query suggestions.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
