@@ -39,20 +39,20 @@ def partition(
 class grafeasCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'batch_create_notes': ('parent', 'notes', ),
-          'batch_create_occurrences': ('parent', 'occurrences', ),
-          'create_note': ('parent', 'note_id', 'note', ),
-          'create_occurrence': ('parent', 'occurrence', ),
-          'delete_note': ('name', ),
-          'delete_occurrence': ('name', ),
-          'get_note': ('name', ),
-          'get_occurrence': ('name', ),
-          'get_occurrence_note': ('name', ),
-          'list_note_occurrences': ('name', 'filter', 'page_size', 'page_token', ),
-          'list_notes': ('parent', 'filter', 'page_size', 'page_token', ),
-          'list_occurrences': ('parent', 'filter', 'page_size', 'page_token', ),
-          'update_note': ('name', 'note', 'update_mask', ),
-          'update_occurrence': ('name', 'occurrence', 'update_mask', ),
+        'batch_create_notes': ('parent', 'notes', ),
+        'batch_create_occurrences': ('parent', 'occurrences', ),
+        'create_note': ('parent', 'note_id', 'note', ),
+        'create_occurrence': ('parent', 'occurrence', ),
+        'delete_note': ('name', ),
+        'delete_occurrence': ('name', ),
+        'get_note': ('name', ),
+        'get_occurrence': ('name', ),
+        'get_occurrence_note': ('name', ),
+        'list_note_occurrences': ('name', 'filter', 'page_size', 'page_token', ),
+        'list_notes': ('parent', 'filter', 'page_size', 'page_token', ),
+        'list_occurrences': ('parent', 'filter', 'page_size', 'page_token', ),
+        'update_note': ('name', 'note', 'update_mask', ),
+        'update_occurrence': ('name', 'occurrence', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -71,7 +71,7 @@ class grafeasCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
