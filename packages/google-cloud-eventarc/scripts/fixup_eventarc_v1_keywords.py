@@ -39,11 +39,11 @@ def partition(
 class eventarcCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_trigger': ('parent', 'trigger', 'trigger_id', 'validate_only', ),
-          'delete_trigger': ('name', 'validate_only', 'etag', 'allow_missing', ),
-          'get_trigger': ('name', ),
-          'list_triggers': ('parent', 'page_size', 'page_token', 'order_by', ),
-          'update_trigger': ('validate_only', 'trigger', 'update_mask', 'allow_missing', ),
+        'create_trigger': ('parent', 'trigger', 'trigger_id', 'validate_only', ),
+        'delete_trigger': ('name', 'validate_only', 'etag', 'allow_missing', ),
+        'get_trigger': ('name', ),
+        'list_triggers': ('parent', 'page_size', 'page_token', 'order_by', ),
+        'update_trigger': ('validate_only', 'trigger', 'update_mask', 'allow_missing', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -62,7 +62,7 @@ class eventarcCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

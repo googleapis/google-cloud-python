@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -380,7 +380,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
     def get_trigger(
         self,
-        request: eventarc.GetTriggerRequest = None,
+        request: Union[eventarc.GetTriggerRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -390,7 +390,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         r"""Get a single trigger.
 
         Args:
-            request (google.cloud.eventarc_v1.types.GetTriggerRequest):
+            request (Union[google.cloud.eventarc_v1.types.GetTriggerRequest, dict]):
                 The request object. The request message for the
                 GetTrigger method.
             name (str):
@@ -451,7 +451,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
     def list_triggers(
         self,
-        request: eventarc.ListTriggersRequest = None,
+        request: Union[eventarc.ListTriggersRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -461,7 +461,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         r"""List triggers.
 
         Args:
-            request (google.cloud.eventarc_v1.types.ListTriggersRequest):
+            request (Union[google.cloud.eventarc_v1.types.ListTriggersRequest, dict]):
                 The request object. The request message for the
                 ListTriggers method.
             parent (str):
@@ -531,7 +531,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
     def create_trigger(
         self,
-        request: eventarc.CreateTriggerRequest = None,
+        request: Union[eventarc.CreateTriggerRequest, dict] = None,
         *,
         parent: str = None,
         trigger: gce_trigger.Trigger = None,
@@ -544,7 +544,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         location.
 
         Args:
-            request (google.cloud.eventarc_v1.types.CreateTriggerRequest):
+            request (Union[google.cloud.eventarc_v1.types.CreateTriggerRequest, dict]):
                 The request object. The request message for the
                 CreateTrigger method.
             parent (str):
@@ -632,7 +632,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
     def update_trigger(
         self,
-        request: eventarc.UpdateTriggerRequest = None,
+        request: Union[eventarc.UpdateTriggerRequest, dict] = None,
         *,
         trigger: gce_trigger.Trigger = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -644,7 +644,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         r"""Update a single trigger.
 
         Args:
-            request (google.cloud.eventarc_v1.types.UpdateTriggerRequest):
+            request (Union[google.cloud.eventarc_v1.types.UpdateTriggerRequest, dict]):
                 The request object. The request message for the
                 UpdateTrigger method.
             trigger (google.cloud.eventarc_v1.types.Trigger):
@@ -737,7 +737,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
     def delete_trigger(
         self,
-        request: eventarc.DeleteTriggerRequest = None,
+        request: Union[eventarc.DeleteTriggerRequest, dict] = None,
         *,
         name: str = None,
         allow_missing: bool = None,
@@ -748,7 +748,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         r"""Delete a single trigger.
 
         Args:
-            request (google.cloud.eventarc_v1.types.DeleteTriggerRequest):
+            request (Union[google.cloud.eventarc_v1.types.DeleteTriggerRequest, dict]):
                 The request object. The request message for the
                 DeleteTrigger method.
             name (str):
