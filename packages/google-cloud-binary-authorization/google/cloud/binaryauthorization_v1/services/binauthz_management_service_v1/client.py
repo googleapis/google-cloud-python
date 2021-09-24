@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -377,7 +377,7 @@ class BinauthzManagementServiceV1Client(
 
     def get_policy(
         self,
-        request: service.GetPolicyRequest = None,
+        request: Union[service.GetPolicyRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -397,7 +397,7 @@ class BinauthzManagementServiceV1Client(
         project does not have one.
 
         Args:
-            request (google.cloud.binaryauthorization_v1.types.GetPolicyRequest):
+            request (Union[google.cloud.binaryauthorization_v1.types.GetPolicyRequest, dict]):
                 The request object. Request message for
                 [BinauthzManagementService.GetPolicy][].
             name (str):
@@ -459,7 +459,7 @@ class BinauthzManagementServiceV1Client(
 
     def update_policy(
         self,
-        request: service.UpdatePolicyRequest = None,
+        request: Union[service.UpdatePolicyRequest, dict] = None,
         *,
         policy: resources.Policy = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -476,7 +476,7 @@ class BinauthzManagementServiceV1Client(
         request is malformed.
 
         Args:
-            request (google.cloud.binaryauthorization_v1.types.UpdatePolicyRequest):
+            request (Union[google.cloud.binaryauthorization_v1.types.UpdatePolicyRequest, dict]):
                 The request object. Request message for
                 [BinauthzManagementService.UpdatePolicy][].
             policy (google.cloud.binaryauthorization_v1.types.Policy):
@@ -543,7 +543,7 @@ class BinauthzManagementServiceV1Client(
 
     def create_attestor(
         self,
-        request: service.CreateAttestorRequest = None,
+        request: Union[service.CreateAttestorRequest, dict] = None,
         *,
         parent: str = None,
         attestor_id: str = None,
@@ -562,7 +562,7 @@ class BinauthzManagementServiceV1Client(
         already exists.
 
         Args:
-            request (google.cloud.binaryauthorization_v1.types.CreateAttestorRequest):
+            request (Union[google.cloud.binaryauthorization_v1.types.CreateAttestorRequest, dict]):
                 The request object. Request message for
                 [BinauthzManagementService.CreateAttestor][].
             parent (str):
@@ -647,7 +647,7 @@ class BinauthzManagementServiceV1Client(
 
     def get_attestor(
         self,
-        request: service.GetAttestorRequest = None,
+        request: Union[service.GetAttestorRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -661,7 +661,7 @@ class BinauthzManagementServiceV1Client(
         not exist.
 
         Args:
-            request (google.cloud.binaryauthorization_v1.types.GetAttestorRequest):
+            request (Union[google.cloud.binaryauthorization_v1.types.GetAttestorRequest, dict]):
                 The request object. Request message for
                 [BinauthzManagementService.GetAttestor][].
             name (str):
@@ -724,7 +724,7 @@ class BinauthzManagementServiceV1Client(
 
     def update_attestor(
         self,
-        request: service.UpdateAttestorRequest = None,
+        request: Union[service.UpdateAttestorRequest, dict] = None,
         *,
         attestor: resources.Attestor = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -738,7 +738,7 @@ class BinauthzManagementServiceV1Client(
         not exist.
 
         Args:
-            request (google.cloud.binaryauthorization_v1.types.UpdateAttestorRequest):
+            request (Union[google.cloud.binaryauthorization_v1.types.UpdateAttestorRequest, dict]):
                 The request object. Request message for
                 [BinauthzManagementService.UpdateAttestor][].
             attestor (google.cloud.binaryauthorization_v1.types.Attestor):
@@ -806,7 +806,7 @@ class BinauthzManagementServiceV1Client(
 
     def list_attestors(
         self,
-        request: service.ListAttestorsRequest = None,
+        request: Union[service.ListAttestorsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -817,7 +817,7 @@ class BinauthzManagementServiceV1Client(
         Returns INVALID_ARGUMENT if the project does not exist.
 
         Args:
-            request (google.cloud.binaryauthorization_v1.types.ListAttestorsRequest):
+            request (Union[google.cloud.binaryauthorization_v1.types.ListAttestorsRequest, dict]):
                 The request object. Request message for
                 [BinauthzManagementService.ListAttestors][].
             parent (str):
@@ -889,7 +889,7 @@ class BinauthzManagementServiceV1Client(
 
     def delete_attestor(
         self,
-        request: service.DeleteAttestorRequest = None,
+        request: Union[service.DeleteAttestorRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -903,7 +903,7 @@ class BinauthzManagementServiceV1Client(
         not exist.
 
         Args:
-            request (google.cloud.binaryauthorization_v1.types.DeleteAttestorRequest):
+            request (Union[google.cloud.binaryauthorization_v1.types.DeleteAttestorRequest, dict]):
                 The request object. Request message for
                 [BinauthzManagementService.DeleteAttestor][].
             name (str):

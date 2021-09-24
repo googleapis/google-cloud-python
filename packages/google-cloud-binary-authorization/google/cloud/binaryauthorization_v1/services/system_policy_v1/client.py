@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -348,7 +348,7 @@ class SystemPolicyV1Client(metaclass=SystemPolicyV1ClientMeta):
 
     def get_system_policy(
         self,
-        request: service.GetSystemPolicyRequest = None,
+        request: Union[service.GetSystemPolicyRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -359,7 +359,7 @@ class SystemPolicyV1Client(metaclass=SystemPolicyV1ClientMeta):
         location.
 
         Args:
-            request (google.cloud.binaryauthorization_v1.types.GetSystemPolicyRequest):
+            request (Union[google.cloud.binaryauthorization_v1.types.GetSystemPolicyRequest, dict]):
                 The request object. Request to read the current system
                 policy.
             name (str):

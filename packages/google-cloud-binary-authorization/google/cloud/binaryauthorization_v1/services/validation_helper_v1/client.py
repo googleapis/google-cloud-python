@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -337,7 +337,7 @@ class ValidationHelperV1Client(metaclass=ValidationHelperV1ClientMeta):
 
     def validate_attestation_occurrence(
         self,
-        request: service.ValidateAttestationOccurrenceRequest = None,
+        request: Union[service.ValidateAttestationOccurrenceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -347,7 +347,7 @@ class ValidationHelperV1Client(metaclass=ValidationHelperV1ClientMeta):
         image URI was signed by the given Attestor
 
         Args:
-            request (google.cloud.binaryauthorization_v1.types.ValidateAttestationOccurrenceRequest):
+            request (Union[google.cloud.binaryauthorization_v1.types.ValidateAttestationOccurrenceRequest, dict]):
                 The request object. Request message for
                 [ValidationHelperV1.ValidateAttestationOccurrence][google.cloud.binaryauthorization.v1.ValidationHelperV1.ValidateAttestationOccurrence].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

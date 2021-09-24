@@ -39,15 +39,15 @@ def partition(
 class binaryauthorizationCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_attestor': ('parent', 'attestor_id', 'attestor', ),
-          'delete_attestor': ('name', ),
-          'get_attestor': ('name', ),
-          'get_policy': ('name', ),
-          'get_system_policy': ('name', ),
-          'list_attestors': ('parent', 'page_size', 'page_token', ),
-          'update_attestor': ('attestor', ),
-          'update_policy': ('policy', ),
-          'validate_attestation_occurrence': ('attestor', 'attestation', 'occurrence_note', 'occurrence_resource_uri', ),
+        'create_attestor': ('parent', 'attestor_id', 'attestor', ),
+        'delete_attestor': ('name', ),
+        'get_attestor': ('name', ),
+        'get_policy': ('name', ),
+        'get_system_policy': ('name', ),
+        'list_attestors': ('parent', 'page_size', 'page_token', ),
+        'update_attestor': ('attestor', ),
+        'update_policy': ('policy', ),
+        'validate_attestation_occurrence': ('attestor', 'attestation', 'occurrence_note', 'occurrence_resource_uri', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -66,7 +66,7 @@ class binaryauthorizationCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
