@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -367,7 +367,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
     def write_user_event(
         self,
-        request: user_event_service.WriteUserEventRequest = None,
+        request: Union[user_event_service.WriteUserEventRequest, dict] = None,
         *,
         parent: str = None,
         user_event: gcr_user_event.UserEvent = None,
@@ -378,7 +378,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         r"""Writes a single user event.
 
         Args:
-            request (google.cloud.recommendationengine_v1beta1.types.WriteUserEventRequest):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.WriteUserEventRequest, dict]):
                 The request object. Request message for WriteUserEvent
                 method.
             parent (str):
@@ -448,7 +448,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
     def collect_user_event(
         self,
-        request: user_event_service.CollectUserEventRequest = None,
+        request: Union[user_event_service.CollectUserEventRequest, dict] = None,
         *,
         parent: str = None,
         user_event: str = None,
@@ -466,7 +466,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         directly.
 
         Args:
-            request (google.cloud.recommendationengine_v1beta1.types.CollectUserEventRequest):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.CollectUserEventRequest, dict]):
                 The request object. Request message for CollectUserEvent
                 method.
             parent (str):
@@ -606,7 +606,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
     def list_user_events(
         self,
-        request: user_event_service.ListUserEventsRequest = None,
+        request: Union[user_event_service.ListUserEventsRequest, dict] = None,
         *,
         parent: str = None,
         filter: str = None,
@@ -618,7 +618,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         potential filtering.
 
         Args:
-            request (google.cloud.recommendationengine_v1beta1.types.ListUserEventsRequest):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.ListUserEventsRequest, dict]):
                 The request object. Request message for ListUserEvents
                 method.
             parent (str):
@@ -731,7 +731,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
     def purge_user_events(
         self,
-        request: user_event_service.PurgeUserEventsRequest = None,
+        request: Union[user_event_service.PurgeUserEventsRequest, dict] = None,
         *,
         parent: str = None,
         filter: str = None,
@@ -747,7 +747,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         command first.
 
         Args:
-            request (google.cloud.recommendationengine_v1beta1.types.PurgeUserEventsRequest):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.PurgeUserEventsRequest, dict]):
                 The request object. Request message for PurgeUserEvents
                 method.
             parent (str):
@@ -858,7 +858,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
     def import_user_events(
         self,
-        request: import_.ImportUserEventsRequest = None,
+        request: Union[import_.ImportUserEventsRequest, dict] = None,
         *,
         parent: str = None,
         request_id: str = None,
@@ -877,7 +877,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         ImportMetadata.
 
         Args:
-            request (google.cloud.recommendationengine_v1beta1.types.ImportUserEventsRequest):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.ImportUserEventsRequest, dict]):
                 The request object. Request message for the
                 ImportUserEvents request.
             parent (str):

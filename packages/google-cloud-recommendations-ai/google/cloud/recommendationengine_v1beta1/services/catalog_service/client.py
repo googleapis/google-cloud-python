@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -360,7 +360,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def create_catalog_item(
         self,
-        request: catalog_service.CreateCatalogItemRequest = None,
+        request: Union[catalog_service.CreateCatalogItemRequest, dict] = None,
         *,
         parent: str = None,
         catalog_item: catalog.CatalogItem = None,
@@ -371,7 +371,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         r"""Creates a catalog item.
 
         Args:
-            request (google.cloud.recommendationengine_v1beta1.types.CreateCatalogItemRequest):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.CreateCatalogItemRequest, dict]):
                 The request object. Request message for
                 CreateCatalogItem method.
             parent (str):
@@ -439,7 +439,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def get_catalog_item(
         self,
-        request: catalog_service.GetCatalogItemRequest = None,
+        request: Union[catalog_service.GetCatalogItemRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -449,7 +449,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         r"""Gets a specific catalog item.
 
         Args:
-            request (google.cloud.recommendationengine_v1beta1.types.GetCatalogItemRequest):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.GetCatalogItemRequest, dict]):
                 The request object. Request message for GetCatalogItem
                 method.
             name (str):
@@ -510,7 +510,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def list_catalog_items(
         self,
-        request: catalog_service.ListCatalogItemsRequest = None,
+        request: Union[catalog_service.ListCatalogItemsRequest, dict] = None,
         *,
         parent: str = None,
         filter: str = None,
@@ -521,7 +521,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         r"""Gets a list of catalog items.
 
         Args:
-            request (google.cloud.recommendationengine_v1beta1.types.ListCatalogItemsRequest):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.ListCatalogItemsRequest, dict]):
                 The request object. Request message for ListCatalogItems
                 method.
             parent (str):
@@ -600,7 +600,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def update_catalog_item(
         self,
-        request: catalog_service.UpdateCatalogItemRequest = None,
+        request: Union[catalog_service.UpdateCatalogItemRequest, dict] = None,
         *,
         name: str = None,
         catalog_item: catalog.CatalogItem = None,
@@ -613,7 +613,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         supported. Non-existing items will be created.
 
         Args:
-            request (google.cloud.recommendationengine_v1beta1.types.UpdateCatalogItemRequest):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.UpdateCatalogItemRequest, dict]):
                 The request object. Request message for
                 UpdateCatalogItem method.
             name (str):
@@ -693,7 +693,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def delete_catalog_item(
         self,
-        request: catalog_service.DeleteCatalogItemRequest = None,
+        request: Union[catalog_service.DeleteCatalogItemRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -703,7 +703,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         r"""Deletes a catalog item.
 
         Args:
-            request (google.cloud.recommendationengine_v1beta1.types.DeleteCatalogItemRequest):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.DeleteCatalogItemRequest, dict]):
                 The request object. Request message for
                 DeleteCatalogItem method.
             name (str):
@@ -757,7 +757,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
 
     def import_catalog_items(
         self,
-        request: import_.ImportCatalogItemsRequest = None,
+        request: Union[import_.ImportCatalogItemsRequest, dict] = None,
         *,
         parent: str = None,
         request_id: str = None,
@@ -776,7 +776,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         successfully updated.
 
         Args:
-            request (google.cloud.recommendationengine_v1beta1.types.ImportCatalogItemsRequest):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.ImportCatalogItemsRequest, dict]):
                 The request object. Request message for Import methods.
             parent (str):
                 Required.

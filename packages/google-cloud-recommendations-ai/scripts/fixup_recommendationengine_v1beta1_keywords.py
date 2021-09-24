@@ -39,21 +39,21 @@ def partition(
 class recommendationengineCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'collect_user_event': ('parent', 'user_event', 'uri', 'ets', ),
-          'create_catalog_item': ('parent', 'catalog_item', ),
-          'create_prediction_api_key_registration': ('parent', 'prediction_api_key_registration', ),
-          'delete_catalog_item': ('name', ),
-          'delete_prediction_api_key_registration': ('name', ),
-          'get_catalog_item': ('name', ),
-          'import_catalog_items': ('parent', 'input_config', 'request_id', 'errors_config', ),
-          'import_user_events': ('parent', 'input_config', 'request_id', 'errors_config', ),
-          'list_catalog_items': ('parent', 'page_size', 'page_token', 'filter', ),
-          'list_prediction_api_key_registrations': ('parent', 'page_size', 'page_token', ),
-          'list_user_events': ('parent', 'page_size', 'page_token', 'filter', ),
-          'predict': ('name', 'user_event', 'page_size', 'page_token', 'filter', 'dry_run', 'params', 'labels', ),
-          'purge_user_events': ('parent', 'filter', 'force', ),
-          'update_catalog_item': ('name', 'catalog_item', 'update_mask', ),
-          'write_user_event': ('parent', 'user_event', ),
+        'collect_user_event': ('parent', 'user_event', 'uri', 'ets', ),
+        'create_catalog_item': ('parent', 'catalog_item', ),
+        'create_prediction_api_key_registration': ('parent', 'prediction_api_key_registration', ),
+        'delete_catalog_item': ('name', ),
+        'delete_prediction_api_key_registration': ('name', ),
+        'get_catalog_item': ('name', ),
+        'import_catalog_items': ('parent', 'input_config', 'request_id', 'errors_config', ),
+        'import_user_events': ('parent', 'input_config', 'request_id', 'errors_config', ),
+        'list_catalog_items': ('parent', 'page_size', 'page_token', 'filter', ),
+        'list_prediction_api_key_registrations': ('parent', 'page_size', 'page_token', ),
+        'list_user_events': ('parent', 'page_size', 'page_token', 'filter', ),
+        'predict': ('name', 'user_event', 'page_size', 'page_token', 'filter', 'dry_run', 'params', 'labels', ),
+        'purge_user_events': ('parent', 'filter', 'force', ),
+        'update_catalog_item': ('name', 'catalog_item', 'update_mask', ),
+        'write_user_event': ('parent', 'user_event', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -72,7 +72,7 @@ class recommendationengineCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
