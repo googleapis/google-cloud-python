@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -359,7 +359,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
     def list_services(
         self,
-        request: cloud_catalog.ListServicesRequest = None,
+        request: Union[cloud_catalog.ListServicesRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -368,7 +368,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         r"""Lists all public cloud services.
 
         Args:
-            request (google.cloud.billing_v1.types.ListServicesRequest):
+            request (Union[google.cloud.billing_v1.types.ListServicesRequest, dict]):
                 The request object. Request message for `ListServices`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -410,7 +410,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
     def list_skus(
         self,
-        request: cloud_catalog.ListSkusRequest = None,
+        request: Union[cloud_catalog.ListSkusRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -421,7 +421,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         service.
 
         Args:
-            request (google.cloud.billing_v1.types.ListSkusRequest):
+            request (Union[google.cloud.billing_v1.types.ListSkusRequest, dict]):
                 The request object. Request message for `ListSkus`.
             parent (str):
                 Required. The name of the service.
