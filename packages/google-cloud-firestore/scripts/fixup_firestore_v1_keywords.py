@@ -45,21 +45,21 @@ def partition(
 class firestoreCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'batch_get_documents': ('database', 'documents', 'mask', 'transaction', 'new_transaction', 'read_time', ),
-          'batch_write': ('database', 'writes', 'labels', ),
-          'begin_transaction': ('database', 'options', ),
-          'commit': ('database', 'writes', 'transaction', ),
-          'create_document': ('parent', 'collection_id', 'document', 'document_id', 'mask', ),
-          'delete_document': ('name', 'current_document', ),
-          'get_document': ('name', 'mask', 'transaction', 'read_time', ),
-          'list_collection_ids': ('parent', 'page_size', 'page_token', ),
-          'list_documents': ('parent', 'collection_id', 'page_size', 'page_token', 'order_by', 'mask', 'transaction', 'read_time', 'show_missing', ),
-          'listen': ('database', 'add_target', 'remove_target', 'labels', ),
-          'partition_query': ('parent', 'structured_query', 'partition_count', 'page_token', 'page_size', ),
-          'rollback': ('database', 'transaction', ),
-          'run_query': ('parent', 'structured_query', 'transaction', 'new_transaction', 'read_time', ),
-          'update_document': ('document', 'update_mask', 'mask', 'current_document', ),
-          'write': ('database', 'stream_id', 'writes', 'stream_token', 'labels', ),
+        'batch_get_documents': ('database', 'documents', 'mask', 'transaction', 'new_transaction', 'read_time', ),
+        'batch_write': ('database', 'writes', 'labels', ),
+        'begin_transaction': ('database', 'options', ),
+        'commit': ('database', 'writes', 'transaction', ),
+        'create_document': ('parent', 'collection_id', 'document', 'document_id', 'mask', ),
+        'delete_document': ('name', 'current_document', ),
+        'get_document': ('name', 'mask', 'transaction', 'read_time', ),
+        'list_collection_ids': ('parent', 'page_size', 'page_token', ),
+        'list_documents': ('parent', 'collection_id', 'page_size', 'page_token', 'order_by', 'mask', 'transaction', 'read_time', 'show_missing', ),
+        'listen': ('database', 'add_target', 'remove_target', 'labels', ),
+        'partition_query': ('parent', 'structured_query', 'partition_count', 'page_token', 'page_size', ),
+        'rollback': ('database', 'transaction', ),
+        'run_query': ('parent', 'structured_query', 'transaction', 'new_transaction', 'read_time', ),
+        'update_document': ('document', 'update_mask', 'mask', 'current_document', ),
+        'write': ('database', 'stream_id', 'writes', 'stream_token', 'labels', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -78,7 +78,7 @@ class firestoreCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
