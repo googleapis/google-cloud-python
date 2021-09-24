@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -408,7 +408,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def list_instances(
         self,
-        request: service.ListInstancesRequest = None,
+        request: Union[service.ListInstancesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -418,7 +418,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Lists instances in a given project and location.
 
         Args:
-            request (google.cloud.notebooks_v1.types.ListInstancesRequest):
+            request (Union[google.cloud.notebooks_v1.types.ListInstancesRequest, dict]):
                 The request object. Request for listing notebook
                 instances.
             parent (str):
@@ -488,7 +488,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def get_instance(
         self,
-        request: service.GetInstanceRequest = None,
+        request: Union[service.GetInstanceRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -498,7 +498,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Gets details of a single Instance.
 
         Args:
-            request (google.cloud.notebooks_v1.types.GetInstanceRequest):
+            request (Union[google.cloud.notebooks_v1.types.GetInstanceRequest, dict]):
                 The request object. Request for getting a notebook
                 instance.
             name (str):
@@ -559,7 +559,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def create_instance(
         self,
-        request: service.CreateInstanceRequest = None,
+        request: Union[service.CreateInstanceRequest, dict] = None,
         *,
         parent: str = None,
         instance: gcn_instance.Instance = None,
@@ -572,7 +572,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         location.
 
         Args:
-            request (google.cloud.notebooks_v1.types.CreateInstanceRequest):
+            request (Union[google.cloud.notebooks_v1.types.CreateInstanceRequest, dict]):
                 The request object. Request for creating a notebook
                 instance.
             parent (str):
@@ -660,7 +660,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def register_instance(
         self,
-        request: service.RegisterInstanceRequest = None,
+        request: Union[service.RegisterInstanceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -674,7 +674,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         API.
 
         Args:
-            request (google.cloud.notebooks_v1.types.RegisterInstanceRequest):
+            request (Union[google.cloud.notebooks_v1.types.RegisterInstanceRequest, dict]):
                 The request object. Request for registering a notebook
                 instance.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -726,7 +726,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def set_instance_accelerator(
         self,
-        request: service.SetInstanceAcceleratorRequest = None,
+        request: Union[service.SetInstanceAcceleratorRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -735,7 +735,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Updates the guest accelerators of a single Instance.
 
         Args:
-            request (google.cloud.notebooks_v1.types.SetInstanceAcceleratorRequest):
+            request (Union[google.cloud.notebooks_v1.types.SetInstanceAcceleratorRequest, dict]):
                 The request object. Request for setting instance
                 accelerator.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -787,7 +787,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def set_instance_machine_type(
         self,
-        request: service.SetInstanceMachineTypeRequest = None,
+        request: Union[service.SetInstanceMachineTypeRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -796,7 +796,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Updates the machine type of a single Instance.
 
         Args:
-            request (google.cloud.notebooks_v1.types.SetInstanceMachineTypeRequest):
+            request (Union[google.cloud.notebooks_v1.types.SetInstanceMachineTypeRequest, dict]):
                 The request object. Request for setting instance machine
                 type.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -850,7 +850,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def update_instance_config(
         self,
-        request: service.UpdateInstanceConfigRequest = None,
+        request: Union[service.UpdateInstanceConfigRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -859,7 +859,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Update Notebook Instance configurations.
 
         Args:
-            request (google.cloud.notebooks_v1.types.UpdateInstanceConfigRequest):
+            request (Union[google.cloud.notebooks_v1.types.UpdateInstanceConfigRequest, dict]):
                 The request object. Request for updating instance
                 configurations.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -911,7 +911,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def update_shielded_instance_config(
         self,
-        request: service.UpdateShieldedInstanceConfigRequest = None,
+        request: Union[service.UpdateShieldedInstanceConfigRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -921,7 +921,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         single Instance.
 
         Args:
-            request (google.cloud.notebooks_v1.types.UpdateShieldedInstanceConfigRequest):
+            request (Union[google.cloud.notebooks_v1.types.UpdateShieldedInstanceConfigRequest, dict]):
                 The request object. Request for updating the Shielded
                 Instance config for a notebook instance. You can only
                 use this method on a stopped instance
@@ -976,7 +976,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def set_instance_labels(
         self,
-        request: service.SetInstanceLabelsRequest = None,
+        request: Union[service.SetInstanceLabelsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -985,7 +985,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Replaces all the labels of an Instance.
 
         Args:
-            request (google.cloud.notebooks_v1.types.SetInstanceLabelsRequest):
+            request (Union[google.cloud.notebooks_v1.types.SetInstanceLabelsRequest, dict]):
                 The request object. Request for setting instance labels.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1036,7 +1036,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def delete_instance(
         self,
-        request: service.DeleteInstanceRequest = None,
+        request: Union[service.DeleteInstanceRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1046,7 +1046,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Deletes a single Instance.
 
         Args:
-            request (google.cloud.notebooks_v1.types.DeleteInstanceRequest):
+            request (Union[google.cloud.notebooks_v1.types.DeleteInstanceRequest, dict]):
                 The request object. Request for deleting a notebook
                 instance.
             name (str):
@@ -1128,7 +1128,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def start_instance(
         self,
-        request: service.StartInstanceRequest = None,
+        request: Union[service.StartInstanceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1137,7 +1137,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Starts a notebook instance.
 
         Args:
-            request (google.cloud.notebooks_v1.types.StartInstanceRequest):
+            request (Union[google.cloud.notebooks_v1.types.StartInstanceRequest, dict]):
                 The request object. Request for starting a notebook
                 instance
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1189,7 +1189,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def stop_instance(
         self,
-        request: service.StopInstanceRequest = None,
+        request: Union[service.StopInstanceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1198,7 +1198,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Stops a notebook instance.
 
         Args:
-            request (google.cloud.notebooks_v1.types.StopInstanceRequest):
+            request (Union[google.cloud.notebooks_v1.types.StopInstanceRequest, dict]):
                 The request object. Request for stopping a notebook
                 instance
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1250,7 +1250,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def reset_instance(
         self,
-        request: service.ResetInstanceRequest = None,
+        request: Union[service.ResetInstanceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1259,7 +1259,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Resets a notebook instance.
 
         Args:
-            request (google.cloud.notebooks_v1.types.ResetInstanceRequest):
+            request (Union[google.cloud.notebooks_v1.types.ResetInstanceRequest, dict]):
                 The request object. Request for reseting a notebook
                 instance
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1311,7 +1311,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def report_instance_info(
         self,
-        request: service.ReportInstanceInfoRequest = None,
+        request: Union[service.ReportInstanceInfoRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1324,7 +1324,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         this method directly.
 
         Args:
-            request (google.cloud.notebooks_v1.types.ReportInstanceInfoRequest):
+            request (Union[google.cloud.notebooks_v1.types.ReportInstanceInfoRequest, dict]):
                 The request object. Request for notebook instances to
                 report information to Notebooks API.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1376,7 +1376,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def is_instance_upgradeable(
         self,
-        request: service.IsInstanceUpgradeableRequest = None,
+        request: Union[service.IsInstanceUpgradeableRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1385,7 +1385,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Check if a notebook instance is upgradable.
 
         Args:
-            request (google.cloud.notebooks_v1.types.IsInstanceUpgradeableRequest):
+            request (Union[google.cloud.notebooks_v1.types.IsInstanceUpgradeableRequest, dict]):
                 The request object. Request for checking if a notebook
                 instance is upgradeable.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1428,7 +1428,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def get_instance_health(
         self,
-        request: service.GetInstanceHealthRequest = None,
+        request: Union[service.GetInstanceHealthRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1438,7 +1438,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Check if a notebook instance is healthy.
 
         Args:
-            request (google.cloud.notebooks_v1.types.GetInstanceHealthRequest):
+            request (Union[google.cloud.notebooks_v1.types.GetInstanceHealthRequest, dict]):
                 The request object. Request for checking if a notebook
                 instance is healthy.
             name (str):
@@ -1499,7 +1499,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def upgrade_instance(
         self,
-        request: service.UpgradeInstanceRequest = None,
+        request: Union[service.UpgradeInstanceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1508,7 +1508,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Upgrades a notebook instance to the latest version.
 
         Args:
-            request (google.cloud.notebooks_v1.types.UpgradeInstanceRequest):
+            request (Union[google.cloud.notebooks_v1.types.UpgradeInstanceRequest, dict]):
                 The request object. Request for upgrading a notebook
                 instance
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1560,7 +1560,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def rollback_instance(
         self,
-        request: service.RollbackInstanceRequest = None,
+        request: Union[service.RollbackInstanceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1570,7 +1570,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         version.
 
         Args:
-            request (google.cloud.notebooks_v1.types.RollbackInstanceRequest):
+            request (Union[google.cloud.notebooks_v1.types.RollbackInstanceRequest, dict]):
                 The request object. Request for rollbacking a notebook
                 instance
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1622,7 +1622,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def upgrade_instance_internal(
         self,
-        request: service.UpgradeInstanceInternalRequest = None,
+        request: Union[service.UpgradeInstanceInternalRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1633,7 +1633,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         this method directly.
 
         Args:
-            request (google.cloud.notebooks_v1.types.UpgradeInstanceInternalRequest):
+            request (Union[google.cloud.notebooks_v1.types.UpgradeInstanceInternalRequest, dict]):
                 The request object. Request for upgrading a notebook
                 instance from within the VM
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1687,7 +1687,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def list_environments(
         self,
-        request: service.ListEnvironmentsRequest = None,
+        request: Union[service.ListEnvironmentsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1697,7 +1697,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Lists environments in a project.
 
         Args:
-            request (google.cloud.notebooks_v1.types.ListEnvironmentsRequest):
+            request (Union[google.cloud.notebooks_v1.types.ListEnvironmentsRequest, dict]):
                 The request object. Request for listing environments.
             parent (str):
                 Required. Format:
@@ -1765,7 +1765,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def get_environment(
         self,
-        request: service.GetEnvironmentRequest = None,
+        request: Union[service.GetEnvironmentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1775,7 +1775,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Gets details of a single Environment.
 
         Args:
-            request (google.cloud.notebooks_v1.types.GetEnvironmentRequest):
+            request (Union[google.cloud.notebooks_v1.types.GetEnvironmentRequest, dict]):
                 The request object. Request for getting a notebook
                 environment.
             name (str):
@@ -1837,7 +1837,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def create_environment(
         self,
-        request: service.CreateEnvironmentRequest = None,
+        request: Union[service.CreateEnvironmentRequest, dict] = None,
         *,
         parent: str = None,
         environment: gcn_environment.Environment = None,
@@ -1849,7 +1849,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Creates a new Environment.
 
         Args:
-            request (google.cloud.notebooks_v1.types.CreateEnvironmentRequest):
+            request (Union[google.cloud.notebooks_v1.types.CreateEnvironmentRequest, dict]):
                 The request object. Request for creating a notebook
                 environment.
             parent (str):
@@ -1941,7 +1941,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def delete_environment(
         self,
-        request: service.DeleteEnvironmentRequest = None,
+        request: Union[service.DeleteEnvironmentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1951,7 +1951,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Deletes a single Environment.
 
         Args:
-            request (google.cloud.notebooks_v1.types.DeleteEnvironmentRequest):
+            request (Union[google.cloud.notebooks_v1.types.DeleteEnvironmentRequest, dict]):
                 The request object. Request for deleting a notebook
                 environment.
             name (str):
@@ -2033,7 +2033,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def list_schedules(
         self,
-        request: service.ListSchedulesRequest = None,
+        request: Union[service.ListSchedulesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2043,7 +2043,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Lists schedules in a given project and location.
 
         Args:
-            request (google.cloud.notebooks_v1.types.ListSchedulesRequest):
+            request (Union[google.cloud.notebooks_v1.types.ListSchedulesRequest, dict]):
                 The request object. Request for listing scheduled
                 notebook job.
             parent (str):
@@ -2113,7 +2113,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def get_schedule(
         self,
-        request: service.GetScheduleRequest = None,
+        request: Union[service.GetScheduleRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2123,7 +2123,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Gets details of schedule
 
         Args:
-            request (google.cloud.notebooks_v1.types.GetScheduleRequest):
+            request (Union[google.cloud.notebooks_v1.types.GetScheduleRequest, dict]):
                 The request object. Request for getting scheduled
                 notebook.
             name (str):
@@ -2182,7 +2182,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def delete_schedule(
         self,
-        request: service.DeleteScheduleRequest = None,
+        request: Union[service.DeleteScheduleRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2192,7 +2192,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Deletes schedule and all underlying jobs
 
         Args:
-            request (google.cloud.notebooks_v1.types.DeleteScheduleRequest):
+            request (Union[google.cloud.notebooks_v1.types.DeleteScheduleRequest, dict]):
                 The request object. Request for deleting an Schedule
             name (str):
                 Required. Format:
@@ -2273,7 +2273,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def create_schedule(
         self,
-        request: service.CreateScheduleRequest = None,
+        request: Union[service.CreateScheduleRequest, dict] = None,
         *,
         parent: str = None,
         schedule: gcn_schedule.Schedule = None,
@@ -2286,7 +2286,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         and location.
 
         Args:
-            request (google.cloud.notebooks_v1.types.CreateScheduleRequest):
+            request (Union[google.cloud.notebooks_v1.types.CreateScheduleRequest, dict]):
                 The request object. Request for created scheduled
                 notebooks
             parent (str):
@@ -2374,7 +2374,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def trigger_schedule(
         self,
-        request: service.TriggerScheduleRequest = None,
+        request: Union[service.TriggerScheduleRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -2383,7 +2383,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Triggers execution of an existing schedule.
 
         Args:
-            request (google.cloud.notebooks_v1.types.TriggerScheduleRequest):
+            request (Union[google.cloud.notebooks_v1.types.TriggerScheduleRequest, dict]):
                 The request object. Request for created scheduled
                 notebooks
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2435,7 +2435,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def list_executions(
         self,
-        request: service.ListExecutionsRequest = None,
+        request: Union[service.ListExecutionsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2445,7 +2445,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Lists executions in a given project and location
 
         Args:
-            request (google.cloud.notebooks_v1.types.ListExecutionsRequest):
+            request (Union[google.cloud.notebooks_v1.types.ListExecutionsRequest, dict]):
                 The request object. Request for listing scheduled
                 notebook executions.
             parent (str):
@@ -2515,7 +2515,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def get_execution(
         self,
-        request: service.GetExecutionRequest = None,
+        request: Union[service.GetExecutionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2525,7 +2525,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Gets details of executions
 
         Args:
-            request (google.cloud.notebooks_v1.types.GetExecutionRequest):
+            request (Union[google.cloud.notebooks_v1.types.GetExecutionRequest, dict]):
                 The request object. Request for getting scheduled
                 notebook execution
             name (str):
@@ -2586,7 +2586,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def delete_execution(
         self,
-        request: service.DeleteExecutionRequest = None,
+        request: Union[service.DeleteExecutionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2596,7 +2596,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Deletes execution
 
         Args:
-            request (google.cloud.notebooks_v1.types.DeleteExecutionRequest):
+            request (Union[google.cloud.notebooks_v1.types.DeleteExecutionRequest, dict]):
                 The request object. Request for deleting a scheduled
                 notebook execution
             name (str):
@@ -2678,7 +2678,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
     def create_execution(
         self,
-        request: service.CreateExecutionRequest = None,
+        request: Union[service.CreateExecutionRequest, dict] = None,
         *,
         parent: str = None,
         execution: gcn_execution.Execution = None,
@@ -2691,7 +2691,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         and location.
 
         Args:
-            request (google.cloud.notebooks_v1.types.CreateExecutionRequest):
+            request (Union[google.cloud.notebooks_v1.types.CreateExecutionRequest, dict]):
                 The request object. Request to create notebook execution
             parent (str):
                 Required. Format:
