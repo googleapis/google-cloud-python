@@ -39,15 +39,15 @@ def partition(
 class recaptchaenterpriseCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'annotate_assessment': ('name', 'annotation', 'reasons', ),
-          'create_assessment': ('parent', 'assessment', ),
-          'create_key': ('parent', 'key', ),
-          'delete_key': ('name', ),
-          'get_key': ('name', ),
-          'get_metrics': ('name', ),
-          'list_keys': ('parent', 'page_size', 'page_token', ),
-          'migrate_key': ('name', ),
-          'update_key': ('key', 'update_mask', ),
+        'annotate_assessment': ('name', 'annotation', 'reasons', ),
+        'create_assessment': ('parent', 'assessment', ),
+        'create_key': ('parent', 'key', ),
+        'delete_key': ('name', ),
+        'get_key': ('name', ),
+        'get_metrics': ('name', ),
+        'list_keys': ('parent', 'page_size', 'page_token', ),
+        'migrate_key': ('name', ),
+        'update_key': ('key', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -66,7 +66,7 @@ class recaptchaenterpriseCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

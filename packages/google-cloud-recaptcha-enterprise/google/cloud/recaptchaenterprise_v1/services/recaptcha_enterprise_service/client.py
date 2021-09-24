@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -378,7 +378,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
     def create_assessment(
         self,
-        request: recaptchaenterprise.CreateAssessmentRequest = None,
+        request: Union[recaptchaenterprise.CreateAssessmentRequest, dict] = None,
         *,
         parent: str = None,
         assessment: recaptchaenterprise.Assessment = None,
@@ -390,7 +390,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         legitimate.
 
         Args:
-            request (google.cloud.recaptchaenterprise_v1.types.CreateAssessmentRequest):
+            request (Union[google.cloud.recaptchaenterprise_v1.types.CreateAssessmentRequest, dict]):
                 The request object. The create assessment request
                 message.
             parent (str):
@@ -457,7 +457,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
     def annotate_assessment(
         self,
-        request: recaptchaenterprise.AnnotateAssessmentRequest = None,
+        request: Union[recaptchaenterprise.AnnotateAssessmentRequest, dict] = None,
         *,
         name: str = None,
         annotation: recaptchaenterprise.AnnotateAssessmentRequest.Annotation = None,
@@ -470,7 +470,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         to be authentic or fraudulent.
 
         Args:
-            request (google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest):
+            request (Union[google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest, dict]):
                 The request object. The request message to annotate an
                 Assessment.
             name (str):
@@ -544,7 +544,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
     def create_key(
         self,
-        request: recaptchaenterprise.CreateKeyRequest = None,
+        request: Union[recaptchaenterprise.CreateKeyRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -553,7 +553,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         r"""Creates a new reCAPTCHA Enterprise key.
 
         Args:
-            request (google.cloud.recaptchaenterprise_v1.types.CreateKeyRequest):
+            request (Union[google.cloud.recaptchaenterprise_v1.types.CreateKeyRequest, dict]):
                 The request object. The create key request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -594,7 +594,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
     def list_keys(
         self,
-        request: recaptchaenterprise.ListKeysRequest = None,
+        request: Union[recaptchaenterprise.ListKeysRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -604,7 +604,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         project.
 
         Args:
-            request (google.cloud.recaptchaenterprise_v1.types.ListKeysRequest):
+            request (Union[google.cloud.recaptchaenterprise_v1.types.ListKeysRequest, dict]):
                 The request object. The list keys request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -653,7 +653,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
     def get_key(
         self,
-        request: recaptchaenterprise.GetKeyRequest = None,
+        request: Union[recaptchaenterprise.GetKeyRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -662,7 +662,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         r"""Returns the specified key.
 
         Args:
-            request (google.cloud.recaptchaenterprise_v1.types.GetKeyRequest):
+            request (Union[google.cloud.recaptchaenterprise_v1.types.GetKeyRequest, dict]):
                 The request object. The get key request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -703,7 +703,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
     def update_key(
         self,
-        request: recaptchaenterprise.UpdateKeyRequest = None,
+        request: Union[recaptchaenterprise.UpdateKeyRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -712,7 +712,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         r"""Updates the specified key.
 
         Args:
-            request (google.cloud.recaptchaenterprise_v1.types.UpdateKeyRequest):
+            request (Union[google.cloud.recaptchaenterprise_v1.types.UpdateKeyRequest, dict]):
                 The request object. The update key request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -753,7 +753,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
     def delete_key(
         self,
-        request: recaptchaenterprise.DeleteKeyRequest = None,
+        request: Union[recaptchaenterprise.DeleteKeyRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -762,7 +762,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         r"""Deletes the specified key.
 
         Args:
-            request (google.cloud.recaptchaenterprise_v1.types.DeleteKeyRequest):
+            request (Union[google.cloud.recaptchaenterprise_v1.types.DeleteKeyRequest, dict]):
                 The request object. The delete key request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -795,7 +795,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
     def migrate_key(
         self,
-        request: recaptchaenterprise.MigrateKeyRequest = None,
+        request: Union[recaptchaenterprise.MigrateKeyRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -810,7 +810,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         role in the destination project.
 
         Args:
-            request (google.cloud.recaptchaenterprise_v1.types.MigrateKeyRequest):
+            request (Union[google.cloud.recaptchaenterprise_v1.types.MigrateKeyRequest, dict]):
                 The request object. The migrate key request message.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -851,7 +851,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
     def get_metrics(
         self,
-        request: recaptchaenterprise.GetMetricsRequest = None,
+        request: Union[recaptchaenterprise.GetMetricsRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -862,7 +862,7 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         be used to build dashboards.
 
         Args:
-            request (google.cloud.recaptchaenterprise_v1.types.GetMetricsRequest):
+            request (Union[google.cloud.recaptchaenterprise_v1.types.GetMetricsRequest, dict]):
                 The request object. The get metrics request message.
             name (str):
                 Required. The name of the requested
