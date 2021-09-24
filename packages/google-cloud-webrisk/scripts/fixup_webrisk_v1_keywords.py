@@ -39,10 +39,10 @@ def partition(
 class webriskCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'compute_threat_list_diff': ('threat_type', 'constraints', 'version_token', ),
-          'create_submission': ('parent', 'submission', ),
-          'search_hashes': ('threat_types', 'hash_prefix', ),
-          'search_uris': ('uri', 'threat_types', ),
+        'compute_threat_list_diff': ('threat_type', 'constraints', 'version_token', ),
+        'create_submission': ('parent', 'submission', ),
+        'search_hashes': ('threat_types', 'hash_prefix', ),
+        'search_uris': ('uri', 'threat_types', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -61,7 +61,7 @@ class webriskCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
