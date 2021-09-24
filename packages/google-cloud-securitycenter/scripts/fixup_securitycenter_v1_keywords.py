@@ -39,29 +39,29 @@ def partition(
 class securitycenterCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_finding': ('parent', 'finding_id', 'finding', ),
-          'create_notification_config': ('parent', 'config_id', 'notification_config', ),
-          'create_source': ('parent', 'source', ),
-          'delete_notification_config': ('name', ),
-          'get_iam_policy': ('resource', 'options', ),
-          'get_notification_config': ('name', ),
-          'get_organization_settings': ('name', ),
-          'get_source': ('name', ),
-          'group_assets': ('parent', 'group_by', 'filter', 'compare_duration', 'read_time', 'page_token', 'page_size', ),
-          'group_findings': ('parent', 'group_by', 'filter', 'read_time', 'compare_duration', 'page_token', 'page_size', ),
-          'list_assets': ('parent', 'filter', 'order_by', 'read_time', 'compare_duration', 'field_mask', 'page_token', 'page_size', ),
-          'list_findings': ('parent', 'filter', 'order_by', 'read_time', 'compare_duration', 'field_mask', 'page_token', 'page_size', ),
-          'list_notification_configs': ('parent', 'page_token', 'page_size', ),
-          'list_sources': ('parent', 'page_token', 'page_size', ),
-          'run_asset_discovery': ('parent', ),
-          'set_finding_state': ('name', 'state', 'start_time', ),
-          'set_iam_policy': ('resource', 'policy', ),
-          'test_iam_permissions': ('resource', 'permissions', ),
-          'update_finding': ('finding', 'update_mask', ),
-          'update_notification_config': ('notification_config', 'update_mask', ),
-          'update_organization_settings': ('organization_settings', 'update_mask', ),
-          'update_security_marks': ('security_marks', 'update_mask', 'start_time', ),
-          'update_source': ('source', 'update_mask', ),
+        'create_finding': ('parent', 'finding_id', 'finding', ),
+        'create_notification_config': ('parent', 'config_id', 'notification_config', ),
+        'create_source': ('parent', 'source', ),
+        'delete_notification_config': ('name', ),
+        'get_iam_policy': ('resource', 'options', ),
+        'get_notification_config': ('name', ),
+        'get_organization_settings': ('name', ),
+        'get_source': ('name', ),
+        'group_assets': ('parent', 'group_by', 'filter', 'compare_duration', 'read_time', 'page_token', 'page_size', ),
+        'group_findings': ('parent', 'group_by', 'filter', 'read_time', 'compare_duration', 'page_token', 'page_size', ),
+        'list_assets': ('parent', 'filter', 'order_by', 'read_time', 'compare_duration', 'field_mask', 'page_token', 'page_size', ),
+        'list_findings': ('parent', 'filter', 'order_by', 'read_time', 'compare_duration', 'field_mask', 'page_token', 'page_size', ),
+        'list_notification_configs': ('parent', 'page_token', 'page_size', ),
+        'list_sources': ('parent', 'page_token', 'page_size', ),
+        'run_asset_discovery': ('parent', ),
+        'set_finding_state': ('name', 'state', 'start_time', ),
+        'set_iam_policy': ('resource', 'policy', ),
+        'test_iam_permissions': ('resource', 'permissions', ),
+        'update_finding': ('finding', 'update_mask', ),
+        'update_notification_config': ('notification_config', 'update_mask', ),
+        'update_organization_settings': ('organization_settings', 'update_mask', ),
+        'update_security_marks': ('security_marks', 'update_mask', 'start_time', ),
+        'update_source': ('source', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -80,7 +80,7 @@ class securitycenterCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
