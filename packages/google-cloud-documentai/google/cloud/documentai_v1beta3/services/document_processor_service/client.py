@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -399,7 +399,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def process_document(
         self,
-        request: document_processor_service.ProcessRequest = None,
+        request: Union[document_processor_service.ProcessRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -409,7 +409,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         r"""Processes a single document.
 
         Args:
-            request (google.cloud.documentai_v1beta3.types.ProcessRequest):
+            request (Union[google.cloud.documentai_v1beta3.types.ProcessRequest, dict]):
                 The request object. Request message for the process
                 document method.
             name (str):
@@ -470,7 +470,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def batch_process_documents(
         self,
-        request: document_processor_service.BatchProcessRequest = None,
+        request: Union[document_processor_service.BatchProcessRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -481,7 +481,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         written to Cloud Storage as JSON in the [Document] format.
 
         Args:
-            request (google.cloud.documentai_v1beta3.types.BatchProcessRequest):
+            request (Union[google.cloud.documentai_v1beta3.types.BatchProcessRequest, dict]):
                 The request object. Request message for batch process
                 document method.
             name (str):
@@ -553,7 +553,9 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def fetch_processor_types(
         self,
-        request: document_processor_service.FetchProcessorTypesRequest = None,
+        request: Union[
+            document_processor_service.FetchProcessorTypesRequest, dict
+        ] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -563,7 +565,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         r"""Fetches processor types.
 
         Args:
-            request (google.cloud.documentai_v1beta3.types.FetchProcessorTypesRequest):
+            request (Union[google.cloud.documentai_v1beta3.types.FetchProcessorTypesRequest, dict]):
                 The request object. Request message for fetch processor
                 types.
             parent (str):
@@ -627,7 +629,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def list_processors(
         self,
-        request: document_processor_service.ListProcessorsRequest = None,
+        request: Union[document_processor_service.ListProcessorsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -637,7 +639,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         r"""Lists all processors which belong to this project.
 
         Args:
-            request (google.cloud.documentai_v1beta3.types.ListProcessorsRequest):
+            request (Union[google.cloud.documentai_v1beta3.types.ListProcessorsRequest, dict]):
                 The request object. Request message for list all
                 processors belongs to a project.
             parent (str):
@@ -708,7 +710,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def create_processor(
         self,
-        request: document_processor_service.CreateProcessorRequest = None,
+        request: Union[document_processor_service.CreateProcessorRequest, dict] = None,
         *,
         parent: str = None,
         processor: gcd_processor.Processor = None,
@@ -721,7 +723,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         default after its creation.
 
         Args:
-            request (google.cloud.documentai_v1beta3.types.CreateProcessorRequest):
+            request (Union[google.cloud.documentai_v1beta3.types.CreateProcessorRequest, dict]):
                 The request object. Request message for create a
                 processor. Notice this request is sent to a regionalized
                 backend service, and if the processor type is not
@@ -798,7 +800,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def delete_processor(
         self,
-        request: document_processor_service.DeleteProcessorRequest = None,
+        request: Union[document_processor_service.DeleteProcessorRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -810,7 +812,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         artifacts associated with this processor.
 
         Args:
-            request (google.cloud.documentai_v1beta3.types.DeleteProcessorRequest):
+            request (Union[google.cloud.documentai_v1beta3.types.DeleteProcessorRequest, dict]):
                 The request object. Request message for the delete
                 processor method.
             name (str):
@@ -892,7 +894,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def enable_processor(
         self,
-        request: document_processor_service.EnableProcessorRequest = None,
+        request: Union[document_processor_service.EnableProcessorRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -901,7 +903,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         r"""Enables a processor
 
         Args:
-            request (google.cloud.documentai_v1beta3.types.EnableProcessorRequest):
+            request (Union[google.cloud.documentai_v1beta3.types.EnableProcessorRequest, dict]):
                 The request object. Request message for the enable
                 processor method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -953,7 +955,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def disable_processor(
         self,
-        request: document_processor_service.DisableProcessorRequest = None,
+        request: Union[document_processor_service.DisableProcessorRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -962,7 +964,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         r"""Disables a processor
 
         Args:
-            request (google.cloud.documentai_v1beta3.types.DisableProcessorRequest):
+            request (Union[google.cloud.documentai_v1beta3.types.DisableProcessorRequest, dict]):
                 The request object. Request message for the disable
                 processor method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1014,7 +1016,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
     def review_document(
         self,
-        request: document_processor_service.ReviewDocumentRequest = None,
+        request: Union[document_processor_service.ReviewDocumentRequest, dict] = None,
         *,
         human_review_config: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1025,7 +1027,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         should be processed by the specified processor.
 
         Args:
-            request (google.cloud.documentai_v1beta3.types.ReviewDocumentRequest):
+            request (Union[google.cloud.documentai_v1beta3.types.ReviewDocumentRequest, dict]):
                 The request object. Request message for review document
                 method. Next Id: 6.
             human_review_config (str):

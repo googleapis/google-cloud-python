@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -348,7 +348,9 @@ class DocumentUnderstandingServiceClient(
 
     def batch_process_documents(
         self,
-        request: document_understanding.BatchProcessDocumentsRequest = None,
+        request: Union[
+            document_understanding.BatchProcessDocumentsRequest, dict
+        ] = None,
         *,
         requests: Sequence[document_understanding.ProcessDocumentRequest] = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -359,7 +361,7 @@ class DocumentUnderstandingServiceClient(
         written to Cloud Storage as JSON in the [Document] format.
 
         Args:
-            request (google.cloud.documentai_v1beta2.types.BatchProcessDocumentsRequest):
+            request (Union[google.cloud.documentai_v1beta2.types.BatchProcessDocumentsRequest, dict]):
                 The request object. Request to batch process documents
                 as an asynchronous operation. The output is written to
                 Cloud Storage as JSON in the [Document] format.
@@ -431,7 +433,7 @@ class DocumentUnderstandingServiceClient(
 
     def process_document(
         self,
-        request: document_understanding.ProcessDocumentRequest = None,
+        request: Union[document_understanding.ProcessDocumentRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -440,7 +442,7 @@ class DocumentUnderstandingServiceClient(
         r"""Processes a single document.
 
         Args:
-            request (google.cloud.documentai_v1beta2.types.ProcessDocumentRequest):
+            request (Union[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest, dict]):
                 The request object. Request to process one document.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
