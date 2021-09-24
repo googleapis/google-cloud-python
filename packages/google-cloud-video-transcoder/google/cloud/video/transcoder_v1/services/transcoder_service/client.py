@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -380,7 +380,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def create_job(
         self,
-        request: services.CreateJobRequest = None,
+        request: Union[services.CreateJobRequest, dict] = None,
         *,
         parent: str = None,
         job: resources.Job = None,
@@ -391,7 +391,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
         r"""Creates a job in the specified region.
 
         Args:
-            request (google.cloud.video.transcoder_v1.types.CreateJobRequest):
+            request (Union[google.cloud.video.transcoder_v1.types.CreateJobRequest, dict]):
                 The request object. Request message for
                 `TranscoderService.CreateJob`.
             parent (str):
@@ -459,7 +459,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def list_jobs(
         self,
-        request: services.ListJobsRequest = None,
+        request: Union[services.ListJobsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -469,7 +469,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
         r"""Lists jobs in the specified region.
 
         Args:
-            request (google.cloud.video.transcoder_v1.types.ListJobsRequest):
+            request (Union[google.cloud.video.transcoder_v1.types.ListJobsRequest, dict]):
                 The request object. Request message for
                 `TranscoderService.ListJobs`. The parent location from
                 which to retrieve the collection of jobs.
@@ -539,7 +539,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def get_job(
         self,
-        request: services.GetJobRequest = None,
+        request: Union[services.GetJobRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -549,7 +549,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
         r"""Returns the job data.
 
         Args:
-            request (google.cloud.video.transcoder_v1.types.GetJobRequest):
+            request (Union[google.cloud.video.transcoder_v1.types.GetJobRequest, dict]):
                 The request object. Request message for
                 `TranscoderService.GetJob`.
             name (str):
@@ -608,7 +608,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def delete_job(
         self,
-        request: services.DeleteJobRequest = None,
+        request: Union[services.DeleteJobRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -618,7 +618,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
         r"""Deletes a job.
 
         Args:
-            request (google.cloud.video.transcoder_v1.types.DeleteJobRequest):
+            request (Union[google.cloud.video.transcoder_v1.types.DeleteJobRequest, dict]):
                 The request object. Request message for
                 `TranscoderService.DeleteJob`.
             name (str):
@@ -672,7 +672,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def create_job_template(
         self,
-        request: services.CreateJobTemplateRequest = None,
+        request: Union[services.CreateJobTemplateRequest, dict] = None,
         *,
         parent: str = None,
         job_template: resources.JobTemplate = None,
@@ -684,7 +684,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
         r"""Creates a job template in the specified region.
 
         Args:
-            request (google.cloud.video.transcoder_v1.types.CreateJobTemplateRequest):
+            request (Union[google.cloud.video.transcoder_v1.types.CreateJobTemplateRequest, dict]):
                 The request object. Request message for
                 `TranscoderService.CreateJobTemplate`.
             parent (str):
@@ -767,7 +767,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def list_job_templates(
         self,
-        request: services.ListJobTemplatesRequest = None,
+        request: Union[services.ListJobTemplatesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -777,7 +777,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
         r"""Lists job templates in the specified region.
 
         Args:
-            request (google.cloud.video.transcoder_v1.types.ListJobTemplatesRequest):
+            request (Union[google.cloud.video.transcoder_v1.types.ListJobTemplatesRequest, dict]):
                 The request object. Request message for
                 `TranscoderService.ListJobTemplates`.
             parent (str):
@@ -847,7 +847,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def get_job_template(
         self,
-        request: services.GetJobTemplateRequest = None,
+        request: Union[services.GetJobTemplateRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -857,7 +857,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
         r"""Returns the job template data.
 
         Args:
-            request (google.cloud.video.transcoder_v1.types.GetJobTemplateRequest):
+            request (Union[google.cloud.video.transcoder_v1.types.GetJobTemplateRequest, dict]):
                 The request object. Request message for
                 `TranscoderService.GetJobTemplate`.
             name (str):
@@ -917,7 +917,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
 
     def delete_job_template(
         self,
-        request: services.DeleteJobTemplateRequest = None,
+        request: Union[services.DeleteJobTemplateRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -927,7 +927,7 @@ class TranscoderServiceClient(metaclass=TranscoderServiceClientMeta):
         r"""Deletes a job template.
 
         Args:
-            request (google.cloud.video.transcoder_v1.types.DeleteJobTemplateRequest):
+            request (Union[google.cloud.video.transcoder_v1.types.DeleteJobTemplateRequest, dict]):
                 The request object. Request message for
                 `TranscoderService.DeleteJobTemplate`.
             name (str):
