@@ -123,7 +123,7 @@ class TablesServiceTransport(abc.ABC):
                 **scopes_kwargs, quota_project_id=quota_project_id
             )
 
-        # If the credentials is service account credentials, then always try to use self signed JWT.
+        # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
             always_use_jwt_access
             and isinstance(credentials, service_account.Credentials)
