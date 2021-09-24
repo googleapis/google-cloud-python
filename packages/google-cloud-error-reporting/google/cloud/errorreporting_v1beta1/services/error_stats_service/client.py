@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -352,7 +352,7 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
 
     def list_group_stats(
         self,
-        request: error_stats_service.ListGroupStatsRequest = None,
+        request: Union[error_stats_service.ListGroupStatsRequest, dict] = None,
         *,
         project_name: str = None,
         time_range: error_stats_service.QueryTimeRange = None,
@@ -363,7 +363,7 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
         r"""Lists the specified groups.
 
         Args:
-            request (google.cloud.errorreporting_v1beta1.types.ListGroupStatsRequest):
+            request (Union[google.cloud.errorreporting_v1beta1.types.ListGroupStatsRequest, dict]):
                 The request object. Specifies a set of `ErrorGroupStats`
                 to return.
             project_name (str):
@@ -456,7 +456,7 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
 
     def list_events(
         self,
-        request: error_stats_service.ListEventsRequest = None,
+        request: Union[error_stats_service.ListEventsRequest, dict] = None,
         *,
         project_name: str = None,
         group_id: str = None,
@@ -467,7 +467,7 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
         r"""Lists the specified events.
 
         Args:
-            request (google.cloud.errorreporting_v1beta1.types.ListEventsRequest):
+            request (Union[google.cloud.errorreporting_v1beta1.types.ListEventsRequest, dict]):
                 The request object. Specifies a set of error events to
                 return.
             project_name (str):
@@ -552,7 +552,7 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
 
     def delete_events(
         self,
-        request: error_stats_service.DeleteEventsRequest = None,
+        request: Union[error_stats_service.DeleteEventsRequest, dict] = None,
         *,
         project_name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -562,7 +562,7 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
         r"""Deletes all error events of a given project.
 
         Args:
-            request (google.cloud.errorreporting_v1beta1.types.DeleteEventsRequest):
+            request (Union[google.cloud.errorreporting_v1beta1.types.DeleteEventsRequest, dict]):
                 The request object. Deletes all events in the project.
             project_name (str):
                 Required. The resource name of the Google Cloud Platform

@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -337,7 +337,7 @@ class ReportErrorsServiceClient(metaclass=ReportErrorsServiceClientMeta):
 
     def report_error_event(
         self,
-        request: report_errors_service.ReportErrorEventRequest = None,
+        request: Union[report_errors_service.ReportErrorEventRequest, dict] = None,
         *,
         project_name: str = None,
         event: report_errors_service.ReportedErrorEvent = None,
@@ -363,7 +363,7 @@ class ReportErrorsServiceClient(metaclass=ReportErrorsServiceClientMeta):
         regionalized logs </error-reporting/docs/regionalization>`__.
 
         Args:
-            request (google.cloud.errorreporting_v1beta1.types.ReportErrorEventRequest):
+            request (Union[google.cloud.errorreporting_v1beta1.types.ReportErrorEventRequest, dict]):
                 The request object. A request for reporting an
                 individual error event.
             project_name (str):

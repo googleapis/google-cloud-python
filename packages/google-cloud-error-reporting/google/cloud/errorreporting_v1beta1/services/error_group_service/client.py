@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -349,7 +349,7 @@ class ErrorGroupServiceClient(metaclass=ErrorGroupServiceClientMeta):
 
     def get_group(
         self,
-        request: error_group_service.GetGroupRequest = None,
+        request: Union[error_group_service.GetGroupRequest, dict] = None,
         *,
         group_name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -359,7 +359,7 @@ class ErrorGroupServiceClient(metaclass=ErrorGroupServiceClientMeta):
         r"""Get the specified group.
 
         Args:
-            request (google.cloud.errorreporting_v1beta1.types.GetGroupRequest):
+            request (Union[google.cloud.errorreporting_v1beta1.types.GetGroupRequest, dict]):
                 The request object. A request to return an individual
                 group.
             group_name (str):
@@ -426,7 +426,7 @@ class ErrorGroupServiceClient(metaclass=ErrorGroupServiceClientMeta):
 
     def update_group(
         self,
-        request: error_group_service.UpdateGroupRequest = None,
+        request: Union[error_group_service.UpdateGroupRequest, dict] = None,
         *,
         group: common.ErrorGroup = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -437,7 +437,7 @@ class ErrorGroupServiceClient(metaclass=ErrorGroupServiceClientMeta):
         Fails if the group does not exist.
 
         Args:
-            request (google.cloud.errorreporting_v1beta1.types.UpdateGroupRequest):
+            request (Union[google.cloud.errorreporting_v1beta1.types.UpdateGroupRequest, dict]):
                 The request object. A request to replace the existing
                 data for the given group.
             group (google.cloud.errorreporting_v1beta1.types.ErrorGroup):

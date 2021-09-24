@@ -39,12 +39,12 @@ def partition(
 class errorreportingCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'delete_events': ('project_name', ),
-          'get_group': ('group_name', ),
-          'list_events': ('project_name', 'group_id', 'service_filter', 'time_range', 'page_size', 'page_token', ),
-          'list_group_stats': ('project_name', 'group_id', 'service_filter', 'time_range', 'timed_count_duration', 'alignment', 'alignment_time', 'order', 'page_size', 'page_token', ),
-          'report_error_event': ('project_name', 'event', ),
-          'update_group': ('group', ),
+        'delete_events': ('project_name', ),
+        'get_group': ('group_name', ),
+        'list_events': ('project_name', 'group_id', 'service_filter', 'time_range', 'page_size', 'page_token', ),
+        'list_group_stats': ('project_name', 'group_id', 'service_filter', 'time_range', 'timed_count_duration', 'alignment', 'alignment_time', 'order', 'page_size', 'page_token', ),
+        'report_error_event': ('project_name', 'event', ),
+        'update_group': ('group', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -63,7 +63,7 @@ class errorreportingCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
