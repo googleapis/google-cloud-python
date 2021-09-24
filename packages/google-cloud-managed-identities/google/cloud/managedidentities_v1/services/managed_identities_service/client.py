@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -395,7 +395,9 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def create_microsoft_ad_domain(
         self,
-        request: managed_identities_service.CreateMicrosoftAdDomainRequest = None,
+        request: Union[
+            managed_identities_service.CreateMicrosoftAdDomainRequest, dict
+        ] = None,
         *,
         parent: str = None,
         domain_name: str = None,
@@ -407,7 +409,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         r"""Creates a Microsoft AD domain.
 
         Args:
-            request (google.cloud.managedidentities_v1.types.CreateMicrosoftAdDomainRequest):
+            request (Union[google.cloud.managedidentities_v1.types.CreateMicrosoftAdDomainRequest, dict]):
                 The request object. Request message for
                 [CreateMicrosoftAdDomain][google.cloud.managedidentities.v1.CreateMicrosoftAdDomain]
             parent (str):
@@ -513,7 +515,9 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def reset_admin_password(
         self,
-        request: managed_identities_service.ResetAdminPasswordRequest = None,
+        request: Union[
+            managed_identities_service.ResetAdminPasswordRequest, dict
+        ] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -523,7 +527,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         r"""Resets a domain's administrator password.
 
         Args:
-            request (google.cloud.managedidentities_v1.types.ResetAdminPasswordRequest):
+            request (Union[google.cloud.managedidentities_v1.types.ResetAdminPasswordRequest, dict]):
                 The request object. Request message for
                 [ResetAdminPassword][google.cloud.managedidentities.v1.ResetAdminPassword]
             name (str):
@@ -586,7 +590,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def list_domains(
         self,
-        request: managed_identities_service.ListDomainsRequest = None,
+        request: Union[managed_identities_service.ListDomainsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -596,7 +600,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         r"""Lists domains in a project.
 
         Args:
-            request (google.cloud.managedidentities_v1.types.ListDomainsRequest):
+            request (Union[google.cloud.managedidentities_v1.types.ListDomainsRequest, dict]):
                 The request object. Request message for
                 [ListDomains][google.cloud.managedidentities.v1.ListDomains]
             parent (str):
@@ -666,7 +670,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def get_domain(
         self,
-        request: managed_identities_service.GetDomainRequest = None,
+        request: Union[managed_identities_service.GetDomainRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -676,7 +680,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         r"""Gets information about a domain.
 
         Args:
-            request (google.cloud.managedidentities_v1.types.GetDomainRequest):
+            request (Union[google.cloud.managedidentities_v1.types.GetDomainRequest, dict]):
                 The request object. Request message for
                 [GetDomain][google.cloud.managedidentities.v1.GetDomain]
             name (str):
@@ -737,7 +741,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def update_domain(
         self,
-        request: managed_identities_service.UpdateDomainRequest = None,
+        request: Union[managed_identities_service.UpdateDomainRequest, dict] = None,
         *,
         domain: resource.Domain = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -748,7 +752,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         r"""Updates the metadata and configuration of a domain.
 
         Args:
-            request (google.cloud.managedidentities_v1.types.UpdateDomainRequest):
+            request (Union[google.cloud.managedidentities_v1.types.UpdateDomainRequest, dict]):
                 The request object. Request message for
                 [UpdateDomain][google.cloud.managedidentities.v1.UpdateDomain]
             domain (google.cloud.managedidentities_v1.types.Domain):
@@ -837,7 +841,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def delete_domain(
         self,
-        request: managed_identities_service.DeleteDomainRequest = None,
+        request: Union[managed_identities_service.DeleteDomainRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -847,7 +851,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         r"""Deletes a domain.
 
         Args:
-            request (google.cloud.managedidentities_v1.types.DeleteDomainRequest):
+            request (Union[google.cloud.managedidentities_v1.types.DeleteDomainRequest, dict]):
                 The request object. Request message for
                 [DeleteDomain][google.cloud.managedidentities.v1.DeleteDomain]
             name (str):
@@ -929,7 +933,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def attach_trust(
         self,
-        request: managed_identities_service.AttachTrustRequest = None,
+        request: Union[managed_identities_service.AttachTrustRequest, dict] = None,
         *,
         name: str = None,
         trust: resource.Trust = None,
@@ -940,7 +944,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         r"""Adds an AD trust to a domain.
 
         Args:
-            request (google.cloud.managedidentities_v1.types.AttachTrustRequest):
+            request (Union[google.cloud.managedidentities_v1.types.AttachTrustRequest, dict]):
                 The request object. Request message for
                 [AttachTrust][google.cloud.managedidentities.v1.AttachTrust]
             name (str):
@@ -1020,7 +1024,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def reconfigure_trust(
         self,
-        request: managed_identities_service.ReconfigureTrustRequest = None,
+        request: Union[managed_identities_service.ReconfigureTrustRequest, dict] = None,
         *,
         name: str = None,
         target_domain_name: str = None,
@@ -1032,7 +1036,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         r"""Updates the DNS conditional forwarder.
 
         Args:
-            request (google.cloud.managedidentities_v1.types.ReconfigureTrustRequest):
+            request (Union[google.cloud.managedidentities_v1.types.ReconfigureTrustRequest, dict]):
                 The request object. Request message for
                 [ReconfigureTrust][google.cloud.managedidentities.v1.ReconfigureTrust]
             name (str):
@@ -1125,7 +1129,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def detach_trust(
         self,
-        request: managed_identities_service.DetachTrustRequest = None,
+        request: Union[managed_identities_service.DetachTrustRequest, dict] = None,
         *,
         name: str = None,
         trust: resource.Trust = None,
@@ -1136,7 +1140,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         r"""Removes an AD trust.
 
         Args:
-            request (google.cloud.managedidentities_v1.types.DetachTrustRequest):
+            request (Union[google.cloud.managedidentities_v1.types.DetachTrustRequest, dict]):
                 The request object. Request message for
                 [DetachTrust][google.cloud.managedidentities.v1.DetachTrust]
             name (str):
@@ -1218,7 +1222,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
 
     def validate_trust(
         self,
-        request: managed_identities_service.ValidateTrustRequest = None,
+        request: Union[managed_identities_service.ValidateTrustRequest, dict] = None,
         *,
         name: str = None,
         trust: resource.Trust = None,
@@ -1231,7 +1235,7 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         incoming trust requests.
 
         Args:
-            request (google.cloud.managedidentities_v1.types.ValidateTrustRequest):
+            request (Union[google.cloud.managedidentities_v1.types.ValidateTrustRequest, dict]):
                 The request object. Request message for
                 [ValidateTrust][google.cloud.managedidentities.v1.ValidateTrust]
             name (str):

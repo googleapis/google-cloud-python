@@ -39,16 +39,16 @@ def partition(
 class managedidentitiesCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'attach_trust': ('name', 'trust', ),
-          'create_microsoft_ad_domain': ('parent', 'domain_name', 'domain', ),
-          'delete_domain': ('name', ),
-          'detach_trust': ('name', 'trust', ),
-          'get_domain': ('name', ),
-          'list_domains': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'reconfigure_trust': ('name', 'target_domain_name', 'target_dns_ip_addresses', ),
-          'reset_admin_password': ('name', ),
-          'update_domain': ('update_mask', 'domain', ),
-          'validate_trust': ('name', 'trust', ),
+        'attach_trust': ('name', 'trust', ),
+        'create_microsoft_ad_domain': ('parent', 'domain_name', 'domain', ),
+        'delete_domain': ('name', ),
+        'detach_trust': ('name', 'trust', ),
+        'get_domain': ('name', ),
+        'list_domains': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'reconfigure_trust': ('name', 'target_domain_name', 'target_dns_ip_addresses', ),
+        'reset_admin_password': ('name', ),
+        'update_domain': ('update_mask', 'domain', ),
+        'validate_trust': ('name', 'trust', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -67,7 +67,7 @@ class managedidentitiesCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
