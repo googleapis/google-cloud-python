@@ -39,19 +39,19 @@ def partition(
 class osconfigCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'cancel_patch_job': ('name', ),
-          'create_patch_deployment': ('parent', 'patch_deployment_id', 'patch_deployment', ),
-          'delete_patch_deployment': ('name', ),
-          'execute_patch_job': ('parent', 'instance_filter', 'description', 'patch_config', 'duration', 'dry_run', 'display_name', 'rollout', ),
-          'get_inventory': ('name', 'view', ),
-          'get_patch_deployment': ('name', ),
-          'get_patch_job': ('name', ),
-          'get_vulnerability_report': ('name', ),
-          'list_inventories': ('parent', 'view', 'page_size', 'page_token', 'filter', ),
-          'list_patch_deployments': ('parent', 'page_size', 'page_token', ),
-          'list_patch_job_instance_details': ('parent', 'page_size', 'page_token', 'filter', ),
-          'list_patch_jobs': ('parent', 'page_size', 'page_token', 'filter', ),
-          'list_vulnerability_reports': ('parent', 'page_size', 'page_token', 'filter', ),
+        'cancel_patch_job': ('name', ),
+        'create_patch_deployment': ('parent', 'patch_deployment_id', 'patch_deployment', ),
+        'delete_patch_deployment': ('name', ),
+        'execute_patch_job': ('parent', 'instance_filter', 'description', 'patch_config', 'duration', 'dry_run', 'display_name', 'rollout', ),
+        'get_inventory': ('name', 'view', ),
+        'get_patch_deployment': ('name', ),
+        'get_patch_job': ('name', ),
+        'get_vulnerability_report': ('name', ),
+        'list_inventories': ('parent', 'view', 'page_size', 'page_token', 'filter', ),
+        'list_patch_deployments': ('parent', 'page_size', 'page_token', ),
+        'list_patch_job_instance_details': ('parent', 'page_size', 'page_token', 'filter', ),
+        'list_patch_jobs': ('parent', 'page_size', 'page_token', 'filter', ),
+        'list_vulnerability_reports': ('parent', 'page_size', 'page_token', 'filter', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -70,7 +70,7 @@ class osconfigCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

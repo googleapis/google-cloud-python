@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -392,7 +392,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def get_inventory(
         self,
-        request: inventory.GetInventoryRequest = None,
+        request: Union[inventory.GetInventoryRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -403,7 +403,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         no associated inventory, the message ``NOT_FOUND`` is returned.
 
         Args:
-            request (google.cloud.osconfig_v1.types.GetInventoryRequest):
+            request (Union[google.cloud.osconfig_v1.types.GetInventoryRequest, dict]):
                 The request object. A request message for getting
                 inventory data for the specified VM.
             name (str):
@@ -479,7 +479,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def list_inventories(
         self,
-        request: inventory.ListInventoriesRequest = None,
+        request: Union[inventory.ListInventoriesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -490,7 +490,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         specified zone.
 
         Args:
-            request (google.cloud.osconfig_v1.types.ListInventoriesRequest):
+            request (Union[google.cloud.osconfig_v1.types.ListInventoriesRequest, dict]):
                 The request object. A request message for listing
                 inventory data for all VMs in the specified location.
             parent (str):
@@ -566,7 +566,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def get_vulnerability_report(
         self,
-        request: vulnerability.GetVulnerabilityReportRequest = None,
+        request: Union[vulnerability.GetVulnerabilityReportRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -578,7 +578,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         vulnerability reports associated with them.
 
         Args:
-            request (google.cloud.osconfig_v1.types.GetVulnerabilityReportRequest):
+            request (Union[google.cloud.osconfig_v1.types.GetVulnerabilityReportRequest, dict]):
                 The request object. A request message for getting the
                 vulnerability report for the specified VM.
             name (str):
@@ -650,7 +650,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def list_vulnerability_reports(
         self,
-        request: vulnerability.ListVulnerabilityReportsRequest = None,
+        request: Union[vulnerability.ListVulnerabilityReportsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -661,7 +661,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         the specified zone.
 
         Args:
-            request (google.cloud.osconfig_v1.types.ListVulnerabilityReportsRequest):
+            request (Union[google.cloud.osconfig_v1.types.ListVulnerabilityReportsRequest, dict]):
                 The request object. A request message for listing
                 vulnerability reports for all VM instances in the
                 specified location.

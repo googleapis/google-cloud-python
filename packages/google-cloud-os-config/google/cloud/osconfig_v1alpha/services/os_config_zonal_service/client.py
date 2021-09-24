@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -438,7 +438,9 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def create_os_policy_assignment(
         self,
-        request: os_policy_assignments.CreateOSPolicyAssignmentRequest = None,
+        request: Union[
+            os_policy_assignments.CreateOSPolicyAssignmentRequest, dict
+        ] = None,
         *,
         parent: str = None,
         os_policy_assignment: os_policy_assignments.OSPolicyAssignment = None,
@@ -460,7 +462,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1alpha/projects.locations.osPolicyAssignments.operations/cancel>`__.
 
         Args:
-            request (google.cloud.osconfig_v1alpha.types.CreateOSPolicyAssignmentRequest):
+            request (Union[google.cloud.osconfig_v1alpha.types.CreateOSPolicyAssignmentRequest, dict]):
                 The request object. A request message to create an OS
                 policy assignment
             parent (str):
@@ -574,7 +576,9 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def update_os_policy_assignment(
         self,
-        request: os_policy_assignments.UpdateOSPolicyAssignmentRequest = None,
+        request: Union[
+            os_policy_assignments.UpdateOSPolicyAssignmentRequest, dict
+        ] = None,
         *,
         os_policy_assignment: os_policy_assignments.OSPolicyAssignment = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -594,7 +598,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1alpha/projects.locations.osPolicyAssignments.operations/cancel>`__.
 
         Args:
-            request (google.cloud.osconfig_v1alpha.types.UpdateOSPolicyAssignmentRequest):
+            request (Union[google.cloud.osconfig_v1alpha.types.UpdateOSPolicyAssignmentRequest, dict]):
                 The request object. A request message to update an OS
                 policy assignment
             os_policy_assignment (google.cloud.osconfig_v1alpha.types.OSPolicyAssignment):
@@ -691,7 +695,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def get_os_policy_assignment(
         self,
-        request: os_policy_assignments.GetOSPolicyAssignmentRequest = None,
+        request: Union[os_policy_assignments.GetOSPolicyAssignmentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -705,7 +709,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         revision ID in the ``name`` parameter.
 
         Args:
-            request (google.cloud.osconfig_v1alpha.types.GetOSPolicyAssignmentRequest):
+            request (Union[google.cloud.osconfig_v1alpha.types.GetOSPolicyAssignmentRequest, dict]):
                 The request object. A request message to get an OS
                 policy assignment
             name (str):
@@ -778,7 +782,9 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def list_os_policy_assignments(
         self,
-        request: os_policy_assignments.ListOSPolicyAssignmentsRequest = None,
+        request: Union[
+            os_policy_assignments.ListOSPolicyAssignmentsRequest, dict
+        ] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -791,7 +797,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         returned.
 
         Args:
-            request (google.cloud.osconfig_v1alpha.types.ListOSPolicyAssignmentsRequest):
+            request (Union[google.cloud.osconfig_v1alpha.types.ListOSPolicyAssignmentsRequest, dict]):
                 The request object. A request message to list OS policy
                 assignments for a parent resource
             parent (str):
@@ -863,7 +869,9 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def list_os_policy_assignment_revisions(
         self,
-        request: os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest = None,
+        request: Union[
+            os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest, dict
+        ] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -874,7 +882,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         OS policy assignment.
 
         Args:
-            request (google.cloud.osconfig_v1alpha.types.ListOSPolicyAssignmentRevisionsRequest):
+            request (Union[google.cloud.osconfig_v1alpha.types.ListOSPolicyAssignmentRevisionsRequest, dict]):
                 The request object. A request message to list revisions
                 for a OS policy assignment
             name (str):
@@ -950,7 +958,9 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def delete_os_policy_assignment(
         self,
-        request: os_policy_assignments.DeleteOSPolicyAssignmentRequest = None,
+        request: Union[
+            os_policy_assignments.DeleteOSPolicyAssignmentRequest, dict
+        ] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -972,7 +982,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1alpha/projects.locations.osPolicyAssignments.operations/cancel>`__.
 
         Args:
-            request (google.cloud.osconfig_v1alpha.types.DeleteOSPolicyAssignmentRequest):
+            request (Union[google.cloud.osconfig_v1alpha.types.DeleteOSPolicyAssignmentRequest, dict]):
                 The request object. A request message for deleting a OS
                 policy assignment.
             name (str):
@@ -1058,7 +1068,9 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def get_instance_os_policies_compliance(
         self,
-        request: instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest = None,
+        request: Union[
+            instance_os_policies_compliance.GetInstanceOSPoliciesComplianceRequest, dict
+        ] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1069,7 +1081,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         Compute Engine VM instance.
 
         Args:
-            request (google.cloud.osconfig_v1alpha.types.GetInstanceOSPoliciesComplianceRequest):
+            request (Union[google.cloud.osconfig_v1alpha.types.GetInstanceOSPoliciesComplianceRequest, dict]):
                 The request object. A request message for getting OS
                 policies compliance data for the given Compute Engine VM
                 instance.
@@ -1159,7 +1171,10 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def list_instance_os_policies_compliances(
         self,
-        request: instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest = None,
+        request: Union[
+            instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesRequest,
+            dict,
+        ] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1170,7 +1185,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         Engine VM instances in the specified zone.
 
         Args:
-            request (google.cloud.osconfig_v1alpha.types.ListInstanceOSPoliciesCompliancesRequest):
+            request (Union[google.cloud.osconfig_v1alpha.types.ListInstanceOSPoliciesCompliancesRequest, dict]):
                 The request object. A request message for listing OS
                 policies compliance data for all Compute Engine VMs in
                 the given location.
@@ -1253,7 +1268,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def get_inventory(
         self,
-        request: inventory.GetInventoryRequest = None,
+        request: Union[inventory.GetInventoryRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1264,7 +1279,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         no associated inventory, the message ``NOT_FOUND`` is returned.
 
         Args:
-            request (google.cloud.osconfig_v1alpha.types.GetInventoryRequest):
+            request (Union[google.cloud.osconfig_v1alpha.types.GetInventoryRequest, dict]):
                 The request object. A request message for getting
                 inventory data for the specified VM.
             name (str):
@@ -1340,7 +1355,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def list_inventories(
         self,
-        request: inventory.ListInventoriesRequest = None,
+        request: Union[inventory.ListInventoriesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1351,7 +1366,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         specified zone.
 
         Args:
-            request (google.cloud.osconfig_v1alpha.types.ListInventoriesRequest):
+            request (Union[google.cloud.osconfig_v1alpha.types.ListInventoriesRequest, dict]):
                 The request object. A request message for listing
                 inventory data for all VMs in the specified location.
             parent (str):
@@ -1429,7 +1444,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def get_vulnerability_report(
         self,
-        request: vulnerability.GetVulnerabilityReportRequest = None,
+        request: Union[vulnerability.GetVulnerabilityReportRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1441,7 +1456,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         vulnerability reports associated with them.
 
         Args:
-            request (google.cloud.osconfig_v1alpha.types.GetVulnerabilityReportRequest):
+            request (Union[google.cloud.osconfig_v1alpha.types.GetVulnerabilityReportRequest, dict]):
                 The request object. A request message for getting the
                 vulnerability report for the specified VM.
             name (str):
@@ -1513,7 +1528,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
     def list_vulnerability_reports(
         self,
-        request: vulnerability.ListVulnerabilityReportsRequest = None,
+        request: Union[vulnerability.ListVulnerabilityReportsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1524,7 +1539,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         the specified zone.
 
         Args:
-            request (google.cloud.osconfig_v1alpha.types.ListVulnerabilityReportsRequest):
+            request (Union[google.cloud.osconfig_v1alpha.types.ListVulnerabilityReportsRequest, dict]):
                 The request object. A request message for listing
                 vulnerability reports for all VM instances in the
                 specified location.

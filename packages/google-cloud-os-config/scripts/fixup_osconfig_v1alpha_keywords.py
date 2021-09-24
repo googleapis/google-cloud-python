@@ -39,18 +39,18 @@ def partition(
 class osconfigCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_os_policy_assignment': ('parent', 'os_policy_assignment', 'os_policy_assignment_id', ),
-          'delete_os_policy_assignment': ('name', ),
-          'get_instance_os_policies_compliance': ('name', ),
-          'get_inventory': ('name', 'view', ),
-          'get_os_policy_assignment': ('name', ),
-          'get_vulnerability_report': ('name', ),
-          'list_instance_os_policies_compliances': ('parent', 'page_size', 'page_token', 'filter', ),
-          'list_inventories': ('parent', 'view', 'page_size', 'page_token', 'filter', ),
-          'list_os_policy_assignment_revisions': ('name', 'page_size', 'page_token', ),
-          'list_os_policy_assignments': ('parent', 'page_size', 'page_token', ),
-          'list_vulnerability_reports': ('parent', 'page_size', 'page_token', 'filter', ),
-          'update_os_policy_assignment': ('os_policy_assignment', 'update_mask', ),
+        'create_os_policy_assignment': ('parent', 'os_policy_assignment', 'os_policy_assignment_id', ),
+        'delete_os_policy_assignment': ('name', ),
+        'get_instance_os_policies_compliance': ('name', ),
+        'get_inventory': ('name', 'view', ),
+        'get_os_policy_assignment': ('name', ),
+        'get_vulnerability_report': ('name', ),
+        'list_instance_os_policies_compliances': ('parent', 'page_size', 'page_token', 'filter', ),
+        'list_inventories': ('parent', 'view', 'page_size', 'page_token', 'filter', ),
+        'list_os_policy_assignment_revisions': ('name', 'page_size', 'page_token', ),
+        'list_os_policy_assignments': ('parent', 'page_size', 'page_token', ),
+        'list_vulnerability_reports': ('parent', 'page_size', 'page_token', 'filter', ),
+        'update_os_policy_assignment': ('os_policy_assignment', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -69,7 +69,7 @@ class osconfigCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
