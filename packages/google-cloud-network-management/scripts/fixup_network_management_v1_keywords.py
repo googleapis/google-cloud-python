@@ -39,12 +39,12 @@ def partition(
 class network_managementCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_connectivity_test': ('parent', 'test_id', 'resource', ),
-          'delete_connectivity_test': ('name', ),
-          'get_connectivity_test': ('name', ),
-          'list_connectivity_tests': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'rerun_connectivity_test': ('name', ),
-          'update_connectivity_test': ('update_mask', 'resource', ),
+        'create_connectivity_test': ('parent', 'test_id', 'resource', ),
+        'delete_connectivity_test': ('name', ),
+        'get_connectivity_test': ('name', ),
+        'list_connectivity_tests': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'rerun_connectivity_test': ('name', ),
+        'update_connectivity_test': ('update_mask', 'resource', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -63,7 +63,7 @@ class network_managementCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

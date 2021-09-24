@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -370,7 +370,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
 
     def list_connectivity_tests(
         self,
-        request: reachability.ListConnectivityTestsRequest = None,
+        request: Union[reachability.ListConnectivityTestsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -380,7 +380,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
         r"""Lists all Connectivity Tests owned by a project.
 
         Args:
-            request (google.cloud.network_management_v1.types.ListConnectivityTestsRequest):
+            request (Union[google.cloud.network_management_v1.types.ListConnectivityTestsRequest, dict]):
                 The request object. Request for the
                 `ListConnectivityTests` method.
             parent (str):
@@ -449,7 +449,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
 
     def get_connectivity_test(
         self,
-        request: reachability.GetConnectivityTestRequest = None,
+        request: Union[reachability.GetConnectivityTestRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -459,7 +459,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
         r"""Gets the details of a specific Connectivity Test.
 
         Args:
-            request (google.cloud.network_management_v1.types.GetConnectivityTestRequest):
+            request (Union[google.cloud.network_management_v1.types.GetConnectivityTestRequest, dict]):
                 The request object. Request for the
                 `GetConnectivityTest` method.
             name (str):
@@ -521,7 +521,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
 
     def create_connectivity_test(
         self,
-        request: reachability.CreateConnectivityTestRequest = None,
+        request: Union[reachability.CreateConnectivityTestRequest, dict] = None,
         *,
         parent: str = None,
         test_id: str = None,
@@ -546,7 +546,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
         documentation.
 
         Args:
-            request (google.cloud.network_management_v1.types.CreateConnectivityTestRequest):
+            request (Union[google.cloud.network_management_v1.types.CreateConnectivityTestRequest, dict]):
                 The request object. Request for the
                 `CreateConnectivityTest` method.
             parent (str):
@@ -641,7 +641,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
 
     def update_connectivity_test(
         self,
-        request: reachability.UpdateConnectivityTestRequest = None,
+        request: Union[reachability.UpdateConnectivityTestRequest, dict] = None,
         *,
         update_mask: field_mask_pb2.FieldMask = None,
         resource: connectivity_test.ConnectivityTest = None,
@@ -667,7 +667,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
         for more details.
 
         Args:
-            request (google.cloud.network_management_v1.types.UpdateConnectivityTestRequest):
+            request (Union[google.cloud.network_management_v1.types.UpdateConnectivityTestRequest, dict]):
                 The request object. Request for the
                 `UpdateConnectivityTest` method.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -751,7 +751,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
 
     def rerun_connectivity_test(
         self,
-        request: reachability.RerunConnectivityTestRequest = None,
+        request: Union[reachability.RerunConnectivityTestRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -773,7 +773,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
         returns a value of ``UNKNOWN``.
 
         Args:
-            request (google.cloud.network_management_v1.types.RerunConnectivityTestRequest):
+            request (Union[google.cloud.network_management_v1.types.RerunConnectivityTestRequest, dict]):
                 The request object. Request for the
                 `RerunConnectivityTest` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -825,7 +825,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
 
     def delete_connectivity_test(
         self,
-        request: reachability.DeleteConnectivityTestRequest = None,
+        request: Union[reachability.DeleteConnectivityTestRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -835,7 +835,7 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
         r"""Deletes a specific ``ConnectivityTest``.
 
         Args:
-            request (google.cloud.network_management_v1.types.DeleteConnectivityTestRequest):
+            request (Union[google.cloud.network_management_v1.types.DeleteConnectivityTestRequest, dict]):
                 The request object. Request for the
                 `DeleteConnectivityTest` method.
             name (str):
