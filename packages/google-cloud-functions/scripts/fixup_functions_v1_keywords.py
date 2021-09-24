@@ -39,17 +39,17 @@ def partition(
 class functionsCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'call_function': ('name', 'data', ),
-          'create_function': ('location', 'function', ),
-          'delete_function': ('name', ),
-          'generate_download_url': ('name', 'version_id', ),
-          'generate_upload_url': ('parent', ),
-          'get_function': ('name', ),
-          'get_iam_policy': ('resource', 'options', ),
-          'list_functions': ('parent', 'page_size', 'page_token', ),
-          'set_iam_policy': ('resource', 'policy', ),
-          'test_iam_permissions': ('resource', 'permissions', ),
-          'update_function': ('function', 'update_mask', ),
+        'call_function': ('name', 'data', ),
+        'create_function': ('location', 'function', ),
+        'delete_function': ('name', ),
+        'generate_download_url': ('name', 'version_id', ),
+        'generate_upload_url': ('parent', ),
+        'get_function': ('name', ),
+        'get_iam_policy': ('resource', 'options', ),
+        'list_functions': ('parent', 'page_size', 'page_token', ),
+        'set_iam_policy': ('resource', 'policy', ),
+        'test_iam_permissions': ('resource', 'permissions', ),
+        'update_function': ('function', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -68,7 +68,7 @@ class functionsCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

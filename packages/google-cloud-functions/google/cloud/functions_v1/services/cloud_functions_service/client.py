@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -364,7 +364,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
     def list_functions(
         self,
-        request: functions.ListFunctionsRequest = None,
+        request: Union[functions.ListFunctionsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -374,7 +374,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         requested project.
 
         Args:
-            request (google.cloud.functions_v1.types.ListFunctionsRequest):
+            request (Union[google.cloud.functions_v1.types.ListFunctionsRequest, dict]):
                 The request object. Request for the `ListFunctions`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -423,7 +423,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
     def get_function(
         self,
-        request: functions.GetFunctionRequest = None,
+        request: Union[functions.GetFunctionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -434,7 +434,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         requested project.
 
         Args:
-            request (google.cloud.functions_v1.types.GetFunctionRequest):
+            request (Union[google.cloud.functions_v1.types.GetFunctionRequest, dict]):
                 The request object. Request for the `GetFunction`
                 method.
             name (str):
@@ -497,7 +497,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
     def create_function(
         self,
-        request: functions.CreateFunctionRequest = None,
+        request: Union[functions.CreateFunctionRequest, dict] = None,
         *,
         location: str = None,
         function: functions.CloudFunction = None,
@@ -510,7 +510,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         operation will return ``ALREADY_EXISTS`` error.
 
         Args:
-            request (google.cloud.functions_v1.types.CreateFunctionRequest):
+            request (Union[google.cloud.functions_v1.types.CreateFunctionRequest, dict]):
                 The request object. Request for the `CreateFunction`
                 method.
             location (str):
@@ -590,7 +590,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
     def update_function(
         self,
-        request: functions.UpdateFunctionRequest = None,
+        request: Union[functions.UpdateFunctionRequest, dict] = None,
         *,
         function: functions.CloudFunction = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -600,7 +600,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         r"""Updates existing function.
 
         Args:
-            request (google.cloud.functions_v1.types.UpdateFunctionRequest):
+            request (Union[google.cloud.functions_v1.types.UpdateFunctionRequest, dict]):
                 The request object. Request for the `UpdateFunction`
                 method.
             function (google.cloud.functions_v1.types.CloudFunction):
@@ -674,7 +674,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
     def delete_function(
         self,
-        request: functions.DeleteFunctionRequest = None,
+        request: Union[functions.DeleteFunctionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -687,7 +687,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         function.
 
         Args:
-            request (google.cloud.functions_v1.types.DeleteFunctionRequest):
+            request (Union[google.cloud.functions_v1.types.DeleteFunctionRequest, dict]):
                 The request object. Request for the `DeleteFunction`
                 method.
             name (str):
@@ -769,7 +769,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
     def call_function(
         self,
-        request: functions.CallFunctionRequest = None,
+        request: Union[functions.CallFunctionRequest, dict] = None,
         *,
         name: str = None,
         data: str = None,
@@ -783,7 +783,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         Limits <https://cloud.google.com/functions/quotas#rate_limits>`__.
 
         Args:
-            request (google.cloud.functions_v1.types.CallFunctionRequest):
+            request (Union[google.cloud.functions_v1.types.CallFunctionRequest, dict]):
                 The request object. Request for the `CallFunction`
                 method.
             name (str):
@@ -851,7 +851,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
     def generate_upload_url(
         self,
-        request: functions.GenerateUploadUrlRequest = None,
+        request: Union[functions.GenerateUploadUrlRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -887,7 +887,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         -  ``Authorization: Bearer YOUR_TOKEN``
 
         Args:
-            request (google.cloud.functions_v1.types.GenerateUploadUrlRequest):
+            request (Union[google.cloud.functions_v1.types.GenerateUploadUrlRequest, dict]):
                 The request object. Request of `GenerateSourceUploadUrl`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -926,7 +926,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
     def generate_download_url(
         self,
-        request: functions.GenerateDownloadUrlRequest = None,
+        request: Union[functions.GenerateDownloadUrlRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -941,7 +941,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         control/signed-urls
 
         Args:
-            request (google.cloud.functions_v1.types.GenerateDownloadUrlRequest):
+            request (Union[google.cloud.functions_v1.types.GenerateDownloadUrlRequest, dict]):
                 The request object. Request of `GenerateDownloadUrl`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -980,7 +980,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
     def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -990,7 +990,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         function. Replaces any existing policy.
 
         Args:
-            request (google.iam.v1.iam_policy_pb2.SetIamPolicyRequest):
+            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1085,7 +1085,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
     def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1096,7 +1096,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         not have a policy set.
 
         Args:
-            request (google.iam.v1.iam_policy_pb2.GetIamPolicyRequest):
+            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1191,7 +1191,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1202,7 +1202,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         return an empty set of permissions, not a NOT_FOUND error.
 
         Args:
-            request (google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest):
+            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
