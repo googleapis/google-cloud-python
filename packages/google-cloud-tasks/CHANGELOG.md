@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+### [2.5.2](https://www.github.com/googleapis/python-tasks/compare/v2.5.1...v2.5.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([42d768b](https://www.github.com/googleapis/python-tasks/commit/42d768b9f302aef3258f4abc413199070bcd2a8d))
+
 ### [2.5.1](https://www.github.com/googleapis/python-tasks/compare/v2.5.0...v2.5.1) (2021-07-28)
 
 
