@@ -39,19 +39,19 @@ def partition(
 class websecurityscannerCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_scan_config': ('parent', 'scan_config', ),
-          'delete_scan_config': ('name', ),
-          'get_finding': ('name', ),
-          'get_scan_config': ('name', ),
-          'get_scan_run': ('name', ),
-          'list_crawled_urls': ('parent', 'page_token', 'page_size', ),
-          'list_findings': ('parent', 'filter', 'page_token', 'page_size', ),
-          'list_finding_type_stats': ('parent', ),
-          'list_scan_configs': ('parent', 'page_token', 'page_size', ),
-          'list_scan_runs': ('parent', 'page_token', 'page_size', ),
-          'start_scan_run': ('name', ),
-          'stop_scan_run': ('name', ),
-          'update_scan_config': ('scan_config', 'update_mask', ),
+        'create_scan_config': ('parent', 'scan_config', ),
+        'delete_scan_config': ('name', ),
+        'get_finding': ('name', ),
+        'get_scan_config': ('name', ),
+        'get_scan_run': ('name', ),
+        'list_crawled_urls': ('parent', 'page_token', 'page_size', ),
+        'list_findings': ('parent', 'filter', 'page_token', 'page_size', ),
+        'list_finding_type_stats': ('parent', ),
+        'list_scan_configs': ('parent', 'page_token', 'page_size', ),
+        'list_scan_runs': ('parent', 'page_token', 'page_size', ),
+        'start_scan_run': ('name', ),
+        'stop_scan_run': ('name', ),
+        'update_scan_config': ('scan_config', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -70,7 +70,7 @@ class websecurityscannerCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
