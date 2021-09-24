@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -377,7 +377,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def create_cluster(
         self,
-        request: clusters.CreateClusterRequest = None,
+        request: Union[clusters.CreateClusterRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
@@ -392,7 +392,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
 
         Args:
-            request (google.cloud.dataproc_v1.types.CreateClusterRequest):
+            request (Union[google.cloud.dataproc_v1.types.CreateClusterRequest, dict]):
                 The request object. A request to create a cluster.
             project_id (str):
                 Required. The ID of the Google Cloud
@@ -473,7 +473,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def update_cluster(
         self,
-        request: clusters.UpdateClusterRequest = None,
+        request: Union[clusters.UpdateClusterRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
@@ -490,7 +490,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
 
         Args:
-            request (google.cloud.dataproc_v1.types.UpdateClusterRequest):
+            request (Union[google.cloud.dataproc_v1.types.UpdateClusterRequest, dict]):
                 The request object. A request to update a cluster.
             project_id (str):
                 Required. The ID of the Google Cloud
@@ -648,7 +648,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def stop_cluster(
         self,
-        request: clusters.StopClusterRequest = None,
+        request: Union[clusters.StopClusterRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -657,7 +657,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         r"""Stops a cluster in a project.
 
         Args:
-            request (google.cloud.dataproc_v1.types.StopClusterRequest):
+            request (Union[google.cloud.dataproc_v1.types.StopClusterRequest, dict]):
                 The request object. A request to stop a cluster.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -701,7 +701,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def start_cluster(
         self,
-        request: clusters.StartClusterRequest = None,
+        request: Union[clusters.StartClusterRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -710,7 +710,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         r"""Starts a cluster in a project.
 
         Args:
-            request (google.cloud.dataproc_v1.types.StartClusterRequest):
+            request (Union[google.cloud.dataproc_v1.types.StartClusterRequest, dict]):
                 The request object. A request to start a cluster.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -754,7 +754,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def delete_cluster(
         self,
-        request: clusters.DeleteClusterRequest = None,
+        request: Union[clusters.DeleteClusterRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
@@ -769,7 +769,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
 
         Args:
-            request (google.cloud.dataproc_v1.types.DeleteClusterRequest):
+            request (Union[google.cloud.dataproc_v1.types.DeleteClusterRequest, dict]):
                 The request object. A request to delete a cluster.
             project_id (str):
                 Required. The ID of the Google Cloud
@@ -861,7 +861,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def get_cluster(
         self,
-        request: clusters.GetClusterRequest = None,
+        request: Union[clusters.GetClusterRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
@@ -874,7 +874,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         project.
 
         Args:
-            request (google.cloud.dataproc_v1.types.GetClusterRequest):
+            request (Union[google.cloud.dataproc_v1.types.GetClusterRequest, dict]):
                 The request object. Request to get the resource
                 representation for a cluster in a project.
             project_id (str):
@@ -947,7 +947,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def list_clusters(
         self,
-        request: clusters.ListClustersRequest = None,
+        request: Union[clusters.ListClustersRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
@@ -960,7 +960,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         alphabetically.
 
         Args:
-            request (google.cloud.dataproc_v1.types.ListClustersRequest):
+            request (Union[google.cloud.dataproc_v1.types.ListClustersRequest, dict]):
                 The request object. A request to list the clusters in a
                 project.
             project_id (str):
@@ -1064,7 +1064,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
 
     def diagnose_cluster(
         self,
-        request: clusters.DiagnoseClusterRequest = None,
+        request: Union[clusters.DiagnoseClusterRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
@@ -1083,7 +1083,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         `DiagnoseClusterResults <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#diagnoseclusterresults>`__.
 
         Args:
-            request (google.cloud.dataproc_v1.types.DiagnoseClusterRequest):
+            request (Union[google.cloud.dataproc_v1.types.DiagnoseClusterRequest, dict]):
                 The request object. A request to collect cluster
                 diagnostic information.
             project_id (str):

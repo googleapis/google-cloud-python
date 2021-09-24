@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -358,7 +358,9 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
 
     def create_autoscaling_policy(
         self,
-        request: autoscaling_policies.CreateAutoscalingPolicyRequest = None,
+        request: Union[
+            autoscaling_policies.CreateAutoscalingPolicyRequest, dict
+        ] = None,
         *,
         parent: str = None,
         policy: autoscaling_policies.AutoscalingPolicy = None,
@@ -369,7 +371,7 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
         r"""Creates new autoscaling policy.
 
         Args:
-            request (google.cloud.dataproc_v1.types.CreateAutoscalingPolicyRequest):
+            request (Union[google.cloud.dataproc_v1.types.CreateAutoscalingPolicyRequest, dict]):
                 The request object. A request to create an autoscaling
                 policy.
             parent (str):
@@ -452,7 +454,9 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
 
     def update_autoscaling_policy(
         self,
-        request: autoscaling_policies.UpdateAutoscalingPolicyRequest = None,
+        request: Union[
+            autoscaling_policies.UpdateAutoscalingPolicyRequest, dict
+        ] = None,
         *,
         policy: autoscaling_policies.AutoscalingPolicy = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -465,7 +469,7 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
         replacements.
 
         Args:
-            request (google.cloud.dataproc_v1.types.UpdateAutoscalingPolicyRequest):
+            request (Union[google.cloud.dataproc_v1.types.UpdateAutoscalingPolicyRequest, dict]):
                 The request object. A request to update an autoscaling
                 policy.
             policy (google.cloud.dataproc_v1.types.AutoscalingPolicy):
@@ -530,7 +534,7 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
 
     def get_autoscaling_policy(
         self,
-        request: autoscaling_policies.GetAutoscalingPolicyRequest = None,
+        request: Union[autoscaling_policies.GetAutoscalingPolicyRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -540,7 +544,7 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
         r"""Retrieves autoscaling policy.
 
         Args:
-            request (google.cloud.dataproc_v1.types.GetAutoscalingPolicyRequest):
+            request (Union[google.cloud.dataproc_v1.types.GetAutoscalingPolicyRequest, dict]):
                 The request object. A request to fetch an autoscaling
                 policy.
             name (str):
@@ -611,7 +615,9 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
 
     def list_autoscaling_policies(
         self,
-        request: autoscaling_policies.ListAutoscalingPoliciesRequest = None,
+        request: Union[
+            autoscaling_policies.ListAutoscalingPoliciesRequest, dict
+        ] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -621,7 +627,7 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
         r"""Lists autoscaling policies in the project.
 
         Args:
-            request (google.cloud.dataproc_v1.types.ListAutoscalingPoliciesRequest):
+            request (Union[google.cloud.dataproc_v1.types.ListAutoscalingPoliciesRequest, dict]):
                 The request object. A request to list autoscaling
                 policies in a project.
             parent (str):
@@ -703,7 +709,9 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
 
     def delete_autoscaling_policy(
         self,
-        request: autoscaling_policies.DeleteAutoscalingPolicyRequest = None,
+        request: Union[
+            autoscaling_policies.DeleteAutoscalingPolicyRequest, dict
+        ] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -715,7 +723,7 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
         more clusters.
 
         Args:
-            request (google.cloud.dataproc_v1.types.DeleteAutoscalingPolicyRequest):
+            request (Union[google.cloud.dataproc_v1.types.DeleteAutoscalingPolicyRequest, dict]):
                 The request object. A request to delete an autoscaling
                 policy.
                 Autoscaling policies in use by one or more clusters will

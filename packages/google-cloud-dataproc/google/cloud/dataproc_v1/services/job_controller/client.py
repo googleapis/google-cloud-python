@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -336,7 +336,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
     def submit_job(
         self,
-        request: jobs.SubmitJobRequest = None,
+        request: Union[jobs.SubmitJobRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
@@ -348,7 +348,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         r"""Submits a job to a cluster.
 
         Args:
-            request (google.cloud.dataproc_v1.types.SubmitJobRequest):
+            request (Union[google.cloud.dataproc_v1.types.SubmitJobRequest, dict]):
                 The request object. A request to submit a job.
             project_id (str):
                 Required. The ID of the Google Cloud
@@ -417,7 +417,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
     def submit_job_as_operation(
         self,
-        request: jobs.SubmitJobRequest = None,
+        request: Union[jobs.SubmitJobRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
@@ -429,7 +429,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         r"""Submits job to a cluster.
 
         Args:
-            request (google.cloud.dataproc_v1.types.SubmitJobRequest):
+            request (Union[google.cloud.dataproc_v1.types.SubmitJobRequest, dict]):
                 The request object. A request to submit a job.
             project_id (str):
                 Required. The ID of the Google Cloud
@@ -511,7 +511,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
     def get_job(
         self,
-        request: jobs.GetJobRequest = None,
+        request: Union[jobs.GetJobRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
@@ -524,7 +524,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         project.
 
         Args:
-            request (google.cloud.dataproc_v1.types.GetJobRequest):
+            request (Union[google.cloud.dataproc_v1.types.GetJobRequest, dict]):
                 The request object. A request to get the resource
                 representation for a job in a project.
             project_id (str):
@@ -594,7 +594,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
     def list_jobs(
         self,
-        request: jobs.ListJobsRequest = None,
+        request: Union[jobs.ListJobsRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
@@ -606,7 +606,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         r"""Lists regions/{region}/jobs in a project.
 
         Args:
-            request (google.cloud.dataproc_v1.types.ListJobsRequest):
+            request (Union[google.cloud.dataproc_v1.types.ListJobsRequest, dict]):
                 The request object. A request to list jobs in a project.
             project_id (str):
                 Required. The ID of the Google Cloud
@@ -702,7 +702,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
     def update_job(
         self,
-        request: jobs.UpdateJobRequest = None,
+        request: Union[jobs.UpdateJobRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -711,7 +711,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         r"""Updates a job in a project.
 
         Args:
-            request (google.cloud.dataproc_v1.types.UpdateJobRequest):
+            request (Union[google.cloud.dataproc_v1.types.UpdateJobRequest, dict]):
                 The request object. A request to update a job.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -743,7 +743,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
     def cancel_job(
         self,
-        request: jobs.CancelJobRequest = None,
+        request: Union[jobs.CancelJobRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
@@ -759,7 +759,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         `regions/{region}/jobs.get <https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/get>`__.
 
         Args:
-            request (google.cloud.dataproc_v1.types.CancelJobRequest):
+            request (Union[google.cloud.dataproc_v1.types.CancelJobRequest, dict]):
                 The request object. A request to cancel a job.
             project_id (str):
                 Required. The ID of the Google Cloud
@@ -828,7 +828,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
     def delete_job(
         self,
-        request: jobs.DeleteJobRequest = None,
+        request: Union[jobs.DeleteJobRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
@@ -841,7 +841,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         delete fails, and the response returns ``FAILED_PRECONDITION``.
 
         Args:
-            request (google.cloud.dataproc_v1.types.DeleteJobRequest):
+            request (Union[google.cloud.dataproc_v1.types.DeleteJobRequest, dict]):
                 The request object. A request to delete a job.
             project_id (str):
                 Required. The ID of the Google Cloud

@@ -39,33 +39,33 @@ def partition(
 class dataprocCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'cancel_job': ('project_id', 'region', 'job_id', ),
-          'create_autoscaling_policy': ('parent', 'policy', ),
-          'create_cluster': ('project_id', 'region', 'cluster', 'request_id', ),
-          'create_workflow_template': ('parent', 'template', ),
-          'delete_autoscaling_policy': ('name', ),
-          'delete_cluster': ('project_id', 'region', 'cluster_name', 'cluster_uuid', 'request_id', ),
-          'delete_job': ('project_id', 'region', 'job_id', ),
-          'delete_workflow_template': ('name', 'version', ),
-          'diagnose_cluster': ('project_id', 'region', 'cluster_name', ),
-          'get_autoscaling_policy': ('name', ),
-          'get_cluster': ('project_id', 'region', 'cluster_name', ),
-          'get_job': ('project_id', 'region', 'job_id', ),
-          'get_workflow_template': ('name', 'version', ),
-          'instantiate_inline_workflow_template': ('parent', 'template', 'request_id', ),
-          'instantiate_workflow_template': ('name', 'version', 'request_id', 'parameters', ),
-          'list_autoscaling_policies': ('parent', 'page_size', 'page_token', ),
-          'list_clusters': ('project_id', 'region', 'filter', 'page_size', 'page_token', ),
-          'list_jobs': ('project_id', 'region', 'page_size', 'page_token', 'cluster_name', 'job_state_matcher', 'filter', ),
-          'list_workflow_templates': ('parent', 'page_size', 'page_token', ),
-          'start_cluster': ('project_id', 'region', 'cluster_name', 'cluster_uuid', 'request_id', ),
-          'stop_cluster': ('project_id', 'region', 'cluster_name', 'cluster_uuid', 'request_id', ),
-          'submit_job': ('project_id', 'region', 'job', 'request_id', ),
-          'submit_job_as_operation': ('project_id', 'region', 'job', 'request_id', ),
-          'update_autoscaling_policy': ('policy', ),
-          'update_cluster': ('project_id', 'region', 'cluster_name', 'cluster', 'update_mask', 'graceful_decommission_timeout', 'request_id', ),
-          'update_job': ('project_id', 'region', 'job_id', 'job', 'update_mask', ),
-          'update_workflow_template': ('template', ),
+        'cancel_job': ('project_id', 'region', 'job_id', ),
+        'create_autoscaling_policy': ('parent', 'policy', ),
+        'create_cluster': ('project_id', 'region', 'cluster', 'request_id', ),
+        'create_workflow_template': ('parent', 'template', ),
+        'delete_autoscaling_policy': ('name', ),
+        'delete_cluster': ('project_id', 'region', 'cluster_name', 'cluster_uuid', 'request_id', ),
+        'delete_job': ('project_id', 'region', 'job_id', ),
+        'delete_workflow_template': ('name', 'version', ),
+        'diagnose_cluster': ('project_id', 'region', 'cluster_name', ),
+        'get_autoscaling_policy': ('name', ),
+        'get_cluster': ('project_id', 'region', 'cluster_name', ),
+        'get_job': ('project_id', 'region', 'job_id', ),
+        'get_workflow_template': ('name', 'version', ),
+        'instantiate_inline_workflow_template': ('parent', 'template', 'request_id', ),
+        'instantiate_workflow_template': ('name', 'version', 'request_id', 'parameters', ),
+        'list_autoscaling_policies': ('parent', 'page_size', 'page_token', ),
+        'list_clusters': ('project_id', 'region', 'filter', 'page_size', 'page_token', ),
+        'list_jobs': ('project_id', 'region', 'page_size', 'page_token', 'cluster_name', 'job_state_matcher', 'filter', ),
+        'list_workflow_templates': ('parent', 'page_size', 'page_token', ),
+        'start_cluster': ('project_id', 'region', 'cluster_name', 'cluster_uuid', 'request_id', ),
+        'stop_cluster': ('project_id', 'region', 'cluster_name', 'cluster_uuid', 'request_id', ),
+        'submit_job': ('project_id', 'region', 'job', 'request_id', ),
+        'submit_job_as_operation': ('project_id', 'region', 'job', 'request_id', ),
+        'update_autoscaling_policy': ('policy', ),
+        'update_cluster': ('project_id', 'region', 'cluster_name', 'cluster', 'update_mask', 'graceful_decommission_timeout', 'request_id', ),
+        'update_job': ('project_id', 'region', 'job_id', 'job', 'update_mask', ),
+        'update_workflow_template': ('template', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -84,7 +84,7 @@ class dataprocCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
