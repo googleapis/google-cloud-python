@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -353,7 +353,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
 
     def list_connections(
         self,
-        request: connection.ListConnectionsRequest = None,
+        request: Union[connection.ListConnectionsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -364,7 +364,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         given Apigee Connect endpoint.
 
         Args:
-            request (google.cloud.apigeeconnect_v1.types.ListConnectionsRequest):
+            request (Union[google.cloud.apigeeconnect_v1.types.ListConnectionsRequest, dict]):
                 The request object. The request for
                 [ListConnections][Management.ListConnections].
             parent (str):
