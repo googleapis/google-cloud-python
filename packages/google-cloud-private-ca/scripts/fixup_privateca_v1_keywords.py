@@ -39,35 +39,35 @@ def partition(
 class privatecaCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'activate_certificate_authority': ('name', 'pem_ca_certificate', 'subordinate_config', 'request_id', ),
-          'create_ca_pool': ('parent', 'ca_pool_id', 'ca_pool', 'request_id', ),
-          'create_certificate': ('parent', 'certificate', 'certificate_id', 'request_id', 'validate_only', 'issuing_certificate_authority_id', ),
-          'create_certificate_authority': ('parent', 'certificate_authority_id', 'certificate_authority', 'request_id', ),
-          'create_certificate_template': ('parent', 'certificate_template_id', 'certificate_template', 'request_id', ),
-          'delete_ca_pool': ('name', 'request_id', ),
-          'delete_certificate_authority': ('name', 'request_id', 'ignore_active_certificates', ),
-          'delete_certificate_template': ('name', 'request_id', ),
-          'disable_certificate_authority': ('name', 'request_id', ),
-          'enable_certificate_authority': ('name', 'request_id', ),
-          'fetch_ca_certs': ('ca_pool', 'request_id', ),
-          'fetch_certificate_authority_csr': ('name', ),
-          'get_ca_pool': ('name', ),
-          'get_certificate': ('name', ),
-          'get_certificate_authority': ('name', ),
-          'get_certificate_revocation_list': ('name', ),
-          'get_certificate_template': ('name', ),
-          'list_ca_pools': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'list_certificate_authorities': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'list_certificate_revocation_lists': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'list_certificates': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'list_certificate_templates': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'revoke_certificate': ('name', 'reason', 'request_id', ),
-          'undelete_certificate_authority': ('name', 'request_id', ),
-          'update_ca_pool': ('ca_pool', 'update_mask', 'request_id', ),
-          'update_certificate': ('certificate', 'update_mask', 'request_id', ),
-          'update_certificate_authority': ('certificate_authority', 'update_mask', 'request_id', ),
-          'update_certificate_revocation_list': ('certificate_revocation_list', 'update_mask', 'request_id', ),
-          'update_certificate_template': ('certificate_template', 'update_mask', 'request_id', ),
+        'activate_certificate_authority': ('name', 'pem_ca_certificate', 'subordinate_config', 'request_id', ),
+        'create_ca_pool': ('parent', 'ca_pool_id', 'ca_pool', 'request_id', ),
+        'create_certificate': ('parent', 'certificate', 'certificate_id', 'request_id', 'validate_only', 'issuing_certificate_authority_id', ),
+        'create_certificate_authority': ('parent', 'certificate_authority_id', 'certificate_authority', 'request_id', ),
+        'create_certificate_template': ('parent', 'certificate_template_id', 'certificate_template', 'request_id', ),
+        'delete_ca_pool': ('name', 'request_id', ),
+        'delete_certificate_authority': ('name', 'request_id', 'ignore_active_certificates', ),
+        'delete_certificate_template': ('name', 'request_id', ),
+        'disable_certificate_authority': ('name', 'request_id', ),
+        'enable_certificate_authority': ('name', 'request_id', ),
+        'fetch_ca_certs': ('ca_pool', 'request_id', ),
+        'fetch_certificate_authority_csr': ('name', ),
+        'get_ca_pool': ('name', ),
+        'get_certificate': ('name', ),
+        'get_certificate_authority': ('name', ),
+        'get_certificate_revocation_list': ('name', ),
+        'get_certificate_template': ('name', ),
+        'list_ca_pools': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_certificate_authorities': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_certificate_revocation_lists': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_certificates': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_certificate_templates': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'revoke_certificate': ('name', 'reason', 'request_id', ),
+        'undelete_certificate_authority': ('name', 'request_id', ),
+        'update_ca_pool': ('ca_pool', 'update_mask', 'request_id', ),
+        'update_certificate': ('certificate', 'update_mask', 'request_id', ),
+        'update_certificate_authority': ('certificate_authority', 'update_mask', 'request_id', ),
+        'update_certificate_revocation_list': ('certificate_revocation_list', 'update_mask', 'request_id', ),
+        'update_certificate_template': ('certificate_template', 'update_mask', 'request_id', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -86,7 +86,7 @@ class privatecaCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

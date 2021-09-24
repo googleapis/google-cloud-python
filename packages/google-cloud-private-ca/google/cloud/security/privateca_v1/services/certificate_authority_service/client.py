@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -458,7 +458,7 @@ class CertificateAuthorityServiceClient(
 
     def create_certificate(
         self,
-        request: service.CreateCertificateRequest = None,
+        request: Union[service.CreateCertificateRequest, dict] = None,
         *,
         parent: str = None,
         certificate: resources.Certificate = None,
@@ -473,7 +473,7 @@ class CertificateAuthorityServiceClient(
         [CaPool][google.cloud.security.privateca.v1.CaPool].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.CreateCertificateRequest):
+            request (Union[google.cloud.security.privateca_v1.types.CreateCertificateRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.CreateCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCertificate].
             parent (str):
@@ -560,7 +560,7 @@ class CertificateAuthorityServiceClient(
 
     def get_certificate(
         self,
-        request: service.GetCertificateRequest = None,
+        request: Union[service.GetCertificateRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -571,7 +571,7 @@ class CertificateAuthorityServiceClient(
         [Certificate][google.cloud.security.privateca.v1.Certificate].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.GetCertificateRequest):
+            request (Union[google.cloud.security.privateca_v1.types.GetCertificateRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.GetCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificate].
             name (str):
@@ -635,7 +635,7 @@ class CertificateAuthorityServiceClient(
 
     def list_certificates(
         self,
-        request: service.ListCertificatesRequest = None,
+        request: Union[service.ListCertificatesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -646,7 +646,7 @@ class CertificateAuthorityServiceClient(
         [Certificates][google.cloud.security.privateca.v1.Certificate].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.ListCertificatesRequest):
+            request (Union[google.cloud.security.privateca_v1.types.ListCertificatesRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.ListCertificates][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificates].
             parent (str):
@@ -718,7 +718,7 @@ class CertificateAuthorityServiceClient(
 
     def revoke_certificate(
         self,
-        request: service.RevokeCertificateRequest = None,
+        request: Union[service.RevokeCertificateRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -729,7 +729,7 @@ class CertificateAuthorityServiceClient(
         [Certificate][google.cloud.security.privateca.v1.Certificate].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.RevokeCertificateRequest):
+            request (Union[google.cloud.security.privateca_v1.types.RevokeCertificateRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.RevokeCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.RevokeCertificate].
             name (str):
@@ -792,7 +792,7 @@ class CertificateAuthorityServiceClient(
 
     def update_certificate(
         self,
-        request: service.UpdateCertificateRequest = None,
+        request: Union[service.UpdateCertificateRequest, dict] = None,
         *,
         certificate: resources.Certificate = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -807,7 +807,7 @@ class CertificateAuthorityServiceClient(
         field.
 
         Args:
-            request (google.cloud.security.privateca_v1.types.UpdateCertificateRequest):
+            request (Union[google.cloud.security.privateca_v1.types.UpdateCertificateRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.UpdateCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificate].
             certificate (google.cloud.security.privateca_v1.types.Certificate):
@@ -880,7 +880,7 @@ class CertificateAuthorityServiceClient(
 
     def activate_certificate_authority(
         self,
-        request: service.ActivateCertificateAuthorityRequest = None,
+        request: Union[service.ActivateCertificateAuthorityRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -899,7 +899,7 @@ class CertificateAuthorityServiceClient(
         this method can complete the activation process.
 
         Args:
-            request (google.cloud.security.privateca_v1.types.ActivateCertificateAuthorityRequest):
+            request (Union[google.cloud.security.privateca_v1.types.ActivateCertificateAuthorityRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.ActivateCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.ActivateCertificateAuthority].
             name (str):
@@ -977,7 +977,7 @@ class CertificateAuthorityServiceClient(
 
     def create_certificate_authority(
         self,
-        request: service.CreateCertificateAuthorityRequest = None,
+        request: Union[service.CreateCertificateAuthorityRequest, dict] = None,
         *,
         parent: str = None,
         certificate_authority: resources.CertificateAuthority = None,
@@ -991,7 +991,7 @@ class CertificateAuthorityServiceClient(
         in a given Project and Location.
 
         Args:
-            request (google.cloud.security.privateca_v1.types.CreateCertificateAuthorityRequest):
+            request (Union[google.cloud.security.privateca_v1.types.CreateCertificateAuthorityRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.CreateCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCertificateAuthority].
             parent (str):
@@ -1091,7 +1091,7 @@ class CertificateAuthorityServiceClient(
 
     def disable_certificate_authority(
         self,
-        request: service.DisableCertificateAuthorityRequest = None,
+        request: Union[service.DisableCertificateAuthorityRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1102,7 +1102,7 @@ class CertificateAuthorityServiceClient(
         [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.DisableCertificateAuthorityRequest):
+            request (Union[google.cloud.security.privateca_v1.types.DisableCertificateAuthorityRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.DisableCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.DisableCertificateAuthority].
             name (str):
@@ -1180,7 +1180,7 @@ class CertificateAuthorityServiceClient(
 
     def enable_certificate_authority(
         self,
-        request: service.EnableCertificateAuthorityRequest = None,
+        request: Union[service.EnableCertificateAuthorityRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1191,7 +1191,7 @@ class CertificateAuthorityServiceClient(
         [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.EnableCertificateAuthorityRequest):
+            request (Union[google.cloud.security.privateca_v1.types.EnableCertificateAuthorityRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.EnableCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.EnableCertificateAuthority].
             name (str):
@@ -1269,7 +1269,7 @@ class CertificateAuthorityServiceClient(
 
     def fetch_certificate_authority_csr(
         self,
-        request: service.FetchCertificateAuthorityCsrRequest = None,
+        request: Union[service.FetchCertificateAuthorityCsrRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1289,7 +1289,7 @@ class CertificateAuthorityServiceClient(
         [ActivateCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.ActivateCertificateAuthority].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.FetchCertificateAuthorityCsrRequest):
+            request (Union[google.cloud.security.privateca_v1.types.FetchCertificateAuthorityCsrRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.FetchCertificateAuthorityCsr][google.cloud.security.privateca.v1.CertificateAuthorityService.FetchCertificateAuthorityCsr].
             name (str):
@@ -1354,7 +1354,7 @@ class CertificateAuthorityServiceClient(
 
     def get_certificate_authority(
         self,
-        request: service.GetCertificateAuthorityRequest = None,
+        request: Union[service.GetCertificateAuthorityRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1365,7 +1365,7 @@ class CertificateAuthorityServiceClient(
         [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.GetCertificateAuthorityRequest):
+            request (Union[google.cloud.security.privateca_v1.types.GetCertificateAuthorityRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.GetCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificateAuthority].
             name (str):
@@ -1434,7 +1434,7 @@ class CertificateAuthorityServiceClient(
 
     def list_certificate_authorities(
         self,
-        request: service.ListCertificateAuthoritiesRequest = None,
+        request: Union[service.ListCertificateAuthoritiesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1445,7 +1445,7 @@ class CertificateAuthorityServiceClient(
         [CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.ListCertificateAuthoritiesRequest):
+            request (Union[google.cloud.security.privateca_v1.types.ListCertificateAuthoritiesRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateAuthorities].
             parent (str):
@@ -1520,7 +1520,7 @@ class CertificateAuthorityServiceClient(
 
     def undelete_certificate_authority(
         self,
-        request: service.UndeleteCertificateAuthorityRequest = None,
+        request: Union[service.UndeleteCertificateAuthorityRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1532,7 +1532,7 @@ class CertificateAuthorityServiceClient(
         that has been deleted.
 
         Args:
-            request (google.cloud.security.privateca_v1.types.UndeleteCertificateAuthorityRequest):
+            request (Union[google.cloud.security.privateca_v1.types.UndeleteCertificateAuthorityRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.UndeleteCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.UndeleteCertificateAuthority].
             name (str):
@@ -1610,7 +1610,7 @@ class CertificateAuthorityServiceClient(
 
     def delete_certificate_authority(
         self,
-        request: service.DeleteCertificateAuthorityRequest = None,
+        request: Union[service.DeleteCertificateAuthorityRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1621,7 +1621,7 @@ class CertificateAuthorityServiceClient(
         [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.DeleteCertificateAuthorityRequest):
+            request (Union[google.cloud.security.privateca_v1.types.DeleteCertificateAuthorityRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.DeleteCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.DeleteCertificateAuthority].
             name (str):
@@ -1699,7 +1699,7 @@ class CertificateAuthorityServiceClient(
 
     def update_certificate_authority(
         self,
-        request: service.UpdateCertificateAuthorityRequest = None,
+        request: Union[service.UpdateCertificateAuthorityRequest, dict] = None,
         *,
         certificate_authority: resources.CertificateAuthority = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -1711,7 +1711,7 @@ class CertificateAuthorityServiceClient(
         [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.UpdateCertificateAuthorityRequest):
+            request (Union[google.cloud.security.privateca_v1.types.UpdateCertificateAuthorityRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.UpdateCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificateAuthority].
             certificate_authority (google.cloud.security.privateca_v1.types.CertificateAuthority):
@@ -1799,7 +1799,7 @@ class CertificateAuthorityServiceClient(
 
     def create_ca_pool(
         self,
-        request: service.CreateCaPoolRequest = None,
+        request: Union[service.CreateCaPoolRequest, dict] = None,
         *,
         parent: str = None,
         ca_pool: resources.CaPool = None,
@@ -1811,7 +1811,7 @@ class CertificateAuthorityServiceClient(
         r"""Create a [CaPool][google.cloud.security.privateca.v1.CaPool].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.CreateCaPoolRequest):
+            request (Union[google.cloud.security.privateca_v1.types.CreateCaPoolRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.CreateCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCaPool].
             parent (str):
@@ -1910,7 +1910,7 @@ class CertificateAuthorityServiceClient(
 
     def update_ca_pool(
         self,
-        request: service.UpdateCaPoolRequest = None,
+        request: Union[service.UpdateCaPoolRequest, dict] = None,
         *,
         ca_pool: resources.CaPool = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -1921,7 +1921,7 @@ class CertificateAuthorityServiceClient(
         r"""Update a [CaPool][google.cloud.security.privateca.v1.CaPool].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.UpdateCaPoolRequest):
+            request (Union[google.cloud.security.privateca_v1.types.UpdateCaPoolRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.UpdateCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCaPool].
             ca_pool (google.cloud.security.privateca_v1.types.CaPool):
@@ -2011,7 +2011,7 @@ class CertificateAuthorityServiceClient(
 
     def get_ca_pool(
         self,
-        request: service.GetCaPoolRequest = None,
+        request: Union[service.GetCaPoolRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2021,7 +2021,7 @@ class CertificateAuthorityServiceClient(
         r"""Returns a [CaPool][google.cloud.security.privateca.v1.CaPool].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.GetCaPoolRequest):
+            request (Union[google.cloud.security.privateca_v1.types.GetCaPoolRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.GetCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCaPool].
             name (str):
@@ -2092,7 +2092,7 @@ class CertificateAuthorityServiceClient(
 
     def list_ca_pools(
         self,
-        request: service.ListCaPoolsRequest = None,
+        request: Union[service.ListCaPoolsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2102,7 +2102,7 @@ class CertificateAuthorityServiceClient(
         r"""Lists [CaPools][google.cloud.security.privateca.v1.CaPool].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.ListCaPoolsRequest):
+            request (Union[google.cloud.security.privateca_v1.types.ListCaPoolsRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.ListCaPools][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCaPools].
             parent (str):
@@ -2174,7 +2174,7 @@ class CertificateAuthorityServiceClient(
 
     def delete_ca_pool(
         self,
-        request: service.DeleteCaPoolRequest = None,
+        request: Union[service.DeleteCaPoolRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2184,7 +2184,7 @@ class CertificateAuthorityServiceClient(
         r"""Delete a [CaPool][google.cloud.security.privateca.v1.CaPool].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.DeleteCaPoolRequest):
+            request (Union[google.cloud.security.privateca_v1.types.DeleteCaPoolRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.DeleteCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.DeleteCaPool].
             name (str):
@@ -2267,7 +2267,7 @@ class CertificateAuthorityServiceClient(
 
     def fetch_ca_certs(
         self,
-        request: service.FetchCaCertsRequest = None,
+        request: Union[service.FetchCaCertsRequest, dict] = None,
         *,
         ca_pool: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2282,7 +2282,7 @@ class CertificateAuthorityServiceClient(
         [CaPool][google.cloud.security.privateca.v1.CaPool].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.FetchCaCertsRequest):
+            request (Union[google.cloud.security.privateca_v1.types.FetchCaCertsRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.FetchCaCerts][google.cloud.security.privateca.v1.CertificateAuthorityService.FetchCaCerts].
             ca_pool (str):
@@ -2344,7 +2344,7 @@ class CertificateAuthorityServiceClient(
 
     def get_certificate_revocation_list(
         self,
-        request: service.GetCertificateRevocationListRequest = None,
+        request: Union[service.GetCertificateRevocationListRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2355,7 +2355,7 @@ class CertificateAuthorityServiceClient(
         [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.GetCertificateRevocationListRequest):
+            request (Union[google.cloud.security.privateca_v1.types.GetCertificateRevocationListRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.GetCertificateRevocationList][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificateRevocationList].
             name (str):
@@ -2423,7 +2423,7 @@ class CertificateAuthorityServiceClient(
 
     def list_certificate_revocation_lists(
         self,
-        request: service.ListCertificateRevocationListsRequest = None,
+        request: Union[service.ListCertificateRevocationListsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2434,7 +2434,7 @@ class CertificateAuthorityServiceClient(
         [CertificateRevocationLists][google.cloud.security.privateca.v1.CertificateRevocationList].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.ListCertificateRevocationListsRequest):
+            request (Union[google.cloud.security.privateca_v1.types.ListCertificateRevocationListsRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateRevocationLists].
             parent (str):
@@ -2509,7 +2509,7 @@ class CertificateAuthorityServiceClient(
 
     def update_certificate_revocation_list(
         self,
-        request: service.UpdateCertificateRevocationListRequest = None,
+        request: Union[service.UpdateCertificateRevocationListRequest, dict] = None,
         *,
         certificate_revocation_list: resources.CertificateRevocationList = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -2521,7 +2521,7 @@ class CertificateAuthorityServiceClient(
         [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.UpdateCertificateRevocationListRequest):
+            request (Union[google.cloud.security.privateca_v1.types.UpdateCertificateRevocationListRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.UpdateCertificateRevocationList][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificateRevocationList].
             certificate_revocation_list (google.cloud.security.privateca_v1.types.CertificateRevocationList):
@@ -2613,7 +2613,7 @@ class CertificateAuthorityServiceClient(
 
     def create_certificate_template(
         self,
-        request: service.CreateCertificateTemplateRequest = None,
+        request: Union[service.CreateCertificateTemplateRequest, dict] = None,
         *,
         parent: str = None,
         certificate_template: resources.CertificateTemplate = None,
@@ -2627,7 +2627,7 @@ class CertificateAuthorityServiceClient(
         in a given Project and Location.
 
         Args:
-            request (google.cloud.security.privateca_v1.types.CreateCertificateTemplateRequest):
+            request (Union[google.cloud.security.privateca_v1.types.CreateCertificateTemplateRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.CreateCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCertificateTemplate].
             parent (str):
@@ -2723,7 +2723,7 @@ class CertificateAuthorityServiceClient(
 
     def delete_certificate_template(
         self,
-        request: service.DeleteCertificateTemplateRequest = None,
+        request: Union[service.DeleteCertificateTemplateRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2734,7 +2734,7 @@ class CertificateAuthorityServiceClient(
         [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.DeleteCertificateTemplateRequest):
+            request (Union[google.cloud.security.privateca_v1.types.DeleteCertificateTemplateRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.DeleteCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.DeleteCertificateTemplate].
             name (str):
@@ -2820,7 +2820,7 @@ class CertificateAuthorityServiceClient(
 
     def get_certificate_template(
         self,
-        request: service.GetCertificateTemplateRequest = None,
+        request: Union[service.GetCertificateTemplateRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2831,7 +2831,7 @@ class CertificateAuthorityServiceClient(
         [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.GetCertificateTemplateRequest):
+            request (Union[google.cloud.security.privateca_v1.types.GetCertificateTemplateRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.GetCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificateTemplate].
             name (str):
@@ -2895,7 +2895,7 @@ class CertificateAuthorityServiceClient(
 
     def list_certificate_templates(
         self,
-        request: service.ListCertificateTemplatesRequest = None,
+        request: Union[service.ListCertificateTemplatesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2906,7 +2906,7 @@ class CertificateAuthorityServiceClient(
         [CertificateTemplates][google.cloud.security.privateca.v1.CertificateTemplate].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.ListCertificateTemplatesRequest):
+            request (Union[google.cloud.security.privateca_v1.types.ListCertificateTemplatesRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.ListCertificateTemplates][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateTemplates].
             parent (str):
@@ -2980,7 +2980,7 @@ class CertificateAuthorityServiceClient(
 
     def update_certificate_template(
         self,
-        request: service.UpdateCertificateTemplateRequest = None,
+        request: Union[service.UpdateCertificateTemplateRequest, dict] = None,
         *,
         certificate_template: resources.CertificateTemplate = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -2992,7 +2992,7 @@ class CertificateAuthorityServiceClient(
         [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate].
 
         Args:
-            request (google.cloud.security.privateca_v1.types.UpdateCertificateTemplateRequest):
+            request (Union[google.cloud.security.privateca_v1.types.UpdateCertificateTemplateRequest, dict]):
                 The request object. Request message for
                 [CertificateAuthorityService.UpdateCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificateTemplate].
             certificate_template (google.cloud.security.privateca_v1.types.CertificateTemplate):
