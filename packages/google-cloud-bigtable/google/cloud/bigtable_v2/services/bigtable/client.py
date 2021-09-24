@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Iterable, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Iterable, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -352,7 +352,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
     def read_rows(
         self,
-        request: bigtable.ReadRowsRequest = None,
+        request: Union[bigtable.ReadRowsRequest, dict] = None,
         *,
         table_name: str = None,
         app_profile_id: str = None,
@@ -368,7 +368,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
         ReadRowsResponse documentation for details.
 
         Args:
-            request (google.cloud.bigtable_v2.types.ReadRowsRequest):
+            request (Union[google.cloud.bigtable_v2.types.ReadRowsRequest, dict]):
                 The request object. Request message for
                 Bigtable.ReadRows.
             table_name (str):
@@ -443,7 +443,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
     def sample_row_keys(
         self,
-        request: bigtable.SampleRowKeysRequest = None,
+        request: Union[bigtable.SampleRowKeysRequest, dict] = None,
         *,
         table_name: str = None,
         app_profile_id: str = None,
@@ -458,7 +458,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
         mapreduces.
 
         Args:
-            request (google.cloud.bigtable_v2.types.SampleRowKeysRequest):
+            request (Union[google.cloud.bigtable_v2.types.SampleRowKeysRequest, dict]):
                 The request object. Request message for
                 Bigtable.SampleRowKeys.
             table_name (str):
@@ -533,7 +533,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
     def mutate_row(
         self,
-        request: bigtable.MutateRowRequest = None,
+        request: Union[bigtable.MutateRowRequest, dict] = None,
         *,
         table_name: str = None,
         row_key: bytes = None,
@@ -547,7 +547,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
         left unchanged unless explicitly changed by ``mutation``.
 
         Args:
-            request (google.cloud.bigtable_v2.types.MutateRowRequest):
+            request (Union[google.cloud.bigtable_v2.types.MutateRowRequest, dict]):
                 The request object. Request message for
                 Bigtable.MutateRow.
             table_name (str):
@@ -644,7 +644,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
     def mutate_rows(
         self,
-        request: bigtable.MutateRowsRequest = None,
+        request: Union[bigtable.MutateRowsRequest, dict] = None,
         *,
         table_name: str = None,
         entries: Sequence[bigtable.MutateRowsRequest.Entry] = None,
@@ -658,7 +658,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
         batch is not executed atomically.
 
         Args:
-            request (google.cloud.bigtable_v2.types.MutateRowsRequest):
+            request (Union[google.cloud.bigtable_v2.types.MutateRowsRequest, dict]):
                 The request object. Request message for
                 BigtableService.MutateRows.
             table_name (str):
@@ -749,7 +749,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
     def check_and_mutate_row(
         self,
-        request: bigtable.CheckAndMutateRowRequest = None,
+        request: Union[bigtable.CheckAndMutateRowRequest, dict] = None,
         *,
         table_name: str = None,
         row_key: bytes = None,
@@ -765,7 +765,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
         predicate Reader filter.
 
         Args:
-            request (google.cloud.bigtable_v2.types.CheckAndMutateRowRequest):
+            request (Union[google.cloud.bigtable_v2.types.CheckAndMutateRowRequest, dict]):
                 The request object. Request message for
                 Bigtable.CheckAndMutateRow.
             table_name (str):
@@ -898,7 +898,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
     def read_modify_write_row(
         self,
-        request: bigtable.ReadModifyWriteRowRequest = None,
+        request: Union[bigtable.ReadModifyWriteRowRequest, dict] = None,
         *,
         table_name: str = None,
         row_key: bytes = None,
@@ -917,7 +917,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
         contents of all modified cells.
 
         Args:
-            request (google.cloud.bigtable_v2.types.ReadModifyWriteRowRequest):
+            request (Union[google.cloud.bigtable_v2.types.ReadModifyWriteRowRequest, dict]):
                 The request object. Request message for
                 Bigtable.ReadModifyWriteRow.
             table_name (str):
