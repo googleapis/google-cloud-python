@@ -39,21 +39,21 @@ def partition(
 class apigatewayCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_api': ('parent', 'api_id', 'api', ),
-          'create_api_config': ('parent', 'api_config_id', 'api_config', ),
-          'create_gateway': ('parent', 'gateway_id', 'gateway', ),
-          'delete_api': ('name', ),
-          'delete_api_config': ('name', ),
-          'delete_gateway': ('name', ),
-          'get_api': ('name', ),
-          'get_api_config': ('name', 'view', ),
-          'get_gateway': ('name', ),
-          'list_api_configs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'list_apis': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'list_gateways': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'update_api': ('api', 'update_mask', ),
-          'update_api_config': ('api_config', 'update_mask', ),
-          'update_gateway': ('gateway', 'update_mask', ),
+        'create_api': ('parent', 'api_id', 'api', ),
+        'create_api_config': ('parent', 'api_config_id', 'api_config', ),
+        'create_gateway': ('parent', 'gateway_id', 'gateway', ),
+        'delete_api': ('name', ),
+        'delete_api_config': ('name', ),
+        'delete_gateway': ('name', ),
+        'get_api': ('name', ),
+        'get_api_config': ('name', 'view', ),
+        'get_gateway': ('name', ),
+        'list_api_configs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_apis': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_gateways': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'update_api': ('api', 'update_mask', ),
+        'update_api_config': ('api_config', 'update_mask', ),
+        'update_gateway': ('gateway', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -72,7 +72,7 @@ class apigatewayCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
