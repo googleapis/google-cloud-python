@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.8.0](https://www.github.com/googleapis/python-container/compare/v2.7.1...v2.8.0) (2021-09-23)
+
+
+### Features
+
+* added a flag to enable/disable gvnic on a node pool ([#147](https://www.github.com/googleapis/python-container/issues/147)) ([616b21a](https://www.github.com/googleapis/python-container/commit/616b21a6abe2b0c4dd647cf56d544c2aff7312f7))
+* added configuration for node pool defaults, autopilot, logging and monitoring ([616b21a](https://www.github.com/googleapis/python-container/commit/616b21a6abe2b0c4dd647cf56d544c2aff7312f7))
+* added configuration for workload certificates and identity service component ([616b21a](https://www.github.com/googleapis/python-container/commit/616b21a6abe2b0c4dd647cf56d544c2aff7312f7))
+* added node pool level network config ([616b21a](https://www.github.com/googleapis/python-container/commit/616b21a6abe2b0c4dd647cf56d544c2aff7312f7))
+* added the option to list supported windows versions ([616b21a](https://www.github.com/googleapis/python-container/commit/616b21a6abe2b0c4dd647cf56d544c2aff7312f7))
+* added the option to specify L4 load balancer configuration and IP v6 configuration ([616b21a](https://www.github.com/googleapis/python-container/commit/616b21a6abe2b0c4dd647cf56d544c2aff7312f7))
+* added update support for node pool labels, taints and network tags ([616b21a](https://www.github.com/googleapis/python-container/commit/616b21a6abe2b0c4dd647cf56d544c2aff7312f7))
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([c912605](https://www.github.com/googleapis/python-container/commit/c9126057cde7fc28094785cceab9cf43e42ca8e0))
+* deprecated cluster status condition code ([616b21a](https://www.github.com/googleapis/python-container/commit/616b21a6abe2b0c4dd647cf56d544c2aff7312f7))
+* deprecated KALM addon config option ([616b21a](https://www.github.com/googleapis/python-container/commit/616b21a6abe2b0c4dd647cf56d544c2aff7312f7))
+* **deps:** require proto-plus 1.15.0 ([616b21a](https://www.github.com/googleapis/python-container/commit/616b21a6abe2b0c4dd647cf56d544c2aff7312f7))
+
+
+### Documentation
+
+* clarified SetNodePoolSize API behavior ([616b21a](https://www.github.com/googleapis/python-container/commit/616b21a6abe2b0c4dd647cf56d544c2aff7312f7))
+
 ### [2.7.1](https://www.github.com/googleapis/python-container/compare/v2.7.0...v2.7.1) (2021-07-24)
 
 
