@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -477,7 +477,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def create_build(
         self,
-        request: cloudbuild.CreateBuildRequest = None,
+        request: Union[cloudbuild.CreateBuildRequest, dict] = None,
         *,
         project_id: str = None,
         build: cloudbuild.Build = None,
@@ -492,7 +492,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         build status (such as ``SUCCESS`` or ``FAILURE``).
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.CreateBuildRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.CreateBuildRequest, dict]):
                 The request object. Request to create a new build.
             project_id (str):
                 Required. ID of the project.
@@ -584,7 +584,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def get_build(
         self,
-        request: cloudbuild.GetBuildRequest = None,
+        request: Union[cloudbuild.GetBuildRequest, dict] = None,
         *,
         project_id: str = None,
         id: str = None,
@@ -599,7 +599,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         information.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.GetBuildRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.GetBuildRequest, dict]):
                 The request object. Request to get a build.
             project_id (str):
                 Required. ID of the project.
@@ -679,7 +679,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def list_builds(
         self,
-        request: cloudbuild.ListBuildsRequest = None,
+        request: Union[cloudbuild.ListBuildsRequest, dict] = None,
         *,
         project_id: str = None,
         filter: str = None,
@@ -692,7 +692,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         may have finished successfully or unsuccessfully.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.ListBuildsRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.ListBuildsRequest, dict]):
                 The request object. Request to list builds.
             project_id (str):
                 Required. ID of the project.
@@ -761,7 +761,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def cancel_build(
         self,
-        request: cloudbuild.CancelBuildRequest = None,
+        request: Union[cloudbuild.CancelBuildRequest, dict] = None,
         *,
         project_id: str = None,
         id: str = None,
@@ -772,7 +772,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         r"""Cancels a build in progress.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.CancelBuildRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.CancelBuildRequest, dict]):
                 The request object. Request to cancel an ongoing build.
             project_id (str):
                 Required. ID of the project.
@@ -852,7 +852,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def retry_build(
         self,
-        request: cloudbuild.RetryBuildRequest = None,
+        request: Union[cloudbuild.RetryBuildRequest, dict] = None,
         *,
         project_id: str = None,
         id: str = None,
@@ -892,7 +892,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
            settings.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.RetryBuildRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.RetryBuildRequest, dict]):
                 The request object. Specifies a build to retry.
             project_id (str):
                 Required. ID of the project.
@@ -986,7 +986,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def approve_build(
         self,
-        request: cloudbuild.ApproveBuildRequest = None,
+        request: Union[cloudbuild.ApproveBuildRequest, dict] = None,
         *,
         name: str = None,
         approval_result: cloudbuild.ApprovalResult = None,
@@ -1001,7 +1001,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         If rejected, the returned LRO will be immediately done.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.ApproveBuildRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.ApproveBuildRequest, dict]):
                 The request object. Request to approve or reject a
                 pending build.
             name (str):
@@ -1102,7 +1102,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def create_build_trigger(
         self,
-        request: cloudbuild.CreateBuildTriggerRequest = None,
+        request: Union[cloudbuild.CreateBuildTriggerRequest, dict] = None,
         *,
         project_id: str = None,
         trigger: cloudbuild.BuildTrigger = None,
@@ -1115,7 +1115,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.CreateBuildTriggerRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.CreateBuildTriggerRequest, dict]):
                 The request object. Request to create a new
                 `BuildTrigger`.
             project_id (str):
@@ -1178,7 +1178,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def get_build_trigger(
         self,
-        request: cloudbuild.GetBuildTriggerRequest = None,
+        request: Union[cloudbuild.GetBuildTriggerRequest, dict] = None,
         *,
         project_id: str = None,
         trigger_id: str = None,
@@ -1191,7 +1191,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.GetBuildTriggerRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.GetBuildTriggerRequest, dict]):
                 The request object. Returns the `BuildTrigger` with the
                 specified ID.
             project_id (str):
@@ -1256,7 +1256,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def list_build_triggers(
         self,
-        request: cloudbuild.ListBuildTriggersRequest = None,
+        request: Union[cloudbuild.ListBuildTriggersRequest, dict] = None,
         *,
         project_id: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1268,7 +1268,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.ListBuildTriggersRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.ListBuildTriggersRequest, dict]):
                 The request object. Request to list existing
                 `BuildTriggers`.
             project_id (str):
@@ -1331,7 +1331,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def delete_build_trigger(
         self,
-        request: cloudbuild.DeleteBuildTriggerRequest = None,
+        request: Union[cloudbuild.DeleteBuildTriggerRequest, dict] = None,
         *,
         project_id: str = None,
         trigger_id: str = None,
@@ -1344,7 +1344,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.DeleteBuildTriggerRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.DeleteBuildTriggerRequest, dict]):
                 The request object. Request to delete a `BuildTrigger`.
             project_id (str):
                 Required. ID of the project that owns
@@ -1398,7 +1398,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def update_build_trigger(
         self,
-        request: cloudbuild.UpdateBuildTriggerRequest = None,
+        request: Union[cloudbuild.UpdateBuildTriggerRequest, dict] = None,
         *,
         project_id: str = None,
         trigger_id: str = None,
@@ -1412,7 +1412,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.UpdateBuildTriggerRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.UpdateBuildTriggerRequest, dict]):
                 The request object. Request to update an existing
                 `BuildTrigger`.
             project_id (str):
@@ -1482,7 +1482,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def run_build_trigger(
         self,
-        request: cloudbuild.RunBuildTriggerRequest = None,
+        request: Union[cloudbuild.RunBuildTriggerRequest, dict] = None,
         *,
         project_id: str = None,
         trigger_id: str = None,
@@ -1494,7 +1494,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         r"""Runs a ``BuildTrigger`` at a particular source revision.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.RunBuildTriggerRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.RunBuildTriggerRequest, dict]):
                 The request object. Specifies a build trigger to run and
                 the source to use.
             project_id (str):
@@ -1594,7 +1594,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def receive_trigger_webhook(
         self,
-        request: cloudbuild.ReceiveTriggerWebhookRequest = None,
+        request: Union[cloudbuild.ReceiveTriggerWebhookRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1604,7 +1604,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         receives a webhook request targeted at a specific trigger.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.ReceiveTriggerWebhookRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.ReceiveTriggerWebhookRequest, dict]):
                 The request object. ReceiveTriggerWebhookRequest
                 [Experimental] is the request object accepted by the
                 ReceiveTriggerWebhook method.
@@ -1640,7 +1640,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def create_worker_pool(
         self,
-        request: cloudbuild.CreateWorkerPoolRequest = None,
+        request: Union[cloudbuild.CreateWorkerPoolRequest, dict] = None,
         *,
         parent: str = None,
         worker_pool: cloudbuild.WorkerPool = None,
@@ -1652,7 +1652,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         r"""Creates a ``WorkerPool``.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.CreateWorkerPoolRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.CreateWorkerPoolRequest, dict]):
                 The request object. Request to create a new
                 `WorkerPool`.
             parent (str):
@@ -1759,7 +1759,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def get_worker_pool(
         self,
-        request: cloudbuild.GetWorkerPoolRequest = None,
+        request: Union[cloudbuild.GetWorkerPoolRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1769,7 +1769,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         r"""Returns details of a ``WorkerPool``.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.GetWorkerPoolRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.GetWorkerPoolRequest, dict]):
                 The request object. Request to get a `WorkerPool` with
                 the specified name.
             name (str):
@@ -1844,7 +1844,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def delete_worker_pool(
         self,
-        request: cloudbuild.DeleteWorkerPoolRequest = None,
+        request: Union[cloudbuild.DeleteWorkerPoolRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1854,7 +1854,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         r"""Deletes a ``WorkerPool``.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.DeleteWorkerPoolRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.DeleteWorkerPoolRequest, dict]):
                 The request object. Request to delete a `WorkerPool`.
             name (str):
                 Required. The name of the ``WorkerPool`` to delete.
@@ -1936,7 +1936,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def update_worker_pool(
         self,
-        request: cloudbuild.UpdateWorkerPoolRequest = None,
+        request: Union[cloudbuild.UpdateWorkerPoolRequest, dict] = None,
         *,
         worker_pool: cloudbuild.WorkerPool = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -1947,7 +1947,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         r"""Updates a ``WorkerPool``.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.UpdateWorkerPoolRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.UpdateWorkerPoolRequest, dict]):
                 The request object. Request to update a `WorkerPool`.
             worker_pool (google.cloud.devtools.cloudbuild_v1.types.WorkerPool):
                 Required. The ``WorkerPool`` to update.
@@ -2046,7 +2046,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
     def list_worker_pools(
         self,
-        request: cloudbuild.ListWorkerPoolsRequest = None,
+        request: Union[cloudbuild.ListWorkerPoolsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2056,7 +2056,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         r"""Lists ``WorkerPool``\ s.
 
         Args:
-            request (google.cloud.devtools.cloudbuild_v1.types.ListWorkerPoolsRequest):
+            request (Union[google.cloud.devtools.cloudbuild_v1.types.ListWorkerPoolsRequest, dict]):
                 The request object. Request to list `WorkerPool`\s.
             parent (str):
                 Required. The parent of the collection of

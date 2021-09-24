@@ -39,24 +39,24 @@ def partition(
 class cloudbuildCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'approve_build': ('name', 'approval_result', ),
-          'cancel_build': ('project_id', 'id', 'name', ),
-          'create_build': ('project_id', 'build', 'parent', ),
-          'create_build_trigger': ('project_id', 'trigger', 'parent', ),
-          'create_worker_pool': ('parent', 'worker_pool', 'worker_pool_id', 'validate_only', ),
-          'delete_build_trigger': ('project_id', 'trigger_id', 'name', ),
-          'delete_worker_pool': ('name', 'etag', 'allow_missing', 'validate_only', ),
-          'get_build': ('project_id', 'id', 'name', ),
-          'get_build_trigger': ('project_id', 'trigger_id', 'name', ),
-          'get_worker_pool': ('name', ),
-          'list_builds': ('project_id', 'parent', 'page_size', 'page_token', 'filter', ),
-          'list_build_triggers': ('project_id', 'parent', 'page_size', 'page_token', ),
-          'list_worker_pools': ('parent', 'page_size', 'page_token', ),
-          'receive_trigger_webhook': ('name', 'body', 'project_id', 'trigger', 'secret', ),
-          'retry_build': ('project_id', 'id', 'name', ),
-          'run_build_trigger': ('project_id', 'trigger_id', 'name', 'source', ),
-          'update_build_trigger': ('project_id', 'trigger_id', 'trigger', ),
-          'update_worker_pool': ('worker_pool', 'update_mask', 'validate_only', ),
+        'approve_build': ('name', 'approval_result', ),
+        'cancel_build': ('project_id', 'id', 'name', ),
+        'create_build': ('project_id', 'build', 'parent', ),
+        'create_build_trigger': ('project_id', 'trigger', 'parent', ),
+        'create_worker_pool': ('parent', 'worker_pool', 'worker_pool_id', 'validate_only', ),
+        'delete_build_trigger': ('project_id', 'trigger_id', 'name', ),
+        'delete_worker_pool': ('name', 'etag', 'allow_missing', 'validate_only', ),
+        'get_build': ('project_id', 'id', 'name', ),
+        'get_build_trigger': ('project_id', 'trigger_id', 'name', ),
+        'get_worker_pool': ('name', ),
+        'list_builds': ('project_id', 'parent', 'page_size', 'page_token', 'filter', ),
+        'list_build_triggers': ('project_id', 'parent', 'page_size', 'page_token', ),
+        'list_worker_pools': ('parent', 'page_size', 'page_token', ),
+        'receive_trigger_webhook': ('name', 'body', 'project_id', 'trigger', 'secret', ),
+        'retry_build': ('project_id', 'id', 'name', ),
+        'run_build_trigger': ('project_id', 'trigger_id', 'name', 'source', ),
+        'update_build_trigger': ('project_id', 'trigger_id', 'trigger', ),
+        'update_worker_pool': ('worker_pool', 'update_mask', 'validate_only', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -75,7 +75,7 @@ class cloudbuildCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
