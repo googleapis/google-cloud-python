@@ -39,10 +39,10 @@ def partition(
 class vpcaccessCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_connector': ('parent', 'connector_id', 'connector', ),
-          'delete_connector': ('name', ),
-          'get_connector': ('name', ),
-          'list_connectors': ('parent', 'page_size', 'page_token', ),
+        'create_connector': ('parent', 'connector_id', 'connector', ),
+        'delete_connector': ('name', ),
+        'get_connector': ('name', ),
+        'list_connectors': ('parent', 'page_size', 'page_token', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -61,7 +61,7 @@ class vpcaccessCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

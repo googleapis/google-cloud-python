@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -358,7 +358,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
 
     def create_connector(
         self,
-        request: vpc_access.CreateConnectorRequest = None,
+        request: Union[vpc_access.CreateConnectorRequest, dict] = None,
         *,
         parent: str = None,
         connector_id: str = None,
@@ -371,7 +371,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         operation.
 
         Args:
-            request (google.cloud.vpcaccess_v1.types.CreateConnectorRequest):
+            request (Union[google.cloud.vpcaccess_v1.types.CreateConnectorRequest, dict]):
                 The request object. Request for creating a Serverless
                 VPC Access connector.
             parent (str):
@@ -460,7 +460,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
 
     def get_connector(
         self,
-        request: vpc_access.GetConnectorRequest = None,
+        request: Union[vpc_access.GetConnectorRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -471,7 +471,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         resource does not exist.
 
         Args:
-            request (google.cloud.vpcaccess_v1.types.GetConnectorRequest):
+            request (Union[google.cloud.vpcaccess_v1.types.GetConnectorRequest, dict]):
                 The request object. Request for getting a Serverless VPC
                 Access connector.
             name (str):
@@ -532,7 +532,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
 
     def list_connectors(
         self,
-        request: vpc_access.ListConnectorsRequest = None,
+        request: Union[vpc_access.ListConnectorsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -542,7 +542,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         r"""Lists Serverless VPC Access connectors.
 
         Args:
-            request (google.cloud.vpcaccess_v1.types.ListConnectorsRequest):
+            request (Union[google.cloud.vpcaccess_v1.types.ListConnectorsRequest, dict]):
                 The request object. Request for listing Serverless VPC
                 Access connectors in a location.
             parent (str):
@@ -612,7 +612,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
 
     def delete_connector(
         self,
-        request: vpc_access.DeleteConnectorRequest = None,
+        request: Union[vpc_access.DeleteConnectorRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -623,7 +623,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         the resource does not exist.
 
         Args:
-            request (google.cloud.vpcaccess_v1.types.DeleteConnectorRequest):
+            request (Union[google.cloud.vpcaccess_v1.types.DeleteConnectorRequest, dict]):
                 The request object. Request for deleting a Serverless
                 VPC Access connector.
             name (str):
