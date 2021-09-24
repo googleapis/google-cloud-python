@@ -39,11 +39,11 @@ def partition(
 class shellCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'add_public_key': ('environment', 'key', ),
-          'authorize_environment': ('name', 'access_token', 'id_token', 'expire_time', ),
-          'get_environment': ('name', ),
-          'remove_public_key': ('environment', 'key', ),
-          'start_environment': ('name', 'access_token', 'public_keys', ),
+        'add_public_key': ('environment', 'key', ),
+        'authorize_environment': ('name', 'access_token', 'id_token', 'expire_time', ),
+        'get_environment': ('name', ),
+        'remove_public_key': ('environment', 'key', ),
+        'start_environment': ('name', 'access_token', 'public_keys', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -62,7 +62,7 @@ class shellCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

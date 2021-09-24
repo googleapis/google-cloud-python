@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -360,7 +360,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
 
     def get_environment(
         self,
-        request: cloudshell.GetEnvironmentRequest = None,
+        request: Union[cloudshell.GetEnvironmentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -371,7 +371,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
         not exist.
 
         Args:
-            request (google.cloud.shell_v1.types.GetEnvironmentRequest):
+            request (Union[google.cloud.shell_v1.types.GetEnvironmentRequest, dict]):
                 The request object. Request message for
                 [GetEnvironment][google.cloud.shell.v1.CloudShellService.GetEnvironment].
             name (str):
@@ -439,7 +439,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
 
     def start_environment(
         self,
-        request: cloudshell.StartEnvironmentRequest = None,
+        request: Union[cloudshell.StartEnvironmentRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -455,7 +455,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
         StartEnvironmentResponse in its response field.
 
         Args:
-            request (google.cloud.shell_v1.types.StartEnvironmentRequest):
+            request (Union[google.cloud.shell_v1.types.StartEnvironmentRequest, dict]):
                 The request object. Request message for
                 [StartEnvironment][google.cloud.shell.v1.CloudShellService.StartEnvironment].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -507,7 +507,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
 
     def authorize_environment(
         self,
-        request: cloudshell.AuthorizeEnvironmentRequest = None,
+        request: Union[cloudshell.AuthorizeEnvironmentRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -520,7 +520,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
         authenticate.
 
         Args:
-            request (google.cloud.shell_v1.types.AuthorizeEnvironmentRequest):
+            request (Union[google.cloud.shell_v1.types.AuthorizeEnvironmentRequest, dict]):
                 The request object. Request message for
                 [AuthorizeEnvironment][google.cloud.shell.v1.CloudShellService.AuthorizeEnvironment].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -571,7 +571,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
 
     def add_public_key(
         self,
-        request: cloudshell.AddPublicKeyRequest = None,
+        request: Union[cloudshell.AddPublicKeyRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -583,7 +583,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
         error with ALREADY_EXISTS.
 
         Args:
-            request (google.cloud.shell_v1.types.AddPublicKeyRequest):
+            request (Union[google.cloud.shell_v1.types.AddPublicKeyRequest, dict]):
                 The request object. Request message for
                 [AddPublicKey][google.cloud.shell.v1.CloudShellService.AddPublicKey].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -636,7 +636,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
 
     def remove_public_key(
         self,
-        request: cloudshell.RemovePublicKeyRequest = None,
+        request: Union[cloudshell.RemovePublicKeyRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -648,7 +648,7 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
         present, this will error with NOT_FOUND.
 
         Args:
-            request (google.cloud.shell_v1.types.RemovePublicKeyRequest):
+            request (Union[google.cloud.shell_v1.types.RemovePublicKeyRequest, dict]):
                 The request object. Request message for
                 [RemovePublicKey][google.cloud.shell.v1.CloudShellService.RemovePublicKey].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
