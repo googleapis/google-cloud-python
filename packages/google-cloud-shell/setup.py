@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-shell"
 description = "Cloud Shell API client library"
-version = "1.0.0"
+version = "1.0.1"
 release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-shell"
 dependencies = [

@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-shell/compare/v1.0.0...v1.0.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([c07f6c9](https://www.github.com/googleapis/python-shell/commit/c07f6c900b41a7513fa73a36544f62d429d1a36d))
+
 ## [1.0.0](https://www.github.com/googleapis/python-shell/compare/v0.2.2...v1.0.0) (2021-08-03)
 
 
