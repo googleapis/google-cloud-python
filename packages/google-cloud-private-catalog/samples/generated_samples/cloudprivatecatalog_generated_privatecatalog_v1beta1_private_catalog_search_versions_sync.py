@@ -35,11 +35,13 @@ def sample_search_versions():
 
     # Initialize request argument(s)
     request = privatecatalog_v1beta1.SearchVersionsRequest(
+        resource="resource_value",
+        query="query_value",
     )
 
     # Make the request
     page_result = client.search_versions(request=request)
     for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchVersions_sync]

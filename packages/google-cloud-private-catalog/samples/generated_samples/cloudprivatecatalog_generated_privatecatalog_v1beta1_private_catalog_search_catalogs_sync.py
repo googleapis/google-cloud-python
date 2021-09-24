@@ -35,11 +35,12 @@ def sample_search_catalogs():
 
     # Initialize request argument(s)
     request = privatecatalog_v1beta1.SearchCatalogsRequest(
+        resource="resource_value",
     )
 
     # Make the request
     page_result = client.search_catalogs(request=request)
     for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchCatalogs_sync]

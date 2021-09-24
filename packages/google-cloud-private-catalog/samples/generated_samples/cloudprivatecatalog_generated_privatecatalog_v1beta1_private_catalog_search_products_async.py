@@ -35,11 +35,12 @@ async def sample_search_products():
 
     # Initialize request argument(s)
     request = privatecatalog_v1beta1.SearchProductsRequest(
+        resource="resource_value",
     )
 
     # Make the request
     page_result = client.search_products(request=request)
     async for response in page_result:
-        print("{}".format(response))
+        print(response)
 
 # [END cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchProducts_async]

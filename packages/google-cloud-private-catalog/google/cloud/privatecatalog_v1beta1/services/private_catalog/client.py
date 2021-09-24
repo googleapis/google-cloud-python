@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -396,7 +396,7 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
 
     def search_catalogs(
         self,
-        request: private_catalog.SearchCatalogsRequest = None,
+        request: Union[private_catalog.SearchCatalogsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -407,7 +407,7 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
         consumer cloud resource hierarchy context.
 
         Args:
-            request (google.cloud.privatecatalog_v1beta1.types.SearchCatalogsRequest):
+            request (Union[google.cloud.privatecatalog_v1beta1.types.SearchCatalogsRequest, dict]):
                 The request object. Request message for
                 [PrivateCatalog.SearchCatalogs][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchCatalogs].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -457,7 +457,7 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
 
     def search_products(
         self,
-        request: private_catalog.SearchProductsRequest = None,
+        request: Union[private_catalog.SearchProductsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -468,7 +468,7 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
         consumer cloud resource hierarchy context.
 
         Args:
-            request (google.cloud.privatecatalog_v1beta1.types.SearchProductsRequest):
+            request (Union[google.cloud.privatecatalog_v1beta1.types.SearchProductsRequest, dict]):
                 The request object. Request message for
                 [PrivateCatalog.SearchProducts][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchProducts].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -518,7 +518,7 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
 
     def search_versions(
         self,
-        request: private_catalog.SearchVersionsRequest = None,
+        request: Union[private_catalog.SearchVersionsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -529,7 +529,7 @@ class PrivateCatalogClient(metaclass=PrivateCatalogClientMeta):
         consumer cloud resource hierarchy context.
 
         Args:
-            request (google.cloud.privatecatalog_v1beta1.types.SearchVersionsRequest):
+            request (Union[google.cloud.privatecatalog_v1beta1.types.SearchVersionsRequest, dict]):
                 The request object. Request message for
                 [PrivateCatalog.SearchVersions][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchVersions].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
