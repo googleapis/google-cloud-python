@@ -39,13 +39,13 @@ def partition(
 class data_fusionCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_instance': ('parent', 'instance_id', 'instance', ),
-          'delete_instance': ('name', ),
-          'get_instance': ('name', ),
-          'list_available_versions': ('parent', 'page_size', 'page_token', 'latest_patch_only', ),
-          'list_instances': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-          'restart_instance': ('name', ),
-          'update_instance': ('instance', 'update_mask', ),
+        'create_instance': ('parent', 'instance_id', 'instance', ),
+        'delete_instance': ('name', ),
+        'get_instance': ('name', ),
+        'list_available_versions': ('parent', 'page_size', 'page_token', 'latest_patch_only', ),
+        'list_instances': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'restart_instance': ('name', ),
+        'update_instance': ('instance', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -64,7 +64,7 @@ class data_fusionCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 

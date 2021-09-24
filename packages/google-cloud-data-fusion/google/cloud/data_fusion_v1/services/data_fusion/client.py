@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -358,7 +358,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
 
     def list_available_versions(
         self,
-        request: datafusion.ListAvailableVersionsRequest = None,
+        request: Union[datafusion.ListAvailableVersionsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -369,7 +369,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
         the specified project and location.
 
         Args:
-            request (google.cloud.data_fusion_v1.types.ListAvailableVersionsRequest):
+            request (Union[google.cloud.data_fusion_v1.types.ListAvailableVersionsRequest, dict]):
                 The request object. Request message for the list
                 available versions request.
             parent (str):
@@ -441,7 +441,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
 
     def list_instances(
         self,
-        request: datafusion.ListInstancesRequest = None,
+        request: Union[datafusion.ListInstancesRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -451,7 +451,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
         and location.
 
         Args:
-            request (google.cloud.data_fusion_v1.types.ListInstancesRequest):
+            request (Union[google.cloud.data_fusion_v1.types.ListInstancesRequest, dict]):
                 The request object. Request message for listing Data
                 Fusion instances.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -501,7 +501,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
 
     def get_instance(
         self,
-        request: datafusion.GetInstanceRequest = None,
+        request: Union[datafusion.GetInstanceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -510,7 +510,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
         r"""Gets details of a single Data Fusion instance.
 
         Args:
-            request (google.cloud.data_fusion_v1.types.GetInstanceRequest):
+            request (Union[google.cloud.data_fusion_v1.types.GetInstanceRequest, dict]):
                 The request object. Request message for getting details
                 about a Data Fusion instance.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -549,7 +549,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
 
     def create_instance(
         self,
-        request: datafusion.CreateInstanceRequest = None,
+        request: Union[datafusion.CreateInstanceRequest, dict] = None,
         *,
         parent: str = None,
         instance: datafusion.Instance = None,
@@ -562,7 +562,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
         project and location.
 
         Args:
-            request (google.cloud.data_fusion_v1.types.CreateInstanceRequest):
+            request (Union[google.cloud.data_fusion_v1.types.CreateInstanceRequest, dict]):
                 The request object. Request message for creating a Data
                 Fusion instance.
             parent (str):
@@ -649,7 +649,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
 
     def delete_instance(
         self,
-        request: datafusion.DeleteInstanceRequest = None,
+        request: Union[datafusion.DeleteInstanceRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -659,7 +659,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
         r"""Deletes a single Date Fusion instance.
 
         Args:
-            request (google.cloud.data_fusion_v1.types.DeleteInstanceRequest):
+            request (Union[google.cloud.data_fusion_v1.types.DeleteInstanceRequest, dict]):
                 The request object. Request message for deleting a Data
                 Fusion instance.
             name (str):
@@ -742,7 +742,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
 
     def update_instance(
         self,
-        request: datafusion.UpdateInstanceRequest = None,
+        request: Union[datafusion.UpdateInstanceRequest, dict] = None,
         *,
         instance: datafusion.Instance = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -753,7 +753,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
         r"""Updates a single Data Fusion instance.
 
         Args:
-            request (google.cloud.data_fusion_v1.types.UpdateInstanceRequest):
+            request (Union[google.cloud.data_fusion_v1.types.UpdateInstanceRequest, dict]):
                 The request object.
             instance (google.cloud.data_fusion_v1.types.Instance):
                 The instance resource that replaces
@@ -844,7 +844,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
 
     def restart_instance(
         self,
-        request: datafusion.RestartInstanceRequest = None,
+        request: Union[datafusion.RestartInstanceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -854,7 +854,7 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
         At the end of an operation instance is fully restarted.
 
         Args:
-            request (google.cloud.data_fusion_v1.types.RestartInstanceRequest):
+            request (Union[google.cloud.data_fusion_v1.types.RestartInstanceRequest, dict]):
                 The request object. Request message for restarting a
                 Data Fusion instance.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
