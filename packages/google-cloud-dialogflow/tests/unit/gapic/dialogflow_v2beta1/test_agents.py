@@ -488,7 +488,7 @@ def test_get_agent(transport: str = "grpc", request_type=agent.GetAgentRequest):
             avatar_uri="avatar_uri_value",
             enable_logging=True,
             match_mode=agent.Agent.MatchMode.MATCH_MODE_HYBRID,
-            classification_threshold=0.2552,
+            classification_threshold=0.25520000000000004,
             api_version=agent.Agent.ApiVersion.API_VERSION_V1,
             tier=agent.Agent.Tier.TIER_STANDARD,
         )
@@ -510,7 +510,9 @@ def test_get_agent(transport: str = "grpc", request_type=agent.GetAgentRequest):
     assert response.avatar_uri == "avatar_uri_value"
     assert response.enable_logging is True
     assert response.match_mode == agent.Agent.MatchMode.MATCH_MODE_HYBRID
-    assert math.isclose(response.classification_threshold, 0.2552, rel_tol=1e-6)
+    assert math.isclose(
+        response.classification_threshold, 0.25520000000000004, rel_tol=1e-6
+    )
     assert response.api_version == agent.Agent.ApiVersion.API_VERSION_V1
     assert response.tier == agent.Agent.Tier.TIER_STANDARD
 
@@ -560,7 +562,7 @@ async def test_get_agent_async(
                 avatar_uri="avatar_uri_value",
                 enable_logging=True,
                 match_mode=agent.Agent.MatchMode.MATCH_MODE_HYBRID,
-                classification_threshold=0.2552,
+                classification_threshold=0.25520000000000004,
                 api_version=agent.Agent.ApiVersion.API_VERSION_V1,
                 tier=agent.Agent.Tier.TIER_STANDARD,
             )
@@ -583,7 +585,9 @@ async def test_get_agent_async(
     assert response.avatar_uri == "avatar_uri_value"
     assert response.enable_logging is True
     assert response.match_mode == agent.Agent.MatchMode.MATCH_MODE_HYBRID
-    assert math.isclose(response.classification_threshold, 0.2552, rel_tol=1e-6)
+    assert math.isclose(
+        response.classification_threshold, 0.25520000000000004, rel_tol=1e-6
+    )
     assert response.api_version == agent.Agent.ApiVersion.API_VERSION_V1
     assert response.tier == agent.Agent.Tier.TIER_STANDARD
 
@@ -726,7 +730,7 @@ def test_set_agent(transport: str = "grpc", request_type=gcd_agent.SetAgentReque
             avatar_uri="avatar_uri_value",
             enable_logging=True,
             match_mode=gcd_agent.Agent.MatchMode.MATCH_MODE_HYBRID,
-            classification_threshold=0.2552,
+            classification_threshold=0.25520000000000004,
             api_version=gcd_agent.Agent.ApiVersion.API_VERSION_V1,
             tier=gcd_agent.Agent.Tier.TIER_STANDARD,
         )
@@ -748,7 +752,9 @@ def test_set_agent(transport: str = "grpc", request_type=gcd_agent.SetAgentReque
     assert response.avatar_uri == "avatar_uri_value"
     assert response.enable_logging is True
     assert response.match_mode == gcd_agent.Agent.MatchMode.MATCH_MODE_HYBRID
-    assert math.isclose(response.classification_threshold, 0.2552, rel_tol=1e-6)
+    assert math.isclose(
+        response.classification_threshold, 0.25520000000000004, rel_tol=1e-6
+    )
     assert response.api_version == gcd_agent.Agent.ApiVersion.API_VERSION_V1
     assert response.tier == gcd_agent.Agent.Tier.TIER_STANDARD
 
@@ -798,7 +804,7 @@ async def test_set_agent_async(
                 avatar_uri="avatar_uri_value",
                 enable_logging=True,
                 match_mode=gcd_agent.Agent.MatchMode.MATCH_MODE_HYBRID,
-                classification_threshold=0.2552,
+                classification_threshold=0.25520000000000004,
                 api_version=gcd_agent.Agent.ApiVersion.API_VERSION_V1,
                 tier=gcd_agent.Agent.Tier.TIER_STANDARD,
             )
@@ -821,7 +827,9 @@ async def test_set_agent_async(
     assert response.avatar_uri == "avatar_uri_value"
     assert response.enable_logging is True
     assert response.match_mode == gcd_agent.Agent.MatchMode.MATCH_MODE_HYBRID
-    assert math.isclose(response.classification_threshold, 0.2552, rel_tol=1e-6)
+    assert math.isclose(
+        response.classification_threshold, 0.25520000000000004, rel_tol=1e-6
+    )
     assert response.api_version == gcd_agent.Agent.ApiVersion.API_VERSION_V1
     assert response.tier == gcd_agent.Agent.Tier.TIER_STANDARD
 

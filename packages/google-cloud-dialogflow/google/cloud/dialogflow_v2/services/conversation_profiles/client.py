@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -422,7 +422,9 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def list_conversation_profiles(
         self,
-        request: conversation_profile.ListConversationProfilesRequest = None,
+        request: Union[
+            conversation_profile.ListConversationProfilesRequest, dict
+        ] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -433,7 +435,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         specified project.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.ListConversationProfilesRequest):
+            request (Union[google.cloud.dialogflow_v2.types.ListConversationProfilesRequest, dict]):
                 The request object. The request message for
                 [ConversationProfiles.ListConversationProfiles][google.cloud.dialogflow.v2.ConversationProfiles.ListConversationProfiles].
             parent (str):
@@ -508,7 +510,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def get_conversation_profile(
         self,
-        request: conversation_profile.GetConversationProfileRequest = None,
+        request: Union[conversation_profile.GetConversationProfileRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -518,7 +520,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         r"""Retrieves the specified conversation profile.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.GetConversationProfileRequest):
+            request (Union[google.cloud.dialogflow_v2.types.GetConversationProfileRequest, dict]):
                 The request object. The request message for
                 [ConversationProfiles.GetConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.GetConversationProfile].
             name (str):
@@ -580,7 +582,9 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def create_conversation_profile(
         self,
-        request: gcd_conversation_profile.CreateConversationProfileRequest = None,
+        request: Union[
+            gcd_conversation_profile.CreateConversationProfileRequest, dict
+        ] = None,
         *,
         parent: str = None,
         conversation_profile: gcd_conversation_profile.ConversationProfile = None,
@@ -597,7 +601,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         API.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.CreateConversationProfileRequest):
+            request (Union[google.cloud.dialogflow_v2.types.CreateConversationProfileRequest, dict]):
                 The request object. The request message for
                 [ConversationProfiles.CreateConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.CreateConversationProfile].
             parent (str):
@@ -672,7 +676,9 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def update_conversation_profile(
         self,
-        request: gcd_conversation_profile.UpdateConversationProfileRequest = None,
+        request: Union[
+            gcd_conversation_profile.UpdateConversationProfileRequest, dict
+        ] = None,
         *,
         conversation_profile: gcd_conversation_profile.ConversationProfile = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -689,7 +695,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         API.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.UpdateConversationProfileRequest):
+            request (Union[google.cloud.dialogflow_v2.types.UpdateConversationProfileRequest, dict]):
                 The request object. The request message for
                 [ConversationProfiles.UpdateConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.UpdateConversationProfile].
             conversation_profile (google.cloud.dialogflow_v2.types.ConversationProfile):
@@ -765,7 +771,9 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
 
     def delete_conversation_profile(
         self,
-        request: conversation_profile.DeleteConversationProfileRequest = None,
+        request: Union[
+            conversation_profile.DeleteConversationProfileRequest, dict
+        ] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -775,7 +783,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         r"""Deletes the specified conversation profile.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.DeleteConversationProfileRequest):
+            request (Union[google.cloud.dialogflow_v2.types.DeleteConversationProfileRequest, dict]):
                 The request object. The request message for
                 [ConversationProfiles.DeleteConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.DeleteConversationProfile].
                 This operation fails if the conversation profile is

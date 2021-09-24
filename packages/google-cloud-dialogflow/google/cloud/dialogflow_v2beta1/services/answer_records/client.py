@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 import warnings
 
@@ -354,7 +354,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
 
     def get_answer_record(
         self,
-        request: answer_record.GetAnswerRecordRequest = None,
+        request: Union[answer_record.GetAnswerRecordRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -364,7 +364,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
         Retrieves a specific answer record.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.GetAnswerRecordRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.GetAnswerRecordRequest, dict]):
                 The request object. Request message for
                 [AnswerRecords.GetAnswerRecord][google.cloud.dialogflow.v2beta1.AnswerRecords.GetAnswerRecord].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -440,7 +440,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
 
     def list_answer_records(
         self,
-        request: answer_record.ListAnswerRecordsRequest = None,
+        request: Union[answer_record.ListAnswerRecordsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -451,7 +451,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
         specified project in reverse chronological order.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.ListAnswerRecordsRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.ListAnswerRecordsRequest, dict]):
                 The request object. Request message for
                 [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2beta1.AnswerRecords.ListAnswerRecords].
             parent (str):
@@ -522,7 +522,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
 
     def update_answer_record(
         self,
-        request: gcd_answer_record.UpdateAnswerRecordRequest = None,
+        request: Union[gcd_answer_record.UpdateAnswerRecordRequest, dict] = None,
         *,
         answer_record: gcd_answer_record.AnswerRecord = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -533,7 +533,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
         r"""Updates the specified answer record.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.UpdateAnswerRecordRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.UpdateAnswerRecordRequest, dict]):
                 The request object. Request message for
                 [AnswerRecords.UpdateAnswerRecord][google.cloud.dialogflow.v2beta1.AnswerRecords.UpdateAnswerRecord].
             answer_record (google.cloud.dialogflow_v2beta1.types.AnswerRecord):

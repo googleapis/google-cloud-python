@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -357,7 +357,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
     def list_entity_types(
         self,
-        request: entity_type.ListEntityTypesRequest = None,
+        request: Union[entity_type.ListEntityTypesRequest, dict] = None,
         *,
         parent: str = None,
         language_code: str = None,
@@ -369,7 +369,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         agent.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.ListEntityTypesRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.ListEntityTypesRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.ListEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.ListEntityTypes].
             parent (str):
@@ -454,7 +454,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
     def get_entity_type(
         self,
-        request: entity_type.GetEntityTypeRequest = None,
+        request: Union[entity_type.GetEntityTypeRequest, dict] = None,
         *,
         name: str = None,
         language_code: str = None,
@@ -465,7 +465,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         r"""Retrieves the specified entity type.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.GetEntityTypeRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.GetEntityTypeRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.GetEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.GetEntityType].
             name (str):
@@ -554,7 +554,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
     def create_entity_type(
         self,
-        request: gcd_entity_type.CreateEntityTypeRequest = None,
+        request: Union[gcd_entity_type.CreateEntityTypeRequest, dict] = None,
         *,
         parent: str = None,
         entity_type: gcd_entity_type.EntityType = None,
@@ -570,7 +570,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.CreateEntityTypeRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.CreateEntityTypeRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.CreateEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.CreateEntityType].
             parent (str):
@@ -666,7 +666,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
     def update_entity_type(
         self,
-        request: gcd_entity_type.UpdateEntityTypeRequest = None,
+        request: Union[gcd_entity_type.UpdateEntityTypeRequest, dict] = None,
         *,
         entity_type: gcd_entity_type.EntityType = None,
         language_code: str = None,
@@ -682,7 +682,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.UpdateEntityTypeRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.UpdateEntityTypeRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.UpdateEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.UpdateEntityType].
             entity_type (google.cloud.dialogflow_v2beta1.types.EntityType):
@@ -777,7 +777,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
     def delete_entity_type(
         self,
-        request: entity_type.DeleteEntityTypeRequest = None,
+        request: Union[entity_type.DeleteEntityTypeRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -791,7 +791,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.DeleteEntityTypeRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.DeleteEntityTypeRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.DeleteEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.DeleteEntityType].
             name (str):
@@ -848,7 +848,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
     def batch_update_entity_types(
         self,
-        request: entity_type.BatchUpdateEntityTypesRequest = None,
+        request: Union[entity_type.BatchUpdateEntityTypesRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -871,7 +871,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.BatchUpdateEntityTypesRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.BatchUpdateEntityTypesRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.BatchUpdateEntityTypes].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -926,7 +926,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
     def batch_delete_entity_types(
         self,
-        request: entity_type.BatchDeleteEntityTypesRequest = None,
+        request: Union[entity_type.BatchDeleteEntityTypesRequest, dict] = None,
         *,
         parent: str = None,
         entity_type_names: Sequence[str] = None,
@@ -951,7 +951,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.BatchDeleteEntityTypesRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.BatchDeleteEntityTypesRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.BatchDeleteEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.BatchDeleteEntityTypes].
             parent (str):
@@ -1047,7 +1047,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
     def batch_create_entities(
         self,
-        request: entity_type.BatchCreateEntitiesRequest = None,
+        request: Union[entity_type.BatchCreateEntitiesRequest, dict] = None,
         *,
         parent: str = None,
         entities: Sequence[entity_type.EntityType.Entity] = None,
@@ -1073,7 +1073,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.BatchCreateEntitiesRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.BatchCreateEntitiesRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.BatchCreateEntities][google.cloud.dialogflow.v2beta1.EntityTypes.BatchCreateEntities].
             parent (str):
@@ -1177,7 +1177,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
     def batch_update_entities(
         self,
-        request: entity_type.BatchUpdateEntitiesRequest = None,
+        request: Union[entity_type.BatchUpdateEntitiesRequest, dict] = None,
         *,
         parent: str = None,
         entities: Sequence[entity_type.EntityType.Entity] = None,
@@ -1205,7 +1205,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.BatchUpdateEntitiesRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.BatchUpdateEntitiesRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.BatchUpdateEntities][google.cloud.dialogflow.v2beta1.EntityTypes.BatchUpdateEntities].
             parent (str):
@@ -1311,7 +1311,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
     def batch_delete_entities(
         self,
-        request: entity_type.BatchDeleteEntitiesRequest = None,
+        request: Union[entity_type.BatchDeleteEntitiesRequest, dict] = None,
         *,
         parent: str = None,
         entity_values: Sequence[str] = None,
@@ -1337,7 +1337,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.BatchDeleteEntitiesRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.BatchDeleteEntitiesRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.BatchDeleteEntities][google.cloud.dialogflow.v2beta1.EntityTypes.BatchDeleteEntities].
             parent (str):

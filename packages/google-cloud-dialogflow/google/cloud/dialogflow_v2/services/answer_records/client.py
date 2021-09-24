@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -353,7 +353,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
 
     def list_answer_records(
         self,
-        request: answer_record.ListAnswerRecordsRequest = None,
+        request: Union[answer_record.ListAnswerRecordsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -364,7 +364,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
         specified project in reverse chronological order.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.ListAnswerRecordsRequest):
+            request (Union[google.cloud.dialogflow_v2.types.ListAnswerRecordsRequest, dict]):
                 The request object. Request message for
                 [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2.AnswerRecords.ListAnswerRecords].
             parent (str):
@@ -435,7 +435,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
 
     def update_answer_record(
         self,
-        request: gcd_answer_record.UpdateAnswerRecordRequest = None,
+        request: Union[gcd_answer_record.UpdateAnswerRecordRequest, dict] = None,
         *,
         answer_record: gcd_answer_record.AnswerRecord = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -446,7 +446,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
         r"""Updates the specified answer record.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.UpdateAnswerRecordRequest):
+            request (Union[google.cloud.dialogflow_v2.types.UpdateAnswerRecordRequest, dict]):
                 The request object. Request message for
                 [AnswerRecords.UpdateAnswerRecord][google.cloud.dialogflow.v2.AnswerRecords.UpdateAnswerRecord].
             answer_record (google.cloud.dialogflow_v2.types.AnswerRecord):

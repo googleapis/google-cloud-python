@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -355,7 +355,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
 
     def list_knowledge_bases(
         self,
-        request: knowledge_base.ListKnowledgeBasesRequest = None,
+        request: Union[knowledge_base.ListKnowledgeBasesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -366,7 +366,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         specified agent.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.ListKnowledgeBasesRequest):
+            request (Union[google.cloud.dialogflow_v2.types.ListKnowledgeBasesRequest, dict]):
                 The request object. Request message for
                 [KnowledgeBases.ListKnowledgeBases][google.cloud.dialogflow.v2.KnowledgeBases.ListKnowledgeBases].
             parent (str):
@@ -437,7 +437,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
 
     def get_knowledge_base(
         self,
-        request: knowledge_base.GetKnowledgeBaseRequest = None,
+        request: Union[knowledge_base.GetKnowledgeBaseRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -447,7 +447,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         r"""Retrieves the specified knowledge base.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.GetKnowledgeBaseRequest):
+            request (Union[google.cloud.dialogflow_v2.types.GetKnowledgeBaseRequest, dict]):
                 The request object. Request message for
                 [KnowledgeBases.GetKnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBases.GetKnowledgeBase].
             name (str):
@@ -519,7 +519,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
 
     def create_knowledge_base(
         self,
-        request: gcd_knowledge_base.CreateKnowledgeBaseRequest = None,
+        request: Union[gcd_knowledge_base.CreateKnowledgeBaseRequest, dict] = None,
         *,
         parent: str = None,
         knowledge_base: gcd_knowledge_base.KnowledgeBase = None,
@@ -530,7 +530,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         r"""Creates a knowledge base.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.CreateKnowledgeBaseRequest):
+            request (Union[google.cloud.dialogflow_v2.types.CreateKnowledgeBaseRequest, dict]):
                 The request object. Request message for
                 [KnowledgeBases.CreateKnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBases.CreateKnowledgeBase].
             parent (str):
@@ -611,7 +611,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
 
     def delete_knowledge_base(
         self,
-        request: knowledge_base.DeleteKnowledgeBaseRequest = None,
+        request: Union[knowledge_base.DeleteKnowledgeBaseRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -621,7 +621,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         r"""Deletes the specified knowledge base.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.DeleteKnowledgeBaseRequest):
+            request (Union[google.cloud.dialogflow_v2.types.DeleteKnowledgeBaseRequest, dict]):
                 The request object. Request message for
                 [KnowledgeBases.DeleteKnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBases.DeleteKnowledgeBase].
             name (str):
@@ -676,7 +676,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
 
     def update_knowledge_base(
         self,
-        request: gcd_knowledge_base.UpdateKnowledgeBaseRequest = None,
+        request: Union[gcd_knowledge_base.UpdateKnowledgeBaseRequest, dict] = None,
         *,
         knowledge_base: gcd_knowledge_base.KnowledgeBase = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -687,7 +687,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         r"""Updates the specified knowledge base.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.UpdateKnowledgeBaseRequest):
+            request (Union[google.cloud.dialogflow_v2.types.UpdateKnowledgeBaseRequest, dict]):
                 The request object. Request message for
                 [KnowledgeBases.UpdateKnowledgeBase][google.cloud.dialogflow.v2.KnowledgeBases.UpdateKnowledgeBase].
             knowledge_base (google.cloud.dialogflow_v2.types.KnowledgeBase):

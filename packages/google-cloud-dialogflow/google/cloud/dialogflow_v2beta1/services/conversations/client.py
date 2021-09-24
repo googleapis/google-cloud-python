@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -386,7 +386,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
 
     def create_conversation(
         self,
-        request: gcd_conversation.CreateConversationRequest = None,
+        request: Union[gcd_conversation.CreateConversationRequest, dict] = None,
         *,
         parent: str = None,
         conversation: gcd_conversation.Conversation = None,
@@ -417,7 +417,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         is triggered, conversation will transfer to Assist Stage.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.CreateConversationRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.CreateConversationRequest, dict]):
                 The request object. The request message for
                 [Conversations.CreateConversation][google.cloud.dialogflow.v2beta1.Conversations.CreateConversation].
             parent (str):
@@ -491,7 +491,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
 
     def list_conversations(
         self,
-        request: conversation.ListConversationsRequest = None,
+        request: Union[conversation.ListConversationsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -502,7 +502,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         specified project.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.ListConversationsRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.ListConversationsRequest, dict]):
                 The request object. The request message for
                 [Conversations.ListConversations][google.cloud.dialogflow.v2beta1.Conversations.ListConversations].
             parent (str):
@@ -573,7 +573,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
 
     def get_conversation(
         self,
-        request: conversation.GetConversationRequest = None,
+        request: Union[conversation.GetConversationRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -583,7 +583,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         r"""Retrieves the specific conversation.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.GetConversationRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.GetConversationRequest, dict]):
                 The request object. The request message for
                 [Conversations.GetConversation][google.cloud.dialogflow.v2beta1.Conversations.GetConversation].
             name (str):
@@ -649,7 +649,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
 
     def complete_conversation(
         self,
-        request: conversation.CompleteConversationRequest = None,
+        request: Union[conversation.CompleteConversationRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -661,7 +661,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         days.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.CompleteConversationRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.CompleteConversationRequest, dict]):
                 The request object. The request message for
                 [Conversations.CompleteConversation][google.cloud.dialogflow.v2beta1.Conversations.CompleteConversation].
             name (str):
@@ -728,7 +728,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
 
     def batch_create_messages(
         self,
-        request: conversation.BatchCreateMessagesRequest = None,
+        request: Union[conversation.BatchCreateMessagesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -740,7 +740,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         conversation.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.BatchCreateMessagesRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.BatchCreateMessagesRequest, dict]):
                 The request object. The request message for
                 [Conversations.BatchCreateMessagesRequest][].
             parent (str):
@@ -802,7 +802,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
 
     def list_messages(
         self,
-        request: conversation.ListMessagesRequest = None,
+        request: Union[conversation.ListMessagesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -816,7 +816,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         and empty page_token.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.ListMessagesRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.ListMessagesRequest, dict]):
                 The request object. The request message for
                 [Conversations.ListMessages][google.cloud.dialogflow.v2beta1.Conversations.ListMessages].
             parent (str):

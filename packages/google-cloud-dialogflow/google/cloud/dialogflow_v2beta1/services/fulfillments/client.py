@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -348,7 +348,7 @@ class FulfillmentsClient(metaclass=FulfillmentsClientMeta):
 
     def get_fulfillment(
         self,
-        request: fulfillment.GetFulfillmentRequest = None,
+        request: Union[fulfillment.GetFulfillmentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -358,7 +358,7 @@ class FulfillmentsClient(metaclass=FulfillmentsClientMeta):
         r"""Retrieves the fulfillment.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.GetFulfillmentRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.GetFulfillmentRequest, dict]):
                 The request object. The request message for
                 [Fulfillments.GetFulfillment][google.cloud.dialogflow.v2beta1.Fulfillments.GetFulfillment].
             name (str):
@@ -432,7 +432,7 @@ class FulfillmentsClient(metaclass=FulfillmentsClientMeta):
 
     def update_fulfillment(
         self,
-        request: gcd_fulfillment.UpdateFulfillmentRequest = None,
+        request: Union[gcd_fulfillment.UpdateFulfillmentRequest, dict] = None,
         *,
         fulfillment: gcd_fulfillment.Fulfillment = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -443,7 +443,7 @@ class FulfillmentsClient(metaclass=FulfillmentsClientMeta):
         r"""Updates the fulfillment.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.UpdateFulfillmentRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.UpdateFulfillmentRequest, dict]):
                 The request object. The request message for
                 [Fulfillments.UpdateFulfillment][google.cloud.dialogflow.v2beta1.Fulfillments.UpdateFulfillment].
             fulfillment (google.cloud.dialogflow_v2beta1.types.Fulfillment):

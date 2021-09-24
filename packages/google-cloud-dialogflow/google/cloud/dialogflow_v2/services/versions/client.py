@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -352,7 +352,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def list_versions(
         self,
-        request: version.ListVersionsRequest = None,
+        request: Union[version.ListVersionsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -363,7 +363,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         agent.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.ListVersionsRequest):
+            request (Union[google.cloud.dialogflow_v2.types.ListVersionsRequest, dict]):
                 The request object. The request message for
                 [Versions.ListVersions][google.cloud.dialogflow.v2.Versions.ListVersions].
             parent (str):
@@ -436,7 +436,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def get_version(
         self,
-        request: version.GetVersionRequest = None,
+        request: Union[version.GetVersionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -446,7 +446,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         r"""Retrieves the specified agent version.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.GetVersionRequest):
+            request (Union[google.cloud.dialogflow_v2.types.GetVersionRequest, dict]):
                 The request object. The request message for
                 [Versions.GetVersion][google.cloud.dialogflow.v2.Versions.GetVersion].
             name (str):
@@ -528,7 +528,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def create_version(
         self,
-        request: gcd_version.CreateVersionRequest = None,
+        request: Union[gcd_version.CreateVersionRequest, dict] = None,
         *,
         parent: str = None,
         version: gcd_version.Version = None,
@@ -541,7 +541,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         "default" environment.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.CreateVersionRequest):
+            request (Union[google.cloud.dialogflow_v2.types.CreateVersionRequest, dict]):
                 The request object. The request message for
                 [Versions.CreateVersion][google.cloud.dialogflow.v2.Versions.CreateVersion].
             parent (str):
@@ -631,7 +631,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def update_version(
         self,
-        request: gcd_version.UpdateVersionRequest = None,
+        request: Union[gcd_version.UpdateVersionRequest, dict] = None,
         *,
         version: gcd_version.Version = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -646,7 +646,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         version resource.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.UpdateVersionRequest):
+            request (Union[google.cloud.dialogflow_v2.types.UpdateVersionRequest, dict]):
                 The request object. The request message for
                 [Versions.UpdateVersion][google.cloud.dialogflow.v2.Versions.UpdateVersion].
             version (google.cloud.dialogflow_v2.types.Version):
@@ -739,7 +739,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
     def delete_version(
         self,
-        request: version.DeleteVersionRequest = None,
+        request: Union[version.DeleteVersionRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -749,7 +749,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         r"""Delete the specified agent version.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.DeleteVersionRequest):
+            request (Union[google.cloud.dialogflow_v2.types.DeleteVersionRequest, dict]):
                 The request object. The request message for
                 [Versions.DeleteVersion][google.cloud.dialogflow.v2.Versions.DeleteVersion].
             name (str):

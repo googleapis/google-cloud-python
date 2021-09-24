@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -353,7 +353,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def get_agent(
         self,
-        request: agent.GetAgentRequest = None,
+        request: Union[agent.GetAgentRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -363,7 +363,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         r"""Retrieves the specified agent.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.GetAgentRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.GetAgentRequest, dict]):
                 The request object. The request message for
                 [Agents.GetAgent][google.cloud.dialogflow.v2beta1.Agents.GetAgent].
             parent (str):
@@ -434,7 +434,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def set_agent(
         self,
-        request: gcd_agent.SetAgentRequest = None,
+        request: Union[gcd_agent.SetAgentRequest, dict] = None,
         *,
         agent: gcd_agent.Agent = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -448,7 +448,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.SetAgentRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.SetAgentRequest, dict]):
                 The request object. The request message for
                 [Agents.SetAgent][google.cloud.dialogflow.v2beta1.Agents.SetAgent].
             agent (google.cloud.dialogflow_v2beta1.types.Agent):
@@ -518,7 +518,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def delete_agent(
         self,
-        request: agent.DeleteAgentRequest = None,
+        request: Union[agent.DeleteAgentRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -528,7 +528,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         r"""Deletes the specified agent.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.DeleteAgentRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.DeleteAgentRequest, dict]):
                 The request object. The request message for
                 [Agents.DeleteAgent][google.cloud.dialogflow.v2beta1.Agents.DeleteAgent].
             parent (str):
@@ -583,7 +583,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def search_agents(
         self,
-        request: agent.SearchAgentsRequest = None,
+        request: Union[agent.SearchAgentsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -598,7 +598,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         Sub-Collections <https://cloud.google.com/apis/design/design_patterns#list_sub-collections>`__.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.SearchAgentsRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.SearchAgentsRequest, dict]):
                 The request object. The request message for
                 [Agents.SearchAgents][google.cloud.dialogflow.v2beta1.Agents.SearchAgents].
             parent (str):
@@ -669,7 +669,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def train_agent(
         self,
-        request: agent.TrainAgentRequest = None,
+        request: Union[agent.TrainAgentRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -693,7 +693,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.TrainAgentRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.TrainAgentRequest, dict]):
                 The request object. The request message for
                 [Agents.TrainAgent][google.cloud.dialogflow.v2beta1.Agents.TrainAgent].
             parent (str):
@@ -776,7 +776,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def export_agent(
         self,
-        request: agent.ExportAgentRequest = None,
+        request: Union[agent.ExportAgentRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -796,7 +796,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
            [ExportAgentResponse][google.cloud.dialogflow.v2beta1.ExportAgentResponse]
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.ExportAgentRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.ExportAgentRequest, dict]):
                 The request object. The request message for
                 [Agents.ExportAgent][google.cloud.dialogflow.v2beta1.Agents.ExportAgent].
             parent (str):
@@ -870,7 +870,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def import_agent(
         self,
-        request: agent.ImportAgentRequest = None,
+        request: Union[agent.ImportAgentRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -908,7 +908,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.ImportAgentRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.ImportAgentRequest, dict]):
                 The request object. The request message for
                 [Agents.ImportAgent][google.cloud.dialogflow.v2beta1.Agents.ImportAgent].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -970,7 +970,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def restore_agent(
         self,
-        request: agent.RestoreAgentRequest = None,
+        request: Union[agent.RestoreAgentRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1006,7 +1006,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.RestoreAgentRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.RestoreAgentRequest, dict]):
                 The request object. The request message for
                 [Agents.RestoreAgent][google.cloud.dialogflow.v2beta1.Agents.RestoreAgent].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1068,7 +1068,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     def get_validation_result(
         self,
-        request: agent.GetValidationResultRequest = None,
+        request: Union[agent.GetValidationResultRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1079,7 +1079,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         automatically when training is completed.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.GetValidationResultRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.GetValidationResultRequest, dict]):
                 The request object. The request message for
                 [Agents.GetValidationResult][google.cloud.dialogflow.v2beta1.Agents.GetValidationResult].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -358,7 +358,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def list_documents(
         self,
-        request: document.ListDocumentsRequest = None,
+        request: Union[document.ListDocumentsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -371,7 +371,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         is deprecated; only use ``projects.knowledgeBases.documents``.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.ListDocumentsRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.ListDocumentsRequest, dict]):
                 The request object. Request message for
                 [Documents.ListDocuments][google.cloud.dialogflow.v2beta1.Documents.ListDocuments].
             parent (str):
@@ -442,7 +442,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def get_document(
         self,
-        request: document.GetDocumentRequest = None,
+        request: Union[document.GetDocumentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -455,7 +455,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         is deprecated; only use ``projects.knowledgeBases.documents``.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.GetDocumentRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.GetDocumentRequest, dict]):
                 The request object. Request message for
                 [Documents.GetDocument][google.cloud.dialogflow.v2beta1.Documents.GetDocument].
             name (str):
@@ -523,7 +523,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def create_document(
         self,
-        request: gcd_document.CreateDocumentRequest = None,
+        request: Union[gcd_document.CreateDocumentRequest, dict] = None,
         *,
         parent: str = None,
         document: gcd_document.Document = None,
@@ -547,7 +547,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         is deprecated; only use ``projects.knowledgeBases.documents``.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.CreateDocumentRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.CreateDocumentRequest, dict]):
                 The request object. Request message for
                 [Documents.CreateDocument][google.cloud.dialogflow.v2beta1.Documents.CreateDocument].
             parent (str):
@@ -635,7 +635,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def import_documents(
         self,
-        request: document.ImportDocumentsRequest = None,
+        request: Union[document.ImportDocumentsRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -656,7 +656,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
            [ImportDocumentsResponse][google.cloud.dialogflow.v2beta1.ImportDocumentsResponse]
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.ImportDocumentsRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.ImportDocumentsRequest, dict]):
                 The request object. Request message for
                 [Documents.ImportDocuments][google.cloud.dialogflow.v2beta1.Documents.ImportDocuments].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -709,7 +709,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def delete_document(
         self,
-        request: document.DeleteDocumentRequest = None,
+        request: Union[document.DeleteDocumentRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -732,7 +732,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         is deprecated; only use ``projects.knowledgeBases.documents``.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.DeleteDocumentRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.DeleteDocumentRequest, dict]):
                 The request object. Request message for
                 [Documents.DeleteDocument][google.cloud.dialogflow.v2beta1.Documents.DeleteDocument].
             name (str):
@@ -814,7 +814,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def update_document(
         self,
-        request: gcd_document.UpdateDocumentRequest = None,
+        request: Union[gcd_document.UpdateDocumentRequest, dict] = None,
         *,
         document: gcd_document.Document = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -838,7 +838,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         is deprecated; only use ``projects.knowledgeBases.documents``.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.UpdateDocumentRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.UpdateDocumentRequest, dict]):
                 The request object. Request message for
                 [Documents.UpdateDocument][google.cloud.dialogflow.v2beta1.Documents.UpdateDocument].
             document (google.cloud.dialogflow_v2beta1.types.Document):
@@ -928,7 +928,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
     def reload_document(
         self,
-        request: document.ReloadDocumentRequest = None,
+        request: Union[document.ReloadDocumentRequest, dict] = None,
         *,
         name: str = None,
         gcs_source: gcs.GcsSource = None,
@@ -960,7 +960,7 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         is deprecated; only use ``projects.knowledgeBases.documents``.
 
         Args:
-            request (google.cloud.dialogflow_v2beta1.types.ReloadDocumentRequest):
+            request (Union[google.cloud.dialogflow_v2beta1.types.ReloadDocumentRequest, dict]):
                 The request object. Request message for
                 [Documents.ReloadDocument][google.cloud.dialogflow.v2beta1.Documents.ReloadDocument].
             name (str):

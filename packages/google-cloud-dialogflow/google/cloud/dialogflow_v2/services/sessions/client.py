@@ -17,17 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import (
-    Callable,
-    Dict,
-    Optional,
-    Iterable,
-    Iterator,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -410,7 +400,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     def detect_intent(
         self,
-        request: gcd_session.DetectIntentRequest = None,
+        request: Union[gcd_session.DetectIntentRequest, dict] = None,
         *,
         session: str = None,
         query_input: gcd_session.QueryInput = None,
@@ -428,7 +418,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.DetectIntentRequest):
+            request (Union[google.cloud.dialogflow_v2.types.DetectIntentRequest, dict]):
                 The request object. The request to detect user's intent.
             session (str):
                 Required. The name of the session this query is sent to.

@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -416,7 +416,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def create_participant(
         self,
-        request: gcd_participant.CreateParticipantRequest = None,
+        request: Union[gcd_participant.CreateParticipantRequest, dict] = None,
         *,
         parent: str = None,
         participant: gcd_participant.Participant = None,
@@ -427,7 +427,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         r"""Creates a new participant in a conversation.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.CreateParticipantRequest):
+            request (Union[google.cloud.dialogflow_v2.types.CreateParticipantRequest, dict]):
                 The request object. The request message for
                 [Participants.CreateParticipant][google.cloud.dialogflow.v2.Participants.CreateParticipant].
             parent (str):
@@ -496,7 +496,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def get_participant(
         self,
-        request: participant.GetParticipantRequest = None,
+        request: Union[participant.GetParticipantRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -506,7 +506,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         r"""Retrieves a conversation participant.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.GetParticipantRequest):
+            request (Union[google.cloud.dialogflow_v2.types.GetParticipantRequest, dict]):
                 The request object. The request message for
                 [Participants.GetParticipant][google.cloud.dialogflow.v2.Participants.GetParticipant].
             name (str):
@@ -567,7 +567,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def list_participants(
         self,
-        request: participant.ListParticipantsRequest = None,
+        request: Union[participant.ListParticipantsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -578,7 +578,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         conversation.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.ListParticipantsRequest):
+            request (Union[google.cloud.dialogflow_v2.types.ListParticipantsRequest, dict]):
                 The request object. The request message for
                 [Participants.ListParticipants][google.cloud.dialogflow.v2.Participants.ListParticipants].
             parent (str):
@@ -649,7 +649,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def update_participant(
         self,
-        request: gcd_participant.UpdateParticipantRequest = None,
+        request: Union[gcd_participant.UpdateParticipantRequest, dict] = None,
         *,
         participant: gcd_participant.Participant = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -660,7 +660,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         r"""Updates the specified participant.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.UpdateParticipantRequest):
+            request (Union[google.cloud.dialogflow_v2.types.UpdateParticipantRequest, dict]):
                 The request object. The request message for
                 [Participants.UpdateParticipant][google.cloud.dialogflow.v2.Participants.UpdateParticipant].
             participant (google.cloud.dialogflow_v2.types.Participant):
@@ -730,7 +730,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def analyze_content(
         self,
-        request: gcd_participant.AnalyzeContentRequest = None,
+        request: Union[gcd_participant.AnalyzeContentRequest, dict] = None,
         *,
         participant: str = None,
         text_input: session.TextInput = None,
@@ -747,7 +747,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.AnalyzeContentRequest):
+            request (Union[google.cloud.dialogflow_v2.types.AnalyzeContentRequest, dict]):
                 The request object. The request message for
                 [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent].
             participant (str):
@@ -827,7 +827,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def suggest_articles(
         self,
-        request: participant.SuggestArticlesRequest = None,
+        request: Union[participant.SuggestArticlesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -838,7 +838,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         specific historical messages.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.SuggestArticlesRequest):
+            request (Union[google.cloud.dialogflow_v2.types.SuggestArticlesRequest, dict]):
                 The request object. The request message for
                 [Participants.SuggestArticles][google.cloud.dialogflow.v2.Participants.SuggestArticles].
             parent (str):
@@ -900,7 +900,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
 
     def suggest_faq_answers(
         self,
-        request: participant.SuggestFaqAnswersRequest = None,
+        request: Union[participant.SuggestFaqAnswersRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -911,7 +911,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         specific historical messages.
 
         Args:
-            request (google.cloud.dialogflow_v2.types.SuggestFaqAnswersRequest):
+            request (Union[google.cloud.dialogflow_v2.types.SuggestFaqAnswersRequest, dict]):
                 The request object. The request message for
                 [Participants.SuggestFaqAnswers][google.cloud.dialogflow.v2.Participants.SuggestFaqAnswers].
             parent (str):
