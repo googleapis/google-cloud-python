@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+### [1.2.3](https://www.github.com/googleapis/python-phishingprotection/compare/v1.2.2...v1.2.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([a9ac832](https://www.github.com/googleapis/python-phishingprotection/commit/a9ac832c3bed179eec4f007c9e1535bf3a95aa57))
+
 ### [1.2.2](https://www.github.com/googleapis/python-phishingprotection/compare/v1.2.1...v1.2.2) (2021-07-26)
 
 
