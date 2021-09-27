@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.9.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.8.0...v2.9.0) (2021-09-27)
+
+
+### Features
+
+* add `AppendRowsStream` to use write API from v1 endpoint ([#309](https://www.github.com/googleapis/python-bigquery-storage/issues/309)) ([9fc3c08](https://www.github.com/googleapis/python-bigquery-storage/commit/9fc3c08cdeebfbd69bc815f951a07b2d086b0a69))
+* add BigQuery Storage Write API v1 ([#301](https://www.github.com/googleapis/python-bigquery-storage/issues/301)) ([69e3fb8](https://www.github.com/googleapis/python-bigquery-storage/commit/69e3fb8ec2ecac0417b6a4bc954004a064ae04b7))
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([a778080](https://www.github.com/googleapis/python-bigquery-storage/commit/a7780805d7350855fccdcf2aefa596851ee83923))
+* add missing read api retry setting on SplitReadStream ([#311](https://www.github.com/googleapis/python-bigquery-storage/issues/311)) ([66c09c0](https://www.github.com/googleapis/python-bigquery-storage/commit/66c09c01d643844117e3e35d2d90a6cc0491349e))
+* avoid failure if closing `AppendRowsStream` before opening ([#304](https://www.github.com/googleapis/python-bigquery-storage/issues/304)) ([9f145f8](https://www.github.com/googleapis/python-bigquery-storage/commit/9f145f87d6a54e757044ff4110d2cafd57ce08fa))
+* avoid opening write stream more than once, make open method private ([#305](https://www.github.com/googleapis/python-bigquery-storage/issues/305)) ([58ec844](https://www.github.com/googleapis/python-bigquery-storage/commit/58ec8444420d29c2915ec5b148de780a36eaf3e2))
+
 ## [2.8.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.7.0...v2.8.0) (2021-09-10)
 
 
