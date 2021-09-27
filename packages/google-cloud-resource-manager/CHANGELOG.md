@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+### [1.1.1](https://www.github.com/googleapis/python-resource-manager/compare/v1.1.0...v1.1.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([e322b1e](https://www.github.com/googleapis/python-resource-manager/commit/e322b1e183bb7edf5a24a60e36e177a63f54ce86))
+
 ## [1.1.0](https://www.github.com/googleapis/python-resource-manager/compare/v1.0.2...v1.1.0) (2021-08-19)
 
 
