@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-storage-transfer/compare/v1.0.0...v1.0.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([aef02f1](https://www.github.com/googleapis/python-storage-transfer/commit/aef02f19b0bf968aec171a8d61cb9066e2d53b00))
+
 ## [1.0.0](https://www.github.com/googleapis/python-storage-transfer/compare/v0.1.0...v1.0.0) (2021-08-31)
 
 
