@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.3.0...v0.3.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([94e64ac](https://www.github.com/googleapis/python-contact-center-insights/commit/94e64acc866eeed789768c2e216dad3f561c81e3))
+
 ## [0.3.0](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.2.0...v0.3.0) (2021-09-20)
 
 

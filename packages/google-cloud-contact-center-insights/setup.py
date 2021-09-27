@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-contact-center-insights"
 description = "Contact Center AI Insights API"
-version = "0.3.0"
+version = "0.3.1"
 release_status = "Development Status :: 4 - Beta"
 url = "https://github.com/googleapis/python-contact-center-insights"
 dependencies = [
