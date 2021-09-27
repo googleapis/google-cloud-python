@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.2](https://www.github.com/googleapis/python-memcache/compare/v1.1.1...v1.1.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([c56fbee](https://www.github.com/googleapis/python-memcache/commit/c56fbee0ffedac37a80bca5ca3028c53753ada5a))
+
 ### [1.1.1](https://www.github.com/googleapis/python-memcache/compare/v1.1.0...v1.1.1) (2021-07-26)
 
 
