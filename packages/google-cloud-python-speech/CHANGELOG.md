@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+### [2.9.1](https://www.github.com/googleapis/python-speech/compare/v2.9.0...v2.9.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([e75ada8](https://www.github.com/googleapis/python-speech/commit/e75ada858d00b22fbae6d0de40771239d2f71756))
+
 ## [2.9.0](https://www.github.com/googleapis/python-speech/compare/v2.8.0...v2.9.0) (2021-09-20)
 
 
