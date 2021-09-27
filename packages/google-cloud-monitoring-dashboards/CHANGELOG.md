@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.2.3](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.2...v2.2.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([4084ab2](https://www.github.com/googleapis/python-monitoring-dashboards/commit/4084ab2a7185b69561d1708f136d05a121ced2f8))
+
 ### [2.2.2](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.1...v2.2.2) (2021-07-26)
 
 
