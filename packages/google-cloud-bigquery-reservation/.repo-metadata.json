@@ -10,5 +10,6 @@
   "repo": "googleapis/python-bigquery-reservation",
   "distribution_name": "google-cloud-bigquery-reservation",
   "api_id": "bigqueryreservation.googleapis.com",
-  "requires_billing": true
+  "requires_billing": true,
+  "codeowner_team": "@googleapis/api-bigquery"
 }
