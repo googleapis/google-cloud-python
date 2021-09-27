@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.8.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.8.0...v0.8.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([a9accfd](https://www.github.com/googleapis/python-analytics-data/commit/a9accfd6e61ff2d0c18fdfaea1cf8d4a12671770))
+
 ## [0.8.0](https://www.github.com/googleapis/python-analytics-data/compare/v0.7.2...v0.8.0) (2021-09-01)
 
 
