@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.4](https://www.github.com/googleapis/python-network-security/compare/v0.1.3...v0.1.4) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([dcefd7e](https://www.github.com/googleapis/python-network-security/commit/dcefd7e92f08e12c868fee114c73075e8ba356a5))
+
 ### [0.1.3](https://www.github.com/googleapis/python-network-security/compare/v0.1.2...v0.1.3) (2021-07-29)
 
 
