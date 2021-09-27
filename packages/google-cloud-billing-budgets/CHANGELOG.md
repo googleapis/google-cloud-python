@@ -1,4 +1,11 @@
 # Changelog
+### [1.4.3](https://www.github.com/googleapis/python-billingbudgets/compare/v1.4.2...v1.4.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([746a7a1](https://www.github.com/googleapis/python-billingbudgets/commit/746a7a13524217f5f0562ac35b963de17bea11bf))
+
 ### [1.4.2](https://www.github.com/googleapis/python-billingbudgets/compare/v1.4.1...v1.4.2) (2021-07-27)
 
 
