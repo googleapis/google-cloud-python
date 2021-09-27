@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+### [2.3.3](https://www.github.com/googleapis/python-scheduler/compare/v2.3.2...v2.3.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([b8b77d1](https://www.github.com/googleapis/python-scheduler/commit/b8b77d11a46136baf2739cfdf48060bd4bfc10fa))
+
 ### [2.3.2](https://www.github.com/googleapis/python-scheduler/compare/v2.3.1...v2.3.2) (2021-07-28)
 
 
