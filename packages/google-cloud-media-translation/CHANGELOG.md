@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.5.4](https://www.github.com/googleapis/python-media-translation/compare/v0.5.3...v0.5.4) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([b6d9e03](https://www.github.com/googleapis/python-media-translation/commit/b6d9e03adc40227f6917069232e0550dcffae528))
+
 ### [0.5.3](https://www.github.com/googleapis/python-media-translation/compare/v0.5.2...v0.5.3) (2021-07-28)
 
 
