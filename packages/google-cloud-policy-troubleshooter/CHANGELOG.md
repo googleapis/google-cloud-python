@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.3](https://www.github.com/googleapis/python-policy-troubleshooter/compare/v1.1.2...v1.1.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([56b6b0e](https://www.github.com/googleapis/python-policy-troubleshooter/commit/56b6b0e3b1637c6ea7ae5c6188d7556ddca25664))
+
 ### [1.1.2](https://www.github.com/googleapis/python-policy-troubleshooter/compare/v1.1.1...v1.1.2) (2021-07-29)
 
 
