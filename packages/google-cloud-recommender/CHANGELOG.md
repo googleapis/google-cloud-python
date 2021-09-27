@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+### [2.3.3](https://www.github.com/googleapis/python-recommender/compare/v2.3.2...v2.3.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([99b111d](https://www.github.com/googleapis/python-recommender/commit/99b111d12987d6a79c96294971747cb092bb381d))
+
 ### [2.3.2](https://www.github.com/googleapis/python-recommender/compare/v2.3.1...v2.3.2) (2021-07-28)
 
 
