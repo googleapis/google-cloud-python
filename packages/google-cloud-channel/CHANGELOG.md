@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/googleapis/python-channel/compare/v1.3.0...v1.3.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([2e959cc](https://www.github.com/googleapis/python-channel/commit/2e959cc025ddb9677796bc87707f82132333f59d))
+
 ## [1.3.0](https://www.github.com/googleapis/python-channel/compare/v1.2.3...v1.3.0) (2021-09-23)
 
 
