@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+### [2.5.1](https://www.github.com/googleapis/python-monitoring/compare/v2.5.0...v2.5.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([ffae24c](https://www.github.com/googleapis/python-monitoring/commit/ffae24c816a3e1645464098cf86fdaf54a3064a9))
+
 ## [2.5.0](https://www.github.com/googleapis/python-monitoring/compare/v2.4.2...v2.5.0) (2021-08-27)
 
 
