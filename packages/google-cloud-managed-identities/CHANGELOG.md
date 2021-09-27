@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.2](https://www.github.com/googleapis/python-managed-identities/compare/v1.1.1...v1.1.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([9da978a](https://www.github.com/googleapis/python-managed-identities/commit/9da978af7a5e95cbc6edae861978ed492797a0c9))
+
 ### [1.1.1](https://www.github.com/googleapis/python-managed-identities/compare/v1.1.0...v1.1.1) (2021-07-26)
 
 
