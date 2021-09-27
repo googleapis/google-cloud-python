@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+### [2.4.3](https://www.github.com/googleapis/python-vision/compare/v2.4.2...v2.4.3) (2021-09-27)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([87ad0ea](https://www.github.com/googleapis/python-vision/commit/87ad0eabbba08754320fd836c5e76fba48222b5c))
+
 ### [2.4.2](https://www.github.com/googleapis/python-vision/compare/v2.4.1...v2.4.2) (2021-07-29)
 
 
