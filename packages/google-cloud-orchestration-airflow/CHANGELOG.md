@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.2](https://www.github.com/googleapis/python-orchestration-airflow/compare/v0.1.1...v0.1.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([7d5d4de](https://www.github.com/googleapis/python-orchestration-airflow/commit/7d5d4de6ec0ae72fad49db1bb47334b2da0494b4))
+
 ### [0.1.1](https://www.github.com/googleapis/python-orchestration-airflow/compare/v0.1.0...v0.1.1) (2021-07-28)
 
 
