@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+### [3.4.2](https://www.github.com/googleapis/python-datacatalog/compare/v3.4.1...v3.4.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([27fcefa](https://www.github.com/googleapis/python-datacatalog/commit/27fcefa6df0d9a3a1c0954dd908b9aa3ad1bf548))
+
+
+### Documentation
+
+* **samples:** add entry group greation to custom entry sample ([#215](https://www.github.com/googleapis/python-datacatalog/issues/215)) ([24d78cf](https://www.github.com/googleapis/python-datacatalog/commit/24d78cf44dd0a4e29aa66daec137e8a618b60f29))
+
 ### [3.4.1](https://www.github.com/googleapis/python-datacatalog/compare/v3.4.0...v3.4.1) (2021-09-01)
 
 
