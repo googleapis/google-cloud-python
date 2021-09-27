@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.2](https://www.github.com/googleapis/python-workflows/compare/v1.2.1...v1.2.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([8e778a3](https://www.github.com/googleapis/python-workflows/commit/8e778a39b1a655867d129df4dbd573ac4763cd19))
+
 ### [1.2.1](https://www.github.com/googleapis/python-workflows/compare/v1.2.0...v1.2.1) (2021-07-26)
 
 
