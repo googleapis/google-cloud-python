@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-resource-settings/compare/v1.0.0...v1.0.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([88a867a](https://www.github.com/googleapis/python-resource-settings/commit/88a867a1ee67ae23e2ba27f85296f494c0581c52))
+
 ## [1.0.0](https://www.github.com/googleapis/python-resource-settings/compare/v0.3.2...v1.0.0) (2021-08-03)
 
 
