@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -342,7 +342,7 @@ class ServiceControllerClient(metaclass=ServiceControllerClientMeta):
 
     def check(
         self,
-        request: service_controller.CheckRequest = None,
+        request: Union[service_controller.CheckRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -369,7 +369,7 @@ class ServiceControllerClient(metaclass=ServiceControllerClientMeta):
         `Cloud IAM <https://cloud.google.com/iam>`__.
 
         Args:
-            request (google.cloud.servicecontrol_v1.types.CheckRequest):
+            request (Union[google.cloud.servicecontrol_v1.types.CheckRequest, dict]):
                 The request object. Request message for the Check
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -404,7 +404,7 @@ class ServiceControllerClient(metaclass=ServiceControllerClientMeta):
 
     def report(
         self,
-        request: service_controller.ReportRequest = None,
+        request: Union[service_controller.ReportRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -430,7 +430,7 @@ class ServiceControllerClient(metaclass=ServiceControllerClientMeta):
         `Google Cloud IAM <https://cloud.google.com/iam>`__.
 
         Args:
-            request (google.cloud.servicecontrol_v1.types.ReportRequest):
+            request (Union[google.cloud.servicecontrol_v1.types.ReportRequest, dict]):
                 The request object. Request message for the Report
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
