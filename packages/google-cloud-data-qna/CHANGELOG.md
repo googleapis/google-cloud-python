@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.3](https://www.github.com/googleapis/python-data-qna/compare/v0.3.2...v0.3.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([149f428](https://www.github.com/googleapis/python-data-qna/commit/149f4286f073101a1013ccf07604a0b0c33b8e94))
+
 ### [0.3.2](https://www.github.com/googleapis/python-data-qna/compare/v0.3.1...v0.3.2) (2021-07-27)
 
 
