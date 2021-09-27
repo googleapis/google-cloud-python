@@ -1,0 +1,13 @@
+{
+    "name": "clouddeploy",
+    "name_pretty": "Google Cloud Deploy",
+    "product_documentation": "https://cloud.google.com/deploy/",
+    "client_documentation": "https://googleapis.dev/python/clouddeploy/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-deploy",
+    "distribution_name": "google-cloud-deploy",
+    "api_id": "clouddeploy.googleapis.com"
+}
