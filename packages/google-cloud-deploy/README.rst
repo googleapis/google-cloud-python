@@ -1,7 +1,7 @@
 Python Client for Google Cloud Deploy
 =====================================
 
-|GA| |pypi| |versions|
+|beta| |pypi| |versions|
 
 `Google Cloud Deploy`_: Deliver continuously to Google Kubernetes Engine. Deploy to Google 
 Kubernetes Engine in minutes. Define pipelines in code and let Google Cloud Deploy handle rollouts. 
@@ -10,7 +10,7 @@ Scale pipelines across your organization, while having  a cross-project, central
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
+.. |beta| image:: https://img.shields.io/badge/support-beta-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-deploy.svg
    :target: https://pypi.org/project/google-cloud-deploy/
