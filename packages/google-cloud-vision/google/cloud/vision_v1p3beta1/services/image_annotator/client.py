@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -373,7 +373,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
 
     def batch_annotate_images(
         self,
-        request: image_annotator.BatchAnnotateImagesRequest = None,
+        request: Union[image_annotator.BatchAnnotateImagesRequest, dict] = None,
         *,
         requests: Sequence[image_annotator.AnnotateImageRequest] = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -384,7 +384,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         images.
 
         Args:
-            request (google.cloud.vision_v1p3beta1.types.BatchAnnotateImagesRequest):
+            request (Union[google.cloud.vision_v1p3beta1.types.BatchAnnotateImagesRequest, dict]):
                 The request object. Multiple image annotation requests
                 are batched into a single service call.
             requests (Sequence[google.cloud.vision_v1p3beta1.types.AnnotateImageRequest]):
@@ -442,7 +442,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
 
     def async_batch_annotate_files(
         self,
-        request: image_annotator.AsyncBatchAnnotateFilesRequest = None,
+        request: Union[image_annotator.AsyncBatchAnnotateFilesRequest, dict] = None,
         *,
         requests: Sequence[image_annotator.AsyncAnnotateFileRequest] = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -458,7 +458,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         ``AsyncBatchAnnotateFilesResponse`` (results).
 
         Args:
-            request (google.cloud.vision_v1p3beta1.types.AsyncBatchAnnotateFilesRequest):
+            request (Union[google.cloud.vision_v1p3beta1.types.AsyncBatchAnnotateFilesRequest, dict]):
                 The request object. Multiple async file annotation
                 requests are batched into a single service call.
             requests (Sequence[google.cloud.vision_v1p3beta1.types.AsyncAnnotateFileRequest]):
