@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-org-policy/compare/v1.0.1...v1.0.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([c2ea337](https://www.github.com/googleapis/python-org-policy/commit/c2ea337f06189254eeaec9e60fbf273b38e9f2d8))
+
 ### [1.0.1](https://www.github.com/googleapis/python-org-policy/compare/v1.0.0...v1.0.1) (2021-07-26)
 
 
