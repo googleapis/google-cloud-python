@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.7.1](https://www.github.com/googleapis/python-assured-workloads/compare/v0.7.0...v0.7.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([5c4dd09](https://www.github.com/googleapis/python-assured-workloads/commit/5c4dd0988b444175a3e6cc5c4b3e183d56cefaba))
+
 ## [0.7.0](https://www.github.com/googleapis/python-assured-workloads/compare/v0.6.0...v0.7.0) (2021-09-20)
 
 
