@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-iap/compare/v1.0.0...v1.0.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([a5b27d2](https://www.github.com/googleapis/python-iap/commit/a5b27d26e4bc845aeede7281959a81f693ee52c2))
+
 ## [1.0.0](https://www.github.com/googleapis/python-iap/compare/v0.1.2...v1.0.0) (2021-08-09)
 
 
