@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+### [2.2.3](https://www.github.com/googleapis/python-redis/compare/v2.2.2...v2.2.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([cf0a714](https://www.github.com/googleapis/python-redis/commit/cf0a71406dfa86909099fc26553f7bf74d4d23e1))
+
 ### [2.2.2](https://www.github.com/googleapis/python-redis/compare/v2.2.1...v2.2.2) (2021-07-28)
 
 
