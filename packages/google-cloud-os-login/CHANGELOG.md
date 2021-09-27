@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+### [2.3.2](https://www.github.com/googleapis/python-oslogin/compare/v2.3.1...v2.3.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([eb11483](https://www.github.com/googleapis/python-oslogin/commit/eb11483cf6f2ce80b931f31634d6b1ebd1b03b02))
+
 ### [2.3.1](https://www.github.com/googleapis/python-oslogin/compare/v2.3.0...v2.3.1) (2021-07-26)
 
 
