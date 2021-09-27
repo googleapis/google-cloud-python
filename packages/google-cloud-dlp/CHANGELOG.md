@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+### [3.2.3](https://www.github.com/googleapis/python-dlp/compare/v3.2.2...v3.2.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([ff98215](https://www.github.com/googleapis/python-dlp/commit/ff98215e7dc3fc6a2e8b04e3b8e570cd72556f4f))
+
 ### [3.2.2](https://www.github.com/googleapis/python-dlp/compare/v3.2.1...v3.2.2) (2021-07-27)
 
 
