@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.4](https://www.github.com/googleapis/python-source-context/compare/v0.1.3...v0.1.4) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([0039f92](https://www.github.com/googleapis/python-source-context/commit/0039f92abf768992bdd79e68fb99407cd0e47629))
+
 ### [0.1.3](https://www.github.com/googleapis/python-source-context/compare/v0.1.2...v0.1.3) (2021-08-23)
 
 
