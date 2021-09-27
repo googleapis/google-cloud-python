@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-data-fusion/compare/v1.0.0...v1.0.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([73e18c4](https://www.github.com/googleapis/python-data-fusion/commit/73e18c4504ee8f1f86d9122b4fb8db223ee24cff))
+
 ## [1.0.0](https://www.github.com/googleapis/python-data-fusion/compare/v0.1.2...v1.0.0) (2021-08-24)
 
 
