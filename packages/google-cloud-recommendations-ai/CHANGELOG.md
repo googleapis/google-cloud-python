@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.3](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.3.2...v0.3.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([ff8c418](https://www.github.com/googleapis/python-recommendations-ai/commit/ff8c4189e70770b83b84eb0d6cf886104d62d36a))
+
 ### [0.3.2](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.3.1...v0.3.2) (2021-07-28)
 
 
