@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+### [2.27.1](https://www.github.com/googleapis/python-bigquery/compare/v2.27.0...v2.27.1) (2021-09-27)
+
+
+### Bug Fixes
+
+* remove py.typed since package fails mypy check ([#988](https://www.github.com/googleapis/python-bigquery/issues/988)) ([39030f2](https://www.github.com/googleapis/python-bigquery/commit/39030f26ce081cfacd456b84694c68e3f04ed48d))
+
 ## [2.27.0](https://www.github.com/googleapis/python-bigquery/compare/v2.26.0...v2.27.0) (2021-09-24)
 
 
