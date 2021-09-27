@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+### [2.3.2](https://www.github.com/googleapis/python-iam/compare/v2.3.1...v2.3.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([96b0b6a](https://www.github.com/googleapis/python-iam/commit/96b0b6ad8af89e0ab2803325f9ff595ce5e3b5b4))
+
 ### [2.3.1](https://www.github.com/googleapis/python-iam/compare/v2.3.0...v2.3.1) (2021-07-26)
 
 
