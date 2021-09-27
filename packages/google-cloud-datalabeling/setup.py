@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-datalabeling"
 description = "Data Labeling API client library"
-version = "1.2.2"
+version = "1.2.3"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x

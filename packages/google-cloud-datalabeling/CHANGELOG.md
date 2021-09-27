@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+### [1.2.3](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.2...v1.2.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([41ccc9a](https://www.github.com/googleapis/python-datalabeling/commit/41ccc9abe59315b9f3794bb264f6dbc4251488bc))
+
 ### [1.2.2](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.1...v1.2.2) (2021-07-27)
 
 
