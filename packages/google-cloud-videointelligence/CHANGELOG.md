@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+### [2.3.3](https://www.github.com/googleapis/python-videointelligence/compare/v2.3.2...v2.3.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([ec86dc6](https://www.github.com/googleapis/python-videointelligence/commit/ec86dc6211a2b5be69c2b74dd65ea4968f89f244))
+
 ### [2.3.2](https://www.github.com/googleapis/python-videointelligence/compare/v2.3.1...v2.3.2) (2021-07-26)
 
 
