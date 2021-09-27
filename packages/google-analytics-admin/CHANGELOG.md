@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.5.1](https://www.github.com/googleapis/python-analytics-admin/compare/v0.5.0...v0.5.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([256c880](https://www.github.com/googleapis/python-analytics-admin/commit/256c880c486761e32c00ece8ee40ee3a23d87bdb))
+
 ## [0.5.0](https://www.github.com/googleapis/python-analytics-admin/compare/v0.4.3...v0.5.0) (2021-08-25)
 
 
