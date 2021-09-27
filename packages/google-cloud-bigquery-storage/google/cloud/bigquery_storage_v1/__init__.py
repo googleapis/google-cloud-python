@@ -30,6 +30,10 @@ class BigQueryReadClient(client.BigQueryReadClient):
     __doc__ = client.BigQueryReadClient.__doc__
 
 
+class BigQueryWriteClient(client.BigQueryWriteClient):
+    __doc__ = client.BigQueryWriteClient.__doc__
+
+
 __all__ = (
     # google.cloud.bigquery_storage_v1
     "__version__",

@@ -25,6 +25,7 @@ import google.api_core.gapic_v1.method
 
 from google.cloud.bigquery_storage_v1 import reader
 from google.cloud.bigquery_storage_v1.services import big_query_read
+from google.cloud.bigquery_storage_v1.services import big_query_write
 
 
 _SCOPES = (
@@ -135,3 +136,7 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
             offset,
             {"retry": retry, "timeout": timeout, "metadata": metadata},
         )
+
+
+class BigQueryWriteClient(big_query_write.BigQueryWriteClient):
+    __doc__ = big_query_write.BigQueryWriteClient.__doc__

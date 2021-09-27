@@ -28,9 +28,9 @@ from google.api_core import exceptions
 import google.api_core.retry
 import grpc
 
-from google.cloud.bigquery_storage_v1beta2 import exceptions as bqstorage_exceptions
-from google.cloud.bigquery_storage_v1beta2 import types as gapic_types
-from google.cloud.bigquery_storage_v1beta2.services import big_query_write
+from google.cloud.bigquery_storage_v1 import exceptions as bqstorage_exceptions
+from google.cloud.bigquery_storage_v1 import types as gapic_types
+from google.cloud.bigquery_storage_v1.services import big_query_write
 
 _LOGGER = logging.getLogger(__name__)
 _RPC_ERROR_THREAD_NAME = "Thread-OnRpcTerminated"
@@ -77,9 +77,9 @@ class AppendRowsStream(object):
             initial_request_template:
                 Data to include in the first request sent to the stream. This
                 must contain
-                :attr:`google.cloud.bigquery_storage_v1beta2.types.AppendRowsRequest.write_stream`
+                :attr:`google.cloud.bigquery_storage_v1.types.AppendRowsRequest.write_stream`
                 and
-                :attr:`google.cloud.bigquery_storage_v1beta2.types.AppendRowsRequest.ProtoData.writer_schema`.
+                :attr:`google.cloud.bigquery_storage_v1.types.AppendRowsRequest.ProtoData.writer_schema`.
             metadata:
                 Extra headers to include when sending the streaming request.
         """
@@ -124,13 +124,13 @@ class AppendRowsStream(object):
         """Open an append rows stream.
 
         This is automatically called by the first call to the
-        :attr:`google.cloud.bigquery_storage_v1beta2.writer.AppendRowsStream.send`
+        :attr:`google.cloud.bigquery_storage_v1.writer.AppendRowsStream.send`
         method.
 
         Args:
             initial_request:
                 The initial request to start the stream. Must have
-                :attr:`google.cloud.bigquery_storage_v1beta2.types.AppendRowsRequest.write_stream`
+                :attr:`google.cloud.bigquery_storage_v1.types.AppendRowsRequest.write_stream`
                 and ``proto_rows.writer_schema.proto_descriptor`` and
                 properties populated.
             timeout:

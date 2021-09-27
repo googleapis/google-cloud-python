@@ -15,14 +15,14 @@
 from google.api_core import exceptions
 import pytest
 
-from google.cloud.bigquery_storage_v1beta2 import types as gapic_types
+from google.cloud.bigquery_storage_v1 import types as gapic_types
 
 
 @pytest.fixture(scope="session")
 def bqstorage_write_client(credentials):
-    from google.cloud import bigquery_storage_v1beta2
+    from google.cloud import bigquery_storage_v1
 
-    return bigquery_storage_v1beta2.BigQueryWriteClient(credentials=credentials)
+    return bigquery_storage_v1.BigQueryWriteClient(credentials=credentials)
 
 
 def test_append_rows_with_invalid_stream_name_fails_fast(bqstorage_write_client):
