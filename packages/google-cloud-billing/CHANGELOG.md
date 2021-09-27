@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.3](https://www.github.com/googleapis/python-billing/compare/v1.3.2...v1.3.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([51f7055](https://www.github.com/googleapis/python-billing/commit/51f7055f3a992902f60342de389ec261147e98af))
+
 ### [1.3.2](https://www.github.com/googleapis/python-billing/compare/v1.3.1...v1.3.2) (2021-07-27)
 
 
