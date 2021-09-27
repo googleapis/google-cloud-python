@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.3](https://www.github.com/googleapis/python-service-directory/compare/v1.0.2...v1.0.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([b1982e1](https://www.github.com/googleapis/python-service-directory/commit/b1982e1e3d9214c93b59dbbb1f9ff00532fc6120))
+
 ### [1.0.2](https://www.github.com/googleapis/python-service-directory/compare/v1.0.1...v1.0.2) (2021-07-28)
 
 
