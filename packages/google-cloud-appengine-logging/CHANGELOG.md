@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.5](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.4...v0.1.5) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([35fa951](https://www.github.com/googleapis/python-appengine-logging/commit/35fa951f775931caefacf0b7dadd37610aad9354))
+
 ### [0.1.4](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.3...v0.1.4) (2021-07-29)
 
 
