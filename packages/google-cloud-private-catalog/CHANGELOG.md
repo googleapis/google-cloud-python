@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.3](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.2...v0.2.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([b9ce54a](https://www.github.com/googleapis/python-private-catalog/commit/b9ce54ad72ffa6be7319ed17d81441117c24b9ec))
+
 ### [0.2.2](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.1...v0.2.2) (2021-07-29)
 
 
