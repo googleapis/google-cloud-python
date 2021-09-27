@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-tpu/compare/v1.0.0...v1.0.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([2487395](https://www.github.com/googleapis/python-tpu/commit/24873956eccde0a118ea11ea19ede30758c34180))
+
 ## [1.0.0](https://www.github.com/googleapis/python-tpu/compare/v0.2.2...v1.0.0) (2021-08-03)
 
 
