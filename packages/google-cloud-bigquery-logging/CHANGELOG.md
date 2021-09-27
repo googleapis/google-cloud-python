@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.2](https://www.github.com/googleapis/python-bigquery-logging/compare/v0.2.1...v0.2.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([546c1b3](https://www.github.com/googleapis/python-bigquery-logging/commit/546c1b3539f03a172eed2cdf202615a5fa37418f))
+
 ### [0.2.1](https://www.github.com/googleapis/python-bigquery-logging/compare/v0.2.0...v0.2.1) (2021-07-29)
 
 
