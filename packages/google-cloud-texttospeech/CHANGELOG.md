@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+### [2.5.3](https://www.github.com/googleapis/python-texttospeech/compare/v2.5.2...v2.5.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([e74b994](https://www.github.com/googleapis/python-texttospeech/commit/e74b9942d480bf7e360bc61ff183909873fc20a6))
+
 ### [2.5.2](https://www.github.com/googleapis/python-texttospeech/compare/v2.5.1...v2.5.2) (2021-07-28)
 
 
