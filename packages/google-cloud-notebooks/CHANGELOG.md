@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-notebooks/compare/v0.4.0...v0.4.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([e1246c8](https://www.github.com/googleapis/python-notebooks/commit/e1246c878c3716181a03dbabee4c5d73e809087f))
+
 ## [0.4.0](https://www.github.com/googleapis/python-notebooks/compare/v0.3.2...v0.4.0) (2021-08-31)
 
 
