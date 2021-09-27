@@ -44,6 +44,7 @@ s.move(
         "noxfile.py",
         "renovate.json",  # do not bundle reports
         "CONTRIBUTING.rst",
+        ".github/CODEOWNERS",
     ],
 )
 
