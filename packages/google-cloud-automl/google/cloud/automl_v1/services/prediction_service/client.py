@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -363,7 +363,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
 
     def predict(
         self,
-        request: prediction_service.PredictRequest = None,
+        request: Union[prediction_service.PredictRequest, dict] = None,
         *,
         name: str = None,
         payload: data_items.ExamplePayload = None,
@@ -411,7 +411,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
            up to 5MB. Not available for FORECASTING ``prediction_type``.
 
         Args:
-            request (google.cloud.automl_v1.types.PredictRequest):
+            request (Union[google.cloud.automl_v1.types.PredictRequest, dict]):
                 The request object. Request message for
                 [PredictionService.Predict][google.cloud.automl.v1.PredictionService.Predict].
             name (str):
@@ -520,7 +520,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
 
     def batch_predict(
         self,
-        request: prediction_service.BatchPredictRequest = None,
+        request: Union[prediction_service.BatchPredictRequest, dict] = None,
         *,
         name: str = None,
         input_config: io.BatchPredictInputConfig = None,
@@ -552,7 +552,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         -  AutoML Tables
 
         Args:
-            request (google.cloud.automl_v1.types.BatchPredictRequest):
+            request (Union[google.cloud.automl_v1.types.BatchPredictRequest, dict]):
                 The request object. Request message for
                 [PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict].
             name (str):

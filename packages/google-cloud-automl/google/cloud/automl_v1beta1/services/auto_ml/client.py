@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -491,7 +491,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def create_dataset(
         self,
-        request: service.CreateDatasetRequest = None,
+        request: Union[service.CreateDatasetRequest, dict] = None,
         *,
         parent: str = None,
         dataset: gca_dataset.Dataset = None,
@@ -502,7 +502,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         r"""Creates a dataset.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.CreateDatasetRequest):
+            request (Union[google.cloud.automl_v1beta1.types.CreateDatasetRequest, dict]):
                 The request object. Request message for
                 [AutoMl.CreateDataset][google.cloud.automl.v1beta1.AutoMl.CreateDataset].
             parent (str):
@@ -572,7 +572,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def get_dataset(
         self,
-        request: service.GetDatasetRequest = None,
+        request: Union[service.GetDatasetRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -582,7 +582,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         r"""Gets a dataset.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.GetDatasetRequest):
+            request (Union[google.cloud.automl_v1beta1.types.GetDatasetRequest, dict]):
                 The request object. Request message for
                 [AutoMl.GetDataset][google.cloud.automl.v1beta1.AutoMl.GetDataset].
             name (str):
@@ -645,7 +645,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def list_datasets(
         self,
-        request: service.ListDatasetsRequest = None,
+        request: Union[service.ListDatasetsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -655,7 +655,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         r"""Lists datasets in a project.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.ListDatasetsRequest):
+            request (Union[google.cloud.automl_v1beta1.types.ListDatasetsRequest, dict]):
                 The request object. Request message for
                 [AutoMl.ListDatasets][google.cloud.automl.v1beta1.AutoMl.ListDatasets].
             parent (str):
@@ -725,7 +725,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def update_dataset(
         self,
-        request: service.UpdateDatasetRequest = None,
+        request: Union[service.UpdateDatasetRequest, dict] = None,
         *,
         dataset: gca_dataset.Dataset = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -735,7 +735,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         r"""Updates a dataset.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.UpdateDatasetRequest):
+            request (Union[google.cloud.automl_v1beta1.types.UpdateDatasetRequest, dict]):
                 The request object. Request message for
                 [AutoMl.UpdateDataset][google.cloud.automl.v1beta1.AutoMl.UpdateDataset]
             dataset (google.cloud.automl_v1beta1.types.Dataset):
@@ -800,7 +800,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def delete_dataset(
         self,
-        request: service.DeleteDatasetRequest = None,
+        request: Union[service.DeleteDatasetRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -814,7 +814,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         [metadata][google.longrunning.Operation.metadata] field.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.DeleteDatasetRequest):
+            request (Union[google.cloud.automl_v1beta1.types.DeleteDatasetRequest, dict]):
                 The request object. Request message for
                 [AutoMl.DeleteDataset][google.cloud.automl.v1beta1.AutoMl.DeleteDataset].
             name (str):
@@ -896,7 +896,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def import_data(
         self,
-        request: service.ImportDataRequest = None,
+        request: Union[service.ImportDataRequest, dict] = None,
         *,
         name: str = None,
         input_config: io.InputConfig = None,
@@ -916,7 +916,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
            field when it completes.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.ImportDataRequest):
+            request (Union[google.cloud.automl_v1beta1.types.ImportDataRequest, dict]):
                 The request object. Request message for
                 [AutoMl.ImportData][google.cloud.automl.v1beta1.AutoMl.ImportData].
             name (str):
@@ -1009,7 +1009,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def export_data(
         self,
-        request: service.ExportDataRequest = None,
+        request: Union[service.ExportDataRequest, dict] = None,
         *,
         name: str = None,
         output_config: io.OutputConfig = None,
@@ -1023,7 +1023,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         completes.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.ExportDataRequest):
+            request (Union[google.cloud.automl_v1beta1.types.ExportDataRequest, dict]):
                 The request object. Request message for
                 [AutoMl.ExportData][google.cloud.automl.v1beta1.AutoMl.ExportData].
             name (str):
@@ -1114,7 +1114,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def get_annotation_spec(
         self,
-        request: service.GetAnnotationSpecRequest = None,
+        request: Union[service.GetAnnotationSpecRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1124,7 +1124,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         r"""Gets an annotation spec.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.GetAnnotationSpecRequest):
+            request (Union[google.cloud.automl_v1beta1.types.GetAnnotationSpecRequest, dict]):
                 The request object. Request message for
                 [AutoMl.GetAnnotationSpec][google.cloud.automl.v1beta1.AutoMl.GetAnnotationSpec].
             name (str):
@@ -1183,7 +1183,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def get_table_spec(
         self,
-        request: service.GetTableSpecRequest = None,
+        request: Union[service.GetTableSpecRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1193,7 +1193,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         r"""Gets a table spec.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.GetTableSpecRequest):
+            request (Union[google.cloud.automl_v1beta1.types.GetTableSpecRequest, dict]):
                 The request object. Request message for
                 [AutoMl.GetTableSpec][google.cloud.automl.v1beta1.AutoMl.GetTableSpec].
             name (str):
@@ -1262,7 +1262,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def list_table_specs(
         self,
-        request: service.ListTableSpecsRequest = None,
+        request: Union[service.ListTableSpecsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1272,7 +1272,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         r"""Lists table specs in a dataset.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.ListTableSpecsRequest):
+            request (Union[google.cloud.automl_v1beta1.types.ListTableSpecsRequest, dict]):
                 The request object. Request message for
                 [AutoMl.ListTableSpecs][google.cloud.automl.v1beta1.AutoMl.ListTableSpecs].
             parent (str):
@@ -1342,7 +1342,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def update_table_spec(
         self,
-        request: service.UpdateTableSpecRequest = None,
+        request: Union[service.UpdateTableSpecRequest, dict] = None,
         *,
         table_spec: gca_table_spec.TableSpec = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1352,7 +1352,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         r"""Updates a table spec.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.UpdateTableSpecRequest):
+            request (Union[google.cloud.automl_v1beta1.types.UpdateTableSpecRequest, dict]):
                 The request object. Request message for
                 [AutoMl.UpdateTableSpec][google.cloud.automl.v1beta1.AutoMl.UpdateTableSpec]
             table_spec (google.cloud.automl_v1beta1.types.TableSpec):
@@ -1423,7 +1423,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def get_column_spec(
         self,
-        request: service.GetColumnSpecRequest = None,
+        request: Union[service.GetColumnSpecRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1433,7 +1433,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         r"""Gets a column spec.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.GetColumnSpecRequest):
+            request (Union[google.cloud.automl_v1beta1.types.GetColumnSpecRequest, dict]):
                 The request object. Request message for
                 [AutoMl.GetColumnSpec][google.cloud.automl.v1beta1.AutoMl.GetColumnSpec].
             name (str):
@@ -1494,7 +1494,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def list_column_specs(
         self,
-        request: service.ListColumnSpecsRequest = None,
+        request: Union[service.ListColumnSpecsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1504,7 +1504,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         r"""Lists column specs in a table spec.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.ListColumnSpecsRequest):
+            request (Union[google.cloud.automl_v1beta1.types.ListColumnSpecsRequest, dict]):
                 The request object. Request message for
                 [AutoMl.ListColumnSpecs][google.cloud.automl.v1beta1.AutoMl.ListColumnSpecs].
             parent (str):
@@ -1574,7 +1574,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def update_column_spec(
         self,
-        request: service.UpdateColumnSpecRequest = None,
+        request: Union[service.UpdateColumnSpecRequest, dict] = None,
         *,
         column_spec: gca_column_spec.ColumnSpec = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1584,7 +1584,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         r"""Updates a column spec.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.UpdateColumnSpecRequest):
+            request (Union[google.cloud.automl_v1beta1.types.UpdateColumnSpecRequest, dict]):
                 The request object. Request message for
                 [AutoMl.UpdateColumnSpec][google.cloud.automl.v1beta1.AutoMl.UpdateColumnSpec]
             column_spec (google.cloud.automl_v1beta1.types.ColumnSpec):
@@ -1647,7 +1647,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def create_model(
         self,
-        request: service.CreateModelRequest = None,
+        request: Union[service.CreateModelRequest, dict] = None,
         *,
         parent: str = None,
         model: gca_model.Model = None,
@@ -1662,7 +1662,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         each annotation spec.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.CreateModelRequest):
+            request (Union[google.cloud.automl_v1beta1.types.CreateModelRequest, dict]):
                 The request object. Request message for
                 [AutoMl.CreateModel][google.cloud.automl.v1beta1.AutoMl.CreateModel].
             parent (str):
@@ -1742,7 +1742,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def get_model(
         self,
-        request: service.GetModelRequest = None,
+        request: Union[service.GetModelRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1752,7 +1752,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         r"""Gets a model.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.GetModelRequest):
+            request (Union[google.cloud.automl_v1beta1.types.GetModelRequest, dict]):
                 The request object. Request message for
                 [AutoMl.GetModel][google.cloud.automl.v1beta1.AutoMl.GetModel].
             name (str):
@@ -1811,7 +1811,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def list_models(
         self,
-        request: service.ListModelsRequest = None,
+        request: Union[service.ListModelsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1821,7 +1821,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         r"""Lists models.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.ListModelsRequest):
+            request (Union[google.cloud.automl_v1beta1.types.ListModelsRequest, dict]):
                 The request object. Request message for
                 [AutoMl.ListModels][google.cloud.automl.v1beta1.AutoMl.ListModels].
             parent (str):
@@ -1891,7 +1891,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def delete_model(
         self,
-        request: service.DeleteModelRequest = None,
+        request: Union[service.DeleteModelRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1904,7 +1904,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         [metadata][google.longrunning.Operation.metadata] field.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.DeleteModelRequest):
+            request (Union[google.cloud.automl_v1beta1.types.DeleteModelRequest, dict]):
                 The request object. Request message for
                 [AutoMl.DeleteModel][google.cloud.automl.v1beta1.AutoMl.DeleteModel].
             name (str):
@@ -1986,7 +1986,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def deploy_model(
         self,
-        request: service.DeployModelRequest = None,
+        request: Union[service.DeployModelRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2010,7 +2010,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         completes.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.DeployModelRequest):
+            request (Union[google.cloud.automl_v1beta1.types.DeployModelRequest, dict]):
                 The request object. Request message for
                 [AutoMl.DeployModel][google.cloud.automl.v1beta1.AutoMl.DeployModel].
             name (str):
@@ -2092,7 +2092,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def undeploy_model(
         self,
-        request: service.UndeployModelRequest = None,
+        request: Union[service.UndeployModelRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2110,7 +2110,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         completes.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.UndeployModelRequest):
+            request (Union[google.cloud.automl_v1beta1.types.UndeployModelRequest, dict]):
                 The request object. Request message for
                 [AutoMl.UndeployModel][google.cloud.automl.v1beta1.AutoMl.UndeployModel].
             name (str):
@@ -2192,7 +2192,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def export_model(
         self,
-        request: service.ExportModelRequest = None,
+        request: Union[service.ExportModelRequest, dict] = None,
         *,
         name: str = None,
         output_config: io.ModelExportOutputConfig = None,
@@ -2211,7 +2211,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         completes.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.ExportModelRequest):
+            request (Union[google.cloud.automl_v1beta1.types.ExportModelRequest, dict]):
                 The request object. Request message for
                 [AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel].
                 Models need to be enabled for exporting, otherwise an
@@ -2304,7 +2304,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def export_evaluated_examples(
         self,
-        request: service.ExportEvaluatedExamplesRequest = None,
+        request: Union[service.ExportEvaluatedExamplesRequest, dict] = None,
         *,
         name: str = None,
         output_config: io.ExportEvaluatedExamplesOutputConfig = None,
@@ -2329,7 +2329,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         completes.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.ExportEvaluatedExamplesRequest):
+            request (Union[google.cloud.automl_v1beta1.types.ExportEvaluatedExamplesRequest, dict]):
                 The request object. Request message for
                 [AutoMl.ExportEvaluatedExamples][google.cloud.automl.v1beta1.AutoMl.ExportEvaluatedExamples].
             name (str):
@@ -2423,7 +2423,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def get_model_evaluation(
         self,
-        request: service.GetModelEvaluationRequest = None,
+        request: Union[service.GetModelEvaluationRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2433,7 +2433,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         r"""Gets a model evaluation.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.GetModelEvaluationRequest):
+            request (Union[google.cloud.automl_v1beta1.types.GetModelEvaluationRequest, dict]):
                 The request object. Request message for
                 [AutoMl.GetModelEvaluation][google.cloud.automl.v1beta1.AutoMl.GetModelEvaluation].
             name (str):
@@ -2492,7 +2492,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     def list_model_evaluations(
         self,
-        request: service.ListModelEvaluationsRequest = None,
+        request: Union[service.ListModelEvaluationsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -2502,7 +2502,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         r"""Lists model evaluations.
 
         Args:
-            request (google.cloud.automl_v1beta1.types.ListModelEvaluationsRequest):
+            request (Union[google.cloud.automl_v1beta1.types.ListModelEvaluationsRequest, dict]):
                 The request object. Request message for
                 [AutoMl.ListModelEvaluations][google.cloud.automl.v1beta1.AutoMl.ListModelEvaluations].
             parent (str):

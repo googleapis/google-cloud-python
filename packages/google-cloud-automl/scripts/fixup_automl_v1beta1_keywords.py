@@ -39,32 +39,32 @@ def partition(
 class automlCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'batch_predict': ('name', 'input_config', 'output_config', 'params', ),
-          'create_dataset': ('parent', 'dataset', ),
-          'create_model': ('parent', 'model', ),
-          'delete_dataset': ('name', ),
-          'delete_model': ('name', ),
-          'deploy_model': ('name', 'image_object_detection_model_deployment_metadata', 'image_classification_model_deployment_metadata', ),
-          'export_data': ('name', 'output_config', ),
-          'export_evaluated_examples': ('name', 'output_config', ),
-          'export_model': ('name', 'output_config', ),
-          'get_annotation_spec': ('name', ),
-          'get_column_spec': ('name', 'field_mask', ),
-          'get_dataset': ('name', ),
-          'get_model': ('name', ),
-          'get_model_evaluation': ('name', ),
-          'get_table_spec': ('name', 'field_mask', ),
-          'import_data': ('name', 'input_config', ),
-          'list_column_specs': ('parent', 'field_mask', 'filter', 'page_size', 'page_token', ),
-          'list_datasets': ('parent', 'filter', 'page_size', 'page_token', ),
-          'list_model_evaluations': ('parent', 'filter', 'page_size', 'page_token', ),
-          'list_models': ('parent', 'filter', 'page_size', 'page_token', ),
-          'list_table_specs': ('parent', 'field_mask', 'filter', 'page_size', 'page_token', ),
-          'predict': ('name', 'payload', 'params', ),
-          'undeploy_model': ('name', ),
-          'update_column_spec': ('column_spec', 'update_mask', ),
-          'update_dataset': ('dataset', 'update_mask', ),
-          'update_table_spec': ('table_spec', 'update_mask', ),
+        'batch_predict': ('name', 'input_config', 'output_config', 'params', ),
+        'create_dataset': ('parent', 'dataset', ),
+        'create_model': ('parent', 'model', ),
+        'delete_dataset': ('name', ),
+        'delete_model': ('name', ),
+        'deploy_model': ('name', 'image_object_detection_model_deployment_metadata', 'image_classification_model_deployment_metadata', ),
+        'export_data': ('name', 'output_config', ),
+        'export_evaluated_examples': ('name', 'output_config', ),
+        'export_model': ('name', 'output_config', ),
+        'get_annotation_spec': ('name', ),
+        'get_column_spec': ('name', 'field_mask', ),
+        'get_dataset': ('name', ),
+        'get_model': ('name', ),
+        'get_model_evaluation': ('name', ),
+        'get_table_spec': ('name', 'field_mask', ),
+        'import_data': ('name', 'input_config', ),
+        'list_column_specs': ('parent', 'field_mask', 'filter', 'page_size', 'page_token', ),
+        'list_datasets': ('parent', 'filter', 'page_size', 'page_token', ),
+        'list_model_evaluations': ('parent', 'filter', 'page_size', 'page_token', ),
+        'list_models': ('parent', 'filter', 'page_size', 'page_token', ),
+        'list_table_specs': ('parent', 'field_mask', 'filter', 'page_size', 'page_token', ),
+        'predict': ('name', 'payload', 'params', ),
+        'undeploy_model': ('name', ),
+        'update_column_spec': ('column_spec', 'update_mask', ),
+        'update_dataset': ('dataset', 'update_mask', ),
+        'update_table_spec': ('table_spec', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -83,7 +83,7 @@ class automlCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
