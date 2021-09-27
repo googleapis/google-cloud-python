@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.3](https://www.github.com/googleapis/python-gke-connect-gateway/compare/v0.2.2...v0.2.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([f23d221](https://www.github.com/googleapis/python-gke-connect-gateway/commit/f23d221f3d8abab4ba9265daa49bb8b691d887c5))
+
 ### [0.2.2](https://www.github.com/googleapis/python-gke-connect-gateway/compare/v0.2.1...v0.2.2) (2021-07-29)
 
 
