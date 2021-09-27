@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.5.1](https://www.github.com/googleapis/python-os-config/compare/v1.5.0...v1.5.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([911871e](https://www.github.com/googleapis/python-os-config/commit/911871e8154fdb16a6e182764563864cf2235153))
+
 ## [1.5.0](https://www.github.com/googleapis/python-os-config/compare/v1.4.0...v1.5.0) (2021-09-07)
 
 
