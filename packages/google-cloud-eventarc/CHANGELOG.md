@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-eventarc/compare/v1.0.0...v1.0.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([d940eea](https://www.github.com/googleapis/python-eventarc/commit/d940eeadf232c1c4e74e4f86a65367a2bf37f428))
+
 ## [1.0.0](https://www.github.com/googleapis/python-eventarc/compare/v0.2.2...v1.0.0) (2021-08-03)
 
 
