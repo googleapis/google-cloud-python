@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.2](https://www.github.com/googleapis/python-domains/compare/v0.2.1...v0.2.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([fa12c9b](https://www.github.com/googleapis/python-domains/commit/fa12c9b4f77bf43a41df5bb84e3a12c7c2b5a48f))
+
 ### [0.2.1](https://www.github.com/googleapis/python-domains/compare/v0.2.0...v0.2.1) (2021-07-28)
 
 
