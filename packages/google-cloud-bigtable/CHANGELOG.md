@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-bigtable/compare/v2.3.3...v2.4.0) (2021-09-24)
+
+
+### Features
+
+* Publish new fields to support cluster group routing for Cloud Bigtable ([#407](https://www.github.com/googleapis/python-bigtable/issues/407)) ([66af554](https://www.github.com/googleapis/python-bigtable/commit/66af554a103eea0139cb313691d69f4c88a9e87f))
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([160bfd3](https://www.github.com/googleapis/python-bigtable/commit/160bfd317a83561821acc0212d3514701a031ac6))
+
 ### [2.3.3](https://www.github.com/googleapis/python-bigtable/compare/v2.3.2...v2.3.3) (2021-07-24)
 
 
