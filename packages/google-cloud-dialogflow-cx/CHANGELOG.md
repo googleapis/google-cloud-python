@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.3.2](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.3.1...v1.3.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([96021b9](https://www.github.com/googleapis/python-dialogflow-cx/commit/96021b9a78a40f3f8f9898d53493912a1621da89))
+
+
+### Documentation
+
+* **samples:** added filter sample ([#171](https://www.github.com/googleapis/python-dialogflow-cx/issues/171)) ([5b7e6b9](https://www.github.com/googleapis/python-dialogflow-cx/commit/5b7e6b9fcb066e823d58c5ce3af0f32a54d896bc))
+* **samples:** added page management samples ([#152](https://www.github.com/googleapis/python-dialogflow-cx/issues/152)) ([41d15f8](https://www.github.com/googleapis/python-dialogflow-cx/commit/41d15f8f212baab09222c6a350efc3376a3bf9ea))
+
 ### [1.3.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.3.0...v1.3.1) (2021-08-31)
 
 
