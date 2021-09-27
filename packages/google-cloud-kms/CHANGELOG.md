@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+### [2.6.1](https://www.github.com/googleapis/python-kms/compare/v2.6.0...v2.6.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([728e5e0](https://www.github.com/googleapis/python-kms/commit/728e5e08738e4954c3f1f9eecda5c1d1753501c3))
+
 ## [2.6.0](https://www.github.com/googleapis/python-kms/compare/v2.5.0...v2.6.0) (2021-08-30)
 
 
