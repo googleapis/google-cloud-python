@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.5](https://www.github.com/googleapis/python-security-private-ca/compare/v1.0.4...v1.0.5) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([49b5c9a](https://www.github.com/googleapis/python-security-private-ca/commit/49b5c9ae54c594abf1a8158506e2a1ddb6dce67d))
+
 ### [1.0.4](https://www.github.com/googleapis/python-security-private-ca/compare/v1.0.3...v1.0.4) (2021-08-10)
 
 
