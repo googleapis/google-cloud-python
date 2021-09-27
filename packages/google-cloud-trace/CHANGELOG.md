@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+### [1.3.3](https://www.github.com/googleapis/python-trace/compare/v1.3.2...v1.3.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([4a5ed62](https://www.github.com/googleapis/python-trace/commit/4a5ed6283a9ed3ed7732117023d362c20d031c16))
+
 ### [1.3.2](https://www.github.com/googleapis/python-trace/compare/v1.3.1...v1.3.2) (2021-07-28)
 
 
