@@ -362,4 +362,60 @@ s.move(templated_files, excludes=[".coveragerc"])
 # ----------------------------------------------------------------------------
 python.py_samples()
 
+# ----------------------------------------------------------------------------
+# pytype-related changes
+# ----------------------------------------------------------------------------
+
+# Add .pytype to .gitignore
+s.replace(".gitignore", r"\.pytest_cache", "\g<0>\n.pytype")
+
+# Add pytype config to setup.cfg
+s.replace(
+    "setup.cfg",
+    r"universal = 1",
+    textwrap.dedent(
+        """    \g<0>
+
+    [pytype]
+    python_version = 3.8
+    inputs =
+        google/cloud/
+    exclude =
+        tests/
+        google/pubsub_v1/  # generated code
+    output = .pytype/
+    disable =
+        # There's some issue with finding some pyi files, thus disabling.
+        # The issue https://github.com/google/pytype/issues/150 is closed, but the
+        # error still occurs for some reason.
+        pyi-error"""
+    ),
+)
+
+# Add pytype session to noxfile.py
+s.replace(
+    "noxfile.py",
+    r"BLACK_PATHS = \[.*?\]",
+    '\g<0>\n\nPYTYPE_VERSION = "pytype==2021.4.9"\n',
+)
+s.replace(
+    "noxfile.py", r'"blacken",', '\g<0>\n    "pytype",',
+)
+s.replace(
+    "noxfile.py",
+    r"nox\.options\.error_on_missing_interpreters = True",
+    textwrap.dedent(
+        '''    \g<0>
+
+
+    @nox.session(python=DEFAULT_PYTHON_VERSION)
+    def pytype(session):
+        """Run type checks."""
+        session.install("-e", ".[all]")
+        session.install(PYTYPE_VERSION)
+        session.run("pytype")'''
+    ),
+)
+
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

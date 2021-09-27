@@ -45,7 +45,7 @@ from google.pubsub_v1.types import pubsub as pubsub_gapic_types
 BatchSettings = collections.namedtuple(
     "BatchSettings", ["max_bytes", "max_latency", "max_messages"]
 )
-BatchSettings.__new__.__defaults__ = (
+BatchSettings.__new__.__defaults__ = (  # pytype: disable=attribute-error
     1 * 1000 * 1000,  # max_bytes: 1 MB
     0.01,  # max_latency: 10 ms
     100,  # max_messages: 100
@@ -78,11 +78,13 @@ class LimitExceededBehavior(str, enum.Enum):
 PublishFlowControl = collections.namedtuple(
     "PublishFlowControl", ["message_limit", "byte_limit", "limit_exceeded_behavior"]
 )
+# pytype: disable=attribute-error
 PublishFlowControl.__new__.__defaults__ = (
     10 * BatchSettings.__new__.__defaults__[2],  # message limit
     10 * BatchSettings.__new__.__defaults__[0],  # byte limit
     LimitExceededBehavior.IGNORE,  # desired behavior
 )
+# pytype: enable=attribute-error
 PublishFlowControl.__doc__ = "The client flow control settings for message publishing."
 PublishFlowControl.message_limit.__doc__ = (
     "The maximum number of messages awaiting to be published."
@@ -101,7 +103,7 @@ PublishFlowControl.limit_exceeded_behavior.__doc__ = (
 PublisherOptions = collections.namedtuple(
     "PublisherOptions", ["enable_message_ordering", "flow_control", "retry", "timeout"]
 )
-PublisherOptions.__new__.__defaults__ = (
+PublisherOptions.__new__.__defaults__ = (  # pytype: disable=attribute-error
     False,  # enable_message_ordering: False
     PublishFlowControl(),  # default flow control settings
     gapic_v1.method.DEFAULT,  # use default api_core value for retry
@@ -138,7 +140,7 @@ FlowControl = collections.namedtuple(
         "max_duration_per_lease_extension",
     ],
 )
-FlowControl.__new__.__defaults__ = (
+FlowControl.__new__.__defaults__ = (  # pytype: disable=attribute-error
     100 * 1024 * 1024,  # max_bytes: 100mb
     1000,  # max_messages: 1000
     1 * 60 * 60,  # max_lease_duration: 1 hour.
