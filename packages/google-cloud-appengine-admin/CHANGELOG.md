@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.4](https://www.github.com/googleapis/python-appengine-admin/compare/v1.1.3...v1.1.4) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([89b4378](https://www.github.com/googleapis/python-appengine-admin/commit/89b4378632af08a11c3bd45d88eb0f0ac152238f))
+
 ### [1.1.3](https://www.github.com/googleapis/python-appengine-admin/compare/v1.1.2...v1.1.3) (2021-07-27)
 
 
