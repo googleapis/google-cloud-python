@@ -14,9 +14,29 @@
 
 import pytest
 
+from google.api_core import exceptions
+from test_utils.retry import RetryErrors
+
 from .utils import clear_datastore
 from .utils import populate_datastore
 from . import _helpers
+
+
+retry_503 = RetryErrors(exceptions.ServiceUnavailable)
+
+
+def _make_iterator(query, **kw):
+    # Do retry for errors raised during initial API call
+    return retry_503(query.fetch)(**kw)
+
+
+def _pull_iterator(query, **kw):
+    return list(_make_iterator(query, **kw))
+
+
+def _do_fetch(query, **kw):
+    # Do retry for errors raised during iteration
+    return retry_503(_pull_iterator)(query, **kw)
 
 
 @pytest.fixture(scope="session")
@@ -54,7 +74,7 @@ def test_query_w_ancestor(ancestor_query):
     expected_matches = 8
 
     # We expect 8, but allow the query to get 1 extra.
-    entities = list(query.fetch(limit=expected_matches + 1))
+    entities = _do_fetch(query, limit=expected_matches + 1)
 
     assert len(entities) == expected_matches
 
@@ -74,7 +94,7 @@ def test_query_w_limit_paging(ancestor_query):
     assert cursor is not None
 
     # Fetch remaining characters.
-    new_character_entities = list(query.fetch(start_cursor=cursor))
+    new_character_entities = _do_fetch(query, start_cursor=cursor)
     characters_remaining = len(populate_datastore.CHARACTERS) - limit
     assert len(new_character_entities) == characters_remaining
 
@@ -85,7 +105,7 @@ def test_query_w_simple_filter(ancestor_query):
     expected_matches = 6
 
     # We expect 6, but allow the query to get 1 extra.
-    entities = list(query.fetch(limit=expected_matches + 1))
+    entities = _do_fetch(query, limit=expected_matches + 1)
 
     assert len(entities) == expected_matches
 
@@ -97,7 +117,7 @@ def test_query_w_multiple_filters(ancestor_query):
     expected_matches = 4
 
     # We expect 4, but allow the query to get 1 extra.
-    entities = list(query.fetch(limit=expected_matches + 1))
+    entities = _do_fetch(query, limit=expected_matches + 1)
 
     assert len(entities) == expected_matches
 
@@ -110,7 +130,7 @@ def test_query_key_filter(query_client, ancestor_query):
     expected_matches = 1
 
     # We expect 1, but allow the query to get 1 extra.
-    entities = list(query.fetch(limit=expected_matches + 1))
+    entities = _do_fetch(query, limit=expected_matches + 1)
 
     assert len(entities) == expected_matches
 
@@ -121,7 +141,7 @@ def test_query_w_order(ancestor_query):
     expected_matches = 8
 
     # We expect 8, but allow the query to get 1 extra.
-    entities = list(query.fetch(limit=expected_matches + 1))
+    entities = _do_fetch(query, limit=expected_matches + 1)
 
     assert len(entities) == expected_matches
 
@@ -202,10 +222,10 @@ def test_query_w_offset_w_timestamp_keys(query_client):
     max_offset = max_all - offset
     query = query_client.query(kind="timestamp_key")
 
-    all_w_limit = list(query.fetch(limit=max_all))
+    all_w_limit = _do_fetch(query, limit=max_all)
     assert len(all_w_limit) == max_all
 
-    offset_w_limit = list(query.fetch(offset=offset, limit=max_offset))
+    offset_w_limit = _do_fetch(query, offset=offset, limit=max_offset)
     assert offset_w_limit == all_w_limit[offset:]
 
 
@@ -271,7 +291,7 @@ def test_query_distinct_on(ancestor_query):
     expected_matches = 2
 
     # We expect 2, but allow the query to get 1 extra.
-    entities = list(query.fetch(limit=expected_matches + 1))
+    entities = _do_fetch(query, limit=expected_matches + 1)
 
     assert len(entities) == expected_matches
     assert entities[0]["name"] == "Catelyn"
