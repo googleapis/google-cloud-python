@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.3](https://www.github.com/googleapis/python-life-sciences/compare/v0.2.2...v0.2.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([93487cb](https://www.github.com/googleapis/python-life-sciences/commit/93487cbfcdab0d77049dba6b7d1e44222c48fdfb))
+
 ### [0.2.2](https://www.github.com/googleapis/python-life-sciences/compare/v0.2.1...v0.2.2) (2021-07-29)
 
 
