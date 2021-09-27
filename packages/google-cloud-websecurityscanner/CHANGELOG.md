@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+### [1.4.2](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.4.1...v1.4.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([15b7d1f](https://www.github.com/googleapis/python-websecurityscanner/commit/15b7d1fa81188a866e089a7a6a715cbe7d768976))
+
 ### [1.4.1](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.4.0...v1.4.1) (2021-07-27)
 
 
