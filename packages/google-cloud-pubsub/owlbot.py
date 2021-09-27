@@ -355,7 +355,7 @@ templated_files = gcp.CommonTemplates().py_library(
     cov_level=100,
     system_test_external_dependencies=["psutil"],
 )
-s.move(templated_files, excludes=[".coveragerc"])
+s.move(templated_files, excludes=[".coveragerc", ".github/CODEOWNERS"])
 
 # ----------------------------------------------------------------------------
 # Samples templates
