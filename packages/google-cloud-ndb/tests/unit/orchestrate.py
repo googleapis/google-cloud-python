@@ -219,7 +219,7 @@ _local = threading.local()
 class _Conductor:
     """Coordinate communication between main thread and a test thread.
 
-    Two way communicaton is maintained between the main thread and a test thread using
+    Two way communication is maintained between the main thread and a test thread using
     two synchronized queues (`queue.Queue`) each with a size of one.
     """
 

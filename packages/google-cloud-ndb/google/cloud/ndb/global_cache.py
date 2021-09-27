@@ -125,7 +125,7 @@ class GlobalCache(object):
 
 
         Returns:
-            Dict[bytes, bool]: A `dict` mapping to boolean value wich will be
+            Dict[bytes, bool]: A `dict` mapping to boolean value that will be
                 :data:`True` if that key was set with a new value, and :data:`False`
                 otherwise.
         """

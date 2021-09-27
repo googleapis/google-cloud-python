@@ -6156,7 +6156,7 @@ class Model(_NotEqualMixin):
         # class SomeKind(ndb.Model):
         #     foo = ndb.IntegerProperty(name="bar")
         #
-        # If we are passed "bar", we know to translate that to "foo", becasue
+        # If we are passed "bar", we know to translate that to "foo", because
         # the datastore property, "bar", is the NDB property, "foo". But if we
         # are passed "foo", here, then that must be the datastore property,
         # "foo", which isn't even mapped to anything in the NDB model.

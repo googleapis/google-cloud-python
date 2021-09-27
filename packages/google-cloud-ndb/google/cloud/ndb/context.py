@@ -40,7 +40,7 @@ class _ContextIds:
     sufficient to uniquely identify the context in which a particular piece of code is
     being run. Each context, as it is created, is assigned the next id in this sequence.
     The context id is used by `utils.logging_debug` to grant insight into where a debug
-    logging statement is coming from in a cloud evironment.
+    logging statement is coming from in a cloud environment.
     """
 
     def __init__(self):
@@ -138,7 +138,7 @@ def get_toplevel_context(raise_context_error=True):
 
     The toplevel context is the context created by the call to
     :meth:`google.cloud.ndb.client.Client.context`. At times, this context will
-    be superceded by subcontexts, which are used, for example, during
+    be superseded by subcontexts, which are used, for example, during
     transactions. This function will always return the top level context
     regardless of whether one of these subcontexts is the current one.
 

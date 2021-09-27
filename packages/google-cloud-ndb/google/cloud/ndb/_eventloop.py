@@ -246,7 +246,7 @@ class EventLoop(object):
         """Run one of the idle callbacks.
 
         Returns:
-            bool: Indicates if an idle calback was called.
+            bool: Indicates if an idle callback was called.
         """
         if not self.idlers or self.inactive >= len(self.idlers):
             return False
@@ -270,7 +270,7 @@ class EventLoop(object):
         """Run one current item.
 
         Returns:
-            bool: Indicates if an idle calback was called.
+            bool: Indicates if an idle callback was called.
         """
         if not self.current:
             return False

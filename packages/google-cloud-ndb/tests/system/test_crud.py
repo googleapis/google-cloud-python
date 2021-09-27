@@ -1484,9 +1484,9 @@ def test_user_property(dispose_of):
     key = entity.put()
     dispose_of(key._key)
 
-    retreived = key.get()
-    assert retreived.user.email() == "somebody@example.com"
-    assert retreived.user.auth_domain() == "gmail.com"
+    retrieved = key.get()
+    assert retrieved.user.email() == "somebody@example.com"
+    assert retrieved.user.auth_domain() == "gmail.com"
 
 
 @pytest.mark.usefixtures("client_context")
@@ -1508,9 +1508,9 @@ def test_user_property_different_user_class(dispose_of):
     key = entity.put()
     dispose_of(key._key)
 
-    retreived = key.get()
-    assert retreived.user.email() == "somebody@example.com"
-    assert retreived.user.auth_domain() == "gmail.com"
+    retrieved = key.get()
+    assert retrieved.user.email() == "somebody@example.com"
+    assert retrieved.user.auth_domain() == "gmail.com"
 
 
 @pytest.mark.usefixtures("client_context")
@@ -1527,8 +1527,8 @@ def test_repeated_empty_strings(dispose_of):
     key = entity.put()
     dispose_of(key._key)
 
-    retreived = key.get()
-    assert retreived.foo == ["", ""]
+    retrieved = key.get()
+    assert retrieved.foo == ["", ""]
 
 
 @pytest.mark.skipif(not USE_REDIS_CACHE, reason="Redis is not configured")
