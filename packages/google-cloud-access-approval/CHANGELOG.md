@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.4](https://www.github.com/googleapis/python-access-approval/compare/v1.3.3...v1.3.4) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([0585562](https://www.github.com/googleapis/python-access-approval/commit/0585562b62c7c7fe81eacc8124ab4f85484ee879))
+
 ### [1.3.3](https://www.github.com/googleapis/python-access-approval/compare/v1.3.2...v1.3.3) (2021-07-27)
 
 
