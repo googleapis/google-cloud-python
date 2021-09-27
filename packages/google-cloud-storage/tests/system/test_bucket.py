@@ -806,6 +806,7 @@ def test_ubla_set_unset_preserves_acls(
     assert blob_acl_before == blob_acl_after
 
 
+@pytest.mark.skip(reason="Unspecified PAP is changing to inherited")
 def test_new_bucket_created_w_unspecified_pap(
     storage_client, buckets_to_delete, blobs_to_delete,
 ):
@@ -855,6 +856,7 @@ def test_new_bucket_created_w_unspecified_pap(
         blob.make_public()
 
 
+@pytest.mark.skip(reason="Unspecified PAP is changing to inherited")
 def test_new_bucket_created_w_enforced_pap(
     storage_client, buckets_to_delete, blobs_to_delete,
 ):
