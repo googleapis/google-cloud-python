@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.3](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.2...v0.2.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([9fdb6bf](https://www.github.com/googleapis/python-essential-contacts/commit/9fdb6bfa9457ec4faf0463920c08c5eb2bd1407b))
+
 ### [0.2.2](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.1...v0.2.2) (2021-07-29)
 
 
