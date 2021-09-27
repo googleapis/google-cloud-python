@@ -15,7 +15,6 @@
 
 import aiounittest
 import datetime
-import sys
 import unittest
 
 import mock
@@ -485,9 +484,6 @@ class Test_decode_value(unittest.TestCase):
         value = _value_pb(double_value=float_val)
         self.assertEqual(self._call_fut(value), float_val)
 
-    @unittest.skipIf(
-        (3,) <= sys.version_info < (3, 4, 4), "known datetime bug (bpo-23517) in Python"
-    )
     def test_datetime(self):
         from google.api_core.datetime_helpers import DatetimeWithNanoseconds
         from google.protobuf import timestamp_pb2

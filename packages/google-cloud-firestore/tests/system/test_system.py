@@ -922,6 +922,9 @@ def test_collection_group_queries_filters(client, cleanup):
     assert found == set(["cg-doc2"])
 
 
+@pytest.mark.skipif(
+    FIRESTORE_EMULATOR, reason="PartitionQuery not implemented in emulator"
+)
 def test_partition_query_no_partitions(client, cleanup):
     collection_group = "b" + UNIQUE_RESOURCE_ID
 
@@ -953,6 +956,9 @@ def test_partition_query_no_partitions(client, cleanup):
     assert found == expected
 
 
+@pytest.mark.skipif(
+    FIRESTORE_EMULATOR, reason="PartitionQuery not implemented in emulator"
+)
 def test_partition_query(client, cleanup):
     collection_group = "b" + UNIQUE_RESOURCE_ID
     n_docs = 128 * 2 + 127  # Minimum partition size is 128
@@ -1514,11 +1520,14 @@ def test_watch_query_order(client, cleanup):
     # Setup listener
     def on_snapshot(docs, changes, read_time):
         try:
+            docs = [i for i in docs if i.id.endswith(UNIQUE_RESOURCE_ID)]
             if len(docs) != 5:
                 return
             # A snapshot should return the same thing as if a query ran now.
             query_ran = query_ref.stream()
-            query_ran_results = [i for i in query_ran]
+            query_ran_results = [
+                i for i in query_ran if i.id.endswith(UNIQUE_RESOURCE_ID)
+            ]
             assert len(docs) == len(query_ran_results)
 
             # compare the order things are returned
