@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+### [3.3.3](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.2...v3.3.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([fe024db](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/fe024dbcc3075fd779358d434f37ec3ee3a0adf9))
+
 ### [3.3.2](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.1...v3.3.2) (2021-08-27)
 
 
