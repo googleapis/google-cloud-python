@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.4](https://www.github.com/googleapis/python-api-gateway/compare/v1.0.3...v1.0.4) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([39ee308](https://www.github.com/googleapis/python-api-gateway/commit/39ee308769c9d999acca90c5ac56e4cd5806c822))
+
 ### [1.0.3](https://www.github.com/googleapis/python-api-gateway/compare/v1.0.2...v1.0.3) (2021-07-27)
 
 
