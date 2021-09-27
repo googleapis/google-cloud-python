@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.3.0...v1.3.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([937ea64](https://www.github.com/googleapis/python-bigquery-reservation/commit/937ea64f4a8a5ff47baffeb88c4dd528324a77ae))
+
 ## [1.3.0](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.2.2...v1.3.0) (2021-09-02)
 
 
