@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-network-management/compare/v1.0.0...v1.0.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([ac98d76](https://www.github.com/googleapis/python-network-management/commit/ac98d76745bb737e4862576d9b93bb0accdc3ef4))
+
 ## [1.0.0](https://www.github.com/googleapis/python-network-management/compare/v0.1.1...v1.0.0) (2021-08-03)
 
 
