@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.1.0...v1.1.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([63a6c45](https://www.github.com/googleapis/python-dataproc-metastore/commit/63a6c4551c9e68502379a1efdd0d00cfab529633))
+
 ## [1.1.0](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.0.0...v1.1.0) (2021-08-17)
 
 
