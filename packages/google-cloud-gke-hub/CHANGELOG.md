@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.2](https://www.github.com/googleapis/python-gke-hub/compare/v0.2.1...v0.2.2) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([7b07616](https://www.github.com/googleapis/python-gke-hub/commit/7b07616c8da7dc504a917634c3749c03e3445148))
+
 ### [0.2.1](https://www.github.com/googleapis/python-gke-hub/compare/v0.2.0...v0.2.1) (2021-08-20)
 
 
