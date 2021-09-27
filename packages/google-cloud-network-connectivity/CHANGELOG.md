@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.6.1](https://www.github.com/googleapis/python-network-connectivity/compare/v0.6.0...v0.6.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([ae7ade1](https://www.github.com/googleapis/python-network-connectivity/commit/ae7ade17d232d016130b386e30812ab7c320f046))
+
 ## [0.6.0](https://www.github.com/googleapis/python-network-connectivity/compare/v0.5.0...v0.6.0) (2021-08-25)
 
 
