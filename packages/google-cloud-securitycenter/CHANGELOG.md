@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+### [1.5.1](https://www.github.com/googleapis/python-securitycenter/compare/v1.5.0...v1.5.1) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([00fb3d3](https://www.github.com/googleapis/python-securitycenter/commit/00fb3d397d604977ef0dc32305ba27158d87f4bc))
+
 ## [1.5.0](https://www.github.com/googleapis/python-securitycenter/compare/v1.4.0...v1.5.0) (2021-07-28)
 
 
