@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.3](https://www.github.com/googleapis/python-area120-tables/compare/v0.4.2...v0.4.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([ee57f81](https://www.github.com/googleapis/python-area120-tables/commit/ee57f81534ac3cc21ced61659ee1796dbe5b4210))
+
 ### [0.4.2](https://www.github.com/googleapis/python-area120-tables/compare/v0.4.1...v0.4.2) (2021-07-26)
 
 
