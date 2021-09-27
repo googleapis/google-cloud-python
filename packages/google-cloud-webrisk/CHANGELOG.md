@@ -3,6 +3,13 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+### [1.4.3](https://www.github.com/googleapis/python-webrisk/compare/v1.4.2...v1.4.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([0c271c0](https://www.github.com/googleapis/python-webrisk/commit/0c271c073004b927c65160b3c474e9c6e24c7895))
+
 ### [1.4.2](https://www.github.com/googleapis/python-webrisk/compare/v1.4.1...v1.4.2) (2021-07-29)
 
 
