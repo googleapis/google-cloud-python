@@ -5,6 +5,26 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [2.27.0](https://www.github.com/googleapis/python-bigquery/compare/v2.26.0...v2.27.0) (2021-09-24)
+
+
+### Features
+
+* Add py.typed for PEP 561 compliance ([#976](https://www.github.com/googleapis/python-bigquery/issues/976)) ([96e6bee](https://www.github.com/googleapis/python-bigquery/commit/96e6beef3c63b663b7e5879b1458f4dd1a47a5b5))
+* include key metadata in Job representation ([#964](https://www.github.com/googleapis/python-bigquery/issues/964)) ([acca1cb](https://www.github.com/googleapis/python-bigquery/commit/acca1cb7baaa3b00508246c994ade40314d421c3))
+
+
+### Bug Fixes
+
+* Arrow extension-type metadata was not set when calling the REST API or when there are no rows ([#946](https://www.github.com/googleapis/python-bigquery/issues/946)) ([864383b](https://www.github.com/googleapis/python-bigquery/commit/864383bc01636b3774f7da194587b8b7edd0383d))
+* disambiguate missing policy tags from explicitly unset policy tags ([#983](https://www.github.com/googleapis/python-bigquery/issues/983)) ([f83c00a](https://www.github.com/googleapis/python-bigquery/commit/f83c00acead70fc0ce9959eefb133a672d816277))
+* remove default timeout ([#974](https://www.github.com/googleapis/python-bigquery/issues/974)) ([1cef0d4](https://www.github.com/googleapis/python-bigquery/commit/1cef0d4664bf448168b26487a71795144b7f4d6b))
+
+
+### Documentation
+
+* simplify destination table sample with f-strings ([#966](https://www.github.com/googleapis/python-bigquery/issues/966)) ([ab6e76f](https://www.github.com/googleapis/python-bigquery/commit/ab6e76f9489262fd9c1876a1c4f93d7e139aa999))
+
 ## [2.26.0](https://www.github.com/googleapis/python-bigquery/compare/v2.25.2...v2.26.0) (2021-09-01)
 
 
