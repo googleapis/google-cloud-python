@@ -44,7 +44,6 @@ nox.options.sessions = [
 ]
 
 # Error if a python version is missing
-nox.options.stop_on_first_error = True
 nox.options.error_on_missing_interpreters = True
 
 

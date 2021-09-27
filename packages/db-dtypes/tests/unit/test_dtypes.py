@@ -58,6 +58,12 @@ SAMPLE_DT_VALUES = dict(
 for_date_and_time = pytest.mark.parametrize("dtype", ["date", "time"])
 
 
+def eq_na(a1, a2):
+    nna1 = pd.notna(a1)
+    nna2 = pd.notna(a2)
+    return np.array_equal(nna1, nna2) and np.array_equal(a1[nna1], a2[nna2])
+
+
 @pytest.fixture(autouse=True)
 def register_dtype():
     import db_dtypes  # noqa
@@ -575,8 +581,8 @@ def test_date_add():
     dates = pd.Series(dates)
     times = pd.Series(times)
     expect = dates.astype("datetime64") + times.astype("timedelta64")[:2]
-    assert np.array_equal(dates + times[:2], expect, equal_nan=True)
-    assert np.array_equal(times[:2] + dates, expect, equal_nan=True)
+    assert eq_na(dates + times[:2], expect)
+    assert eq_na(times[:2] + dates, expect)
 
     do = pd.Series([pd.DateOffset(days=i) for i in range(4)])
     expect = dates.astype("object") + do
@@ -609,7 +615,7 @@ def test_date_sub():
     dates = pd.Series(dates)
     dates2 = pd.Series(dates2)
     expect = dates.astype("datetime64") - dates2.astype("datetime64")[:2]
-    assert np.array_equal(dates - dates2[:2], expect, equal_nan=True)
+    assert eq_na(dates - dates2[:2], expect)
 
     do = pd.Series([pd.DateOffset(days=i) for i in range(4)])
     expect = dates.astype("object") - do

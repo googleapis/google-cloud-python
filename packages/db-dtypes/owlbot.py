@@ -51,21 +51,6 @@ s.replace(
     ["noxfile.py"], "google/cloud", "db_dtypes",
 )
 
-
-def place_before(path, text, *before_text, escape=None):
-    replacement = "\n".join(before_text) + "\n" + text
-    if escape:
-        for c in escape:
-            text = text.replace(c, "\\" + c)
-    s.replace([path], text, replacement)
-
-
-place_before(
-    "noxfile.py",
-    "nox.options.error_on_missing_interpreters = True",
-    "nox.options.stop_on_first_error = True",
-)
-
 # There are no system tests for this package.
 old_sessions = """
     "unit",
