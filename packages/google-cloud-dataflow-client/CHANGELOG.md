@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.4](https://www.github.com/googleapis/python-dataflow-client/compare/v0.1.3...v0.1.4) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([db5d966](https://www.github.com/googleapis/python-dataflow-client/commit/db5d966111077c2ba286136b9b5aba6a371c8e0d))
+
 ### [0.1.3](https://www.github.com/googleapis/python-dataflow-client/compare/v0.1.2...v0.1.3) (2021-08-18)
 
 
