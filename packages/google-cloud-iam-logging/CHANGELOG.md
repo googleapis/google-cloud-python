@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.3](https://www.github.com/googleapis/python-iam-logging/compare/v0.1.2...v0.1.3) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([86d48f8](https://www.github.com/googleapis/python-iam-logging/commit/86d48f8fcf08d9cb381a46fcefb9f22b334d4896))
+
 ### [0.1.2](https://www.github.com/googleapis/python-iam-logging/compare/v0.1.1...v0.1.2) (2021-07-29)
 
 
