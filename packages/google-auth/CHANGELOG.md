@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.2.0](https://www.github.com/googleapis/google-auth-library-python/compare/v2.1.0...v2.2.0) (2021-09-21)
+
+
+### Features
+
+* add support for workforce pool credentials ([#868](https://www.github.com/googleapis/google-auth-library-python/issues/868)) ([993bab2](https://www.github.com/googleapis/google-auth-library-python/commit/993bab2aaacf3034e09d9f0f25d36c0e815d3a29))
+
 ## [2.1.0](https://www.github.com/googleapis/google-auth-library-python/compare/v2.0.2...v2.1.0) (2021-09-10)
 
 
