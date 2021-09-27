@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.6.0](https://www.github.com/googleapis/python-asset/compare/v3.5.0...v3.6.0) (2021-09-24)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([79a5a8a](https://www.github.com/googleapis/python-asset/commit/79a5a8a11d49c52162b9467e291df38f70634858))
+
+
+### Documentation
+
+* add relationship samples ([#293](https://www.github.com/googleapis/python-asset/issues/293)) ([473e133](https://www.github.com/googleapis/python-asset/commit/473e133e2674bf6a5ae655fe67be7d79fed2d8e9))
+
 ## [3.5.0](https://www.github.com/googleapis/python-asset/compare/v3.4.0...v3.5.0) (2021-09-03)
 
 
