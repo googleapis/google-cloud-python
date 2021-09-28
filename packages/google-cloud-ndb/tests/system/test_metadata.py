@@ -19,14 +19,10 @@ import pytest
 
 from google.cloud import ndb
 
-from . import eventually
+from test_utils import retry
 
 
-def _length_at_least(n):
-    def predicate(sequence):
-        return len(sequence) >= n
-
-    return predicate
+_retry_assertion_errors = retry.RetryErrors(AssertionError)
 
 
 @pytest.mark.usefixtures("client_context")
@@ -47,11 +43,14 @@ def test_kind_metadata(dispose_of):
     entity2.put()
     dispose_of(entity2.key._key)
 
-    query = ndb.Query(kind=Kind.KIND_NAME, namespace="_test_namespace_")
-    results = eventually(query.fetch, _length_at_least(2))
+    @_retry_assertion_errors
+    def query_metadata():
+        query = ndb.Query(kind=Kind.KIND_NAME, namespace="_test_namespace_")
+        results = query.fetch()
+        kinds = [result.kind_name for result in results]
+        assert all(kind in kinds for kind in ["AnyKind", "MyKind"])
 
-    kinds = [result.kind_name for result in results]
-    assert all(kind in kinds for kind in ["AnyKind", "MyKind"]) != []
+    query_metadata()
 
 
 @pytest.mark.usefixtures("client_context")
@@ -86,23 +85,26 @@ def test_get_kinds(dispose_of):
     entity4.put()
     dispose_of(entity4.key._key)
 
-    kinds = eventually(get_kinds, _length_at_least(4))
-    assert (
-        all(kind in kinds for kind in ["AnyKind", "MyKind", "OtherKind", "SomeKind"])
-        != []
-    )
+    @_retry_assertion_errors
+    def query_metadata():
+        kinds = get_kinds()
+        assert all(
+            kind in kinds for kind in ["AnyKind", "MyKind", "OtherKind", "SomeKind"]
+        )
 
-    kinds = get_kinds(start="N")
-    assert all(kind in kinds for kind in ["OtherKind", "SomeKind"]) != []
-    assert not any(kind in kinds for kind in ["AnyKind", "MyKind"])
+        kinds = get_kinds(start="N")
+        assert all(kind in kinds for kind in ["OtherKind", "SomeKind"]) != []
+        assert not any(kind in kinds for kind in ["AnyKind", "MyKind"])
 
-    kinds = get_kinds(end="N")
-    assert all(kind in kinds for kind in ["AnyKind", "MyKind"]) != []
-    assert not any(kind in kinds for kind in ["OtherKind", "SomeKind"])
+        kinds = get_kinds(end="N")
+        assert all(kind in kinds for kind in ["AnyKind", "MyKind"]) != []
+        assert not any(kind in kinds for kind in ["OtherKind", "SomeKind"])
 
-    kinds = get_kinds(start="L", end="P")
-    assert all(kind in kinds for kind in ["MyKind", "OtherKind"]) != []
-    assert not any(kind in kinds for kind in ["AnyKind", "SomeKind"])
+        kinds = get_kinds(start="L", end="P")
+        assert all(kind in kinds for kind in ["MyKind", "OtherKind"]) != []
+        assert not any(kind in kinds for kind in ["AnyKind", "SomeKind"])
+
+    query_metadata()
 
 
 @pytest.mark.usefixtures("client_context")
@@ -123,13 +125,15 @@ def test_namespace_metadata(dispose_of):
     entity2.put()
     dispose_of(entity2.key._key)
 
-    query = ndb.Query(kind=Namespace.KIND_NAME)
-    results = eventually(query.fetch, _length_at_least(2))
+    @_retry_assertion_errors
+    def query_metadata():
+        query = ndb.Query(kind=Namespace.KIND_NAME)
+        results = query.fetch()
 
-    names = [result.namespace_name for result in results]
-    assert (
-        all(name in names for name in ["_test_namespace_", "_test_namespace_2_"]) != []
-    )
+        names = [result.namespace_name for result in results]
+        assert all(name in names for name in ["_test_namespace_", "_test_namespace_2_"])
+
+    query_metadata()
 
 
 @pytest.mark.usefixtures("client_context")
@@ -151,22 +155,23 @@ def test_get_namespaces(dispose_of):
     entity3.put()
     dispose_of(entity3.key._key)
 
-    names = eventually(get_namespaces, _length_at_least(3))
-    assert (
-        all(
+    @_retry_assertion_errors
+    def query_metadata():
+        names = get_namespaces()
+        assert all(
             name in names for name in ["CoolNamespace", "MyNamespace", "OtherNamespace"]
         )
-        != []
-    )
 
-    names = get_namespaces(start="L")
-    assert all(name in names for name in ["MyNamespace", "OtherNamspace"]) != []
+        names = get_namespaces(start="L")
+        assert all(name in names for name in ["MyNamespace", "OtherNamspace"]) != []
 
-    names = get_namespaces(end="N")
-    assert all(name in names for name in ["CoolNamespace", "MyNamespace"]) != []
+        names = get_namespaces(end="N")
+        assert all(name in names for name in ["CoolNamespace", "MyNamespace"]) != []
 
-    names = get_namespaces(start="D", end="N")
-    assert all(name in names for name in ["MyNamespace"]) != []
+        names = get_namespaces(start="D", end="N")
+        assert all(name in names for name in ["MyNamespace"]) != []
+
+    query_metadata()
 
 
 @pytest.mark.usefixtures("client_context")
@@ -184,13 +189,17 @@ def test_property_metadata(dispose_of):
     entity1.put()
     dispose_of(entity1.key._key)
 
-    query = ndb.Query(kind=Property.KIND_NAME)
-    results = eventually(query.fetch, _length_at_least(2))
+    @_retry_assertion_errors
+    def query_metadata():
+        query = ndb.Query(kind=Property.KIND_NAME)
+        results = query.fetch()
 
-    properties = [
-        result.property_name for result in results if result.kind_name == "AnyKind"
-    ]
-    assert properties == ["bar", "foo"]
+        properties = [
+            result.property_name for result in results if result.kind_name == "AnyKind"
+        ]
+        assert properties == ["bar", "foo"]
+
+    query_metadata()
 
 
 @pytest.mark.usefixtures("client_context")
@@ -207,20 +216,21 @@ def test_get_properties_of_kind(dispose_of):
     entity1.put()
     dispose_of(entity1.key._key)
 
-    properties = eventually(
-        lambda: get_properties_of_kind("AnyKind"), _length_at_least(4)
-    )
+    @_retry_assertion_errors
+    def query_metadata():
+        properties = get_properties_of_kind("AnyKind")
+        assert properties == ["bar", "baz", "foo", "qux"]
 
-    assert properties == ["bar", "baz", "foo", "qux"]
+        properties = get_properties_of_kind("AnyKind", start="c")
+        assert properties == ["foo", "qux"]
 
-    properties = get_properties_of_kind("AnyKind", start="c")
-    assert properties == ["foo", "qux"]
+        properties = get_properties_of_kind("AnyKind", end="e")
+        assert properties == ["bar", "baz"]
 
-    properties = get_properties_of_kind("AnyKind", end="e")
-    assert properties == ["bar", "baz"]
+        properties = get_properties_of_kind("AnyKind", start="c", end="p")
+        assert properties == ["foo"]
 
-    properties = get_properties_of_kind("AnyKind", start="c", end="p")
-    assert properties == ["foo"]
+    query_metadata()
 
 
 @pytest.mark.usefixtures("client_context")
@@ -238,20 +248,21 @@ def test_get_properties_of_kind_different_namespace(dispose_of, namespace):
     entity1.put()
     dispose_of(entity1.key._key)
 
-    properties = eventually(
-        lambda: get_properties_of_kind("AnyKind"), _length_at_least(4)
-    )
+    @_retry_assertion_errors
+    def query_metadata():
+        properties = get_properties_of_kind("AnyKind")
+        assert properties == ["bar", "baz", "foo", "qux"]
 
-    assert properties == ["bar", "baz", "foo", "qux"]
+        properties = get_properties_of_kind("AnyKind", start="c")
+        assert properties == ["foo", "qux"]
 
-    properties = get_properties_of_kind("AnyKind", start="c")
-    assert properties == ["foo", "qux"]
+        properties = get_properties_of_kind("AnyKind", end="e")
+        assert properties == ["bar", "baz"]
 
-    properties = get_properties_of_kind("AnyKind", end="e")
-    assert properties == ["bar", "baz"]
+        properties = get_properties_of_kind("AnyKind", start="c", end="p")
+        assert properties == ["foo"]
 
-    properties = get_properties_of_kind("AnyKind", start="c", end="p")
-    assert properties == ["foo"]
+    query_metadata()
 
 
 @pytest.mark.usefixtures("client_context")
@@ -268,22 +279,23 @@ def test_get_representations_of_kind(dispose_of):
     entity1.put()
     dispose_of(entity1.key._key)
 
-    representations = eventually(
-        lambda: get_representations_of_kind("AnyKind"), _length_at_least(4)
-    )
+    @_retry_assertion_errors
+    def query_metadata():
+        representations = get_representations_of_kind("AnyKind")
+        assert representations == {
+            "bar": ["STRING"],
+            "baz": ["INT64"],
+            "foo": ["INT64"],
+            "qux": ["STRING"],
+        }
 
-    assert representations == {
-        "bar": ["STRING"],
-        "baz": ["INT64"],
-        "foo": ["INT64"],
-        "qux": ["STRING"],
-    }
+        representations = get_representations_of_kind("AnyKind", start="c")
+        assert representations == {"foo": ["INT64"], "qux": ["STRING"]}
 
-    representations = get_representations_of_kind("AnyKind", start="c")
-    assert representations == {"foo": ["INT64"], "qux": ["STRING"]}
+        representations = get_representations_of_kind("AnyKind", end="e")
+        assert representations == {"bar": ["STRING"], "baz": ["INT64"]}
 
-    representations = get_representations_of_kind("AnyKind", end="e")
-    assert representations == {"bar": ["STRING"], "baz": ["INT64"]}
+        representations = get_representations_of_kind("AnyKind", start="c", end="p")
+        assert representations == {"foo": ["INT64"]}
 
-    representations = get_representations_of_kind("AnyKind", start="c", end="p")
-    assert representations == {"foo": ["INT64"]}
+    query_metadata()
