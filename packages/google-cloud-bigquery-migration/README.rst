@@ -1,5 +1,5 @@
 Python Client for Google Cloud Bigquery Migration API
-=================================================
+=====================================================
 
 Quick Start
 -----------
