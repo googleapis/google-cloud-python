@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.10.4](https://www.github.com/googleapis/python-ndb/compare/v1.10.3...v1.10.4) (2021-09-28)
+
+
+### Bug Fixes
+
+* pin grpcio / googleapis-common-protos under Python2 ([#725](https://www.github.com/googleapis/python-ndb/issues/725)) ([ccc82e4](https://www.github.com/googleapis/python-ndb/commit/ccc82e42fe2bbb285779a81cff03866facfad667))
+
 ### [1.10.3](https://www.github.com/googleapis/python-ndb/compare/v1.10.2...v1.10.3) (2021-09-07)
 
 
