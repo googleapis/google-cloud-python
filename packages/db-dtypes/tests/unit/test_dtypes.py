@@ -15,6 +15,7 @@
 import datetime
 
 import packaging.version
+import pyarrow.lib
 import pytest
 
 pd = pytest.importorskip("pandas")
@@ -171,18 +172,14 @@ def test_timearray_comparisons(
 
     # Bad shape
     for bad_shape in ([], [1, 2, 3]):
-        if op == "==":
-            assert not comparisons[op](left, np.array(bad_shape))
-            assert complements[op](left, np.array(bad_shape))
-        else:
-            with pytest.raises(
-                ValueError, match="operands could not be broadcast together",
-            ):
-                comparisons[op](left, np.array(bad_shape))
-            with pytest.raises(
-                ValueError, match="operands could not be broadcast together",
-            ):
-                complements[op](left, np.array(bad_shape))
+        with pytest.raises(
+            TypeError, match="Can't compare arrays with different shapes"
+        ):
+            comparisons[op](left, np.array(bad_shape))
+        with pytest.raises(
+            TypeError, match="Can't compare arrays with different shapes"
+        ):
+            complements[op](left, np.array(bad_shape))
 
     # Bad items
     for bad_items in (
@@ -478,8 +475,10 @@ def test_asdatetime(dtype, same):
 )
 def test_astimedelta(dtype):
     t = "01:02:03.123456"
-    expect = pd.to_timedelta([t]).array.astype(
-        "timedelta64[ns]" if dtype == "timedelta" else dtype
+    expect = (
+        pd.to_timedelta([t])
+        .to_numpy()
+        .astype("timedelta64[ns]" if dtype == "timedelta" else dtype)
     )
 
     a = _cls("time")([t, None])
@@ -543,7 +542,10 @@ def test_min_max_median(dtype):
     assert empty.min(skipna=False) is None
     assert empty.max(skipna=False) is None
     if pandas_release >= (1, 2):
-        assert empty.median() is None
+        with pytest.warns(RuntimeWarning, match="empty slice"):
+            # It's weird that we get the warning here, and not
+            # below. :/
+            assert empty.median() is None
         assert empty.median(skipna=False) is None
 
     a = _make_one(dtype)
@@ -620,3 +622,61 @@ def test_date_sub():
     do = pd.Series([pd.DateOffset(days=i) for i in range(4)])
     expect = dates.astype("object") - do
     assert np.array_equal(dates - do, expect)
+
+
+@pytest.mark.parametrize(
+    "value, expected", [("1", datetime.time(1)), ("1:2", datetime.time(1, 2))],
+)
+def test_short_time_parsing(value, expected):
+    assert _cls("time")([value])[0] == expected
+
+
+@pytest.mark.parametrize(
+    "value, error",
+    [
+        ("thursday", "Bad time string: 'thursday'"),
+        ("1:2:3thursday", "Bad time string: '1:2:3thursday'"),
+        ("1:2:3:4", "Bad time string: '1:2:3:4'"),
+        ("1:2:3.f", "Bad time string: '1:2:3.f'"),
+        ("1:d:3", "Bad time string: '1:d:3'"),
+        ("1:2.3", "Bad time string: '1:2.3'"),
+        ("", "Bad time string: ''"),
+        ("1:2:99", "second must be in 0[.][.]59"),
+        ("1:99", "minute must be in 0[.][.]59"),
+        ("99", "hour must be in 0[.][.]23"),
+    ],
+)
+def test_bad_time_parsing(value, error):
+    with pytest.raises(ValueError, match=error):
+        _cls("time")([value])
+
+
+@pytest.mark.parametrize(
+    "value, error",
+    [
+        ("thursday", "Bad date string: 'thursday'"),
+        ("1-2-thursday", "Bad date string: '1-2-thursday'"),
+        ("1-2-3-4", "Bad date string: '1-2-3-4'"),
+        ("1-2-3.f", "Bad date string: '1-2-3.f'"),
+        ("1-d-3", "Bad date string: '1-d-3'"),
+        ("1-3", "Bad date string: '1-3'"),
+        ("1", "Bad date string: '1'"),
+        ("", "Bad date string: ''"),
+        ("2021-2-99", "day is out of range for month"),
+        ("2021-99-1", "month must be in 1[.][.]12"),
+        ("10000-1-1", "year 10000 is out of range"),
+    ],
+)
+def test_bad_date_parsing(value, error):
+    with pytest.raises(ValueError, match=error):
+        _cls("date")([value])
+
+
+@for_date_and_time
+def test_date___arrow__array__(dtype):
+    a = _make_one(dtype)
+    ar = a.__arrow_array__()
+    assert isinstance(
+        ar, pyarrow.Date32Array if dtype == "date" else pyarrow.Time64Array,
+    )
+    assert [v.as_py() for v in ar] == list(a)

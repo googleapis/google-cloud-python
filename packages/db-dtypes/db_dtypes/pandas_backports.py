@@ -31,8 +31,17 @@ pandas_release = packaging.version.parse(pandas.__version__).release
 
 
 def import_default(module_name, force=False, default=None):
+    """
+    Provide an implementation for a class or function when it can't be imported
+
+    or when force is True.
+
+    This is used to replicate Pandas APIs that are missing or insufficient
+    (thus the force option) in early pandas versions.
+    """
+
     if default is None:
-        return lambda func: import_default(module_name, force, func)
+        return lambda func_or_class: import_default(module_name, force, func_or_class)
 
     if force:
         return default

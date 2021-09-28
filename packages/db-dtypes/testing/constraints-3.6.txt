@@ -5,6 +5,7 @@
 #
 # e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
 packaging==17.0
+# Make sure we test with pandas 0.24.2. The Python version isn't that relevant.
 pandas==0.24.2
 pyarrow==3.0.0
 numpy==1.16.6

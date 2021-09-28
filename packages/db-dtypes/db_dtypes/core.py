@@ -84,6 +84,12 @@ class BaseDatetimeArray(
         return super().astype(dtype, copy=copy)
 
     def _cmp_method(self, other, op):
+        oshape = getattr(other, "shape", None)
+        if oshape != self.shape and oshape != (1,) and self.shape != (1,):
+            raise TypeError(
+                "Can't compare arrays with different shapes", self.shape, oshape
+            )
+
         if type(other) != type(self):
             return NotImplemented
         return op(self._ndarray, other._ndarray)
