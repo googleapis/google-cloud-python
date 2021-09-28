@@ -95,6 +95,8 @@ s.replace(
     "# The root toctree document.",
 )
 
+s.replace("samples/snippets/noxfile.py", r"# Copyright 2019 Google LLC", r"# Copyright 2021 Google LLC") 
+
 # ----------------------------------------------------------------------------
 # Run blacken session
 # ----------------------------------------------------------------------------
