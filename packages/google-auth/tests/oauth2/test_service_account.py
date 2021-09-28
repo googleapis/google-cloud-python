@@ -371,6 +371,35 @@ class TestCredentials(object):
         assert credentials.token == token
         assert credentials.expiry == expiry
 
+    @mock.patch("google.oauth2._client.jwt_grant", autospec=True)
+    @mock.patch("google.auth.jwt.Credentials.refresh", autospec=True)
+    def test_refresh_jwt_not_used_for_domain_wide_delegation(
+        self, self_signed_jwt_refresh, jwt_grant
+    ):
+        # Create a domain wide delegation credentials by setting the subject.
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.TOKEN_URI,
+            always_use_jwt_access=True,
+            subject="subject",
+        )
+        credentials._create_self_signed_jwt("https://pubsub.googleapis.com")
+        jwt_grant.return_value = (
+            "token",
+            _helpers.utcnow() + datetime.timedelta(seconds=500),
+            {},
+        )
+        request = mock.create_autospec(transport.Request, instance=True)
+
+        # Refresh credentials
+        credentials.refresh(request)
+
+        # Make sure we are using jwt_grant and not self signed JWT refresh
+        # method to obtain the token.
+        assert jwt_grant.called
+        assert not self_signed_jwt_refresh.called
+
 
 class TestIDTokenCredentials(object):
     SERVICE_ACCOUNT_EMAIL = "service-account@example.com"

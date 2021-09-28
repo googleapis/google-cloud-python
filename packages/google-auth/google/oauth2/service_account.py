@@ -399,7 +399,9 @@ class Credentials(
 
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):
-        if self._jwt_credentials is not None:
+        # Since domain wide delegation doesn't work with self signed JWT. If
+        # subject exists, then we should not use self signed JWT.
+        if self._subject is None and self._jwt_credentials is not None:
             self._jwt_credentials.refresh(request)
             self.token = self._jwt_credentials.token
             self.expiry = self._jwt_credentials.expiry
