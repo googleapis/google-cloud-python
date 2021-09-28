@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [2.2.1](https://www.github.com/googleapis/google-auth-library-python/compare/v2.2.0...v2.2.1) (2021-09-28)
+
+
+### Bug Fixes
+
+* disable self signed jwt for domain wide delegation ([#873](https://www.github.com/googleapis/google-auth-library-python/issues/873)) ([0cd15e2](https://www.github.com/googleapis/google-auth-library-python/commit/0cd15e2ae20f7caddf9eb2d069064058d3c14ad7))
+
 ## [2.2.0](https://www.github.com/googleapis/google-auth-library-python/compare/v2.1.0...v2.2.0) (2021-09-21)
 
 
