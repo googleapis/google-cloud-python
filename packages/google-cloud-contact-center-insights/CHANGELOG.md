@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.3.1...v0.4.0) (2021-09-29)
+
+
+### Features
+
+* add metadata from dialogflow related to transcript segment ([#54](https://www.github.com/googleapis/python-contact-center-insights/issues/54)) ([ef575cf](https://www.github.com/googleapis/python-contact-center-insights/commit/ef575cf076376261c784b9c3332ef2befa1a11d9))
+* add obfuscated if from dialogflow ([ef575cf](https://www.github.com/googleapis/python-contact-center-insights/commit/ef575cf076376261c784b9c3332ef2befa1a11d9))
+* add sentiment data for transcript segment ([ef575cf](https://www.github.com/googleapis/python-contact-center-insights/commit/ef575cf076376261c784b9c3332ef2befa1a11d9))
+
 ### [0.3.1](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.3.0...v0.3.1) (2021-09-24)
 
 
