@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-video-transcoder/compare/v0.5.1...v1.0.0) (2021-09-29)
+
+
+### Features
+
+* bump release level to production/stable ([#79](https://www.github.com/googleapis/python-video-transcoder/issues/79)) ([45ba870](https://www.github.com/googleapis/python-video-transcoder/commit/45ba87048ef73c666c00248c6da3637fd418d70a))
+
 ### [0.5.1](https://www.github.com/googleapis/python-video-transcoder/compare/v0.5.0...v0.5.1) (2021-09-24)
 
 
