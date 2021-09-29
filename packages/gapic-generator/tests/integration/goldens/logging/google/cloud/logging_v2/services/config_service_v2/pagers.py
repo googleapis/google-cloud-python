@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple, Optional
+from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Optional, Iterator
 
 from google.cloud.logging_v2.types import logging_config
 
@@ -62,14 +62,14 @@ class ListBucketsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[logging_config.ListBucketsResponse]:
+    def pages(self) -> Iterator[logging_config.ListBucketsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[logging_config.LogBucket]:
+    def __iter__(self) -> Iterator[logging_config.LogBucket]:
         for page in self.pages:
             yield from page.buckets
 
@@ -121,14 +121,14 @@ class ListBucketsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[logging_config.ListBucketsResponse]:
+    async def pages(self) -> AsyncIterator[logging_config.ListBucketsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[logging_config.LogBucket]:
+    def __aiter__(self) -> AsyncIterator[logging_config.LogBucket]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.buckets:
@@ -184,14 +184,14 @@ class ListViewsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[logging_config.ListViewsResponse]:
+    def pages(self) -> Iterator[logging_config.ListViewsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[logging_config.LogView]:
+    def __iter__(self) -> Iterator[logging_config.LogView]:
         for page in self.pages:
             yield from page.views
 
@@ -243,14 +243,14 @@ class ListViewsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[logging_config.ListViewsResponse]:
+    async def pages(self) -> AsyncIterator[logging_config.ListViewsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[logging_config.LogView]:
+    def __aiter__(self) -> AsyncIterator[logging_config.LogView]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.views:
@@ -306,14 +306,14 @@ class ListSinksPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[logging_config.ListSinksResponse]:
+    def pages(self) -> Iterator[logging_config.ListSinksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[logging_config.LogSink]:
+    def __iter__(self) -> Iterator[logging_config.LogSink]:
         for page in self.pages:
             yield from page.sinks
 
@@ -365,14 +365,14 @@ class ListSinksAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[logging_config.ListSinksResponse]:
+    async def pages(self) -> AsyncIterator[logging_config.ListSinksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[logging_config.LogSink]:
+    def __aiter__(self) -> AsyncIterator[logging_config.LogSink]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.sinks:
@@ -428,14 +428,14 @@ class ListExclusionsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[logging_config.ListExclusionsResponse]:
+    def pages(self) -> Iterator[logging_config.ListExclusionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[logging_config.LogExclusion]:
+    def __iter__(self) -> Iterator[logging_config.LogExclusion]:
         for page in self.pages:
             yield from page.exclusions
 
@@ -487,14 +487,14 @@ class ListExclusionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[logging_config.ListExclusionsResponse]:
+    async def pages(self) -> AsyncIterator[logging_config.ListExclusionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[logging_config.LogExclusion]:
+    def __aiter__(self) -> AsyncIterator[logging_config.LogExclusion]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.exclusions:

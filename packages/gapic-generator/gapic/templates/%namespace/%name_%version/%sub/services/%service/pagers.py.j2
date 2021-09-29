@@ -7,7 +7,7 @@
 {# This lives within the loop in order to ensure that this template
    is empty if there are no paged methods.
  #}
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple, Optional
+from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Optional, Iterator
 
 {% filter sort_lines %}
 {% for method in service.methods.values() | selectattr('paged_result_field') %}
@@ -65,7 +65,7 @@ class {{ method.name }}Pager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[{{ method.output.ident }}]:
+    def pages(self) -> Iterator[{{ method.output.ident }}]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
@@ -73,14 +73,14 @@ class {{ method.name }}Pager:
             yield self._response
 
     {% if method.paged_result_field.map %}
-    def __iter__(self) -> Iterable[Tuple[str, {{ method.paged_result_field.type.fields.get('value').ident }}]]:
+    def __iter__(self) -> Iterator[Tuple[str, {{ method.paged_result_field.type.fields.get('value').ident }}]]:
         for page in self.pages:
             yield from page.{{ method.paged_result_field.name}}.items()
 
     def get(self, key: str) -> Optional[{{ method.paged_result_field.type.fields.get('value').ident }}]:
         return self._response.items.get(key)
     {% else %}
-    def __iter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'Iterable') }}:
+    def __iter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'Iterator') }}:
         for page in self.pages:
             yield from page.{{ method.paged_result_field.name }}
     {% endif %}
@@ -135,14 +135,14 @@ class {{ method.name }}AsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[{{ method.output.ident }}]:
+    async def pages(self) -> AsyncIterator[{{ method.output.ident }}]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'AsyncIterable') }}:
+    def __aiter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'AsyncIterator') }}:
         async def async_generator():
             async for page in self.pages:
                 for response in page.{{ method.paged_result_field.name }}:
