@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-gke-hub/compare/v0.2.2...v1.0.0) (2021-09-29)
+
+
+### Features
+
+* bump release level to production/stable ([#60](https://www.github.com/googleapis/python-gke-hub/issues/60)) ([5877ee6](https://www.github.com/googleapis/python-gke-hub/commit/5877ee64f259cfdae46f2606e0cb1d9ef5fcc5ea))
+
 ### [0.2.2](https://www.github.com/googleapis/python-gke-hub/compare/v0.2.1...v0.2.2) (2021-09-24)
 
 
