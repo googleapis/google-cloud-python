@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-network-connectivity/compare/v0.6.1...v1.0.0) (2021-09-29)
+
+
+### Features
+
+* bump release level to production/stable ([#65](https://www.github.com/googleapis/python-network-connectivity/issues/65)) ([e0876fb](https://www.github.com/googleapis/python-network-connectivity/commit/e0876fb2bcb03393a36c9ad1a65d5ca447259019))
+
 ### [0.6.1](https://www.github.com/googleapis/python-network-connectivity/compare/v0.6.0...v0.6.1) (2021-09-24)
 
 
