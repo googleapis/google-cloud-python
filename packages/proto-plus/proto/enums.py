@@ -112,6 +112,9 @@ class Enum(enum.IntEnum, metaclass=ProtoEnumMeta):
         # Avoid 'isinstance' to prevent other IntEnums from matching
         return type(other) in (type(self), int)
 
+    def __hash__(self):
+        return hash(self.value)
+
     def __eq__(self, other):
         if not self._comparable(other):
             return NotImplemented

@@ -85,3 +85,9 @@ def test_total_ordering_w_int(int_val):
         assert to_compare <= int_val
         assert not to_compare > int_val
         assert to_compare >= int_val
+
+
+def test_hashing():
+    to_hash = enums_test.OneEnum.SOME_VALUE
+
+    {to_hash: "testing"}  # no raise
