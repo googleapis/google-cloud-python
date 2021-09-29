@@ -340,11 +340,13 @@ class Session(object):
         """
         deadline = time.time() + kw.pop("timeout_secs", DEFAULT_RETRY_TIMEOUT_SECS)
         commit_request_options = kw.pop("commit_request_options", None)
+        transaction_tag = kw.pop("transaction_tag", None)
         attempts = 0
 
         while True:
             if self._transaction is None:
                 txn = self.transaction()
+                txn.transaction_tag = transaction_tag
             else:
                 txn = self._transaction
             if txn._transaction_id is None:

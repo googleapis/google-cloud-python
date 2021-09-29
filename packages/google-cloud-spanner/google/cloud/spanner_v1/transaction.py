@@ -148,8 +148,15 @@ class Transaction(_SnapshotBase, _BatchBase):
         metadata = _metadata_with_prefix(database.name)
         trace_attributes = {"num_mutations": len(self._mutations)}
 
-        if type(request_options) == dict:
+        if request_options is None:
+            request_options = RequestOptions()
+        elif type(request_options) == dict:
             request_options = RequestOptions(request_options)
+        if self.transaction_tag is not None:
+            request_options.transaction_tag = self.transaction_tag
+
+        # Request tags are not supported for commit requests.
+        request_options.request_tag = None
 
         request = CommitRequest(
             session=self._session.name,
@@ -267,8 +274,11 @@ class Transaction(_SnapshotBase, _BatchBase):
         default_query_options = database._instance._client._query_options
         query_options = _merge_query_options(default_query_options, query_options)
 
-        if type(request_options) == dict:
+        if request_options is None:
+            request_options = RequestOptions()
+        elif type(request_options) == dict:
             request_options = RequestOptions(request_options)
+        request_options.transaction_tag = self.transaction_tag
 
         trace_attributes = {"db.statement": dml}
 
@@ -343,8 +353,11 @@ class Transaction(_SnapshotBase, _BatchBase):
             self._execute_sql_count + 1,
         )
 
-        if type(request_options) == dict:
+        if request_options is None:
+            request_options = RequestOptions()
+        elif type(request_options) == dict:
             request_options = RequestOptions(request_options)
+        request_options.transaction_tag = self.transaction_tag
 
         trace_attributes = {
             # Get just the queries from the DML statement batch

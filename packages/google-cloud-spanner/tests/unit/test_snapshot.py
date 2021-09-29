@@ -402,6 +402,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         partition=None,
         timeout=gapic_v1.method.DEFAULT,
         retry=gapic_v1.method.DEFAULT,
+        request_options=None,
     ):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner_v1 import (
@@ -451,6 +452,11 @@ class Test_SnapshotBase(OpenTelemetryBase):
         if not first:
             derived._transaction_id = TXN_ID
 
+        if request_options is None:
+            request_options = RequestOptions()
+        elif type(request_options) == dict:
+            request_options = RequestOptions(request_options)
+
         if partition is not None:  # 'limit' and 'partition' incompatible
             result_set = derived.read(
                 TABLE_NAME,
@@ -460,6 +466,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
                 partition=partition,
                 retry=retry,
                 timeout=timeout,
+                request_options=request_options,
             )
         else:
             result_set = derived.read(
@@ -470,6 +477,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
                 limit=LIMIT,
                 retry=retry,
                 timeout=timeout,
+                request_options=request_options,
             )
 
         self.assertEqual(derived._read_request_count, count + 1)
@@ -500,6 +508,10 @@ class Test_SnapshotBase(OpenTelemetryBase):
         else:
             expected_limit = LIMIT
 
+        # Transaction tag is ignored for read request.
+        expected_request_options = request_options
+        expected_request_options.transaction_tag = None
+
         expected_request = ReadRequest(
             session=self.SESSION_NAME,
             table=TABLE_NAME,
@@ -509,6 +521,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
             index=INDEX,
             limit=expected_limit,
             partition_token=partition,
+            request_options=expected_request_options,
         )
         api.streaming_read.assert_called_once_with(
             request=expected_request,
@@ -526,6 +539,29 @@ class Test_SnapshotBase(OpenTelemetryBase):
 
     def test_read_wo_multi_use(self):
         self._read_helper(multi_use=False)
+
+    def test_read_w_request_tag_success(self):
+        request_options = RequestOptions(request_tag="tag-1",)
+        self._read_helper(multi_use=False, request_options=request_options)
+
+    def test_read_w_transaction_tag_success(self):
+        request_options = RequestOptions(transaction_tag="tag-1-1",)
+        self._read_helper(multi_use=False, request_options=request_options)
+
+    def test_read_w_request_and_transaction_tag_success(self):
+        request_options = RequestOptions(
+            request_tag="tag-1", transaction_tag="tag-1-1",
+        )
+        self._read_helper(multi_use=False, request_options=request_options)
+
+    def test_read_w_request_and_transaction_tag_dictionary_success(self):
+        request_options = {"request_tag": "tag-1", "transaction_tag": "tag-1-1"}
+        self._read_helper(multi_use=False, request_options=request_options)
+
+    def test_read_w_incorrect_tag_dictionary_error(self):
+        request_options = {"incorrect_tag": "tag-1-1"}
+        with self.assertRaises(ValueError):
+            self._read_helper(multi_use=False, request_options=request_options)
 
     def test_read_wo_multi_use_w_read_request_count_gt_0(self):
         with self.assertRaises(ValueError):
@@ -646,6 +682,11 @@ class Test_SnapshotBase(OpenTelemetryBase):
         if not first:
             derived._transaction_id = TXN_ID
 
+        if request_options is None:
+            request_options = RequestOptions()
+        elif type(request_options) == dict:
+            request_options = RequestOptions(request_options)
+
         result_set = derived.execute_sql(
             SQL_QUERY_WITH_PARAM,
             PARAMS,
@@ -691,6 +732,11 @@ class Test_SnapshotBase(OpenTelemetryBase):
                 expected_query_options, query_options
             )
 
+        if derived._read_only:
+            # Transaction tag is ignored for read only requests.
+            expected_request_options = request_options
+            expected_request_options.transaction_tag = None
+
         expected_request = ExecuteSqlRequest(
             session=self.SESSION_NAME,
             sql=SQL_QUERY_WITH_PARAM,
@@ -699,7 +745,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
             param_types=PARAM_TYPES,
             query_mode=MODE,
             query_options=expected_query_options,
-            request_options=request_options,
+            request_options=expected_request_options,
             partition_token=partition,
             seqno=sql_count,
         )
@@ -759,6 +805,29 @@ class Test_SnapshotBase(OpenTelemetryBase):
                 priority=RequestOptions.Priority.PRIORITY_MEDIUM
             ),
         )
+
+    def test_execute_sql_w_request_tag_success(self):
+        request_options = RequestOptions(request_tag="tag-1",)
+        self._execute_sql_helper(multi_use=False, request_options=request_options)
+
+    def test_execute_sql_w_transaction_tag_success(self):
+        request_options = RequestOptions(transaction_tag="tag-1-1",)
+        self._execute_sql_helper(multi_use=False, request_options=request_options)
+
+    def test_execute_sql_w_request_and_transaction_tag_success(self):
+        request_options = RequestOptions(
+            request_tag="tag-1", transaction_tag="tag-1-1",
+        )
+        self._execute_sql_helper(multi_use=False, request_options=request_options)
+
+    def test_execute_sql_w_request_and_transaction_tag_dictionary_success(self):
+        request_options = {"request_tag": "tag-1", "transaction_tag": "tag-1-1"}
+        self._execute_sql_helper(multi_use=False, request_options=request_options)
+
+    def test_execute_sql_w_incorrect_tag_dictionary_error(self):
+        request_options = {"incorrect_tag": "tag-1-1"}
+        with self.assertRaises(ValueError):
+            self._execute_sql_helper(multi_use=False, request_options=request_options)
 
     def _partition_read_helper(
         self,

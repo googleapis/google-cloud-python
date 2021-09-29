@@ -32,6 +32,9 @@ class _BatchBase(_SessionWrapper):
     :param session: the session used to perform the commit
     """
 
+    transaction_tag = None
+    _read_only = False
+
     def __init__(self, session):
         super(_BatchBase, self).__init__(session)
         self._mutations = []
@@ -118,8 +121,7 @@ class _BatchBase(_SessionWrapper):
 
 
 class Batch(_BatchBase):
-    """Accumulate mutations for transmission during :meth:`commit`.
-    """
+    """Accumulate mutations for transmission during :meth:`commit`."""
 
     committed = None
     commit_stats = None
@@ -160,8 +162,14 @@ class Batch(_BatchBase):
         txn_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
         trace_attributes = {"num_mutations": len(self._mutations)}
 
-        if type(request_options) == dict:
+        if request_options is None:
+            request_options = RequestOptions()
+        elif type(request_options) == dict:
             request_options = RequestOptions(request_options)
+        request_options.transaction_tag = self.transaction_tag
+
+        # Request tags are not supported for commit requests.
+        request_options.request_tag = None
 
         request = CommitRequest(
             session=self._session.name,

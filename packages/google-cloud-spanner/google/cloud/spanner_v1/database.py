@@ -494,6 +494,8 @@ class Database(object):
             (Optional) Common options for this request.
             If a dict is provided, it must be of the same form as the protobuf
             message :class:`~google.cloud.spanner_v1.types.RequestOptions`.
+            Please note, the `transactionTag` setting will be ignored as it is
+            not supported for partitioned DML.
 
         :rtype: int
         :returns: Count of rows affected by the DML statement.
@@ -501,8 +503,11 @@ class Database(object):
         query_options = _merge_query_options(
             self._instance._client._query_options, query_options
         )
-        if type(request_options) == dict:
+        if request_options is None:
+            request_options = RequestOptions()
+        elif type(request_options) == dict:
             request_options = RequestOptions(request_options)
+        request_options.transaction_tag = None
 
         if params is not None:
             from google.cloud.spanner_v1.transaction import Transaction
@@ -796,12 +801,19 @@ class BatchCheckout(object):
     def __init__(self, database, request_options=None):
         self._database = database
         self._session = self._batch = None
-        self._request_options = request_options
+        if request_options is None:
+            self._request_options = RequestOptions()
+        elif type(request_options) == dict:
+            self._request_options = RequestOptions(request_options)
+        else:
+            self._request_options = request_options
 
     def __enter__(self):
         """Begin ``with`` block."""
         session = self._session = self._database._pool.get()
         batch = self._batch = Batch(session)
+        if self._request_options.transaction_tag:
+            batch.transaction_tag = self._request_options.transaction_tag
         return batch
 
     def __exit__(self, exc_type, exc_val, exc_tb):

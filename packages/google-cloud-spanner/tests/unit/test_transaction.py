@@ -51,6 +51,7 @@ class TestTransaction(OpenTelemetryBase):
     SESSION_ID = "session-id"
     SESSION_NAME = DATABASE_NAME + "/sessions/" + SESSION_ID
     TRANSACTION_ID = b"DEADBEEF"
+    TRANSACTION_TAG = "transaction-tag"
 
     BASE_ATTRIBUTES = {
         "db.type": "spanner",
@@ -314,7 +315,9 @@ class TestTransaction(OpenTelemetryBase):
             attributes=dict(TestTransaction.BASE_ATTRIBUTES, num_mutations=1),
         )
 
-    def _commit_helper(self, mutate=True, return_commit_stats=False):
+    def _commit_helper(
+        self, mutate=True, return_commit_stats=False, request_options=None
+    ):
         import datetime
         from google.cloud.spanner_v1 import CommitResponse
         from google.cloud.spanner_v1.keyset import KeySet
@@ -331,20 +334,38 @@ class TestTransaction(OpenTelemetryBase):
         session = _Session(database)
         transaction = self._make_one(session)
         transaction._transaction_id = self.TRANSACTION_ID
+        transaction.transaction_tag = self.TRANSACTION_TAG
 
         if mutate:
             transaction.delete(TABLE_NAME, keyset)
 
-        transaction.commit(return_commit_stats=return_commit_stats)
+        transaction.commit(
+            return_commit_stats=return_commit_stats, request_options=request_options
+        )
 
         self.assertEqual(transaction.committed, now)
         self.assertIsNone(session._transaction)
 
-        session_id, mutations, txn_id, metadata = api._committed
+        session_id, mutations, txn_id, actual_request_options, metadata = api._committed
+
+        if request_options is None:
+            expected_request_options = RequestOptions(
+                transaction_tag=self.TRANSACTION_TAG
+            )
+        elif type(request_options) == dict:
+            expected_request_options = RequestOptions(request_options)
+            expected_request_options.transaction_tag = self.TRANSACTION_TAG
+            expected_request_options.request_tag = None
+        else:
+            expected_request_options = request_options
+            expected_request_options.transaction_tag = self.TRANSACTION_TAG
+            expected_request_options.request_tag = None
+
         self.assertEqual(session_id, session.name)
         self.assertEqual(txn_id, self.TRANSACTION_ID)
         self.assertEqual(mutations, transaction._mutations)
         self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
+        self.assertEqual(actual_request_options, expected_request_options)
 
         if return_commit_stats:
             self.assertEqual(transaction.commit_stats.mutation_count, 4)
@@ -365,6 +386,29 @@ class TestTransaction(OpenTelemetryBase):
 
     def test_commit_w_return_commit_stats(self):
         self._commit_helper(return_commit_stats=True)
+
+    def test_commit_w_request_tag_success(self):
+        request_options = RequestOptions(request_tag="tag-1",)
+        self._commit_helper(request_options=request_options)
+
+    def test_commit_w_transaction_tag_ignored_success(self):
+        request_options = RequestOptions(transaction_tag="tag-1-1",)
+        self._commit_helper(request_options=request_options)
+
+    def test_commit_w_request_and_transaction_tag_success(self):
+        request_options = RequestOptions(
+            request_tag="tag-1", transaction_tag="tag-1-1",
+        )
+        self._commit_helper(request_options=request_options)
+
+    def test_commit_w_request_and_transaction_tag_dictionary_success(self):
+        request_options = {"request_tag": "tag-1", "transaction_tag": "tag-1-1"}
+        self._commit_helper(request_options=request_options)
+
+    def test_commit_w_incorrect_tag_dictionary_error(self):
+        request_options = {"incorrect_tag": "tag-1-1"}
+        with self.assertRaises(ValueError):
+            self._commit_helper(request_options=request_options)
 
     def test__make_params_pb_w_params_wo_param_types(self):
         session = _Session()
@@ -443,7 +487,13 @@ class TestTransaction(OpenTelemetryBase):
         session = _Session(database)
         transaction = self._make_one(session)
         transaction._transaction_id = self.TRANSACTION_ID
+        transaction.transaction_tag = self.TRANSACTION_TAG
         transaction._execute_sql_count = count
+
+        if request_options is None:
+            request_options = RequestOptions()
+        elif type(request_options) == dict:
+            request_options = RequestOptions(request_options)
 
         row_count = transaction.execute_update(
             DML_QUERY_WITH_PARAM,
@@ -468,6 +518,8 @@ class TestTransaction(OpenTelemetryBase):
             expected_query_options = _merge_query_options(
                 expected_query_options, query_options
             )
+        expected_request_options = request_options
+        expected_request_options.transaction_tag = self.TRANSACTION_TAG
 
         expected_request = ExecuteSqlRequest(
             session=self.SESSION_NAME,
@@ -491,6 +543,29 @@ class TestTransaction(OpenTelemetryBase):
 
     def test_execute_update_new_transaction(self):
         self._execute_update_helper()
+
+    def test_execute_update_w_request_tag_success(self):
+        request_options = RequestOptions(request_tag="tag-1",)
+        self._execute_update_helper(request_options=request_options)
+
+    def test_execute_update_w_transaction_tag_success(self):
+        request_options = RequestOptions(transaction_tag="tag-1-1",)
+        self._execute_update_helper(request_options=request_options)
+
+    def test_execute_update_w_request_and_transaction_tag_success(self):
+        request_options = RequestOptions(
+            request_tag="tag-1", transaction_tag="tag-1-1",
+        )
+        self._execute_update_helper(request_options=request_options)
+
+    def test_execute_update_w_request_and_transaction_tag_dictionary_success(self):
+        request_options = {"request_tag": "tag-1", "transaction_tag": "tag-1-1"}
+        self._execute_update_helper(request_options=request_options)
+
+    def test_execute_update_w_incorrect_tag_dictionary_error(self):
+        request_options = {"incorrect_tag": "tag-1-1"}
+        with self.assertRaises(ValueError):
+            self._execute_update_helper(request_options=request_options)
 
     def test_execute_update_w_count(self):
         self._execute_update_helper(count=1)
@@ -587,7 +662,13 @@ class TestTransaction(OpenTelemetryBase):
         session = _Session(database)
         transaction = self._make_one(session)
         transaction._transaction_id = self.TRANSACTION_ID
+        transaction.transaction_tag = self.TRANSACTION_TAG
         transaction._execute_sql_count = count
+
+        if request_options is None:
+            request_options = RequestOptions()
+        elif type(request_options) == dict:
+            request_options = RequestOptions(request_options)
 
         status, row_counts = transaction.batch_update(
             dml_statements, request_options=request_options
@@ -611,13 +692,15 @@ class TestTransaction(OpenTelemetryBase):
             ExecuteBatchDmlRequest.Statement(sql=update_dml),
             ExecuteBatchDmlRequest.Statement(sql=delete_dml),
         ]
+        expected_request_options = request_options
+        expected_request_options.transaction_tag = self.TRANSACTION_TAG
 
         expected_request = ExecuteBatchDmlRequest(
             session=self.SESSION_NAME,
             transaction=expected_transaction,
             statements=expected_statements,
             seqno=count,
-            request_options=request_options,
+            request_options=expected_request_options,
         )
         api.execute_batch_dml.assert_called_once_with(
             request=expected_request,
@@ -632,6 +715,29 @@ class TestTransaction(OpenTelemetryBase):
                 priority=RequestOptions.Priority.PRIORITY_MEDIUM
             ),
         )
+
+    def test_batch_update_w_request_tag_success(self):
+        request_options = RequestOptions(request_tag="tag-1",)
+        self._batch_update_helper(request_options=request_options)
+
+    def test_batch_update_w_transaction_tag_success(self):
+        request_options = RequestOptions(transaction_tag="tag-1-1",)
+        self._batch_update_helper(request_options=request_options)
+
+    def test_batch_update_w_request_and_transaction_tag_success(self):
+        request_options = RequestOptions(
+            request_tag="tag-1", transaction_tag="tag-1-1",
+        )
+        self._batch_update_helper(request_options=request_options)
+
+    def test_batch_update_w_request_and_transaction_tag_dictionary_success(self):
+        request_options = {"request_tag": "tag-1", "transaction_tag": "tag-1-1"}
+        self._batch_update_helper(request_options=request_options)
+
+    def test_batch_update_w_incorrect_tag_dictionary_error(self):
+        request_options = {"incorrect_tag": "tag-1-1"}
+        with self.assertRaises(ValueError):
+            self._batch_update_helper(request_options=request_options)
 
     def test_batch_update_w_errors(self):
         self._batch_update_helper(error_after=2, count=1)
@@ -688,7 +794,7 @@ class TestTransaction(OpenTelemetryBase):
 
         self.assertEqual(transaction.committed, now)
 
-        session_id, mutations, txn_id, metadata = api._committed
+        session_id, mutations, txn_id, _, metadata = api._committed
         self.assertEqual(session_id, self.SESSION_NAME)
         self.assertEqual(txn_id, self.TRANSACTION_ID)
         self.assertEqual(mutations, transaction._mutations)
@@ -775,6 +881,7 @@ class _FauxSpannerAPI(object):
             request.session,
             request.mutations,
             request.transaction_id,
+            request.request_options,
             metadata,
         )
         return self._commit_response

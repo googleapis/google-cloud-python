@@ -15,6 +15,7 @@
 
 import unittest
 from tests._helpers import OpenTelemetryBase, StatusCode
+from google.cloud.spanner_v1 import RequestOptions
 
 TABLE_NAME = "citizens"
 COLUMNS = ["email", "first_name", "last_name", "age"]
@@ -39,6 +40,7 @@ class _BaseTest(unittest.TestCase):
     DATABASE_NAME = INSTANCE_NAME + "/databases/" + DATABASE_ID
     SESSION_ID = "session-id"
     SESSION_NAME = DATABASE_NAME + "/sessions/" + SESSION_ID
+    TRANSACTION_TAG = "transaction-tag"
 
     def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
@@ -232,17 +234,86 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self.assertEqual(committed, now)
         self.assertEqual(batch.committed, committed)
 
-        (session, mutations, single_use_txn, metadata, request_options) = api._committed
+        (session, mutations, single_use_txn, request_options, metadata) = api._committed
         self.assertEqual(session, self.SESSION_NAME)
         self.assertEqual(mutations, batch._mutations)
         self.assertIsInstance(single_use_txn, TransactionOptions)
         self.assertTrue(type(single_use_txn).pb(single_use_txn).HasField("read_write"))
         self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
-        self.assertEqual(request_options, None)
+        self.assertEqual(request_options, RequestOptions())
 
         self.assertSpanAttributes(
             "CloudSpanner.Commit", attributes=dict(BASE_ATTRIBUTES, num_mutations=1)
         )
+
+    def _test_commit_with_request_options(self, request_options=None):
+        import datetime
+        from google.cloud.spanner_v1 import CommitResponse
+        from google.cloud.spanner_v1 import TransactionOptions
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now_pb = _datetime_to_pb_timestamp(now)
+        response = CommitResponse(commit_timestamp=now_pb)
+        database = _Database()
+        api = database.spanner_api = _FauxSpannerAPI(_commit_response=response)
+        session = _Session(database)
+        batch = self._make_one(session)
+        batch.transaction_tag = self.TRANSACTION_TAG
+        batch.insert(TABLE_NAME, COLUMNS, VALUES)
+        committed = batch.commit(request_options=request_options)
+
+        self.assertEqual(committed, now)
+        self.assertEqual(batch.committed, committed)
+
+        if type(request_options) == dict:
+            expected_request_options = RequestOptions(request_options)
+        else:
+            expected_request_options = request_options
+        expected_request_options.transaction_tag = self.TRANSACTION_TAG
+        expected_request_options.request_tag = None
+
+        (
+            session,
+            mutations,
+            single_use_txn,
+            actual_request_options,
+            metadata,
+        ) = api._committed
+        self.assertEqual(session, self.SESSION_NAME)
+        self.assertEqual(mutations, batch._mutations)
+        self.assertIsInstance(single_use_txn, TransactionOptions)
+        self.assertTrue(type(single_use_txn).pb(single_use_txn).HasField("read_write"))
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
+        self.assertEqual(actual_request_options, expected_request_options)
+
+        self.assertSpanAttributes(
+            "CloudSpanner.Commit", attributes=dict(BASE_ATTRIBUTES, num_mutations=1)
+        )
+
+    def test_commit_w_request_tag_success(self):
+        request_options = RequestOptions(request_tag="tag-1",)
+        self._test_commit_with_request_options(request_options=request_options)
+
+    def test_commit_w_transaction_tag_success(self):
+        request_options = RequestOptions(transaction_tag="tag-1-1",)
+        self._test_commit_with_request_options(request_options=request_options)
+
+    def test_commit_w_request_and_transaction_tag_success(self):
+        request_options = RequestOptions(
+            request_tag="tag-1", transaction_tag="tag-1-1",
+        )
+        self._test_commit_with_request_options(request_options=request_options)
+
+    def test_commit_w_request_and_transaction_tag_dictionary_success(self):
+        request_options = {"request_tag": "tag-1", "transaction_tag": "tag-1-1"}
+        self._test_commit_with_request_options(request_options=request_options)
+
+    def test_commit_w_incorrect_tag_dictionary_error(self):
+        request_options = {"incorrect_tag": "tag-1-1"}
+        with self.assertRaises(ValueError):
+            self._test_commit_with_request_options(request_options=request_options)
 
     def test_context_mgr_already_committed(self):
         import datetime
@@ -281,13 +352,13 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
 
         self.assertEqual(batch.committed, now)
 
-        (session, mutations, single_use_txn, metadata, request_options) = api._committed
+        (session, mutations, single_use_txn, request_options, metadata) = api._committed
         self.assertEqual(session, self.SESSION_NAME)
         self.assertEqual(mutations, batch._mutations)
         self.assertIsInstance(single_use_txn, TransactionOptions)
         self.assertTrue(type(single_use_txn).pb(single_use_txn).HasField("read_write"))
         self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
-        self.assertEqual(request_options, None)
+        self.assertEqual(request_options, RequestOptions())
 
         self.assertSpanAttributes(
             "CloudSpanner.Commit", attributes=dict(BASE_ATTRIBUTES, num_mutations=1)
@@ -341,7 +412,7 @@ class _FauxSpannerAPI:
         self.__dict__.update(**kwargs)
 
     def commit(
-        self, request=None, metadata=None, request_options=None,
+        self, request=None, metadata=None,
     ):
         from google.api_core.exceptions import Unknown
 
@@ -350,8 +421,8 @@ class _FauxSpannerAPI:
             request.session,
             request.mutations,
             request.single_use_transaction,
+            request.request_options,
             metadata,
-            request_options,
         )
         if self._rpc_error:
             raise Unknown("error")
