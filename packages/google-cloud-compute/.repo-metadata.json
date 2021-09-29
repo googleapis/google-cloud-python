@@ -9,5 +9,6 @@
   "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-compute",
   "distribution_name": "google-cloud-compute",
-  "api_id": "compute.googleapis.com"
+  "api_id": "compute.googleapis.com",
+  "codeowner_team": "@googleapis/actools"
 }
