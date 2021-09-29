@@ -24,15 +24,15 @@ from typing import (
     Optional,
 )
 
-from google.cloud.bigquery.migration_v2alpha.types import migration_entities
-from google.cloud.bigquery.migration_v2alpha.types import migration_service
+from google.cloud.bigquery_migration_v2alpha.types import migration_entities
+from google.cloud.bigquery_migration_v2alpha.types import migration_service
 
 
 class ListMigrationWorkflowsPager:
     """A pager for iterating through ``list_migration_workflows`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.bigquery.migration_v2alpha.types.ListMigrationWorkflowsResponse` object, and
+    :class:`google.cloud.bigquery_migration_v2alpha.types.ListMigrationWorkflowsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``migration_workflows`` field.
 
@@ -41,7 +41,7 @@ class ListMigrationWorkflowsPager:
     through the ``migration_workflows`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.bigquery.migration_v2alpha.types.ListMigrationWorkflowsResponse`
+    All the usual :class:`google.cloud.bigquery_migration_v2alpha.types.ListMigrationWorkflowsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -59,9 +59,9 @@ class ListMigrationWorkflowsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.bigquery.migration_v2alpha.types.ListMigrationWorkflowsRequest):
+            request (google.cloud.bigquery_migration_v2alpha.types.ListMigrationWorkflowsRequest):
                 The initial request object.
-            response (google.cloud.bigquery.migration_v2alpha.types.ListMigrationWorkflowsResponse):
+            response (google.cloud.bigquery_migration_v2alpha.types.ListMigrationWorkflowsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -94,7 +94,7 @@ class ListMigrationWorkflowsAsyncPager:
     """A pager for iterating through ``list_migration_workflows`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.bigquery.migration_v2alpha.types.ListMigrationWorkflowsResponse` object, and
+    :class:`google.cloud.bigquery_migration_v2alpha.types.ListMigrationWorkflowsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``migration_workflows`` field.
 
@@ -103,7 +103,7 @@ class ListMigrationWorkflowsAsyncPager:
     through the ``migration_workflows`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.bigquery.migration_v2alpha.types.ListMigrationWorkflowsResponse`
+    All the usual :class:`google.cloud.bigquery_migration_v2alpha.types.ListMigrationWorkflowsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -123,9 +123,9 @@ class ListMigrationWorkflowsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.bigquery.migration_v2alpha.types.ListMigrationWorkflowsRequest):
+            request (google.cloud.bigquery_migration_v2alpha.types.ListMigrationWorkflowsRequest):
                 The initial request object.
-            response (google.cloud.bigquery.migration_v2alpha.types.ListMigrationWorkflowsResponse):
+            response (google.cloud.bigquery_migration_v2alpha.types.ListMigrationWorkflowsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -164,7 +164,7 @@ class ListMigrationSubtasksPager:
     """A pager for iterating through ``list_migration_subtasks`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.bigquery.migration_v2alpha.types.ListMigrationSubtasksResponse` object, and
+    :class:`google.cloud.bigquery_migration_v2alpha.types.ListMigrationSubtasksResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``migration_subtasks`` field.
 
@@ -173,7 +173,7 @@ class ListMigrationSubtasksPager:
     through the ``migration_subtasks`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.bigquery.migration_v2alpha.types.ListMigrationSubtasksResponse`
+    All the usual :class:`google.cloud.bigquery_migration_v2alpha.types.ListMigrationSubtasksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -191,9 +191,9 @@ class ListMigrationSubtasksPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.bigquery.migration_v2alpha.types.ListMigrationSubtasksRequest):
+            request (google.cloud.bigquery_migration_v2alpha.types.ListMigrationSubtasksRequest):
                 The initial request object.
-            response (google.cloud.bigquery.migration_v2alpha.types.ListMigrationSubtasksResponse):
+            response (google.cloud.bigquery_migration_v2alpha.types.ListMigrationSubtasksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -226,7 +226,7 @@ class ListMigrationSubtasksAsyncPager:
     """A pager for iterating through ``list_migration_subtasks`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.bigquery.migration_v2alpha.types.ListMigrationSubtasksResponse` object, and
+    :class:`google.cloud.bigquery_migration_v2alpha.types.ListMigrationSubtasksResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``migration_subtasks`` field.
 
@@ -235,7 +235,7 @@ class ListMigrationSubtasksAsyncPager:
     through the ``migration_subtasks`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.bigquery.migration_v2alpha.types.ListMigrationSubtasksResponse`
+    All the usual :class:`google.cloud.bigquery_migration_v2alpha.types.ListMigrationSubtasksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -255,9 +255,9 @@ class ListMigrationSubtasksAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.bigquery.migration_v2alpha.types.ListMigrationSubtasksRequest):
+            request (google.cloud.bigquery_migration_v2alpha.types.ListMigrationSubtasksRequest):
                 The initial request object.
-            response (google.cloud.bigquery.migration_v2alpha.types.ListMigrationSubtasksResponse):
+            response (google.cloud.bigquery_migration_v2alpha.types.ListMigrationSubtasksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

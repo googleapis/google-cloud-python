@@ -26,8 +26,8 @@ from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.bigquery.migration_v2alpha.types import migration_entities
-from google.cloud.bigquery.migration_v2alpha.types import migration_service
+from google.cloud.bigquery_migration_v2alpha.types import migration_entities
+from google.cloud.bigquery_migration_v2alpha.types import migration_service
 from google.protobuf import empty_pb2  # type: ignore
 
 try:

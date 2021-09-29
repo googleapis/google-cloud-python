@@ -15,8 +15,8 @@
 #
 import proto  # type: ignore
 
-from google.cloud.bigquery.migration_v2alpha.types import migration_error_details
-from google.cloud.bigquery.migration_v2alpha.types import migration_metrics
+from google.cloud.bigquery_migration_v2alpha.types import migration_error_details
+from google.cloud.bigquery_migration_v2alpha.types import migration_metrics
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import error_details_pb2  # type: ignore
@@ -42,12 +42,12 @@ class MigrationWorkflow(proto.Message):
             The display name of the workflow. This can be
             set to give a workflow a descriptive name. There
             is no guarantee or enforcement of uniqueness.
-        tasks (Sequence[google.cloud.bigquery.migration_v2alpha.types.MigrationWorkflow.TasksEntry]):
+        tasks (Sequence[google.cloud.bigquery_migration_v2alpha.types.MigrationWorkflow.TasksEntry]):
             The tasks in a workflow in a named map. The
             name (i.e. key) has no meaning and is merely a
             convenient way to address a specific task in a
             workflow.
-        state (google.cloud.bigquery.migration_v2alpha.types.MigrationWorkflow.State):
+        state (google.cloud.bigquery_migration_v2alpha.types.MigrationWorkflow.State):
             Output only. That status of the workflow.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the workflow was created.
@@ -91,7 +91,7 @@ class MigrationTask(proto.Message):
             The details of the task. The type URL must be
             one of the supported task details messages and
             correspond to the Task's type.
-        state (google.cloud.bigquery.migration_v2alpha.types.MigrationTask.State):
+        state (google.cloud.bigquery_migration_v2alpha.types.MigrationTask.State):
             Output only. The current state of the task.
         processing_error (google.rpc.error_details_pb2.ErrorInfo):
             Output only. An explanation that may be
@@ -148,13 +148,13 @@ class MigrationSubtask(proto.Message):
             orchestrator or worker) to ensure it only
             creates subtasks for which there are compatible
             workers polling for Subtasks.
-        state (google.cloud.bigquery.migration_v2alpha.types.MigrationSubtask.State):
+        state (google.cloud.bigquery_migration_v2alpha.types.MigrationSubtask.State):
             Output only. The current state of the
             subtask.
         processing_error (google.rpc.error_details_pb2.ErrorInfo):
             Output only. An explanation that may be
             populated when the task is in FAILED state.
-        resource_error_details (Sequence[google.cloud.bigquery.migration_v2alpha.types.ResourceErrorDetail]):
+        resource_error_details (Sequence[google.cloud.bigquery_migration_v2alpha.types.ResourceErrorDetail]):
             Output only. Provides details to errors and
             issues encountered while processing the subtask.
             Presence of error details does not mean that the
@@ -169,7 +169,7 @@ class MigrationSubtask(proto.Message):
             Time when the subtask was created.
         last_update_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the subtask was last updated.
-        metrics (Sequence[google.cloud.bigquery.migration_v2alpha.types.TimeSeries]):
+        metrics (Sequence[google.cloud.bigquery_migration_v2alpha.types.TimeSeries]):
             The metrics for the subtask.
     """
 

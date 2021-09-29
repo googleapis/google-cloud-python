@@ -15,7 +15,7 @@
 #
 import proto  # type: ignore
 
-from google.cloud.bigquery.migration_v2alpha.types import migration_entities
+from google.cloud.bigquery_migration_v2alpha.types import migration_entities
 from google.protobuf import field_mask_pb2  # type: ignore
 
 
@@ -41,7 +41,7 @@ class CreateMigrationWorkflowRequest(proto.Message):
         parent (str):
             Required. The name of the project to which this migration
             workflow belongs. Example: ``projects/foo/locations/bar``
-        migration_workflow (google.cloud.bigquery.migration_v2alpha.types.MigrationWorkflow):
+        migration_workflow (google.cloud.bigquery_migration_v2alpha.types.MigrationWorkflow):
             Required. The migration workflow to create.
     """
 
@@ -96,7 +96,7 @@ class ListMigrationWorkflowsRequest(proto.Message):
 class ListMigrationWorkflowsResponse(proto.Message):
     r"""Response object for a ``ListMigrationWorkflows`` call.
     Attributes:
-        migration_workflows (Sequence[google.cloud.bigquery.migration_v2alpha.types.MigrationWorkflow]):
+        migration_workflows (Sequence[google.cloud.bigquery_migration_v2alpha.types.MigrationWorkflow]):
             The migration workflows for the specified
             project / location.
         next_page_token (str):
@@ -189,7 +189,7 @@ class ListMigrationSubtasksRequest(proto.Message):
 class ListMigrationSubtasksResponse(proto.Message):
     r"""Response object for a ``ListMigrationSubtasks`` call.
     Attributes:
-        migration_subtasks (Sequence[google.cloud.bigquery.migration_v2alpha.types.MigrationSubtask]):
+        migration_subtasks (Sequence[google.cloud.bigquery_migration_v2alpha.types.MigrationSubtask]):
             The migration subtasks for the specified
             task.
         next_page_token (str):

@@ -31,23 +31,23 @@ from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.bigquery.migration_v2alpha.services.migration_service import (
+from google.cloud.bigquery_migration_v2alpha.services.migration_service import (
     MigrationServiceAsyncClient,
 )
-from google.cloud.bigquery.migration_v2alpha.services.migration_service import (
+from google.cloud.bigquery_migration_v2alpha.services.migration_service import (
     MigrationServiceClient,
 )
-from google.cloud.bigquery.migration_v2alpha.services.migration_service import pagers
-from google.cloud.bigquery.migration_v2alpha.services.migration_service import (
+from google.cloud.bigquery_migration_v2alpha.services.migration_service import pagers
+from google.cloud.bigquery_migration_v2alpha.services.migration_service import (
     transports,
 )
-from google.cloud.bigquery.migration_v2alpha.services.migration_service.transports.base import (
+from google.cloud.bigquery_migration_v2alpha.services.migration_service.transports.base import (
     _GOOGLE_AUTH_VERSION,
 )
-from google.cloud.bigquery.migration_v2alpha.types import migration_entities
-from google.cloud.bigquery.migration_v2alpha.types import migration_error_details
-from google.cloud.bigquery.migration_v2alpha.types import migration_metrics
-from google.cloud.bigquery.migration_v2alpha.types import migration_service
+from google.cloud.bigquery_migration_v2alpha.types import migration_entities
+from google.cloud.bigquery_migration_v2alpha.types import migration_error_details
+from google.cloud.bigquery_migration_v2alpha.types import migration_metrics
+from google.cloud.bigquery_migration_v2alpha.types import migration_service
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -500,7 +500,7 @@ def test_migration_service_client_client_options_credentials_file(
 
 def test_migration_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.bigquery.migration_v2alpha.services.migration_service.transports.MigrationServiceGrpcTransport.__init__"
+        "google.cloud.bigquery_migration_v2alpha.services.migration_service.transports.MigrationServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
         client = MigrationServiceClient(
@@ -2532,7 +2532,7 @@ def test_migration_service_base_transport_error():
 def test_migration_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.bigquery.migration_v2alpha.services.migration_service.transports.MigrationServiceTransport.__init__"
+        "google.cloud.bigquery_migration_v2alpha.services.migration_service.transports.MigrationServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
         transport = transports.MigrationServiceTransport(
@@ -2561,7 +2561,7 @@ def test_migration_service_base_transport_with_credentials_file():
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.bigquery.migration_v2alpha.services.migration_service.transports.MigrationServiceTransport._prep_wrapped_messages"
+        "google.cloud.bigquery_migration_v2alpha.services.migration_service.transports.MigrationServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
@@ -2582,7 +2582,7 @@ def test_migration_service_base_transport_with_credentials_file_old_google_auth(
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.bigquery.migration_v2alpha.services.migration_service.transports.MigrationServiceTransport._prep_wrapped_messages"
+        "google.cloud.bigquery_migration_v2alpha.services.migration_service.transports.MigrationServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
@@ -2599,7 +2599,7 @@ def test_migration_service_base_transport_with_credentials_file_old_google_auth(
 def test_migration_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.bigquery.migration_v2alpha.services.migration_service.transports.MigrationServiceTransport._prep_wrapped_messages"
+        "google.cloud.bigquery_migration_v2alpha.services.migration_service.transports.MigrationServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)

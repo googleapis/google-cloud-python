@@ -24,8 +24,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
-from google.cloud.bigquery.migration_v2alpha.types import migration_entities
-from google.cloud.bigquery.migration_v2alpha.types import migration_service
+from google.cloud.bigquery_migration_v2alpha.types import migration_entities
+from google.cloud.bigquery_migration_v2alpha.types import migration_service
 from google.protobuf import empty_pb2  # type: ignore
 from .base import MigrationServiceTransport, DEFAULT_CLIENT_INFO
 

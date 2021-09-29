@@ -43,7 +43,7 @@ class TimeSeries(proto.Message):
             must be auto-created, then this field specifies the metric
             kind of the new descriptor and must be either ``GAUGE`` (the
             default) or ``CUMULATIVE``.
-        points (Sequence[google.cloud.bigquery.migration_v2alpha.types.Point]):
+        points (Sequence[google.cloud.bigquery_migration_v2alpha.types.Point]):
             Required. The data points of this time series. When listing
             time series, points are returned in reverse time order.
 
@@ -68,7 +68,7 @@ class TimeSeries(proto.Message):
 class Point(proto.Message):
     r"""A single data point in a time series.
     Attributes:
-        interval (google.cloud.bigquery.migration_v2alpha.types.TimeInterval):
+        interval (google.cloud.bigquery_migration_v2alpha.types.TimeInterval):
             The time interval to which the data point applies. For
             ``GAUGE`` metrics, the start time does not need to be
             supplied, but if it is supplied, it must equal the end time.
@@ -80,7 +80,7 @@ class Point(proto.Message):
             time and increasing end times, until an event resets the
             cumulative value to zero and sets a new start time for the
             following points.
-        value (google.cloud.bigquery.migration_v2alpha.types.TypedValue):
+        value (google.cloud.bigquery_migration_v2alpha.types.TypedValue):
             The value of the data point.
     """
 

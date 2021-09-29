@@ -14,60 +14,60 @@
 # limitations under the License.
 #
 
-from google.cloud.bigquery.migration_v2alpha.services.migration_service.client import (
+from google.cloud.bigquery_migration_v2alpha.services.migration_service.client import (
     MigrationServiceClient,
 )
-from google.cloud.bigquery.migration_v2alpha.services.migration_service.async_client import (
+from google.cloud.bigquery_migration_v2alpha.services.migration_service.async_client import (
     MigrationServiceAsyncClient,
 )
 
-from google.cloud.bigquery.migration_v2alpha.types.migration_entities import (
+from google.cloud.bigquery_migration_v2alpha.types.migration_entities import (
     MigrationSubtask,
 )
-from google.cloud.bigquery.migration_v2alpha.types.migration_entities import (
+from google.cloud.bigquery_migration_v2alpha.types.migration_entities import (
     MigrationTask,
 )
-from google.cloud.bigquery.migration_v2alpha.types.migration_entities import (
+from google.cloud.bigquery_migration_v2alpha.types.migration_entities import (
     MigrationWorkflow,
 )
-from google.cloud.bigquery.migration_v2alpha.types.migration_error_details import (
+from google.cloud.bigquery_migration_v2alpha.types.migration_error_details import (
     ErrorDetail,
 )
-from google.cloud.bigquery.migration_v2alpha.types.migration_error_details import (
+from google.cloud.bigquery_migration_v2alpha.types.migration_error_details import (
     ErrorLocation,
 )
-from google.cloud.bigquery.migration_v2alpha.types.migration_error_details import (
+from google.cloud.bigquery_migration_v2alpha.types.migration_error_details import (
     ResourceErrorDetail,
 )
-from google.cloud.bigquery.migration_v2alpha.types.migration_metrics import Point
-from google.cloud.bigquery.migration_v2alpha.types.migration_metrics import TimeInterval
-from google.cloud.bigquery.migration_v2alpha.types.migration_metrics import TimeSeries
-from google.cloud.bigquery.migration_v2alpha.types.migration_metrics import TypedValue
-from google.cloud.bigquery.migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2alpha.types.migration_metrics import Point
+from google.cloud.bigquery_migration_v2alpha.types.migration_metrics import TimeInterval
+from google.cloud.bigquery_migration_v2alpha.types.migration_metrics import TimeSeries
+from google.cloud.bigquery_migration_v2alpha.types.migration_metrics import TypedValue
+from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
     CreateMigrationWorkflowRequest,
 )
-from google.cloud.bigquery.migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
     DeleteMigrationWorkflowRequest,
 )
-from google.cloud.bigquery.migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
     GetMigrationSubtaskRequest,
 )
-from google.cloud.bigquery.migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
     GetMigrationWorkflowRequest,
 )
-from google.cloud.bigquery.migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
     ListMigrationSubtasksRequest,
 )
-from google.cloud.bigquery.migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
     ListMigrationSubtasksResponse,
 )
-from google.cloud.bigquery.migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
     ListMigrationWorkflowsRequest,
 )
-from google.cloud.bigquery.migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
     ListMigrationWorkflowsResponse,
 )
-from google.cloud.bigquery.migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
     StartMigrationWorkflowRequest,
 )
 

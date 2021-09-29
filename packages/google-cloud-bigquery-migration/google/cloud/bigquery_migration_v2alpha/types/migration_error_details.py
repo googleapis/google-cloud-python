@@ -30,7 +30,7 @@ class ResourceErrorDetail(proto.Message):
         resource_info (google.rpc.error_details_pb2.ResourceInfo):
             Required. Information about the resource
             where the error is located.
-        error_details (Sequence[google.cloud.bigquery.migration_v2alpha.types.ErrorDetail]):
+        error_details (Sequence[google.cloud.bigquery_migration_v2alpha.types.ErrorDetail]):
             Required. The error details for the resource.
         error_count (int):
             Required. How many errors there are in total for the
@@ -51,7 +51,7 @@ class ErrorDetail(proto.Message):
     encountered when processing a subtask.
 
     Attributes:
-        location (google.cloud.bigquery.migration_v2alpha.types.ErrorLocation):
+        location (google.cloud.bigquery_migration_v2alpha.types.ErrorLocation):
             Optional. The exact location within the
             resource (if applicable).
         error_info (google.rpc.error_details_pb2.ErrorInfo):

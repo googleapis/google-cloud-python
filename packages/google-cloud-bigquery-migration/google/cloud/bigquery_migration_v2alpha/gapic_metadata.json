@@ -1,7 +1,7 @@
  {
   "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
   "language": "python",
-  "libraryPackage": "google.cloud.bigquery.migration_v2alpha",
+  "libraryPackage": "google.cloud.bigquery_migration_v2alpha",
   "protoPackage": "google.cloud.bigquery.migration.v2alpha",
   "schema": "1.0",
   "services": {
