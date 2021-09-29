@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+### [2.8.1](https://www.github.com/googleapis/python-dialogflow/compare/v2.8.0...v2.8.1) (2021-09-29)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([12b4f60](https://www.github.com/googleapis/python-dialogflow/commit/12b4f6050d0b5f741f106798643bef6ebbbe1e28))
+
 ## [2.8.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.7.1...v2.8.0) (2021-09-08)
 
 
