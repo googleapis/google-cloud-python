@@ -15,7 +15,6 @@
 import datetime
 
 import packaging.version
-import pyarrow.lib
 import pytest
 
 pd = pytest.importorskip("pandas")
@@ -670,13 +669,3 @@ def test_bad_time_parsing(value, error):
 def test_bad_date_parsing(value, error):
     with pytest.raises(ValueError, match=error):
         _cls("date")([value])
-
-
-@for_date_and_time
-def test_date___arrow__array__(dtype):
-    a = _make_one(dtype)
-    ar = a.__arrow_array__()
-    assert isinstance(
-        ar, pyarrow.Date32Array if dtype == "date" else pyarrow.Time64Array,
-    )
-    assert [v.as_py() for v in ar] == list(a)

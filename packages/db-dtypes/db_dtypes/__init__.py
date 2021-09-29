@@ -125,7 +125,8 @@ class TimeArray(core.BaseDatetimeArray):
 
     def __arrow_array__(self, type=None):
         return pyarrow.array(
-            self.to_numpy(), type=type if type is not None else pyarrow.time64("ns"),
+            self.to_numpy(dtype="object"),
+            type=type if type is not None else pyarrow.time64("ns"),
         )
 
 
