@@ -1,7 +1,7 @@
 Python Client for GKE Hub API
 =============================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `GKE Hub`_ provides a unified way to work with Kubernetes clusters as part of
 Anthos, extending GKE to work in multiple environments. You have consistent,
@@ -12,8 +12,8 @@ multiple public clouds.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-gke-hub.svg
    :target: https://pypi.org/project/google-cloud-gke-hub/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-gke-hub.svg

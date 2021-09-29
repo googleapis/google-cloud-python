@@ -22,7 +22,7 @@ import setuptools  # type: ignore
 name = "google-cloud-gke-hub"
 version = "0.2.2"
 description = "GKE Hub API client library"
-release_status = "Development Status :: 4 - Beta"
+release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-gke-hub"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
