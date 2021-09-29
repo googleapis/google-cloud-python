@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.19.2](https://www.github.com/googleapis/proto-plus-python/compare/v1.19.1...v1.19.2) (2021-09-29)
+
+
+### Bug Fixes
+
+* ensure enums are hashable ([#252](https://www.github.com/googleapis/proto-plus-python/issues/252)) ([232341b](https://www.github.com/googleapis/proto-plus-python/commit/232341b4f4902fba1b3597bb1e1618b8f320374b))
+
 ### [1.19.1](https://www.github.com/googleapis/proto-plus-python/compare/v1.19.0...v1.19.1) (2021-09-29)
 
 
