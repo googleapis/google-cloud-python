@@ -9,4 +9,4 @@ pyparsing==2.4.7
 pytest==6.2.5
 toml==0.10.2
 typing-extensions==3.10.0.2
-zipp==3.5.0
+zipp==3.5.1
