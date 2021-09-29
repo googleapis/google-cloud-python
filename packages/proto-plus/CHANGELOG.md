@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.19.1](https://www.github.com/googleapis/proto-plus-python/compare/v1.19.0...v1.19.1) (2021-09-29)
+
+
+### Bug Fixes
+
+* ensure enums are incomparable w other enum types ([#248](https://www.github.com/googleapis/proto-plus-python/issues/248)) ([5927c14](https://www.github.com/googleapis/proto-plus-python/commit/5927c1400f400b3213c9b92e7a37c3c3a1abd681))
+
 ## [1.19.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.18.1...v1.19.0) (2021-06-29)
 
 
