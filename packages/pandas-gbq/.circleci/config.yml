@@ -39,7 +39,7 @@ jobs:
     steps:
       - checkout
       - run: ci/config_auth.sh
-      - run: nox -s unit-3.8 system-3.8 cover
+      - run: export GOOGLE_APPLICATION_CREDENTIALS="$(pwd)/ci/service_account.json"; nox -s unit-3.8 system-3.8 cover
 
   # Conda
   "conda-3.7":

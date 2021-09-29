@@ -11,5 +11,5 @@ if [ -f "$DIR/service_account.json" ]; then
 fi
 
 # Install test requirements
-pip install coverage pytest pytest-cov flake8 codecov
+pip install coverage pytest pytest-cov flake8 codecov google-cloud-testutils
 pytest -v -m "not local_auth" --cov=pandas_gbq --cov-report xml:/tmp/pytest-cov.xml tests

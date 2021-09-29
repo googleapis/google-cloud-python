@@ -14,10 +14,12 @@ pytest.importorskip("google.cloud.bigquery", minversion="1.24.0")
 
 
 @pytest.fixture
-def method_under_test(credentials):
+def method_under_test(project_id, credentials):
     import pandas_gbq
 
-    return functools.partial(pandas_gbq.read_gbq, credentials=credentials)
+    return functools.partial(
+        pandas_gbq.read_gbq, project_id=project_id, credentials=credentials
+    )
 
 
 @pytest.mark.parametrize(
@@ -38,7 +40,6 @@ def test_empty_results(method_under_test, query_string):
     assert len(df.index) == 0
 
 
-@pytest.mark.slow(reason="Large query for BQ Storage API tests.")
 def test_large_results(random_dataset, method_under_test):
     df = method_under_test(
         """

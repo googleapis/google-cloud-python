@@ -13,10 +13,12 @@ pytest.importorskip("google.cloud.bigquery", minversion="1.24.0")
 
 
 @pytest.fixture
-def method_under_test(credentials):
+def method_under_test(credentials, project_id):
     import pandas_gbq
 
-    return functools.partial(pandas_gbq.to_gbq, credentials=credentials)
+    return functools.partial(
+        pandas_gbq.to_gbq, project_id=project_id, credentials=credentials
+    )
 
 
 def test_float_round_trip(method_under_test, random_dataset_id, bigquery_client):

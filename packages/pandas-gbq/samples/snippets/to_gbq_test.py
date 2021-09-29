@@ -4,11 +4,13 @@
 
 """System tests for to_gbq code samples."""
 
+import random
+
 from . import to_gbq_simple
 
 
-def test_to_gbq_simple(project_id, bigquery_client, random_dataset_id):
-    table_id = "{}.to_gbq_simple".format(random_dataset_id)
+def test_to_gbq_simple(project_id, bigquery_client, dataset_id):
+    table_id = f"{dataset_id}.to_gbq_simple_{random.randint(0, 999999)}"
     to_gbq_simple.main(project_id, table_id)
     table = bigquery_client.get_table(table_id)
     assert table.num_rows == 3

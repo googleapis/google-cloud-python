@@ -61,7 +61,7 @@ authentication methods:
    If pandas-gbq does not find cached credentials, it prompts you to open a
    web browser, where you can grant pandas-gbq permissions to access your
    cloud resources. These credentials are only used locally. See the
-   :doc:`privacy policy <privacy>` for details.
+   :doc:`privacy policy <../privacy>` for details.
 
 
 Authenticating with a Service Account
