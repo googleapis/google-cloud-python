@@ -9,5 +9,6 @@
   "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-data-qna",
   "distribution_name": "google-cloud-data-qna",
-  "api_id": "dataqna.googleapis.com"
+  "api_id": "dataqna.googleapis.com",
+  "codeowner_team": "@googleapis/api-bigquery"
 }
