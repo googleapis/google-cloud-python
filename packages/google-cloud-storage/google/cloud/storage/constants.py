@@ -107,5 +107,13 @@ See: https://cloud.google.com/storage/docs/public-access-prevention
 PUBLIC_ACCESS_PREVENTION_UNSPECIFIED = "unspecified"
 """Unspecified public access prevention value.
 
+DEPRECATED: Use 'PUBLIC_ACCESS_PREVENTION_INHERITED' instead.
+
+See: https://cloud.google.com/storage/docs/public-access-prevention
+"""
+
+PUBLIC_ACCESS_PREVENTION_INHERITED = "inherited"
+"""Inherited public access prevention value.
+
 See: https://cloud.google.com/storage/docs/public-access-prevention
 """

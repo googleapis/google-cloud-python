@@ -806,22 +806,22 @@ def test_ubla_set_unset_preserves_acls(
     assert blob_acl_before == blob_acl_after
 
 
-@pytest.mark.skip(reason="Unspecified PAP is changing to inherited")
-def test_new_bucket_created_w_unspecified_pap(
+def test_new_bucket_created_w_inherited_pap(
     storage_client, buckets_to_delete, blobs_to_delete,
 ):
     from google.cloud.storage import constants
 
-    bucket_name = _helpers.unique_name("new-w-pap-unspecified")
+    bucket_name = _helpers.unique_name("new-w-pap-inherited")
     bucket = storage_client.bucket(bucket_name)
     bucket.iam_configuration.uniform_bucket_level_access_enabled = True
     bucket.create()
     buckets_to_delete.append(bucket)
 
-    assert (
-        bucket.iam_configuration.public_access_prevention
-        == constants.PUBLIC_ACCESS_PREVENTION_UNSPECIFIED
-    )
+    # TODO: Remove unspecified after changeover is complete
+    assert bucket.iam_configuration.public_access_prevention in [
+        constants.PUBLIC_ACCESS_PREVENTION_UNSPECIFIED,
+        constants.PUBLIC_ACCESS_PREVENTION_INHERITED,
+    ]
 
     bucket.iam_configuration.public_access_prevention = (
         constants.PUBLIC_ACCESS_PREVENTION_ENFORCED
@@ -876,12 +876,13 @@ def test_new_bucket_created_w_enforced_pap(
     )
 
     bucket.iam_configuration.public_access_prevention = (
-        constants.PUBLIC_ACCESS_PREVENTION_UNSPECIFIED
+        constants.PUBLIC_ACCESS_PREVENTION_INHERITED
     )
     bucket.patch()
 
-    assert (
-        bucket.iam_configuration.public_access_prevention
-        == constants.PUBLIC_ACCESS_PREVENTION_UNSPECIFIED
-    )
+    # TODO: Remove unspecified after changeover is complete
+    assert bucket.iam_configuration.public_access_prevention in [
+        constants.PUBLIC_ACCESS_PREVENTION_UNSPECIFIED,
+        constants.PUBLIC_ACCESS_PREVENTION_INHERITED,
+    ]
     assert not bucket.iam_configuration.uniform_bucket_level_access_enabled

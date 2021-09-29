@@ -51,7 +51,7 @@ from google.cloud.storage.constants import (
 from google.cloud.storage.constants import MULTI_REGIONAL_LEGACY_STORAGE_CLASS
 from google.cloud.storage.constants import MULTI_REGION_LOCATION_TYPE
 from google.cloud.storage.constants import NEARLINE_STORAGE_CLASS
-from google.cloud.storage.constants import PUBLIC_ACCESS_PREVENTION_UNSPECIFIED
+from google.cloud.storage.constants import PUBLIC_ACCESS_PREVENTION_INHERITED
 from google.cloud.storage.constants import REGIONAL_LEGACY_STORAGE_CLASS
 from google.cloud.storage.constants import REGION_LOCATION_TYPE
 from google.cloud.storage.constants import STANDARD_STORAGE_CLASS
@@ -387,8 +387,7 @@ class IAMConfiguration(dict):
 
     :type public_access_prevention: str
     :params public_access_prevention:
-        (Optional) Whether the public access prevention policy is 'unspecified' (default) or 'enforced'
-        See: https://cloud.google.com/storage/docs/public-access-prevention
+        (Optional) Whether the public access prevention policy is 'inherited' (default) or 'enforced'
         See: https://cloud.google.com/storage/docs/public-access-prevention
 
     :type uniform_bucket_level_access_enabled: bool
@@ -438,7 +437,7 @@ class IAMConfiguration(dict):
             uniform_bucket_level_access_enabled = False
 
         if public_access_prevention is _default:
-            public_access_prevention = PUBLIC_ACCESS_PREVENTION_UNSPECIFIED
+            public_access_prevention = PUBLIC_ACCESS_PREVENTION_INHERITED
 
         data = {
             "uniformBucketLevelAccess": {
@@ -481,11 +480,12 @@ class IAMConfiguration(dict):
 
     @property
     def public_access_prevention(self):
-        """Setting for public access prevention policy. Options are 'unspecified' (default) or 'enforced'.
-            More information can be found at https://cloud.google.com/storage/docs/public-access-prevention
+        """Setting for public access prevention policy. Options are 'inherited' (default) or 'enforced'.
+
+            See: https://cloud.google.com/storage/docs/public-access-prevention
 
         :rtype: string
-        :returns: the public access prevention status, either 'enforced' or 'unspecified'.
+        :returns: the public access prevention status, either 'enforced' or 'inherited'.
         """
         return self["publicAccessPrevention"]
 
