@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.7.0](https://www.github.com/googleapis/python-kms/compare/v2.6.1...v2.7.0) (2021-09-30)
+
+
+### Features
+
+* add OAEP+SHA1 to the list of supported algorithms ([#181](https://www.github.com/googleapis/python-kms/issues/181)) ([65b2c97](https://www.github.com/googleapis/python-kms/commit/65b2c975d2635cd562a0e4b7ff8f1989643929ee))
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([8ff7501](https://www.github.com/googleapis/python-kms/commit/8ff75018aeacd87bd00abb4a12a130f3e28604f5))
+
 ### [2.6.1](https://www.github.com/googleapis/python-kms/compare/v2.6.0...v2.6.1) (2021-09-24)
 
 
