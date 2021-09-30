@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.2](https://www.github.com/googleapis/python-channel/compare/v1.3.1...v1.3.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([dae83af](https://www.github.com/googleapis/python-channel/commit/dae83af170d1d5734ba3b1b72ffc9710adfd2a67))
+
 ### [1.3.1](https://www.github.com/googleapis/python-channel/compare/v1.3.0...v1.3.1) (2021-09-24)
 
 
