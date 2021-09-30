@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.metastore_v1alpha.types import metastore
@@ -74,14 +74,14 @@ class ListServicesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[metastore.ListServicesResponse]:
+    def pages(self) -> Iterator[metastore.ListServicesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[metastore.Service]:
+    def __iter__(self) -> Iterator[metastore.Service]:
         for page in self.pages:
             yield from page.services
 
@@ -136,14 +136,14 @@ class ListServicesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[metastore.ListServicesResponse]:
+    async def pages(self) -> AsyncIterator[metastore.ListServicesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[metastore.Service]:
+    def __aiter__(self) -> AsyncIterator[metastore.Service]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.services:
@@ -202,14 +202,14 @@ class ListMetadataImportsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[metastore.ListMetadataImportsResponse]:
+    def pages(self) -> Iterator[metastore.ListMetadataImportsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[metastore.MetadataImport]:
+    def __iter__(self) -> Iterator[metastore.MetadataImport]:
         for page in self.pages:
             yield from page.metadata_imports
 
@@ -264,14 +264,14 @@ class ListMetadataImportsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[metastore.ListMetadataImportsResponse]:
+    async def pages(self) -> AsyncIterator[metastore.ListMetadataImportsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[metastore.MetadataImport]:
+    def __aiter__(self) -> AsyncIterator[metastore.MetadataImport]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.metadata_imports:
@@ -330,14 +330,14 @@ class ListBackupsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[metastore.ListBackupsResponse]:
+    def pages(self) -> Iterator[metastore.ListBackupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[metastore.Backup]:
+    def __iter__(self) -> Iterator[metastore.Backup]:
         for page in self.pages:
             yield from page.backups
 
@@ -392,14 +392,14 @@ class ListBackupsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[metastore.ListBackupsResponse]:
+    async def pages(self) -> AsyncIterator[metastore.ListBackupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[metastore.Backup]:
+    def __aiter__(self) -> AsyncIterator[metastore.Backup]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.backups:
