@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+### [3.4.1](https://www.github.com/googleapis/python-translate/compare/v3.4.0...v3.4.1) (2021-09-30)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([6bbf390](https://www.github.com/googleapis/python-translate/commit/6bbf39038f37a3d16018d9ee9f356145a50f987c))
+* improper types in pagers generation ([cd70523](https://www.github.com/googleapis/python-translate/commit/cd70523d9a628684515a8d910e7e5158817b3e61))
+
 ## [3.4.0](https://www.github.com/googleapis/python-translate/compare/v3.3.2...v3.4.0) (2021-08-29)
 
 
