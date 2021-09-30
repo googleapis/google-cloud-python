@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.5](https://www.github.com/googleapis/python-network-security/compare/v0.1.4...v0.1.5) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([90b83d6](https://www.github.com/googleapis/python-network-security/commit/90b83d6282d8b68890eed8e81013766763ec6648))
+
 ### [0.1.4](https://www.github.com/googleapis/python-network-security/compare/v0.1.3...v0.1.4) (2021-09-24)
 
 
