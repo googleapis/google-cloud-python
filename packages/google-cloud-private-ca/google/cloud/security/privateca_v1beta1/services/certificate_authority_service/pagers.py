@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.security.privateca_v1beta1.types import resources
@@ -75,14 +75,14 @@ class ListCertificatesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[service.ListCertificatesResponse]:
+    def pages(self) -> Iterator[service.ListCertificatesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.Certificate]:
+    def __iter__(self) -> Iterator[resources.Certificate]:
         for page in self.pages:
             yield from page.certificates
 
@@ -137,14 +137,14 @@ class ListCertificatesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[service.ListCertificatesResponse]:
+    async def pages(self) -> AsyncIterator[service.ListCertificatesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.Certificate]:
+    def __aiter__(self) -> AsyncIterator[resources.Certificate]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.certificates:
@@ -203,14 +203,14 @@ class ListCertificateAuthoritiesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[service.ListCertificateAuthoritiesResponse]:
+    def pages(self) -> Iterator[service.ListCertificateAuthoritiesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.CertificateAuthority]:
+    def __iter__(self) -> Iterator[resources.CertificateAuthority]:
         for page in self.pages:
             yield from page.certificate_authorities
 
@@ -265,14 +265,14 @@ class ListCertificateAuthoritiesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[service.ListCertificateAuthoritiesResponse]:
+    async def pages(self) -> AsyncIterator[service.ListCertificateAuthoritiesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.CertificateAuthority]:
+    def __aiter__(self) -> AsyncIterator[resources.CertificateAuthority]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.certificate_authorities:
@@ -331,14 +331,14 @@ class ListCertificateRevocationListsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[service.ListCertificateRevocationListsResponse]:
+    def pages(self) -> Iterator[service.ListCertificateRevocationListsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.CertificateRevocationList]:
+    def __iter__(self) -> Iterator[resources.CertificateRevocationList]:
         for page in self.pages:
             yield from page.certificate_revocation_lists
 
@@ -397,14 +397,14 @@ class ListCertificateRevocationListsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[service.ListCertificateRevocationListsResponse]:
+    ) -> AsyncIterator[service.ListCertificateRevocationListsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.CertificateRevocationList]:
+    def __aiter__(self) -> AsyncIterator[resources.CertificateRevocationList]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.certificate_revocation_lists:
@@ -463,14 +463,14 @@ class ListReusableConfigsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[service.ListReusableConfigsResponse]:
+    def pages(self) -> Iterator[service.ListReusableConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.ReusableConfig]:
+    def __iter__(self) -> Iterator[resources.ReusableConfig]:
         for page in self.pages:
             yield from page.reusable_configs
 
@@ -525,14 +525,14 @@ class ListReusableConfigsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[service.ListReusableConfigsResponse]:
+    async def pages(self) -> AsyncIterator[service.ListReusableConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.ReusableConfig]:
+    def __aiter__(self) -> AsyncIterator[resources.ReusableConfig]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.reusable_configs:
