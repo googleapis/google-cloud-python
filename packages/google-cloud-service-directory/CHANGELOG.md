@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.4](https://www.github.com/googleapis/python-service-directory/compare/v1.0.3...v1.0.4) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([1b0841d](https://www.github.com/googleapis/python-service-directory/commit/1b0841dec49d193c777601ff16ee0706395349b3))
+
 ### [1.0.3](https://www.github.com/googleapis/python-service-directory/compare/v1.0.2...v1.0.3) (2021-09-24)
 
 
