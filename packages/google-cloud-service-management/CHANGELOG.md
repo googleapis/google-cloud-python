@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.4](https://www.github.com/googleapis/python-service-management/compare/v1.0.3...v1.0.4) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([538b500](https://www.github.com/googleapis/python-service-management/commit/538b5005bac38276ffaaa3c6a2d82f9d7bff3477))
+
 ### [1.0.3](https://www.github.com/googleapis/python-service-management/compare/v1.0.2...v1.0.3) (2021-09-24)
 
 
