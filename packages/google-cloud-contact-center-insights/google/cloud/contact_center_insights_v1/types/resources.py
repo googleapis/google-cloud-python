@@ -107,7 +107,8 @@ class Conversation(proto.Message):
         transcript (google.cloud.contact_center_insights_v1.types.Conversation.Transcript):
             Output only. The conversation transcript.
         medium (google.cloud.contact_center_insights_v1.types.Conversation.Medium):
-            Immutable. The conversation medium.
+            Immutable. The conversation medium, if unspecified will
+            default to PHONE_CALL.
         duration (google.protobuf.duration_pb2.Duration):
             Output only. The duration of the
             conversation.

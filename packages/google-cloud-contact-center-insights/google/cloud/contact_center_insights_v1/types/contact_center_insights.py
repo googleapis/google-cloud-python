@@ -123,6 +123,7 @@ class CalculateStatsResponse(proto.Message):
             respective number of matches in the set of conversations.
             Key has the format:
             ``projects/<Project ID>/locations/<Location ID>/issueModels/<Issue Model ID>/issues/<Issue ID>``
+            Deprecated, use ``issue_matches_stats`` field instead.
         conversation_count_time_series (google.cloud.contact_center_insights_v1.types.CalculateStatsResponse.TimeSeries):
             A time series representing the count of
             conversations created over time that match that
