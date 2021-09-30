@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.orgpolicy_v2.types import constraint
@@ -75,14 +75,14 @@ class ListConstraintsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[orgpolicy.ListConstraintsResponse]:
+    def pages(self) -> Iterator[orgpolicy.ListConstraintsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[constraint.Constraint]:
+    def __iter__(self) -> Iterator[constraint.Constraint]:
         for page in self.pages:
             yield from page.constraints
 
@@ -137,14 +137,14 @@ class ListConstraintsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[orgpolicy.ListConstraintsResponse]:
+    async def pages(self) -> AsyncIterator[orgpolicy.ListConstraintsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[constraint.Constraint]:
+    def __aiter__(self) -> AsyncIterator[constraint.Constraint]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.constraints:
@@ -203,14 +203,14 @@ class ListPoliciesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[orgpolicy.ListPoliciesResponse]:
+    def pages(self) -> Iterator[orgpolicy.ListPoliciesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[orgpolicy.Policy]:
+    def __iter__(self) -> Iterator[orgpolicy.Policy]:
         for page in self.pages:
             yield from page.policies
 
@@ -265,14 +265,14 @@ class ListPoliciesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[orgpolicy.ListPoliciesResponse]:
+    async def pages(self) -> AsyncIterator[orgpolicy.ListPoliciesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[orgpolicy.Policy]:
+    def __aiter__(self) -> AsyncIterator[orgpolicy.Policy]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.policies:
