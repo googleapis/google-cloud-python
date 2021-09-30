@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.dataflow_v1beta3.types import metrics
@@ -74,14 +74,14 @@ class GetJobExecutionDetailsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[metrics.JobExecutionDetails]:
+    def pages(self) -> Iterator[metrics.JobExecutionDetails]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[metrics.StageSummary]:
+    def __iter__(self) -> Iterator[metrics.StageSummary]:
         for page in self.pages:
             yield from page.stages
 
@@ -136,14 +136,14 @@ class GetJobExecutionDetailsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[metrics.JobExecutionDetails]:
+    async def pages(self) -> AsyncIterator[metrics.JobExecutionDetails]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[metrics.StageSummary]:
+    def __aiter__(self) -> AsyncIterator[metrics.StageSummary]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.stages:
@@ -202,14 +202,14 @@ class GetStageExecutionDetailsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[metrics.StageExecutionDetails]:
+    def pages(self) -> Iterator[metrics.StageExecutionDetails]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[metrics.WorkerDetails]:
+    def __iter__(self) -> Iterator[metrics.WorkerDetails]:
         for page in self.pages:
             yield from page.workers
 
@@ -264,14 +264,14 @@ class GetStageExecutionDetailsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[metrics.StageExecutionDetails]:
+    async def pages(self) -> AsyncIterator[metrics.StageExecutionDetails]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[metrics.WorkerDetails]:
+    def __aiter__(self) -> AsyncIterator[metrics.WorkerDetails]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.workers:
