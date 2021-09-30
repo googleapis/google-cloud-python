@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.vpcaccess_v1.types import vpc_access
@@ -74,14 +74,14 @@ class ListConnectorsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[vpc_access.ListConnectorsResponse]:
+    def pages(self) -> Iterator[vpc_access.ListConnectorsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[vpc_access.Connector]:
+    def __iter__(self) -> Iterator[vpc_access.Connector]:
         for page in self.pages:
             yield from page.connectors
 
@@ -136,14 +136,14 @@ class ListConnectorsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[vpc_access.ListConnectorsResponse]:
+    async def pages(self) -> AsyncIterator[vpc_access.ListConnectorsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[vpc_access.Connector]:
+    def __aiter__(self) -> AsyncIterator[vpc_access.Connector]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.connectors:
