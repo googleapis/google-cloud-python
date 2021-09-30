@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.binaryauthorization_v1beta1.types import resources
@@ -75,14 +75,14 @@ class ListAttestorsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[service.ListAttestorsResponse]:
+    def pages(self) -> Iterator[service.ListAttestorsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.Attestor]:
+    def __iter__(self) -> Iterator[resources.Attestor]:
         for page in self.pages:
             yield from page.attestors
 
@@ -137,14 +137,14 @@ class ListAttestorsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[service.ListAttestorsResponse]:
+    async def pages(self) -> AsyncIterator[service.ListAttestorsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.Attestor]:
+    def __aiter__(self) -> AsyncIterator[resources.Attestor]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.attestors:
