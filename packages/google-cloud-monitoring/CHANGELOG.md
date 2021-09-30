@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+### [2.5.2](https://www.github.com/googleapis/python-monitoring/compare/v2.5.1...v2.5.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([4a8b823](https://www.github.com/googleapis/python-monitoring/commit/4a8b823061a03fd0e5c385c1fa0ac964b9a5597a))
+
 ### [2.5.1](https://www.github.com/googleapis/python-monitoring/compare/v2.5.0...v2.5.1) (2021-09-24)
 
 
