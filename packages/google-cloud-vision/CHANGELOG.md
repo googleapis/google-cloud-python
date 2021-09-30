@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+### [2.4.4](https://www.github.com/googleapis/python-vision/compare/v2.4.3...v2.4.4) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([29b57f6](https://www.github.com/googleapis/python-vision/commit/29b57f6ef6506ba36c66e18d46781e6a15e872b2))
+
 ### [2.4.3](https://www.github.com/googleapis/python-vision/compare/v2.4.2...v2.4.3) (2021-09-27)
 
 
