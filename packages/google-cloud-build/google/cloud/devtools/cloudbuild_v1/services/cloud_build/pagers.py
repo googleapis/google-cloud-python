@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.devtools.cloudbuild_v1.types import cloudbuild
@@ -74,14 +74,14 @@ class ListBuildsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[cloudbuild.ListBuildsResponse]:
+    def pages(self) -> Iterator[cloudbuild.ListBuildsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[cloudbuild.Build]:
+    def __iter__(self) -> Iterator[cloudbuild.Build]:
         for page in self.pages:
             yield from page.builds
 
@@ -136,14 +136,14 @@ class ListBuildsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[cloudbuild.ListBuildsResponse]:
+    async def pages(self) -> AsyncIterator[cloudbuild.ListBuildsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[cloudbuild.Build]:
+    def __aiter__(self) -> AsyncIterator[cloudbuild.Build]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.builds:
@@ -202,14 +202,14 @@ class ListBuildTriggersPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[cloudbuild.ListBuildTriggersResponse]:
+    def pages(self) -> Iterator[cloudbuild.ListBuildTriggersResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[cloudbuild.BuildTrigger]:
+    def __iter__(self) -> Iterator[cloudbuild.BuildTrigger]:
         for page in self.pages:
             yield from page.triggers
 
@@ -264,14 +264,14 @@ class ListBuildTriggersAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[cloudbuild.ListBuildTriggersResponse]:
+    async def pages(self) -> AsyncIterator[cloudbuild.ListBuildTriggersResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[cloudbuild.BuildTrigger]:
+    def __aiter__(self) -> AsyncIterator[cloudbuild.BuildTrigger]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.triggers:
@@ -330,14 +330,14 @@ class ListWorkerPoolsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[cloudbuild.ListWorkerPoolsResponse]:
+    def pages(self) -> Iterator[cloudbuild.ListWorkerPoolsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[cloudbuild.WorkerPool]:
+    def __iter__(self) -> Iterator[cloudbuild.WorkerPool]:
         for page in self.pages:
             yield from page.worker_pools
 
@@ -392,14 +392,14 @@ class ListWorkerPoolsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[cloudbuild.ListWorkerPoolsResponse]:
+    async def pages(self) -> AsyncIterator[cloudbuild.ListWorkerPoolsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[cloudbuild.WorkerPool]:
+    def __aiter__(self) -> AsyncIterator[cloudbuild.WorkerPool]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.worker_pools:
