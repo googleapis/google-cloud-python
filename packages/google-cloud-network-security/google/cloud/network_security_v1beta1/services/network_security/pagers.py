@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.network_security_v1beta1.types import authorization_policy
@@ -76,14 +76,14 @@ class ListAuthorizationPoliciesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[authorization_policy.ListAuthorizationPoliciesResponse]:
+    def pages(self) -> Iterator[authorization_policy.ListAuthorizationPoliciesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[authorization_policy.AuthorizationPolicy]:
+    def __iter__(self) -> Iterator[authorization_policy.AuthorizationPolicy]:
         for page in self.pages:
             yield from page.authorization_policies
 
@@ -142,14 +142,14 @@ class ListAuthorizationPoliciesAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[authorization_policy.ListAuthorizationPoliciesResponse]:
+    ) -> AsyncIterator[authorization_policy.ListAuthorizationPoliciesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[authorization_policy.AuthorizationPolicy]:
+    def __aiter__(self) -> AsyncIterator[authorization_policy.AuthorizationPolicy]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.authorization_policies:
@@ -208,14 +208,14 @@ class ListServerTlsPoliciesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[server_tls_policy.ListServerTlsPoliciesResponse]:
+    def pages(self) -> Iterator[server_tls_policy.ListServerTlsPoliciesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[server_tls_policy.ServerTlsPolicy]:
+    def __iter__(self) -> Iterator[server_tls_policy.ServerTlsPolicy]:
         for page in self.pages:
             yield from page.server_tls_policies
 
@@ -274,14 +274,14 @@ class ListServerTlsPoliciesAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[server_tls_policy.ListServerTlsPoliciesResponse]:
+    ) -> AsyncIterator[server_tls_policy.ListServerTlsPoliciesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[server_tls_policy.ServerTlsPolicy]:
+    def __aiter__(self) -> AsyncIterator[server_tls_policy.ServerTlsPolicy]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.server_tls_policies:
@@ -340,14 +340,14 @@ class ListClientTlsPoliciesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[client_tls_policy.ListClientTlsPoliciesResponse]:
+    def pages(self) -> Iterator[client_tls_policy.ListClientTlsPoliciesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[client_tls_policy.ClientTlsPolicy]:
+    def __iter__(self) -> Iterator[client_tls_policy.ClientTlsPolicy]:
         for page in self.pages:
             yield from page.client_tls_policies
 
@@ -406,14 +406,14 @@ class ListClientTlsPoliciesAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[client_tls_policy.ListClientTlsPoliciesResponse]:
+    ) -> AsyncIterator[client_tls_policy.ListClientTlsPoliciesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[client_tls_policy.ClientTlsPolicy]:
+    def __aiter__(self) -> AsyncIterator[client_tls_policy.ClientTlsPolicy]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.client_tls_policies:
