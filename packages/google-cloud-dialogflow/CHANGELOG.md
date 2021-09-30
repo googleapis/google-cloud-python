@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.9.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.8.1...v2.9.0) (2021-09-30)
+
+
+### Features
+
+* added support for TelephonyTransferCall in Participant ResponseMessage ([#406](https://www.github.com/googleapis/python-dialogflow/issues/406)) ([814055d](https://www.github.com/googleapis/python-dialogflow/commit/814055d2f6d7948f832b8cc0ae0573fea163ace1))
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([814055d](https://www.github.com/googleapis/python-dialogflow/commit/814055d2f6d7948f832b8cc0ae0573fea163ace1))
+
+
+### Documentation
+
+* **samples:** added webhook code snippet ([#401](https://www.github.com/googleapis/python-dialogflow/issues/401)) ([9e279c8](https://www.github.com/googleapis/python-dialogflow/commit/9e279c86136543432cc218c2b1876bbb96f24240))
+
 ### [2.8.1](https://www.github.com/googleapis/python-dialogflow/compare/v2.8.0...v2.8.1) (2021-09-29)
 
 
