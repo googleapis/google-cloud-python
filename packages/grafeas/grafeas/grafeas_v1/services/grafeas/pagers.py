@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from grafeas.grafeas_v1.types import grafeas
@@ -74,14 +74,14 @@ class ListOccurrencesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[grafeas.ListOccurrencesResponse]:
+    def pages(self) -> Iterator[grafeas.ListOccurrencesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[grafeas.Occurrence]:
+    def __iter__(self) -> Iterator[grafeas.Occurrence]:
         for page in self.pages:
             yield from page.occurrences
 
@@ -136,14 +136,14 @@ class ListOccurrencesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[grafeas.ListOccurrencesResponse]:
+    async def pages(self) -> AsyncIterator[grafeas.ListOccurrencesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[grafeas.Occurrence]:
+    def __aiter__(self) -> AsyncIterator[grafeas.Occurrence]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.occurrences:
@@ -202,14 +202,14 @@ class ListNotesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[grafeas.ListNotesResponse]:
+    def pages(self) -> Iterator[grafeas.ListNotesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[grafeas.Note]:
+    def __iter__(self) -> Iterator[grafeas.Note]:
         for page in self.pages:
             yield from page.notes
 
@@ -264,14 +264,14 @@ class ListNotesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[grafeas.ListNotesResponse]:
+    async def pages(self) -> AsyncIterator[grafeas.ListNotesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[grafeas.Note]:
+    def __aiter__(self) -> AsyncIterator[grafeas.Note]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.notes:
@@ -330,14 +330,14 @@ class ListNoteOccurrencesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[grafeas.ListNoteOccurrencesResponse]:
+    def pages(self) -> Iterator[grafeas.ListNoteOccurrencesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[grafeas.Occurrence]:
+    def __iter__(self) -> Iterator[grafeas.Occurrence]:
         for page in self.pages:
             yield from page.occurrences
 
@@ -392,14 +392,14 @@ class ListNoteOccurrencesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[grafeas.ListNoteOccurrencesResponse]:
+    async def pages(self) -> AsyncIterator[grafeas.ListNoteOccurrencesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[grafeas.Occurrence]:
+    def __aiter__(self) -> AsyncIterator[grafeas.Occurrence]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.occurrences:
