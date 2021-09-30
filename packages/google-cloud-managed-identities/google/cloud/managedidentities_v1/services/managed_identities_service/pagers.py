@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.managedidentities_v1.types import managed_identities_service
@@ -75,14 +75,14 @@ class ListDomainsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[managed_identities_service.ListDomainsResponse]:
+    def pages(self) -> Iterator[managed_identities_service.ListDomainsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resource.Domain]:
+    def __iter__(self) -> Iterator[resource.Domain]:
         for page in self.pages:
             yield from page.domains
 
@@ -141,14 +141,14 @@ class ListDomainsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[managed_identities_service.ListDomainsResponse]:
+    ) -> AsyncIterator[managed_identities_service.ListDomainsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resource.Domain]:
+    def __aiter__(self) -> AsyncIterator[resource.Domain]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.domains:
