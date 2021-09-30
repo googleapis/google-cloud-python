@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-retail/compare/v1.0.1...v1.0.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([e82885d](https://www.github.com/googleapis/python-retail/commit/e82885ddcd9926e0b1a5c869e5843c534015b566))
+
 ### [1.0.1](https://www.github.com/googleapis/python-retail/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
