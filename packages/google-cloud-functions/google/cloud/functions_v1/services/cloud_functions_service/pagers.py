@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.functions_v1.types import functions
@@ -74,14 +74,14 @@ class ListFunctionsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[functions.ListFunctionsResponse]:
+    def pages(self) -> Iterator[functions.ListFunctionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[functions.CloudFunction]:
+    def __iter__(self) -> Iterator[functions.CloudFunction]:
         for page in self.pages:
             yield from page.functions
 
@@ -136,14 +136,14 @@ class ListFunctionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[functions.ListFunctionsResponse]:
+    async def pages(self) -> AsyncIterator[functions.ListFunctionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[functions.CloudFunction]:
+    def __aiter__(self) -> AsyncIterator[functions.CloudFunction]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.functions:
