@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.notebooks_v1beta1.types import environment
@@ -76,14 +76,14 @@ class ListInstancesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[service.ListInstancesResponse]:
+    def pages(self) -> Iterator[service.ListInstancesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[instance.Instance]:
+    def __iter__(self) -> Iterator[instance.Instance]:
         for page in self.pages:
             yield from page.instances
 
@@ -138,14 +138,14 @@ class ListInstancesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[service.ListInstancesResponse]:
+    async def pages(self) -> AsyncIterator[service.ListInstancesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[instance.Instance]:
+    def __aiter__(self) -> AsyncIterator[instance.Instance]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.instances:
@@ -204,14 +204,14 @@ class ListEnvironmentsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[service.ListEnvironmentsResponse]:
+    def pages(self) -> Iterator[service.ListEnvironmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[environment.Environment]:
+    def __iter__(self) -> Iterator[environment.Environment]:
         for page in self.pages:
             yield from page.environments
 
@@ -266,14 +266,14 @@ class ListEnvironmentsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[service.ListEnvironmentsResponse]:
+    async def pages(self) -> AsyncIterator[service.ListEnvironmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[environment.Environment]:
+    def __aiter__(self) -> AsyncIterator[environment.Environment]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.environments:
