@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.4](https://www.github.com/googleapis/python-area120-tables/compare/v0.4.3...v0.4.4) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([18767c6](https://www.github.com/googleapis/python-area120-tables/commit/18767c6fe872942866266c0530a95a8d5160b8e5))
+
 ### [0.4.3](https://www.github.com/googleapis/python-area120-tables/compare/v0.4.2...v0.4.3) (2021-09-24)
 
 
