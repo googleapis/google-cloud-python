@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-video-transcoder/compare/v1.0.0...v1.0.1) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([34391dc](https://www.github.com/googleapis/python-video-transcoder/commit/34391dc7fbf433278e34843d4994364f44e62b4e))
+
 ## [1.0.0](https://www.github.com/googleapis/python-video-transcoder/compare/v0.5.1...v1.0.0) (2021-09-29)
 
 
