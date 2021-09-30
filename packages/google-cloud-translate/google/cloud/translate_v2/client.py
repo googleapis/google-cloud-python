@@ -227,7 +227,7 @@ class Client(BaseClient):
         :param model: (Optional) The model used to translate the text, such
                       as ``'base'`` or ``'nmt'``.
 
-        :rtype: str or list
+        :rtype: dict or list
         :returns: A list of dictionaries for each queried value. Each
                   dictionary typically contains three keys (though not
                   all will be present in all cases)
