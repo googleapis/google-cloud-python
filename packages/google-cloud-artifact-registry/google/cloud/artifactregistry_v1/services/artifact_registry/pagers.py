@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.artifactregistry_v1.types import artifact
@@ -75,14 +75,14 @@ class ListDockerImagesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[artifact.ListDockerImagesResponse]:
+    def pages(self) -> Iterator[artifact.ListDockerImagesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[artifact.DockerImage]:
+    def __iter__(self) -> Iterator[artifact.DockerImage]:
         for page in self.pages:
             yield from page.docker_images
 
@@ -137,14 +137,14 @@ class ListDockerImagesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[artifact.ListDockerImagesResponse]:
+    async def pages(self) -> AsyncIterator[artifact.ListDockerImagesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[artifact.DockerImage]:
+    def __aiter__(self) -> AsyncIterator[artifact.DockerImage]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.docker_images:
@@ -203,14 +203,14 @@ class ListRepositoriesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[repository.ListRepositoriesResponse]:
+    def pages(self) -> Iterator[repository.ListRepositoriesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[repository.Repository]:
+    def __iter__(self) -> Iterator[repository.Repository]:
         for page in self.pages:
             yield from page.repositories
 
@@ -265,14 +265,14 @@ class ListRepositoriesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[repository.ListRepositoriesResponse]:
+    async def pages(self) -> AsyncIterator[repository.ListRepositoriesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[repository.Repository]:
+    def __aiter__(self) -> AsyncIterator[repository.Repository]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.repositories:
