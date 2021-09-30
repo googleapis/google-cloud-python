@@ -23,6 +23,7 @@ from mock import Mock, patch
 
 import pytest
 from test_utils.retry import RetryInstanceState
+from test_utils.retry import RetryResult
 
 from metricscaler import get_cpu_load
 from metricscaler import get_storage_utilization
@@ -74,6 +75,10 @@ def instance():
                                    default_storage_type=storage_type)
         instance.create(clusters=[cluster])
 
+        # Eventual consistency check
+        retry_found = RetryResult(bool)
+        retry_found(instance.exists)()
+
     yield
 
     instance.delete()
@@ -97,9 +102,25 @@ def dev_instance():
                                    default_storage_type=storage_type)
         instance.create(clusters=[cluster])
 
+        # Eventual consistency check
+        retry_found = RetryResult(bool)
+        retry_found(instance.exists)()
+
     yield
 
     instance.delete()
+
+
+class ClusterNodeCountPredicate:
+    def __init__(self, expected_node_count):
+        self.expected_node_count = expected_node_count
+
+    def __call__(self, cluster):
+        expected = self.expected_node_count
+        print(
+            f"Expected node count: {expected}; found: {cluster.serve_nodes}"
+        )
+        return cluster.serve_nodes == expected
 
 
 def test_scale_bigtable(instance):
@@ -120,18 +141,21 @@ def test_scale_bigtable(instance):
 
     scale_bigtable(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, True)
 
-    expected_count = original_node_count + SIZE_CHANGE_STEP
+    scaled_node_count_predicate = ClusterNodeCountPredicate(
+        original_node_count + SIZE_CHANGE_STEP
+    )
+    scaled_node_count_predicate.__name__ = "scaled_node_count_predicate"
     _scaled_node_count = RetryInstanceState(
-        instance_predicate=lambda c: c.serve_nodes == expected_count,
-        max_tries=10,
+        instance_predicate=scaled_node_count_predicate, max_tries=10,
     )
     _scaled_node_count(cluster.reload)()
 
     scale_bigtable(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, False)
 
+    restored_node_count_predicate = ClusterNodeCountPredicate(original_node_count)
+    restored_node_count_predicate.__name__ = "restored_node_count_predicate"
     _restored_node_count = RetryInstanceState(
-        instance_predicate=lambda c: c.serve_nodes == original_node_count,
-        max_tries=10,
+        instance_predicate=restored_node_count_predicate, max_tries=10,
     )
     _restored_node_count(cluster.reload)()
 
