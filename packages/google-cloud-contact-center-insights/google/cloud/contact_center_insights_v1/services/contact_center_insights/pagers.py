@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.contact_center_insights_v1.types import contact_center_insights
@@ -75,14 +75,14 @@ class ListConversationsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[contact_center_insights.ListConversationsResponse]:
+    def pages(self) -> Iterator[contact_center_insights.ListConversationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.Conversation]:
+    def __iter__(self) -> Iterator[resources.Conversation]:
         for page in self.pages:
             yield from page.conversations
 
@@ -141,14 +141,14 @@ class ListConversationsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[contact_center_insights.ListConversationsResponse]:
+    ) -> AsyncIterator[contact_center_insights.ListConversationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.Conversation]:
+    def __aiter__(self) -> AsyncIterator[resources.Conversation]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.conversations:
@@ -207,14 +207,14 @@ class ListAnalysesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[contact_center_insights.ListAnalysesResponse]:
+    def pages(self) -> Iterator[contact_center_insights.ListAnalysesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.Analysis]:
+    def __iter__(self) -> Iterator[resources.Analysis]:
         for page in self.pages:
             yield from page.analyses
 
@@ -271,14 +271,14 @@ class ListAnalysesAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[contact_center_insights.ListAnalysesResponse]:
+    ) -> AsyncIterator[contact_center_insights.ListAnalysesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.Analysis]:
+    def __aiter__(self) -> AsyncIterator[resources.Analysis]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.analyses:
@@ -337,14 +337,14 @@ class ListPhraseMatchersPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[contact_center_insights.ListPhraseMatchersResponse]:
+    def pages(self) -> Iterator[contact_center_insights.ListPhraseMatchersResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.PhraseMatcher]:
+    def __iter__(self) -> Iterator[resources.PhraseMatcher]:
         for page in self.pages:
             yield from page.phrase_matchers
 
@@ -403,14 +403,14 @@ class ListPhraseMatchersAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[contact_center_insights.ListPhraseMatchersResponse]:
+    ) -> AsyncIterator[contact_center_insights.ListPhraseMatchersResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.PhraseMatcher]:
+    def __aiter__(self) -> AsyncIterator[resources.PhraseMatcher]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.phrase_matchers:
