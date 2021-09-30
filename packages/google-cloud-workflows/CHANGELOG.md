@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.3](https://www.github.com/googleapis/python-workflows/compare/v1.2.2...v1.2.3) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([f33a1b9](https://www.github.com/googleapis/python-workflows/commit/f33a1b902c6d66222b2bd217f81f42188de24e65))
+
 ### [1.2.2](https://www.github.com/googleapis/python-workflows/compare/v1.2.1...v1.2.2) (2021-09-24)
 
 
