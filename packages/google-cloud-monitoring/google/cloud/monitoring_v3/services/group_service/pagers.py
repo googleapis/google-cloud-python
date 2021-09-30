@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.api import monitored_resource_pb2  # type: ignore
@@ -76,14 +76,14 @@ class ListGroupsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[group_service.ListGroupsResponse]:
+    def pages(self) -> Iterator[group_service.ListGroupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[group.Group]:
+    def __iter__(self) -> Iterator[group.Group]:
         for page in self.pages:
             yield from page.group
 
@@ -138,14 +138,14 @@ class ListGroupsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[group_service.ListGroupsResponse]:
+    async def pages(self) -> AsyncIterator[group_service.ListGroupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[group.Group]:
+    def __aiter__(self) -> AsyncIterator[group.Group]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.group:
@@ -204,14 +204,14 @@ class ListGroupMembersPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[group_service.ListGroupMembersResponse]:
+    def pages(self) -> Iterator[group_service.ListGroupMembersResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[monitored_resource_pb2.MonitoredResource]:
+    def __iter__(self) -> Iterator[monitored_resource_pb2.MonitoredResource]:
         for page in self.pages:
             yield from page.members
 
@@ -266,14 +266,14 @@ class ListGroupMembersAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[group_service.ListGroupMembersResponse]:
+    async def pages(self) -> AsyncIterator[group_service.ListGroupMembersResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[monitored_resource_pb2.MonitoredResource]:
+    def __aiter__(self) -> AsyncIterator[monitored_resource_pb2.MonitoredResource]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.members:

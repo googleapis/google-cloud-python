@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.monitoring_v3.types import notification
@@ -81,14 +81,14 @@ class ListNotificationChannelDescriptorsPager:
     @property
     def pages(
         self,
-    ) -> Iterable[notification_service.ListNotificationChannelDescriptorsResponse]:
+    ) -> Iterator[notification_service.ListNotificationChannelDescriptorsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[notification.NotificationChannelDescriptor]:
+    def __iter__(self) -> Iterator[notification.NotificationChannelDescriptor]:
         for page in self.pages:
             yield from page.channel_descriptors
 
@@ -150,14 +150,14 @@ class ListNotificationChannelDescriptorsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[notification_service.ListNotificationChannelDescriptorsResponse]:
+    ) -> AsyncIterator[notification_service.ListNotificationChannelDescriptorsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[notification.NotificationChannelDescriptor]:
+    def __aiter__(self) -> AsyncIterator[notification.NotificationChannelDescriptor]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.channel_descriptors:
@@ -216,14 +216,14 @@ class ListNotificationChannelsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[notification_service.ListNotificationChannelsResponse]:
+    def pages(self) -> Iterator[notification_service.ListNotificationChannelsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[notification.NotificationChannel]:
+    def __iter__(self) -> Iterator[notification.NotificationChannel]:
         for page in self.pages:
             yield from page.notification_channels
 
@@ -282,14 +282,14 @@ class ListNotificationChannelsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[notification_service.ListNotificationChannelsResponse]:
+    ) -> AsyncIterator[notification_service.ListNotificationChannelsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[notification.NotificationChannel]:
+    def __aiter__(self) -> AsyncIterator[notification.NotificationChannel]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.notification_channels:
