@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.datacatalog_v1beta1.types import datacatalog
@@ -76,14 +76,14 @@ class SearchCatalogPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[datacatalog.SearchCatalogResponse]:
+    def pages(self) -> Iterator[datacatalog.SearchCatalogResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[search.SearchCatalogResult]:
+    def __iter__(self) -> Iterator[search.SearchCatalogResult]:
         for page in self.pages:
             yield from page.results
 
@@ -138,14 +138,14 @@ class SearchCatalogAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[datacatalog.SearchCatalogResponse]:
+    async def pages(self) -> AsyncIterator[datacatalog.SearchCatalogResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[search.SearchCatalogResult]:
+    def __aiter__(self) -> AsyncIterator[search.SearchCatalogResult]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.results:
@@ -204,14 +204,14 @@ class ListEntryGroupsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[datacatalog.ListEntryGroupsResponse]:
+    def pages(self) -> Iterator[datacatalog.ListEntryGroupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[datacatalog.EntryGroup]:
+    def __iter__(self) -> Iterator[datacatalog.EntryGroup]:
         for page in self.pages:
             yield from page.entry_groups
 
@@ -266,14 +266,14 @@ class ListEntryGroupsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[datacatalog.ListEntryGroupsResponse]:
+    async def pages(self) -> AsyncIterator[datacatalog.ListEntryGroupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[datacatalog.EntryGroup]:
+    def __aiter__(self) -> AsyncIterator[datacatalog.EntryGroup]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.entry_groups:
@@ -332,14 +332,14 @@ class ListEntriesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[datacatalog.ListEntriesResponse]:
+    def pages(self) -> Iterator[datacatalog.ListEntriesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[datacatalog.Entry]:
+    def __iter__(self) -> Iterator[datacatalog.Entry]:
         for page in self.pages:
             yield from page.entries
 
@@ -394,14 +394,14 @@ class ListEntriesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[datacatalog.ListEntriesResponse]:
+    async def pages(self) -> AsyncIterator[datacatalog.ListEntriesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[datacatalog.Entry]:
+    def __aiter__(self) -> AsyncIterator[datacatalog.Entry]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.entries:
@@ -460,14 +460,14 @@ class ListTagsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[datacatalog.ListTagsResponse]:
+    def pages(self) -> Iterator[datacatalog.ListTagsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[tags.Tag]:
+    def __iter__(self) -> Iterator[tags.Tag]:
         for page in self.pages:
             yield from page.tags
 
@@ -522,14 +522,14 @@ class ListTagsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[datacatalog.ListTagsResponse]:
+    async def pages(self) -> AsyncIterator[datacatalog.ListTagsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[tags.Tag]:
+    def __aiter__(self) -> AsyncIterator[tags.Tag]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.tags:
