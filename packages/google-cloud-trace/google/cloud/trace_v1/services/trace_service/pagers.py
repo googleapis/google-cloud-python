@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.trace_v1.types import trace
@@ -74,14 +74,14 @@ class ListTracesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[trace.ListTracesResponse]:
+    def pages(self) -> Iterator[trace.ListTracesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[trace.Trace]:
+    def __iter__(self) -> Iterator[trace.Trace]:
         for page in self.pages:
             yield from page.traces
 
@@ -136,14 +136,14 @@ class ListTracesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[trace.ListTracesResponse]:
+    async def pages(self) -> AsyncIterator[trace.ListTracesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[trace.Trace]:
+    def __aiter__(self) -> AsyncIterator[trace.Trace]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.traces:
