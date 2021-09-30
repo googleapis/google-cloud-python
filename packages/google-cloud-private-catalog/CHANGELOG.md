@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.4](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.3...v0.2.4) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([98d65c5](https://www.github.com/googleapis/python-private-catalog/commit/98d65c5d61a55d6cd550a7e079eb3c41156076c7))
+
 ### [0.2.3](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.2...v0.2.3) (2021-09-24)
 
 
