@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.talent_v4.types import company
@@ -75,14 +75,14 @@ class ListCompaniesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[company_service.ListCompaniesResponse]:
+    def pages(self) -> Iterator[company_service.ListCompaniesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[company.Company]:
+    def __iter__(self) -> Iterator[company.Company]:
         for page in self.pages:
             yield from page.companies
 
@@ -137,14 +137,14 @@ class ListCompaniesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[company_service.ListCompaniesResponse]:
+    async def pages(self) -> AsyncIterator[company_service.ListCompaniesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[company.Company]:
+    def __aiter__(self) -> AsyncIterator[company.Company]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.companies:
