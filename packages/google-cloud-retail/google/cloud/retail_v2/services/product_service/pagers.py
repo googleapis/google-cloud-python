@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.retail_v2.types import product
@@ -75,14 +75,14 @@ class ListProductsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[product_service.ListProductsResponse]:
+    def pages(self) -> Iterator[product_service.ListProductsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[product.Product]:
+    def __iter__(self) -> Iterator[product.Product]:
         for page in self.pages:
             yield from page.products
 
@@ -137,14 +137,14 @@ class ListProductsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[product_service.ListProductsResponse]:
+    async def pages(self) -> AsyncIterator[product_service.ListProductsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[product.Product]:
+    def __aiter__(self) -> AsyncIterator[product.Product]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.products:
