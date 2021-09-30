@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.scheduler_v1beta1.types import cloudscheduler
@@ -75,14 +75,14 @@ class ListJobsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[cloudscheduler.ListJobsResponse]:
+    def pages(self) -> Iterator[cloudscheduler.ListJobsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[job.Job]:
+    def __iter__(self) -> Iterator[job.Job]:
         for page in self.pages:
             yield from page.jobs
 
@@ -137,14 +137,14 @@ class ListJobsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[cloudscheduler.ListJobsResponse]:
+    async def pages(self) -> AsyncIterator[cloudscheduler.ListJobsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[job.Job]:
+    def __aiter__(self) -> AsyncIterator[job.Job]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.jobs:
