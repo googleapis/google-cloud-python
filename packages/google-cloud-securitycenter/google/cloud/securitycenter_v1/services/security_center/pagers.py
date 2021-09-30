@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.securitycenter_v1.types import notification_config
@@ -76,14 +76,14 @@ class GroupAssetsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[securitycenter_service.GroupAssetsResponse]:
+    def pages(self) -> Iterator[securitycenter_service.GroupAssetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[securitycenter_service.GroupResult]:
+    def __iter__(self) -> Iterator[securitycenter_service.GroupResult]:
         for page in self.pages:
             yield from page.group_by_results
 
@@ -138,14 +138,14 @@ class GroupAssetsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[securitycenter_service.GroupAssetsResponse]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.GroupAssetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[securitycenter_service.GroupResult]:
+    def __aiter__(self) -> AsyncIterator[securitycenter_service.GroupResult]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.group_by_results:
@@ -204,14 +204,14 @@ class GroupFindingsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[securitycenter_service.GroupFindingsResponse]:
+    def pages(self) -> Iterator[securitycenter_service.GroupFindingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[securitycenter_service.GroupResult]:
+    def __iter__(self) -> Iterator[securitycenter_service.GroupResult]:
         for page in self.pages:
             yield from page.group_by_results
 
@@ -268,14 +268,14 @@ class GroupFindingsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[securitycenter_service.GroupFindingsResponse]:
+    ) -> AsyncIterator[securitycenter_service.GroupFindingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[securitycenter_service.GroupResult]:
+    def __aiter__(self) -> AsyncIterator[securitycenter_service.GroupResult]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.group_by_results:
@@ -334,7 +334,7 @@ class ListAssetsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[securitycenter_service.ListAssetsResponse]:
+    def pages(self) -> Iterator[securitycenter_service.ListAssetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
@@ -343,7 +343,7 @@ class ListAssetsPager:
 
     def __iter__(
         self,
-    ) -> Iterable[securitycenter_service.ListAssetsResponse.ListAssetsResult]:
+    ) -> Iterator[securitycenter_service.ListAssetsResponse.ListAssetsResult]:
         for page in self.pages:
             yield from page.list_assets_results
 
@@ -398,7 +398,7 @@ class ListAssetsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[securitycenter_service.ListAssetsResponse]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.ListAssetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
@@ -407,7 +407,7 @@ class ListAssetsAsyncPager:
 
     def __aiter__(
         self,
-    ) -> AsyncIterable[securitycenter_service.ListAssetsResponse.ListAssetsResult]:
+    ) -> AsyncIterator[securitycenter_service.ListAssetsResponse.ListAssetsResult]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.list_assets_results:
@@ -466,7 +466,7 @@ class ListFindingsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[securitycenter_service.ListFindingsResponse]:
+    def pages(self) -> Iterator[securitycenter_service.ListFindingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
@@ -475,7 +475,7 @@ class ListFindingsPager:
 
     def __iter__(
         self,
-    ) -> Iterable[securitycenter_service.ListFindingsResponse.ListFindingsResult]:
+    ) -> Iterator[securitycenter_service.ListFindingsResponse.ListFindingsResult]:
         for page in self.pages:
             yield from page.list_findings_results
 
@@ -530,7 +530,7 @@ class ListFindingsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[securitycenter_service.ListFindingsResponse]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.ListFindingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
@@ -539,7 +539,7 @@ class ListFindingsAsyncPager:
 
     def __aiter__(
         self,
-    ) -> AsyncIterable[securitycenter_service.ListFindingsResponse.ListFindingsResult]:
+    ) -> AsyncIterator[securitycenter_service.ListFindingsResponse.ListFindingsResult]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.list_findings_results:
@@ -598,14 +598,14 @@ class ListNotificationConfigsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[securitycenter_service.ListNotificationConfigsResponse]:
+    def pages(self) -> Iterator[securitycenter_service.ListNotificationConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[notification_config.NotificationConfig]:
+    def __iter__(self) -> Iterator[notification_config.NotificationConfig]:
         for page in self.pages:
             yield from page.notification_configs
 
@@ -664,14 +664,14 @@ class ListNotificationConfigsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[securitycenter_service.ListNotificationConfigsResponse]:
+    ) -> AsyncIterator[securitycenter_service.ListNotificationConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[notification_config.NotificationConfig]:
+    def __aiter__(self) -> AsyncIterator[notification_config.NotificationConfig]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.notification_configs:
@@ -730,14 +730,14 @@ class ListSourcesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[securitycenter_service.ListSourcesResponse]:
+    def pages(self) -> Iterator[securitycenter_service.ListSourcesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[source.Source]:
+    def __iter__(self) -> Iterator[source.Source]:
         for page in self.pages:
             yield from page.sources
 
@@ -792,14 +792,14 @@ class ListSourcesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[securitycenter_service.ListSourcesResponse]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.ListSourcesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[source.Source]:
+    def __aiter__(self) -> AsyncIterator[source.Source]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.sources:
