@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.clouddms_v1.types import clouddms
@@ -75,14 +75,14 @@ class ListMigrationJobsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[clouddms.ListMigrationJobsResponse]:
+    def pages(self) -> Iterator[clouddms.ListMigrationJobsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[clouddms_resources.MigrationJob]:
+    def __iter__(self) -> Iterator[clouddms_resources.MigrationJob]:
         for page in self.pages:
             yield from page.migration_jobs
 
@@ -137,14 +137,14 @@ class ListMigrationJobsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[clouddms.ListMigrationJobsResponse]:
+    async def pages(self) -> AsyncIterator[clouddms.ListMigrationJobsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[clouddms_resources.MigrationJob]:
+    def __aiter__(self) -> AsyncIterator[clouddms_resources.MigrationJob]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.migration_jobs:
@@ -203,14 +203,14 @@ class ListConnectionProfilesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[clouddms.ListConnectionProfilesResponse]:
+    def pages(self) -> Iterator[clouddms.ListConnectionProfilesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[clouddms_resources.ConnectionProfile]:
+    def __iter__(self) -> Iterator[clouddms_resources.ConnectionProfile]:
         for page in self.pages:
             yield from page.connection_profiles
 
@@ -265,14 +265,14 @@ class ListConnectionProfilesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[clouddms.ListConnectionProfilesResponse]:
+    async def pages(self) -> AsyncIterator[clouddms.ListConnectionProfilesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[clouddms_resources.ConnectionProfile]:
+    def __aiter__(self) -> AsyncIterator[clouddms_resources.ConnectionProfile]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.connection_profiles:
