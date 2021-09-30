@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.asset_v1p5beta1.types import asset_service
@@ -75,14 +75,14 @@ class ListAssetsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[asset_service.ListAssetsResponse]:
+    def pages(self) -> Iterator[asset_service.ListAssetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[assets.Asset]:
+    def __iter__(self) -> Iterator[assets.Asset]:
         for page in self.pages:
             yield from page.assets
 
@@ -137,14 +137,14 @@ class ListAssetsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[asset_service.ListAssetsResponse]:
+    async def pages(self) -> AsyncIterator[asset_service.ListAssetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[assets.Asset]:
+    def __aiter__(self) -> AsyncIterator[assets.Asset]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.assets:
