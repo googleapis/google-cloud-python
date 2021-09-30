@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.5](https://www.github.com/googleapis/python-dataflow-client/compare/v0.1.4...v0.1.5) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([ce0077b](https://www.github.com/googleapis/python-dataflow-client/commit/ce0077b8b99566a6c97dbbd355eb9a0ea75f5ed3))
+
 ### [0.1.4](https://www.github.com/googleapis/python-dataflow-client/compare/v0.1.3...v0.1.4) (2021-09-24)
 
 
