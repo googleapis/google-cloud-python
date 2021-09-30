@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.7.3](https://www.github.com/googleapis/python-secret-manager/compare/v2.7.2...v2.7.3) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([59c557f](https://www.github.com/googleapis/python-secret-manager/commit/59c557f5acd5de9e12dfa7308fa9fb9e89833fe6))
+
 ### [2.7.2](https://www.github.com/googleapis/python-secret-manager/compare/v2.7.1...v2.7.2) (2021-09-24)
 
 
