@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-network-connectivity/compare/v1.0.0...v1.0.1) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([b83e28b](https://www.github.com/googleapis/python-network-connectivity/commit/b83e28b9c810c3bb4b1e2a7a88aff72f6b8afe36))
+
 ## [1.0.0](https://www.github.com/googleapis/python-network-connectivity/compare/v0.6.1...v1.0.0) (2021-09-29)
 
 
