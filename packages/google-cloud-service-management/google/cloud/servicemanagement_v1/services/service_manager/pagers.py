@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.api import service_pb2  # type: ignore
@@ -76,14 +76,14 @@ class ListServicesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[servicemanager.ListServicesResponse]:
+    def pages(self) -> Iterator[servicemanager.ListServicesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.ManagedService]:
+    def __iter__(self) -> Iterator[resources.ManagedService]:
         for page in self.pages:
             yield from page.services
 
@@ -138,14 +138,14 @@ class ListServicesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[servicemanager.ListServicesResponse]:
+    async def pages(self) -> AsyncIterator[servicemanager.ListServicesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.ManagedService]:
+    def __aiter__(self) -> AsyncIterator[resources.ManagedService]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.services:
@@ -204,14 +204,14 @@ class ListServiceConfigsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[servicemanager.ListServiceConfigsResponse]:
+    def pages(self) -> Iterator[servicemanager.ListServiceConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[service_pb2.Service]:
+    def __iter__(self) -> Iterator[service_pb2.Service]:
         for page in self.pages:
             yield from page.service_configs
 
@@ -266,14 +266,14 @@ class ListServiceConfigsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[servicemanager.ListServiceConfigsResponse]:
+    async def pages(self) -> AsyncIterator[servicemanager.ListServiceConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[service_pb2.Service]:
+    def __aiter__(self) -> AsyncIterator[service_pb2.Service]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.service_configs:
@@ -332,14 +332,14 @@ class ListServiceRolloutsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[servicemanager.ListServiceRolloutsResponse]:
+    def pages(self) -> Iterator[servicemanager.ListServiceRolloutsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.Rollout]:
+    def __iter__(self) -> Iterator[resources.Rollout]:
         for page in self.pages:
             yield from page.rollouts
 
@@ -394,14 +394,14 @@ class ListServiceRolloutsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[servicemanager.ListServiceRolloutsResponse]:
+    async def pages(self) -> AsyncIterator[servicemanager.ListServiceRolloutsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.Rollout]:
+    def __aiter__(self) -> AsyncIterator[resources.Rollout]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.rollouts:
