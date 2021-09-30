@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-resource-settings/compare/v1.0.1...v1.0.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([801dfba](https://www.github.com/googleapis/python-resource-settings/commit/801dfba9f736136df4d8d976f6f460656bc56cd6))
+
 ### [1.0.1](https://www.github.com/googleapis/python-resource-settings/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
