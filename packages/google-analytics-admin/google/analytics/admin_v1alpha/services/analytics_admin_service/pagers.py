@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.analytics.admin_v1alpha.types import analytics_admin
@@ -75,14 +75,14 @@ class ListAccountsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[analytics_admin.ListAccountsResponse]:
+    def pages(self) -> Iterator[analytics_admin.ListAccountsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.Account]:
+    def __iter__(self) -> Iterator[resources.Account]:
         for page in self.pages:
             yield from page.accounts
 
@@ -137,14 +137,14 @@ class ListAccountsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[analytics_admin.ListAccountsResponse]:
+    async def pages(self) -> AsyncIterator[analytics_admin.ListAccountsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.Account]:
+    def __aiter__(self) -> AsyncIterator[resources.Account]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.accounts:
@@ -203,14 +203,14 @@ class ListAccountSummariesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[analytics_admin.ListAccountSummariesResponse]:
+    def pages(self) -> Iterator[analytics_admin.ListAccountSummariesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.AccountSummary]:
+    def __iter__(self) -> Iterator[resources.AccountSummary]:
         for page in self.pages:
             yield from page.account_summaries
 
@@ -267,14 +267,14 @@ class ListAccountSummariesAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[analytics_admin.ListAccountSummariesResponse]:
+    ) -> AsyncIterator[analytics_admin.ListAccountSummariesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.AccountSummary]:
+    def __aiter__(self) -> AsyncIterator[resources.AccountSummary]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.account_summaries:
@@ -333,14 +333,14 @@ class ListPropertiesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[analytics_admin.ListPropertiesResponse]:
+    def pages(self) -> Iterator[analytics_admin.ListPropertiesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.Property]:
+    def __iter__(self) -> Iterator[resources.Property]:
         for page in self.pages:
             yield from page.properties
 
@@ -395,14 +395,14 @@ class ListPropertiesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[analytics_admin.ListPropertiesResponse]:
+    async def pages(self) -> AsyncIterator[analytics_admin.ListPropertiesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.Property]:
+    def __aiter__(self) -> AsyncIterator[resources.Property]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.properties:
@@ -461,14 +461,14 @@ class ListUserLinksPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[analytics_admin.ListUserLinksResponse]:
+    def pages(self) -> Iterator[analytics_admin.ListUserLinksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.UserLink]:
+    def __iter__(self) -> Iterator[resources.UserLink]:
         for page in self.pages:
             yield from page.user_links
 
@@ -523,14 +523,14 @@ class ListUserLinksAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[analytics_admin.ListUserLinksResponse]:
+    async def pages(self) -> AsyncIterator[analytics_admin.ListUserLinksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.UserLink]:
+    def __aiter__(self) -> AsyncIterator[resources.UserLink]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.user_links:
@@ -589,14 +589,14 @@ class AuditUserLinksPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[analytics_admin.AuditUserLinksResponse]:
+    def pages(self) -> Iterator[analytics_admin.AuditUserLinksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.AuditUserLink]:
+    def __iter__(self) -> Iterator[resources.AuditUserLink]:
         for page in self.pages:
             yield from page.user_links
 
@@ -651,14 +651,14 @@ class AuditUserLinksAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[analytics_admin.AuditUserLinksResponse]:
+    async def pages(self) -> AsyncIterator[analytics_admin.AuditUserLinksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.AuditUserLink]:
+    def __aiter__(self) -> AsyncIterator[resources.AuditUserLink]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.user_links:
@@ -717,14 +717,14 @@ class ListWebDataStreamsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[analytics_admin.ListWebDataStreamsResponse]:
+    def pages(self) -> Iterator[analytics_admin.ListWebDataStreamsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.WebDataStream]:
+    def __iter__(self) -> Iterator[resources.WebDataStream]:
         for page in self.pages:
             yield from page.web_data_streams
 
@@ -779,14 +779,14 @@ class ListWebDataStreamsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[analytics_admin.ListWebDataStreamsResponse]:
+    async def pages(self) -> AsyncIterator[analytics_admin.ListWebDataStreamsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.WebDataStream]:
+    def __aiter__(self) -> AsyncIterator[resources.WebDataStream]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.web_data_streams:
@@ -845,14 +845,14 @@ class ListIosAppDataStreamsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[analytics_admin.ListIosAppDataStreamsResponse]:
+    def pages(self) -> Iterator[analytics_admin.ListIosAppDataStreamsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.IosAppDataStream]:
+    def __iter__(self) -> Iterator[resources.IosAppDataStream]:
         for page in self.pages:
             yield from page.ios_app_data_streams
 
@@ -909,14 +909,14 @@ class ListIosAppDataStreamsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[analytics_admin.ListIosAppDataStreamsResponse]:
+    ) -> AsyncIterator[analytics_admin.ListIosAppDataStreamsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.IosAppDataStream]:
+    def __aiter__(self) -> AsyncIterator[resources.IosAppDataStream]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.ios_app_data_streams:
@@ -975,14 +975,14 @@ class ListAndroidAppDataStreamsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[analytics_admin.ListAndroidAppDataStreamsResponse]:
+    def pages(self) -> Iterator[analytics_admin.ListAndroidAppDataStreamsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.AndroidAppDataStream]:
+    def __iter__(self) -> Iterator[resources.AndroidAppDataStream]:
         for page in self.pages:
             yield from page.android_app_data_streams
 
@@ -1041,14 +1041,14 @@ class ListAndroidAppDataStreamsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[analytics_admin.ListAndroidAppDataStreamsResponse]:
+    ) -> AsyncIterator[analytics_admin.ListAndroidAppDataStreamsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.AndroidAppDataStream]:
+    def __aiter__(self) -> AsyncIterator[resources.AndroidAppDataStream]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.android_app_data_streams:
@@ -1107,14 +1107,14 @@ class ListFirebaseLinksPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[analytics_admin.ListFirebaseLinksResponse]:
+    def pages(self) -> Iterator[analytics_admin.ListFirebaseLinksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.FirebaseLink]:
+    def __iter__(self) -> Iterator[resources.FirebaseLink]:
         for page in self.pages:
             yield from page.firebase_links
 
@@ -1169,14 +1169,14 @@ class ListFirebaseLinksAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[analytics_admin.ListFirebaseLinksResponse]:
+    async def pages(self) -> AsyncIterator[analytics_admin.ListFirebaseLinksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.FirebaseLink]:
+    def __aiter__(self) -> AsyncIterator[resources.FirebaseLink]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.firebase_links:
@@ -1235,14 +1235,14 @@ class ListGoogleAdsLinksPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[analytics_admin.ListGoogleAdsLinksResponse]:
+    def pages(self) -> Iterator[analytics_admin.ListGoogleAdsLinksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.GoogleAdsLink]:
+    def __iter__(self) -> Iterator[resources.GoogleAdsLink]:
         for page in self.pages:
             yield from page.google_ads_links
 
@@ -1297,14 +1297,14 @@ class ListGoogleAdsLinksAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[analytics_admin.ListGoogleAdsLinksResponse]:
+    async def pages(self) -> AsyncIterator[analytics_admin.ListGoogleAdsLinksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.GoogleAdsLink]:
+    def __aiter__(self) -> AsyncIterator[resources.GoogleAdsLink]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.google_ads_links:
@@ -1363,14 +1363,14 @@ class ListMeasurementProtocolSecretsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[analytics_admin.ListMeasurementProtocolSecretsResponse]:
+    def pages(self) -> Iterator[analytics_admin.ListMeasurementProtocolSecretsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.MeasurementProtocolSecret]:
+    def __iter__(self) -> Iterator[resources.MeasurementProtocolSecret]:
         for page in self.pages:
             yield from page.measurement_protocol_secrets
 
@@ -1429,14 +1429,14 @@ class ListMeasurementProtocolSecretsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[analytics_admin.ListMeasurementProtocolSecretsResponse]:
+    ) -> AsyncIterator[analytics_admin.ListMeasurementProtocolSecretsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.MeasurementProtocolSecret]:
+    def __aiter__(self) -> AsyncIterator[resources.MeasurementProtocolSecret]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.measurement_protocol_secrets:
@@ -1495,14 +1495,14 @@ class SearchChangeHistoryEventsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[analytics_admin.SearchChangeHistoryEventsResponse]:
+    def pages(self) -> Iterator[analytics_admin.SearchChangeHistoryEventsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.ChangeHistoryEvent]:
+    def __iter__(self) -> Iterator[resources.ChangeHistoryEvent]:
         for page in self.pages:
             yield from page.change_history_events
 
@@ -1561,14 +1561,14 @@ class SearchChangeHistoryEventsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[analytics_admin.SearchChangeHistoryEventsResponse]:
+    ) -> AsyncIterator[analytics_admin.SearchChangeHistoryEventsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.ChangeHistoryEvent]:
+    def __aiter__(self) -> AsyncIterator[resources.ChangeHistoryEvent]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.change_history_events:
@@ -1627,14 +1627,14 @@ class ListConversionEventsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[analytics_admin.ListConversionEventsResponse]:
+    def pages(self) -> Iterator[analytics_admin.ListConversionEventsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.ConversionEvent]:
+    def __iter__(self) -> Iterator[resources.ConversionEvent]:
         for page in self.pages:
             yield from page.conversion_events
 
@@ -1691,14 +1691,14 @@ class ListConversionEventsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[analytics_admin.ListConversionEventsResponse]:
+    ) -> AsyncIterator[analytics_admin.ListConversionEventsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.ConversionEvent]:
+    def __aiter__(self) -> AsyncIterator[resources.ConversionEvent]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.conversion_events:
@@ -1763,14 +1763,14 @@ class ListDisplayVideo360AdvertiserLinksPager:
     @property
     def pages(
         self,
-    ) -> Iterable[analytics_admin.ListDisplayVideo360AdvertiserLinksResponse]:
+    ) -> Iterator[analytics_admin.ListDisplayVideo360AdvertiserLinksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.DisplayVideo360AdvertiserLink]:
+    def __iter__(self) -> Iterator[resources.DisplayVideo360AdvertiserLink]:
         for page in self.pages:
             yield from page.display_video_360_advertiser_links
 
@@ -1831,14 +1831,14 @@ class ListDisplayVideo360AdvertiserLinksAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[analytics_admin.ListDisplayVideo360AdvertiserLinksResponse]:
+    ) -> AsyncIterator[analytics_admin.ListDisplayVideo360AdvertiserLinksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.DisplayVideo360AdvertiserLink]:
+    def __aiter__(self) -> AsyncIterator[resources.DisplayVideo360AdvertiserLink]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.display_video_360_advertiser_links:
@@ -1903,14 +1903,14 @@ class ListDisplayVideo360AdvertiserLinkProposalsPager:
     @property
     def pages(
         self,
-    ) -> Iterable[analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse]:
+    ) -> Iterator[analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.DisplayVideo360AdvertiserLinkProposal]:
+    def __iter__(self) -> Iterator[resources.DisplayVideo360AdvertiserLinkProposal]:
         for page in self.pages:
             yield from page.display_video_360_advertiser_link_proposals
 
@@ -1974,7 +1974,7 @@ class ListDisplayVideo360AdvertiserLinkProposalsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[
+    ) -> AsyncIterator[
         analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse
     ]:
         yield self._response
@@ -1985,7 +1985,7 @@ class ListDisplayVideo360AdvertiserLinkProposalsAsyncPager:
 
     def __aiter__(
         self,
-    ) -> AsyncIterable[resources.DisplayVideo360AdvertiserLinkProposal]:
+    ) -> AsyncIterator[resources.DisplayVideo360AdvertiserLinkProposal]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.display_video_360_advertiser_link_proposals:
@@ -2044,14 +2044,14 @@ class ListCustomDimensionsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[analytics_admin.ListCustomDimensionsResponse]:
+    def pages(self) -> Iterator[analytics_admin.ListCustomDimensionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.CustomDimension]:
+    def __iter__(self) -> Iterator[resources.CustomDimension]:
         for page in self.pages:
             yield from page.custom_dimensions
 
@@ -2108,14 +2108,14 @@ class ListCustomDimensionsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[analytics_admin.ListCustomDimensionsResponse]:
+    ) -> AsyncIterator[analytics_admin.ListCustomDimensionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.CustomDimension]:
+    def __aiter__(self) -> AsyncIterator[resources.CustomDimension]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.custom_dimensions:
@@ -2174,14 +2174,14 @@ class ListCustomMetricsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[analytics_admin.ListCustomMetricsResponse]:
+    def pages(self) -> Iterator[analytics_admin.ListCustomMetricsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.CustomMetric]:
+    def __iter__(self) -> Iterator[resources.CustomMetric]:
         for page in self.pages:
             yield from page.custom_metrics
 
@@ -2236,14 +2236,14 @@ class ListCustomMetricsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[analytics_admin.ListCustomMetricsResponse]:
+    async def pages(self) -> AsyncIterator[analytics_admin.ListCustomMetricsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.CustomMetric]:
+    def __aiter__(self) -> AsyncIterator[resources.CustomMetric]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.custom_metrics:
