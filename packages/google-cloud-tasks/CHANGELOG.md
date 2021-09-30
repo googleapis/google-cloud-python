@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+### [2.5.3](https://www.github.com/googleapis/python-tasks/compare/v2.5.2...v2.5.3) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([0feec1e](https://www.github.com/googleapis/python-tasks/commit/0feec1e0d1e4847e2722920c8afdc597ecd92e3f))
+
 ### [2.5.2](https://www.github.com/googleapis/python-tasks/compare/v2.5.1...v2.5.2) (2021-09-24)
 
 
