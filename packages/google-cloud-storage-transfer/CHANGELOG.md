@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-storage-transfer/compare/v1.0.1...v1.0.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([fa6382c](https://www.github.com/googleapis/python-storage-transfer/commit/fa6382c6d2e82faa0a8e75993c03f5e4b0fdeb6c))
+
 ### [1.0.1](https://www.github.com/googleapis/python-storage-transfer/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
