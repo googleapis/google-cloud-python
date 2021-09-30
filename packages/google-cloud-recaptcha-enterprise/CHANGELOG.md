@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.2](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.1.1...v1.1.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([cab9a71](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/cab9a71083b2482396ecd53051bb694937c7fe7d))
+
 ### [1.1.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.1.0...v1.1.1) (2021-09-24)
 
 
