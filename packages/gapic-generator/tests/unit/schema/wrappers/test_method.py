@@ -14,6 +14,7 @@
 
 import collections
 import dataclasses
+import json
 from typing import Sequence
 
 from google.api import field_behavior_pb2
@@ -407,6 +408,16 @@ def test_method_http_options_additional_bindings():
             'uri': '/v1/projects/p1/topics',
             'body': 'body_field'
             }]
+
+
+def test_method_http_options_generate_sample():
+    http_rule = http_pb2.HttpRule(
+        get='/v1/{resource.id=projects/*/regions/*/id/**}/stuff',
+    )
+    method = make_method('DoSomething', http_rule=http_rule)
+    sample = method.http_options[0].sample_request
+    assert json.loads(sample) == {'resource': {
+        'id': 'projects/sample1/regions/sample2/id/sample3'}}
 
 
 def test_method_query_params():

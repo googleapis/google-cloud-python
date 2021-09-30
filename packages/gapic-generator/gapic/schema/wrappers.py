@@ -29,6 +29,7 @@ Documentation is consistently at ``{thing}.meta.doc``.
 
 import collections
 import dataclasses
+import json
 import re
 from itertools import chain
 from typing import (Any, cast, Dict, FrozenSet, Iterable, List, Mapping,
@@ -39,6 +40,7 @@ from google.api import field_behavior_pb2
 from google.api import http_pb2
 from google.api import resource_pb2
 from google.api_core import exceptions      # type: ignore
+from google.api_core import path_template   # type: ignore
 from google.protobuf import descriptor_pb2  # type: ignore
 from google.protobuf.json_format import MessageToDict  # type: ignore
 
@@ -713,6 +715,18 @@ class HttpRule:
     method: str
     uri: str
     body: Optional[str]
+
+    @property
+    def path_fields(self) -> List[Tuple[str, str]]:
+        """return list of (name, template) tuples extracted from uri."""
+        return [(match.group("name"), match.group("template"))
+                for match in path_template._VARIABLE_RE.finditer(self.uri)]
+
+    @property
+    def sample_request(self) -> str:
+        """return json dict for sample request matching the uri template."""
+        sample = utils.sample_from_path_fields(self.path_fields)
+        return json.dumps(sample)
 
     @classmethod
     def try_parse_http_rule(cls, http_rule) -> Optional['HttpRule']:
