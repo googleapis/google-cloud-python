@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.appengine_admin_v1.types import appengine
@@ -75,14 +75,14 @@ class ListAuthorizedCertificatesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[appengine.ListAuthorizedCertificatesResponse]:
+    def pages(self) -> Iterator[appengine.ListAuthorizedCertificatesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[certificate.AuthorizedCertificate]:
+    def __iter__(self) -> Iterator[certificate.AuthorizedCertificate]:
         for page in self.pages:
             yield from page.certificates
 
@@ -139,14 +139,14 @@ class ListAuthorizedCertificatesAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[appengine.ListAuthorizedCertificatesResponse]:
+    ) -> AsyncIterator[appengine.ListAuthorizedCertificatesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[certificate.AuthorizedCertificate]:
+    def __aiter__(self) -> AsyncIterator[certificate.AuthorizedCertificate]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.certificates:

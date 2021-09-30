@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.appengine_admin_v1.types import appengine
@@ -75,14 +75,14 @@ class ListVersionsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[appengine.ListVersionsResponse]:
+    def pages(self) -> Iterator[appengine.ListVersionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[version.Version]:
+    def __iter__(self) -> Iterator[version.Version]:
         for page in self.pages:
             yield from page.versions
 
@@ -137,14 +137,14 @@ class ListVersionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[appengine.ListVersionsResponse]:
+    async def pages(self) -> AsyncIterator[appengine.ListVersionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[version.Version]:
+    def __aiter__(self) -> AsyncIterator[version.Version]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.versions:

@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.appengine_admin_v1.types import appengine
@@ -75,14 +75,14 @@ class ListDomainMappingsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[appengine.ListDomainMappingsResponse]:
+    def pages(self) -> Iterator[appengine.ListDomainMappingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[domain_mapping.DomainMapping]:
+    def __iter__(self) -> Iterator[domain_mapping.DomainMapping]:
         for page in self.pages:
             yield from page.domain_mappings
 
@@ -137,14 +137,14 @@ class ListDomainMappingsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[appengine.ListDomainMappingsResponse]:
+    async def pages(self) -> AsyncIterator[appengine.ListDomainMappingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[domain_mapping.DomainMapping]:
+    def __aiter__(self) -> AsyncIterator[domain_mapping.DomainMapping]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.domain_mappings:
