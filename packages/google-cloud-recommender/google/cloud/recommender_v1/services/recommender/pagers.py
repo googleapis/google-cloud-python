@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.recommender_v1.types import insight
@@ -76,14 +76,14 @@ class ListInsightsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[recommender_service.ListInsightsResponse]:
+    def pages(self) -> Iterator[recommender_service.ListInsightsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[insight.Insight]:
+    def __iter__(self) -> Iterator[insight.Insight]:
         for page in self.pages:
             yield from page.insights
 
@@ -138,14 +138,14 @@ class ListInsightsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[recommender_service.ListInsightsResponse]:
+    async def pages(self) -> AsyncIterator[recommender_service.ListInsightsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[insight.Insight]:
+    def __aiter__(self) -> AsyncIterator[insight.Insight]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.insights:
@@ -204,14 +204,14 @@ class ListRecommendationsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[recommender_service.ListRecommendationsResponse]:
+    def pages(self) -> Iterator[recommender_service.ListRecommendationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[recommendation.Recommendation]:
+    def __iter__(self) -> Iterator[recommendation.Recommendation]:
         for page in self.pages:
             yield from page.recommendations
 
@@ -270,14 +270,14 @@ class ListRecommendationsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[recommender_service.ListRecommendationsResponse]:
+    ) -> AsyncIterator[recommender_service.ListRecommendationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[recommendation.Recommendation]:
+    def __aiter__(self) -> AsyncIterator[recommendation.Recommendation]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.recommendations:
