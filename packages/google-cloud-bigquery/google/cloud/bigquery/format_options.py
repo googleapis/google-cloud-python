@@ -13,7 +13,59 @@
 # limitations under the License.
 
 import copy
-from typing import Dict
+from typing import Dict, Optional
+
+
+class AvroOptions:
+    """Options if source format is set to AVRO."""
+
+    _SOURCE_FORMAT = "AVRO"
+    _RESOURCE_NAME = "avroOptions"
+
+    def __init__(self):
+        self._properties = {}
+
+    @property
+    def use_avro_logical_types(self) -> Optional[bool]:
+        """[Optional] If sourceFormat is set to 'AVRO', indicates whether to
+        interpret logical types as the corresponding BigQuery data type (for
+        example, TIMESTAMP), instead of using the raw type (for example,
+        INTEGER).
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#AvroOptions.FIELDS.use_avro_logical_types
+        """
+        return self._properties.get("useAvroLogicalTypes")
+
+    @use_avro_logical_types.setter
+    def use_avro_logical_types(self, value):
+        self._properties["useAvroLogicalTypes"] = value
+
+    @classmethod
+    def from_api_repr(cls, resource: Dict[str, bool]) -> "AvroOptions":
+        """Factory: construct an instance from a resource dict.
+
+        Args:
+            resource (Dict[str, bool]):
+                Definition of a :class:`~.format_options.AvroOptions` instance in
+                the same representation as is returned from the API.
+
+        Returns:
+            :class:`~.format_options.AvroOptions`:
+                Configuration parsed from ``resource``.
+        """
+        config = cls()
+        config._properties = copy.deepcopy(resource)
+        return config
+
+    def to_api_repr(self) -> dict:
+        """Build an API representation of this object.
+
+        Returns:
+            Dict[str, bool]:
+                A dictionary in the format used by the BigQuery API.
+        """
+        return copy.deepcopy(self._properties)
 
 
 class ParquetOptions:

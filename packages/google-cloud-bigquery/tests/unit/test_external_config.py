@@ -163,7 +163,7 @@ class TestExternalConfig(unittest.TestCase):
         options = external_config.GoogleSheetsOptions()
         options.skip_leading_rows = 123
         options.range = "Sheet1!A5:B10"
-        ec._options = options
+        ec.google_sheets_options = options
 
         exp_resource = {
             "sourceFormat": "GOOGLE_SHEETS",
@@ -277,7 +277,7 @@ class TestExternalConfig(unittest.TestCase):
         options.quote_character = "quote"
         options.skip_leading_rows = 123
         options.allow_jagged_rows = False
-        ec._options = options
+        ec.csv_options = options
 
         exp_resource = {
             "sourceFormat": "CSV",
@@ -368,7 +368,7 @@ class TestExternalConfig(unittest.TestCase):
         options = external_config.BigtableOptions()
         options.ignore_unspecified_column_families = True
         options.read_rowkey_as_string = False
-        ec._options = options
+        ec.bigtable_options = options
 
         fam1 = external_config.BigtableColumnFamily()
         fam1.family_id = "familyId"
@@ -425,10 +425,166 @@ class TestExternalConfig(unittest.TestCase):
 
         self.assertEqual(got_resource, exp_resource)
 
-    def test_parquet_options_getter(self):
+    def test_avro_options_getter_and_setter(self):
+        from google.cloud.bigquery.external_config import AvroOptions
+
+        options = AvroOptions.from_api_repr({"useAvroLogicalTypes": True})
+        ec = external_config.ExternalConfig(external_config.ExternalSourceFormat.AVRO)
+
+        self.assertIsNone(ec.avro_options.use_avro_logical_types)
+
+        ec.avro_options = options
+
+        self.assertTrue(ec.avro_options.use_avro_logical_types)
+        self.assertIs(
+            ec.options._properties, ec._properties[AvroOptions._RESOURCE_NAME]
+        )
+        self.assertIs(
+            ec.avro_options._properties, ec._properties[AvroOptions._RESOURCE_NAME]
+        )
+
+    def test_avro_options_getter_empty(self):
+        ec = external_config.ExternalConfig(external_config.ExternalSourceFormat.AVRO)
+        self.assertIsNotNone(ec.avro_options)
+
+    def test_avro_options_getter_wrong_format(self):
+        ec = external_config.ExternalConfig(external_config.ExternalSourceFormat.CSV)
+        self.assertIsNone(ec.avro_options)
+
+    def test_avro_options_setter_wrong_format(self):
+        from google.cloud.bigquery.format_options import AvroOptions
+
+        options = AvroOptions()
+        ec = external_config.ExternalConfig(external_config.ExternalSourceFormat.CSV)
+
+        with self.assertRaisesRegex(TypeError, "Cannot set.*source format is CSV"):
+            ec.avro_options = options
+
+    def test_bigtable_options_getter_and_setter(self):
+        from google.cloud.bigquery.external_config import BigtableOptions
+
+        options = BigtableOptions.from_api_repr(
+            {"ignoreUnspecifiedColumnFamilies": True, "readRowkeyAsString": False}
+        )
+        ec = external_config.ExternalConfig(
+            external_config.ExternalSourceFormat.BIGTABLE
+        )
+
+        self.assertIsNone(ec.bigtable_options.ignore_unspecified_column_families)
+        self.assertIsNone(ec.bigtable_options.read_rowkey_as_string)
+
+        ec.bigtable_options = options
+
+        self.assertTrue(ec.bigtable_options.ignore_unspecified_column_families)
+        self.assertFalse(ec.bigtable_options.read_rowkey_as_string)
+        self.assertIs(
+            ec.options._properties, ec._properties[BigtableOptions._RESOURCE_NAME]
+        )
+        self.assertIs(
+            ec.bigtable_options._properties,
+            ec._properties[BigtableOptions._RESOURCE_NAME],
+        )
+
+    def test_bigtable_options_getter_empty(self):
+        ec = external_config.ExternalConfig(
+            external_config.ExternalSourceFormat.BIGTABLE
+        )
+        self.assertIsNotNone(ec.bigtable_options)
+
+    def test_bigtable_options_getter_wrong_format(self):
+        ec = external_config.ExternalConfig(external_config.ExternalSourceFormat.CSV)
+        self.assertIsNone(ec.bigtable_options)
+
+    def test_bigtable_options_setter_wrong_format(self):
+        from google.cloud.bigquery.external_config import BigtableOptions
+
+        options = BigtableOptions()
+        ec = external_config.ExternalConfig(external_config.ExternalSourceFormat.CSV)
+
+        with self.assertRaisesRegex(TypeError, "Cannot set.*source format is CSV"):
+            ec.bigtable_options = options
+
+    def test_csv_options_getter_and_setter(self):
+        from google.cloud.bigquery.external_config import CSVOptions
+
+        options = CSVOptions.from_api_repr(
+            {"allowJaggedRows": True, "allowQuotedNewlines": False}
+        )
+        ec = external_config.ExternalConfig(external_config.ExternalSourceFormat.CSV)
+
+        self.assertIsNone(ec.csv_options.allow_jagged_rows)
+        self.assertIsNone(ec.csv_options.allow_quoted_newlines)
+
+        ec.csv_options = options
+
+        self.assertTrue(ec.csv_options.allow_jagged_rows)
+        self.assertFalse(ec.csv_options.allow_quoted_newlines)
+        self.assertIs(ec.options._properties, ec._properties[CSVOptions._RESOURCE_NAME])
+        self.assertIs(
+            ec.csv_options._properties, ec._properties[CSVOptions._RESOURCE_NAME]
+        )
+
+    def test_csv_options_getter_empty(self):
+        ec = external_config.ExternalConfig(external_config.ExternalSourceFormat.CSV)
+        self.assertIsNotNone(ec.csv_options)
+
+    def test_csv_options_getter_wrong_format(self):
+        ec = external_config.ExternalConfig(external_config.ExternalSourceFormat.AVRO)
+        self.assertIsNone(ec.csv_options)
+
+    def test_csv_options_setter_wrong_format(self):
+        from google.cloud.bigquery.external_config import CSVOptions
+
+        options = CSVOptions()
+        ec = external_config.ExternalConfig(external_config.ExternalSourceFormat.AVRO)
+
+        with self.assertRaisesRegex(TypeError, "Cannot set.*source format is AVRO"):
+            ec.csv_options = options
+
+    def test_google_sheets_options_getter_and_setter(self):
+        from google.cloud.bigquery.external_config import GoogleSheetsOptions
+
+        options = GoogleSheetsOptions.from_api_repr({"skipLeadingRows": "123"})
+        ec = external_config.ExternalConfig(
+            external_config.ExternalSourceFormat.GOOGLE_SHEETS
+        )
+
+        self.assertIsNone(ec.google_sheets_options.skip_leading_rows)
+
+        ec.google_sheets_options = options
+
+        self.assertEqual(ec.google_sheets_options.skip_leading_rows, 123)
+        self.assertIs(
+            ec.options._properties, ec._properties[GoogleSheetsOptions._RESOURCE_NAME]
+        )
+        self.assertIs(
+            ec.google_sheets_options._properties,
+            ec._properties[GoogleSheetsOptions._RESOURCE_NAME],
+        )
+
+    def test_google_sheets_options_getter_empty(self):
+        ec = external_config.ExternalConfig(
+            external_config.ExternalSourceFormat.GOOGLE_SHEETS
+        )
+        self.assertIsNotNone(ec.google_sheets_options)
+
+    def test_google_sheets_options_getter_wrong_format(self):
+        ec = external_config.ExternalConfig(external_config.ExternalSourceFormat.CSV)
+        self.assertIsNone(ec.google_sheets_options)
+
+    def test_google_sheets_options_setter_wrong_format(self):
+        from google.cloud.bigquery.external_config import GoogleSheetsOptions
+
+        options = GoogleSheetsOptions()
+        ec = external_config.ExternalConfig(external_config.ExternalSourceFormat.CSV)
+
+        with self.assertRaisesRegex(TypeError, "Cannot set.*source format is CSV"):
+            ec.google_sheets_options = options
+
+    def test_parquet_options_getter_and_setter(self):
         from google.cloud.bigquery.format_options import ParquetOptions
 
-        parquet_options = ParquetOptions.from_api_repr(
+        options = ParquetOptions.from_api_repr(
             {"enumAsString": True, "enableListInference": False}
         )
         ec = external_config.ExternalConfig(
@@ -438,32 +594,50 @@ class TestExternalConfig(unittest.TestCase):
         self.assertIsNone(ec.parquet_options.enum_as_string)
         self.assertIsNone(ec.parquet_options.enable_list_inference)
 
-        ec._options = parquet_options
+        ec.parquet_options = options
 
         self.assertTrue(ec.parquet_options.enum_as_string)
         self.assertFalse(ec.parquet_options.enable_list_inference)
-
-        self.assertIs(ec.parquet_options, ec.options)
-
-    def test_parquet_options_getter_non_parquet_format(self):
-        ec = external_config.ExternalConfig(external_config.ExternalSourceFormat.CSV)
-        self.assertIsNone(ec.parquet_options)
-
-    def test_parquet_options_setter(self):
-        from google.cloud.bigquery.format_options import ParquetOptions
-
-        parquet_options = ParquetOptions.from_api_repr(
-            {"enumAsString": False, "enableListInference": True}
+        self.assertIs(
+            ec.options._properties, ec._properties[ParquetOptions._RESOURCE_NAME]
         )
+        self.assertIs(
+            ec.parquet_options._properties,
+            ec._properties[ParquetOptions._RESOURCE_NAME],
+        )
+
+    def test_parquet_options_set_properties(self):
+        """Check that setting sub-properties works without having to create a
+        new ParquetOptions instance.
+
+        This is required for compatibility with previous
+        ExternalConfig._options implementation.
+        """
+
         ec = external_config.ExternalConfig(
             external_config.ExternalSourceFormat.PARQUET
         )
 
-        ec.parquet_options = parquet_options
+        self.assertIsNone(ec.parquet_options.enum_as_string)
+        self.assertIsNone(ec.parquet_options.enable_list_inference)
 
-        # Setting Parquet options should be reflected in the generic options attribute.
-        self.assertFalse(ec.options.enum_as_string)
-        self.assertTrue(ec.options.enable_list_inference)
+        ec.parquet_options.enum_as_string = True
+        ec.parquet_options.enable_list_inference = False
+
+        self.assertTrue(ec.options.enum_as_string)
+        self.assertFalse(ec.options.enable_list_inference)
+        self.assertTrue(ec.parquet_options.enum_as_string)
+        self.assertFalse(ec.parquet_options.enable_list_inference)
+
+    def test_parquet_options_getter_empty(self):
+        ec = external_config.ExternalConfig(
+            external_config.ExternalSourceFormat.PARQUET
+        )
+        self.assertIsNotNone(ec.parquet_options)
+
+    def test_parquet_options_getter_non_parquet_format(self):
+        ec = external_config.ExternalConfig(external_config.ExternalSourceFormat.CSV)
+        self.assertIsNone(ec.parquet_options)
 
     def test_parquet_options_setter_non_parquet_format(self):
         from google.cloud.bigquery.format_options import ParquetOptions
@@ -514,7 +688,7 @@ class TestExternalConfig(unittest.TestCase):
         options = ParquetOptions.from_api_repr(
             dict(enumAsString=False, enableListInference=True)
         )
-        ec._options = options
+        ec.parquet_options = options
 
         exp_resource = {
             "sourceFormat": external_config.ExternalSourceFormat.PARQUET,
@@ -582,6 +756,117 @@ class TestExternalConfig(unittest.TestCase):
         self.assertEqual(got_resource, expected_resource)
 
         ec.decimal_target_types = None  # No error if unsetting when already unset.
+
+
+class BigtableOptions(unittest.TestCase):
+    def test_to_api_repr(self):
+        options = external_config.BigtableOptions()
+        family1 = external_config.BigtableColumnFamily()
+        column1 = external_config.BigtableColumn()
+        column1.qualifier_string = "col1"
+        column1.field_name = "bqcol1"
+        column1.type_ = "FLOAT"
+        column1.encoding = "TEXT"
+        column1.only_read_latest = True
+        column2 = external_config.BigtableColumn()
+        column2.qualifier_encoded = b"col2"
+        column2.field_name = "bqcol2"
+        column2.type_ = "STRING"
+        column2.only_read_latest = False
+        family1.family_id = "family1"
+        family1.type_ = "INTEGER"
+        family1.encoding = "BINARY"
+        family1.columns = [column1, column2]
+        family1.only_read_latest = False
+        family2 = external_config.BigtableColumnFamily()
+        column3 = external_config.BigtableColumn()
+        column3.qualifier_string = "col3"
+        family2.family_id = "family2"
+        family2.type_ = "BYTES"
+        family2.encoding = "TEXT"
+        family2.columns = [column3]
+        family2.only_read_latest = True
+        options.column_families = [family1, family2]
+        options.ignore_unspecified_column_families = False
+        options.read_rowkey_as_string = True
+
+        resource = options.to_api_repr()
+
+        expected_column_families = [
+            {
+                "familyId": "family1",
+                "type": "INTEGER",
+                "encoding": "BINARY",
+                "columns": [
+                    {
+                        "qualifierString": "col1",
+                        "fieldName": "bqcol1",
+                        "type": "FLOAT",
+                        "encoding": "TEXT",
+                        "onlyReadLatest": True,
+                    },
+                    {
+                        "qualifierEncoded": "Y29sMg==",
+                        "fieldName": "bqcol2",
+                        "type": "STRING",
+                        "onlyReadLatest": False,
+                    },
+                ],
+                "onlyReadLatest": False,
+            },
+            {
+                "familyId": "family2",
+                "type": "BYTES",
+                "encoding": "TEXT",
+                "columns": [{"qualifierString": "col3"}],
+                "onlyReadLatest": True,
+            },
+        ]
+        self.maxDiff = None
+        self.assertEqual(
+            resource,
+            {
+                "columnFamilies": expected_column_families,
+                "ignoreUnspecifiedColumnFamilies": False,
+                "readRowkeyAsString": True,
+            },
+        )
+
+
+class CSVOptions(unittest.TestCase):
+    def test_to_api_repr(self):
+        options = external_config.CSVOptions()
+        options.field_delimiter = "\t"
+        options.skip_leading_rows = 42
+        options.quote_character = '"'
+        options.allow_quoted_newlines = True
+        options.allow_jagged_rows = False
+        options.encoding = "UTF-8"
+
+        resource = options.to_api_repr()
+
+        self.assertEqual(
+            resource,
+            {
+                "fieldDelimiter": "\t",
+                "skipLeadingRows": "42",
+                "quote": '"',
+                "allowQuotedNewlines": True,
+                "allowJaggedRows": False,
+                "encoding": "UTF-8",
+            },
+        )
+
+
+class TestGoogleSheetsOptions(unittest.TestCase):
+    def test_to_api_repr(self):
+        options = external_config.GoogleSheetsOptions()
+        options.range = "sheet1!A1:B20"
+        options.skip_leading_rows = 107
+
+        resource = options.to_api_repr()
+
+        self.assertEqual(resource, {"range": "sheet1!A1:B20", "skipLeadingRows": "107"})
 
 
 def _copy_and_update(d, u):

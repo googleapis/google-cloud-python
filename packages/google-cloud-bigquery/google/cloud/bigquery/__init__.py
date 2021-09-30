@@ -50,6 +50,7 @@ from google.cloud.bigquery.external_config import BigtableColumn
 from google.cloud.bigquery.external_config import CSVOptions
 from google.cloud.bigquery.external_config import GoogleSheetsOptions
 from google.cloud.bigquery.external_config import ExternalSourceFormat
+from google.cloud.bigquery.format_options import AvroOptions
 from google.cloud.bigquery.format_options import ParquetOptions
 from google.cloud.bigquery.job import Compression
 from google.cloud.bigquery.job import CopyJob
@@ -144,6 +145,7 @@ __all__ = [
     "PolicyTagList",
     "UDFResource",
     "ExternalConfig",
+    "AvroOptions",
     "BigtableOptions",
     "BigtableColumnFamily",
     "BigtableColumn",

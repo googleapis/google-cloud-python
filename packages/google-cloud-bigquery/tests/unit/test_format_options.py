@@ -13,6 +13,29 @@
 # limitations under the License.
 
 
+class TestAvroOptions:
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.format_options import AvroOptions
+
+        return AvroOptions
+
+    def test_ctor(self):
+        config = self._get_target_class()()
+        assert config.use_avro_logical_types is None
+
+    def test_from_api_repr(self):
+        config = self._get_target_class().from_api_repr({"useAvroLogicalTypes": True})
+        assert config.use_avro_logical_types
+
+    def test_to_api_repr(self):
+        config = self._get_target_class()()
+        config.use_avro_logical_types = False
+
+        result = config.to_api_repr()
+        assert result == {"useAvroLogicalTypes": False}
+
+
 class TestParquetOptions:
     @staticmethod
     def _get_target_class():

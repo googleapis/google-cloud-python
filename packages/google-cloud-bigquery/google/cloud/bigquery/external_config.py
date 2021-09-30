@@ -22,13 +22,13 @@ from __future__ import absolute_import
 
 import base64
 import copy
-from typing import FrozenSet, Iterable, Optional
+from typing import FrozenSet, Iterable, Optional, Union
 
 from google.cloud.bigquery._helpers import _to_bytes
 from google.cloud.bigquery._helpers import _bytes_to_json
 from google.cloud.bigquery._helpers import _int_or_none
 from google.cloud.bigquery._helpers import _str_or_none
-from google.cloud.bigquery.format_options import ParquetOptions
+from google.cloud.bigquery.format_options import AvroOptions, ParquetOptions
 from google.cloud.bigquery.schema import SchemaField
 
 
@@ -548,7 +548,13 @@ class GoogleSheetsOptions(object):
         return config
 
 
-_OPTION_CLASSES = (BigtableOptions, CSVOptions, GoogleSheetsOptions, ParquetOptions)
+_OPTION_CLASSES = (
+    AvroOptions,
+    BigtableOptions,
+    CSVOptions,
+    GoogleSheetsOptions,
+    ParquetOptions,
+)
 
 
 class HivePartitioningOptions(object):
@@ -646,11 +652,6 @@ class ExternalConfig(object):
 
     def __init__(self, source_format):
         self._properties = {"sourceFormat": source_format}
-        self._options = None
-        for optcls in _OPTION_CLASSES:
-            if source_format == optcls._SOURCE_FORMAT:
-                self._options = optcls()
-                break
 
     @property
     def source_format(self):
@@ -663,9 +664,17 @@ class ExternalConfig(object):
         return self._properties["sourceFormat"]
 
     @property
-    def options(self):
-        """Optional[Dict[str, Any]]: Source-specific options."""
-        return self._options
+    def options(self) -> Optional[Union[_OPTION_CLASSES]]:
+        """Source-specific options."""
+        for optcls in _OPTION_CLASSES:
+            if self.source_format == optcls._SOURCE_FORMAT:
+                options = optcls()
+                self._properties.setdefault(optcls._RESOURCE_NAME, {})
+                options._properties = self._properties[optcls._RESOURCE_NAME]
+                return options
+
+        # No matching source format found.
+        return None
 
     @property
     def autodetect(self):
@@ -815,23 +824,120 @@ class ExternalConfig(object):
         self._properties["schema"] = prop
 
     @property
-    def parquet_options(self):
-        """Optional[google.cloud.bigquery.format_options.ParquetOptions]: Additional
-        properties to set if ``sourceFormat`` is set to PARQUET.
+    def avro_options(self) -> Optional[AvroOptions]:
+        """Additional properties to set if ``sourceFormat`` is set to AVRO.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#ExternalDataConfiguration.FIELDS.avro_options
+        """
+        if self.source_format == ExternalSourceFormat.AVRO:
+            self._properties.setdefault(AvroOptions._RESOURCE_NAME, {})
+        resource = self._properties.get(AvroOptions._RESOURCE_NAME)
+        if resource is None:
+            return None
+        options = AvroOptions()
+        options._properties = resource
+        return options
+
+    @avro_options.setter
+    def avro_options(self, value):
+        if self.source_format != ExternalSourceFormat.AVRO:
+            msg = f"Cannot set Avro options, source format is {self.source_format}"
+            raise TypeError(msg)
+        self._properties[AvroOptions._RESOURCE_NAME] = value._properties
+
+    @property
+    def bigtable_options(self) -> Optional[BigtableOptions]:
+        """Additional properties to set if ``sourceFormat`` is set to BIGTABLE.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#ExternalDataConfiguration.FIELDS.bigtable_options
+        """
+        if self.source_format == ExternalSourceFormat.BIGTABLE:
+            self._properties.setdefault(BigtableOptions._RESOURCE_NAME, {})
+        resource = self._properties.get(BigtableOptions._RESOURCE_NAME)
+        if resource is None:
+            return None
+        options = BigtableOptions()
+        options._properties = resource
+        return options
+
+    @bigtable_options.setter
+    def bigtable_options(self, value):
+        if self.source_format != ExternalSourceFormat.BIGTABLE:
+            msg = f"Cannot set Bigtable options, source format is {self.source_format}"
+            raise TypeError(msg)
+        self._properties[BigtableOptions._RESOURCE_NAME] = value._properties
+
+    @property
+    def csv_options(self) -> Optional[CSVOptions]:
+        """Additional properties to set if ``sourceFormat`` is set to CSV.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#ExternalDataConfiguration.FIELDS.csv_options
+        """
+        if self.source_format == ExternalSourceFormat.CSV:
+            self._properties.setdefault(CSVOptions._RESOURCE_NAME, {})
+        resource = self._properties.get(CSVOptions._RESOURCE_NAME)
+        if resource is None:
+            return None
+        options = CSVOptions()
+        options._properties = resource
+        return options
+
+    @csv_options.setter
+    def csv_options(self, value):
+        if self.source_format != ExternalSourceFormat.CSV:
+            msg = f"Cannot set CSV options, source format is {self.source_format}"
+            raise TypeError(msg)
+        self._properties[CSVOptions._RESOURCE_NAME] = value._properties
+
+    @property
+    def google_sheets_options(self) -> Optional[GoogleSheetsOptions]:
+        """Additional properties to set if ``sourceFormat`` is set to
+        GOOGLE_SHEETS.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#ExternalDataConfiguration.FIELDS.google_sheets_options
+        """
+        if self.source_format == ExternalSourceFormat.GOOGLE_SHEETS:
+            self._properties.setdefault(GoogleSheetsOptions._RESOURCE_NAME, {})
+        resource = self._properties.get(GoogleSheetsOptions._RESOURCE_NAME)
+        if resource is None:
+            return None
+        options = GoogleSheetsOptions()
+        options._properties = resource
+        return options
+
+    @google_sheets_options.setter
+    def google_sheets_options(self, value):
+        if self.source_format != ExternalSourceFormat.GOOGLE_SHEETS:
+            msg = f"Cannot set Google Sheets options, source format is {self.source_format}"
+            raise TypeError(msg)
+        self._properties[GoogleSheetsOptions._RESOURCE_NAME] = value._properties
+
+    @property
+    def parquet_options(self) -> Optional[ParquetOptions]:
+        """Additional properties to set if ``sourceFormat`` is set to PARQUET.
 
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#ExternalDataConfiguration.FIELDS.parquet_options
         """
-        if self.source_format != ExternalSourceFormat.PARQUET:
+        if self.source_format == ExternalSourceFormat.PARQUET:
+            self._properties.setdefault(ParquetOptions._RESOURCE_NAME, {})
+        resource = self._properties.get(ParquetOptions._RESOURCE_NAME)
+        if resource is None:
             return None
-        return self._options
+        options = ParquetOptions()
+        options._properties = resource
+        return options
 
     @parquet_options.setter
     def parquet_options(self, value):
         if self.source_format != ExternalSourceFormat.PARQUET:
             msg = f"Cannot set Parquet options, source format is {self.source_format}"
             raise TypeError(msg)
-        self._options = value
+        self._properties[ParquetOptions._RESOURCE_NAME] = value._properties
 
     def to_api_repr(self) -> dict:
         """Build an API representation of this object.
@@ -841,10 +947,6 @@ class ExternalConfig(object):
                 A dictionary in the format used by the BigQuery API.
         """
         config = copy.deepcopy(self._properties)
-        if self.options is not None:
-            r = self.options.to_api_repr()
-            if r != {}:
-                config[self.options._RESOURCE_NAME] = r
         return config
 
     @classmethod
@@ -862,10 +964,5 @@ class ExternalConfig(object):
             ExternalConfig: Configuration parsed from ``resource``.
         """
         config = cls(resource["sourceFormat"])
-        for optcls in _OPTION_CLASSES:
-            opts = resource.get(optcls._RESOURCE_NAME)
-            if opts is not None:
-                config._options = optcls.from_api_repr(opts)
-                break
         config._properties = copy.deepcopy(resource)
         return config
