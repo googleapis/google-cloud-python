@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/python-functions/compare/v1.1.0...v1.1.1) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([ef050bd](https://www.github.com/googleapis/python-functions/commit/ef050bd15318cd9ca4481502411e16bf5c7f2c2e))
+
 ## [1.1.0](https://www.github.com/googleapis/python-functions/compare/v1.0.4...v1.1.0) (2021-09-16)
 
 
