@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+### [2.3.4](https://www.github.com/googleapis/python-recommender/compare/v2.3.3...v2.3.4) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([a9bba5f](https://www.github.com/googleapis/python-recommender/commit/a9bba5f68d7510fec7e50efb59a3f7b8317e7984))
+
 ### [2.3.3](https://www.github.com/googleapis/python-recommender/compare/v2.3.2...v2.3.3) (2021-09-24)
 
 
