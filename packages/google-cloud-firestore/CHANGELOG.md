@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+### [2.3.4](https://www.github.com/googleapis/python-firestore/compare/v2.3.3...v2.3.4) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([4434415](https://www.github.com/googleapis/python-firestore/commit/4434415ef5b4aef81fe2a8ec9469ebaaa2a19d1b))
+
 ### [2.3.3](https://www.github.com/googleapis/python-firestore/compare/v2.3.2...v2.3.3) (2021-09-24)
 
 
