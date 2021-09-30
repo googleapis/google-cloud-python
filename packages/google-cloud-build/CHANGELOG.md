@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+### [3.5.2](https://www.github.com/googleapis/python-cloudbuild/compare/v3.5.1...v3.5.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([f56eed5](https://www.github.com/googleapis/python-cloudbuild/commit/f56eed5376f66a9ce5f9c1ca21f2b5b9b6d5779b))
+
 ### [3.5.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.5.0...v3.5.1) (2021-09-24)
 
 
