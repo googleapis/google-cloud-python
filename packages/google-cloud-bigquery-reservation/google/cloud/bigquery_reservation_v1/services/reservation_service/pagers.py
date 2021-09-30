@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.bigquery_reservation_v1.types import reservation
@@ -74,14 +74,14 @@ class ListReservationsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[reservation.ListReservationsResponse]:
+    def pages(self) -> Iterator[reservation.ListReservationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[reservation.Reservation]:
+    def __iter__(self) -> Iterator[reservation.Reservation]:
         for page in self.pages:
             yield from page.reservations
 
@@ -136,14 +136,14 @@ class ListReservationsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[reservation.ListReservationsResponse]:
+    async def pages(self) -> AsyncIterator[reservation.ListReservationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[reservation.Reservation]:
+    def __aiter__(self) -> AsyncIterator[reservation.Reservation]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.reservations:
@@ -202,14 +202,14 @@ class ListCapacityCommitmentsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[reservation.ListCapacityCommitmentsResponse]:
+    def pages(self) -> Iterator[reservation.ListCapacityCommitmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[reservation.CapacityCommitment]:
+    def __iter__(self) -> Iterator[reservation.CapacityCommitment]:
         for page in self.pages:
             yield from page.capacity_commitments
 
@@ -264,14 +264,14 @@ class ListCapacityCommitmentsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[reservation.ListCapacityCommitmentsResponse]:
+    async def pages(self) -> AsyncIterator[reservation.ListCapacityCommitmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[reservation.CapacityCommitment]:
+    def __aiter__(self) -> AsyncIterator[reservation.CapacityCommitment]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.capacity_commitments:
@@ -330,14 +330,14 @@ class ListAssignmentsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[reservation.ListAssignmentsResponse]:
+    def pages(self) -> Iterator[reservation.ListAssignmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[reservation.Assignment]:
+    def __iter__(self) -> Iterator[reservation.Assignment]:
         for page in self.pages:
             yield from page.assignments
 
@@ -392,14 +392,14 @@ class ListAssignmentsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[reservation.ListAssignmentsResponse]:
+    async def pages(self) -> AsyncIterator[reservation.ListAssignmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[reservation.Assignment]:
+    def __aiter__(self) -> AsyncIterator[reservation.Assignment]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.assignments:
@@ -458,14 +458,14 @@ class SearchAssignmentsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[reservation.SearchAssignmentsResponse]:
+    def pages(self) -> Iterator[reservation.SearchAssignmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[reservation.Assignment]:
+    def __iter__(self) -> Iterator[reservation.Assignment]:
         for page in self.pages:
             yield from page.assignments
 
@@ -520,14 +520,14 @@ class SearchAssignmentsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[reservation.SearchAssignmentsResponse]:
+    async def pages(self) -> AsyncIterator[reservation.SearchAssignmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[reservation.Assignment]:
+    def __aiter__(self) -> AsyncIterator[reservation.Assignment]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.assignments:
@@ -586,14 +586,14 @@ class SearchAllAssignmentsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[reservation.SearchAllAssignmentsResponse]:
+    def pages(self) -> Iterator[reservation.SearchAllAssignmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[reservation.Assignment]:
+    def __iter__(self) -> Iterator[reservation.Assignment]:
         for page in self.pages:
             yield from page.assignments
 
@@ -648,14 +648,14 @@ class SearchAllAssignmentsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[reservation.SearchAllAssignmentsResponse]:
+    async def pages(self) -> AsyncIterator[reservation.SearchAllAssignmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[reservation.Assignment]:
+    def __aiter__(self) -> AsyncIterator[reservation.Assignment]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.assignments:
