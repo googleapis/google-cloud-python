@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.7.2](https://www.github.com/googleapis/python-assured-workloads/compare/v0.7.1...v0.7.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([a78556b](https://www.github.com/googleapis/python-assured-workloads/commit/a78556b3481b7e000a209ce0495b52495769cb9a))
+
 ### [0.7.1](https://www.github.com/googleapis/python-assured-workloads/compare/v0.7.0...v0.7.1) (2021-09-24)
 
 
