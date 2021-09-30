@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.osconfig_v1.types import patch_deployments
@@ -75,14 +75,14 @@ class ListPatchJobsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[patch_jobs.ListPatchJobsResponse]:
+    def pages(self) -> Iterator[patch_jobs.ListPatchJobsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[patch_jobs.PatchJob]:
+    def __iter__(self) -> Iterator[patch_jobs.PatchJob]:
         for page in self.pages:
             yield from page.patch_jobs
 
@@ -137,14 +137,14 @@ class ListPatchJobsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[patch_jobs.ListPatchJobsResponse]:
+    async def pages(self) -> AsyncIterator[patch_jobs.ListPatchJobsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[patch_jobs.PatchJob]:
+    def __aiter__(self) -> AsyncIterator[patch_jobs.PatchJob]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.patch_jobs:
@@ -203,14 +203,14 @@ class ListPatchJobInstanceDetailsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[patch_jobs.ListPatchJobInstanceDetailsResponse]:
+    def pages(self) -> Iterator[patch_jobs.ListPatchJobInstanceDetailsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[patch_jobs.PatchJobInstanceDetails]:
+    def __iter__(self) -> Iterator[patch_jobs.PatchJobInstanceDetails]:
         for page in self.pages:
             yield from page.patch_job_instance_details
 
@@ -269,14 +269,14 @@ class ListPatchJobInstanceDetailsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[patch_jobs.ListPatchJobInstanceDetailsResponse]:
+    ) -> AsyncIterator[patch_jobs.ListPatchJobInstanceDetailsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[patch_jobs.PatchJobInstanceDetails]:
+    def __aiter__(self) -> AsyncIterator[patch_jobs.PatchJobInstanceDetails]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.patch_job_instance_details:
@@ -335,14 +335,14 @@ class ListPatchDeploymentsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[patch_deployments.ListPatchDeploymentsResponse]:
+    def pages(self) -> Iterator[patch_deployments.ListPatchDeploymentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[patch_deployments.PatchDeployment]:
+    def __iter__(self) -> Iterator[patch_deployments.PatchDeployment]:
         for page in self.pages:
             yield from page.patch_deployments
 
@@ -401,14 +401,14 @@ class ListPatchDeploymentsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[patch_deployments.ListPatchDeploymentsResponse]:
+    ) -> AsyncIterator[patch_deployments.ListPatchDeploymentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[patch_deployments.PatchDeployment]:
+    def __aiter__(self) -> AsyncIterator[patch_deployments.PatchDeployment]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.patch_deployments:

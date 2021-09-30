@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.osconfig_v1alpha.types import instance_os_policies_compliance
@@ -77,14 +77,14 @@ class ListOSPolicyAssignmentsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[os_policy_assignments.ListOSPolicyAssignmentsResponse]:
+    def pages(self) -> Iterator[os_policy_assignments.ListOSPolicyAssignmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[os_policy_assignments.OSPolicyAssignment]:
+    def __iter__(self) -> Iterator[os_policy_assignments.OSPolicyAssignment]:
         for page in self.pages:
             yield from page.os_policy_assignments
 
@@ -143,14 +143,14 @@ class ListOSPolicyAssignmentsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[os_policy_assignments.ListOSPolicyAssignmentsResponse]:
+    ) -> AsyncIterator[os_policy_assignments.ListOSPolicyAssignmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[os_policy_assignments.OSPolicyAssignment]:
+    def __aiter__(self) -> AsyncIterator[os_policy_assignments.OSPolicyAssignment]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.os_policy_assignments:
@@ -215,14 +215,14 @@ class ListOSPolicyAssignmentRevisionsPager:
     @property
     def pages(
         self,
-    ) -> Iterable[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse]:
+    ) -> Iterator[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[os_policy_assignments.OSPolicyAssignment]:
+    def __iter__(self) -> Iterator[os_policy_assignments.OSPolicyAssignment]:
         for page in self.pages:
             yield from page.os_policy_assignments
 
@@ -284,14 +284,14 @@ class ListOSPolicyAssignmentRevisionsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse]:
+    ) -> AsyncIterator[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[os_policy_assignments.OSPolicyAssignment]:
+    def __aiter__(self) -> AsyncIterator[os_policy_assignments.OSPolicyAssignment]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.os_policy_assignments:
@@ -357,7 +357,7 @@ class ListInstanceOSPoliciesCompliancesPager:
     @property
     def pages(
         self,
-    ) -> Iterable[
+    ) -> Iterator[
         instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse
     ]:
         yield self._response
@@ -368,7 +368,7 @@ class ListInstanceOSPoliciesCompliancesPager:
 
     def __iter__(
         self,
-    ) -> Iterable[instance_os_policies_compliance.InstanceOSPoliciesCompliance]:
+    ) -> Iterator[instance_os_policies_compliance.InstanceOSPoliciesCompliance]:
         for page in self.pages:
             yield from page.instance_os_policies_compliances
 
@@ -432,7 +432,7 @@ class ListInstanceOSPoliciesCompliancesAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[
+    ) -> AsyncIterator[
         instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse
     ]:
         yield self._response
@@ -443,7 +443,7 @@ class ListInstanceOSPoliciesCompliancesAsyncPager:
 
     def __aiter__(
         self,
-    ) -> AsyncIterable[instance_os_policies_compliance.InstanceOSPoliciesCompliance]:
+    ) -> AsyncIterator[instance_os_policies_compliance.InstanceOSPoliciesCompliance]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.instance_os_policies_compliances:
@@ -502,14 +502,14 @@ class ListInventoriesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[inventory.ListInventoriesResponse]:
+    def pages(self) -> Iterator[inventory.ListInventoriesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[inventory.Inventory]:
+    def __iter__(self) -> Iterator[inventory.Inventory]:
         for page in self.pages:
             yield from page.inventories
 
@@ -564,14 +564,14 @@ class ListInventoriesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[inventory.ListInventoriesResponse]:
+    async def pages(self) -> AsyncIterator[inventory.ListInventoriesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[inventory.Inventory]:
+    def __aiter__(self) -> AsyncIterator[inventory.Inventory]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.inventories:
@@ -630,14 +630,14 @@ class ListVulnerabilityReportsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[vulnerability.ListVulnerabilityReportsResponse]:
+    def pages(self) -> Iterator[vulnerability.ListVulnerabilityReportsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[vulnerability.VulnerabilityReport]:
+    def __iter__(self) -> Iterator[vulnerability.VulnerabilityReport]:
         for page in self.pages:
             yield from page.vulnerability_reports
 
@@ -696,14 +696,14 @@ class ListVulnerabilityReportsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[vulnerability.ListVulnerabilityReportsResponse]:
+    ) -> AsyncIterator[vulnerability.ListVulnerabilityReportsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[vulnerability.VulnerabilityReport]:
+    def __aiter__(self) -> AsyncIterator[vulnerability.VulnerabilityReport]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.vulnerability_reports:
