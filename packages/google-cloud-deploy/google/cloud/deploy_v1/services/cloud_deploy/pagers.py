@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.deploy_v1.types import cloud_deploy
@@ -74,14 +74,14 @@ class ListDeliveryPipelinesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[cloud_deploy.ListDeliveryPipelinesResponse]:
+    def pages(self) -> Iterator[cloud_deploy.ListDeliveryPipelinesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[cloud_deploy.DeliveryPipeline]:
+    def __iter__(self) -> Iterator[cloud_deploy.DeliveryPipeline]:
         for page in self.pages:
             yield from page.delivery_pipelines
 
@@ -136,14 +136,14 @@ class ListDeliveryPipelinesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[cloud_deploy.ListDeliveryPipelinesResponse]:
+    async def pages(self) -> AsyncIterator[cloud_deploy.ListDeliveryPipelinesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[cloud_deploy.DeliveryPipeline]:
+    def __aiter__(self) -> AsyncIterator[cloud_deploy.DeliveryPipeline]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.delivery_pipelines:
@@ -202,14 +202,14 @@ class ListTargetsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[cloud_deploy.ListTargetsResponse]:
+    def pages(self) -> Iterator[cloud_deploy.ListTargetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[cloud_deploy.Target]:
+    def __iter__(self) -> Iterator[cloud_deploy.Target]:
         for page in self.pages:
             yield from page.targets
 
@@ -264,14 +264,14 @@ class ListTargetsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[cloud_deploy.ListTargetsResponse]:
+    async def pages(self) -> AsyncIterator[cloud_deploy.ListTargetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[cloud_deploy.Target]:
+    def __aiter__(self) -> AsyncIterator[cloud_deploy.Target]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.targets:
@@ -330,14 +330,14 @@ class ListReleasesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[cloud_deploy.ListReleasesResponse]:
+    def pages(self) -> Iterator[cloud_deploy.ListReleasesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[cloud_deploy.Release]:
+    def __iter__(self) -> Iterator[cloud_deploy.Release]:
         for page in self.pages:
             yield from page.releases
 
@@ -392,14 +392,14 @@ class ListReleasesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[cloud_deploy.ListReleasesResponse]:
+    async def pages(self) -> AsyncIterator[cloud_deploy.ListReleasesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[cloud_deploy.Release]:
+    def __aiter__(self) -> AsyncIterator[cloud_deploy.Release]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.releases:
@@ -458,14 +458,14 @@ class ListRolloutsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[cloud_deploy.ListRolloutsResponse]:
+    def pages(self) -> Iterator[cloud_deploy.ListRolloutsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[cloud_deploy.Rollout]:
+    def __iter__(self) -> Iterator[cloud_deploy.Rollout]:
         for page in self.pages:
             yield from page.rollouts
 
@@ -520,14 +520,14 @@ class ListRolloutsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[cloud_deploy.ListRolloutsResponse]:
+    async def pages(self) -> AsyncIterator[cloud_deploy.ListRolloutsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[cloud_deploy.Rollout]:
+    def __aiter__(self) -> AsyncIterator[cloud_deploy.Rollout]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.rollouts:
