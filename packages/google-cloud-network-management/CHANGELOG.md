@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-network-management/compare/v1.0.1...v1.0.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([fb7e7fd](https://www.github.com/googleapis/python-network-management/commit/fb7e7fd9915d0ee99a4741896bd2a43a57aaba77))
+
 ### [1.0.1](https://www.github.com/googleapis/python-network-management/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
