@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.recommendationengine_v1beta1.types import catalog
@@ -75,14 +75,14 @@ class ListCatalogItemsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[catalog_service.ListCatalogItemsResponse]:
+    def pages(self) -> Iterator[catalog_service.ListCatalogItemsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[catalog.CatalogItem]:
+    def __iter__(self) -> Iterator[catalog.CatalogItem]:
         for page in self.pages:
             yield from page.catalog_items
 
@@ -137,14 +137,14 @@ class ListCatalogItemsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[catalog_service.ListCatalogItemsResponse]:
+    async def pages(self) -> AsyncIterator[catalog_service.ListCatalogItemsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[catalog.CatalogItem]:
+    def __aiter__(self) -> AsyncIterator[catalog.CatalogItem]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.catalog_items:

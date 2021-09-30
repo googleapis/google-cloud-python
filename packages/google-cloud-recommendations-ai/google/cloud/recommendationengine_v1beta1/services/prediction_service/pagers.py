@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.recommendationengine_v1beta1.types import prediction_service
@@ -74,14 +74,14 @@ class PredictPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[prediction_service.PredictResponse]:
+    def pages(self) -> Iterator[prediction_service.PredictResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[prediction_service.PredictResponse.PredictionResult]:
+    def __iter__(self) -> Iterator[prediction_service.PredictResponse.PredictionResult]:
         for page in self.pages:
             yield from page.results
 
@@ -136,7 +136,7 @@ class PredictAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[prediction_service.PredictResponse]:
+    async def pages(self) -> AsyncIterator[prediction_service.PredictResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
@@ -145,7 +145,7 @@ class PredictAsyncPager:
 
     def __aiter__(
         self,
-    ) -> AsyncIterable[prediction_service.PredictResponse.PredictionResult]:
+    ) -> AsyncIterator[prediction_service.PredictResponse.PredictionResult]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.results:

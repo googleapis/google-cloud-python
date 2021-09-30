@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.recommendationengine_v1beta1.types import (
@@ -83,7 +83,7 @@ class ListPredictionApiKeyRegistrationsPager:
     @property
     def pages(
         self,
-    ) -> Iterable[
+    ) -> Iterator[
         prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse
     ]:
         yield self._response
@@ -94,7 +94,7 @@ class ListPredictionApiKeyRegistrationsPager:
 
     def __iter__(
         self,
-    ) -> Iterable[prediction_apikey_registry_service.PredictionApiKeyRegistration]:
+    ) -> Iterator[prediction_apikey_registry_service.PredictionApiKeyRegistration]:
         for page in self.pages:
             yield from page.prediction_api_key_registrations
 
@@ -158,7 +158,7 @@ class ListPredictionApiKeyRegistrationsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[
+    ) -> AsyncIterator[
         prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse
     ]:
         yield self._response
@@ -169,7 +169,7 @@ class ListPredictionApiKeyRegistrationsAsyncPager:
 
     def __aiter__(
         self,
-    ) -> AsyncIterable[prediction_apikey_registry_service.PredictionApiKeyRegistration]:
+    ) -> AsyncIterator[prediction_apikey_registry_service.PredictionApiKeyRegistration]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.prediction_api_key_registrations:
