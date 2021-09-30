@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.11.0](https://www.github.com/googleapis/python-spanner/compare/v3.10.0...v3.11.0) (2021-09-29)
+
+
+### Features
+
+* adding support for spanner request options tags ([#276](https://www.github.com/googleapis/python-spanner/issues/276)) ([e16f376](https://www.github.com/googleapis/python-spanner/commit/e16f37649b0023da48ec55a2e65261ee930b9ec4))
+
 ## [3.10.0](https://www.github.com/googleapis/python-spanner/compare/v3.9.0...v3.10.0) (2021-09-17)
 
 
