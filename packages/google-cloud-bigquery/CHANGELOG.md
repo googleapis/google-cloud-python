@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [2.28.0](https://www.github.com/googleapis/python-bigquery/compare/v2.27.1...v2.28.0) (2021-09-30)
+
+
+### Features
+
+* add `AvroOptions` to configure AVRO external data ([#994](https://www.github.com/googleapis/python-bigquery/issues/994)) ([1a9431d](https://www.github.com/googleapis/python-bigquery/commit/1a9431d9e02eeb99e4712b61c623f9cca80134a6))
+
+
+### Documentation
+
+* link to stable pandas docs ([#990](https://www.github.com/googleapis/python-bigquery/issues/990)) ([ea50e80](https://www.github.com/googleapis/python-bigquery/commit/ea50e8031fc035b3772a338bc00982de263cefad))
+
 ### [2.27.1](https://www.github.com/googleapis/python-bigquery/compare/v2.27.0...v2.27.1) (2021-09-27)
 
 
