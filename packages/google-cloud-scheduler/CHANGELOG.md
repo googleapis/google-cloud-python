@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+### [2.3.4](https://www.github.com/googleapis/python-scheduler/compare/v2.3.3...v2.3.4) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([a24ad41](https://www.github.com/googleapis/python-scheduler/commit/a24ad41ae62407bc542eb5362f2fd84a1370d3c2))
+
 ### [2.3.3](https://www.github.com/googleapis/python-scheduler/compare/v2.3.2...v2.3.3) (2021-09-24)
 
 
