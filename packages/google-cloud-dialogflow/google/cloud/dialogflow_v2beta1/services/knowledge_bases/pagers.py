@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.dialogflow_v2beta1.types import knowledge_base
@@ -74,14 +74,14 @@ class ListKnowledgeBasesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[knowledge_base.ListKnowledgeBasesResponse]:
+    def pages(self) -> Iterator[knowledge_base.ListKnowledgeBasesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[knowledge_base.KnowledgeBase]:
+    def __iter__(self) -> Iterator[knowledge_base.KnowledgeBase]:
         for page in self.pages:
             yield from page.knowledge_bases
 
@@ -136,14 +136,14 @@ class ListKnowledgeBasesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[knowledge_base.ListKnowledgeBasesResponse]:
+    async def pages(self) -> AsyncIterator[knowledge_base.ListKnowledgeBasesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[knowledge_base.KnowledgeBase]:
+    def __aiter__(self) -> AsyncIterator[knowledge_base.KnowledgeBase]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.knowledge_bases:

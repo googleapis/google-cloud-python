@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.dialogflow_v2beta1.types import context
@@ -74,14 +74,14 @@ class ListContextsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[context.ListContextsResponse]:
+    def pages(self) -> Iterator[context.ListContextsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[context.Context]:
+    def __iter__(self) -> Iterator[context.Context]:
         for page in self.pages:
             yield from page.contexts
 
@@ -136,14 +136,14 @@ class ListContextsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[context.ListContextsResponse]:
+    async def pages(self) -> AsyncIterator[context.ListContextsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[context.Context]:
+    def __aiter__(self) -> AsyncIterator[context.Context]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.contexts:

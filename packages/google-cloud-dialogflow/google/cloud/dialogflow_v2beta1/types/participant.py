@@ -1090,6 +1090,10 @@ class ResponseMessage(proto.Message):
         end_interaction (google.cloud.dialogflow_v2beta1.types.ResponseMessage.EndInteraction):
             A signal that indicates the interaction with
             the Dialogflow agent has ended.
+        telephony_transfer_call (google.cloud.dialogflow_v2beta1.types.ResponseMessage.TelephonyTransferCall):
+            A signal that the client should transfer the
+            phone call connected to this agent to a third-
+            party endpoint.
     """
 
     class Text(proto.Message):
@@ -1129,6 +1133,21 @@ class ResponseMessage(proto.Message):
         ended.
             """
 
+    class TelephonyTransferCall(proto.Message):
+        r"""Represents the signal that telles the client to transfer the
+        phone call connected to the agent to a third-party endpoint.
+
+        Attributes:
+            phone_number (str):
+                Transfer the call to a phone number in `E.164
+                format <https://en.wikipedia.org/wiki/E.164>`__.
+            sip_uri (str):
+                Transfer the call to a SIP endpoint.
+        """
+
+        phone_number = proto.Field(proto.STRING, number=1, oneof="endpoint",)
+        sip_uri = proto.Field(proto.STRING, number=2, oneof="endpoint",)
+
     text = proto.Field(proto.MESSAGE, number=1, oneof="message", message=Text,)
     payload = proto.Field(
         proto.MESSAGE, number=2, oneof="message", message=struct_pb2.Struct,
@@ -1138,6 +1157,9 @@ class ResponseMessage(proto.Message):
     )
     end_interaction = proto.Field(
         proto.MESSAGE, number=4, oneof="message", message=EndInteraction,
+    )
+    telephony_transfer_call = proto.Field(
+        proto.MESSAGE, number=6, oneof="message", message=TelephonyTransferCall,
     )
 
 
