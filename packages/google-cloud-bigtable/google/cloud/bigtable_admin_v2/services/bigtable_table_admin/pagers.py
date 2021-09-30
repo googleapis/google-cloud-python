@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
@@ -75,14 +75,14 @@ class ListTablesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[bigtable_table_admin.ListTablesResponse]:
+    def pages(self) -> Iterator[bigtable_table_admin.ListTablesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[table.Table]:
+    def __iter__(self) -> Iterator[table.Table]:
         for page in self.pages:
             yield from page.tables
 
@@ -137,14 +137,14 @@ class ListTablesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[bigtable_table_admin.ListTablesResponse]:
+    async def pages(self) -> AsyncIterator[bigtable_table_admin.ListTablesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[table.Table]:
+    def __aiter__(self) -> AsyncIterator[table.Table]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.tables:
@@ -203,14 +203,14 @@ class ListSnapshotsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[bigtable_table_admin.ListSnapshotsResponse]:
+    def pages(self) -> Iterator[bigtable_table_admin.ListSnapshotsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[table.Snapshot]:
+    def __iter__(self) -> Iterator[table.Snapshot]:
         for page in self.pages:
             yield from page.snapshots
 
@@ -265,14 +265,14 @@ class ListSnapshotsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[bigtable_table_admin.ListSnapshotsResponse]:
+    async def pages(self) -> AsyncIterator[bigtable_table_admin.ListSnapshotsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[table.Snapshot]:
+    def __aiter__(self) -> AsyncIterator[table.Snapshot]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.snapshots:
@@ -331,14 +331,14 @@ class ListBackupsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[bigtable_table_admin.ListBackupsResponse]:
+    def pages(self) -> Iterator[bigtable_table_admin.ListBackupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[table.Backup]:
+    def __iter__(self) -> Iterator[table.Backup]:
         for page in self.pages:
             yield from page.backups
 
@@ -393,14 +393,14 @@ class ListBackupsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[bigtable_table_admin.ListBackupsResponse]:
+    async def pages(self) -> AsyncIterator[bigtable_table_admin.ListBackupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[table.Backup]:
+    def __aiter__(self) -> AsyncIterator[table.Backup]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.backups:
