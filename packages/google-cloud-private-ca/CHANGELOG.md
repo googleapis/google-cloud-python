@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.6](https://www.github.com/googleapis/python-security-private-ca/compare/v1.0.5...v1.0.6) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([f86ec89](https://www.github.com/googleapis/python-security-private-ca/commit/f86ec89f3c4537556188064606be005ee7feb056))
+
 ### [1.0.5](https://www.github.com/googleapis/python-security-private-ca/compare/v1.0.4...v1.0.5) (2021-09-24)
 
 
