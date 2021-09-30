@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.resourcemanager_v3.types import tag_values
@@ -74,14 +74,14 @@ class ListTagValuesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[tag_values.ListTagValuesResponse]:
+    def pages(self) -> Iterator[tag_values.ListTagValuesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[tag_values.TagValue]:
+    def __iter__(self) -> Iterator[tag_values.TagValue]:
         for page in self.pages:
             yield from page.tag_values
 
@@ -136,14 +136,14 @@ class ListTagValuesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[tag_values.ListTagValuesResponse]:
+    async def pages(self) -> AsyncIterator[tag_values.ListTagValuesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[tag_values.TagValue]:
+    def __aiter__(self) -> AsyncIterator[tag_values.TagValue]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.tag_values:

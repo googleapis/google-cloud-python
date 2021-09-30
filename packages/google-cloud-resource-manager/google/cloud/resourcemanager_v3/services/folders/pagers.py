@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.resourcemanager_v3.types import folders
@@ -74,14 +74,14 @@ class ListFoldersPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[folders.ListFoldersResponse]:
+    def pages(self) -> Iterator[folders.ListFoldersResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[folders.Folder]:
+    def __iter__(self) -> Iterator[folders.Folder]:
         for page in self.pages:
             yield from page.folders
 
@@ -136,14 +136,14 @@ class ListFoldersAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[folders.ListFoldersResponse]:
+    async def pages(self) -> AsyncIterator[folders.ListFoldersResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[folders.Folder]:
+    def __aiter__(self) -> AsyncIterator[folders.Folder]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.folders:
@@ -202,14 +202,14 @@ class SearchFoldersPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[folders.SearchFoldersResponse]:
+    def pages(self) -> Iterator[folders.SearchFoldersResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[folders.Folder]:
+    def __iter__(self) -> Iterator[folders.Folder]:
         for page in self.pages:
             yield from page.folders
 
@@ -264,14 +264,14 @@ class SearchFoldersAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[folders.SearchFoldersResponse]:
+    async def pages(self) -> AsyncIterator[folders.SearchFoldersResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[folders.Folder]:
+    def __aiter__(self) -> AsyncIterator[folders.Folder]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.folders:
