@@ -276,6 +276,11 @@ class Batch(Connection):
         response = self._client._base_connection._make_request(
             "POST", url, data=body, headers=headers, timeout=timeout
         )
+
+        # Raise exception if the top-level batch request fails
+        if not 200 <= response.status_code < 300:
+            raise exceptions.from_http_response(response)
+
         responses = list(_unpack_batch_response(response))
         self._finish_futures(responses)
         return responses

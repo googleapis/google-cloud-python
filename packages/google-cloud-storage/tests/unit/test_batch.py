@@ -447,6 +447,24 @@ class TestBatch(unittest.TestCase):
         with self.assertRaises(ValueError):
             batch.finish()
 
+    def test_finish_multipart_response_with_status_failure(self):
+        from google.cloud.exceptions import ServiceUnavailable
+
+        url = "http://api.example.com/other_api"
+        expected_response = _make_response(
+            status=http_client.SERVICE_UNAVAILABLE,
+            headers={"content-type": 'multipart/mixed; boundary="DEADBEEF="'},
+        )
+        http = _make_requests_session([expected_response])
+        connection = _Connection(http=http)
+        client = _Client(connection)
+        batch = self._make_one(client)
+        batch.API_BASE_URL = "http://api.example.com"
+        batch._requests.append(("POST", url, {}, {"foo": 1, "bar": 2}, None))
+
+        with self.assertRaises(ServiceUnavailable):
+            batch.finish()
+
     def test_as_context_mgr_wo_error(self):
         from google.cloud.storage.client import Client
 
