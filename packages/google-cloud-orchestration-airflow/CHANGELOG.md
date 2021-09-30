@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.3](https://www.github.com/googleapis/python-orchestration-airflow/compare/v0.1.2...v0.1.3) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([b9b7a2f](https://www.github.com/googleapis/python-orchestration-airflow/commit/b9b7a2fe76906c0056c1a4bba1ff576dc7e339a3))
+
 ### [0.1.2](https://www.github.com/googleapis/python-orchestration-airflow/compare/v0.1.1...v0.1.2) (2021-09-24)
 
 
