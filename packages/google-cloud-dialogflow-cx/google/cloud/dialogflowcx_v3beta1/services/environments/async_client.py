@@ -57,6 +57,8 @@ class EnvironmentsAsyncClient:
     )
     environment_path = staticmethod(EnvironmentsClient.environment_path)
     parse_environment_path = staticmethod(EnvironmentsClient.parse_environment_path)
+    test_case_path = staticmethod(EnvironmentsClient.test_case_path)
+    parse_test_case_path = staticmethod(EnvironmentsClient.parse_test_case_path)
     test_case_result_path = staticmethod(EnvironmentsClient.test_case_result_path)
     parse_test_case_result_path = staticmethod(
         EnvironmentsClient.parse_test_case_result_path
@@ -361,6 +363,16 @@ class EnvironmentsAsyncClient:
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment] in
         the specified [Agent][google.cloud.dialogflow.cx.v3beta1.Agent].
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
+
         Args:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.CreateEnvironmentRequest`):
                 The request object. The request message for
@@ -463,6 +475,16 @@ class EnvironmentsAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the specified
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
 
         Args:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.UpdateEnvironmentRequest`):
@@ -712,6 +734,16 @@ class EnvironmentsAsyncClient:
         r"""Kicks off a continuous test under the specified
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [RunContinuousTestMetadata][google.cloud.dialogflow.cx.v3beta1.RunContinuousTestMetadata]
+        -  ``response``:
+           [RunContinuousTestResponse][google.cloud.dialogflow.cx.v3beta1.RunContinuousTestResponse]
+
         Args:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.RunContinuousTestRequest`):
                 The request object. The request message for
@@ -841,6 +873,80 @@ class EnvironmentsAsyncClient:
         # an `__aiter__` convenience method.
         response = pagers.ListContinuousTestResultsAsyncPager(
             method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def deploy_flow(
+        self,
+        request: environment.DeployFlowRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deploys a flow to the specified
+        [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [DeployFlowMetadata][google.cloud.dialogflow.cx.v3beta1.DeployFlowMetadata]
+        -  ``response``:
+           [DeployFlowResponse][google.cloud.dialogflow.cx.v3beta1.DeployFlowResponse]
+
+        Args:
+            request (:class:`google.cloud.dialogflowcx_v3beta1.types.DeployFlowRequest`):
+                The request object. The request message for
+                [Environments.DeployFlow][google.cloud.dialogflow.cx.v3beta1.Environments.DeployFlow].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.dialogflowcx_v3beta1.types.DeployFlowResponse`
+                The response message for
+                [Environments.DeployFlow][google.cloud.dialogflow.cx.v3beta1.Environments.DeployFlow].
+
+        """
+        # Create or coerce a protobuf request object.
+        request = environment.DeployFlowRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.deploy_flow,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("environment", request.environment),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            environment.DeployFlowResponse,
+            metadata_type=environment.DeployFlowMetadata,
         )
 
         # Done; return the response.

@@ -908,6 +908,16 @@ class FlowsClient(metaclass=FlowsClientMeta):
         r"""Trains the specified flow. Note that only the flow in 'draft'
         environment is trained.
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
@@ -1131,6 +1141,16 @@ class FlowsClient(metaclass=FlowsClientMeta):
         r"""Imports the specified flow to the specified agent from a binary
         file.
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [ImportFlowResponse][google.cloud.dialogflow.cx.v3beta1.ImportFlowResponse]
+
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
@@ -1196,8 +1216,19 @@ class FlowsClient(metaclass=FlowsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Exports the specified flow to a binary file.
-        Note that resources (e.g. intents, entities, webhooks)
-        that the flow references will also be exported.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [ExportFlowResponse][google.cloud.dialogflow.cx.v3beta1.ExportFlowResponse]
+
+        Note that resources (e.g. intents, entities, webhooks) that the
+        flow references will also be exported.
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.ExportFlowRequest, dict]):

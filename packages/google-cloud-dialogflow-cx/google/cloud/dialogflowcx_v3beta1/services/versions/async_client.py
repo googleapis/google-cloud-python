@@ -332,6 +332,16 @@ class VersionsAsyncClient:
         in the specified
         [Flow][google.cloud.dialogflow.cx.v3beta1.Flow].
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [CreateVersionOperationMetadata][google.cloud.dialogflow.cx.v3beta1.CreateVersionOperationMetadata]
+        -  ``response``:
+           [Version][google.cloud.dialogflow.cx.v3beta1.Version]
+
         Args:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.CreateVersionRequest`):
                 The request object. The request message for
@@ -571,8 +581,17 @@ class VersionsAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Loads resources in the specified version to the draft
-        flow.
+        r"""Loads resources in the specified version to the draft flow.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Args:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.LoadVersionRequest`):

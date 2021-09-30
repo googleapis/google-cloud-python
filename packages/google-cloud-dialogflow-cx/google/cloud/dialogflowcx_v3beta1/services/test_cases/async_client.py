@@ -568,7 +568,9 @@ class TestCasesAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Kicks off a test case run. This method is a `long-running
+        r"""Kicks off a test case run.
+
+        This method is a `long-running
         operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
@@ -638,6 +640,16 @@ class TestCasesAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Kicks off a batch run of test cases.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [BatchRunTestCasesMetadata][google.cloud.dialogflow.cx.v3beta1.BatchRunTestCasesMetadata]
+        -  ``response``:
+           [BatchRunTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.BatchRunTestCasesResponse]
 
         Args:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.BatchRunTestCasesRequest`):
@@ -747,10 +759,20 @@ class TestCasesAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Imports the test cases from a Cloud Storage bucket or
-        a local file. It always creates new test cases and won't
-        overwite any existing ones. The provided ID in the
-        imported test case is neglected.
+        r"""Imports the test cases from a Cloud Storage bucket or a local
+        file. It always creates new test cases and won't overwite any
+        existing ones. The provided ID in the imported test case is
+        neglected.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [ImportTestCasesMetadata][google.cloud.dialogflow.cx.v3beta1.ImportTestCasesMetadata]
+        -  ``response``:
+           [ImportTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.ImportTestCasesResponse]
 
         Args:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.ImportTestCasesRequest`):
@@ -811,9 +833,19 @@ class TestCasesAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Exports the test cases under the agent to a Cloud
-        Storage bucket or a local file. Filter can be applied to
-        export a subset of test cases.
+        r"""Exports the test cases under the agent to a Cloud Storage bucket
+        or a local file. Filter can be applied to export a subset of
+        test cases.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [ExportTestCasesMetadata][google.cloud.dialogflow.cx.v3beta1.ExportTestCasesMetadata]
+        -  ``response``:
+           [ExportTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.ExportTestCasesResponse]
 
         Args:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.ExportTestCasesRequest`):

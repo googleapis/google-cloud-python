@@ -18,7 +18,6 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
-from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 import packaging.version
@@ -26,19 +25,16 @@ import packaging.version
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.dialogflowcx_v3beta1.types import version
-from google.cloud.dialogflowcx_v3beta1.types import version as gcdc_version
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from .base import VersionsTransport, DEFAULT_CLIENT_INFO
-from .grpc import VersionsGrpcTransport
+from google.cloud.dialogflowcx_v3beta1.types import deployment
+from .base import DeploymentsTransport, DEFAULT_CLIENT_INFO
+from .grpc import DeploymentsGrpcTransport
 
 
-class VersionsGrpcAsyncIOTransport(VersionsTransport):
-    """gRPC AsyncIO backend transport for Versions.
+class DeploymentsGrpcAsyncIOTransport(DeploymentsTransport):
+    """gRPC AsyncIO backend transport for Deployments.
 
     Service for managing
-    [Versions][google.cloud.dialogflow.cx.v3beta1.Version].
+    [Deployments][google.cloud.dialogflow.cx.v3beta1.Deployment].
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -162,7 +158,6 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
-        self._operations_client = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -235,35 +230,20 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         return self._grpc_channel
 
     @property
-    def operations_client(self) -> operations_v1.OperationsAsyncClient:
-        """Create the client designed to process long-running operations.
-
-        This property caches on the instance; repeated calls return the same
-        client.
-        """
-        # Sanity check: Only create a new client if we do not already have one.
-        if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
-            )
-
-        # Return the client from cache.
-        return self._operations_client
-
-    @property
-    def list_versions(
+    def list_deployments(
         self,
     ) -> Callable[
-        [version.ListVersionsRequest], Awaitable[version.ListVersionsResponse]
+        [deployment.ListDeploymentsRequest],
+        Awaitable[deployment.ListDeploymentsResponse],
     ]:
-        r"""Return a callable for the list versions method over gRPC.
+        r"""Return a callable for the list deployments method over gRPC.
 
-        Returns the list of all versions in the specified
-        [Flow][google.cloud.dialogflow.cx.v3beta1.Flow].
+        Returns the list of all deployments in the specified
+        [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
         Returns:
-            Callable[[~.ListVersionsRequest],
-                    Awaitable[~.ListVersionsResponse]]:
+            Callable[[~.ListDeploymentsRequest],
+                    Awaitable[~.ListDeploymentsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -271,26 +251,26 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_versions" not in self._stubs:
-            self._stubs["list_versions"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3beta1.Versions/ListVersions",
-                request_serializer=version.ListVersionsRequest.serialize,
-                response_deserializer=version.ListVersionsResponse.deserialize,
+        if "list_deployments" not in self._stubs:
+            self._stubs["list_deployments"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Deployments/ListDeployments",
+                request_serializer=deployment.ListDeploymentsRequest.serialize,
+                response_deserializer=deployment.ListDeploymentsResponse.deserialize,
             )
-        return self._stubs["list_versions"]
+        return self._stubs["list_deployments"]
 
     @property
-    def get_version(
+    def get_deployment(
         self,
-    ) -> Callable[[version.GetVersionRequest], Awaitable[version.Version]]:
-        r"""Return a callable for the get version method over gRPC.
+    ) -> Callable[[deployment.GetDeploymentRequest], Awaitable[deployment.Deployment]]:
+        r"""Return a callable for the get deployment method over gRPC.
 
         Retrieves the specified
-        [Version][google.cloud.dialogflow.cx.v3beta1.Version].
+        [Deployment][google.cloud.dialogflow.cx.v3beta1.Deployment].
 
         Returns:
-            Callable[[~.GetVersionRequest],
-                    Awaitable[~.Version]]:
+            Callable[[~.GetDeploymentRequest],
+                    Awaitable[~.Deployment]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -298,143 +278,13 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_version" not in self._stubs:
-            self._stubs["get_version"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3beta1.Versions/GetVersion",
-                request_serializer=version.GetVersionRequest.serialize,
-                response_deserializer=version.Version.deserialize,
+        if "get_deployment" not in self._stubs:
+            self._stubs["get_deployment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Deployments/GetDeployment",
+                request_serializer=deployment.GetDeploymentRequest.serialize,
+                response_deserializer=deployment.Deployment.deserialize,
             )
-        return self._stubs["get_version"]
-
-    @property
-    def create_version(
-        self,
-    ) -> Callable[
-        [gcdc_version.CreateVersionRequest], Awaitable[operations_pb2.Operation]
-    ]:
-        r"""Return a callable for the create version method over gRPC.
-
-        Creates a [Version][google.cloud.dialogflow.cx.v3beta1.Version]
-        in the specified
-        [Flow][google.cloud.dialogflow.cx.v3beta1.Flow].
-
-        This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
-        The returned ``Operation`` type has the following
-        method-specific fields:
-
-        -  ``metadata``:
-           [CreateVersionOperationMetadata][google.cloud.dialogflow.cx.v3beta1.CreateVersionOperationMetadata]
-        -  ``response``:
-           [Version][google.cloud.dialogflow.cx.v3beta1.Version]
-
-        Returns:
-            Callable[[~.CreateVersionRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_version" not in self._stubs:
-            self._stubs["create_version"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3beta1.Versions/CreateVersion",
-                request_serializer=gcdc_version.CreateVersionRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["create_version"]
-
-    @property
-    def update_version(
-        self,
-    ) -> Callable[[gcdc_version.UpdateVersionRequest], Awaitable[gcdc_version.Version]]:
-        r"""Return a callable for the update version method over gRPC.
-
-        Updates the specified
-        [Version][google.cloud.dialogflow.cx.v3beta1.Version].
-
-        Returns:
-            Callable[[~.UpdateVersionRequest],
-                    Awaitable[~.Version]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_version" not in self._stubs:
-            self._stubs["update_version"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3beta1.Versions/UpdateVersion",
-                request_serializer=gcdc_version.UpdateVersionRequest.serialize,
-                response_deserializer=gcdc_version.Version.deserialize,
-            )
-        return self._stubs["update_version"]
-
-    @property
-    def delete_version(
-        self,
-    ) -> Callable[[version.DeleteVersionRequest], Awaitable[empty_pb2.Empty]]:
-        r"""Return a callable for the delete version method over gRPC.
-
-        Deletes the specified
-        [Version][google.cloud.dialogflow.cx.v3beta1.Version].
-
-        Returns:
-            Callable[[~.DeleteVersionRequest],
-                    Awaitable[~.Empty]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_version" not in self._stubs:
-            self._stubs["delete_version"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3beta1.Versions/DeleteVersion",
-                request_serializer=version.DeleteVersionRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
-            )
-        return self._stubs["delete_version"]
-
-    @property
-    def load_version(
-        self,
-    ) -> Callable[[version.LoadVersionRequest], Awaitable[operations_pb2.Operation]]:
-        r"""Return a callable for the load version method over gRPC.
-
-        Loads resources in the specified version to the draft flow.
-
-        This method is a `long-running
-        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
-        The returned ``Operation`` type has the following
-        method-specific fields:
-
-        -  ``metadata``: An empty `Struct
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
-        -  ``response``: An `Empty
-           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
-
-        Returns:
-            Callable[[~.LoadVersionRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "load_version" not in self._stubs:
-            self._stubs["load_version"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3beta1.Versions/LoadVersion",
-                request_serializer=version.LoadVersionRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["load_version"]
+        return self._stubs["get_deployment"]
 
 
-__all__ = ("VersionsGrpcAsyncIOTransport",)
+__all__ = ("DeploymentsGrpcAsyncIOTransport",)

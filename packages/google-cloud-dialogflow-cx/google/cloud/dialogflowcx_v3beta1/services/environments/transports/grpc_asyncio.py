@@ -321,6 +321,16 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment] in
         the specified [Agent][google.cloud.dialogflow.cx.v3beta1.Agent].
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
+
         Returns:
             Callable[[~.CreateEnvironmentRequest],
                     Awaitable[~.Operation]]:
@@ -349,6 +359,16 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
 
         Updates the specified
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
 
         Returns:
             Callable[[~.UpdateEnvironmentRequest],
@@ -436,6 +456,16 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         Kicks off a continuous test under the specified
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [RunContinuousTestMetadata][google.cloud.dialogflow.cx.v3beta1.RunContinuousTestMetadata]
+        -  ``response``:
+           [RunContinuousTestResponse][google.cloud.dialogflow.cx.v3beta1.RunContinuousTestResponse]
+
         Returns:
             Callable[[~.RunContinuousTestRequest],
                     Awaitable[~.Operation]]:
@@ -483,6 +513,43 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
                 response_deserializer=environment.ListContinuousTestResultsResponse.deserialize,
             )
         return self._stubs["list_continuous_test_results"]
+
+    @property
+    def deploy_flow(
+        self,
+    ) -> Callable[[environment.DeployFlowRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the deploy flow method over gRPC.
+
+        Deploys a flow to the specified
+        [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [DeployFlowMetadata][google.cloud.dialogflow.cx.v3beta1.DeployFlowMetadata]
+        -  ``response``:
+           [DeployFlowResponse][google.cloud.dialogflow.cx.v3beta1.DeployFlowResponse]
+
+        Returns:
+            Callable[[~.DeployFlowRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "deploy_flow" not in self._stubs:
+            self._stubs["deploy_flow"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Environments/DeployFlow",
+                request_serializer=environment.DeployFlowRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["deploy_flow"]
 
 
 __all__ = ("EnvironmentsGrpcAsyncIOTransport",)

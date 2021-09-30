@@ -873,8 +873,9 @@ class AgentsClient(metaclass=AgentsClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Exports the specified agent to a binary file. This method is a
-        `long-running
+        r"""Exports the specified agent to a binary file.
+
+        This method is a `long-running
         operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
         The returned ``Operation`` type has the following
         method-specific fields:
@@ -949,6 +950,16 @@ class AgentsClient(metaclass=AgentsClientMeta):
         Replaces the current agent with a new one. Note that all
         existing resources in agent (e.g. intents, entity types, flows)
         will be removed.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``: An `Empty
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
         Note: You should always train a flow prior to sending it
         queries. See the `training
