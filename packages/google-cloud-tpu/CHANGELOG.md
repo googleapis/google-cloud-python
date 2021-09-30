@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-tpu/compare/v1.0.1...v1.0.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([306f0f7](https://www.github.com/googleapis/python-tpu/commit/306f0f7703ba2e1d3c1dc0201b0bd9142cd1cfde))
+
 ### [1.0.1](https://www.github.com/googleapis/python-tpu/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
