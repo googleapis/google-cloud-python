@@ -1,0 +1,29 @@
+name: "Run systests on emulator"
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  run-systests:
+    runs-on: ubuntu-20.04
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.7'
+
+    - name: Setup GCloud SDK
+      uses: google-github-actions/setup-gcloud@v0.2.1
+
+    - name: Install / run Nox
+      run: |
+        python -m pip install --upgrade setuptools pip
+        python -m pip install nox
+        nox -s system_emulated

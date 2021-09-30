@@ -51,18 +51,6 @@ class TestAsyncClient(aiounittest.AsyncTestCase):
         self.assertEqual(client._credentials, credentials)
         self.assertEqual(client._database, DEFAULT_DATABASE)
         self.assertIs(client._client_info, _CLIENT_INFO)
-        self.assertIsNone(client._emulator_host)
-
-    def test_constructor_with_emulator_host(self):
-        from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
-
-        credentials = _make_credentials()
-        emulator_host = "localhost:8081"
-        with mock.patch("os.getenv") as getenv:
-            getenv.return_value = emulator_host
-            client = self._make_one(project=self.PROJECT, credentials=credentials)
-            self.assertEqual(client._emulator_host, emulator_host)
-            getenv.assert_called_once_with(_FIRESTORE_EMULATOR_HOST)
 
     def test_constructor_explicit(self):
         from google.api_core.client_options import ClientOptions

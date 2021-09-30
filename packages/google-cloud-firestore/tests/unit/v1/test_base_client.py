@@ -37,6 +37,46 @@ class TestBaseClient(unittest.TestCase):
         credentials = _make_credentials()
         return self._make_one(project=self.PROJECT, credentials=credentials)
 
+    def test_constructor_with_emulator_host_defaults(self):
+        from google.auth.credentials import AnonymousCredentials
+        from google.cloud.firestore_v1.base_client import _DEFAULT_EMULATOR_PROJECT
+        from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
+
+        emulator_host = "localhost:8081"
+
+        with mock.patch("os.environ", {_FIRESTORE_EMULATOR_HOST: emulator_host}):
+            client = self._make_one()
+
+        self.assertEqual(client._emulator_host, emulator_host)
+        self.assertIsInstance(client._credentials, AnonymousCredentials)
+        self.assertEqual(client.project, _DEFAULT_EMULATOR_PROJECT)
+
+    def test_constructor_with_emulator_host_w_project(self):
+        from google.auth.credentials import AnonymousCredentials
+        from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
+
+        emulator_host = "localhost:8081"
+
+        with mock.patch("os.environ", {_FIRESTORE_EMULATOR_HOST: emulator_host}):
+            client = self._make_one(project=self.PROJECT)
+
+        self.assertEqual(client._emulator_host, emulator_host)
+        self.assertIsInstance(client._credentials, AnonymousCredentials)
+
+    def test_constructor_with_emulator_host_w_creds(self):
+        from google.cloud.firestore_v1.base_client import _DEFAULT_EMULATOR_PROJECT
+        from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
+
+        credentials = _make_credentials()
+        emulator_host = "localhost:8081"
+
+        with mock.patch("os.environ", {_FIRESTORE_EMULATOR_HOST: emulator_host}):
+            client = self._make_one(credentials=credentials)
+
+        self.assertEqual(client._emulator_host, emulator_host)
+        self.assertIs(client._credentials, credentials)
+        self.assertEqual(client.project, _DEFAULT_EMULATOR_PROJECT)
+
     @mock.patch(
         "google.cloud.firestore_v1.services.firestore.client.FirestoreClient",
         autospec=True,

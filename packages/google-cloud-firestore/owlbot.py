@@ -143,6 +143,76 @@ python.py_samples(skip_readmes=True)
 
 s.move(templated_files)
 
+# ----------------------------------------------------------------------------
+# Customize noxfile.py
+# ----------------------------------------------------------------------------
+
+def place_before(path, text, *before_text, escape=None):
+    replacement = "\n".join(before_text) + "\n" + text
+    if escape:
+        for c in escape:
+            text = text.replace(c, '\\' + c)
+    s.replace([path], text, replacement)
+
+system_emulated_session = """
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+def system_emulated(session):
+    import subprocess
+    import signal
+
+    try:
+        subprocess.call(["gcloud", "--version"])
+    except OSError:
+        session.skip("gcloud not found but required for emulator support")
+
+    # Currently, CI/CD doesn't have beta component of gcloud.
+    subprocess.call(
+        ["gcloud", "components", "install", "beta", "cloud-firestore-emulator",]
+    )
+
+    hostport = "localhost:8789"
+    session.env["FIRESTORE_EMULATOR_HOST"] = hostport
+
+    p = subprocess.Popen(
+        [
+            "gcloud",
+            "--quiet",
+            "beta",
+            "emulators",
+            "firestore",
+            "start",
+            "--host-port",
+            hostport,
+        ]
+    )
+
+    try:
+        system(session)
+    finally:
+        # Stop Emulator
+        os.killpg(os.getpgid(p.pid), signal.SIGKILL)
+
+"""
+
+place_before(
+    "noxfile.py",
+    "@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)\n"
+    "def system(session):",
+    system_emulated_session,
+    escape="()"
+)
+
+# add system_emulated nox session
+s.replace("noxfile.py",
+    """nox.options.sessions = \[
+    "unit",
+    "system",""",
+    """nox.options.sessions = [
+    "unit",
+    "system_emulated",
+    "system",""",
+)
+
 s.replace(
     "noxfile.py",
     """\"--quiet\",

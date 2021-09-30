@@ -27,6 +27,7 @@ In the hierarchy of API concepts
 import os
 import grpc  # type: ignore
 
+from google.auth.credentials import AnonymousCredentials
 import google.api_core.client_options  # type: ignore
 import google.api_core.path_template  # type: ignore
 from google.api_core import retry as retries  # type: ignore
@@ -61,6 +62,7 @@ from google.cloud.firestore_v1.base_query import BaseQuery
 
 DEFAULT_DATABASE = "(default)"
 """str: The default database used in a :class:`~google.cloud.firestore_v1.client.Client`."""
+_DEFAULT_EMULATOR_PROJECT = "google-cloud-firestore-emulator"
 _BAD_OPTION_ERR = (
     "Exactly one of ``last_update_time`` or ``exists`` " "must be provided."
 )
@@ -122,6 +124,14 @@ class BaseClient(ClientWithProject):
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
         #       creates a working HTTP object.
+        self._emulator_host = os.getenv(_FIRESTORE_EMULATOR_HOST)
+
+        if self._emulator_host is not None:
+            if credentials is None:
+                credentials = AnonymousCredentials()
+            if project is None:
+                project = _DEFAULT_EMULATOR_PROJECT
+
         super(BaseClient, self).__init__(
             project=project,
             credentials=credentials,
@@ -137,7 +147,6 @@ class BaseClient(ClientWithProject):
         self._client_options = client_options
 
         self._database = database
-        self._emulator_host = os.getenv(_FIRESTORE_EMULATOR_HOST)
 
     def _firestore_api_helper(self, transport, client_class, client_module) -> Any:
         """Lazy-loading getter GAPIC Firestore API.

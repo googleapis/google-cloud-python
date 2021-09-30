@@ -37,6 +37,7 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
     "unit",
+    "system_emulated",
     "system",
     "cover",
     "lint",
@@ -126,6 +127,44 @@ def default(session):
 def unit(session):
     """Run the unit test suite."""
     default(session)
+
+
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+def system_emulated(session):
+    import subprocess
+    import signal
+
+    try:
+        subprocess.call(["gcloud", "--version"])
+    except OSError:
+        session.skip("gcloud not found but required for emulator support")
+
+    # Currently, CI/CD doesn't have beta component of gcloud.
+    subprocess.call(
+        ["gcloud", "components", "install", "beta", "cloud-firestore-emulator",]
+    )
+
+    hostport = "localhost:8789"
+    session.env["FIRESTORE_EMULATOR_HOST"] = hostport
+
+    p = subprocess.Popen(
+        [
+            "gcloud",
+            "--quiet",
+            "beta",
+            "emulators",
+            "firestore",
+            "start",
+            "--host-port",
+            hostport,
+        ]
+    )
+
+    try:
+        system(session)
+    finally:
+        # Stop Emulator
+        os.killpg(os.getpgid(p.pid), signal.SIGKILL)
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
