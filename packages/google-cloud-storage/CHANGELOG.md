@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+### [1.42.3](https://www.github.com/googleapis/python-storage/compare/v1.42.2...v1.42.3) (2021-09-30)
+
+
+### Bug Fixes
+
+* changeover unspecified to inherited ([#603](https://www.github.com/googleapis/python-storage/issues/603)) ([283a419](https://www.github.com/googleapis/python-storage/commit/283a4196865d9b5275e87f54737d1faee40cc946))
+* check response code in batch.finish ([#609](https://www.github.com/googleapis/python-storage/issues/609)) ([318a286](https://www.github.com/googleapis/python-storage/commit/318a286d709427bfe9f3a37e933c255ac51b3033))
+* skip tests that use unspecified pap until we get the change in ([#600](https://www.github.com/googleapis/python-storage/issues/600)) ([38b9b55](https://www.github.com/googleapis/python-storage/commit/38b9b5582e2c6bbd1acab2b49410084170466fad))
+
 ### [1.42.2](https://www.github.com/googleapis/python-storage/compare/v1.42.1...v1.42.2) (2021-09-16)
 
 
