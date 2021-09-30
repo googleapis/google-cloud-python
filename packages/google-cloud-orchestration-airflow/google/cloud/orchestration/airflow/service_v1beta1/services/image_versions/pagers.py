@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.orchestration.airflow.service_v1beta1.types import image_versions
@@ -74,14 +74,14 @@ class ListImageVersionsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[image_versions.ListImageVersionsResponse]:
+    def pages(self) -> Iterator[image_versions.ListImageVersionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[image_versions.ImageVersion]:
+    def __iter__(self) -> Iterator[image_versions.ImageVersion]:
         for page in self.pages:
             yield from page.image_versions
 
@@ -136,14 +136,14 @@ class ListImageVersionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[image_versions.ListImageVersionsResponse]:
+    async def pages(self) -> AsyncIterator[image_versions.ListImageVersionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[image_versions.ImageVersion]:
+    def __aiter__(self) -> AsyncIterator[image_versions.ImageVersion]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.image_versions:
