@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+### [1.2.4](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.3...v1.2.4) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([b2cefef](https://www.github.com/googleapis/python-datalabeling/commit/b2cefef2c320f7d80b56dfe2e0419a1a78f4222e))
+
 ### [1.2.3](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.2...v1.2.3) (2021-09-24)
 
 
