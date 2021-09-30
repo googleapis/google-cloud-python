@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.speech_v1p1beta1.types import cloud_speech_adaptation
@@ -75,14 +75,14 @@ class ListPhraseSetPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[cloud_speech_adaptation.ListPhraseSetResponse]:
+    def pages(self) -> Iterator[cloud_speech_adaptation.ListPhraseSetResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resource.PhraseSet]:
+    def __iter__(self) -> Iterator[resource.PhraseSet]:
         for page in self.pages:
             yield from page.phrase_sets
 
@@ -139,14 +139,14 @@ class ListPhraseSetAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[cloud_speech_adaptation.ListPhraseSetResponse]:
+    ) -> AsyncIterator[cloud_speech_adaptation.ListPhraseSetResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resource.PhraseSet]:
+    def __aiter__(self) -> AsyncIterator[resource.PhraseSet]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.phrase_sets:
@@ -205,14 +205,14 @@ class ListCustomClassesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[cloud_speech_adaptation.ListCustomClassesResponse]:
+    def pages(self) -> Iterator[cloud_speech_adaptation.ListCustomClassesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resource.CustomClass]:
+    def __iter__(self) -> Iterator[resource.CustomClass]:
         for page in self.pages:
             yield from page.custom_classes
 
@@ -271,14 +271,14 @@ class ListCustomClassesAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[cloud_speech_adaptation.ListCustomClassesResponse]:
+    ) -> AsyncIterator[cloud_speech_adaptation.ListCustomClassesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resource.CustomClass]:
+    def __aiter__(self) -> AsyncIterator[resource.CustomClass]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.custom_classes:
