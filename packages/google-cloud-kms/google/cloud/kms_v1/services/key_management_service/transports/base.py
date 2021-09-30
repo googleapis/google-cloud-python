@@ -484,14 +484,48 @@ class KeyManagementServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.mac_sign: gapic_v1.method.wrap_method(
-                self.mac_sign, default_timeout=None, client_info=client_info,
+                self.mac_sign,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.mac_verify: gapic_v1.method.wrap_method(
-                self.mac_verify, default_timeout=None, client_info=client_info,
+                self.mac_verify,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.generate_random_bytes: gapic_v1.method.wrap_method(
                 self.generate_random_bytes,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
         }
