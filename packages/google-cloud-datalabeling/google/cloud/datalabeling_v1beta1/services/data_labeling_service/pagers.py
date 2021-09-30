@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.datalabeling_v1beta1.types import annotation_spec_set
@@ -79,14 +79,14 @@ class ListDatasetsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[data_labeling_service.ListDatasetsResponse]:
+    def pages(self) -> Iterator[data_labeling_service.ListDatasetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[dataset.Dataset]:
+    def __iter__(self) -> Iterator[dataset.Dataset]:
         for page in self.pages:
             yield from page.datasets
 
@@ -141,14 +141,14 @@ class ListDatasetsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[data_labeling_service.ListDatasetsResponse]:
+    async def pages(self) -> AsyncIterator[data_labeling_service.ListDatasetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[dataset.Dataset]:
+    def __aiter__(self) -> AsyncIterator[dataset.Dataset]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.datasets:
@@ -207,14 +207,14 @@ class ListDataItemsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[data_labeling_service.ListDataItemsResponse]:
+    def pages(self) -> Iterator[data_labeling_service.ListDataItemsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[dataset.DataItem]:
+    def __iter__(self) -> Iterator[dataset.DataItem]:
         for page in self.pages:
             yield from page.data_items
 
@@ -269,14 +269,14 @@ class ListDataItemsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[data_labeling_service.ListDataItemsResponse]:
+    async def pages(self) -> AsyncIterator[data_labeling_service.ListDataItemsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[dataset.DataItem]:
+    def __aiter__(self) -> AsyncIterator[dataset.DataItem]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.data_items:
@@ -335,14 +335,14 @@ class ListAnnotatedDatasetsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[data_labeling_service.ListAnnotatedDatasetsResponse]:
+    def pages(self) -> Iterator[data_labeling_service.ListAnnotatedDatasetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[dataset.AnnotatedDataset]:
+    def __iter__(self) -> Iterator[dataset.AnnotatedDataset]:
         for page in self.pages:
             yield from page.annotated_datasets
 
@@ -401,14 +401,14 @@ class ListAnnotatedDatasetsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[data_labeling_service.ListAnnotatedDatasetsResponse]:
+    ) -> AsyncIterator[data_labeling_service.ListAnnotatedDatasetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[dataset.AnnotatedDataset]:
+    def __aiter__(self) -> AsyncIterator[dataset.AnnotatedDataset]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.annotated_datasets:
@@ -467,14 +467,14 @@ class ListExamplesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[data_labeling_service.ListExamplesResponse]:
+    def pages(self) -> Iterator[data_labeling_service.ListExamplesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[dataset.Example]:
+    def __iter__(self) -> Iterator[dataset.Example]:
         for page in self.pages:
             yield from page.examples
 
@@ -529,14 +529,14 @@ class ListExamplesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[data_labeling_service.ListExamplesResponse]:
+    async def pages(self) -> AsyncIterator[data_labeling_service.ListExamplesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[dataset.Example]:
+    def __aiter__(self) -> AsyncIterator[dataset.Example]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.examples:
@@ -595,14 +595,14 @@ class ListAnnotationSpecSetsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[data_labeling_service.ListAnnotationSpecSetsResponse]:
+    def pages(self) -> Iterator[data_labeling_service.ListAnnotationSpecSetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[annotation_spec_set.AnnotationSpecSet]:
+    def __iter__(self) -> Iterator[annotation_spec_set.AnnotationSpecSet]:
         for page in self.pages:
             yield from page.annotation_spec_sets
 
@@ -661,14 +661,14 @@ class ListAnnotationSpecSetsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[data_labeling_service.ListAnnotationSpecSetsResponse]:
+    ) -> AsyncIterator[data_labeling_service.ListAnnotationSpecSetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[annotation_spec_set.AnnotationSpecSet]:
+    def __aiter__(self) -> AsyncIterator[annotation_spec_set.AnnotationSpecSet]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.annotation_spec_sets:
@@ -727,14 +727,14 @@ class ListInstructionsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[data_labeling_service.ListInstructionsResponse]:
+    def pages(self) -> Iterator[data_labeling_service.ListInstructionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[instruction.Instruction]:
+    def __iter__(self) -> Iterator[instruction.Instruction]:
         for page in self.pages:
             yield from page.instructions
 
@@ -793,14 +793,14 @@ class ListInstructionsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[data_labeling_service.ListInstructionsResponse]:
+    ) -> AsyncIterator[data_labeling_service.ListInstructionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[instruction.Instruction]:
+    def __aiter__(self) -> AsyncIterator[instruction.Instruction]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.instructions:
@@ -859,14 +859,14 @@ class SearchEvaluationsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[data_labeling_service.SearchEvaluationsResponse]:
+    def pages(self) -> Iterator[data_labeling_service.SearchEvaluationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[evaluation.Evaluation]:
+    def __iter__(self) -> Iterator[evaluation.Evaluation]:
         for page in self.pages:
             yield from page.evaluations
 
@@ -925,14 +925,14 @@ class SearchEvaluationsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[data_labeling_service.SearchEvaluationsResponse]:
+    ) -> AsyncIterator[data_labeling_service.SearchEvaluationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[evaluation.Evaluation]:
+    def __aiter__(self) -> AsyncIterator[evaluation.Evaluation]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.evaluations:
@@ -991,7 +991,7 @@ class SearchExampleComparisonsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[data_labeling_service.SearchExampleComparisonsResponse]:
+    def pages(self) -> Iterator[data_labeling_service.SearchExampleComparisonsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
@@ -1000,7 +1000,7 @@ class SearchExampleComparisonsPager:
 
     def __iter__(
         self,
-    ) -> Iterable[
+    ) -> Iterator[
         data_labeling_service.SearchExampleComparisonsResponse.ExampleComparison
     ]:
         for page in self.pages:
@@ -1061,7 +1061,7 @@ class SearchExampleComparisonsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[data_labeling_service.SearchExampleComparisonsResponse]:
+    ) -> AsyncIterator[data_labeling_service.SearchExampleComparisonsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
@@ -1070,7 +1070,7 @@ class SearchExampleComparisonsAsyncPager:
 
     def __aiter__(
         self,
-    ) -> AsyncIterable[
+    ) -> AsyncIterator[
         data_labeling_service.SearchExampleComparisonsResponse.ExampleComparison
     ]:
         async def async_generator():
@@ -1131,14 +1131,14 @@ class ListEvaluationJobsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[data_labeling_service.ListEvaluationJobsResponse]:
+    def pages(self) -> Iterator[data_labeling_service.ListEvaluationJobsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[evaluation_job.EvaluationJob]:
+    def __iter__(self) -> Iterator[evaluation_job.EvaluationJob]:
         for page in self.pages:
             yield from page.evaluation_jobs
 
@@ -1197,14 +1197,14 @@ class ListEvaluationJobsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[data_labeling_service.ListEvaluationJobsResponse]:
+    ) -> AsyncIterator[data_labeling_service.ListEvaluationJobsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[evaluation_job.EvaluationJob]:
+    def __aiter__(self) -> AsyncIterator[evaluation_job.EvaluationJob]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.evaluation_jobs:
