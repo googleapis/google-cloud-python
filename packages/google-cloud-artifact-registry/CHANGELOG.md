@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-artifact-registry/compare/v0.4.0...v0.4.1) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([8a6b687](https://www.github.com/googleapis/python-artifact-registry/commit/8a6b6870f39c34bd1cf2dafd591c58ebd2c48d77))
+
 ## [0.4.0](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.3...v0.4.0) (2021-09-24)
 
 
