@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.dialogflowcx_v3beta1.types import transition_route_group
@@ -76,14 +76,14 @@ class ListTransitionRouteGroupsPager:
     @property
     def pages(
         self,
-    ) -> Iterable[transition_route_group.ListTransitionRouteGroupsResponse]:
+    ) -> Iterator[transition_route_group.ListTransitionRouteGroupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[transition_route_group.TransitionRouteGroup]:
+    def __iter__(self) -> Iterator[transition_route_group.TransitionRouteGroup]:
         for page in self.pages:
             yield from page.transition_route_groups
 
@@ -142,14 +142,14 @@ class ListTransitionRouteGroupsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[transition_route_group.ListTransitionRouteGroupsResponse]:
+    ) -> AsyncIterator[transition_route_group.ListTransitionRouteGroupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[transition_route_group.TransitionRouteGroup]:
+    def __aiter__(self) -> AsyncIterator[transition_route_group.TransitionRouteGroup]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.transition_route_groups:

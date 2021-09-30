@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.dialogflowcx_v3beta1.types import intent
@@ -74,14 +74,14 @@ class ListIntentsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[intent.ListIntentsResponse]:
+    def pages(self) -> Iterator[intent.ListIntentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[intent.Intent]:
+    def __iter__(self) -> Iterator[intent.Intent]:
         for page in self.pages:
             yield from page.intents
 
@@ -136,14 +136,14 @@ class ListIntentsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[intent.ListIntentsResponse]:
+    async def pages(self) -> AsyncIterator[intent.ListIntentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[intent.Intent]:
+    def __aiter__(self) -> AsyncIterator[intent.Intent]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.intents:

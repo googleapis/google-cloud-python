@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.dialogflowcx_v3beta1.types import security_settings
@@ -74,14 +74,14 @@ class ListSecuritySettingsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[security_settings.ListSecuritySettingsResponse]:
+    def pages(self) -> Iterator[security_settings.ListSecuritySettingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[security_settings.SecuritySettings]:
+    def __iter__(self) -> Iterator[security_settings.SecuritySettings]:
         for page in self.pages:
             yield from page.security_settings
 
@@ -140,14 +140,14 @@ class ListSecuritySettingsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[security_settings.ListSecuritySettingsResponse]:
+    ) -> AsyncIterator[security_settings.ListSecuritySettingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[security_settings.SecuritySettings]:
+    def __aiter__(self) -> AsyncIterator[security_settings.SecuritySettings]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.security_settings:
