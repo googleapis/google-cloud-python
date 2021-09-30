@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+### [2.2.4](https://www.github.com/googleapis/python-redis/compare/v2.2.3...v2.2.4) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([7b93deb](https://www.github.com/googleapis/python-redis/commit/7b93debcc36cdb60bf8c17808aa1a05bad4695f6))
+
 ### [2.2.3](https://www.github.com/googleapis/python-redis/compare/v2.2.2...v2.2.3) (2021-09-24)
 
 
