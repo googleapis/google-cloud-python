@@ -208,9 +208,7 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
             client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
-            {% if 'grpc' in opts.transport %}
             always_use_jwt_access=True,
-            {% endif %}
         )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -227,9 +225,7 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
-                {% if 'grpc' in opts.transport %}
                 always_use_jwt_access=True,
-                {% endif %}
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -246,9 +242,7 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
-                {% if 'grpc' in opts.transport %}
                 always_use_jwt_access=True,
-                {% endif %}
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
@@ -275,9 +269,7 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
-            {% if 'grpc' in opts.transport %}
             always_use_jwt_access=True,
-            {% endif %}
         )
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name,use_client_cert_env", [
@@ -323,9 +315,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
                 client_cert_source_for_mtls=expected_client_cert_source,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
-                {% if 'grpc' in opts.transport %}
                 always_use_jwt_access=True,
-                {% endif %}
             )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
@@ -351,9 +341,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
                         client_cert_source_for_mtls=expected_client_cert_source,
                         quota_project_id=None,
                         client_info=transports.base.DEFAULT_CLIENT_INFO,
-                        {% if 'grpc' in opts.transport %}
                         always_use_jwt_access=True,
-                        {% endif %}
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
@@ -370,9 +358,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
                     client_info=transports.base.DEFAULT_CLIENT_INFO,
-                    {% if 'grpc' in opts.transport %}
                     always_use_jwt_access=True,
-                    {% endif %}
                 )
 
 
@@ -400,9 +386,7 @@ def test_{{ service.client_name|snake_case }}_client_options_scopes(client_class
             client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
-            {% if 'grpc' in opts.transport %}
             always_use_jwt_access=True,
-            {% endif %}
         )
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
@@ -429,9 +413,7 @@ def test_{{ service.client_name|snake_case }}_client_options_credentials_file(cl
             client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
-            {% if 'grpc' in opts.transport %}
             always_use_jwt_access=True,
-            {% endif %}
         )
 {% if 'grpc' in opts.transport %}
 
