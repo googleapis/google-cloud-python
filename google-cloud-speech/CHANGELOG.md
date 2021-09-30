@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+### [2.9.2](https://www.github.com/googleapis/python-speech/compare/v2.9.1...v2.9.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([a0bac07](https://www.github.com/googleapis/python-speech/commit/a0bac07de9f4e89c41d34a47d9e35ec6fd7edac3))
+
 ### [2.9.1](https://www.github.com/googleapis/python-speech/compare/v2.9.0...v2.9.1) (2021-09-24)
 
 
