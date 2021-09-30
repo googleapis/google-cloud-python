@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+### [1.1.2](https://www.github.com/googleapis/python-resource-manager/compare/v1.1.1...v1.1.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([e48478b](https://www.github.com/googleapis/python-resource-manager/commit/e48478b64d66a54b4ff283a071b6492cb2961330))
+
 ### [1.1.1](https://www.github.com/googleapis/python-resource-manager/compare/v1.1.0...v1.1.1) (2021-09-24)
 
 
