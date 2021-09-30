@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-vpc-access/compare/v1.0.1...v1.0.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([294b2da](https://www.github.com/googleapis/python-vpc-access/commit/294b2da2a2161b7e84ce011780e7f25bc8bd7184))
+
 ### [1.0.1](https://www.github.com/googleapis/python-vpc-access/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
