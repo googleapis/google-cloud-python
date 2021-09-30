@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-dms/compare/v1.0.1...v1.0.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([2a7b8f2](https://www.github.com/googleapis/python-dms/commit/2a7b8f2fcc0eaf4f13a044282aeac22dc53ea918))
+
 ### [1.0.1](https://www.github.com/googleapis/python-dms/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
