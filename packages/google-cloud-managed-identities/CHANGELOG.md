@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.3](https://www.github.com/googleapis/python-managed-identities/compare/v1.1.2...v1.1.3) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([4d42021](https://www.github.com/googleapis/python-managed-identities/commit/4d4202106eb7ed5af809a96f823e4b8067709f6e))
+
 ### [1.1.2](https://www.github.com/googleapis/python-managed-identities/compare/v1.1.1...v1.1.2) (2021-09-24)
 
 
