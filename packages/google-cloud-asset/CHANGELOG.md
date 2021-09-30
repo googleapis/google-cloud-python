@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+### [3.6.1](https://www.github.com/googleapis/python-asset/compare/v3.6.0...v3.6.1) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([fa08cbf](https://www.github.com/googleapis/python-asset/commit/fa08cbfbac5c8ce566883ad2c2e79ca5b4f32027))
+
 ## [3.6.0](https://www.github.com/googleapis/python-asset/compare/v3.5.0...v3.6.0) (2021-09-24)
 
 
