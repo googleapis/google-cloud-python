@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.tpu_v1.types import cloud_tpu
@@ -74,14 +74,14 @@ class ListNodesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[cloud_tpu.ListNodesResponse]:
+    def pages(self) -> Iterator[cloud_tpu.ListNodesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[cloud_tpu.Node]:
+    def __iter__(self) -> Iterator[cloud_tpu.Node]:
         for page in self.pages:
             yield from page.nodes
 
@@ -136,14 +136,14 @@ class ListNodesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[cloud_tpu.ListNodesResponse]:
+    async def pages(self) -> AsyncIterator[cloud_tpu.ListNodesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[cloud_tpu.Node]:
+    def __aiter__(self) -> AsyncIterator[cloud_tpu.Node]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.nodes:
@@ -202,14 +202,14 @@ class ListTensorFlowVersionsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[cloud_tpu.ListTensorFlowVersionsResponse]:
+    def pages(self) -> Iterator[cloud_tpu.ListTensorFlowVersionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[cloud_tpu.TensorFlowVersion]:
+    def __iter__(self) -> Iterator[cloud_tpu.TensorFlowVersion]:
         for page in self.pages:
             yield from page.tensorflow_versions
 
@@ -264,14 +264,14 @@ class ListTensorFlowVersionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[cloud_tpu.ListTensorFlowVersionsResponse]:
+    async def pages(self) -> AsyncIterator[cloud_tpu.ListTensorFlowVersionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[cloud_tpu.TensorFlowVersion]:
+    def __aiter__(self) -> AsyncIterator[cloud_tpu.TensorFlowVersion]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.tensorflow_versions:
@@ -330,14 +330,14 @@ class ListAcceleratorTypesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[cloud_tpu.ListAcceleratorTypesResponse]:
+    def pages(self) -> Iterator[cloud_tpu.ListAcceleratorTypesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[cloud_tpu.AcceleratorType]:
+    def __iter__(self) -> Iterator[cloud_tpu.AcceleratorType]:
         for page in self.pages:
             yield from page.accelerator_types
 
@@ -392,14 +392,14 @@ class ListAcceleratorTypesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[cloud_tpu.ListAcceleratorTypesResponse]:
+    async def pages(self) -> AsyncIterator[cloud_tpu.ListAcceleratorTypesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[cloud_tpu.AcceleratorType]:
+    def __aiter__(self) -> AsyncIterator[cloud_tpu.AcceleratorType]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.accelerator_types:
