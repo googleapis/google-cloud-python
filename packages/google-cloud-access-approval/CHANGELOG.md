@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.5](https://www.github.com/googleapis/python-access-approval/compare/v1.3.4...v1.3.5) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([a73b1e0](https://www.github.com/googleapis/python-access-approval/commit/a73b1e0bc466b6edc6355423180b4cf44d64e55a))
+
 ### [1.3.4](https://www.github.com/googleapis/python-access-approval/compare/v1.3.3...v1.3.4) (2021-09-24)
 
 
