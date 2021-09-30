@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.3](https://www.github.com/googleapis/python-domains/compare/v0.2.2...v0.2.3) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([17d4bed](https://www.github.com/googleapis/python-domains/commit/17d4bed929328cfad16595e0c27d8cf67456f633))
+
 ### [0.2.2](https://www.github.com/googleapis/python-domains/compare/v0.2.1...v0.2.2) (2021-09-24)
 
 
