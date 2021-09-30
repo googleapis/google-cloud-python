@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-eventarc/compare/v1.0.1...v1.0.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([406ac83](https://www.github.com/googleapis/python-eventarc/commit/406ac83dc4f568500c87ce8ff7b6aa61000252b3))
+
 ### [1.0.1](https://www.github.com/googleapis/python-eventarc/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
