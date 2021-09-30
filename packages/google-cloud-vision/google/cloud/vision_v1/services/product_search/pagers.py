@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.vision_v1.types import product_search_service
@@ -74,14 +74,14 @@ class ListProductSetsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[product_search_service.ListProductSetsResponse]:
+    def pages(self) -> Iterator[product_search_service.ListProductSetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[product_search_service.ProductSet]:
+    def __iter__(self) -> Iterator[product_search_service.ProductSet]:
         for page in self.pages:
             yield from page.product_sets
 
@@ -140,14 +140,14 @@ class ListProductSetsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[product_search_service.ListProductSetsResponse]:
+    ) -> AsyncIterator[product_search_service.ListProductSetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[product_search_service.ProductSet]:
+    def __aiter__(self) -> AsyncIterator[product_search_service.ProductSet]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.product_sets:
@@ -206,14 +206,14 @@ class ListProductsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[product_search_service.ListProductsResponse]:
+    def pages(self) -> Iterator[product_search_service.ListProductsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[product_search_service.Product]:
+    def __iter__(self) -> Iterator[product_search_service.Product]:
         for page in self.pages:
             yield from page.products
 
@@ -268,14 +268,14 @@ class ListProductsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[product_search_service.ListProductsResponse]:
+    async def pages(self) -> AsyncIterator[product_search_service.ListProductsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[product_search_service.Product]:
+    def __aiter__(self) -> AsyncIterator[product_search_service.Product]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.products:
@@ -334,14 +334,14 @@ class ListReferenceImagesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[product_search_service.ListReferenceImagesResponse]:
+    def pages(self) -> Iterator[product_search_service.ListReferenceImagesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[product_search_service.ReferenceImage]:
+    def __iter__(self) -> Iterator[product_search_service.ReferenceImage]:
         for page in self.pages:
             yield from page.reference_images
 
@@ -400,14 +400,14 @@ class ListReferenceImagesAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[product_search_service.ListReferenceImagesResponse]:
+    ) -> AsyncIterator[product_search_service.ListReferenceImagesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[product_search_service.ReferenceImage]:
+    def __aiter__(self) -> AsyncIterator[product_search_service.ReferenceImage]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.reference_images:
@@ -468,14 +468,14 @@ class ListProductsInProductSetPager:
     @property
     def pages(
         self,
-    ) -> Iterable[product_search_service.ListProductsInProductSetResponse]:
+    ) -> Iterator[product_search_service.ListProductsInProductSetResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[product_search_service.Product]:
+    def __iter__(self) -> Iterator[product_search_service.Product]:
         for page in self.pages:
             yield from page.products
 
@@ -534,14 +534,14 @@ class ListProductsInProductSetAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[product_search_service.ListProductsInProductSetResponse]:
+    ) -> AsyncIterator[product_search_service.ListProductsInProductSetResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[product_search_service.Product]:
+    def __aiter__(self) -> AsyncIterator[product_search_service.Product]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.products:
