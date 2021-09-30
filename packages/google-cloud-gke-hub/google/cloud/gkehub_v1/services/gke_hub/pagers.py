@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.gkehub_v1.types import feature
@@ -76,14 +76,14 @@ class ListMembershipsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[service.ListMembershipsResponse]:
+    def pages(self) -> Iterator[service.ListMembershipsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[membership.Membership]:
+    def __iter__(self) -> Iterator[membership.Membership]:
         for page in self.pages:
             yield from page.resources
 
@@ -138,14 +138,14 @@ class ListMembershipsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[service.ListMembershipsResponse]:
+    async def pages(self) -> AsyncIterator[service.ListMembershipsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[membership.Membership]:
+    def __aiter__(self) -> AsyncIterator[membership.Membership]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.resources:
@@ -204,14 +204,14 @@ class ListFeaturesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[service.ListFeaturesResponse]:
+    def pages(self) -> Iterator[service.ListFeaturesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[feature.Feature]:
+    def __iter__(self) -> Iterator[feature.Feature]:
         for page in self.pages:
             yield from page.resources
 
@@ -266,14 +266,14 @@ class ListFeaturesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[service.ListFeaturesResponse]:
+    async def pages(self) -> AsyncIterator[service.ListFeaturesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[feature.Feature]:
+    def __aiter__(self) -> AsyncIterator[feature.Feature]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.resources:
