@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.websecurityscanner_v1alpha.types import crawled_url
@@ -78,14 +78,14 @@ class ListScanConfigsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[web_security_scanner.ListScanConfigsResponse]:
+    def pages(self) -> Iterator[web_security_scanner.ListScanConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[scan_config.ScanConfig]:
+    def __iter__(self) -> Iterator[scan_config.ScanConfig]:
         for page in self.pages:
             yield from page.scan_configs
 
@@ -142,14 +142,14 @@ class ListScanConfigsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[web_security_scanner.ListScanConfigsResponse]:
+    ) -> AsyncIterator[web_security_scanner.ListScanConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[scan_config.ScanConfig]:
+    def __aiter__(self) -> AsyncIterator[scan_config.ScanConfig]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.scan_configs:
@@ -208,14 +208,14 @@ class ListScanRunsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[web_security_scanner.ListScanRunsResponse]:
+    def pages(self) -> Iterator[web_security_scanner.ListScanRunsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[scan_run.ScanRun]:
+    def __iter__(self) -> Iterator[scan_run.ScanRun]:
         for page in self.pages:
             yield from page.scan_runs
 
@@ -270,14 +270,14 @@ class ListScanRunsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[web_security_scanner.ListScanRunsResponse]:
+    async def pages(self) -> AsyncIterator[web_security_scanner.ListScanRunsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[scan_run.ScanRun]:
+    def __aiter__(self) -> AsyncIterator[scan_run.ScanRun]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.scan_runs:
@@ -336,14 +336,14 @@ class ListCrawledUrlsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[web_security_scanner.ListCrawledUrlsResponse]:
+    def pages(self) -> Iterator[web_security_scanner.ListCrawledUrlsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[crawled_url.CrawledUrl]:
+    def __iter__(self) -> Iterator[crawled_url.CrawledUrl]:
         for page in self.pages:
             yield from page.crawled_urls
 
@@ -400,14 +400,14 @@ class ListCrawledUrlsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[web_security_scanner.ListCrawledUrlsResponse]:
+    ) -> AsyncIterator[web_security_scanner.ListCrawledUrlsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[crawled_url.CrawledUrl]:
+    def __aiter__(self) -> AsyncIterator[crawled_url.CrawledUrl]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.crawled_urls:
@@ -466,14 +466,14 @@ class ListFindingsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[web_security_scanner.ListFindingsResponse]:
+    def pages(self) -> Iterator[web_security_scanner.ListFindingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[finding.Finding]:
+    def __iter__(self) -> Iterator[finding.Finding]:
         for page in self.pages:
             yield from page.findings
 
@@ -528,14 +528,14 @@ class ListFindingsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[web_security_scanner.ListFindingsResponse]:
+    async def pages(self) -> AsyncIterator[web_security_scanner.ListFindingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[finding.Finding]:
+    def __aiter__(self) -> AsyncIterator[finding.Finding]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.findings:
