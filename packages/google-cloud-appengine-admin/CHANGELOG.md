@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.5](https://www.github.com/googleapis/python-appengine-admin/compare/v1.1.4...v1.1.5) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([a29e420](https://www.github.com/googleapis/python-appengine-admin/commit/a29e4200c6fdb7cad045bfd29e74a35c9a6e6fd6))
+
 ### [1.1.4](https://www.github.com/googleapis/python-appengine-admin/compare/v1.1.3...v1.1.4) (2021-09-24)
 
 
