@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+### [1.1.4](https://www.github.com/googleapis/python-grafeas/compare/v1.1.3...v1.1.4) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([ce7afa0](https://www.github.com/googleapis/python-grafeas/commit/ce7afa03c39588832beaa9a0307b79ba1fac88f6))
+
 ### [1.1.3](https://www.github.com/googleapis/python-grafeas/compare/v1.1.2...v1.1.3) (2021-09-24)
 
 
