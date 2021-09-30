@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+### [1.3.4](https://www.github.com/googleapis/python-trace/compare/v1.3.3...v1.3.4) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([cb38c20](https://www.github.com/googleapis/python-trace/commit/cb38c2000d9edf20943cb8c6a5ed98e6aa2a57b6))
+
 ### [1.3.3](https://www.github.com/googleapis/python-trace/compare/v1.3.2...v1.3.3) (2021-09-24)
 
 
