@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-apigee-connect/compare/v1.0.1...v1.0.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([fb8b837](https://www.github.com/googleapis/python-apigee-connect/commit/fb8b837d64c9771d7af9d36688e00243794ea731))
+
 ### [1.0.1](https://www.github.com/googleapis/python-apigee-connect/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
