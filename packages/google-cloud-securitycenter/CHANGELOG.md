@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+### [1.5.2](https://www.github.com/googleapis/python-securitycenter/compare/v1.5.1...v1.5.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([cd17b59](https://www.github.com/googleapis/python-securitycenter/commit/cd17b5935c330d063ffe05d444ccd68b73b50bd3))
+
 ### [1.5.1](https://www.github.com/googleapis/python-securitycenter/compare/v1.5.0...v1.5.1) (2021-09-24)
 
 
