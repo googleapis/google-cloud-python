@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.3](https://www.github.com/googleapis/python-memcache/compare/v1.1.2...v1.1.3) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([3680bac](https://www.github.com/googleapis/python-memcache/commit/3680bac8c702cc0313b06dbec3c0c6512ac4a58a))
+
 ### [1.1.2](https://www.github.com/googleapis/python-memcache/compare/v1.1.1...v1.1.2) (2021-09-24)
 
 
