@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.firestore_admin_v1.types import field
@@ -76,14 +76,14 @@ class ListIndexesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[firestore_admin.ListIndexesResponse]:
+    def pages(self) -> Iterator[firestore_admin.ListIndexesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[index.Index]:
+    def __iter__(self) -> Iterator[index.Index]:
         for page in self.pages:
             yield from page.indexes
 
@@ -138,14 +138,14 @@ class ListIndexesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[firestore_admin.ListIndexesResponse]:
+    async def pages(self) -> AsyncIterator[firestore_admin.ListIndexesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[index.Index]:
+    def __aiter__(self) -> AsyncIterator[index.Index]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.indexes:
@@ -204,14 +204,14 @@ class ListFieldsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[firestore_admin.ListFieldsResponse]:
+    def pages(self) -> Iterator[firestore_admin.ListFieldsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[field.Field]:
+    def __iter__(self) -> Iterator[field.Field]:
         for page in self.pages:
             yield from page.fields
 
@@ -266,14 +266,14 @@ class ListFieldsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[firestore_admin.ListFieldsResponse]:
+    async def pages(self) -> AsyncIterator[firestore_admin.ListFieldsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[field.Field]:
+    def __aiter__(self) -> AsyncIterator[field.Field]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.fields:
