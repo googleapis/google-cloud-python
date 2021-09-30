@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-binary-authorization/compare/v0.4.0...v0.4.1) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([789e8c5](https://www.github.com/googleapis/python-binary-authorization/commit/789e8c5e459bf6a2eafada84fe586ba9524efc05))
+
 ## [0.4.0](https://www.github.com/googleapis/python-binary-authorization/compare/v0.3.1...v0.4.0) (2021-09-24)
 
 
