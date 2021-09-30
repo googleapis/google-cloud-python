@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.2.4](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.3...v2.2.4) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([df79ab3](https://www.github.com/googleapis/python-monitoring-dashboards/commit/df79ab3e27b77186313e829c95e4a780bd2fb127))
+
 ### [2.2.3](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.2...v2.2.3) (2021-09-24)
 
 
