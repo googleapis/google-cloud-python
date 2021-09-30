@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.5.2](https://www.github.com/googleapis/python-os-config/compare/v1.5.1...v1.5.2) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([e6d6242](https://www.github.com/googleapis/python-os-config/commit/e6d62422e555f33cd5107eb59073c8d88d292681))
+
 ### [1.5.1](https://www.github.com/googleapis/python-os-config/compare/v1.5.0...v1.5.1) (2021-09-24)
 
 
