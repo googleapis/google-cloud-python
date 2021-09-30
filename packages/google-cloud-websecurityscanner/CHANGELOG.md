@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+### [1.4.3](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.4.2...v1.4.3) (2021-09-30)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([cc27745](https://www.github.com/googleapis/python-websecurityscanner/commit/cc27745090362ba6197b51dfb6d7313fa2c917a1))
+
 ### [1.4.2](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.4.1...v1.4.2) (2021-09-24)
 
 
