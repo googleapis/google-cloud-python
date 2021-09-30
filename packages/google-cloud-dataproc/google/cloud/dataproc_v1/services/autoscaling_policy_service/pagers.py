@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.dataproc_v1.types import autoscaling_policies
@@ -74,14 +74,14 @@ class ListAutoscalingPoliciesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[autoscaling_policies.ListAutoscalingPoliciesResponse]:
+    def pages(self) -> Iterator[autoscaling_policies.ListAutoscalingPoliciesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[autoscaling_policies.AutoscalingPolicy]:
+    def __iter__(self) -> Iterator[autoscaling_policies.AutoscalingPolicy]:
         for page in self.pages:
             yield from page.policies
 
@@ -140,14 +140,14 @@ class ListAutoscalingPoliciesAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[autoscaling_policies.ListAutoscalingPoliciesResponse]:
+    ) -> AsyncIterator[autoscaling_policies.ListAutoscalingPoliciesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[autoscaling_policies.AutoscalingPolicy]:
+    def __aiter__(self) -> AsyncIterator[autoscaling_policies.AutoscalingPolicy]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.policies:

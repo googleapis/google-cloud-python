@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.dataproc_v1.types import jobs
@@ -74,14 +74,14 @@ class ListJobsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[jobs.ListJobsResponse]:
+    def pages(self) -> Iterator[jobs.ListJobsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[jobs.Job]:
+    def __iter__(self) -> Iterator[jobs.Job]:
         for page in self.pages:
             yield from page.jobs
 
@@ -136,14 +136,14 @@ class ListJobsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[jobs.ListJobsResponse]:
+    async def pages(self) -> AsyncIterator[jobs.ListJobsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[jobs.Job]:
+    def __aiter__(self) -> AsyncIterator[jobs.Job]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.jobs:
