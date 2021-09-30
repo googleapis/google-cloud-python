@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.kms_v1.types import resources
@@ -75,14 +75,14 @@ class ListKeyRingsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[service.ListKeyRingsResponse]:
+    def pages(self) -> Iterator[service.ListKeyRingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.KeyRing]:
+    def __iter__(self) -> Iterator[resources.KeyRing]:
         for page in self.pages:
             yield from page.key_rings
 
@@ -137,14 +137,14 @@ class ListKeyRingsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[service.ListKeyRingsResponse]:
+    async def pages(self) -> AsyncIterator[service.ListKeyRingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.KeyRing]:
+    def __aiter__(self) -> AsyncIterator[resources.KeyRing]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.key_rings:
@@ -203,14 +203,14 @@ class ListCryptoKeysPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[service.ListCryptoKeysResponse]:
+    def pages(self) -> Iterator[service.ListCryptoKeysResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.CryptoKey]:
+    def __iter__(self) -> Iterator[resources.CryptoKey]:
         for page in self.pages:
             yield from page.crypto_keys
 
@@ -265,14 +265,14 @@ class ListCryptoKeysAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[service.ListCryptoKeysResponse]:
+    async def pages(self) -> AsyncIterator[service.ListCryptoKeysResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.CryptoKey]:
+    def __aiter__(self) -> AsyncIterator[resources.CryptoKey]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.crypto_keys:
@@ -331,14 +331,14 @@ class ListCryptoKeyVersionsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[service.ListCryptoKeyVersionsResponse]:
+    def pages(self) -> Iterator[service.ListCryptoKeyVersionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.CryptoKeyVersion]:
+    def __iter__(self) -> Iterator[resources.CryptoKeyVersion]:
         for page in self.pages:
             yield from page.crypto_key_versions
 
@@ -393,14 +393,14 @@ class ListCryptoKeyVersionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[service.ListCryptoKeyVersionsResponse]:
+    async def pages(self) -> AsyncIterator[service.ListCryptoKeyVersionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.CryptoKeyVersion]:
+    def __aiter__(self) -> AsyncIterator[resources.CryptoKeyVersion]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.crypto_key_versions:
@@ -459,14 +459,14 @@ class ListImportJobsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[service.ListImportJobsResponse]:
+    def pages(self) -> Iterator[service.ListImportJobsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[resources.ImportJob]:
+    def __iter__(self) -> Iterator[resources.ImportJob]:
         for page in self.pages:
             yield from page.import_jobs
 
@@ -521,14 +521,14 @@ class ListImportJobsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[service.ListImportJobsResponse]:
+    async def pages(self) -> AsyncIterator[service.ListImportJobsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[resources.ImportJob]:
+    def __aiter__(self) -> AsyncIterator[resources.ImportJob]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.import_jobs:
