@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.8.0](https://www.github.com/googleapis/python-kms/compare/v2.7.0...v2.8.0) (2021-09-30)
+
+
+### Features
+
+* add RPC retry information for MacSign, MacVerify, and GenerateRandomBytes ([#186](https://www.github.com/googleapis/python-kms/issues/186)) ([62591c8](https://www.github.com/googleapis/python-kms/commit/62591c8ead85c33fa5a5c4cc7c2a26779cbd1075))
+
 ## [2.7.0](https://www.github.com/googleapis/python-kms/compare/v2.6.1...v2.7.0) (2021-09-30)
 
 
