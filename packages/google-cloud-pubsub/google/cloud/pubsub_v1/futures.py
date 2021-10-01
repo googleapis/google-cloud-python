@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 import concurrent.futures
+from typing import Any, NoReturn
 
 import google.api_core.future
 
@@ -29,19 +30,16 @@ class Future(concurrent.futures.Future, google.api_core.future.Future):
     methods in this library.
     """
 
-    def running(self):
-        """Return ``True`` if the associated Pub/Sub action has not yet completed.
-
-        Returns: bool:
-        """
+    def running(self) -> bool:
+        """Return ``True`` if the associated Pub/Sub action has not yet completed."""
         return not self.done()
 
-    def set_running_or_notify_cancel(self):
+    def set_running_or_notify_cancel(self) -> NoReturn:
         raise NotImplementedError(
             "Only used by executors from `concurrent.futures` package."
         )
 
-    def set_result(self, result):
+    def set_result(self, result: Any):
         """Set the return value of work associated with the future.
 
         Do not use this method, it should only be used internally by the library and its
@@ -49,7 +47,7 @@ class Future(concurrent.futures.Future, google.api_core.future.Future):
         """
         return super().set_result(result=result)
 
-    def set_exception(self, exception):
+    def set_exception(self, exception: Exception):
         """Set the result of the future as being the given exception.
 
         Do not use this method, it should only be used internally by the library and its

@@ -16,6 +16,12 @@ from __future__ import absolute_import
 
 import logging
 import threading
+import typing
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.pubsub_v1.subscriber._protocol.streaming_pull_manager import (
+        StreamingPullManager,
+    )
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -27,14 +33,14 @@ _DEFAULT_PERIOD = 30
 
 
 class Heartbeater(object):
-    def __init__(self, manager, period=_DEFAULT_PERIOD):
+    def __init__(self, manager: "StreamingPullManager", period: int = _DEFAULT_PERIOD):
         self._thread = None
         self._operational_lock = threading.Lock()
         self._manager = manager
         self._stop_event = threading.Event()
         self._period = period
 
-    def heartbeat(self):
+    def heartbeat(self) -> None:
         """Periodically send streaming pull heartbeats.
         """
         while not self._stop_event.is_set():
@@ -44,7 +50,7 @@ class Heartbeater(object):
 
         _LOGGER.info("%s exiting.", _HEARTBEAT_WORKER_NAME)
 
-    def start(self):
+    def start(self) -> None:
         with self._operational_lock:
             if self._thread is not None:
                 raise ValueError("Heartbeater is already running.")
@@ -59,7 +65,7 @@ class Heartbeater(object):
             _LOGGER.debug("Started helper thread %s", thread.name)
             self._thread = thread
 
-    def stop(self):
+    def stop(self) -> None:
         with self._operational_lock:
             self._stop_event.set()
 

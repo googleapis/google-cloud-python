@@ -15,9 +15,14 @@
 from __future__ import absolute_import
 
 import abc
+import typing
 
 from google.api_core import gapic_v1
 from google.pubsub_v1 import types as gapic_types
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    from concurrent import futures
+    from google.api_core import retry
 
 
 class Sequencer(metaclass=abc.ABCMeta):
@@ -27,7 +32,7 @@ class Sequencer(metaclass=abc.ABCMeta):
 
     @staticmethod
     @abc.abstractmethod
-    def is_finished(self):  # pragma: NO COVER
+    def is_finished(self) -> bool:  # pragma: NO COVER
         """ Whether the sequencer is finished and should be cleaned up.
 
             Returns:
@@ -37,7 +42,7 @@ class Sequencer(metaclass=abc.ABCMeta):
 
     @staticmethod
     @abc.abstractmethod
-    def unpause(self, message):  # pragma: NO COVER
+    def unpause(self) -> None:  # pragma: NO COVER
         """ Unpauses this sequencer.
 
         Raises:
@@ -50,24 +55,24 @@ class Sequencer(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def publish(
         self,
-        message,
-        retry=None,
+        message: gapic_types.PubsubMessage,
+        retry: "retry.Retry" = None,
         timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
-    ):  # pragma: NO COVER
+    ) -> "futures.Future":  # pragma: NO COVER
         """ Publish message for this ordering key.
 
         Args:
-            message (~.pubsub_v1.types.PubsubMessage):
+            message:
                 The Pub/Sub message.
-            retry (Optional[google.api_core.retry.Retry]):
+            retry:
                 The retry settings to apply when publishing the message.
-            timeout (:class:`~.pubsub_v1.types.TimeoutType`):
+            timeout:
                 The timeout to apply when publishing the message.
 
         Returns:
             A class instance that conforms to Python Standard library's
-            :class:`~concurrent.futures.Future` interface (but not an
-            instance of that class). The future might return immediately with a
+            :class:`~concurrent.futures.Future` interface. The future might return
+            immediately with a
             `pubsub_v1.publisher.exceptions.PublishToPausedOrderingKeyException`
             if the ordering key is paused.  Otherwise, the future tracks the
             lifetime of the message publish.

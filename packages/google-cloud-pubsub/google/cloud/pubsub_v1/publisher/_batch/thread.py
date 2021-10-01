@@ -17,6 +17,8 @@ from __future__ import absolute_import
 import logging
 import threading
 import time
+import typing
+from typing import Any, Callable, Optional, Sequence
 
 import google.api_core.exceptions
 from google.api_core import gapic_v1
@@ -24,6 +26,12 @@ from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher import futures
 from google.cloud.pubsub_v1.publisher._batch import base
 from google.pubsub_v1 import types as gapic_types
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    from google import api_core
+    from google.cloud import pubsub_v1
+    from google.cloud.pubsub_v1 import types
+    from google.cloud.pubsub_v1 import PublisherClient
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -56,36 +64,36 @@ class Batch(base.Batch):
     implementation details.
 
     Args:
-        client (~.pubsub_v1.PublisherClient): The publisher client used to
-            create this batch.
-        topic (str): The topic. The format for this is
-            ``projects/{project}/topics/{topic}``.
-        settings (~.pubsub_v1.types.BatchSettings): The settings for batch
-            publishing. These should be considered immutable once the batch
-            has been opened.
-        batch_done_callback (Callable[[bool], Any]): Callback called when the
-            response for a batch publish has been received. Called with one
-            boolean argument: successfully published or a permanent error
-            occurred. Temporary errors are not surfaced because they are retried
+        client:
+            The publisher client used to create this batch.
+        topic:
+            The topic. The format for this is ``projects/{project}/topics/{topic}``.
+        settings:
+            The settings for batch publishing. These should be considered immutable
+            once the batch has been opened.
+        batch_done_callback:
+            Callback called when the response for a batch publish has been received.
+            Called with one boolean argument: successfully published or a permanent
+            error occurred. Temporary errors are not surfaced because they are retried
             at a lower level.
-        commit_when_full (bool): Whether to commit the batch when the batch
-            is full.
-        commit_retry (Optional[google.api_core.retry.Retry]): Designation of what
-            errors, if any, should be retried when commiting the batch. If not
-            provided, a default retry is used.
-        commit_timeout (:class:`~.pubsub_v1.types.TimeoutType`):
-                The timeout to apply when commiting the batch. If not provided, a
-                default timeout is used.
+        commit_when_full:
+            Whether to commit the batch when the batch is full.
+        commit_retry:
+            Designation of what errors, if any, should be retried when commiting
+            the batch. If not provided, a default retry is used.
+        commit_timeout:
+            The timeout to apply when commiting the batch. If not provided, a default
+            timeout is used.
     """
 
     def __init__(
         self,
-        client,
-        topic,
-        settings,
-        batch_done_callback=None,
-        commit_when_full=True,
-        commit_retry=gapic_v1.method.DEFAULT,
+        client: "PublisherClient",
+        topic: str,
+        settings: "types.BatchSettings",
+        batch_done_callback: Callable[[bool], Any] = None,
+        commit_when_full: bool = True,
+        commit_retry: "api_core.retry.Retry" = gapic_v1.method.DEFAULT,
         commit_timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
     ):
         self._client = client
@@ -113,66 +121,65 @@ class Batch(base.Batch):
         self._commit_timeout = commit_timeout
 
     @staticmethod
-    def make_lock():
+    def make_lock() -> threading.Lock:
         """Return a threading lock.
 
         Returns:
-            _thread.Lock: A newly created lock.
+            A newly created lock.
         """
         return threading.Lock()
 
     @property
-    def client(self):
-        """~.pubsub_v1.client.PublisherClient: A publisher client."""
+    def client(self) -> "PublisherClient":
+        """A publisher client."""
         return self._client
 
     @property
-    def messages(self):
-        """Sequence: The messages currently in the batch."""
+    def messages(self) -> Sequence[gapic_types.PubsubMessage]:
+        """The messages currently in the batch."""
         return self._messages
 
     @property
-    def settings(self):
+    def settings(self) -> "types.BatchSettings":
         """Return the batch settings.
 
         Returns:
-            ~.pubsub_v1.types.BatchSettings: The batch settings. These are
-                considered immutable once the batch has been opened.
+            The batch settings. These are considered immutable once the batch has
+            been opened.
         """
         return self._settings
 
     @property
-    def size(self):
+    def size(self) -> int:
         """Return the total size of all of the messages currently in the batch.
 
         The size includes any overhead of the actual ``PublishRequest`` that is
         sent to the backend.
 
         Returns:
-            int: The total size of all of the messages currently
-                 in the batch (including the request overhead), in bytes.
+            The total size of all of the messages currently in the batch (including
+            the request overhead), in bytes.
         """
         return self._size
 
     @property
-    def status(self):
+    def status(self) -> base.BatchStatus:
         """Return the status of this batch.
 
         Returns:
-            str: The status of this batch. All statuses are human-readable,
-                all-lowercase strings.
+            The status of this batch. All statuses are human-readable, all-lowercase
+            strings.
         """
         return self._status
 
-    def cancel(self, cancellation_reason):
+    def cancel(self, cancellation_reason: base.BatchCancellationReason) -> None:
         """Complete pending futures with an exception.
 
         This method must be called before publishing starts (ie: while the
         batch is still accepting messages.)
 
         Args:
-            cancellation_reason (BatchCancellationReason): The reason why this
-                batch has been cancelled.
+            The reason why this batch has been cancelled.
         """
 
         with self._state_lock:
@@ -185,7 +192,7 @@ class Batch(base.Batch):
                 future.set_exception(exc)
             self._status = base.BatchStatus.ERROR
 
-    def commit(self):
+    def commit(self) -> None:
         """Actually publish all of the messages on the active batch.
 
         .. note::
@@ -210,7 +217,7 @@ class Batch(base.Batch):
 
         self._start_commit_thread()
 
-    def _start_commit_thread(self):
+    def _start_commit_thread(self) -> None:
         """Start a new thread to actually handle the commit."""
         # NOTE: If the thread is *not* a daemon, a memory leak exists due to a CPython issue.
         # https://github.com/googleapis/python-pubsub/issues/395#issuecomment-829910303
@@ -220,7 +227,7 @@ class Batch(base.Batch):
         )
         commit_thread.start()
 
-    def _commit(self):
+    def _commit(self) -> None:
         """Actually publish all of the messages on the active batch.
 
         This moves the batch out from being the active batch to an in progress
@@ -320,7 +327,9 @@ class Batch(base.Batch):
         if self._batch_done_callback is not None:
             self._batch_done_callback(batch_transport_succeeded)
 
-    def publish(self, message):
+    def publish(
+        self, message: gapic_types.PubsubMessage
+    ) -> Optional["pubsub_v1.publisher.futures.Future"]:
         """Publish a single message.
 
         Add the given message to this object; this will cause it to be
@@ -331,13 +340,12 @@ class Batch(base.Batch):
         This method is called by :meth:`~.PublisherClient.publish`.
 
         Args:
-            message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
+            message: The Pub/Sub message.
 
         Returns:
-            Optional[~google.api_core.future.Future]: An object conforming to
-            the :class:`~concurrent.futures.Future` interface or :data:`None`.
-            If :data:`None` is returned, that signals that the batch cannot
-            accept a message.
+            An object conforming to the :class:`~concurrent.futures.Future` interface
+            or :data:`None`. If :data:`None` is returned, that signals that the batch
+            cannot accept a message.
 
         Raises:
             pubsub_v1.publisher.exceptions.MessageTooLargeError: If publishing
@@ -398,5 +406,5 @@ class Batch(base.Batch):
 
         return future
 
-    def _set_status(self, status):
+    def _set_status(self, status: base.BatchStatus):
         self._status = status

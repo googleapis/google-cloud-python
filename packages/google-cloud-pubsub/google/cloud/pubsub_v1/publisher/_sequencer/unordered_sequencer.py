@@ -12,10 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import typing
+
 from google.api_core import gapic_v1
 
 from google.cloud.pubsub_v1.publisher._sequencer import base
 from google.pubsub_v1 import types as gapic_types
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    from concurrent import futures
+    from google.api_core import retry
+    from google.cloud.pubsub_v1 import PublisherClient
+    from google.cloud.pubsub_v1.publisher import _batch
 
 
 class UnorderedSequencer(base.Sequencer):
@@ -24,17 +32,17 @@ class UnorderedSequencer(base.Sequencer):
         Public methods are NOT thread-safe.
     """
 
-    def __init__(self, client, topic):
+    def __init__(self, client: "PublisherClient", topic: str):
         self._client = client
         self._topic = topic
         self._current_batch = None
         self._stopped = False
 
-    def is_finished(self):
+    def is_finished(self) -> bool:
         """ Whether the sequencer is finished and should be cleaned up.
 
             Returns:
-                bool: Whether the sequencer is finished and should be cleaned up.
+                Whether the sequencer is finished and should be cleaned up.
         """
         # TODO: Implement. Not implementing yet because of possible performance
         # impact due to extra locking required. This does mean that
@@ -42,7 +50,7 @@ class UnorderedSequencer(base.Sequencer):
         # previously existing behavior.
         return False
 
-    def stop(self):
+    def stop(self) -> None:
         """ Stop the sequencer.
 
             Subsequent publishes will fail.
@@ -56,7 +64,7 @@ class UnorderedSequencer(base.Sequencer):
         self.commit()
         self._stopped = True
 
-    def commit(self):
+    def commit(self) -> None:
         """ Commit the batch.
 
             Raises:
@@ -74,22 +82,22 @@ class UnorderedSequencer(base.Sequencer):
             # batch.
             self._current_batch = None
 
-    def unpause(self):
+    def unpause(self) -> typing.NoReturn:
         """ Not relevant for this class. """
         raise NotImplementedError
 
     def _create_batch(
         self,
-        commit_retry=gapic_v1.method.DEFAULT,
+        commit_retry: "retry.Retry" = gapic_v1.method.DEFAULT,
         commit_timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
-    ):
+    ) -> "_batch.thread.Batch":
         """ Create a new batch using the client's batch class and other stored
             settings.
 
         Args:
-            commit_retry (Optional[google.api_core.retry.Retry]):
+            commit_retry:
                 The retry settings to apply when publishing the batch.
-            commit_timeout (:class:`~.pubsub_v1.types.TimeoutType`):
+            commit_timeout:
                 The timeout to apply when publishing the batch.
         """
         return self._client._batch_class(
@@ -104,24 +112,23 @@ class UnorderedSequencer(base.Sequencer):
 
     def publish(
         self,
-        message,
-        retry=gapic_v1.method.DEFAULT,
+        message: gapic_types.PubsubMessage,
+        retry: "retry.Retry" = gapic_v1.method.DEFAULT,
         timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
-    ):
+    ) -> "futures.Future":
         """ Batch message into existing or new batch.
 
         Args:
-            message (~.pubsub_v1.types.PubsubMessage):
+            message:
                 The Pub/Sub message.
-            retry (Optional[google.api_core.retry.Retry]):
+            retry:
                 The retry settings to apply when publishing the message.
-            timeout (:class:`~.pubsub_v1.types.TimeoutType`):
+            timeout:
                 The timeout to apply when publishing the message.
 
         Returns:
-            ~google.api_core.future.Future: An object conforming to
-            the :class:`~concurrent.futures.Future` interface. The future tracks
-            the publishing status of the message.
+            An object conforming to the :class:`~concurrent.futures.Future` interface.
+            The future tracks the publishing status of the message.
 
         Raises:
             RuntimeError:
@@ -151,5 +158,5 @@ class UnorderedSequencer(base.Sequencer):
         return future
 
     # Used only for testing.
-    def _set_batch(self, batch):
+    def _set_batch(self, batch: "_batch.thread.Batch") -> None:
         self._current_batch = batch

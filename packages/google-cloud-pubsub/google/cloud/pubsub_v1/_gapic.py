@@ -15,9 +15,12 @@
 from __future__ import absolute_import
 
 import functools
+from typing import Callable, Container, Type
 
 
-def add_methods(source_class, denylist=()):
+def add_methods(
+    source_class: Type, denylist: Container[str] = ()
+) -> Callable[[Type], Type]:
     """Add wrapped versions of the `api` member's methods to the class.
 
     Any methods passed in `denylist` are not added.
@@ -25,7 +28,7 @@ def add_methods(source_class, denylist=()):
     not added.
     """
 
-    def wrap(wrapped_fx, lookup_fx):
+    def wrap(wrapped_fx: Callable, lookup_fx: Callable):
         """Wrap a GAPIC method; preserve its name and docstring."""
         # If this is a static or class method, then we do *not*
         # send self as the first argument.
@@ -40,7 +43,7 @@ def add_methods(source_class, denylist=()):
             fx = lambda self, *a, **kw: wrapped_fx(self.api, *a, **kw)  # noqa
             return functools.wraps(wrapped_fx)(fx)
 
-    def actual_decorator(cls):
+    def actual_decorator(cls: Type) -> Type:
         # Reflectively iterate over most of the methods on the source class
         # (the GAPIC) and make wrapped versions available on this client.
         for name in dir(source_class):

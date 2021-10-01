@@ -21,7 +21,12 @@ each message.
 import abc
 import concurrent.futures
 import queue
+import typing
+from typing import Callable, List, Optional
 import warnings
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud import pubsub_v1
 
 
 class Scheduler(metaclass=abc.ABCMeta):
@@ -32,7 +37,7 @@ class Scheduler(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def queue(self):  # pragma: NO COVER
+    def queue(self) -> queue.Queue:  # pragma: NO COVER
         """Queue: A concurrency-safe queue specific to the underlying
         concurrency implementation.
 
@@ -41,13 +46,13 @@ class Scheduler(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def schedule(self, callback, *args, **kwargs):  # pragma: NO COVER
+    def schedule(self, callback: Callable, *args, **kwargs) -> None:  # pragma: NO COVER
         """Schedule the callback to be called asynchronously.
 
         Args:
-            callback (Callable): The function to call.
-            args: Positional arguments passed to the function.
-            kwargs: Key-word arguments passed to the function.
+            callback: The function to call.
+            args: Positional arguments passed to the callback.
+            kwargs: Key-word arguments passed to the callback.
 
         Returns:
             None
@@ -55,26 +60,27 @@ class Scheduler(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def shutdown(self, await_msg_callbacks=False):  # pragma: NO COVER
+    def shutdown(
+        self, await_msg_callbacks: bool = False
+    ) -> List["pubsub_v1.subscriber.message.Message"]:  # pragma: NO COVER
         """Shuts down the scheduler and immediately end all pending callbacks.
 
         Args:
-            await_msg_callbacks (bool):
+            await_msg_callbacks:
                 If ``True``, the method will block until all currently executing
                 callbacks are done processing. If ``False`` (default), the
                 method will not wait for the currently running callbacks to complete.
 
         Returns:
-            List[pubsub_v1.subscriber.message.Message]:
-                The messages submitted to the scheduler that were not yet dispatched
-                to their callbacks.
-                It is assumed that each message was submitted to the scheduler as the
-                first positional argument to the provided callback.
+            The messages submitted to the scheduler that were not yet dispatched
+            to their callbacks.
+            It is assumed that each message was submitted to the scheduler as the
+            first positional argument to the provided callback.
         """
         raise NotImplementedError
 
 
-def _make_default_thread_pool_executor():
+def _make_default_thread_pool_executor() -> concurrent.futures.ThreadPoolExecutor:
     return concurrent.futures.ThreadPoolExecutor(
         max_workers=10, thread_name_prefix="ThreadPoolExecutor-ThreadScheduler"
     )
@@ -87,11 +93,14 @@ class ThreadScheduler(Scheduler):
     This scheduler is useful in typical I/O-bound message processing.
 
     Args:
-        executor(concurrent.futures.ThreadPoolExecutor): An optional executor
-            to use. If not specified, a default one will be created.
+        executor:
+            An optional executor to use. If not specified, a default one
+            will be created.
     """
 
-    def __init__(self, executor=None):
+    def __init__(
+        self, executor: Optional[concurrent.futures.ThreadPoolExecutor] = None
+    ):
         self._queue = queue.Queue()
         if executor is None:
             self._executor = _make_default_thread_pool_executor()
@@ -104,13 +113,13 @@ class ThreadScheduler(Scheduler):
         and the scheduling thread."""
         return self._queue
 
-    def schedule(self, callback, *args, **kwargs):
+    def schedule(self, callback: Callable, *args, **kwargs) -> None:
         """Schedule the callback to be called asynchronously in a thread pool.
 
         Args:
-            callback (Callable): The function to call.
-            args: Positional arguments passed to the function.
-            kwargs: Key-word arguments passed to the function.
+            callback: The function to call.
+            args: Positional arguments passed to the callback.
+            kwargs: Key-word arguments passed to the callback.
 
         Returns:
             None
@@ -124,21 +133,22 @@ class ThreadScheduler(Scheduler):
                 stacklevel=2,
             )
 
-    def shutdown(self, await_msg_callbacks=False):
+    def shutdown(
+        self, await_msg_callbacks: bool = False
+    ) -> List["pubsub_v1.subscriber.message.Message"]:
         """Shut down the scheduler and immediately end all pending callbacks.
 
         Args:
-            await_msg_callbacks (bool):
+            await_msg_callbacks:
                 If ``True``, the method will block until all currently executing
                 executor threads are done processing. If ``False`` (default), the
                 method will not wait for the currently running threads to complete.
 
         Returns:
-            List[pubsub_v1.subscriber.message.Message]:
-                The messages submitted to the scheduler that were not yet dispatched
-                to their callbacks.
-                It is assumed that each message was submitted to the scheduler as the
-                first positional argument to the provided callback.
+            The messages submitted to the scheduler that were not yet dispatched
+            to their callbacks.
+            It is assumed that each message was submitted to the scheduler as the
+            first positional argument to the provided callback.
         """
         dropped_messages = []
 

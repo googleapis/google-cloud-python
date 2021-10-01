@@ -20,8 +20,15 @@ import logging
 import random
 import threading
 import time
+import typing
+from typing import Iterable, Sequence, Union
 
 from google.cloud.pubsub_v1.subscriber._protocol import requests
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.pubsub_v1.subscriber._protocol.streaming_pull_manager import (
+        StreamingPullManager,
+    )
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -34,7 +41,7 @@ _LeasedMessage = collections.namedtuple(
 
 
 class Leaser(object):
-    def __init__(self, manager):
+    def __init__(self, manager: "StreamingPullManager"):
         self._thread = None
         self._manager = manager
 
@@ -55,21 +62,21 @@ class Leaser(object):
         self._stop_event = threading.Event()
 
     @property
-    def message_count(self):
-        """int: The number of leased messages."""
+    def message_count(self) -> int:
+        """The number of leased messages."""
         return len(self._leased_messages)
 
     @property
-    def ack_ids(self):
-        """Sequence[str]: The ack IDs of all leased messages."""
+    def ack_ids(self) -> Sequence[str]:
+        """The ack IDs of all leased messages."""
         return self._leased_messages.keys()
 
     @property
-    def bytes(self):
-        """int: The total size, in bytes, of all leased messages."""
+    def bytes(self) -> int:
+        """The total size, in bytes, of all leased messages."""
         return self._bytes
 
-    def add(self, items):
+    def add(self, items: Iterable[requests.LeaseRequest]) -> None:
         """Add messages to be managed by the leaser."""
         with self._add_remove_lock:
             for item in items:
@@ -85,12 +92,11 @@ class Leaser(object):
                 else:
                     _LOGGER.debug("Message %s is already lease managed", item.ack_id)
 
-    def start_lease_expiry_timer(self, ack_ids):
+    def start_lease_expiry_timer(self, ack_ids: Iterable[str]) -> None:
         """Start the lease expiry timer for `items`.
 
         Args:
-            items (Sequence[str]): Sequence of ack-ids for which to start
-                lease expiry timers.
+            items: Sequence of ack-ids for which to start lease expiry timers.
         """
         with self._add_remove_lock:
             for ack_id in ack_ids:
@@ -102,7 +108,12 @@ class Leaser(object):
                         sent_time=time.time()
                     )
 
-    def remove(self, items):
+    def remove(
+        self,
+        items: Iterable[
+            Union[requests.AckRequest, requests.DropRequest, requests.NackRequest]
+        ],
+    ) -> None:
         """Remove messages from lease management."""
         with self._add_remove_lock:
             # Remove the ack ID from lease management, and decrement the
@@ -117,7 +128,7 @@ class Leaser(object):
                 _LOGGER.debug("Bytes was unexpectedly negative: %d", self._bytes)
                 self._bytes = 0
 
-    def maintain_leases(self):
+    def maintain_leases(self) -> None:
         """Maintain all of the leases being managed.
 
         This method modifies the ack deadline for all of the managed
@@ -188,7 +199,7 @@ class Leaser(object):
 
         _LOGGER.info("%s exiting.", _LEASE_WORKER_NAME)
 
-    def start(self):
+    def start(self) -> None:
         with self._operational_lock:
             if self._thread is not None:
                 raise ValueError("Leaser is already running.")
@@ -203,7 +214,7 @@ class Leaser(object):
             _LOGGER.debug("Started helper thread %s", thread.name)
             self._thread = thread
 
-    def stop(self):
+    def stop(self) -> None:
         with self._operational_lock:
             self._stop_event.set()
 

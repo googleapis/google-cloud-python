@@ -14,6 +14,8 @@
 
 from __future__ import absolute_import
 
+from typing import Union
+
 from google.cloud.pubsub_v1 import futures
 
 
@@ -25,32 +27,32 @@ class Future(futures.Future):
     ID, unless an error occurs.
     """
 
-    def cancel(self):
+    def cancel(self) -> bool:
         """Actions in Pub/Sub generally may not be canceled.
 
         This method always returns ``False``.
         """
         return False
 
-    def cancelled(self):
+    def cancelled(self) -> bool:
         """Actions in Pub/Sub generally may not be canceled.
 
         This method always returns ``False``.
         """
         return False
 
-    def result(self, timeout=None):
+    def result(self, timeout: Union[int, float] = None) -> str:
         """Return the message ID or raise an exception.
 
         This blocks until the message has been published successfully and
         returns the message ID unless an exception is raised.
 
         Args:
-            timeout (Union[int, float]): The number of seconds before this call
+            timeout: The number of seconds before this call
                 times out and raises TimeoutError.
 
         Returns:
-            str: The message ID.
+            The message ID.
 
         Raises:
             concurrent.futures.TimeoutError: If the request times out.

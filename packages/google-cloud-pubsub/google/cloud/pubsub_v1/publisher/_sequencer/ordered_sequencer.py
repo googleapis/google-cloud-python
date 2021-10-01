@@ -16,12 +16,19 @@ import enum
 import collections
 import concurrent.futures as futures
 import threading
+import typing
+from typing import Iterable, Sequence
 
 from google.api_core import gapic_v1
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher._sequencer import base as sequencer_base
 from google.cloud.pubsub_v1.publisher._batch import base as batch_base
 from google.pubsub_v1 import types as gapic_types
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    from google.api_core import retry
+    from google.cloud.pubsub_v1 import PublisherClient
+    from google.cloud.pubsub_v1.publisher import _batch
 
 
 class _OrderedSequencerStatus(str, enum.Enum):
@@ -77,14 +84,15 @@ class OrderedSequencer(sequencer_base.Sequencer):
         Public methods are thread-safe.
 
         Args:
-            client (~.pubsub_v1.PublisherClient): The publisher client used to
-                create this sequencer.
-            topic (str): The topic. The format for this is
-                ``projects/{project}/topics/{topic}``.
-            ordering_key (str): The ordering key for this sequencer.
+            client:
+                The publisher client used to create this sequencer.
+            topic:
+                The topic. The format for this is ``projects/{project}/topics/{topic}``.
+            ordering_key:
+                The ordering key for this sequencer.
     """
 
-    def __init__(self, client, topic, ordering_key):
+    def __init__(self, client: "PublisherClient", topic: str, ordering_key: str):
         self._client = client
         self._topic = topic
         self._ordering_key = ordering_key
@@ -97,16 +105,16 @@ class OrderedSequencer(sequencer_base.Sequencer):
         # See _OrderedSequencerStatus for valid state transitions.
         self._state = _OrderedSequencerStatus.ACCEPTING_MESSAGES
 
-    def is_finished(self):
+    def is_finished(self) -> bool:
         """ Whether the sequencer is finished and should be cleaned up.
 
             Returns:
-                bool: Whether the sequencer is finished and should be cleaned up.
+                Whether the sequencer is finished and should be cleaned up.
         """
         with self._state_lock:
             return self._state == _OrderedSequencerStatus.FINISHED
 
-    def stop(self):
+    def stop(self) -> None:
         """ Permanently stop this sequencer.
 
             This differs from pausing, which may be resumed. Immediately commits
@@ -133,7 +141,7 @@ class OrderedSequencer(sequencer_base.Sequencer):
                     batch = self._ordered_batches.pop()
                     batch.cancel(batch_base.BatchCancellationReason.CLIENT_STOPPED)
 
-    def commit(self):
+    def commit(self) -> None:
         """ Commit the first batch, if unpaused.
 
             If paused or no batches exist, this method does nothing.
@@ -151,7 +159,7 @@ class OrderedSequencer(sequencer_base.Sequencer):
                 # operation is idempotent.
                 self._ordered_batches[0].commit()
 
-    def _batch_done_callback(self, success):
+    def _batch_done_callback(self, success: bool) -> None:
         """ Deal with completion of a batch.
 
             Called when a batch has finished publishing, with either a success
@@ -199,7 +207,7 @@ class OrderedSequencer(sequencer_base.Sequencer):
         if ensure_cleanup_and_commit_timer_runs:
             self._client.ensure_cleanup_and_commit_timer_runs()
 
-    def _pause(self):
+    def _pause(self) -> None:
         """ Pause this sequencer: set state to paused, cancel all batches, and
             clear the list of ordered batches.
 
@@ -215,7 +223,7 @@ class OrderedSequencer(sequencer_base.Sequencer):
             )
         self._ordered_batches.clear()
 
-    def unpause(self):
+    def unpause(self) -> None:
         """ Unpause this sequencer.
 
         Raises:
@@ -229,16 +237,16 @@ class OrderedSequencer(sequencer_base.Sequencer):
 
     def _create_batch(
         self,
-        commit_retry=gapic_v1.method.DEFAULT,
+        commit_retry: "retry.Retry" = gapic_v1.method.DEFAULT,
         commit_timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
-    ):
+    ) -> "_batch.thread.Batch":
         """ Create a new batch using the client's batch class and other stored
             settings.
 
         Args:
-            commit_retry (Optional[google.api_core.retry.Retry]):
+            commit_retry:
                 The retry settings to apply when publishing the batch.
-            commit_timeout (:class:`~.pubsub_v1.types.TimeoutType`):
+            commit_timeout:
                 The timeout to apply when publishing the batch.
         """
         return self._client._batch_class(
@@ -253,18 +261,18 @@ class OrderedSequencer(sequencer_base.Sequencer):
 
     def publish(
         self,
-        message,
-        retry=gapic_v1.method.DEFAULT,
+        message: gapic_types.PubsubMessage,
+        retry: "retry.Retry" = gapic_v1.method.DEFAULT,
         timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
-    ):
+    ) -> futures.Future:
         """ Publish message for this ordering key.
 
         Args:
-            message (~.pubsub_v1.types.PubsubMessage):
+            message:
                 The Pub/Sub message.
-            retry (Optional[google.api_core.retry.Retry]):
+            retry:
                 The retry settings to apply when publishing the message.
-            timeout (:class:`~.pubsub_v1.types.TimeoutType`):
+            timeout:
                 The timeout to apply when publishing the message.
 
         Returns:
@@ -317,13 +325,13 @@ class OrderedSequencer(sequencer_base.Sequencer):
             return future
 
     # Used only for testing.
-    def _set_batch(self, batch):
+    def _set_batch(self, batch: "_batch.thread.Batch") -> None:
         self._ordered_batches = collections.deque([batch])
 
     # Used only for testing.
-    def _set_batches(self, batches):
+    def _set_batches(self, batches: Iterable["_batch.thread.Batch"]) -> None:
         self._ordered_batches = collections.deque(batches)
 
     # Used only for testing.
-    def _get_batches(self):
+    def _get_batches(self) -> Sequence["_batch.thread.Batch"]:
         return self._ordered_batches

@@ -18,8 +18,16 @@ import datetime as dt
 import json
 import math
 import time
+import typing
+from typing import Optional
 
 from google.cloud.pubsub_v1.subscriber._protocol import requests
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    import datetime
+    import queue
+    from google.cloud.pubsub_v1 import types
+    from google.protobuf.internal import containers
 
 
 _MESSAGE_REPR = """\
@@ -30,18 +38,19 @@ Message {{
 }}"""
 
 
-def _indent(lines, prefix="  "):
+def _indent(lines: str, prefix: str = "  ") -> str:
     """Indent some text.
 
     Note that this is present as ``textwrap.indent``, but not in Python 2.
 
     Args:
-        lines (str): The newline delimited string to be indented.
-        prefix (Optional[str]): The prefix to indent each line with. Default
-            to two spaces.
+        lines:
+            The newline delimited string to be indented.
+        prefix:
+            The prefix to indent each line with. Defaults to two spaces.
 
     Returns:
-        str: The newly indented content.
+        The newly indented content.
     """
     indented = []
     for line in lines.split("\n"):
@@ -60,17 +69,25 @@ class Message(object):
     :class:`~.pubsub_v1.subscriber._consumer.Consumer`.)
 
     Attributes:
-        message_id (str): The message ID. In general, you should not need
-            to use this directly.
-        data (bytes): The data in the message. Note that this will be a
-            :class:`bytes`, not a text string.
-        attributes (.ScalarMapContainer): The attributes sent along with the
-            message. See :attr:`attributes` for more information on this type.
-        publish_time (datetime): The time that this message was originally
-            published.
+        message_id:
+            The message ID. In general, you should not need to use this directly.
+        data:
+            The data in the message. Note that this will be a :class:`bytes`,
+            not a text string.
+        attributes:
+            The attributes sent along with the message. See :attr:`attributes` for more
+            information on this type.
+        publish_time:
+            The time that this message was originally published.
     """
 
-    def __init__(self, message, ack_id, delivery_attempt, request_queue):
+    def __init__(  # pytype: disable=module-attr
+        self,
+        message: "types.PubsubMessage._meta._pb",
+        ack_id: str,
+        delivery_attempt: int,
+        request_queue: "queue.Queue",
+    ):
         """Construct the Message.
 
         .. note::
@@ -79,19 +96,20 @@ class Message(object):
             responsibility of :class:`BasePolicy` subclasses to do so.
 
         Args:
-            message (`pubsub_v1.types.PubsubMessage._meta._pb`):
+            message:
                 The message received from Pub/Sub. For performance reasons it should be
                 the raw protobuf message normally wrapped by
                 :class:`~pubsub_v1.types.PubsubMessage`. A raw message can be obtained
                 from a  :class:`~pubsub_v1.types.PubsubMessage` instance through the
                 latter's ``._pb`` attribute.
-            ack_id (str): The ack_id received from Pub/Sub.
-            delivery_attempt (int): The delivery attempt counter received
-                from Pub/Sub if a DeadLetterPolicy is set on the subscription,
-                and zero otherwise.
-            request_queue (queue.Queue): A queue provided by the policy that
-                can accept requests; the policy is responsible for handling
-                those requests.
+            ack_id:
+                The ack_id received from Pub/Sub.
+            delivery_attempt:
+                The delivery attempt counter received from Pub/Sub if a DeadLetterPolicy
+                is set on the subscription, and zero otherwise.
+            request_queue:
+                A queue provided by the policy that can accept requests; the policy is
+                responsible for handling those requests.
         """
         self._message = message
         self._ack_id = ack_id
@@ -131,12 +149,12 @@ class Message(object):
         return _MESSAGE_REPR.format(abbv_data, str(self.ordering_key), pretty_attrs)
 
     @property
-    def attributes(self):
+    def attributes(self) -> "containers.ScalarMap":
         """Return the attributes of the underlying Pub/Sub Message.
 
         .. warning::
 
-            A ``ScalarMapContainer`` behaves slightly differently than a
+            A ``ScalarMap`` behaves slightly differently than a
             ``dict``. For a Pub / Sub message this is a ``string->string`` map.
             When trying to access a value via ``map['key']``, if the key is
             not in the map, then the default value for the string type will
@@ -144,47 +162,47 @@ class Message(object):
             to just cast the map to a ``dict`` or to one use ``map.get``.
 
         Returns:
-            .ScalarMapContainer: The message's attributes. This is a
-            ``dict``-like object provided by ``google.protobuf``.
+            The message's attributes. This is a ``dict``-like object provided by
+            ``google.protobuf``.
         """
         return self._attributes
 
     @property
-    def data(self):
+    def data(self) -> bytes:
         """Return the data for the underlying Pub/Sub Message.
 
         Returns:
-            bytes: The message data. This is always a bytestring; if you
-                want a text string, call :meth:`bytes.decode`.
+            The message data. This is always a bytestring; if you want a text string,
+            call :meth:`bytes.decode`.
         """
         return self._data
 
     @property
-    def publish_time(self):
+    def publish_time(self) -> "datetime.datetime":
         """Return the time that the message was originally published.
 
         Returns:
-            datetime: The date and time that the message was published.
+            The date and time that the message was published.
         """
         return self._publish_time
 
     @property
-    def ordering_key(self):
-        """str: the ordering key used to publish the message."""
+    def ordering_key(self) -> str:
+        """The ordering key used to publish the message."""
         return self._ordering_key
 
     @property
-    def size(self):
+    def size(self) -> int:
         """Return the size of the underlying message, in bytes."""
         return self._size
 
     @property
-    def ack_id(self):
-        """str: the ID used to ack the message."""
+    def ack_id(self) -> str:
+        """the ID used to ack the message."""
         return self._ack_id
 
     @property
-    def delivery_attempt(self):
+    def delivery_attempt(self) -> Optional[int]:
         """The delivery attempt counter is 1 + (the sum of number of NACKs
         and number of ack_deadline exceeds) for this message. It is set to None
         if a DeadLetterPolicy is not set on the subscription.
@@ -199,11 +217,11 @@ class Message(object):
         is calculated at best effort and is approximate.
 
         Returns:
-            Optional[int]: The delivery attempt counter or None.
+            The delivery attempt counter or ``None``.
         """
         return self._delivery_attempt
 
-    def ack(self):
+    def ack(self) -> None:
         """Acknowledge the given message.
 
         Acknowledging a message in Pub/Sub means that you are done
@@ -227,7 +245,7 @@ class Message(object):
             )
         )
 
-    def drop(self):
+    def drop(self) -> None:
         """Release the message from lease management.
 
         This informs the policy to no longer hold on to the lease for this
@@ -246,7 +264,7 @@ class Message(object):
             )
         )
 
-    def modify_ack_deadline(self, seconds):
+    def modify_ack_deadline(self, seconds: int) -> None:
         """Resets the deadline for acknowledgement.
 
         New deadline will be the given value of seconds from now.
@@ -257,15 +275,16 @@ class Message(object):
         :class:`~.pubsub_v1.subcriber._consumer.Consumer`.
 
         Args:
-            seconds (int): The number of seconds to set the lease deadline
-                to. This should be between 0 and 600. Due to network latency,
-                values below 10 are advised against.
+            seconds:
+                The number of seconds to set the lease deadline to. This should be
+                between 0 and 600. Due to network latency, values below 10 are advised
+                against.
         """
         self._request_queue.put(
             requests.ModAckRequest(ack_id=self._ack_id, seconds=seconds)
         )
 
-    def nack(self):
+    def nack(self) -> None:
         """Decline to acknowldge the given message.
 
         This will cause the message to be re-delivered to the subscription.

@@ -33,7 +33,7 @@ class PublishToPausedOrderingKeyException(Exception):
         occurred during publish of a batch for that key.
     """
 
-    def __init__(self, ordering_key):
+    def __init__(self, ordering_key: str):
         self.ordering_key = ordering_key
         super(PublishToPausedOrderingKeyException, self).__init__()
 

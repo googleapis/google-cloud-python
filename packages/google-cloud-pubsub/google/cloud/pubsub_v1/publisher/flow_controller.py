@@ -15,6 +15,7 @@
 from collections import OrderedDict
 import logging
 import threading
+from typing import Optional
 import warnings
 
 from google.cloud.pubsub_v1 import types
@@ -45,11 +46,10 @@ class FlowController(object):
     """A class used to control the flow of messages passing through it.
 
     Args:
-        settings (~google.cloud.pubsub_v1.types.PublishFlowControl):
-            Desired flow control configuration.
+        settings: Desired flow control configuration.
     """
 
-    def __init__(self, settings):
+    def __init__(self, settings: types.PublishFlowControl):
         self._settings = settings
 
         # Load statistics. They represent the number of messages added, but not
@@ -72,14 +72,14 @@ class FlowController(object):
         # The condition for blocking the flow if capacity is exceeded.
         self._has_capacity = threading.Condition(lock=self._operational_lock)
 
-    def add(self, message):
+    def add(self, message: types.PubsubMessage) -> None:  # pytype: disable=module-attr
         """Add a message to flow control.
 
         Adding a message updates the internal load statistics, and an action is
         taken if these limits are exceeded (depending on the flow control settings).
 
         Args:
-            message (:class:`~google.cloud.pubsub_v1.types.PubsubMessage`):
+            message:
                 The message entering the flow control.
 
         Raises:
@@ -166,11 +166,13 @@ class FlowController(object):
             self._reserved_slots -= 1
             del self._waiting[current_thread]
 
-    def release(self, message):
+    def release(
+        self, message: types.PubsubMessage  # pytype: disable=module-attr
+    ) -> None:
         """Release a mesage from flow control.
 
         Args:
-            message (:class:`~google.cloud.pubsub_v1.types.PubsubMessage`):
+            message:
                 The message entering the flow control.
         """
         if self._settings.limit_exceeded_behavior == types.LimitExceededBehavior.IGNORE:
@@ -197,7 +199,7 @@ class FlowController(object):
                 _LOGGER.debug("Notifying threads waiting to add messages to flow.")
                 self._has_capacity.notify_all()
 
-    def _distribute_available_capacity(self):
+    def _distribute_available_capacity(self) -> None:
         """Distribute available capacity among the waiting threads in FIFO order.
 
         The method assumes that the caller has obtained ``_operational_lock``.
@@ -237,13 +239,10 @@ class FlowController(object):
             self._reserved_bytes += can_give
             available_bytes -= can_give
 
-    def _ready_to_unblock(self):
+    def _ready_to_unblock(self) -> bool:
         """Determine if any of the threads waiting to add a message can proceed.
 
         The method assumes that the caller has obtained ``_operational_lock``.
-
-        Returns:
-            bool
         """
         if self._waiting:
             # It's enough to only check the head of the queue, because FIFO
@@ -256,17 +255,15 @@ class FlowController(object):
 
         return False
 
-    def _would_overflow(self, message):
+    def _would_overflow(
+        self, message: types.PubsubMessage  # pytype: disable=module-attr
+    ) -> bool:
         """Determine if accepting a message would exceed flow control limits.
 
         The method assumes that the caller has obtained ``_operational_lock``.
 
         Args:
-            message (:class:`~google.cloud.pubsub_v1.types.PubsubMessage`):
-                The message entering the flow control.
-
-        Returns:
-            bool
+            message: The message entering the flow control.
         """
         reservation = self._waiting.get(threading.current_thread())
 
@@ -287,7 +284,9 @@ class FlowController(object):
 
         return size_overflow or msg_count_overflow
 
-    def _load_info(self, message_count=None, total_bytes=None):
+    def _load_info(
+        self, message_count: Optional[int] = None, total_bytes: Optional[int] = None
+    ) -> str:
         """Return the current flow control load information.
 
         The caller can optionally adjust some of the values to fit its reporting
@@ -296,13 +295,10 @@ class FlowController(object):
         The method assumes that the caller has obtained ``_operational_lock``.
 
         Args:
-            message_count (Optional[int]):
+            message_count:
                 The value to override the current message count with.
-            total_bytes (Optional[int]):
+            total_bytes:
                 The value to override the current total bytes with.
-
-        Returns:
-            str
         """
         if message_count is None:
             message_count = self._message_count

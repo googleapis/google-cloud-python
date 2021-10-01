@@ -20,10 +20,27 @@ import itertools
 import logging
 import math
 import threading
+import typing
+from typing import Sequence, Union
 
 from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 from google.pubsub_v1 import types as gapic_types
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    import queue
+    from google.cloud.pubsub_v1.subscriber._protocol.streaming_pull_manager import (
+        StreamingPullManager,
+    )
+
+
+RequestItem = Union[
+    requests.AckRequest,
+    requests.DropRequest,
+    requests.LeaseRequest,
+    requests.ModAckRequest,
+    requests.NackRequest,
+]
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -51,14 +68,15 @@ IDs at a time.
 
 
 class Dispatcher(object):
-    def __init__(self, manager, queue):
+    def __init__(self, manager: "StreamingPullManager", queue: "queue.Queue"):
         self._manager = manager
         self._queue = queue
         self._thread = None
         self._operational_lock = threading.Lock()
 
-    def start(self):
+    def start(self) -> None:
         """Start a thread to dispatch requests queued up by callbacks.
+
         Spawns a thread to run :meth:`dispatch_callback`.
         """
         with self._operational_lock:
@@ -78,7 +96,7 @@ class Dispatcher(object):
             _LOGGER.debug("Started helper thread %s", thread.name)
             self._thread = thread
 
-    def stop(self):
+    def stop(self) -> None:
         with self._operational_lock:
             if self._thread is not None:
                 # Signal the worker to stop by queueing a "poison pill"
@@ -87,17 +105,12 @@ class Dispatcher(object):
 
             self._thread = None
 
-    def dispatch_callback(self, items):
+    def dispatch_callback(self, items: Sequence[RequestItem]) -> None:
         """Map the callback request to the appropriate gRPC request.
 
         Args:
-            action (str): The method to be invoked.
-            kwargs (Dict[str, Any]): The keyword arguments for the method
-                specified by ``action``.
-
-        Raises:
-            ValueError: If ``action`` isn't one of the expected actions
-                "ack", "drop", "lease", "modify_ack_deadline" or "nack".
+            items:
+                Queued requests to dispatch.
         """
         batched_commands = collections.defaultdict(list)
 
@@ -119,11 +132,11 @@ class Dispatcher(object):
         if batched_commands[requests.DropRequest]:
             self.drop(batched_commands.pop(requests.DropRequest))
 
-    def ack(self, items):
+    def ack(self, items: Sequence[requests.AckRequest]) -> None:
         """Acknowledge the given messages.
 
         Args:
-            items(Sequence[AckRequest]): The items to acknowledge.
+            items: The items to acknowledge.
         """
         # If we got timing information, add it to the histogram.
         for item in items:
@@ -145,31 +158,36 @@ class Dispatcher(object):
         # Remove the message from lease management.
         self.drop(items)
 
-    def drop(self, items):
+    def drop(
+        self,
+        items: Sequence[
+            Union[requests.AckRequest, requests.DropRequest, requests.NackRequest]
+        ],
+    ) -> None:
         """Remove the given messages from lease management.
 
         Args:
-            items(Sequence[DropRequest]): The items to drop.
+            items: The items to drop.
         """
         self._manager.leaser.remove(items)
         ordering_keys = (k.ordering_key for k in items if k.ordering_key)
         self._manager.activate_ordering_keys(ordering_keys)
         self._manager.maybe_resume_consumer()
 
-    def lease(self, items):
+    def lease(self, items: Sequence[requests.LeaseRequest]) -> None:
         """Add the given messages to lease management.
 
         Args:
-            items(Sequence[LeaseRequest]): The items to lease.
+            items: The items to lease.
         """
         self._manager.leaser.add(items)
         self._manager.maybe_pause_consumer()
 
-    def modify_ack_deadline(self, items):
+    def modify_ack_deadline(self, items: Sequence[requests.ModAckRequest]) -> None:
         """Modify the ack deadline for the given messages.
 
         Args:
-            items(Sequence[ModAckRequest]): The items to modify.
+            items: The items to modify.
         """
         # We must potentially split the request into multiple smaller requests
         # to avoid the server-side max request size limit.
@@ -184,11 +202,11 @@ class Dispatcher(object):
             )
             self._manager.send(request)
 
-    def nack(self, items):
+    def nack(self, items: Sequence[requests.NackRequest]) -> None:
         """Explicitly deny receipt of messages.
 
         Args:
-            items(Sequence[NackRequest]): The items to deny.
+            items: The items to deny.
         """
         self.modify_ack_deadline(
             [requests.ModAckRequest(ack_id=item.ack_id, seconds=0) for item in items]

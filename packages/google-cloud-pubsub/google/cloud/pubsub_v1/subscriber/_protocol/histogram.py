@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import, division
+from typing import Dict, Optional, Union
 
 
 MIN_ACK_DEADLINE = 10
@@ -36,15 +36,15 @@ class Histogram(object):
     leases in the actual API.
     """
 
-    def __init__(self, data=None):
+    def __init__(self, data: Optional[Dict[int, int]] = None):
         """Instantiate the histogram.
 
         Args:
-            data (Mapping[str, int]): The data strucure to be used to store
-                the underlying data. The default is an empty dictionary.
-                This can be set to a dictionary-like object if required
-                (for example, if a special object is needed for
-                concurrency reasons).
+            data:
+                The data strucure to be used to store the underlying data. The default
+                is an empty dictionary. This can be set to a dictionary-like object if
+                required (for example, if a special object is needed for concurrency
+                reasons).
         """
         # The data is stored as a dictionary, with the keys being the
         # value being added and the values being the number of times that
@@ -60,22 +60,19 @@ class Histogram(object):
         self._data = data
         self._len = 0
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Return the total number of data points in this histogram.
 
         This is cached on a separate counter (rather than computing it using
         ``sum([v for v in self._data.values()])``) to optimize lookup.
 
         Returns:
-            int: The total number of data points in this histogram.
+            The total number of data points in this histogram.
         """
         return self._len
 
-    def __contains__(self, needle):
-        """Return True if needle is present in the histogram, False otherwise.
-
-        Returns:
-            bool: True or False
+    def __contains__(self, needle: int) -> bool:
+        """Return ``True`` if needle is present in the histogram, ``False`` otherwise.
         """
         return needle in self._data
 
@@ -85,37 +82,38 @@ class Histogram(object):
         )
 
     @property
-    def max(self):
+    def max(self) -> int:
         """Return the maximum value in this histogram.
 
         If there are no values in the histogram at all, return ``MAX_ACK_DEADLINE``.
 
         Returns:
-            int: The maximum value in the histogram.
+            The maximum value in the histogram.
         """
         if len(self._data) == 0:
             return MAX_ACK_DEADLINE
         return next(iter(reversed(sorted(self._data.keys()))))
 
     @property
-    def min(self):
+    def min(self) -> int:
         """Return the minimum value in this histogram.
 
         If there are no values in the histogram at all, return ``MIN_ACK_DEADLINE``.
 
         Returns:
-            int: The minimum value in the histogram.
+            The minimum value in the histogram.
         """
         if len(self._data) == 0:
             return MIN_ACK_DEADLINE
         return next(iter(sorted(self._data.keys())))
 
-    def add(self, value):
+    def add(self, value: Union[int, float]) -> None:
         """Add the value to this histogram.
 
         Args:
-            value (int): The value. Values outside of
-            ``MIN_ACK_DEADLINE <= x <= MAX_ACK_DEADLINE``
+            value:
+                The value. Values outside of
+                ``MIN_ACK_DEADLINE <= x <= MAX_ACK_DEADLINE``
                 will be raised to ``MIN_ACK_DEADLINE`` or reduced to
                 ``MAX_ACK_DEADLINE``.
         """
@@ -131,15 +129,16 @@ class Histogram(object):
         self._data[value] += 1
         self._len += 1
 
-    def percentile(self, percent):
+    def percentile(self, percent: Union[int, float]) -> int:
         """Return the value that is the Nth precentile in the histogram.
 
         Args:
-            percent (Union[int, float]): The precentile being sought. The
-                default consumer implementations consistently use ``99``.
+            percent:
+                The precentile being sought. The default consumer implementations
+                consistently use ``99``.
 
         Returns:
-            int: The value corresponding to the requested percentile.
+            The value corresponding to the requested percentile.
         """
         # Sanity check: Any value over 100 should become 100.
         if percent >= 100:

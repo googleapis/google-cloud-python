@@ -20,6 +20,8 @@ import os
 import pkg_resources
 import threading
 import time
+import typing
+from typing import Any, Sequence, Type, Union
 
 from google.api_core import gapic_v1
 from google.auth.credentials import AnonymousCredentials
@@ -43,6 +45,13 @@ except pkg_resources.DistributionNotFound:
     # PIP package.
     __version__ = "0.0"
 
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    from google import api_core
+    from google.cloud import pubsub_v1
+    from google.cloud.pubsub_v1.publisher._sequencer.base import Sequencer
+    from google.cloud.pubsub_v1.publisher import _batch
+
+
 _LOGGER = logging.getLogger(__name__)
 
 _DENYLISTED_METHODS = (
@@ -63,13 +72,14 @@ class Client(object):
     get sensible defaults.
 
     Args:
-        batch_settings (~google.cloud.pubsub_v1.types.BatchSettings): The
-            settings for batch publishing.
-        publisher_options (~google.cloud.pubsub_v1.types.PublisherOptions): The
-            options for the publisher client. Note that enabling message ordering will
-            override the publish retry timeout to be infinite.
-        kwargs (dict): Any additional arguments provided are sent as keyword
-            arguments to the underlying
+        batch_settings:
+            The settings for batch publishing.
+        publisher_options:
+            The options for the publisher client. Note that enabling message ordering
+            will override the publish retry timeout to be infinite.
+        kwargs:
+            Any additional arguments provided are sent as keyword arguments to the
+            underlying
             :class:`~google.cloud.pubsub_v1.gapic.publisher_client.PublisherClient`.
             Generally you should not need to set additional keyword
             arguments. Regional endpoints can be set via ``client_options`` that
@@ -104,14 +114,19 @@ class Client(object):
         )
     """
 
-    def __init__(self, batch_settings=(), publisher_options=(), **kwargs):
+    def __init__(
+        self,
+        batch_settings: Union[types.BatchSettings, Sequence] = (),
+        publisher_options: Union[types.PublisherOptions, Sequence] = (),
+        **kwargs: Any,
+    ):
         assert (
             type(batch_settings) is types.BatchSettings or len(batch_settings) == 0
-        ), "batch_settings must be of type BatchSettings or an empty tuple."
+        ), "batch_settings must be of type BatchSettings or an empty sequence."
         assert (
             type(publisher_options) is types.PublisherOptions
             or len(publisher_options) == 0
-        ), "publisher_options must be of type PublisherOptions or an empty tuple."
+        ), "publisher_options must be of type PublisherOptions or an empty sequence."
 
         # Sanity check: Is our goal to use the emulator?
         # If so, create a grpc insecure channel with the emulator host
@@ -146,20 +161,25 @@ class Client(object):
         self._flow_controller = FlowController(self.publisher_options.flow_control)
 
     @classmethod
-    def from_service_account_file(cls, filename, batch_settings=(), **kwargs):
+    def from_service_account_file(
+        cls,
+        filename: str,
+        batch_settings: Union[types.BatchSettings, Sequence] = (),
+        **kwargs: Any,
+    ) -> "Client":
         """Creates an instance of this client using the provided credentials
         file.
 
         Args:
-            filename (str): The path to the service account private key json
-                file.
-            batch_settings (~google.cloud.pubsub_v1.types.BatchSettings): The
-                settings for batch publishing.
-            kwargs: Additional arguments to pass to the constructor.
+            filename:
+                The path to the service account private key JSON file.
+            batch_settings:
+                The settings for batch publishing.
+            kwargs:
+                Additional arguments to pass to the constructor.
 
         Returns:
-            A Publisher :class:`~google.cloud.pubsub_v1.publisher.client.Client`
-            instance that is the constructed client.
+            A Publisher instance that is the constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -168,15 +188,15 @@ class Client(object):
     from_service_account_json = from_service_account_file
 
     @property
-    def target(self):
+    def target(self) -> str:
         """Return the target (where the API is).
 
         Returns:
-            str: The location of the API.
+            The location of the API.
         """
         return self._target
 
-    def _get_or_create_sequencer(self, topic, ordering_key):
+    def _get_or_create_sequencer(self, topic: str, ordering_key: str) -> "Sequencer":
         """ Get an existing sequencer or create a new one given the (topic,
             ordering_key) pair.
         """
@@ -193,11 +213,11 @@ class Client(object):
 
         return sequencer
 
-    def resume_publish(self, topic, ordering_key):
+    def resume_publish(self, topic: str, ordering_key: str) -> None:
         """ Resume publish on an ordering key that has had unrecoverable errors.
 
         Args:
-            topic (str): The topic to publish messages to.
+            topic: The topic to publish messages to.
             ordering_key: A string that identifies related messages for which
                 publish order should be respected.
 
@@ -231,13 +251,13 @@ class Client(object):
 
     def publish(
         self,
-        topic,
-        data,
-        ordering_key="",
-        retry=gapic_v1.method.DEFAULT,
+        topic: str,
+        data: bytes,
+        ordering_key: str = "",
+        retry: "api_core.retry.Retry" = gapic_v1.method.DEFAULT,
         timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
-        **attrs
-    ):
+        **attrs: Union[bytes, str],
+    ) -> "pubsub_v1.publisher.futures.Future":
         """Publish a single message.
 
         .. note::
@@ -266,22 +286,22 @@ class Client(object):
             >>> response = client.publish(topic, data, username='guido')
 
         Args:
-            topic (str): The topic to publish messages to.
-            data (bytes): A bytestring representing the message body. This
+            topic: The topic to publish messages to.
+            data: A bytestring representing the message body. This
                 must be a bytestring.
             ordering_key: A string that identifies related messages for which
                 publish order should be respected. Message ordering must be
                 enabled for this client to use this feature.
-            retry (Optional[google.api_core.retry.Retry]): Designation of what
-                errors, if any, should be retried. If `ordering_key` is specified,
-                the total retry deadline will be changed to "infinity".
+            retry:
+                Designation of what errors, if any, should be retried. If `ordering_key`
+                is specified, the total retry deadline will be changed to "infinity".
                 If given, it overides any retry passed into the client through
                 the ``publisher_options`` argument.
-            timeout (:class:`~.pubsub_v1.types.TimeoutType`):
+            timeout:
                 The timeout for the RPC request. Can be used to override any timeout
                 passed in through ``publisher_options`` when instantiating the client.
 
-            attrs (Mapping[str, str]): A dictionary of attributes to be
+            attrs: A dictionary of attributes to be
                 sent as metadata. (These may be text strings or byte strings.)
 
         Returns:
@@ -374,7 +394,7 @@ class Client(object):
 
             return future
 
-    def ensure_cleanup_and_commit_timer_runs(self):
+    def ensure_cleanup_and_commit_timer_runs(self) -> None:
         """ Ensure a cleanup/commit timer thread is running.
 
             If a cleanup/commit timer thread is already running, this does nothing.
@@ -382,7 +402,7 @@ class Client(object):
         with self._batch_lock:
             self._ensure_commit_timer_runs_no_lock()
 
-    def _ensure_commit_timer_runs_no_lock(self):
+    def _ensure_commit_timer_runs_no_lock(self) -> None:
         """ Ensure a commit timer thread is running, without taking
             _batch_lock.
 
@@ -391,7 +411,7 @@ class Client(object):
         if not self._commit_thread and self.batch_settings.max_latency < float("inf"):
             self._start_commit_thread()
 
-    def _start_commit_thread(self):
+    def _start_commit_thread(self) -> None:
         """Start a new thread to actually wait and commit the sequencers."""
         # NOTE: If the thread is *not* a daemon, a memory leak exists due to a CPython issue.
         # https://github.com/googleapis/python-pubsub/issues/395#issuecomment-829910303
@@ -403,7 +423,7 @@ class Client(object):
         )
         self._commit_thread.start()
 
-    def _wait_and_commit_sequencers(self):
+    def _wait_and_commit_sequencers(self) -> None:
         """ Wait up to the batching timeout, and commit all sequencers.
         """
         # Sleep for however long we should be waiting.
@@ -416,7 +436,7 @@ class Client(object):
             self._commit_sequencers()
             self._commit_thread = None
 
-    def _commit_sequencers(self):
+    def _commit_sequencers(self) -> None:
         """ Clean up finished sequencers and commit the rest. """
         finished_sequencer_keys = [
             key
@@ -429,7 +449,7 @@ class Client(object):
         for sequencer in self._sequencers.values():
             sequencer.commit()
 
-    def stop(self):
+    def stop(self) -> None:
         """Immediately publish all outstanding messages.
 
         Asynchronously sends all outstanding messages and
@@ -458,15 +478,19 @@ class Client(object):
                 sequencer.stop()
 
     # Used only for testing.
-    def _set_batch(self, topic, batch, ordering_key=""):
+    def _set_batch(
+        self, topic: str, batch: "_batch.thread.Batch", ordering_key: str = ""
+    ) -> None:
         sequencer = self._get_or_create_sequencer(topic, ordering_key)
         sequencer._set_batch(batch)
 
     # Used only for testing.
-    def _set_batch_class(self, batch_class):
+    def _set_batch_class(self, batch_class: Type) -> None:
         self._batch_class = batch_class
 
     # Used only for testing.
-    def _set_sequencer(self, topic, sequencer, ordering_key=""):
+    def _set_sequencer(
+        self, topic: str, sequencer: "Sequencer", ordering_key: str = ""
+    ) -> None:
         sequencer_key = (topic, ordering_key)
         self._sequencers[sequencer_key] = sequencer

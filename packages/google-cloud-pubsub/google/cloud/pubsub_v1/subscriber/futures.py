@@ -14,7 +14,16 @@
 
 from __future__ import absolute_import
 
+import typing
+from typing import Any
+
 from google.cloud.pubsub_v1 import futures
+
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.pubsub_v1.subscriber._protocol.streaming_pull_manager import (
+        StreamingPullManager,
+    )
 
 
 class StreamingPullFuture(futures.Future):
@@ -26,13 +35,13 @@ class StreamingPullFuture(futures.Future):
     the calling thread to block indefinitely.
     """
 
-    def __init__(self, manager):
+    def __init__(self, manager: "StreamingPullManager"):
         super(StreamingPullFuture, self).__init__()
         self.__manager = manager
         self.__manager.add_close_callback(self._on_close_callback)
         self.__cancelled = False
 
-    def _on_close_callback(self, manager, result):
+    def _on_close_callback(self, manager: "StreamingPullManager", result: Any):
         if self.done():
             # The future has already been resolved in a different thread,
             # nothing to do on the streaming pull manager shutdown.
@@ -57,9 +66,9 @@ class StreamingPullFuture(futures.Future):
         self.__cancelled = True
         return self.__manager.close()
 
-    def cancelled(self):
+    def cancelled(self) -> bool:
         """
-        returns:
-            bool: ``True`` if the subscription has been cancelled.
+        Returns:
+            ``True`` if the subscription has been cancelled.
         """
         return self.__cancelled

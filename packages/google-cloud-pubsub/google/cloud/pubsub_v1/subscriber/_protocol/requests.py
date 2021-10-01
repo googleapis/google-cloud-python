@@ -12,28 +12,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Base class for concurrency policy."""
+from typing import NamedTuple, Optional
 
-from __future__ import absolute_import, division
-
-import collections
 
 # Namedtuples for management requests. Used by the Message class to communicate
 # items of work back to the policy.
-AckRequest = collections.namedtuple(
-    "AckRequest", ["ack_id", "byte_size", "time_to_ack", "ordering_key"]
-)
+class AckRequest(NamedTuple):
+    ack_id: str
+    byte_size: int
+    time_to_ack: float
+    ordering_key: Optional[str]
 
-DropRequest = collections.namedtuple(
-    "DropRequest", ["ack_id", "byte_size", "ordering_key"]
-)
 
-LeaseRequest = collections.namedtuple(
-    "LeaseRequest", ["ack_id", "byte_size", "ordering_key"]
-)
+class DropRequest(NamedTuple):
+    ack_id: str
+    byte_size: int
+    ordering_key: Optional[str]
 
-ModAckRequest = collections.namedtuple("ModAckRequest", ["ack_id", "seconds"])
 
-NackRequest = collections.namedtuple(
-    "NackRequest", ["ack_id", "byte_size", "ordering_key"]
-)
+class LeaseRequest(NamedTuple):
+    ack_id: str
+    byte_size: int
+    ordering_key: Optional[str]
+
+
+class ModAckRequest(NamedTuple):
+    ack_id: str
+    seconds: float
+
+
+class NackRequest(NamedTuple):
+    ack_id: str
+    byte_size: int
+    ordering_key: Optional[str]

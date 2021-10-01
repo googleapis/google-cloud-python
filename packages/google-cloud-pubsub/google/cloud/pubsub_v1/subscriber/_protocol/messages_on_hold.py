@@ -13,6 +13,11 @@
 # limitations under the License.
 
 import collections
+import typing
+from typing import Any, Callable, Iterable, Optional
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.pubsub_v1 import subscriber
 
 
 class MessagesOnHold(object):
@@ -41,27 +46,25 @@ class MessagesOnHold(object):
         self._pending_ordered_messages = {}
 
     @property
-    def size(self):
-        """Return the number of messages on hold across ordered and unordered
-        messages.
+    def size(self) -> int:
+        """Return the number of messages on hold across ordered and unordered messages.
 
         Note that this object may still store information about ordered messages
         in flight even if size is zero.
 
         Returns:
-            int: The size value.
+            The size value.
         """
         return self._size
 
-    def get(self):
+    def get(self) -> Optional["subscriber.message.Message"]:
         """ Gets a message from the on-hold queue. A message with an ordering
         key wont be returned if there's another message with the same key in
         flight.
 
         Returns:
-            Optional[google.cloud.pubsub_v1.subscriber.message.Message]: A message
-                that hasn't been sent to the user yet or None if there are no
-                messages available.
+            A message that hasn't been sent to the user yet or ``None`` if there are no
+            messages available.
         """
         while self._messages_on_hold:
             msg = self._messages_on_hold.popleft()
@@ -88,17 +91,20 @@ class MessagesOnHold(object):
 
         return None
 
-    def put(self, message):
+    def put(self, message: "subscriber.message.Message") -> None:
         """Put a message on hold.
 
         Args:
-            message (google.cloud.pubsub_v1.subscriber.message.Message): The
-                message to put on hold.
+            message: The message to put on hold.
         """
         self._messages_on_hold.append(message)
         self._size = self._size + 1
 
-    def activate_ordering_keys(self, ordering_keys, schedule_message_callback):
+    def activate_ordering_keys(
+        self,
+        ordering_keys: Iterable[str],
+        schedule_message_callback: Callable[["subscriber.message.Message"], Any],
+    ) -> None:
         """Send the next message in the queue for each of the passed-in
         ordering keys, if they exist. Clean up state for keys that no longer
         have any queued messages.
@@ -107,9 +113,9 @@ class MessagesOnHold(object):
         detail about the impact of this method on load.
 
         Args:
-            ordering_keys(Sequence[str]): A sequence of ordering keys to
-                activate. May be empty.
-            schedule_message_callback(Callable[google.cloud.pubsub_v1.subscriber.message.Message]):
+            ordering_keys:
+                The ordering keys to activate. May be empty.
+            schedule_message_callback:
                 The callback to call to schedule a message to be sent to the user.
         """
         for key in ordering_keys:
@@ -126,18 +132,19 @@ class MessagesOnHold(object):
                 # No more messages for this ordering key, so do clean-up.
                 self._clean_up_ordering_key(key)
 
-    def _get_next_for_ordering_key(self, ordering_key):
+    def _get_next_for_ordering_key(
+        self, ordering_key: str
+    ) -> Optional["subscriber.message.Message"]:
         """Get next message for ordering key.
 
         The client should call clean_up_ordering_key() if this method returns
         None.
 
         Args:
-            ordering_key (str): Ordering key for which to get the next message.
+            ordering_key: Ordering key for which to get the next message.
 
         Returns:
-            google.cloud.pubsub_v1.subscriber.message.Message|None: The
-                next message for this ordering key or None if there aren't any.
+            The next message for this ordering key or None if there aren't any.
         """
         queue_for_key = self._pending_ordered_messages.get(ordering_key)
         if queue_for_key:
@@ -145,11 +152,11 @@ class MessagesOnHold(object):
             return queue_for_key.popleft()
         return None
 
-    def _clean_up_ordering_key(self, ordering_key):
+    def _clean_up_ordering_key(self, ordering_key: str) -> None:
         """Clean up state for an ordering key with no pending messages.
 
         Args:
-            ordering_key (str): The ordering key to clean up.
+            ordering_key: The ordering key to clean up.
         """
         message_queue = self._pending_ordered_messages.get(ordering_key)
         assert (

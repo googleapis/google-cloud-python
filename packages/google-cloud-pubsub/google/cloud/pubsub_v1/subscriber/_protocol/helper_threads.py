@@ -15,6 +15,7 @@
 import logging
 import queue
 import time
+from typing import Any, Callable, List, Sequence
 import uuid
 
 
@@ -30,22 +31,25 @@ _LOGGER = logging.getLogger(__name__)
 STOP = uuid.uuid4()
 
 
-def _get_many(queue_, max_items=None, max_latency=0):
+def _get_many(
+    queue_: queue.Queue, max_items: int = None, max_latency: float = 0
+) -> List[Any]:
     """Get multiple items from a Queue.
 
     Gets at least one (blocking) and at most ``max_items`` items
     (non-blocking) from a given Queue. Does not mark the items as done.
 
     Args:
-        queue_ (~queue.Queue`): The Queue to get items from.
-        max_items (int): The maximum number of items to get. If ``None``, then
-            all available items in the queue are returned.
-        max_latency (float):  The maximum number of seconds to wait for more
-            than one item from a queue. This number includes the time required
-            to retrieve the first item.
+        queue_: The Queue to get items from.
+        max_items:
+            The maximum number of items to get. If ``None``, then all available items
+            in the queue are returned.
+        max_latency:
+            The maximum number of seconds to wait for more than one item from a queue.
+            This number includes the time required to retrieve the first item.
 
     Returns:
-        Sequence[Any]: A sequence of items retrieved from the queue.
+        A sequence of items retrieved from the queue.
     """
     start = time.time()
     # Always return at least one item.
@@ -67,26 +71,33 @@ class QueueCallbackWorker(object):
     :attr:`STOP`.
 
     Args:
-        queue (~queue.Queue): A Queue instance, appropriate for crossing the
-            concurrency boundary implemented by ``executor``. Items will
-            be popped off (with a blocking ``get()``) until :attr:`STOP`
-            is encountered.
-        callback (Callable[Sequence[Any], Any]): A callback that can process
-            items pulled off of the queue. Multiple items will be passed to
-            the callback in batches.
-        max_items (int): The maximum amount of items that will be passed to the
-            callback at a time.
-        max_latency (float): The maximum amount of time in seconds to wait for
-            additional items before executing the callback.
+        queue:
+            A Queue instance, appropriate for crossing the concurrency boundary
+            implemented by ``executor``. Items will be popped off (with a blocking
+            ``get()``) until :attr:`STOP` is encountered.
+        callback:
+            A callback that can process items pulled off of the queue. Multiple items
+            will be passed to the callback in batches.
+        max_items:
+            The maximum amount of items that will be passed to the callback at a time.
+        max_latency:
+            The maximum amount of time in seconds to wait for additional items before
+            executing the callback.
     """
 
-    def __init__(self, queue, callback, max_items=100, max_latency=0):
+    def __init__(
+        self,
+        queue: queue.Queue,
+        callback: Callable[[Sequence[Any]], Any],
+        max_items: int = 100,
+        max_latency: float = 0,
+    ):
         self.queue = queue
         self._callback = callback
         self.max_items = max_items
         self.max_latency = max_latency
 
-    def __call__(self):
+    def __call__(self) -> None:
         continue_ = True
         while continue_:
             items = _get_many(
