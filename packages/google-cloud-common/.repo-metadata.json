@@ -7,5 +7,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-cloud-common",
-    "distribution_name": "google-cloud-common"
+    "distribution_name": "google-cloud-common",
+    "default_version": "",
+    "codeowner_team": ""
 }
