@@ -1,0 +1,11 @@
+{
+    "name": "common",
+    "name_pretty": "Google Cloud Common",
+    "client_documentation": "https://googleapis.dev/python/common/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-common",
+    "distribution_name": "google-cloud-common"
+}
