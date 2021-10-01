@@ -6,6 +6,6 @@
     "release_level": "beta",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-common",
+    "repo": "googleapis/python-cloud-common",
     "distribution_name": "google-cloud-common"
 }

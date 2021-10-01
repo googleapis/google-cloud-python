@@ -24,7 +24,7 @@ name = "google-cloud-common"
 description = "Google Cloud Common client library"
 version = "0.1.0"
 release_status = "Development Status :: 4 - Beta"
-url = "https://github.com/googleapis/python-common"
+url = "https://github.com/googleapis/python-cloud-common"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
     # Until this issue is closed

@@ -23,6 +23,6 @@ set -eo pipefail
 # Enables `**` to include files nested inside sub-folders
 shopt -s globstar
 
-cd github/python-common
+cd github/python-cloud-common
 
 exec .kokoro/test-samples-impl.sh

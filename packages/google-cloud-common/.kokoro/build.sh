@@ -16,7 +16,7 @@
 set -eo pipefail
 
 if [[ -z "${PROJECT_ROOT:-}" ]]; then
-    PROJECT_ROOT="github/python-common"
+    PROJECT_ROOT="github/python-cloud-common"
 fi
 
 cd "${PROJECT_ROOT}"
