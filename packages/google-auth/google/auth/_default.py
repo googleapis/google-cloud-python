@@ -54,6 +54,9 @@ or "API not enabled" error. We recommend you rerun \
 added. Or you can use service accounts instead. For more information \
 about service accounts, see https://cloud.google.com/docs/authentication/"""
 
+# The subject token type used for AWS external_account credentials.
+_AWS_SUBJECT_TOKEN_TYPE = "urn:ietf:params:aws:token-type:aws4_request"
+
 
 def _warn_about_problematic_credentials(credentials):
     """Determines if the credentials are problematic.
@@ -321,14 +324,14 @@ def _get_external_account_credentials(
             is in the wrong format or is missing required information.
     """
     # There are currently 2 types of external_account credentials.
-    try:
+    if info.get("subject_token_type") == _AWS_SUBJECT_TOKEN_TYPE:
         # Check if configuration corresponds to an AWS credentials.
         from google.auth import aws
 
         credentials = aws.Credentials.from_info(
             info, scopes=scopes, default_scopes=default_scopes
         )
-    except ValueError:
+    else:
         try:
             # Check if configuration corresponds to an Identity Pool credentials.
             from google.auth import identity_pool
