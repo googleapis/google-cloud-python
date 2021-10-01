@@ -90,7 +90,7 @@ templated_files = common.py_library(
     cov_level=100,
 )
 
-s.move(templated_files, excludes=[".coveragerc"])
+s.move(templated_files, excludes=[".coveragerc", ".github/CODEOWNERS"])
 
 # ----------------------------------------------------------------------------
 # Customize noxfile.py
