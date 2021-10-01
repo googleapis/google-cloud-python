@@ -141,7 +141,7 @@ templated_files = common.py_library(
 )
 python.py_samples(skip_readmes=True)
 
-s.move(templated_files)
+s.move(templated_files, excludes=[".github/CODEOOWNERS"])
 
 # ----------------------------------------------------------------------------
 # Customize noxfile.py
