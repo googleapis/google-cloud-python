@@ -28,7 +28,7 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.common import operation_metadata_pb2  # type: ignore
+from google.cloud.common.types import operation_metadata as operation_metadata_pb2  # type: ignore
 from google.cloud.filestore_v1.services.cloud_filestore_manager import pagers
 from google.cloud.filestore_v1.types import cloud_filestore_service
 from google.protobuf import empty_pb2  # type: ignore

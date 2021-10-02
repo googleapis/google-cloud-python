@@ -17,7 +17,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -32,7 +32,7 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.common import operation_metadata_pb2  # type: ignore
+from google.cloud.common.types import operation_metadata as operation_metadata_pb2  # type: ignore
 from google.cloud.filestore_v1.services.cloud_filestore_manager import pagers
 from google.cloud.filestore_v1.types import cloud_filestore_service
 from google.protobuf import empty_pb2  # type: ignore
@@ -400,7 +400,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def list_instances(
         self,
-        request: cloud_filestore_service.ListInstancesRequest = None,
+        request: Union[cloud_filestore_service.ListInstancesRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -411,7 +411,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         specified location or for all locations.
 
         Args:
-            request (google.cloud.filestore_v1.types.ListInstancesRequest):
+            request (Union[google.cloud.filestore_v1.types.ListInstancesRequest, dict]):
                 The request object. ListInstancesRequest lists
                 instances.
             parent (str):
@@ -485,7 +485,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def get_instance(
         self,
-        request: cloud_filestore_service.GetInstanceRequest = None,
+        request: Union[cloud_filestore_service.GetInstanceRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -495,7 +495,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         r"""Gets the details of a specific instance.
 
         Args:
-            request (google.cloud.filestore_v1.types.GetInstanceRequest):
+            request (Union[google.cloud.filestore_v1.types.GetInstanceRequest, dict]):
                 The request object. GetInstanceRequest gets the state of
                 an instance.
             name (str):
@@ -554,7 +554,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def create_instance(
         self,
-        request: cloud_filestore_service.CreateInstanceRequest = None,
+        request: Union[cloud_filestore_service.CreateInstanceRequest, dict] = None,
         *,
         parent: str = None,
         instance: cloud_filestore_service.Instance = None,
@@ -570,7 +570,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         the minimum capacity of the tier).
 
         Args:
-            request (google.cloud.filestore_v1.types.CreateInstanceRequest):
+            request (Union[google.cloud.filestore_v1.types.CreateInstanceRequest, dict]):
                 The request object. CreateInstanceRequest creates an
                 instance.
             parent (str):
@@ -663,7 +663,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def update_instance(
         self,
-        request: cloud_filestore_service.UpdateInstanceRequest = None,
+        request: Union[cloud_filestore_service.UpdateInstanceRequest, dict] = None,
         *,
         instance: cloud_filestore_service.Instance = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -674,7 +674,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         r"""Updates the settings of a specific instance.
 
         Args:
-            request (google.cloud.filestore_v1.types.UpdateInstanceRequest):
+            request (Union[google.cloud.filestore_v1.types.UpdateInstanceRequest, dict]):
                 The request object. UpdateInstanceRequest updates the
                 settings of an instance.
             instance (google.cloud.filestore_v1.types.Instance):
@@ -760,7 +760,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def restore_instance(
         self,
-        request: cloud_filestore_service.RestoreInstanceRequest = None,
+        request: Union[cloud_filestore_service.RestoreInstanceRequest, dict] = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -773,7 +773,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         to or larger than the minimum capacity of the tier).
 
         Args:
-            request (google.cloud.filestore_v1.types.RestoreInstanceRequest):
+            request (Union[google.cloud.filestore_v1.types.RestoreInstanceRequest, dict]):
                 The request object. RestoreInstanceRequest restores an
                 existing instances's file share from a backup.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -825,7 +825,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def delete_instance(
         self,
-        request: cloud_filestore_service.DeleteInstanceRequest = None,
+        request: Union[cloud_filestore_service.DeleteInstanceRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -835,7 +835,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         r"""Deletes an instance.
 
         Args:
-            request (google.cloud.filestore_v1.types.DeleteInstanceRequest):
+            request (Union[google.cloud.filestore_v1.types.DeleteInstanceRequest, dict]):
                 The request object. DeleteInstanceRequest deletes an
                 instance.
             name (str):
@@ -917,7 +917,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def list_backups(
         self,
-        request: cloud_filestore_service.ListBackupsRequest = None,
+        request: Union[cloud_filestore_service.ListBackupsRequest, dict] = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -928,7 +928,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         location or for all locations.
 
         Args:
-            request (google.cloud.filestore_v1.types.ListBackupsRequest):
+            request (Union[google.cloud.filestore_v1.types.ListBackupsRequest, dict]):
                 The request object. ListBackupsRequest lists backups.
             parent (str):
                 Required. The project and location for which to retrieve
@@ -1001,7 +1001,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def get_backup(
         self,
-        request: cloud_filestore_service.GetBackupRequest = None,
+        request: Union[cloud_filestore_service.GetBackupRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1011,7 +1011,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         r"""Gets the details of a specific backup.
 
         Args:
-            request (google.cloud.filestore_v1.types.GetBackupRequest):
+            request (Union[google.cloud.filestore_v1.types.GetBackupRequest, dict]):
                 The request object. GetBackupRequest gets the state of a
                 backup.
             name (str):
@@ -1070,7 +1070,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def create_backup(
         self,
-        request: cloud_filestore_service.CreateBackupRequest = None,
+        request: Union[cloud_filestore_service.CreateBackupRequest, dict] = None,
         *,
         parent: str = None,
         backup: cloud_filestore_service.Backup = None,
@@ -1082,7 +1082,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         r"""Creates a backup.
 
         Args:
-            request (google.cloud.filestore_v1.types.CreateBackupRequest):
+            request (Union[google.cloud.filestore_v1.types.CreateBackupRequest, dict]):
                 The request object. CreateBackupRequest creates a
                 backup.
             parent (str):
@@ -1180,7 +1180,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def delete_backup(
         self,
-        request: cloud_filestore_service.DeleteBackupRequest = None,
+        request: Union[cloud_filestore_service.DeleteBackupRequest, dict] = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
@@ -1190,7 +1190,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         r"""Deletes a backup.
 
         Args:
-            request (google.cloud.filestore_v1.types.DeleteBackupRequest):
+            request (Union[google.cloud.filestore_v1.types.DeleteBackupRequest, dict]):
                 The request object. DeleteBackupRequest deletes a
                 backup.
             name (str):
@@ -1272,7 +1272,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
 
     def update_backup(
         self,
-        request: cloud_filestore_service.UpdateBackupRequest = None,
+        request: Union[cloud_filestore_service.UpdateBackupRequest, dict] = None,
         *,
         backup: cloud_filestore_service.Backup = None,
         update_mask: field_mask_pb2.FieldMask = None,
@@ -1283,7 +1283,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         r"""Updates the settings of a specific backup.
 
         Args:
-            request (google.cloud.filestore_v1.types.UpdateBackupRequest):
+            request (Union[google.cloud.filestore_v1.types.UpdateBackupRequest, dict]):
                 The request object. UpdateBackupRequest updates
                 description and/or labels for a backup.
             backup (google.cloud.filestore_v1.types.Backup):

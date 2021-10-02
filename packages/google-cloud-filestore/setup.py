@@ -24,12 +24,13 @@ name = "google-cloud-filestore"
 description = "Filestore API client library"
 version = "0.1.0"
 release_status = "Development Status :: 4 - Beta"
-url="https://github.com/googleapis/python-filestore"
+url = "https://github.com/googleapis/python-filestore"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
     # Until this issue is closed
     # https://github.com/googleapis/google-cloud-python/issues/10566
     "google-api-core[grpc] >= 1.27.0, <3.0.0dev",
+    "google-cloud-common >= 0.1.0",
     "proto-plus >= 1.15.0",
     "packaging >= 14.3",
 ]

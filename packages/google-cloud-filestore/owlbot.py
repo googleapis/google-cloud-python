@@ -23,6 +23,12 @@ from synthtool.languages import python
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
+    s.replace(
+        library / "**/*.py",
+        "from google.cloud.common import operation_metadata_pb2",
+        "from google.cloud.common.types import operation_metadata as operation_metadata_pb2",
+    )
+
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 s.remove_staging_dirs()
 

@@ -39,17 +39,17 @@ def partition(
 class filestoreCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_backup': ('parent', 'backup', 'backup_id', ),
-          'create_instance': ('parent', 'instance_id', 'instance', ),
-          'delete_backup': ('name', ),
-          'delete_instance': ('name', ),
-          'get_backup': ('name', ),
-          'get_instance': ('name', ),
-          'list_backups': ('parent', 'page_size', 'page_token', 'order_by', 'filter', ),
-          'list_instances': ('parent', 'page_size', 'page_token', 'order_by', 'filter', ),
-          'restore_instance': ('name', 'file_share', 'source_backup', ),
-          'update_backup': ('backup', 'update_mask', ),
-          'update_instance': ('update_mask', 'instance', ),
+        'create_backup': ('parent', 'backup', 'backup_id', ),
+        'create_instance': ('parent', 'instance_id', 'instance', ),
+        'delete_backup': ('name', ),
+        'delete_instance': ('name', ),
+        'get_backup': ('name', ),
+        'get_instance': ('name', ),
+        'list_backups': ('parent', 'page_size', 'page_token', 'order_by', 'filter', ),
+        'list_instances': ('parent', 'page_size', 'page_token', 'order_by', 'filter', ),
+        'restore_instance': ('name', 'file_share', 'source_backup', ),
+        'update_backup': ('backup', 'update_mask', ),
+        'update_instance': ('update_mask', 'instance', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -68,7 +68,7 @@ class filestoreCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
