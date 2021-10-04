@@ -216,6 +216,7 @@ class LogMetric(proto.Message):
 
 class ListLogMetricsRequest(proto.Message):
     r"""The parameters to ListLogMetrics.
+
     Attributes:
         parent (str):
             Required. The name of the project containing the metrics:
@@ -252,6 +253,7 @@ class ListLogMetricsRequest(proto.Message):
 
 class ListLogMetricsResponse(proto.Message):
     r"""Result returned from ListLogMetrics.
+
     Attributes:
         metrics (Sequence[google.cloud.logging_v2.types.LogMetric]):
             A list of logs-based metrics.
@@ -279,6 +281,7 @@ class ListLogMetricsResponse(proto.Message):
 
 class GetLogMetricRequest(proto.Message):
     r"""The parameters to GetLogMetric.
+
     Attributes:
         metric_name (str):
             Required. The resource name of the desired metric:
@@ -296,6 +299,7 @@ class GetLogMetricRequest(proto.Message):
 
 class CreateLogMetricRequest(proto.Message):
     r"""The parameters to CreateLogMetric.
+
     Attributes:
         parent (str):
             Required. The resource name of the project in which to
@@ -324,6 +328,7 @@ class CreateLogMetricRequest(proto.Message):
 
 class UpdateLogMetricRequest(proto.Message):
     r"""The parameters to UpdateLogMetric.
+
     Attributes:
         metric_name (str):
             Required. The resource name of the metric to update:
@@ -353,6 +358,7 @@ class UpdateLogMetricRequest(proto.Message):
 
 class DeleteLogMetricRequest(proto.Message):
     r"""The parameters to DeleteLogMetric.
+
     Attributes:
         metric_name (str):
             Required. The resource name of the metric to delete:

@@ -42,6 +42,7 @@ __protobuf__ = proto.module(
 
 class DeleteLogRequest(proto.Message):
     r"""The parameters to DeleteLog.
+
     Attributes:
         log_name (str):
             Required. The resource name of the log to delete:
@@ -68,6 +69,7 @@ class DeleteLogRequest(proto.Message):
 
 class WriteLogEntriesRequest(proto.Message):
     r"""The parameters to WriteLogEntries.
+
     Attributes:
         log_name (str):
             Optional. A default log resource name that is assigned to
@@ -186,11 +188,13 @@ class WriteLogEntriesRequest(proto.Message):
 
 
 class WriteLogEntriesResponse(proto.Message):
-    r"""Result returned from WriteLogEntries.    """
+    r"""Result returned from WriteLogEntries.
+    """
 
 
 class WriteLogEntriesPartialErrors(proto.Message):
     r"""Error details for WriteLogEntries with partial success.
+
     Attributes:
         log_entry_errors (Sequence[google.cloud.logging_v2.types.WriteLogEntriesPartialErrors.LogEntryErrorsEntry]):
             When ``WriteLogEntriesRequest.partial_success`` is true,
@@ -212,6 +216,7 @@ class WriteLogEntriesPartialErrors(proto.Message):
 
 class ListLogEntriesRequest(proto.Message):
     r"""The parameters to ``ListLogEntries``.
+
     Attributes:
         resource_names (Sequence[str]):
             Required. Names of one or more parent resources from which
@@ -289,6 +294,7 @@ class ListLogEntriesRequest(proto.Message):
 
 class ListLogEntriesResponse(proto.Message):
     r"""Result returned from ``ListLogEntries``.
+
     Attributes:
         entries (Sequence[google.cloud.logging_v2.types.LogEntry]):
             A list of log entries. If ``entries`` is empty,
@@ -328,6 +334,7 @@ class ListLogEntriesResponse(proto.Message):
 
 class ListMonitoredResourceDescriptorsRequest(proto.Message):
     r"""The parameters to ListMonitoredResourceDescriptors
+
     Attributes:
         page_size (int):
             Optional. The maximum number of results to return from this
@@ -354,6 +361,7 @@ class ListMonitoredResourceDescriptorsRequest(proto.Message):
 
 class ListMonitoredResourceDescriptorsResponse(proto.Message):
     r"""Result returned from ListMonitoredResourceDescriptors.
+
     Attributes:
         resource_descriptors (Sequence[google.api.monitored_resource_pb2.MonitoredResourceDescriptor]):
             A list of resource descriptors.
@@ -381,6 +389,7 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
 
 class ListLogsRequest(proto.Message):
     r"""The parameters to ListLogs.
+
     Attributes:
         parent (str):
             Required. The resource name that owns the logs:
@@ -434,6 +443,7 @@ class ListLogsRequest(proto.Message):
 
 class ListLogsResponse(proto.Message):
     r"""Result returned from ListLogs.
+
     Attributes:
         log_names (Sequence[str]):
             A list of log names. For example,
@@ -462,6 +472,7 @@ class ListLogsResponse(proto.Message):
 
 class TailLogEntriesRequest(proto.Message):
     r"""The parameters to ``TailLogEntries``.
+
     Attributes:
         resource_names (Sequence[str]):
             Required. Name of a parent resource from which to retrieve
@@ -515,6 +526,7 @@ class TailLogEntriesRequest(proto.Message):
 
 class TailLogEntriesResponse(proto.Message):
     r"""Result returned from ``TailLogEntries``.
+
     Attributes:
         entries (Sequence[google.cloud.logging_v2.types.LogEntry]):
             A list of log entries. Each response in the stream will
@@ -534,6 +546,7 @@ class TailLogEntriesResponse(proto.Message):
 
     class SuppressionInfo(proto.Message):
         r"""Information about entries that were omitted from the session.
+
         Attributes:
             reason (google.cloud.logging_v2.types.TailLogEntriesResponse.SuppressionInfo.Reason):
                 The reason that entries were omitted from the

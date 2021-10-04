@@ -46,6 +46,7 @@ __protobuf__ = proto.module(
 
 class Instance(proto.Message):
     r"""A Google Cloud Redis instance.
+
     Attributes:
         name (str):
             Required. Unique name of the resource in this scope
@@ -484,6 +485,7 @@ class DeleteInstanceRequest(proto.Message):
 
 class GcsSource(proto.Message):
     r"""The Cloud Storage location for the input content
+
     Attributes:
         uri (str):
             Required. Source data URI. (e.g.
@@ -498,6 +500,7 @@ class GcsSource(proto.Message):
 
 class InputConfig(proto.Message):
     r"""The input content
+
     Attributes:
         gcs_source (google.cloud.redis_v1.types.GcsSource):
             Google Cloud Storage location where input
@@ -538,6 +541,7 @@ class ImportInstanceRequest(proto.Message):
 
 class GcsDestination(proto.Message):
     r"""The Cloud Storage location for the output content
+
     Attributes:
         uri (str):
             Required. Data destination URI (e.g.
@@ -553,6 +557,7 @@ class GcsDestination(proto.Message):
 
 class OutputConfig(proto.Message):
     r"""The output content
+
     Attributes:
         gcs_destination (google.cloud.redis_v1.types.GcsDestination):
             Google Cloud Storage destination for output
@@ -626,6 +631,7 @@ class FailoverInstanceRequest(proto.Message):
 
 class OperationMetadata(proto.Message):
     r"""Represents the v1 metadata of the long-running operation.
+
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Creation timestamp.
@@ -702,7 +708,8 @@ class LocationMetadata(proto.Message):
 class ZoneMetadata(proto.Message):
     r"""Defines specific information for a particular zone. Currently
     empty and reserved for future use only.
-        """
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

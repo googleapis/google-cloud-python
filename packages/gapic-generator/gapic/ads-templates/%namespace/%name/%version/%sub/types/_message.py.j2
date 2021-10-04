@@ -1,5 +1,6 @@
 class {{ message.name }}({{ p }}.Message):
-    r"""{{ message.meta.doc|rst(indent=4) }}{% if message.fields|length %}
+    r"""{{ message.meta.doc|rst(indent=4) }}
+    {% if message.fields|length %}
 
     Attributes:
     {% for field in message.fields.values() %}

@@ -98,6 +98,7 @@ class TemporalAsset(proto.Message):
 
 class TimeWindow(proto.Message):
     r"""A time window specified by its ``start_time`` and ``end_time``.
+
     Attributes:
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Start time of the time window (exclusive).
@@ -253,6 +254,7 @@ class Asset(proto.Message):
 
 class Resource(proto.Message):
     r"""A representation of a Google Cloud resource.
+
     Attributes:
         version (str):
             The API version. Example: ``v1``
@@ -707,6 +709,7 @@ class IamPolicySearchResult(proto.Message):
 
     class Explanation(proto.Message):
         r"""Explanation about the IAM policy search result.
+
         Attributes:
             matched_permissions (Sequence[google.cloud.asset_v1.types.IamPolicySearchResult.Explanation.MatchedPermissionsEntry]):
                 The map from roles to their included permissions that match
@@ -723,6 +726,7 @@ class IamPolicySearchResult(proto.Message):
 
         class Permissions(proto.Message):
             r"""IAM permissions
+
             Attributes:
                 permissions (Sequence[str]):
                     A list of permissions. A sample permission string:
@@ -806,6 +810,7 @@ class IamPolicyAnalysisState(proto.Message):
 
 class ConditionEvaluation(proto.Message):
     r"""The Condition evaluation.
+
     Attributes:
         evaluation_value (google.cloud.asset_v1.types.ConditionEvaluation.EvaluationValue):
             The evaluation result.
@@ -855,6 +860,7 @@ class IamPolicyAnalysisResult(proto.Message):
 
     class Resource(proto.Message):
         r"""A Google Cloud resource under analysis.
+
         Attributes:
             full_resource_name (str):
                 The `full resource
@@ -875,6 +881,7 @@ class IamPolicyAnalysisResult(proto.Message):
 
     class Access(proto.Message):
         r"""An IAM role or permission under analysis.
+
         Attributes:
             role (str):
                 The role.
@@ -902,6 +909,7 @@ class IamPolicyAnalysisResult(proto.Message):
 
     class Identity(proto.Message):
         r"""An identity under analysis.
+
         Attributes:
             name (str):
                 The identity name in any form of members appear in `IAM
@@ -932,6 +940,7 @@ class IamPolicyAnalysisResult(proto.Message):
 
     class Edge(proto.Message):
         r"""A directional edge.
+
         Attributes:
             source_node (str):
                 The source node of the edge. For example, it
@@ -1023,6 +1032,7 @@ class IamPolicyAnalysisResult(proto.Message):
 
     class IdentityList(proto.Message):
         r"""The identities and group edges.
+
         Attributes:
             identities (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Identity]):
                 Only the identities that match one of the following
