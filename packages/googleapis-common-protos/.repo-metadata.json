@@ -7,5 +7,7 @@
     "language": "python",
     "library_type": "CORE",
     "repo": "googleapis/python-api-common-protos",
-    "distribution_name": "googleapis-common-protos"
-  }
+    "distribution_name": "googleapis-common-protos",
+    "default_version": "",
+    "codeowner_team": ""
+}
