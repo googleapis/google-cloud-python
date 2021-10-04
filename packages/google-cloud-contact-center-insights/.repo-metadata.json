@@ -10,5 +10,6 @@
     "repo": "googleapis/python-contact-center-insights",
     "distribution_name": "google-cloud-contact-center-insights",
     "api_id": "contactcenterinsights.googleapis.com",
-    "codeowner_team": "@googleapis/api-contact-center-insights"
+    "codeowner_team": "@googleapis/api-contact-center-insights",
+    "default_version": "v1"
 }
