@@ -69,29 +69,33 @@ class TimeArray(core.BaseDatetimeArray):
         cls,
         scalar,
         match_fn=re.compile(
-            r"\s*(?P<hour>\d+)(?::(?P<minute>\d+)(?::(?P<second>\d+(?:[.]\d+)?)?)?)?\s*$"
+            r"\s*(?P<hours>\d+)"
+            r"(?::(?P<minutes>\d+)"
+            r"(?::(?P<seconds>\d+)"
+            r"(?:\.(?P<fraction>\d*))?)?)?\s*$"
         ).match,
     ):
         if isinstance(scalar, datetime.time):
             return datetime.datetime.combine(cls._epoch, scalar)
         elif isinstance(scalar, str):
             # iso string
-            match = match_fn(scalar)
-            if not match:
+            parsed = match_fn(scalar)
+            if not parsed:
                 raise ValueError(f"Bad time string: {repr(scalar)}")
 
-            hour = match.group("hour")
-            minute = match.group("minute")
-            second = match.group("second")
-            second, microsecond = divmod(float(second if second else 0), 1)
+            hours = parsed.group("hours")
+            minutes = parsed.group("minutes")
+            seconds = parsed.group("seconds")
+            fraction = parsed.group("fraction")
+            microseconds = int(fraction.ljust(6, "0")[:6]) if fraction else 0
             return datetime.datetime(
                 1970,
                 1,
                 1,
-                int(hour),
-                int(minute if minute else 0),
-                int(second),
-                int(microsecond * 1_000_000),
+                int(hours),
+                int(minutes) if minutes else 0,
+                int(seconds) if seconds else 0,
+                microseconds,
             )
         else:
             raise TypeError("Invalid value type", scalar)
