@@ -6,8 +6,10 @@
     "issue_tracker": "https://github.com/googleapis/python-bigquerylogging/issues",
     "release_level": "beta",
     "language": "python",
-    "library_type" : "OTHER",
+    "library_type": "OTHER",
     "repo": "googleapis/python-bigquery-logging",
     "distribution_name": "google-cloud-bigquery-logging",
-    "api_id": ""
-  }
+    "api_id": "",
+    "default_version": "v1",
+    "codeowner_team": "@googleapis/api-bigquery"
+}
