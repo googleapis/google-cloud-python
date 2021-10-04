@@ -9,5 +9,7 @@
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-dataflow-client",
     "distribution_name": "google-cloud-dataflow-client",
-    "api_id": "dataflow.googleapis.com"
+    "api_id": "dataflow.googleapis.com",
+    "default_version": "v1beta3",
+    "codeowner_team": ""
 }
