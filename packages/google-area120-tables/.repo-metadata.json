@@ -1,13 +1,15 @@
 {
-  "name": "area120tables",
-  "name_pretty": "Area 120 Tables API",
-  "product_documentation": "",
-  "client_documentation": "https://googleapis.dev/python/area120tables/latest",
-  "issue_tracker": "",
-  "release_level": "alpha",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-area120-tables",
-  "distribution_name": "google-area120-tables",
-  "api_id": "area120tables.googleapis.com"
+    "name": "area120tables",
+    "name_pretty": "Area 120 Tables API",
+    "product_documentation": "",
+    "client_documentation": "https://googleapis.dev/python/area120tables/latest",
+    "issue_tracker": "",
+    "release_level": "alpha",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-area120-tables",
+    "distribution_name": "google-area120-tables",
+    "api_id": "area120tables.googleapis.com",
+    "default_version": "v1alpha1",
+    "codeowner_team": ""
 }
