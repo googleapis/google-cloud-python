@@ -536,6 +536,8 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
             )
         return self._stubs['delete_instance']
 
+    def close(self):
+        self.grpc_channel.close()
 
 __all__ = (
     'CloudRedisGrpcTransport',

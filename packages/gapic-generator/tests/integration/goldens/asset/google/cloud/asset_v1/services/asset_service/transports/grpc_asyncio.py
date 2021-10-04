@@ -596,6 +596,9 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
             )
         return self._stubs['analyze_iam_policy_longrunning']
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = (
     'AssetServiceGrpcAsyncIOTransport',

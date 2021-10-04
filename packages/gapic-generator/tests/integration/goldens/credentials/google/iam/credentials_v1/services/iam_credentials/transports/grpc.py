@@ -337,6 +337,8 @@ class IAMCredentialsGrpcTransport(IAMCredentialsTransport):
             )
         return self._stubs['sign_jwt']
 
+    def close(self):
+        self.grpc_channel.close()
 
 __all__ = (
     'IAMCredentialsGrpcTransport',

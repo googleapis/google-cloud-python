@@ -1516,6 +1516,9 @@ def test_{{ service.name|snake_case }}_base_transport():
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
 
+    with pytest.raises(NotImplementedError):
+        transport.close()
+
     {% if service.has_lro %}
     # Additionally, the LRO client (a property) should
     # also raise NotImplementedError
@@ -2486,5 +2489,57 @@ async def test_test_iam_permissions_from_dict_async():
         call.assert_called()
 
 {% endif %}
+
+@pytest.mark.asyncio
+async def test_transport_close_async():
+    client = {{ service.async_client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+    with mock.patch.object(type(getattr(client.transport, "grpc_channel")), "close") as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+def test_transport_close():
+    transports = {
+        {% if 'rest' in opts.transport %}
+        "rest": "_session",
+        {% endif %}
+        {% if 'grpc' in opts.transport %}
+        "grpc": "_grpc_channel",
+        {% endif %}
+    }
+
+    for transport, close_name in transports.items():
+        client = {{ service.client_name }}(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport
+        )
+        with mock.patch.object(type(getattr(client.transport, close_name)), "close") as close:
+            with client:
+                close.assert_not_called()
+            close.assert_called_once()
+
+def test_client_ctx():
+    transports = [
+        {% if 'rest' in opts.transport %}
+        'rest',
+        {% endif %}
+        {% if 'grpc' in opts.transport %}
+        'grpc',
+        {% endif %}
+    ]
+    for transport in transports:
+        client = {{ service.client_name }}(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport
+        )
+        # Test client calls underlying transport.
+        with mock.patch.object(type(client.transport), "close") as close:
+            close.assert_not_called()
+            with client:
+                pass
+            close.assert_called()
 
 {% endblock %}

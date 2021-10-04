@@ -540,6 +540,9 @@ class CloudRedisGrpcAsyncIOTransport(CloudRedisTransport):
             )
         return self._stubs['delete_instance']
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = (
     'CloudRedisGrpcAsyncIOTransport',

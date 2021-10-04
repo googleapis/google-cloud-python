@@ -283,6 +283,9 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         return self._{{method.name | snake_case}}
     {%- endfor %}
 
+    def close(self):
+        self._session.close()
+
 
 __all__=(
     '{{ service.name }}RestTransport',

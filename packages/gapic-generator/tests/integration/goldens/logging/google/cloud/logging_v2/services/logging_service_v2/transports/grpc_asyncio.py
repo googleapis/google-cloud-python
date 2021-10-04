@@ -400,6 +400,9 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
             )
         return self._stubs['tail_log_entries']
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = (
     'LoggingServiceV2GrpcAsyncIOTransport',

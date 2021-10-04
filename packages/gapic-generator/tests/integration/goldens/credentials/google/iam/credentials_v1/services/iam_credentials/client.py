@@ -804,7 +804,18 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # Done; return the response.
         return response
 
+    def __enter__(self):
+        return self
 
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 
