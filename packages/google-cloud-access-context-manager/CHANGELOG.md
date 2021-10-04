@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.8](https://www.github.com/googleapis/python-access-context-manager/compare/v0.1.7...v0.1.8) (2021-10-04)
+
+
+### Bug Fixes
+
+* update pin on 'google-api-core' to allow current versions ([#89](https://www.github.com/googleapis/python-access-context-manager/issues/89)) ([1f7b73b](https://www.github.com/googleapis/python-access-context-manager/commit/1f7b73b947011999b82976027ade8218d58ac788))
+
 ### [0.1.7](https://www.github.com/googleapis/python-access-context-manager/compare/v0.1.6...v0.1.7) (2021-08-23)
 
 
