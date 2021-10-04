@@ -6,6 +6,7 @@
     "language": "python",
     "library_type": "CORE",
     "repo": "googleapis/google-resumable-media-python",
-    "distribution_name": "google-resumable-media"
-  }
-
+    "distribution_name": "google-resumable-media",
+    "default_version": "",
+    "codeowner_team": "@googleapis/cloud-storage-dpe"
+}
