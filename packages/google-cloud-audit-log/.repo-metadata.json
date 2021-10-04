@@ -9,6 +9,7 @@
     "library_type": "OTHER",
     "repo": "googleapis/python-audit-log",
     "distribution_name": "google-cloud-audit-log",
-    "api_id": ""
-  }
-  
+    "api_id": "",
+    "default_version": "",
+    "codeowner_team": ""
+}
