@@ -9,5 +9,7 @@
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-appengine-admin",
     "distribution_name": "google-cloud-appengine-admin",
-    "api_id": "appengine.googleapis.com"
+    "api_id": "appengine.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": ""
 }
