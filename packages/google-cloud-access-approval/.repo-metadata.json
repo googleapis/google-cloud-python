@@ -1,13 +1,15 @@
 {
-  "name": "accessapproval",
-  "name_pretty": "Access Approval",
-  "product_documentation": "https://cloud.google.com/access-approval",
-  "client_documentation": "https://googleapis.dev/python/accessapproval/latest",
-  "issue_tracker": "",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-access-approval",
-  "distribution_name": "google-cloud-access-approval",
-  "api_id": "accessapproval.googleapis.com"
+    "name": "accessapproval",
+    "name_pretty": "Access Approval",
+    "product_documentation": "https://cloud.google.com/access-approval",
+    "client_documentation": "https://googleapis.dev/python/accessapproval/latest",
+    "issue_tracker": "",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-access-approval",
+    "distribution_name": "google-cloud-access-approval",
+    "api_id": "accessapproval.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": ""
 }
