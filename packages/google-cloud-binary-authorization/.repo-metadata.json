@@ -10,5 +10,6 @@
     "repo": "googleapis/python-binary-authorization",
     "distribution_name": "google-cloud-binary-authorization",
     "api_id": "binaryauthorization.googleapis.com",
-    "codeowner_team": "@googleapis/cicd"
-    }
+    "codeowner_team": "@googleapis/cicd",
+    "default_version": "v1"
+}
