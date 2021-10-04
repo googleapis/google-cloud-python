@@ -71,9 +71,20 @@ def _has_all_ddl(database):
 retry_has_all_dll = retry.RetryInstanceState(_has_all_ddl)
 
 
+def scrub_referencing_databases(to_scrub, db_list):
+    for db_name in db_list:
+        db = to_scrub.database(db_name.split("/")[-1])
+        try:
+            retry_429_503(db.delete)()
+        except exceptions.NotFound:  # lost the race
+            pass
+
+
 def scrub_instance_backups(to_scrub):
     try:
         for backup_pb in to_scrub.list_backups():
+            # Backup cannot be deleted while referencing databases exist.
+            scrub_referencing_databases(to_scrub, backup_pb.referencing_databases)
             bkp = instance_mod.Backup.from_pb(backup_pb, to_scrub)
             try:
                 # Instance cannot be deleted while backups exist.
