@@ -1,14 +1,16 @@
 {
-  "name": "billingbudgets",
-  "name_pretty": "Cloud Billing Budget",
-  "product_documentation": "https://cloud.google.com/billing/docs/how-to/budget-api-overview",
-  "client_documentation": "https://googleapis.dev/python/billingbudgets/latest",
-  "issue_tracker": "https://issuetracker.google.com/savedsearches/559770",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-billingbudgets",
-  "distribution_name": "google-cloud-billing-budgets",
-  "api_id": "billingbudgets.googleapis.com",
-  "requires_billing": true
+    "name": "billingbudgets",
+    "name_pretty": "Cloud Billing Budget",
+    "product_documentation": "https://cloud.google.com/billing/docs/how-to/budget-api-overview",
+    "client_documentation": "https://googleapis.dev/python/billingbudgets/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559770",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-billingbudgets",
+    "distribution_name": "google-cloud-billing-budgets",
+    "api_id": "billingbudgets.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": ""
 }
