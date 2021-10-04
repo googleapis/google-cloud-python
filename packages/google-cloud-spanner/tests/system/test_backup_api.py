@@ -383,11 +383,7 @@ def test_multi_create_cancel_update_error_restore_errors(
 
 
 def test_instance_list_backups(
-    shared_instance,
-    shared_database,
-    second_database,
-    database_version_time,
-    backups_to_delete,
+    shared_instance, shared_database, second_database, backups_to_delete,
 ):
     # Remove un-scrubbed backups FBO count below.
     _helpers.scrub_instance_backups(shared_instance)
@@ -400,16 +396,8 @@ def test_instance_list_backups(
     )
     expire_time_1_stamp = expire_time_1.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
-    # Backup tests are failing because of timeout. As a temporary fix
-    # we are increasing db version time to current time.
-    # Read more: https://github.com/googleapis/python-spanner/issues/496
-    database_version_time = datetime.datetime.now(datetime.timezone.utc)
-
     backup1 = shared_instance.backup(
-        backup_id_1,
-        database=shared_database,
-        expire_time=expire_time_1,
-        version_time=database_version_time,
+        backup_id_1, database=shared_database, expire_time=expire_time_1,
     )
 
     expire_time_2 = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(
