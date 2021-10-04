@@ -16,6 +16,8 @@
 
 from .services.agents import AgentsClient
 from .services.agents import AgentsAsyncClient
+from .services.deployments import DeploymentsClient
+from .services.deployments import DeploymentsAsyncClient
 from .services.entity_types import EntityTypesClient
 from .services.entity_types import EntityTypesAsyncClient
 from .services.environments import EnvironmentsClient
@@ -67,6 +69,10 @@ from .types.audio_config import AudioEncoding
 from .types.audio_config import OutputAudioEncoding
 from .types.audio_config import SpeechModelVariant
 from .types.audio_config import SsmlVoiceGender
+from .types.deployment import Deployment
+from .types.deployment import GetDeploymentRequest
+from .types.deployment import ListDeploymentsRequest
+from .types.deployment import ListDeploymentsResponse
 from .types.entity_type import CreateEntityTypeRequest
 from .types.entity_type import DeleteEntityTypeRequest
 from .types.entity_type import EntityType
@@ -77,6 +83,9 @@ from .types.entity_type import UpdateEntityTypeRequest
 from .types.environment import ContinuousTestResult
 from .types.environment import CreateEnvironmentRequest
 from .types.environment import DeleteEnvironmentRequest
+from .types.environment import DeployFlowMetadata
+from .types.environment import DeployFlowRequest
+from .types.environment import DeployFlowResponse
 from .types.environment import Environment
 from .types.environment import GetEnvironmentRequest
 from .types.environment import ListContinuousTestResultsRequest
@@ -237,6 +246,7 @@ from .types.webhook import WebhookResponse
 
 __all__ = (
     "AgentsAsyncClient",
+    "DeploymentsAsyncClient",
     "EntityTypesAsyncClient",
     "EnvironmentsAsyncClient",
     "ExperimentsAsyncClient",
@@ -290,6 +300,11 @@ __all__ = (
     "DeleteTransitionRouteGroupRequest",
     "DeleteVersionRequest",
     "DeleteWebhookRequest",
+    "DeployFlowMetadata",
+    "DeployFlowRequest",
+    "DeployFlowResponse",
+    "Deployment",
+    "DeploymentsClient",
     "DetectIntentRequest",
     "DetectIntentResponse",
     "DtmfInput",
@@ -317,6 +332,7 @@ __all__ = (
     "Fulfillment",
     "GetAgentRequest",
     "GetAgentValidationResultRequest",
+    "GetDeploymentRequest",
     "GetEntityTypeRequest",
     "GetEnvironmentRequest",
     "GetExperimentRequest",
@@ -346,6 +362,8 @@ __all__ = (
     "ListAgentsResponse",
     "ListContinuousTestResultsRequest",
     "ListContinuousTestResultsResponse",
+    "ListDeploymentsRequest",
+    "ListDeploymentsResponse",
     "ListEntityTypesRequest",
     "ListEntityTypesResponse",
     "ListEnvironmentsRequest",

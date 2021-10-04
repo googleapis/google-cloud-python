@@ -41,6 +41,12 @@ from .audio_config import (
     SpeechModelVariant,
     SsmlVoiceGender,
 )
+from .deployment import (
+    Deployment,
+    GetDeploymentRequest,
+    ListDeploymentsRequest,
+    ListDeploymentsResponse,
+)
 from .entity_type import (
     CreateEntityTypeRequest,
     DeleteEntityTypeRequest,
@@ -54,6 +60,9 @@ from .environment import (
     ContinuousTestResult,
     CreateEnvironmentRequest,
     DeleteEnvironmentRequest,
+    DeployFlowMetadata,
+    DeployFlowRequest,
+    DeployFlowResponse,
     Environment,
     GetEnvironmentRequest,
     ListContinuousTestResultsRequest,
@@ -262,6 +271,10 @@ __all__ = (
     "OutputAudioEncoding",
     "SpeechModelVariant",
     "SsmlVoiceGender",
+    "Deployment",
+    "GetDeploymentRequest",
+    "ListDeploymentsRequest",
+    "ListDeploymentsResponse",
     "CreateEntityTypeRequest",
     "DeleteEntityTypeRequest",
     "EntityType",
@@ -272,6 +285,9 @@ __all__ = (
     "ContinuousTestResult",
     "CreateEnvironmentRequest",
     "DeleteEnvironmentRequest",
+    "DeployFlowMetadata",
+    "DeployFlowRequest",
+    "DeployFlowResponse",
     "Environment",
     "GetEnvironmentRequest",
     "ListContinuousTestResultsRequest",

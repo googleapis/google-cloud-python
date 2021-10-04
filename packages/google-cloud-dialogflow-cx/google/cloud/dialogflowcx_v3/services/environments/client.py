@@ -206,6 +206,22 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def test_case_path(project: str, location: str, agent: str, test_case: str,) -> str:
+        """Returns a fully-qualified test_case string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/testCases/{test_case}".format(
+            project=project, location=location, agent=agent, test_case=test_case,
+        )
+
+    @staticmethod
+    def parse_test_case_path(path: str) -> Dict[str, str]:
+        """Parses a test_case path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/testCases/(?P<test_case>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def test_case_result_path(
         project: str, location: str, agent: str, test_case: str, result: str,
     ) -> str:
@@ -608,6 +624,16 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         [Environment][google.cloud.dialogflow.cx.v3.Environment] in the
         specified [Agent][google.cloud.dialogflow.cx.v3.Agent].
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [Environment][google.cloud.dialogflow.cx.v3.Environment]
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.CreateEnvironmentRequest, dict]):
                 The request object. The request message for
@@ -710,6 +736,16 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
     ) -> operation.Operation:
         r"""Updates the specified
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``: An empty `Struct
+           message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
+        -  ``response``:
+           [Environment][google.cloud.dialogflow.cx.v3.Environment]
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.UpdateEnvironmentRequest, dict]):
@@ -961,6 +997,16 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Kicks off a continuous test under the specified
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
 
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [RunContinuousTestMetadata][google.cloud.dialogflow.cx.v3.RunContinuousTestMetadata]
+        -  ``response``:
+           [RunContinuousTestResponse][google.cloud.dialogflow.cx.v3.RunContinuousTestResponse]
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.RunContinuousTestRequest, dict]):
                 The request object. The request message for
@@ -1093,6 +1139,81 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         # an `__iter__` convenience method.
         response = pagers.ListContinuousTestResultsPager(
             method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def deploy_flow(
+        self,
+        request: Union[environment.DeployFlowRequest, dict] = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Deploys a flow to the specified
+        [Environment][google.cloud.dialogflow.cx.v3.Environment].
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [DeployFlowMetadata][google.cloud.dialogflow.cx.v3.DeployFlowMetadata]
+        -  ``response``:
+           [DeployFlowResponse][google.cloud.dialogflow.cx.v3.DeployFlowResponse]
+
+        Args:
+            request (Union[google.cloud.dialogflowcx_v3.types.DeployFlowRequest, dict]):
+                The request object. The request message for
+                [Environments.DeployFlow][google.cloud.dialogflow.cx.v3.Environments.DeployFlow].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.dialogflowcx_v3.types.DeployFlowResponse`
+                The response message for
+                [Environments.DeployFlow][google.cloud.dialogflow.cx.v3.Environments.DeployFlow].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environment.DeployFlowRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environment.DeployFlowRequest):
+            request = environment.DeployFlowRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.deploy_flow]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("environment", request.environment),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            environment.DeployFlowResponse,
+            metadata_type=environment.DeployFlowMetadata,
         )
 
         # Done; return the response.

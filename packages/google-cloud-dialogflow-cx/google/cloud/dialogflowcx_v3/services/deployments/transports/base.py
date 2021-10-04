@@ -23,14 +23,10 @@ import google.api_core  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.dialogflowcx_v3.types import environment
-from google.cloud.dialogflowcx_v3.types import environment as gcdc_environment
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
+from google.cloud.dialogflowcx_v3.types import deployment
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -51,8 +47,8 @@ except AttributeError:
         _GOOGLE_AUTH_VERSION = None
 
 
-class EnvironmentsTransport(abc.ABC):
-    """Abstract transport class for Environments."""
+class DeploymentsTransport(abc.ABC):
+    """Abstract transport class for Deployments."""
 
     AUTH_SCOPES = (
         "https://www.googleapis.com/auth/cloud-platform",
@@ -161,133 +157,34 @@ class EnvironmentsTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.list_environments: gapic_v1.method.wrap_method(
-                self.list_environments, default_timeout=None, client_info=client_info,
+            self.list_deployments: gapic_v1.method.wrap_method(
+                self.list_deployments, default_timeout=None, client_info=client_info,
             ),
-            self.get_environment: gapic_v1.method.wrap_method(
-                self.get_environment, default_timeout=None, client_info=client_info,
-            ),
-            self.create_environment: gapic_v1.method.wrap_method(
-                self.create_environment, default_timeout=None, client_info=client_info,
-            ),
-            self.update_environment: gapic_v1.method.wrap_method(
-                self.update_environment, default_timeout=None, client_info=client_info,
-            ),
-            self.delete_environment: gapic_v1.method.wrap_method(
-                self.delete_environment, default_timeout=None, client_info=client_info,
-            ),
-            self.lookup_environment_history: gapic_v1.method.wrap_method(
-                self.lookup_environment_history,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.run_continuous_test: gapic_v1.method.wrap_method(
-                self.run_continuous_test, default_timeout=None, client_info=client_info,
-            ),
-            self.list_continuous_test_results: gapic_v1.method.wrap_method(
-                self.list_continuous_test_results,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.deploy_flow: gapic_v1.method.wrap_method(
-                self.deploy_flow, default_timeout=None, client_info=client_info,
+            self.get_deployment: gapic_v1.method.wrap_method(
+                self.get_deployment, default_timeout=None, client_info=client_info,
             ),
         }
 
     @property
-    def operations_client(self) -> operations_v1.OperationsClient:
-        """Return the client designed to process long-running operations."""
-        raise NotImplementedError()
-
-    @property
-    def list_environments(
+    def list_deployments(
         self,
     ) -> Callable[
-        [environment.ListEnvironmentsRequest],
+        [deployment.ListDeploymentsRequest],
         Union[
-            environment.ListEnvironmentsResponse,
-            Awaitable[environment.ListEnvironmentsResponse],
+            deployment.ListDeploymentsResponse,
+            Awaitable[deployment.ListDeploymentsResponse],
         ],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_environment(
+    def get_deployment(
         self,
     ) -> Callable[
-        [environment.GetEnvironmentRequest],
-        Union[environment.Environment, Awaitable[environment.Environment]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def create_environment(
-        self,
-    ) -> Callable[
-        [gcdc_environment.CreateEnvironmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def update_environment(
-        self,
-    ) -> Callable[
-        [gcdc_environment.UpdateEnvironmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_environment(
-        self,
-    ) -> Callable[
-        [environment.DeleteEnvironmentRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def lookup_environment_history(
-        self,
-    ) -> Callable[
-        [environment.LookupEnvironmentHistoryRequest],
-        Union[
-            environment.LookupEnvironmentHistoryResponse,
-            Awaitable[environment.LookupEnvironmentHistoryResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def run_continuous_test(
-        self,
-    ) -> Callable[
-        [environment.RunContinuousTestRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_continuous_test_results(
-        self,
-    ) -> Callable[
-        [environment.ListContinuousTestResultsRequest],
-        Union[
-            environment.ListContinuousTestResultsResponse,
-            Awaitable[environment.ListContinuousTestResultsResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def deploy_flow(
-        self,
-    ) -> Callable[
-        [environment.DeployFlowRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [deployment.GetDeploymentRequest],
+        Union[deployment.Deployment, Awaitable[deployment.Deployment]],
     ]:
         raise NotImplementedError()
 
 
-__all__ = ("EnvironmentsTransport",)
+__all__ = ("DeploymentsTransport",)

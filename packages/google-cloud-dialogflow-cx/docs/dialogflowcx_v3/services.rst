@@ -4,6 +4,7 @@ Services for Google Cloud Dialogflowcx v3 API
     :maxdepth: 2
 
     agents
+    deployments
     entity_types
     environments
     experiments

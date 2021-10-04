@@ -146,7 +146,11 @@ class SecuritySettings(proto.Message):
 
     Attributes:
         name (str):
-            Required. Resource name of the settings. Format:
+            Resource name of the settings. Required for the
+            [SecuritySettingsService.UpdateSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.UpdateSecuritySettings]
+            method.
+            [SecuritySettingsService.CreateSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.CreateSecuritySettings]
+            populates the name automatically. Format:
             ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
         display_name (str):
             Required. The human-readable name of the

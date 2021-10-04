@@ -2609,6 +2609,136 @@ async def test_list_continuous_test_results_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+def test_deploy_flow(
+    transport: str = "grpc", request_type=environment.DeployFlowRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.deploy_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.deploy_flow(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.DeployFlowRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_deploy_flow_from_dict():
+    test_deploy_flow(request_type=dict)
+
+
+def test_deploy_flow_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.deploy_flow), "__call__") as call:
+        client.deploy_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.DeployFlowRequest()
+
+
+@pytest.mark.asyncio
+async def test_deploy_flow_async(
+    transport: str = "grpc_asyncio", request_type=environment.DeployFlowRequest
+):
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.deploy_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.deploy_flow(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.DeployFlowRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_deploy_flow_async_from_dict():
+    await test_deploy_flow_async(request_type=dict)
+
+
+def test_deploy_flow_field_headers():
+    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environment.DeployFlowRequest()
+
+    request.environment = "environment/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.deploy_flow), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.deploy_flow(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "environment=environment/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_deploy_flow_field_headers_async():
+    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environment.DeployFlowRequest()
+
+    request.environment = "environment/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.deploy_flow), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.deploy_flow(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "environment=environment/value",) in kw["metadata"]
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.EnvironmentsGrpcTransport(
@@ -2714,6 +2844,7 @@ def test_environments_base_transport():
         "lookup_environment_history",
         "run_continuous_test",
         "list_continuous_test_results",
+        "deploy_flow",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -3163,12 +3294,38 @@ def test_parse_environment_path():
     assert expected == actual
 
 
-def test_test_case_result_path():
+def test_test_case_path():
     project = "cuttlefish"
     location = "mussel"
     agent = "winkle"
     test_case = "nautilus"
-    result = "scallop"
+    expected = "projects/{project}/locations/{location}/agents/{agent}/testCases/{test_case}".format(
+        project=project, location=location, agent=agent, test_case=test_case,
+    )
+    actual = EnvironmentsClient.test_case_path(project, location, agent, test_case)
+    assert expected == actual
+
+
+def test_parse_test_case_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "agent": "squid",
+        "test_case": "clam",
+    }
+    path = EnvironmentsClient.test_case_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = EnvironmentsClient.parse_test_case_path(path)
+    assert expected == actual
+
+
+def test_test_case_result_path():
+    project = "whelk"
+    location = "octopus"
+    agent = "oyster"
+    test_case = "nudibranch"
+    result = "cuttlefish"
     expected = "projects/{project}/locations/{location}/agents/{agent}/testCases/{test_case}/results/{result}".format(
         project=project,
         location=location,
@@ -3184,11 +3341,11 @@ def test_test_case_result_path():
 
 def test_parse_test_case_result_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "agent": "clam",
-        "test_case": "whelk",
-        "result": "octopus",
+        "project": "mussel",
+        "location": "winkle",
+        "agent": "nautilus",
+        "test_case": "scallop",
+        "result": "abalone",
     }
     path = EnvironmentsClient.test_case_result_path(**expected)
 
@@ -3198,11 +3355,11 @@ def test_parse_test_case_result_path():
 
 
 def test_version_path():
-    project = "oyster"
-    location = "nudibranch"
-    agent = "cuttlefish"
-    flow = "mussel"
-    version = "winkle"
+    project = "squid"
+    location = "clam"
+    agent = "whelk"
+    flow = "octopus"
+    version = "oyster"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/versions/{version}".format(
         project=project, location=location, agent=agent, flow=flow, version=version,
     )
@@ -3212,11 +3369,11 @@ def test_version_path():
 
 def test_parse_version_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "agent": "abalone",
-        "flow": "squid",
-        "version": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "agent": "mussel",
+        "flow": "winkle",
+        "version": "nautilus",
     }
     path = EnvironmentsClient.version_path(**expected)
 
@@ -3226,7 +3383,7 @@ def test_parse_version_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3236,7 +3393,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "abalone",
     }
     path = EnvironmentsClient.common_billing_account_path(**expected)
 
@@ -3246,7 +3403,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "squid"
     expected = "folders/{folder}".format(folder=folder,)
     actual = EnvironmentsClient.common_folder_path(folder)
     assert expected == actual
@@ -3254,7 +3411,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "clam",
     }
     path = EnvironmentsClient.common_folder_path(**expected)
 
@@ -3264,7 +3421,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "whelk"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = EnvironmentsClient.common_organization_path(organization)
     assert expected == actual
@@ -3272,7 +3429,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "octopus",
     }
     path = EnvironmentsClient.common_organization_path(**expected)
 
@@ -3282,7 +3439,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "oyster"
     expected = "projects/{project}".format(project=project,)
     actual = EnvironmentsClient.common_project_path(project)
     assert expected == actual
@@ -3290,7 +3447,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "nudibranch",
     }
     path = EnvironmentsClient.common_project_path(**expected)
 
@@ -3300,8 +3457,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -3311,8 +3468,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = EnvironmentsClient.common_location_path(**expected)
 
