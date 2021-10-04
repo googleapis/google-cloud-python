@@ -1,14 +1,15 @@
 {
-  "name": "compute",
-  "name_pretty": "Compute Engine",
-  "product_documentation": "https://cloud.google.com/compute/",
-  "client_documentation": "https://googleapis.dev/python/compute/latest",
-  "issue_tracker": "https://issuetracker.google.com/issues/new?component=187134&template=0",
-  "release_level": "alpha",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-compute",
-  "distribution_name": "google-cloud-compute",
-  "api_id": "compute.googleapis.com",
-  "codeowner_team": "@googleapis/actools"
+    "name": "compute",
+    "name_pretty": "Compute Engine",
+    "product_documentation": "https://cloud.google.com/compute/",
+    "client_documentation": "https://googleapis.dev/python/compute/latest",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=187134&template=0",
+    "release_level": "alpha",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-compute",
+    "distribution_name": "google-cloud-compute",
+    "api_id": "compute.googleapis.com",
+    "codeowner_team": "@googleapis/actools",
+    "default_version": "v1"
 }
