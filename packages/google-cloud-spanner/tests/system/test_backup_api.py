@@ -400,6 +400,11 @@ def test_instance_list_backups(
     )
     expire_time_1_stamp = expire_time_1.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
+    # Backup tests are failing because of timeout. As a temporary fix
+    # we are increasing db version time to current time.
+    # Read more: https://github.com/googleapis/python-spanner/issues/496
+    database_version_time = datetime.datetime.now(datetime.timezone.utc)
+
     backup1 = shared_instance.backup(
         backup_id_1,
         database=shared_database,

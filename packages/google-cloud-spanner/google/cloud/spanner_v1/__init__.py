@@ -58,6 +58,7 @@ from .types.transaction import TransactionSelector
 from .types.type import StructType
 from .types.type import Type
 from .types.type import TypeCode
+from .data_types import JsonObject
 
 from google.cloud.spanner_v1 import param_types
 from google.cloud.spanner_v1.client import Client
@@ -132,6 +133,8 @@ __all__ = (
     "TransactionSelector",
     "Type",
     "TypeCode",
+    # Custom spanner related data types
+    "JsonObject",
     # google.cloud.spanner_v1.services
     "SpannerClient",
 )

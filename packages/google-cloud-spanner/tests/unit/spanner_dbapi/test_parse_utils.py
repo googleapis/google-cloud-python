@@ -16,6 +16,7 @@ import sys
 import unittest
 
 from google.cloud.spanner_v1 import param_types
+from google.cloud.spanner_v1 import JsonObject
 
 
 class TestParseUtils(unittest.TestCase):
@@ -333,9 +334,11 @@ class TestParseUtils(unittest.TestCase):
         import datetime
         import decimal
 
-        from google.cloud.spanner_dbapi.parse_utils import DateStr
-        from google.cloud.spanner_dbapi.parse_utils import TimestampStr
-        from google.cloud.spanner_dbapi.parse_utils import get_param_types
+        from google.cloud.spanner_dbapi.parse_utils import (
+            DateStr,
+            TimestampStr,
+            get_param_types,
+        )
 
         params = {
             "a1": 10,
@@ -349,6 +352,7 @@ class TestParseUtils(unittest.TestCase):
             "i1": b"bytes",
             "j1": None,
             "k1": decimal.Decimal("3.194387483193242e+19"),
+            "l1": JsonObject({"key": "value"}),
         }
         want_types = {
             "a1": param_types.INT64,
@@ -361,6 +365,7 @@ class TestParseUtils(unittest.TestCase):
             "h1": param_types.DATE,
             "i1": param_types.BYTES,
             "k1": param_types.NUMERIC,
+            "l1": param_types.JSON,
         }
         got_types = get_param_types(params)
         self.assertEqual(got_types, want_types)

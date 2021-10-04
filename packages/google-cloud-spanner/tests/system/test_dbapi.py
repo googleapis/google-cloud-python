@@ -15,11 +15,11 @@
 import hashlib
 import pickle
 import pkg_resources
-
 import pytest
 
 from google.cloud import spanner_v1
 from google.cloud.spanner_dbapi.connection import connect, Connection
+from google.cloud.spanner_v1 import JsonObject
 from . import _helpers
 
 DATABASE_NAME = "dbapi-txn"
@@ -326,6 +326,45 @@ def test_DDL_autocommit(shared_instance, dbapi_database):
 
     cur.execute("DROP TABLE Singers")
     conn.commit()
+
+
+@pytest.mark.skipif(_helpers.USE_EMULATOR, reason="Emulator does not support json.")
+def test_autocommit_with_json_data(shared_instance, dbapi_database):
+    """Check that DDLs in autocommit mode are immediately executed for
+    json fields."""
+    # Create table
+    conn = Connection(shared_instance, dbapi_database)
+    conn.autocommit = True
+
+    cur = conn.cursor()
+    cur.execute(
+        """
+        CREATE TABLE JsonDetails (
+            DataId     INT64 NOT NULL,
+            Details    JSON,
+        ) PRIMARY KEY (DataId)
+    """
+    )
+
+    # Insert data to table
+    cur.execute(
+        sql="INSERT INTO JsonDetails (DataId, Details) VALUES (%s, %s)",
+        args=(123, JsonObject({"name": "Jakob", "age": "26"})),
+    )
+
+    # Read back the data.
+    cur.execute("""select * from JsonDetails;""")
+    got_rows = cur.fetchall()
+
+    # Assert the response
+    assert len(got_rows) == 1
+    assert got_rows[0][0] == 123
+    assert got_rows[0][1] == '{"age":"26","name":"Jakob"}'
+
+    # Drop the table
+    cur.execute("DROP TABLE JsonDetails")
+    conn.commit()
+    conn.close()
 
 
 def test_DDL_commit(shared_instance, dbapi_database):
