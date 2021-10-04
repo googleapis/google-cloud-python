@@ -1,14 +1,16 @@
 {
-  "name": "bigquerydatatransfer",
-  "name_pretty": "Google BigQuery Data Transfer Service",
-  "product_documentation": "https://cloud.google.com/bigquery/transfer/",
-  "client_documentation": "https://googleapis.dev/python/bigquerydatatransfer/latest",
-  "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-bigquery-datatransfer",
-  "distribution_name": "google-cloud-bigquery-datatransfer",
-  "api_id": "bigquerydatatransfer.googleapis.com",
-  "requires_billing": true
+    "name": "bigquerydatatransfer",
+    "name_pretty": "Google BigQuery Data Transfer Service",
+    "product_documentation": "https://cloud.google.com/bigquery/transfer/",
+    "client_documentation": "https://googleapis.dev/python/bigquerydatatransfer/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-bigquery-datatransfer",
+    "distribution_name": "google-cloud-bigquery-datatransfer",
+    "api_id": "bigquerydatatransfer.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": "@googleapis/api-bigquery"
 }
