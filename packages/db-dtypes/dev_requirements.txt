@@ -4,4 +4,4 @@ future==0.18.2
 
 pytest==6.2.5
 pytest-flake8==1.0.7
-pytz==2021.1
+pytz==2021.3
