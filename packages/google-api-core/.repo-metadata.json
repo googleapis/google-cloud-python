@@ -1,10 +1,12 @@
 {
-  "name": "google-api-core",
-  "name_pretty": "Google API client core library",
-  "client_documentation": "https://googleapis.dev/python/google-api-core/latest",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "CORE",
-  "repo": "googleapis/python-api-core",
-  "distribution_name": "google-api-core"
+    "name": "google-api-core",
+    "name_pretty": "Google API client core library",
+    "client_documentation": "https://googleapis.dev/python/google-api-core/latest",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "CORE",
+    "repo": "googleapis/python-api-core",
+    "distribution_name": "google-api-core",
+    "default_version": "",
+    "codeowner_team": "@googleapis/actools-python"
 }
