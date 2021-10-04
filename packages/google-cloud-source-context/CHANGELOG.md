@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-source-context/compare/v0.1.4...v1.0.0) (2021-10-04)
+
+
+### Features
+
+* bump release level to production/stable ([#31](https://www.github.com/googleapis/python-source-context/issues/31)) ([139188c](https://www.github.com/googleapis/python-source-context/commit/139188cb7a7850878b91756bacb0daf758cdcf2a))
+
 ### [0.1.4](https://www.github.com/googleapis/python-source-context/compare/v0.1.3...v0.1.4) (2021-09-24)
 
 
