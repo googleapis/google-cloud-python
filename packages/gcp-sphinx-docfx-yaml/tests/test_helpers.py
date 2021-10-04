@@ -1,8 +1,10 @@
 from docfx_yaml.extension import extract_keyword
 from docfx_yaml.extension import indent_code_left
-
+from docfx_yaml.extension import convert_cross_references
+from docfx_yaml.extension import search_cross_references
 
 import unittest
+from parameterized import parameterized
 
 from yaml import load, Loader
 
@@ -56,6 +58,105 @@ for i in range(10):
         with self.assertRaises(ValueError):
             keyword_got = extract_keyword(keyword_line)
 
+
+    cross_references_testdata = [
+        # Testing for normal input.
+        [
+            "google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse",
+            "<xref uid=\"google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse\">google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse</xref>"
+        ],
+        # Testing for no cross references to convert.
+        [
+            "Response message for SplitReadStreamResponse.",
+            "Response message for SplitReadStreamResponse."
+        ],
+        # Testing for cross references to convert within longer content.
+        [
+            "Response message for google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse.",
+            "Response message for <xref uid=\"google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse\">google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse</xref>."
+        ],
+    ]
+    @parameterized.expand(cross_references_testdata)
+    def test_convert_cross_references(self, content, content_want):
+        # Check that entries correctly turns into cross references.
+        keyword_map = [
+            "google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse"
+        ]
+        current_name = "SplitRepsonse"
+
+        content_got = convert_cross_references(content, current_name, keyword_map)
+        self.assertEqual(content_got, content_want)
+
+
+    # Test data used to test for processing already-processed cross references.
+    cross_references_short_testdata = [
+        [
+            "Response message for google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse.",
+            "Response message for <xref uid=\"google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse\">google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse</xref>."
+        ],
+    ]
+    @parameterized.expand(cross_references_short_testdata)
+    def test_convert_cross_references_twice(self, content, content_want):
+        keyword_map = [
+            "google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse"
+        ]
+        current_name = "SplitRepsonse"
+
+        content_got = convert_cross_references(content, current_name, keyword_map)
+
+        # Make sure that same entries are not processed twice.
+        # The output should not be different.
+        current = content_got
+        current_got = convert_cross_references(current, content, keyword_map)
+        self.assertEqual(content_want, current_got)
+
+        # If shorter version of the current name exists, it should not interfere
+        # unless strictly necessary.
+        keyword_map.append("google.cloud.bigquery_storage_v1.types")
+        long_name_got = convert_cross_references(content, current_name, keyword_map)
+        self.assertEqual(long_name_got, content_want)
+
+        shorter_name_want = "<xref uid=\"google.cloud.bigquery_storage_v1.types\">google.cloud.bigquery_storage_v1.types</xref>"
+        shorter_name = "google.cloud.bigquery_storage_v1.types"
+        shorter_name_got = convert_cross_references(shorter_name, current_name, keyword_map)
+        self.assertEqual(shorter_name_got, shorter_name_want)
+
+
+    def test_search_cross_references(self):
+        # Test for a given YAML file.
+        keyword_map = [
+               "google.cloud.bigquery_storage_v1.types.ThrottleState",
+               "google.cloud.bigquery_storage_v1.types.StreamStats.Progress",
+               "google.cloud.bigquery_storage_v1.types.StreamStats",
+               "google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse",
+               "google.cloud.bigquery_storage_v1.types.SplitReadStreamRequest",
+               "google.cloud.bigquery_storage_v1.types.ReadStream",
+               "google.cloud.bigquery_storage_v1.types.ReadSession.TableReadOptions",
+               "google.cloud.bigquery_storage_v1.types.ReadSession.TableModifiers",
+               "google.cloud.bigquery_storage_v1.types.ReadSession",
+               "google.cloud.bigquery_storage_v1.types.ReadRowsResponse",
+               "google.cloud.bigquery_storage_v1.types.ReadRowsRequest",
+               "google.cloud.bigquery_storage_v1.types.DataFormat",
+               "google.cloud.bigquery_storage_v1.types.CreateReadSessionRequest",
+               "google.cloud.bigquery_storage_v1.types.AvroSchema",
+               "google.cloud.bigquery_storage_v1.types.AvroRows",
+               "google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions.CompressionCodec",
+               "google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions",
+               "google.cloud.bigquery_storage_v1.types.ArrowSchema",
+               "google.cloud.bigquery_storage_v1.types.ArrowRecordBatch",
+               "google.cloud.bigquery_storage_v1.types",
+        ]
+        current_name = "google.cloud.bigquery_storage_v1.types.ReadSession.TableReadOptions"
+        with open('tests/cross_references_pre.yaml', 'r') as test_file:
+            yaml_pre = load(test_file, Loader=Loader)
+
+        for obj in yaml_pre['items']:
+            search_cross_references(obj, current_name, keyword_map)
+
+        with open('tests/cross_references_post.yaml', 'r') as want_file:
+            yaml_post = load(want_file, Loader=Loader)
+
+        self.assertEqual(yaml_pre, yaml_post)
 
 if __name__ == '__main__':
     unittest.main()

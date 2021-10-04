@@ -26,6 +26,7 @@ import shutil
 from pathlib import Path
 from functools import partial
 from itertools import zip_longest
+from typing import List
 
 try:
     from subprocess import getoutput
@@ -85,6 +86,7 @@ REF_PATTERN_LAST = '~([a-zA-Z0-9_<>]*\.)*[a-zA-Z0-9_<>]*(\(\))?'
 PROPERTY = 'property'
 CODEBLOCK = "code-block"
 CODE = "code"
+PACKAGE = "package"
 
 
 # Run sphinx-build with Markdown builder in the plugin.
@@ -673,7 +675,7 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
 
     if lines is None:
         lines = []
-    short_name = name.split('.')[-1]
+    short_name = name.split(".")[-1]
     args = []
     # Check how many arguments are present in the function.
     arg_count = 0
@@ -1260,6 +1262,117 @@ def find_markdown_pages(app, outdir):
             })
 
 
+# Finds and replaces occurrences which should be a cross reference in the given
+# content, except for the current name.
+def convert_cross_references(content: str, current_name: str, entry_names: List[str]):
+    words = content.split(" ")
+    new_words = []
+    # Using counter to check if the entry is already a cross reference.
+    for index, word in enumerate(words):
+        cross_reference = ""
+        for keyword in entry_names:
+            if keyword != current_name and keyword not in current_name and keyword in word:
+                # If it is already processed as cross reference, skip over it.
+                if "<xref" in words[index-1] or (new_words and f"<xref uid=\"{keyword}" in new_words[-1]):
+                    continue
+                cross_reference = f"<xref uid=\"{keyword}\">{keyword}</xref>"
+                new_words.append(word.replace(keyword, cross_reference))
+                print(f"Converted {keyword} into cross reference in: \n{content}")
+
+        # If cross reference has not been found, add current unchanged content.
+        if not cross_reference:
+            new_words.append(word)
+
+    return " ".join(new_words)
+
+
+# Used to look for cross references in the obj's data where applicable.
+# For now, we inspect summary, syntax and attributes.
+def search_cross_references(obj, current_name: str, entry_names: List[str]):
+    if obj.get("summary"):
+        obj["summary"] = convert_cross_references(obj["summary"], current_name, entry_names)
+
+    if obj.get("syntax"):
+        if obj["syntax"].get("parameters"):
+            for param in obj["syntax"]["parameters"]:
+                if param.get("description"):
+                    param["description"] = convert_cross_references(
+                        param["description"],
+                        current_name,
+                        entry_names
+                    )
+
+                if param.get("id"):
+                    param["id"] = convert_cross_references(
+                        param["id"],
+                        current_name,
+                        entry_names
+                    )
+
+                if param.get("var_type"):
+                    param["var_type"] = convert_cross_references(
+                        param["var_type"],
+                        current_name,
+                        entry_names
+                    )
+
+        if obj["syntax"].get("exceptions"):
+            for exception in obj["syntax"]["exceptions"]:
+                if exception.get("description"):
+                    exception["description"] = convert_cross_references(
+                        exception["description"],
+                        current_name,
+                        entry_names
+                    )
+
+                if exception.get("var_type"):
+                    exception["var_type"] = convert_cross_references(
+                        exception["var_type"],
+                        current_name,
+                        entry_names
+                    )
+
+        if obj["syntax"].get("returns"):
+            for ret in obj["syntax"]["returns"]:
+                if ret.get("description"):
+                    ret["description"] = convert_cross_references(
+                        ret["description"],
+                        current_name,
+                        entry_names
+                    )
+
+                if ret.get("var_type"):
+                    ret["var_type"] = convert_cross_references(
+                        ret["var_type"],
+                        current_name,
+                        entry_names
+                    )
+
+
+    if obj.get("attributes"):
+        for attribute in obj["attributes"]:
+            if attribute.get("description"):
+                attribute["description"] = convert_cross_references(
+                    attribute["description"],
+                    current_name,
+                    entry_names
+                )
+
+            if attribute.get("name"):
+                attribute["name"] = convert_cross_references(
+                    attribute["name"],
+                    current_name,
+                    entry_names
+                )
+
+            if attribute.get("var_type"):
+                attribute["var_type"] = convert_cross_references(
+                    attribute["var_type"],
+                    current_name,
+                    entry_names
+                )
+
+
 def build_finished(app, exception):
     """
     Output YAML on the file system.
@@ -1445,6 +1558,24 @@ def build_finished(app, exception):
                 if 'source' in obj and (not obj['source']['remote']['repo'] or \
                     obj['source']['remote']['repo'] == 'https://apidrop.visualstudio.com/Content%20CI/_git/ReferenceAutomation'):
                         del(obj['source'])
+
+
+                # Extract any missing cross references where applicable.
+                # Potential targets are instances of full uid shown, or
+                # if we find a short form of the uid of one of current
+                # package's items. For example:
+                # cross reference candidates:
+                #   google.cloud.bigquery_storage_v1.types.storage.SplitReadStreamResponse
+                #   SplitReadStreamResponse
+                # non-candidates:
+                #   (not from the same library)
+                #   google.cloud.aiplatform.AutoMLForecastingTrainingJob
+
+                current_name = obj["fullName"]
+                entry_names = sorted(app.env.docfx_uid_names.keys(), reverse=True)
+                # Currently we only need to look in summary, syntax and
+                # attributes for cross references.
+                search_cross_references(obj, current_name, entry_names)
 
             yaml_map[uid] = [yaml_data, references]
 
