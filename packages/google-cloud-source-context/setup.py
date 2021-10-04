@@ -23,7 +23,7 @@ import setuptools
 name = "google-cloud-source-context"
 description = "Python client for Source Context"
 version = "0.1.4"
-release_status = "Development Status :: 4 - Beta"
+release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-source-context"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
