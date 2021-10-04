@@ -1,12 +1,13 @@
 {
-  "name": "db-dtypes",
-  "name_pretty": "Pandas Data Types for SQL systems (BigQuery, Spanner)",
-  "client_documentation":
-    "https://googleapis.dev/python/db-dtypes/latest/index.html",
-  "release_level": "beta",
-  "language": "python",
-  "library_type": "INTEGRATION",
-  "repo": "googleapis/python-db-dtypes-pandas",
-  "distribution_name": "db-dtypes",
-  "api_id": "bigquery.googleapis.com"
+    "name": "db-dtypes",
+    "name_pretty": "Pandas Data Types for SQL systems (BigQuery, Spanner)",
+    "client_documentation": "https://googleapis.dev/python/db-dtypes/latest/index.html",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "INTEGRATION",
+    "repo": "googleapis/python-db-dtypes-pandas",
+    "distribution_name": "db-dtypes",
+    "api_id": "bigquery.googleapis.com",
+    "default_version": "",
+    "codeowner_team": "@googleapis/api-bigquery"
 }
