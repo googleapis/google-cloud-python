@@ -66,10 +66,9 @@ class Instance(proto.Message):
             Use a container image to start the notebook
             instance.
         post_startup_script (str):
-            Path to a Bash script that automatically runs
-            after a notebook instance fully boots up. The
-            path must be a URL or Cloud Storage path
-            (gs://path-to-file/file-name).
+            Path to a Bash script that automatically runs after a
+            notebook instance fully boots up. The path must be a URL or
+            Cloud Storage path (``gs://path-to-file/file-name``).
         proxy_uri (str):
             Output only. The proxy endpoint that is used
             to access the Jupyter notebook.
@@ -159,9 +158,9 @@ class Instance(proto.Message):
             Output only. Attached disks to notebook
             instance.
         shielded_instance_config (google.cloud.notebooks_v1.types.Instance.ShieldedInstanceConfig):
-            Optional. Shielded VM configuration. [Images using supported
-            Shielded VM features]
-            (https://cloud.google.com/compute/docs/instances/modifying-shielded-vm).
+            Optional. Shielded VM configuration. `Images using supported
+            Shielded VM
+            features <https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>`__.
         no_public_ip (bool):
             If true, no public IP will be assigned to
             this instance.

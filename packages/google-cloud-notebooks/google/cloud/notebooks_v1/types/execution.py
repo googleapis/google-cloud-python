@@ -91,8 +91,8 @@ class ExecutionTemplate(proto.Message):
         input_notebook_file (str):
             Path to the notebook file to execute. Must be in a Google
             Cloud Storage bucket. Format:
-            gs://{project_id}/{folder}/{notebook_file_name} Ex:
-            gs://notebook_user/scheduled_notebooks/sentiment_notebook.ipynb
+            ``gs://{project_id}/{folder}/{notebook_file_name}`` Ex:
+            ``gs://notebook_user/scheduled_notebooks/sentiment_notebook.ipynb``
         container_image_uri (str):
             Container Image URI to a DLVM
             Example: 'gcr.io/deeplearning-platform-
@@ -103,15 +103,15 @@ class ExecutionTemplate(proto.Message):
         output_notebook_folder (str):
             Path to the notebook folder to write to. Must be in a Google
             Cloud Storage bucket path. Format:
-            gs://{project_id}/{folder} Ex:
-            gs://notebook_user/scheduled_notebooks
+            ``gs://{project_id}/{folder}`` Ex:
+            ``gs://notebook_user/scheduled_notebooks``
         params_yaml_file (str):
             Parameters to be overridden in the notebook during
             execution. Ref
             https://papermill.readthedocs.io/en/latest/usage-parameterize.html
             on how to specifying parameters in the input notebook and
             pass them here in an YAML file. Ex:
-            gs://notebook_user/scheduled_notebooks/sentiment_notebook_params.yaml
+            ``gs://notebook_user/scheduled_notebooks/sentiment_notebook_params.yaml``
         parameters (str):
             Parameters used within the 'input_notebook_file' notebook.
         service_account (str):
@@ -177,7 +177,7 @@ class ExecutionTemplate(proto.Message):
         Attributes:
             cluster (str):
                 URI for cluster used to run Dataproc execution. Format:
-                'projects/{PROJECT_ID}/regions/{REGION}/clusters/{CLUSTER_NAME}
+                ``projects/{PROJECT_ID}/regions/{REGION}/clusters/{CLUSTER_NAME}``
         """
 
         cluster = proto.Field(proto.STRING, number=1,)
@@ -208,7 +208,7 @@ class Execution(proto.Message):
             spec, region, labels, etc.
         name (str):
             Output only. The resource name of the execute. Format:
-            \`projects/{project_id}/locations/{location}/execution/{execution_id}
+            ``projects/{project_id}/locations/{location}/execution/{execution_id}``
         display_name (str):
             Output only. Name used for UI purposes. Name can only
             contain alphanumeric characters and underscores '_'.

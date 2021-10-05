@@ -589,9 +589,12 @@ class ListSchedulesResponse(proto.Message):
             listing from the last result in the next list
             call.
         unreachable (Sequence[str]):
-            Schedules that could not be reached. For example,
-            ['projects/{project_id}/location/{location}/schedules/monthly_digest',
-            'projects/{project_id}/location/{location}/schedules/weekly_sentiment'].
+            Schedules that could not be reached. For example:
+
+            ::
+
+                ['projects/{project_id}/location/{location}/schedules/monthly_digest',
+                 'projects/{project_id}/location/{location}/schedules/weekly_sentiment']
     """
 
     @property
@@ -670,7 +673,7 @@ class ListExecutionsRequest(proto.Message):
         filter (str):
             Filter applied to resulting executions. Currently only
             supports filtering executions by a specified schedule_id.
-            Format: "schedule_id=<Schedule_ID>".
+            Format: ``schedule_id=<Schedule_ID>``
         order_by (str):
             Sort by field.
     """
@@ -692,9 +695,12 @@ class ListExecutionsResponse(proto.Message):
             listing from the last result in the next list
             call.
         unreachable (Sequence[str]):
-            Executions IDs that could not be reached. For example,
-            ['projects/{project_id}/location/{location}/executions/imagenet_test1',
-            'projects/{project_id}/location/{location}/executions/classifier_train1'].
+            Executions IDs that could not be reached. For example:
+
+            ::
+
+                ['projects/{project_id}/location/{location}/executions/imagenet_test1',
+                 'projects/{project_id}/location/{location}/executions/classifier_train1']
     """
 
     @property

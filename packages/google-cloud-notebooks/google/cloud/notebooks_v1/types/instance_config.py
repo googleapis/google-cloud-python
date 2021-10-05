@@ -30,7 +30,6 @@ class InstanceConfig(proto.Message):
             format <https://en.wikipedia.org/wiki/Cron>`__.
         enable_health_monitoring (bool):
             Verifies core internal services are running.
-            More info: go/notebooks-health
     """
 
     notebook_upgrade_schedule = proto.Field(proto.STRING, number=1,)

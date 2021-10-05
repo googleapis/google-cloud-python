@@ -384,10 +384,9 @@ class RuntimeSoftwareConfig(proto.Message):
             GPU driver is stored. If not specified, we'll
             automatically choose from official GPU drivers.
         post_startup_script (str):
-            Path to a Bash script that automatically runs
-            after a notebook instance fully boots up. The
-            path must be a URL or Cloud Storage path
-            (gs://path-to-file/file-name).
+            Path to a Bash script that automatically runs after a
+            notebook instance fully boots up. The path must be a URL or
+            Cloud Storage path (``gs://path-to-file/file-name``).
     """
 
     notebook_upgrade_schedule = proto.Field(proto.STRING, number=1,)
