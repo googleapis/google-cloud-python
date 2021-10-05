@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+### [3.11.1](https://www.github.com/googleapis/python-spanner/compare/v3.11.0...v3.11.1) (2021-10-04)
+
+
+### Bug Fixes
+
+* add support for json data type ([#593](https://www.github.com/googleapis/python-spanner/issues/593)) ([bc5ddc3](https://www.github.com/googleapis/python-spanner/commit/bc5ddc3fb1eb7eff9a266fe3d1c3c8a4a6fd3763))
+* remove database_version_time param from test_instance_list_backups ([#609](https://www.github.com/googleapis/python-spanner/issues/609)) ([db63aee](https://www.github.com/googleapis/python-spanner/commit/db63aee2b15fd812d78d980bc302d9a217ca711e))
+
 ## [3.11.0](https://www.github.com/googleapis/python-spanner/compare/v3.10.0...v3.11.0) (2021-09-29)
 
 
