@@ -1,14 +1,16 @@
 {
-  "name": "documentai",
-  "name_pretty": "Cloud Document Understanding API",
-  "product_documentation": "https://cloud.google.com/document-understanding/docs/",
-  "client_documentation": "https://googleapis.dev/python/documentai/latest",
-  "issue_tracker": "",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-documentai",
-  "distribution_name": "google-cloud-documentai",
-  "api_id": "documentai.googleapis.com",
-  "requires_billing": true
+    "name": "documentai",
+    "name_pretty": "Cloud Document Understanding API",
+    "product_documentation": "https://cloud.google.com/document-understanding/docs/",
+    "client_documentation": "https://googleapis.dev/python/documentai/latest",
+    "issue_tracker": "",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-documentai",
+    "distribution_name": "google-cloud-documentai",
+    "api_id": "documentai.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": "@googleapis/ml-apis"
 }
