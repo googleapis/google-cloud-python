@@ -17,7 +17,7 @@ import os
 import properties_user_links_batch_get
 
 TEST_PROPERTY_ID = os.getenv("GA_TEST_PROPERTY_ID")
-TEST_USER_LINK_ID = os.getenv("GA_USER_LINK_ID")
+TEST_USER_LINK_ID = os.getenv("GA_TEST_PROPERTY_USER_LINK_ID")
 
 
 def test_properties_user_links_batch_get(capsys):

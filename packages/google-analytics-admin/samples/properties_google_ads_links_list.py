@@ -50,7 +50,7 @@ def print_google_ads_link(google_ads_link):
     print(f"Google Ads customer ID: {google_ads_link.customer_id}")
     print(f"Can manage clients: {google_ads_link.can_manage_clients}")
     print(f"Ads personalization enabled: {google_ads_link.ads_personalization_enabled}")
-    print(f"Email address of the link creator: {google_ads_link.email_address}")
+    print(f"Email address of the link creator: {google_ads_link.creator_email_address}")
     print(f"Create time: {google_ads_link.create_time}")
     print(f"Update time: {google_ads_link.update_time}")
 

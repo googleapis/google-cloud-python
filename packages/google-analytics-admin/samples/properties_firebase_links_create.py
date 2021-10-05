@@ -49,10 +49,7 @@ def create_firebase_link(property_id, firebase_project_id):
     client = AnalyticsAdminServiceClient()
     firebase_link = client.create_firebase_link(
         parent=f"properties/{property_id}",
-        firebase_link=FirebaseLink(
-            project=f"projects/{firebase_project_id}",
-            maximum_user_access="READ_AND_ANALYZE",
-        ),
+        firebase_link=FirebaseLink(project=f"projects/{firebase_project_id}"),
     )
 
     print("Result:")

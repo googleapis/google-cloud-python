@@ -22,7 +22,6 @@ for more information.
 """
 # [START analyticsadmin_properties_firebase_links_list]
 from google.analytics.admin import AnalyticsAdminServiceClient
-from google.analytics.admin_v1alpha.types import MaximumUserAccess
 
 
 def run_sample():
@@ -49,10 +48,6 @@ def print_firebase_link(firebase_link):
     """Prints the Firebase link details."""
     print(f"Resource name: {firebase_link.name}")
     print(f"Firebase project: {firebase_link.project}")
-    print(
-        f"Maximum user access to the GA4 property: "
-        f"{MaximumUserAccess(firebase_link.maximum_user_access).name}"
-    )
     print(f"Create time: {firebase_link.create_time}")
 
 

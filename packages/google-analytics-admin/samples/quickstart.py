@@ -49,20 +49,24 @@ To install the latest published package dependency, execute the following:
   pip install google-analytics-admin
 """
 
+
 # [START ga_admin_list_accounts]
 def list_accounts():
-  """Lists the available Google Analytics accounts."""
-  from google.analytics.admin import AnalyticsAdminServiceClient
-  # Using a default constructor instructs the client to use the credentials
-  # specified in GOOGLE_APPLICATION_CREDENTIALS environment variable.
-  client = AnalyticsAdminServiceClient()
+    """Lists the available Google Analytics accounts."""
+    from google.analytics.admin import AnalyticsAdminServiceClient
 
-  # Displays the configuration information for all Google Analytics accounts
-  # available to the authenticated user.
-  for account in client.list_accounts():
-    print(account)
+    # Using a default constructor instructs the client to use the credentials
+    # specified in GOOGLE_APPLICATION_CREDENTIALS environment variable.
+    client = AnalyticsAdminServiceClient()
+
+    # Displays the configuration information for all Google Analytics accounts
+    # available to the authenticated user.
+    for account in client.list_accounts():
+        print(account)
+
+
 # [END ga_admin_list_accounts]
 
 
 if __name__ == "__main__":
-  list_accounts()
+    list_accounts()

@@ -53,7 +53,7 @@ def print_ios_app_data_stream(ios_app_data_stream):
     print(f"Resource name: {ios_app_data_stream.name}")
     print(f"Display name: {ios_app_data_stream.display_name}")
     print(f"Firebase app ID: {ios_app_data_stream.firebase_app_id}")
-    print(f"Bundle ID: {ios_app_data_stream.bundleId}")
+    print(f"Bundle ID: {ios_app_data_stream.bundle_id}")
     print(f"Create time: {ios_app_data_stream.create_time}")
     print(f"Update time: {ios_app_data_stream.update_time}")
 
