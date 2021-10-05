@@ -1,14 +1,16 @@
 {
-  "name": "dlp",
-  "name_pretty": "Cloud Data Loss Prevention",
-  "product_documentation": "https://cloud.google.com/dlp/docs/",
-  "client_documentation": "https://googleapis.dev/python/dlp/latest",
-  "issue_tracker": "",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-dlp",
-  "distribution_name": "google-cloud-dlp",
-  "api_id": "dlp.googleapis.com",
-  "requires_billing": true
+    "name": "dlp",
+    "name_pretty": "Cloud Data Loss Prevention",
+    "product_documentation": "https://cloud.google.com/dlp/docs/",
+    "client_documentation": "https://googleapis.dev/python/dlp/latest",
+    "issue_tracker": "",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-dlp",
+    "distribution_name": "google-cloud-dlp",
+    "api_id": "dlp.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v2",
+    "codeowner_team": ""
 }
