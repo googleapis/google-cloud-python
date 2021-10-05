@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+### [2.9.3](https://www.github.com/googleapis/python-speech/compare/v2.9.2...v2.9.3) (2021-10-04)
+
+
+### Documentation
+
+* **samples:** Remove reference to deprecated message "diarization_speaker_count" in favor of diarization_config ([#264](https://www.github.com/googleapis/python-speech/issues/264)) ([c1f7f35](https://www.github.com/googleapis/python-speech/commit/c1f7f357fe8367dafcdcb3d42e04a2619de2de62))
+
 ### [2.9.2](https://www.github.com/googleapis/python-speech/compare/v2.9.1...v2.9.2) (2021-09-30)
 
 
