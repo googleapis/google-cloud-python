@@ -9,5 +9,7 @@
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-tpu",
     "distribution_name": "google-cloud-tpu",
-    "api_id": "tpu.googleapis.com"
+    "api_id": "tpu.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": ""
 }
