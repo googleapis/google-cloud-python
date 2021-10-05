@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-orchestration-airflow/compare/v0.1.3...v1.0.0) (2021-10-05)
+
+
+### Features
+
+* bump release level to production/stable ([#12](https://www.github.com/googleapis/python-orchestration-airflow/issues/12)) ([9034947](https://www.github.com/googleapis/python-orchestration-airflow/commit/90349471b64fa702618c7da394d212cc31126a33))
+
 ### [0.1.3](https://www.github.com/googleapis/python-orchestration-airflow/compare/v0.1.2...v0.1.3) (2021-09-30)
 
 
