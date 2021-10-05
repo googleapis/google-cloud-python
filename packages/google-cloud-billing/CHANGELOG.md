@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.4](https://www.github.com/googleapis/python-billing/compare/v1.3.3...v1.3.4) (2021-10-04)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([578aeef](https://www.github.com/googleapis/python-billing/commit/578aeefcde72f12063e54e86208e3c6c4b135885))
+
 ### [1.3.3](https://www.github.com/googleapis/python-billing/compare/v1.3.2...v1.3.3) (2021-09-24)
 
 
