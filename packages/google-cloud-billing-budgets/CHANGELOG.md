@@ -1,4 +1,11 @@
 # Changelog
+### [1.4.4](https://www.github.com/googleapis/python-billingbudgets/compare/v1.4.3...v1.4.4) (2021-10-04)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([47eb773](https://www.github.com/googleapis/python-billingbudgets/commit/47eb77346fe44ce803a20552347bb42c4a17e5a5))
+
 ### [1.4.3](https://www.github.com/googleapis/python-billingbudgets/compare/v1.4.2...v1.4.3) (2021-09-24)
 
 
