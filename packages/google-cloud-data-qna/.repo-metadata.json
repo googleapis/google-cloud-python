@@ -1,14 +1,15 @@
 {
-  "name": "dataqna",
-  "name_pretty": "Data QnA",
-  "product_documentation": "https://cloud.google.com/bigquery/docs/dataqna",
-  "client_documentation": "https://googleapis.dev/python/dataqna/latest",
-  "issue_tracker": "",
-  "release_level": "alpha",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-data-qna",
-  "distribution_name": "google-cloud-data-qna",
-  "api_id": "dataqna.googleapis.com",
-  "codeowner_team": "@googleapis/api-bigquery"
+    "name": "dataqna",
+    "name_pretty": "Data QnA",
+    "product_documentation": "https://cloud.google.com/bigquery/docs/dataqna",
+    "client_documentation": "https://googleapis.dev/python/dataqna/latest",
+    "issue_tracker": "",
+    "release_level": "alpha",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-data-qna",
+    "distribution_name": "google-cloud-data-qna",
+    "api_id": "dataqna.googleapis.com",
+    "codeowner_team": "@googleapis/api-bigquery",
+    "default_version": "v1alpha"
 }
