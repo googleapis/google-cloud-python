@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+### [2.9.1](https://www.github.com/googleapis/python-dialogflow/compare/v2.9.0...v2.9.1) (2021-10-04)
+
+
+### Documentation
+
+* **samples:** adds training phrases sample ([#404](https://www.github.com/googleapis/python-dialogflow/issues/404)) ([9d98f9b](https://www.github.com/googleapis/python-dialogflow/commit/9d98f9b47208cbbdee13f678000c2970387c716e))
+
 ## [2.9.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.8.1...v2.9.0) (2021-09-30)
 
 
