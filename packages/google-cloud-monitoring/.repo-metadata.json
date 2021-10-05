@@ -1,13 +1,15 @@
 {
-  "name": "monitoring",
-  "name_pretty": "Stackdriver Monitoring",
-  "product_documentation": "https://cloud.google.com/monitoring/docs",
-  "client_documentation": "https://googleapis.dev/python/monitoring/latest",
-  "issue_tracker": "https://issuetracker.google.com/savedsearches/559785",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_COMBO",
-  "repo": "googleapis/python-monitoring",
-  "distribution_name": "google-cloud-monitoring",
-  "api_id": "monitoring.googleapis.com"
+    "name": "monitoring",
+    "name_pretty": "Stackdriver Monitoring",
+    "product_documentation": "https://cloud.google.com/monitoring/docs",
+    "client_documentation": "https://googleapis.dev/python/monitoring/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559785",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_COMBO",
+    "repo": "googleapis/python-monitoring",
+    "distribution_name": "google-cloud-monitoring",
+    "api_id": "monitoring.googleapis.com",
+    "default_version": "v3",
+    "codeowner_team": ""
 }
