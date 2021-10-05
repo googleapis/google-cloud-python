@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.1.2...v1.2.0) (2021-10-05)
+
+
+### Features
+
+* find more items to cross reference ([#138](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/138)) ([a0f82dd](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/a0f82ddc45d8c09ecae6ab55d6366ab6e666397b))
+
 ### [1.1.2](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.1.1...v1.1.2) (2021-09-14)
 
 
