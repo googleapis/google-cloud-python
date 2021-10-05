@@ -8,5 +8,7 @@
     "language": "python",
     "repo": "googleapis/python-policy-troubleshooter",
     "distribution_name": "google-cloud-policy-troubleshooter",
-    "api_id": "policytroubleshooter.googleapis.com"
+    "api_id": "policytroubleshooter.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": ""
 }
