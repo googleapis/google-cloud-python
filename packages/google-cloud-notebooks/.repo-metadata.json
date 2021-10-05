@@ -9,5 +9,7 @@
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-notebooks",
     "distribution_name": "google-cloud-notebooks",
-    "api_id": "notebooks.googleapis.com"
-  }  
+    "api_id": "notebooks.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": ""
+}
