@@ -8,5 +8,7 @@
     "language": "python",
     "repo": "googleapis/python-resource-settings",
     "distribution_name": "google-cloud-resource-settings",
-    "api_id": "resourcesettings.googleapis.com"
-  }
+    "api_id": "resourcesettings.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": ""
+}
