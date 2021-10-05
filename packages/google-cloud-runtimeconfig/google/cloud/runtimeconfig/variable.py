@@ -210,13 +210,10 @@ class Variable(object):
             try:
                 value = datetime.datetime.strptime(
                     value, datetime_helpers._RFC3339_MICROS
-                )
+                ).replace(tzinfo=datetime.timezone.utc)
             except ValueError:
                 DatetimeNS = datetime_helpers.DatetimeWithNanoseconds
                 value = DatetimeNS.from_rfc3339(value)
-            naive = value.tzinfo is None or value.tzinfo.utcoffset(value) is None
-            if naive:
-                value = value.astimezone(tz=datetime.timezone.utc)
         return value
 
     def _require_client(self, client):
