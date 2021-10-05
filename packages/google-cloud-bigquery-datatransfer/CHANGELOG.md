@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+### [3.3.4](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.3...v3.3.4) (2021-10-04)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([702a848](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/702a84864e5395cf7a7b8f2aeed93d2109414f7c))
+
 ### [3.3.3](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.2...v3.3.3) (2021-09-24)
 
 
