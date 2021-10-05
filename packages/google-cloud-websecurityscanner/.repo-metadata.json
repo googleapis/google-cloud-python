@@ -1,14 +1,16 @@
 {
-  "name": "websecurityscanner",
-  "name_pretty": "Cloud Security Scanner",
-  "product_documentation": "https://cloud.google.com/security-scanner/docs/",
-  "client_documentation": "https://googleapis.dev/python/websecurityscanner/latest",
-  "issue_tracker": "https://issuetracker.google.com/savedsearches/559748",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-websecurityscanner",
-  "distribution_name": "google-cloud-websecurityscanner",
-  "api_id": "websecurityscanner.googleapis.com",
-  "requires_billing": true
+    "name": "websecurityscanner",
+    "name_pretty": "Cloud Security Scanner",
+    "product_documentation": "https://cloud.google.com/security-scanner/docs/",
+    "client_documentation": "https://googleapis.dev/python/websecurityscanner/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559748",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-websecurityscanner",
+    "distribution_name": "google-cloud-websecurityscanner",
+    "api_id": "websecurityscanner.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": ""
 }
