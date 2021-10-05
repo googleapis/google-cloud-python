@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+### [2.8.1](https://www.github.com/googleapis/python-container/compare/v2.8.0...v2.8.1) (2021-10-04)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([6814251](https://www.github.com/googleapis/python-container/commit/68142512b75ee81a1fee0e982edd00a617706a00))
+
 ## [2.8.0](https://www.github.com/googleapis/python-container/compare/v2.7.1...v2.8.0) (2021-09-23)
 
 
