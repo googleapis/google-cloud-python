@@ -1,14 +1,16 @@
 {
-  "name": "dialogflow",
-  "name_pretty": "Dialogflow",
-  "product_documentation": "https://www.dialogflow.com/",
-  "client_documentation": "https://googleapis.dev/python/dialogflow/latest",
-  "issue_tracker": "https://issuetracker.google.com/savedsearches/5300385",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-dialogflow",
-  "distribution_name": "google-cloud-dialogflow",
-  "api_id": "dialogflow.googleapis.com",
-  "requires_billing": true
+    "name": "dialogflow",
+    "name_pretty": "Dialogflow",
+    "product_documentation": "https://www.dialogflow.com/",
+    "client_documentation": "https://googleapis.dev/python/dialogflow/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/5300385",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-dialogflow",
+    "distribution_name": "google-cloud-dialogflow",
+    "api_id": "dialogflow.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v2",
+    "codeowner_team": ""
 }
