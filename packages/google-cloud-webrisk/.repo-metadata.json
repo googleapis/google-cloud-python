@@ -1,14 +1,16 @@
 {
-  "name": "webrisk",
-  "name_pretty": "Web Risk",
-  "product_documentation": "https://cloud.google.com/web-risk/docs/",
-  "client_documentation": "https://googleapis.dev/python/webrisk/latest",
-  "issue_tracker": "",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-webrisk",
-  "distribution_name": "google-cloud-webrisk",
-  "api_id": "webrisk.googleapis.com",
-  "requires_billing": true
+    "name": "webrisk",
+    "name_pretty": "Web Risk",
+    "product_documentation": "https://cloud.google.com/web-risk/docs/",
+    "client_documentation": "https://googleapis.dev/python/webrisk/latest",
+    "issue_tracker": "",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-webrisk",
+    "distribution_name": "google-cloud-webrisk",
+    "api_id": "webrisk.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": ""
 }
