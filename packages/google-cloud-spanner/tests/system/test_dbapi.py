@@ -19,8 +19,10 @@ import pytest
 
 from google.cloud import spanner_v1
 from google.cloud.spanner_dbapi.connection import connect, Connection
+from google.cloud.spanner_dbapi.exceptions import ProgrammingError
 from google.cloud.spanner_v1 import JsonObject
 from . import _helpers
+
 
 DATABASE_NAME = "dbapi-txn"
 
@@ -406,3 +408,24 @@ def test_user_agent(shared_instance, dbapi_database):
         conn.instance._client._client_info.user_agent
         == "dbapi/" + pkg_resources.get_distribution("google-cloud-spanner").version
     )
+
+
+def test_read_only(shared_instance, dbapi_database):
+    """
+    Check that connection set to `read_only=True` uses
+    ReadOnly transactions.
+    """
+    conn = Connection(shared_instance, dbapi_database, read_only=True)
+    cur = conn.cursor()
+
+    with pytest.raises(ProgrammingError):
+        cur.execute(
+            """
+UPDATE contacts
+SET first_name = 'updated-first-name'
+WHERE first_name = 'first-name'
+"""
+        )
+
+    cur.execute("SELECT * FROM contacts")
+    conn.commit()

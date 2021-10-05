@@ -21,6 +21,7 @@ from google.api_core.exceptions import Aborted
 from google.api_core.gapic_v1.client_info import ClientInfo
 from google.cloud import spanner_v1 as spanner
 from google.cloud.spanner_v1.session import _get_retry_delay
+from google.cloud.spanner_v1.snapshot import Snapshot
 
 from google.cloud.spanner_dbapi._helpers import _execute_insert_heterogenous
 from google.cloud.spanner_dbapi._helpers import _execute_insert_homogenous
@@ -50,15 +51,31 @@ class Connection:
 
     :type database: :class:`~google.cloud.spanner_v1.database.Database`
     :param database: The database to which the connection is linked.
+
+    :type read_only: bool
+    :param read_only:
+        Flag to indicate that the connection may only execute queries and no update or DDL statements.
+        If True, the connection will use a single use read-only transaction with strong timestamp
+        bound for each new statement, and will immediately see any changes that have been committed by
+        any other transaction.
+        If autocommit is false, the connection will automatically start a new multi use read-only transaction
+        with strong timestamp bound when the first statement is executed. This read-only transaction will be
+        used for all subsequent statements until either commit() or rollback() is called on the connection. The
+        read-only transaction will read from a consistent snapshot of the database at the time that the
+        transaction started. This means that the transaction will not see any changes that have been
+        committed by other transactions since the start of the read-only transaction. Commit or rolling back
+        the read-only transaction is semantically the same, and only indicates that the read-only transaction
+        should end a that a new one should be started when the next statement is executed.
     """
 
-    def __init__(self, instance, database):
+    def __init__(self, instance, database, read_only=False):
         self._instance = instance
         self._database = database
         self._ddl_statements = []
 
         self._transaction = None
         self._session = None
+        self._snapshot = None
         # SQL statements, which were executed
         # within the current transaction
         self._statements = []
@@ -69,6 +86,7 @@ class Connection:
         # this connection should be cleared on the
         # connection close
         self._own_pool = True
+        self._read_only = read_only
 
     @property
     def autocommit(self):
@@ -122,6 +140,30 @@ class Connection:
         :returns: The related instance object.
         """
         return self._instance
+
+    @property
+    def read_only(self):
+        """Flag: the connection can be used only for database reads.
+
+        Returns:
+            bool:
+                True if the connection may only be used for database reads.
+        """
+        return self._read_only
+
+    @read_only.setter
+    def read_only(self, value):
+        """`read_only` flag setter.
+
+        Args:
+            value (bool): True for ReadOnly mode, False for ReadWrite.
+        """
+        if self.inside_transaction:
+            raise ValueError(
+                "Connection read/write mode can't be changed while a transaction is in progress. "
+                "Commit or rollback the current transaction and try again."
+            )
+        self._read_only = value
 
     def _session_checkout(self):
         """Get a Cloud Spanner session from the pool.
@@ -231,6 +273,22 @@ class Connection:
 
             return self._transaction
 
+    def snapshot_checkout(self):
+        """Get a Cloud Spanner snapshot.
+
+        Initiate a new multi-use snapshot, if there is no snapshot in
+        this connection yet. Return the existing one otherwise.
+
+        :rtype: :class:`google.cloud.spanner_v1.snapshot.Snapshot`
+        :returns: A Cloud Spanner snapshot object, ready to use.
+        """
+        if self.read_only and not self.autocommit:
+            if not self._snapshot:
+                self._snapshot = Snapshot(self._session_checkout(), multi_use=True)
+                self._snapshot.begin()
+
+            return self._snapshot
+
     def _raise_if_closed(self):
         """Helper to check the connection state before running a query.
         Raises an exception if this connection is closed.
@@ -259,6 +317,8 @@ class Connection:
 
         This method is non-operational in autocommit mode.
         """
+        self._snapshot = None
+
         if self._autocommit:
             warnings.warn(AUTOCOMMIT_MODE_WARNING, UserWarning, stacklevel=2)
             return
@@ -266,7 +326,9 @@ class Connection:
         self.run_prior_DDL_statements()
         if self.inside_transaction:
             try:
-                self._transaction.commit()
+                if not self.read_only:
+                    self._transaction.commit()
+
                 self._release_session()
                 self._statements = []
             except Aborted:
@@ -279,10 +341,14 @@ class Connection:
         This is a no-op if there is no active transaction or if the connection
         is in autocommit mode.
         """
+        self._snapshot = None
+
         if self._autocommit:
             warnings.warn(AUTOCOMMIT_MODE_WARNING, UserWarning, stacklevel=2)
         elif self._transaction:
-            self._transaction.rollback()
+            if not self.read_only:
+                self._transaction.rollback()
+
             self._release_session()
             self._statements = []
 

@@ -186,6 +186,10 @@ class Cursor(object):
 
         # Classify whether this is a read-only SQL statement.
         try:
+            if self.connection.read_only:
+                self._handle_DQL(sql, args or None)
+                return
+
             classification = parse_utils.classify_stmt(sql)
             if classification == parse_utils.STMT_DDL:
                 ddl_statements = []
@@ -325,14 +329,15 @@ class Cursor(object):
 
         try:
             res = next(self)
-            if not self.connection.autocommit:
+            if not self.connection.autocommit and not self.connection.read_only:
                 self._checksum.consume_result(res)
             return res
         except StopIteration:
             return
         except Aborted:
-            self.connection.retry_transaction()
-            return self.fetchone()
+            if not self.connection.read_only:
+                self.connection.retry_transaction()
+                return self.fetchone()
 
     def fetchall(self):
         """Fetch all (remaining) rows of a query result, returning them as
@@ -343,12 +348,13 @@ class Cursor(object):
         res = []
         try:
             for row in self:
-                if not self.connection.autocommit:
+                if not self.connection.autocommit and not self.connection.read_only:
                     self._checksum.consume_result(row)
                 res.append(row)
         except Aborted:
-            self.connection.retry_transaction()
-            return self.fetchall()
+            if not self.connection.read_only:
+                self.connection.retry_transaction()
+                return self.fetchall()
 
         return res
 
@@ -372,14 +378,15 @@ class Cursor(object):
         for i in range(size):
             try:
                 res = next(self)
-                if not self.connection.autocommit:
+                if not self.connection.autocommit and not self.connection.read_only:
                     self._checksum.consume_result(res)
                 items.append(res)
             except StopIteration:
                 break
             except Aborted:
-                self.connection.retry_transaction()
-                return self.fetchmany(size)
+                if not self.connection.read_only:
+                    self.connection.retry_transaction()
+                    return self.fetchmany(size)
 
         return items
 
@@ -395,38 +402,39 @@ class Cursor(object):
         """A no-op, raising an error if the cursor or connection is closed."""
         self._raise_if_closed()
 
+    def _handle_DQL_with_snapshot(self, snapshot, sql, params):
+        # Reference
+        #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
+        sql, params = parse_utils.sql_pyformat_args_to_spanner(sql, params)
+        res = snapshot.execute_sql(
+            sql, params=params, param_types=get_param_types(params)
+        )
+        # Immediately using:
+        #   iter(response)
+        # here, because this Spanner API doesn't provide
+        # easy mechanisms to detect when only a single item
+        # is returned or many, yet mixing results that
+        # are for .fetchone() with those that would result in
+        # many items returns a RuntimeError if .fetchone() is
+        # invoked and vice versa.
+        self._result_set = res
+        # Read the first element so that the StreamedResultSet can
+        # return the metadata after a DQL statement. See issue #155.
+        self._itr = PeekIterator(self._result_set)
+        # Unfortunately, Spanner doesn't seem to send back
+        # information about the number of rows available.
+        self._row_count = _UNSET_COUNT
+
     def _handle_DQL(self, sql, params):
-        with self.connection.database.snapshot() as snapshot:
-            # Reference
-            #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
-            sql, params = parse_utils.sql_pyformat_args_to_spanner(sql, params)
-            res = snapshot.execute_sql(
-                sql, params=params, param_types=get_param_types(params)
+        if self.connection.read_only and not self.connection.autocommit:
+            # initiate or use the existing multi-use snapshot
+            self._handle_DQL_with_snapshot(
+                self.connection.snapshot_checkout(), sql, params
             )
-            if type(res) == int:
-                self._row_count = res
-                self._itr = None
-            else:
-                # Immediately using:
-                #   iter(response)
-                # here, because this Spanner API doesn't provide
-                # easy mechanisms to detect when only a single item
-                # is returned or many, yet mixing results that
-                # are for .fetchone() with those that would result in
-                # many items returns a RuntimeError if .fetchone() is
-                # invoked and vice versa.
-                self._result_set = res
-                # Read the first element so that the StreamedResultSet can
-                # return the metadata after a DQL statement. See issue #155.
-                while True:
-                    try:
-                        self._itr = PeekIterator(self._result_set)
-                        break
-                    except Aborted:
-                        self.connection.retry_transaction()
-                # Unfortunately, Spanner doesn't seem to send back
-                # information about the number of rows available.
-                self._row_count = _UNSET_COUNT
+        else:
+            # execute with single-use snapshot
+            with self.connection.database.snapshot() as snapshot:
+                self._handle_DQL_with_snapshot(snapshot, sql, params)
 
     def __enter__(self):
         return self
