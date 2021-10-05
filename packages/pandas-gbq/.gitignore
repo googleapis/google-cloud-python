@@ -45,7 +45,6 @@ pip-log.txt
 
 # Built documentation
 docs/_build
-docs/source/_build
 bigquery/docs/generated
 docs.metadata
 
