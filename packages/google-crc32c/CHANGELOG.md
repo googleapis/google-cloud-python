@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-crc32c/#history
 
+## [1.3.0](https://www.github.com/googleapis/python-crc32c/compare/v1.2.0...v1.3.0) (2021-10-05)
+
+
+### Features
+
+* add support for Python 3.10 ([#116](https://www.github.com/googleapis/python-crc32c/issues/116)) ([01ee9c0](https://www.github.com/googleapis/python-crc32c/commit/01ee9c0b4d6a992ddcf1fbbeaaea9d107c972b74))
+
 ## [1.2.0](https://www.github.com/googleapis/python-crc32c/compare/v1.1.5...v1.2.0) (2021-09-17)
 
 
