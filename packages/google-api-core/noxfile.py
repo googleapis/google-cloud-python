@@ -121,7 +121,7 @@ def default(session):
         session.run(*pytest_args)
 
 
-@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9", "3.10"])
 def unit(session):
     """Run the unit test suite."""
     default(session)
