@@ -1,14 +1,16 @@
 {
-  "name": "redis",
-  "name_pretty": "Cloud Redis",
-  "product_documentation": "https://cloud.google.com/memorystore/docs/redis/",
-  "client_documentation": "https://googleapis.dev/python/redis/latest",
-  "issue_tracker": "https://issuetracker.google.com/savedsearches/5169231",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-redis",
-  "distribution_name": "google-cloud-redis",
-  "api_id": "redis.googleapis.com",
-  "requires_billing": true
+    "name": "redis",
+    "name_pretty": "Cloud Redis",
+    "product_documentation": "https://cloud.google.com/memorystore/docs/redis/",
+    "client_documentation": "https://googleapis.dev/python/redis/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/5169231",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-redis",
+    "distribution_name": "google-cloud-redis",
+    "api_id": "redis.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": ""
 }
