@@ -6,8 +6,10 @@
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
-    "library_type" : "GAPIC_AUTO",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-essential-contacts",
     "distribution_name": "google-cloud-essential-contacts",
-    "api_id": "essentialcontacts.googleapis.com"
-  }
+    "api_id": "essentialcontacts.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": ""
+}
