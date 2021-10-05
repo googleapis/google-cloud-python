@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+### [0.32.6](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.5...v0.32.6) (2021-10-05)
+
+
+### Bug Fixes
+
+* don't offset timestamp via naive datetime ([#112](https://www.github.com/googleapis/python-runtimeconfig/issues/112)) ([8fe62f9](https://www.github.com/googleapis/python-runtimeconfig/commit/8fe62f992e1dc98dfb69a805afb24160de9c3b6b))
+
 ### [0.32.5](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.4...v0.32.5) (2021-09-20)
 
 
