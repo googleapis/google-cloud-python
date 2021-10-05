@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.4](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.3...v0.2.4) (2021-10-04)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([831f18a](https://www.github.com/googleapis/python-essential-contacts/commit/831f18afd43d83310699352e7467641c4dc9a79a))
+
 ### [0.2.3](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.2...v0.2.3) (2021-09-24)
 
 
