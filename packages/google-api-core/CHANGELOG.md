@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-api-core/compare/v2.0.1...v2.1.0) (2021-10-05)
+
+
+### Features
+
+* add grpc transcoding + tests ([#259](https://www.github.com/googleapis/python-api-core/issues/259)) ([afe0fa1](https://www.github.com/googleapis/python-api-core/commit/afe0fa14c21289c8244606a9f81544cff8ac5f7c))
+* Add helper function to format query_params for rest transport. ([#275](https://www.github.com/googleapis/python-api-core/issues/275)) ([1c5eb4d](https://www.github.com/googleapis/python-api-core/commit/1c5eb4df93d78e791082d9282330ebf0faacd222))
+* add support for Python 3.10 ([#284](https://www.github.com/googleapis/python-api-core/issues/284)) ([a422a5d](https://www.github.com/googleapis/python-api-core/commit/a422a5d72cb6f363d57e7a4effe421ba8e049cde))
+
 ### [2.0.1](https://www.github.com/googleapis/python-api-core/compare/v2.0.0...v2.0.1) (2021-08-31)
 
 
