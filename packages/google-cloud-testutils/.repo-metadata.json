@@ -8,5 +8,7 @@
     "language": "python",
     "library_type": "OTHER",
     "repo": "googleapis/python-test-utils",
-    "distribution_name": "google-cloud-testutils"
-}  
+    "distribution_name": "google-cloud-testutils",
+    "default_version": "",
+    "codeowner_team": ""
+}
