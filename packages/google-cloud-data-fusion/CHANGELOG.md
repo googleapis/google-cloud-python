@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-data-fusion/compare/v1.0.1...v1.0.2) (2021-10-04)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([b278e83](https://www.github.com/googleapis/python-data-fusion/commit/b278e83f4a087ac21fd02eefc5f79e8c02abcfb5))
+
 ### [1.0.1](https://www.github.com/googleapis/python-data-fusion/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
