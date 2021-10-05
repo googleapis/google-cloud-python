@@ -1,13 +1,15 @@
 {
-  "name": "dns",
-  "name_pretty": "Cloud DNS",
-  "product_documentation": "https://cloud.google.com/dns",
-  "client_documentation": "https://googleapis.dev/python/dns/latest",
-  "issue_tracker": "https://issuetracker.google.com/savedsearches/559772",
-  "release_level": "alpha",
-  "language": "python",
-  "library_type": "GAPIC_MANUAL",
-  "repo": "googleapis/python-dns",
-  "distribution_name": "google-cloud-dns",
-  "requires_billing": true
+    "name": "dns",
+    "name_pretty": "Cloud DNS",
+    "product_documentation": "https://cloud.google.com/dns",
+    "client_documentation": "https://googleapis.dev/python/dns/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559772",
+    "release_level": "alpha",
+    "language": "python",
+    "library_type": "GAPIC_MANUAL",
+    "repo": "googleapis/python-dns",
+    "distribution_name": "google-cloud-dns",
+    "requires_billing": true,
+    "default_version": "",
+    "codeowner_team": ""
 }
