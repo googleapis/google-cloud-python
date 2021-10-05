@@ -30,6 +30,7 @@ from google.cloud._helpers import _datetime_to_rfc3339
 # import officially supported proto definitions
 import google.cloud.audit.audit_log_pb2  # noqa: F401
 import google.cloud.appengine_logging  # noqa: F401
+from google.iam.v1.logging import audit_data_pb2  # noqa: F401
 
 _GLOBAL_RESOURCE = Resource(type="global", labels={})
 

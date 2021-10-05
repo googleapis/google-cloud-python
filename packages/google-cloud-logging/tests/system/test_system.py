@@ -260,6 +260,39 @@ class TestLogging(unittest.TestCase):
             protobuf_entry.to_api_repr()["protoPayload"]["@type"], type_url
         )
 
+    def test_list_entry_with_auditdata(self):
+        """
+        Test emitting and listing logs containing a google.iam.v1.logging.AuditData proto message
+        """
+        from google.protobuf import descriptor_pool
+        from google.cloud.logging_v2 import entries
+
+        pool = descriptor_pool.Default()
+        type_name = "google.iam.v1.logging.AuditData"
+        type_url = "type.googleapis.com/" + type_name
+        # Make sure the descriptor is known in the registry.
+        # Raises KeyError if unknown
+        pool.FindMessageTypeByName(type_name)
+
+        # create log
+        req_dict = {"@type": type_url, "policyDelta": {}}
+        req_struct = self._dict_to_struct(req_dict)
+
+        logger = Config.CLIENT.logger(f"auditdata-proto-{uuid.uuid1()}")
+        logger.log_proto(req_struct)
+
+        # retrieve log
+        retry = RetryErrors((TooManyRequests, StopIteration), max_tries=8)
+        protobuf_entry = retry(lambda: next(logger.list_entries()))()
+
+        self.assertIsInstance(protobuf_entry, entries.ProtobufEntry)
+        self.assertIsNone(protobuf_entry.payload_pb)
+        self.assertIsInstance(protobuf_entry.payload_json, dict)
+        self.assertEqual(protobuf_entry.payload_json["@type"], type_url)
+        self.assertEqual(
+            protobuf_entry.to_api_repr()["protoPayload"]["@type"], type_url
+        )
+
     def test_log_text(self):
         TEXT_PAYLOAD = "System test: test_log_text"
         logger = Config.CLIENT.logger(self._logger_name("log_text"))
