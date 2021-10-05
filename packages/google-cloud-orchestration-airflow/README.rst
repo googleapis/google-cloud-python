@@ -1,7 +1,7 @@
 Python Client for Cloud Composer
 ================================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Cloud Composer`_: is a fully managed data workflow orchestration service that empowers you to author, 
 schedule, and monitor pipelines.
@@ -9,8 +9,8 @@ schedule, and monitor pipelines.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-orchestration-airflow.svg
    :target: https://pypi.org/project/google-cloud-orchestration-airflow/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-orchestration-airflow.svg
