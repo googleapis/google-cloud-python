@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [3.0.0](https://www.github.com/googleapis/python-dataproc/compare/v2.6.0...v3.0.0) (2021-10-04)
+
+
+### Features
+
+* delete deprecated Dataproc v1beta2 API client ([3bdeaa7](https://www.github.com/googleapis/python-dataproc/commit/3bdeaa7e707ec2af445bf7c0321959b927c9c245))
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([be5c115](https://www.github.com/googleapis/python-dataproc/commit/be5c11554f7accfe60dd5cb8da7c4888f688c282))
+* improper types in pagers generation ([1ae784b](https://www.github.com/googleapis/python-dataproc/commit/1ae784bc1610aeb389eaa2cc7a6dc6f10c96788b))
+
+
+### Miscellaneous Chores
+
+* release as 3.0.0 ([#273](https://www.github.com/googleapis/python-dataproc/issues/273)) ([3bdeaa7](https://www.github.com/googleapis/python-dataproc/commit/3bdeaa7e707ec2af445bf7c0321959b927c9c245))
+
+
+### Documentation
+
+* update cluster sample ([3bdeaa7](https://www.github.com/googleapis/python-dataproc/commit/3bdeaa7e707ec2af445bf7c0321959b927c9c245))
+
 ## [2.6.0](https://www.github.com/googleapis/python-dataproc/compare/v2.5.0...v2.6.0) (2021-09-21)
 
 
