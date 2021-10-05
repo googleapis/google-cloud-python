@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.3](https://www.github.com/googleapis/python-notebooks/compare/v0.4.2...v0.4.3) (2021-10-05)
+
+
+### Documentation
+
+* Fix broken links and formatting in the reference documentation ([#93](https://www.github.com/googleapis/python-notebooks/issues/93)) ([f122cb0](https://www.github.com/googleapis/python-notebooks/commit/f122cb0d638579ebba3b54705f27942660704048))
+
 ### [0.4.2](https://www.github.com/googleapis/python-notebooks/compare/v0.4.1...v0.4.2) (2021-09-30)
 
 
