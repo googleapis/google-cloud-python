@@ -1,14 +1,16 @@
 {
-  "name": "oslogin",
-  "name_pretty": "Google Cloud OS Login",
-  "product_documentation": "https://cloud.google.com/compute/docs/oslogin/",
-  "client_documentation": "https://googleapis.dev/python/oslogin/latest",
-  "issue_tracker": "https://issuetracker.google.com/savedsearches/559755",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-oslogin",
-  "distribution_name": "google-cloud-os-login",
-  "api_id": "oslogin.googleapis.com",
-  "requires_billing": true
+    "name": "oslogin",
+    "name_pretty": "Google Cloud OS Login",
+    "product_documentation": "https://cloud.google.com/compute/docs/oslogin/",
+    "client_documentation": "https://googleapis.dev/python/oslogin/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559755",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-oslogin",
+    "distribution_name": "google-cloud-os-login",
+    "api_id": "oslogin.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": ""
 }
