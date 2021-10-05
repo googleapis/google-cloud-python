@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.53.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.52.0...v0.53.0) (2021-10-04)
+
+
+### Features
+
+* add support for context manager in client ([#987](https://www.github.com/googleapis/gapic-generator-python/issues/987)) ([4edabcf](https://www.github.com/googleapis/gapic-generator-python/commit/4edabcf6791cfb0874a951b695b39672036760d4))
+* enable self signed jwt for http ([#1000](https://www.github.com/googleapis/gapic-generator-python/issues/1000)) ([5f87973](https://www.github.com/googleapis/gapic-generator-python/commit/5f8797396a2477b772b7bfb827499db32e28710e))
+* implement grpc transcode for rest transport and complete generated tests ([#999](https://www.github.com/googleapis/gapic-generator-python/issues/999)) ([ccdd17d](https://www.github.com/googleapis/gapic-generator-python/commit/ccdd17d6133274a34dd727fab0576e6c63238833))
+* implement grpc transcode for rest transport and complete generated tests. ([ccdd17d](https://www.github.com/googleapis/gapic-generator-python/commit/ccdd17d6133274a34dd727fab0576e6c63238833))
+
+
+### Bug Fixes
+
+* fix docstring for first attribute of protos ([#1004](https://www.github.com/googleapis/gapic-generator-python/issues/1004)) ([383f655](https://www.github.com/googleapis/gapic-generator-python/commit/383f6555a1d850889b2aa74be28c8d06465399e5))
+
 ## [0.52.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.51.2...v0.52.0) (2021-09-29)
 
 
