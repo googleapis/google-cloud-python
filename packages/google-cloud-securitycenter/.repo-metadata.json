@@ -1,14 +1,16 @@
 {
-  "name": "securitycenter",
-  "name_pretty": "Google Cloud Security Command Center",
-  "product_documentation": "https://cloud.google.com/security-command-center",
-  "client_documentation": "https://googleapis.dev/python/securitycenter/latest",
-  "issue_tracker": "https://issuetracker.google.com/savedsearches/559748",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-securitycenter",
-  "distribution_name": "google-cloud-securitycenter",
-  "api_id": "securitycenter.googleapis.com",
-  "requires_billing": true
+    "name": "securitycenter",
+    "name_pretty": "Google Cloud Security Command Center",
+    "product_documentation": "https://cloud.google.com/security-command-center",
+    "client_documentation": "https://googleapis.dev/python/securitycenter/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559748",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-securitycenter",
+    "distribution_name": "google-cloud-securitycenter",
+    "api_id": "securitycenter.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": ""
 }
