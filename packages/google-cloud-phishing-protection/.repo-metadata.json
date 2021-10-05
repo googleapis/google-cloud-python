@@ -1,14 +1,16 @@
 {
-  "name": "phishingprotection",
-  "name_pretty": "Phishing Protection",
-  "product_documentation": "https://cloud.google.com/phishing-protection/docs/",
-  "client_documentation": "https://googleapis.dev/python/phishingprotection/latest",
-  "issue_tracker": "",
-  "release_level": "beta",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-phishingprotection",
-  "distribution_name": "google-cloud-phishing-protection",
-  "api_id": "phishingprotection.googleapis.com",
-  "requires_billing": true
+    "name": "phishingprotection",
+    "name_pretty": "Phishing Protection",
+    "product_documentation": "https://cloud.google.com/phishing-protection/docs/",
+    "client_documentation": "https://googleapis.dev/python/phishingprotection/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-phishingprotection",
+    "distribution_name": "google-cloud-phishing-protection",
+    "api_id": "phishingprotection.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1beta1",
+    "codeowner_team": ""
 }
