@@ -9,5 +9,7 @@
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-retail",
     "distribution_name": "google-cloud-retail",
-    "api_id": "retail.googleapis.com"
-  }
+    "api_id": "retail.googleapis.com",
+    "default_version": "v2",
+    "codeowner_team": ""
+}
