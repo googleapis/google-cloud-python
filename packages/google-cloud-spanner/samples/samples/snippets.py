@@ -2043,6 +2043,73 @@ def create_client_with_query_options(instance_id, database_id):
     # [END spanner_create_client_with_query_options]
 
 
+def set_transaction_tag(instance_id, database_id):
+    """Executes a transaction with a transaction tag."""
+    # [START spanner_set_transaction_tag]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    def update_venues(transaction):
+        # Sets the request tag to "app=concert,env=dev,action=update".
+        #  This request tag will only be set on this request.
+        transaction.execute_update(
+            "UPDATE Venues SET Capacity = CAST(Capacity/4 AS INT64) WHERE OutdoorVenue = false",
+            request_options={"request_tag": "app=concert,env=dev,action=update"}
+        )
+        print("Venue capacities updated.")
+
+        # Sets the request tag to "app=concert,env=dev,action=insert".
+        # This request tag will only be set on this request.
+        transaction.execute_update(
+            "INSERT INTO Venues (VenueId, VenueName, Capacity, OutdoorVenue, LastUpdateTime) "
+            "VALUES (@venueId, @venueName, @capacity, @outdoorVenue, PENDING_COMMIT_TIMESTAMP())",
+            params={
+                "venueId": 81,
+                "venueName": "Venue 81",
+                "capacity": 1440,
+                "outdoorVenue": True
+            },
+            param_types={
+                "venueId": param_types.INT64,
+                "venueName": param_types.STRING,
+                "capacity": param_types.INT64,
+                "outdoorVenue": param_types.BOOL
+            },
+            request_options={"request_tag": "app=concert,env=dev,action=insert"}
+        )
+        print("New venue inserted.")
+
+    database.run_in_transaction(
+        update_venues, transaction_tag="app=concert,env=dev"
+    )
+
+    # [END spanner_set_transaction_tag]
+
+
+def set_request_tag(instance_id, database_id):
+    """Executes a snapshot read with a request tag."""
+    # [START spanner_set_request_tag]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    with database.snapshot() as snapshot:
+        results = snapshot.execute_sql(
+            "SELECT SingerId, AlbumId, AlbumTitle FROM Albums",
+            request_options={"request_tag": "app=concert,env=dev,action=select"}
+        )
+
+        for row in results:
+            print(u"SingerId: {}, AlbumId: {}, AlbumTitle: {}".format(*row))
+
+    # [END spanner_set_request_tag]
+
+
 if __name__ == "__main__":  # noqa: C901
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter

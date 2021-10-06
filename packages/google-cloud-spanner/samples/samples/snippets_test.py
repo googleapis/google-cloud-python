@@ -614,3 +614,18 @@ def test_create_client_with_query_options(capsys, instance_id, sample_database):
     assert "VenueId: 4, VenueName: Venue 4, LastUpdateTime:" in out
     assert "VenueId: 19, VenueName: Venue 19, LastUpdateTime:" in out
     assert "VenueId: 42, VenueName: Venue 42, LastUpdateTime:" in out
+
+
+@pytest.mark.dependency(depends=["insert_datatypes_data"])
+def test_set_transaction_tag(capsys, instance_id, sample_database):
+    snippets.set_transaction_tag(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "Venue capacities updated." in out
+    assert "New venue inserted." in out
+
+
+@pytest.mark.dependency(depends=["insert_data"])
+def test_set_request_tag(capsys, instance_id, sample_database):
+    snippets.set_request_tag(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "SingerId: 1, AlbumId: 1, AlbumTitle: Total Junk" in out
