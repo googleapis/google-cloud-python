@@ -21,7 +21,6 @@ from .types.resources import AdBreak
 from .types.resources import AudioStream
 from .types.resources import EditAtom
 from .types.resources import ElementaryStream
-from .types.resources import Encryption
 from .types.resources import Input
 from .types.resources import Job
 from .types.resources import JobConfig
@@ -57,7 +56,6 @@ __all__ = (
     "DeleteJobTemplateRequest",
     "EditAtom",
     "ElementaryStream",
-    "Encryption",
     "GetJobRequest",
     "GetJobTemplateRequest",
     "Input",

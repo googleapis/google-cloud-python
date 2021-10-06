@@ -41,7 +41,6 @@ __protobuf__ = proto.module(
         "AudioStream",
         "TextStream",
         "SegmentSettings",
-        "Encryption",
     },
 )
 
@@ -51,7 +50,7 @@ class Job(proto.Message):
     Attributes:
         name (str):
             The resource name of the job. Format:
-            ``projects/{project}/locations/{location}/jobs/{job}``
+            ``projects/{project_number}/locations/{location}/jobs/{job}``
         input_uri (str):
             Input only. Specify the ``input_uri`` to populate empty
             ``uri`` fields in each element of ``Job.config.inputs`` or
@@ -127,7 +126,7 @@ class JobTemplate(proto.Message):
     Attributes:
         name (str):
             The resource name of the job template. Format:
-            ``projects/{project}/locations/{location}/jobTemplates/{job_template}``
+            ``projects/{project_number}/locations/{location}/jobTemplates/{job_template}``
         config (google.cloud.video.transcoder_v1.types.JobConfig):
             The configuration for this template.
     """
@@ -292,8 +291,8 @@ class MuxStream(proto.Message):
     Attributes:
         key (str):
             A unique key for this multiplexed stream. HLS media
-            manifests will be named ``MuxStream.key`` with the
-            ``".m3u8"`` extension suffix.
+            manifests will be named ``MuxStream.key`` with the ``.m3u8``
+            extension suffix.
         file_name (str):
             The name of the generated file. The default is
             ``MuxStream.key`` with the extension suffix corresponding to
@@ -301,23 +300,21 @@ class MuxStream(proto.Message):
 
             Individual segments also have an incremental 10-digit
             zero-padded suffix starting from 0 before the extension,
-            such as ``"mux_stream0000000123.ts"``.
+            such as ``mux_stream0000000123.ts``.
         container (str):
-            The container format. The default is ``"mp4"``
+            The container format. The default is ``mp4``
 
             Supported container formats:
 
-            -  'ts'
-            -  'fmp4'- the corresponding file extension is ``".m4s"``
-            -  'mp4'
-            -  'vtt'
+            -  ``ts``
+            -  ``fmp4``- the corresponding file extension is ``.m4s``
+            -  ``mp4``
+            -  ``vtt``
         elementary_streams (Sequence[str]):
             List of ``ElementaryStream.key``\ s multiplexed in this
             stream.
         segment_settings (google.cloud.video.transcoder_v1.types.SegmentSettings):
-            Segment settings for ``"ts"``, ``"fmp4"`` and ``"vtt"``.
-        encryption (google.cloud.video.transcoder_v1.types.Encryption):
-            Encryption settings.
+            Segment settings for ``ts``, ``fmp4`` and ``vtt``.
     """
 
     key = proto.Field(proto.STRING, number=1,)
@@ -325,19 +322,17 @@ class MuxStream(proto.Message):
     container = proto.Field(proto.STRING, number=3,)
     elementary_streams = proto.RepeatedField(proto.STRING, number=4,)
     segment_settings = proto.Field(proto.MESSAGE, number=5, message="SegmentSettings",)
-    encryption = proto.Field(proto.MESSAGE, number=6, message="Encryption",)
 
 
 class Manifest(proto.Message):
     r"""Manifest configuration.
     Attributes:
         file_name (str):
-            The name of the generated file. The default is
-            ``"manifest"`` with the extension suffix corresponding to
-            the ``Manifest.type``.
+            The name of the generated file. The default is ``manifest``
+            with the extension suffix corresponding to the
+            ``Manifest.type``.
         type_ (google.cloud.video.transcoder_v1.types.Manifest.ManifestType):
-            Required. Type of the manifest, can be "HLS"
-            or "DASH".
+            Required. Type of the manifest, can be ``HLS`` or ``DASH``.
         mux_streams (Sequence[str]):
             Required. List of user given ``MuxStream.key``\ s that
             should appear in this manifest.
@@ -348,7 +343,7 @@ class Manifest(proto.Message):
     """
 
     class ManifestType(proto.Enum):
-        r"""The manifest type can be either ``"HLS"`` or ``"DASH"``."""
+        r"""The manifest type can be either ``HLS`` or ``DASH``."""
         MANIFEST_TYPE_UNSPECIFIED = 0
         HLS = 1
         DASH = 2
@@ -375,17 +370,17 @@ class SpriteSheet(proto.Message):
 
     Attributes:
         format_ (str):
-            Format type. The default is ``"jpeg"``.
+            Format type. The default is ``jpeg``.
 
             Supported formats:
 
-            -  'jpeg'
+            -  ``jpeg``
         file_prefix (str):
             Required. File name prefix for the generated sprite sheets.
 
             Each sprite sheet has an incremental 10-digit zero-padded
             suffix starting from 0 before the extension, such as
-            ``"sprite_sheet0000000123.jpeg"``.
+            ``sprite_sheet0000000123.jpeg``.
         sprite_width_pixels (int):
             Required. The width of sprite in pixels. Must be an even
             integer. To preserve the source aspect ratio, set the
@@ -663,12 +658,12 @@ class PreprocessingConfig(proto.Message):
                 smoother the image. 0 is no denoising. The
                 default is 0.
             tune (str):
-                Set the denoiser mode. The default is ``"standard"``.
+                Set the denoiser mode. The default is ``standard``.
 
                 Supported denoiser modes:
 
-                -  'standard'
-                -  'grain'
+                -  ``standard``
+                -  ``grain``
         """
 
         strength = proto.Field(proto.DOUBLE, number=1,)
@@ -812,28 +807,29 @@ class VideoStream(proto.Message):
                 for more information.
             bitrate_bps (int):
                 Required. The video bitrate in bits per
-                second. Must be between 1 and 1,000,000,000.
+                second. The minimum value is 1,000. The maximum
+                value is 800,000,000.
             pixel_format (str):
-                Pixel format to use. The default is ``"yuv420p"``.
+                Pixel format to use. The default is ``yuv420p``.
 
                 Supported pixel formats:
 
-                -  'yuv420p' pixel format.
-                -  'yuv422p' pixel format.
-                -  'yuv444p' pixel format.
-                -  'yuv420p10' 10-bit HDR pixel format.
-                -  'yuv422p10' 10-bit HDR pixel format.
-                -  'yuv444p10' 10-bit HDR pixel format.
-                -  'yuv420p12' 12-bit HDR pixel format.
-                -  'yuv422p12' 12-bit HDR pixel format.
-                -  'yuv444p12' 12-bit HDR pixel format.
+                -  ``yuv420p`` pixel format
+                -  ``yuv422p`` pixel format
+                -  ``yuv444p`` pixel format
+                -  ``yuv420p10`` 10-bit HDR pixel format
+                -  ``yuv422p10`` 10-bit HDR pixel format
+                -  ``yuv444p10`` 10-bit HDR pixel format
+                -  ``yuv420p12`` 12-bit HDR pixel format
+                -  ``yuv422p12`` 12-bit HDR pixel format
+                -  ``yuv444p12`` 12-bit HDR pixel format
             rate_control_mode (str):
-                Specify the ``rate_control_mode``. The default is ``"vbr"``.
+                Specify the ``rate_control_mode``. The default is ``vbr``.
 
                 Supported rate control modes:
 
-                -  'vbr' - variable bitrate
-                -  'crf' - constant rate factor
+                -  ``vbr`` - variable bitrate
+                -  ``crf`` - constant rate factor
             crf_level (int):
                 Target CRF level. Must be between 10 and 36,
                 where 10 is the highest quality and 36 is the
@@ -846,14 +842,14 @@ class VideoStream(proto.Message):
                 frame count. Must be greater than zero.
             gop_duration (google.protobuf.duration_pb2.Duration):
                 Select the GOP size based on the specified duration. The
-                default is ``"3s"``. Note that ``gopDuration`` must be less
+                default is ``3s``. Note that ``gopDuration`` must be less
                 than or equal to ```segmentDuration`` <#SegmentSettings>`__,
                 and ```segmentDuration`` <#SegmentSettings>`__ must be
                 divisible by ``gopDuration``.
             enable_two_pass (bool):
                 Use two-pass encoding strategy to achieve better video
-                quality. ``VideoStream.rate_control_mode`` must be
-                ``"vbr"``. The default is ``false``.
+                quality. ``VideoStream.rate_control_mode`` must be ``vbr``.
+                The default is ``false``.
             vbv_size_bits (int):
                 Size of the Video Buffering Verifier (VBV) buffer in bits.
                 Must be greater than zero. The default is equal to
@@ -863,12 +859,12 @@ class VideoStream(proto.Message):
                 buffer in bits. Must be greater than zero. The default is
                 equal to 90% of ``VideoStream.vbv_size_bits``.
             entropy_coder (str):
-                The entropy coder to use. The default is ``"cabac"``.
+                The entropy coder to use. The default is ``cabac``.
 
                 Supported entropy coders:
 
-                -  'cavlc'
-                -  'cabac'
+                -  ``cavlc``
+                -  ``cabac``
             b_pyramid (bool):
                 Allow B-pyramid for reference frame selection. This may not
                 be supported on all decoders. The default is ``false``.
@@ -891,23 +887,23 @@ class VideoStream(proto.Message):
                 -  ``high`` (default)
 
                 The available options are
-                `FFmpeg-compatible <https://trac.ffmpeg.org/wiki/Encode/H.264#Profile>`__\ {:
-                class="external" }. Note that certain values for this field
-                may cause the transcoder to override other fields you set in
-                the ``H264CodecSettings`` message.
+                `FFmpeg-compatible <https://trac.ffmpeg.org/wiki/Encode/H.264#Tune>`__.
+                Note that certain values for this field may cause the
+                transcoder to override other fields you set in the
+                ``H264CodecSettings`` message.
             tune (str):
                 Enforces the specified codec tune. The available options are
-                `FFmpeg-compatible <https://trac.ffmpeg.org/wiki/Encode/H.264#Tune>`__\ {:
-                class="external" }. Note that certain values for this field
-                may cause the transcoder to override other fields you set in
-                the ``H264CodecSettings`` message.
+                `FFmpeg-compatible <https://trac.ffmpeg.org/wiki/Encode/H.264#Tune>`__.
+                Note that certain values for this field may cause the
+                transcoder to override other fields you set in the
+                ``H264CodecSettings`` message.
             preset (str):
                 Enforces the specified codec preset. The default is
                 ``veryfast``. The available options are
-                `FFmpeg-compatible <https://trac.ffmpeg.org/wiki/Encode/H.264#Preset>`__\ {:
-                class="external" }. Note that certain values for this field
-                may cause the transcoder to override other fields you set in
-                the ``H264CodecSettings`` message.
+                `FFmpeg-compatible <https://trac.ffmpeg.org/wiki/Encode/H.264#Preset>`__.
+                Note that certain values for this field may cause the
+                transcoder to override other fields you set in the
+                ``H264CodecSettings`` message.
         """
 
         width_pixels = proto.Field(proto.INT32, number=1,)
@@ -959,28 +955,29 @@ class VideoStream(proto.Message):
                 for more information.
             bitrate_bps (int):
                 Required. The video bitrate in bits per
-                second. Must be between 1 and 1,000,000,000.
+                second. The minimum value is 1,000. The maximum
+                value is 800,000,000.
             pixel_format (str):
-                Pixel format to use. The default is ``"yuv420p"``.
+                Pixel format to use. The default is ``yuv420p``.
 
                 Supported pixel formats:
 
-                -  'yuv420p' pixel format.
-                -  'yuv422p' pixel format.
-                -  'yuv444p' pixel format.
-                -  'yuv420p10' 10-bit HDR pixel format.
-                -  'yuv422p10' 10-bit HDR pixel format.
-                -  'yuv444p10' 10-bit HDR pixel format.
-                -  'yuv420p12' 12-bit HDR pixel format.
-                -  'yuv422p12' 12-bit HDR pixel format.
-                -  'yuv444p12' 12-bit HDR pixel format.
+                -  ``yuv420p`` pixel format
+                -  ``yuv422p`` pixel format
+                -  ``yuv444p`` pixel format
+                -  ``yuv420p10`` 10-bit HDR pixel format
+                -  ``yuv422p10`` 10-bit HDR pixel format
+                -  ``yuv444p10`` 10-bit HDR pixel format
+                -  ``yuv420p12`` 12-bit HDR pixel format
+                -  ``yuv422p12`` 12-bit HDR pixel format
+                -  ``yuv444p12`` 12-bit HDR pixel format
             rate_control_mode (str):
-                Specify the ``rate_control_mode``. The default is ``"vbr"``.
+                Specify the ``rate_control_mode``. The default is ``vbr``.
 
                 Supported rate control modes:
 
-                -  'vbr' - variable bitrate
-                -  'crf' - constant rate factor
+                -  ``vbr`` - variable bitrate
+                -  ``crf`` - constant rate factor
             crf_level (int):
                 Target CRF level. Must be between 10 and 36,
                 where 10 is the highest quality and 36 is the
@@ -993,14 +990,14 @@ class VideoStream(proto.Message):
                 frame count. Must be greater than zero.
             gop_duration (google.protobuf.duration_pb2.Duration):
                 Select the GOP size based on the specified duration. The
-                default is ``"3s"``. Note that ``gopDuration`` must be less
+                default is ``3s``. Note that ``gopDuration`` must be less
                 than or equal to ```segmentDuration`` <#SegmentSettings>`__,
                 and ```segmentDuration`` <#SegmentSettings>`__ must be
                 divisible by ``gopDuration``.
             enable_two_pass (bool):
                 Use two-pass encoding strategy to achieve better video
-                quality. ``VideoStream.rate_control_mode`` must be
-                ``"vbr"``. The default is ``false``.
+                quality. ``VideoStream.rate_control_mode`` must be ``vbr``.
+                The default is ``false``.
             vbv_size_bits (int):
                 Size of the Video Buffering Verifier (VBV) buffer in bits.
                 Must be greater than zero. The default is equal to
@@ -1026,48 +1023,48 @@ class VideoStream(proto.Message):
                 Enforces the specified codec profile. The following profiles
                 are supported:
 
-                8bit profiles
+                -  8-bit profiles
 
-                -  ``main`` (default)
-                -  ``main-intra``
-                -  ``mainstillpicture``
+                   -  ``main`` (default)
+                   -  ``main-intra``
+                   -  ``mainstillpicture``
 
-                10bit profiles
+                -  10-bit profiles
 
-                -  ``main10`` (default)
-                -  ``main10-intra``
-                -  ``main422-10``
-                -  ``main422-10-intra``
-                -  ``main444-10``
-                -  ``main444-10-intra``
+                   -  ``main10`` (default)
+                   -  ``main10-intra``
+                   -  ``main422-10``
+                   -  ``main422-10-intra``
+                   -  ``main444-10``
+                   -  ``main444-10-intra``
 
-                12bit profiles
+                -  12-bit profiles
 
-                -  ``main12`` (default)
-                -  ``main12-intra``
-                -  ``main422-12``
-                -  ``main422-12-intra``
-                -  ``main444-12``
-                -  ``main444-12-intra``
+                   -  ``main12`` (default)
+                   -  ``main12-intra``
+                   -  ``main422-12``
+                   -  ``main422-12-intra``
+                   -  ``main444-12``
+                   -  ``main444-12-intra``
 
                 The available options are
-                `FFmpeg-compatible <https://x265.readthedocs.io/>`__\ {:
-                class="external" }. Note that certain values for this field
-                may cause the transcoder to override other fields you set in
-                the ``H265CodecSettings`` message.
+                `FFmpeg-compatible <https://x265.readthedocs.io/>`__. Note
+                that certain values for this field may cause the transcoder
+                to override other fields you set in the
+                ``H265CodecSettings`` message.
             tune (str):
                 Enforces the specified codec tune. The available options are
-                `FFmpeg-compatible <https://trac.ffmpeg.org/wiki/Encode/H.265>`__\ {:
-                class="external" }. Note that certain values for this field
-                may cause the transcoder to override other fields you set in
-                the ``H265CodecSettings`` message.
+                `FFmpeg-compatible <https://trac.ffmpeg.org/wiki/Encode/H.265>`__.
+                Note that certain values for this field may cause the
+                transcoder to override other fields you set in the
+                ``H265CodecSettings`` message.
             preset (str):
                 Enforces the specified codec preset. The default is
                 ``veryfast``. The available options are
-                `FFmpeg-compatible <https://trac.ffmpeg.org/wiki/Encode/H.265>`__\ {:
-                class="external" }. Note that certain values for this field
-                may cause the transcoder to override other fields you set in
-                the ``H265CodecSettings`` message.
+                `FFmpeg-compatible <https://trac.ffmpeg.org/wiki/Encode/H.265>`__.
+                Note that certain values for this field may cause the
+                transcoder to override other fields you set in the
+                ``H265CodecSettings`` message.
         """
 
         width_pixels = proto.Field(proto.INT32, number=1,)
@@ -1118,28 +1115,29 @@ class VideoStream(proto.Message):
                 for more information.
             bitrate_bps (int):
                 Required. The video bitrate in bits per
-                second. Must be between 1 and 1,000,000,000.
+                second. The minimum value is 1,000. The maximum
+                value is 480,000,000.
             pixel_format (str):
-                Pixel format to use. The default is ``"yuv420p"``.
+                Pixel format to use. The default is ``yuv420p``.
 
                 Supported pixel formats:
 
-                -  'yuv420p' pixel format.
-                -  'yuv422p' pixel format.
-                -  'yuv444p' pixel format.
-                -  'yuv420p10' 10-bit HDR pixel format.
-                -  'yuv422p10' 10-bit HDR pixel format.
-                -  'yuv444p10' 10-bit HDR pixel format.
-                -  'yuv420p12' 12-bit HDR pixel format.
-                -  'yuv422p12' 12-bit HDR pixel format.
-                -  'yuv444p12' 12-bit HDR pixel format.
+                -  ``yuv420p`` pixel format
+                -  ``yuv422p`` pixel format
+                -  ``yuv444p`` pixel format
+                -  ``yuv420p10`` 10-bit HDR pixel format
+                -  ``yuv422p10`` 10-bit HDR pixel format
+                -  ``yuv444p10`` 10-bit HDR pixel format
+                -  ``yuv420p12`` 12-bit HDR pixel format
+                -  ``yuv422p12`` 12-bit HDR pixel format
+                -  ``yuv444p12`` 12-bit HDR pixel format
             rate_control_mode (str):
-                Specify the ``rate_control_mode``. The default is ``"vbr"``.
+                Specify the ``rate_control_mode``. The default is ``vbr``.
 
                 Supported rate control modes:
 
-                -  'vbr' - variable bitrate
-                -  'crf' - constant rate factor
+                -  ``vbr`` - variable bitrate
+                -  ``crf`` - constant rate factor
             crf_level (int):
                 Target CRF level. Must be between 10 and 36,
                 where 10 is the highest quality and 36 is the
@@ -1149,7 +1147,7 @@ class VideoStream(proto.Message):
                 frame count. Must be greater than zero.
             gop_duration (google.protobuf.duration_pb2.Duration):
                 Select the GOP size based on the specified duration. The
-                default is ``"3s"``. Note that ``gopDuration`` must be less
+                default is ``3s``. Note that ``gopDuration`` must be less
                 than or equal to ```segmentDuration`` <#SegmentSettings>`__,
                 and ```segmentDuration`` <#SegmentSettings>`__ must be
                 divisible by ``gopDuration``.
@@ -1163,10 +1161,10 @@ class VideoStream(proto.Message):
                 -  ``profile3``
 
                 The available options are
-                `WebM-compatible <https://www.webmproject.org/vp9/profiles/>`__\ {:
-                class="external" }. Note that certain values for this field
-                may cause the transcoder to override other fields you set in
-                the ``Vp9CodecSettings`` message.
+                `WebM-compatible <https://www.webmproject.org/vp9/profiles/>`__.
+                Note that certain values for this field may cause the
+                transcoder to override other fields you set in the
+                ``Vp9CodecSettings`` message.
         """
 
         width_pixels = proto.Field(proto.INT32, number=1,)
@@ -1197,16 +1195,16 @@ class AudioStream(proto.Message):
     r"""Audio stream resource.
     Attributes:
         codec (str):
-            The codec for this audio stream. The default is ``"aac"``.
+            The codec for this audio stream. The default is ``aac``.
 
             Supported audio codecs:
 
-            -  'aac'
-            -  'aac-he'
-            -  'aac-he-v2'
-            -  'mp3'
-            -  'ac3'
-            -  'eac3'
+            -  ``aac``
+            -  ``aac-he``
+            -  ``aac-he-v2``
+            -  ``mp3``
+            -  ``ac3``
+            -  ``eac3``
         bitrate_bps (int):
             Required. Audio bitrate in bits per second.
             Must be between 1 and 10,000,000.
@@ -1221,12 +1219,12 @@ class AudioStream(proto.Message):
 
             Supported channel names:
 
-            -  'fl' - Front left channel
-            -  'fr' - Front right channel
-            -  'sl' - Side left channel
-            -  'sr' - Side right channel
-            -  'fc' - Front center channel
-            -  'lfe' - Low frequency
+            -  ``fl`` - Front left channel
+            -  ``fr`` - Front right channel
+            -  ``sl`` - Side left channel
+            -  ``sr`` - Side right channel
+            -  ``fc`` - Front center channel
+            -  ``lfe`` - Low frequency
         mapping (Sequence[google.cloud.video.transcoder_v1.types.AudioStream.AudioMapping]):
             The mapping for the ``Job.edit_list`` atoms with audio
             ``EditAtom.inputs``.
@@ -1281,15 +1279,15 @@ class TextStream(proto.Message):
 
     Attributes:
         codec (str):
-            The codec for this text stream. The default is ``"webvtt"``.
+            The codec for this text stream. The default is ``webvtt``.
 
             Supported text codecs:
 
-            -  'srt'
-            -  'ttml'
-            -  'cea608'
-            -  'cea708'
-            -  'webvtt'
+            -  ``srt``
+            -  ``ttml``
+            -  ``cea608``
+            -  ``cea708``
+            -  ``webvtt``
         mapping (Sequence[google.cloud.video.transcoder_v1.types.TextStream.TextMapping]):
             The mapping for the ``Job.edit_list`` atoms with text
             ``EditAtom.inputs``.
@@ -1319,12 +1317,12 @@ class TextStream(proto.Message):
 
 
 class SegmentSettings(proto.Message):
-    r"""Segment settings for ``"ts"``, ``"fmp4"`` and ``"vtt"``.
+    r"""Segment settings for ``ts``, ``fmp4`` and ``vtt``.
     Attributes:
         segment_duration (google.protobuf.duration_pb2.Duration):
             Duration of the segments in seconds. The default is
-            ``"6.0s"``. Note that ``segmentDuration`` must be greater
-            than or equal to ```gopDuration`` <#videostream>`__, and
+            ``6.0s``. Note that ``segmentDuration`` must be greater than
+            or equal to ```gopDuration`` <#videostream>`__, and
             ``segmentDuration`` must be divisible by
             ```gopDuration`` <#videostream>`__.
         individual_segments (bool):
@@ -1336,74 +1334,6 @@ class SegmentSettings(proto.Message):
         proto.MESSAGE, number=1, message=duration_pb2.Duration,
     )
     individual_segments = proto.Field(proto.BOOL, number=3,)
-
-
-class Encryption(proto.Message):
-    r"""Encryption settings.
-    Attributes:
-        key (str):
-            Required. 128 bit encryption key represented
-            as lowercase hexadecimal digits.
-        iv (str):
-            Required. 128 bit Initialization Vector (IV)
-            represented as lowercase hexadecimal digits.
-        aes_128 (google.cloud.video.transcoder_v1.types.Encryption.Aes128Encryption):
-            Configuration for AES-128 encryption.
-        sample_aes (google.cloud.video.transcoder_v1.types.Encryption.SampleAesEncryption):
-            Configuration for SAMPLE-AES encryption.
-        mpeg_cenc (google.cloud.video.transcoder_v1.types.Encryption.MpegCommonEncryption):
-            Configuration for MPEG Common Encryption
-            (MPEG-CENC).
-    """
-
-    class Aes128Encryption(proto.Message):
-        r"""Configuration for AES-128 encryption.
-        Attributes:
-            key_uri (str):
-                Required. URI of the key delivery service.
-                This URI is inserted into the M3U8 header.
-        """
-
-        key_uri = proto.Field(proto.STRING, number=1,)
-
-    class SampleAesEncryption(proto.Message):
-        r"""Configuration for SAMPLE-AES encryption.
-        Attributes:
-            key_uri (str):
-                Required. URI of the key delivery service.
-                This URI is inserted into the M3U8 header.
-        """
-
-        key_uri = proto.Field(proto.STRING, number=1,)
-
-    class MpegCommonEncryption(proto.Message):
-        r"""Configuration for MPEG Common Encryption (MPEG-CENC).
-        Attributes:
-            key_id (str):
-                Required. 128 bit Key ID represented as
-                lowercase hexadecimal digits for use with common
-                encryption.
-            scheme (str):
-                Required. Specify the encryption scheme.
-                Supported encryption schemes:
-                - 'cenc'
-                - 'cbcs'
-        """
-
-        key_id = proto.Field(proto.STRING, number=1,)
-        scheme = proto.Field(proto.STRING, number=2,)
-
-    key = proto.Field(proto.STRING, number=1,)
-    iv = proto.Field(proto.STRING, number=2,)
-    aes_128 = proto.Field(
-        proto.MESSAGE, number=3, oneof="encryption_mode", message=Aes128Encryption,
-    )
-    sample_aes = proto.Field(
-        proto.MESSAGE, number=4, oneof="encryption_mode", message=SampleAesEncryption,
-    )
-    mpeg_cenc = proto.Field(
-        proto.MESSAGE, number=5, oneof="encryption_mode", message=MpegCommonEncryption,
-    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

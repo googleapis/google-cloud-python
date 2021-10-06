@@ -96,9 +96,14 @@ class DeleteJobRequest(proto.Message):
         name (str):
             Required. The name of the job to delete. Format:
             ``projects/{project}/locations/{location}/jobs/{job}``
+        allow_missing (bool):
+            If set to true, and the job is not found, the
+            request will succeed but no action will be taken
+            on the server.
     """
 
     name = proto.Field(proto.STRING, number=1,)
+    allow_missing = proto.Field(proto.BOOL, number=2,)
 
 
 class ListJobsResponse(proto.Message):
@@ -190,9 +195,14 @@ class DeleteJobTemplateRequest(proto.Message):
         name (str):
             Required. The name of the job template to delete.
             ``projects/{project}/locations/{location}/jobTemplates/{job_template}``
+        allow_missing (bool):
+            If set to true, and the job template is not
+            found, the request will succeed but no action
+            will be taken on the server.
     """
 
     name = proto.Field(proto.STRING, number=1,)
+    allow_missing = proto.Field(proto.BOOL, number=2,)
 
 
 class ListJobTemplatesResponse(proto.Message):
