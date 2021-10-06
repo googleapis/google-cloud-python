@@ -1,14 +1,16 @@
 {
-  "name": "bigquery",
-  "name_pretty": "Google Cloud BigQuery",
-  "product_documentation": "https://cloud.google.com/bigquery",
-  "client_documentation": "https://googleapis.dev/python/bigquery/latest",
-  "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_COMBO",
-  "repo": "googleapis/python-bigquery",
-  "distribution_name": "google-cloud-bigquery",
-  "api_id": "bigquery.googleapis.com",
-  "requires_billing": false
+    "name": "bigquery",
+    "name_pretty": "Google Cloud BigQuery",
+    "product_documentation": "https://cloud.google.com/bigquery",
+    "client_documentation": "https://googleapis.dev/python/bigquery/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_COMBO",
+    "repo": "googleapis/python-bigquery",
+    "distribution_name": "google-cloud-bigquery",
+    "api_id": "bigquery.googleapis.com",
+    "requires_billing": false,
+    "default_version": "v2",
+    "codeowner_team": "@googleapis/api-bigquery"
 }
