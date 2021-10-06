@@ -49,7 +49,7 @@ setuptools.setup(
     ),
     python_requires=">=3.6",
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3.6",
