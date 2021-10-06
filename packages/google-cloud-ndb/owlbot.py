@@ -12,6 +12,7 @@ common = gcp.CommonTemplates()
 templated_files = common.py_library(unit_cov_level=100, cov_level=100)
 python.py_samples(skip_readmes=True)
 s.move(templated_files / '.kokoro')  # just move kokoro configs
+s.move(templated_files / '.trampolinerc')
 
 s.replace([".kokoro/publish-docs.sh", ".kokoro/build.sh"], "cd github/python-ndb", 
 """cd github/python-ndb
