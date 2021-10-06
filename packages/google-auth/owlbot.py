@@ -17,6 +17,10 @@ s.move(
         "build.sh",
     ],
 )  # just move kokoro configs
+s.move(
+    # needed by samples kokoro jobs
+    templated_files / ".trampolinerc"
+)
 
 
 assert 1 == s.replace(
