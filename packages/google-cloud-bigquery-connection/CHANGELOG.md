@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.2.3](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.2.2...v1.2.3) (2021-10-05)
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([87b77ee](https://www.github.com/googleapis/python-bigquery-connection/commit/87b77ee76e3abcce5428230a6884c66843353440))
+* improper types in pagers generation ([47d1b68](https://www.github.com/googleapis/python-bigquery-connection/commit/47d1b68b74dda036b64979e4c7aab589046822ba))
+
 ### [1.2.2](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.2.1...v1.2.2) (2021-07-27)
 
 
