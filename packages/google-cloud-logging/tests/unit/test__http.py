@@ -129,16 +129,20 @@ class Test_LoggingAPI(unittest.TestCase):
         NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
         return NOW, _datetime_to_rfc3339_w_nanos(NOW)
 
-    def test_list_entries_no_paging(self):
+    def test_list_entries_with_limits(self):
         from google.cloud.logging import Client
         from google.cloud.logging import TextEntry
         from google.cloud.logging import Logger
 
         NOW, TIMESTAMP = self._make_timestamp()
         IID = "IID"
+        IID1 = "IID1"
+        IID2 = "IID2"
         TEXT = "TEXT"
         SENT = {"resourceNames": [self.PROJECT_PATH]}
-        TOKEN = "TOKEN"
+        PAYLOAD = {"message": "MESSAGE", "weather": "partly cloudy"}
+        PROTO_PAYLOAD = PAYLOAD.copy()
+        PROTO_PAYLOAD["@type"] = "type.googleapis.com/testing.example"
         RETURNED = {
             "entries": [
                 {
@@ -147,24 +151,42 @@ class Test_LoggingAPI(unittest.TestCase):
                     "resource": {"type": "global"},
                     "timestamp": TIMESTAMP,
                     "logName": f"projects/{self.PROJECT}/logs/{self.LOGGER_NAME}",
-                }
+                },
+                {
+                    "jsonPayload": PAYLOAD,
+                    "insertId": IID1,
+                    "resource": {"type": "global"},
+                    "timestamp": TIMESTAMP,
+                    "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                },
+                {
+                    "protoPayload": PROTO_PAYLOAD,
+                    "insertId": IID2,
+                    "resource": {"type": "global"},
+                    "timestamp": TIMESTAMP,
+                    "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                },
             ],
-            "nextPageToken": TOKEN,
         }
         client = Client(
             project=self.PROJECT, credentials=_make_credentials(), _use_grpc=False
         )
+        # try with negative max_results
+        with self.assertRaises(ValueError):
+            client._connection = _Connection(RETURNED)
+            api = self._make_one(client)
+            empty = list(api.list_entries([self.PROJECT_PATH], max_results=-1))
+        # try with max_results of 0
         client._connection = _Connection(RETURNED)
         api = self._make_one(client)
-
-        iterator = api.list_entries([self.PROJECT_PATH])
-        page = next(iterator.pages)
-        entries = list(page)
-        token = iterator.next_page_token
-
-        # First check the token.
-        self.assertEqual(token, TOKEN)
-        # Then check the entries returned.
+        empty = list(api.list_entries([self.PROJECT_PATH], max_results=0))
+        self.assertEqual(empty, [])
+        # try with single result
+        client._connection = _Connection(RETURNED)
+        api = self._make_one(client)
+        iterator = api.list_entries([self.PROJECT_PATH], max_results=1)
+        entries = list(iterator)
+        # check the entries returned.
         self.assertEqual(len(entries), 1)
         entry = entries[0]
         self.assertIsInstance(entry, TextEntry)
@@ -183,7 +205,7 @@ class Test_LoggingAPI(unittest.TestCase):
             called_with, {"method": "POST", "path": expected_path, "data": SENT}
         )
 
-    def test_list_entries_w_paging(self):
+    def test_list_entries(self):
         from google.cloud.logging import DESCENDING
         from google.cloud.logging import Client
         from google.cloud.logging import Logger
@@ -241,11 +263,8 @@ class Test_LoggingAPI(unittest.TestCase):
             page_token=TOKEN,
         )
         entries = list(iterator)
-        token = iterator.next_page_token
 
-        # First check the token.
-        self.assertIsNone(token)
-        # Then check the entries returned.
+        # Check the entries returned.
         self.assertEqual(len(entries), 2)
         entry1 = entries[0]
         self.assertIsInstance(entry1, StructEntry)
@@ -361,32 +380,38 @@ class Test_SinksAPI(unittest.TestCase):
         self.assertIs(api._client, client)
         self.assertEqual(api.api_request, connection.api_request)
 
-    def test_list_sinks_no_paging(self):
+    def test_list_sinks_max_returned(self):
         from google.cloud.logging import Sink
 
-        TOKEN = "TOKEN"
         RETURNED = {
             "sinks": [
                 {
                     "name": self.SINK_PATH,
                     "filter": self.FILTER,
                     "destination": self.DESTINATION_URI,
-                }
+                },
+                {"name": "test", "filter": "test", "destination": "test"},
             ],
-            "nextPageToken": TOKEN,
         }
+        # try with negative max_results
+        with self.assertRaises(ValueError):
+            conn = _Connection(RETURNED)
+            client = _Client(conn)
+            api = self._make_one(client)
+            empty = list(api.list_sinks(self.PROJECT_PATH, max_results=-1))
+        # try with max_results of 0
         conn = _Connection(RETURNED)
         client = _Client(conn)
         api = self._make_one(client)
-
-        iterator = api.list_sinks(self.PROJECT_PATH)
-        page = next(iterator.pages)
-        sinks = list(page)
-        token = iterator.next_page_token
-
-        # First check the token.
-        self.assertEqual(token, TOKEN)
-        # Then check the sinks returned.
+        empty = list(api.list_sinks(self.PROJECT_PATH, max_results=0))
+        self.assertEqual(empty, [])
+        # try with single result
+        conn = _Connection(RETURNED)
+        client = _Client(conn)
+        api = self._make_one(client)
+        iterator = api.list_sinks(self.PROJECT_PATH, max_results=1)
+        sinks = list(iterator)
+        # Check the sinks returned.
         self.assertEqual(len(sinks), 1)
         sink = sinks[0]
         self.assertIsInstance(sink, Sink)
@@ -401,7 +426,7 @@ class Test_SinksAPI(unittest.TestCase):
             called_with, {"method": "GET", "path": path, "query_params": {}}
         )
 
-    def test_list_sinks_w_paging(self):
+    def test_list_sinks(self):
         from google.cloud.logging import Sink
 
         TOKEN = "TOKEN"
@@ -423,11 +448,7 @@ class Test_SinksAPI(unittest.TestCase):
             self.PROJECT_PATH, page_size=PAGE_SIZE, page_token=TOKEN
         )
         sinks = list(iterator)
-        token = iterator.next_page_token
-
-        # First check the token.
-        self.assertIsNone(token)
-        # Then check the sinks returned.
+        # Check the sinks returned.
         self.assertEqual(len(sinks), 1)
         sink = sinks[0]
         self.assertIsInstance(sink, Sink)
@@ -632,26 +653,35 @@ class Test_MetricsAPI(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_list_metrics_no_paging(self):
+    def test_list_metrics_max_results(self):
         from google.cloud.logging import Metric
 
-        TOKEN = "TOKEN"
         RETURNED = {
-            "metrics": [{"name": self.METRIC_PATH, "filter": self.FILTER}],
-            "nextPageToken": TOKEN,
+            "metrics": [
+                {"name": self.METRIC_PATH, "filter": self.FILTER},
+                {"name": "test", "filter": "test"},
+            ],
         }
+        # try with negative max_results
+        with self.assertRaises(ValueError):
+            conn = _Connection(RETURNED)
+            client = _Client(conn)
+            api = self._make_one(client)
+            empty = list(api.list_metrics(self.PROJECT, max_results=-1))
+        # try with max_results of 0
+        conn = _Connection(RETURNED)
+        client = _Client(conn)
+        api = self._make_one(client)
+        empty = list(api.list_metrics(self.PROJECT, max_results=0))
+        self.assertEqual(empty, [])
+        # try with single result
         conn = _Connection(RETURNED)
         client = _Client(conn)
         api = self._make_one(client)
 
-        iterator = api.list_metrics(self.PROJECT)
-        page = next(iterator.pages)
-        metrics = list(page)
-        token = iterator.next_page_token
-
-        # First check the token.
-        self.assertEqual(token, TOKEN)
-        # Then check the metrics returned.
+        iterator = api.list_metrics(self.PROJECT, max_results=1)
+        metrics = list(iterator)
+        # Check the metrics returned.
         self.assertEqual(len(metrics), 1)
         metric = metrics[0]
         self.assertIsInstance(metric, Metric)
@@ -666,7 +696,7 @@ class Test_MetricsAPI(unittest.TestCase):
             called_with, {"method": "GET", "path": path, "query_params": {}}
         )
 
-    def test_list_metrics_w_paging(self):
+    def test_list_metrics(self):
         from google.cloud.logging import Metric
 
         TOKEN = "TOKEN"
@@ -678,11 +708,7 @@ class Test_MetricsAPI(unittest.TestCase):
 
         iterator = api.list_metrics(self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
         metrics = list(iterator)
-        token = iterator.next_page_token
-
-        # First check the token.
-        self.assertIsNone(token)
-        # Then check the metrics returned.
+        # Check the metrics returned.
         self.assertEqual(len(metrics), 1)
         metric = metrics[0]
         self.assertIsInstance(metric, Metric)

@@ -605,23 +605,18 @@ class TestLogger(unittest.TestCase):
     def test_list_entries_defaults(self):
         from google.cloud.logging import Client
 
-        TOKEN = "TOKEN"
-
         client = Client(
             project=self.PROJECT, credentials=_make_credentials(), _use_grpc=False
         )
-        returned = {"nextPageToken": TOKEN}
+        returned = {}
         client._connection = _Connection(returned)
 
         logger = self._make_one(self.LOGGER_NAME, client=client)
 
         iterator = logger.list_entries()
-        page = next(iterator.pages)
-        entries = list(page)
-        token = iterator.next_page_token
+        entries = list(iterator)
 
         self.assertEqual(len(entries), 0)
-        self.assertEqual(token, TOKEN)
         LOG_FILTER = "logName=projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME)
 
         # check call payload
@@ -668,10 +663,8 @@ class TestLogger(unittest.TestCase):
             page_token=TOKEN,
         )
         entries = list(iterator)
-        token = iterator.next_page_token
 
         self.assertEqual(len(entries), 0)
-        self.assertIsNone(token)
         # self.assertEqual(client._listed, LISTED)
         # check call payload
         call_payload_no_filter = deepcopy(client._connection._called_with)
@@ -728,10 +721,8 @@ class TestLogger(unittest.TestCase):
             page_token=TOKEN,
         )
         entries = list(iterator)
-        token = iterator.next_page_token
 
         self.assertEqual(len(entries), 0)
-        self.assertIsNone(token)
         # self.assertEqual(client._listed, LISTED)
         # check call payload
         LOG_FILTER = "logName=projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME,)
@@ -743,6 +734,100 @@ class TestLogger(unittest.TestCase):
                 "path": "/entries:list",
                 "data": {
                     "filter": combined_filter,
+                    "orderBy": DESCENDING,
+                    "pageSize": PAGE_SIZE,
+                    "pageToken": TOKEN,
+                    "resourceNames": [f"projects/{PROJECT1}", f"projects/{PROJECT2}"],
+                },
+            },
+        )
+
+    def test_list_entries_limit(self):
+        from google.cloud.logging import DESCENDING
+        from google.cloud.logging import ProtobufEntry
+        from google.cloud.logging import StructEntry
+        from google.cloud.logging import Logger
+        from google.cloud.logging import Client
+
+        PROJECT1 = "PROJECT1"
+        PROJECT2 = "PROJECT2"
+        INPUT_FILTER = "logName:LOGNAME"
+        IID1 = "IID1"
+        IID2 = "IID2"
+        PAYLOAD = {"message": "MESSAGE", "weather": "partly cloudy"}
+        PROTO_PAYLOAD = PAYLOAD.copy()
+        PROTO_PAYLOAD["@type"] = "type.googleapis.com/testing.example"
+        TOKEN = "TOKEN"
+        PAGE_SIZE = 42
+        ENTRIES = [
+            {
+                "jsonPayload": PAYLOAD,
+                "insertId": IID1,
+                "resource": {"type": "global"},
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+            },
+            {
+                "protoPayload": PROTO_PAYLOAD,
+                "insertId": IID2,
+                "resource": {"type": "global"},
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+            },
+            {
+                "protoPayload": "ignored",
+                "insertId": "ignored",
+                "resource": {"type": "global"},
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+            },
+        ]
+        client = Client(
+            project=self.PROJECT, credentials=_make_credentials(), _use_grpc=False
+        )
+        returned = {"entries": ENTRIES}
+        client._connection = _Connection(returned)
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+
+        iterator = logger.list_entries(
+            resource_names=[f"projects/{PROJECT1}", f"projects/{PROJECT2}"],
+            filter_=INPUT_FILTER,
+            order_by=DESCENDING,
+            page_size=PAGE_SIZE,
+            page_token=TOKEN,
+            max_results=2,
+        )
+        entries = list(iterator)
+        # Check the entries.
+        self.assertEqual(len(entries), 2)
+        entry = entries[0]
+        self.assertIsInstance(entry, StructEntry)
+        self.assertEqual(entry.insert_id, IID1)
+        self.assertEqual(entry.payload, PAYLOAD)
+        logger = entry.logger
+        self.assertIsInstance(logger, Logger)
+        self.assertEqual(logger.name, self.LOGGER_NAME)
+        self.assertIs(logger.client, client)
+        self.assertEqual(logger.project, self.PROJECT)
+
+        entry = entries[1]
+        self.assertIsInstance(entry, ProtobufEntry)
+        self.assertEqual(entry.insert_id, IID2)
+        self.assertEqual(entry.payload, PROTO_PAYLOAD)
+        logger = entry.logger
+        self.assertEqual(logger.name, self.LOGGER_NAME)
+        self.assertIs(logger.client, client)
+        self.assertEqual(logger.project, self.PROJECT)
+
+        self.assertIs(entries[0].logger, entries[1].logger)
+
+        # check call payload
+        call_payload_no_filter = deepcopy(client._connection._called_with)
+        call_payload_no_filter["data"]["filter"] = "removed"
+        self.assertEqual(
+            call_payload_no_filter,
+            {
+                "path": "/entries:list",
+                "method": "POST",
+                "data": {
+                    "filter": "removed",
                     "orderBy": DESCENDING,
                     "pageSize": PAGE_SIZE,
                     "pageToken": TOKEN,

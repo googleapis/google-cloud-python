@@ -32,7 +32,7 @@ PROJECT_PATH = f"projects/{PROJECT}"
 FILTER = "logName:syslog AND severity>=ERROR"
 
 
-class Test_LoggingAPI(object):
+class Test_LoggingAPI(unittest.TestCase):
     LOG_NAME = "log_name"
     LOG_PATH = f"projects/{PROJECT}/logs/{LOG_NAME}"
 
@@ -107,6 +107,49 @@ class Test_LoggingAPI(object):
         assert request.page_size == 42
         assert request.page_token == "token"
 
+    def test_list_logs_with_max_results(self):
+        client = self.make_logging_api()
+        log_entry_msg = LogEntryPB(log_name=self.LOG_PATH, text_payload="text")
+
+        with mock.patch.object(
+            type(client._gapic_api.transport.list_log_entries), "__call__"
+        ) as call:
+            call.return_value = logging_v2.types.ListLogEntriesResponse(
+                entries=[log_entry_msg, log_entry_msg]
+            )
+            result = client.list_entries(
+                [PROJECT_PATH],
+                filter_=FILTER,
+                order_by=google.cloud.logging.ASCENDING,
+                page_size=42,
+                page_token="token",
+                max_results=1,
+            )
+
+        # Check the request
+        call.assert_called_once()
+        assert len(list(result)) == 1
+
+    def test_list_logs_negative_max_results(self):
+        client = self.make_logging_api()
+
+        with self.assertRaises(ValueError):
+            with mock.patch.object(
+                type(client._gapic_api.transport.list_log_entries), "__call__"
+            ) as call:
+                call.return_value = logging_v2.types.ListLogEntriesResponse(entries=[])
+                result = client.list_entries(
+                    [PROJECT_PATH],
+                    filter_=FILTER,
+                    order_by=google.cloud.logging.ASCENDING,
+                    page_size=42,
+                    page_token="token",
+                    max_results=-1,
+                )
+            # Check the request
+            list(result)
+            call.assert_called_once()
+
     def test_write_entries_single(self):
         client = self.make_logging_api()
 
@@ -141,7 +184,7 @@ class Test_LoggingAPI(object):
         assert call.call_args.args[0].log_name == self.LOG_PATH
 
 
-class Test_SinksAPI(object):
+class Test_SinksAPI(unittest.TestCase):
     SINK_NAME = "sink_name"
     PARENT_PATH = f"projects/{PROJECT}"
     SINK_PATH = f"projects/{PROJECT}/sinks/{SINK_NAME}"
@@ -207,6 +250,40 @@ class Test_SinksAPI(object):
         assert request.parent == self.PARENT_PATH
         assert request.page_size == 42
         assert request.page_token == "token"
+
+    def test_list_sinks_with_max_results(self):
+        client = self.make_sinks_api()
+        sink_msg = LogSink(
+            name=self.SINK_NAME, destination=self.DESTINATION_URI, filter=FILTER
+        )
+
+        with mock.patch.object(
+            type(client._gapic_api.transport.list_sinks), "__call__"
+        ) as call:
+            call.return_value = logging_v2.types.ListSinksResponse(
+                sinks=[sink_msg, sink_msg]
+            )
+            result = client.list_sinks(
+                self.PARENT_PATH, page_size=42, page_token="token", max_results=1
+            )
+        # Check the request
+        call.assert_called_once()
+        assert len(list(result)) == 1
+
+    def test_list_sinks_negative_max_results(self):
+        client = self.make_sinks_api()
+
+        with self.assertRaises(ValueError):
+            with mock.patch.object(
+                type(client._gapic_api.transport.list_sinks), "__call__"
+            ) as call:
+                call.return_value = logging_v2.types.ListSinksResponse(sinks=[])
+                result = client.list_sinks(
+                    self.PARENT_PATH, page_size=42, page_token="token", max_results=-1
+                )
+            # Check the request
+            list(result)
+            call.assert_called_once()
 
     def test_sink_create(self):
         client = self.make_sinks_api()
@@ -315,7 +392,7 @@ class Test_SinksAPI(object):
         assert request.sink_name == self.SINK_PATH
 
 
-class Test_MetricsAPI(object):
+class Test_MetricsAPI(unittest.TestCase):
     METRIC_NAME = "metric_name"
     METRIC_PATH = f"projects/{PROJECT}/metrics/{METRIC_NAME}"
     DESCRIPTION = "Description"
@@ -378,6 +455,39 @@ class Test_MetricsAPI(object):
         assert request.parent == PROJECT_PATH
         assert request.page_size == 42
         assert request.page_token == "token"
+
+    def test_list_metrics_with_max_results(self):
+        client = self.make_metrics_api()
+        metric = logging_v2.types.LogMetric(
+            name=self.METRIC_PATH, description=self.DESCRIPTION, filter=FILTER
+        )
+        with mock.patch.object(
+            type(client._gapic_api.transport.list_log_metrics), "__call__"
+        ) as call:
+            call.return_value = logging_v2.types.ListLogMetricsResponse(
+                metrics=[metric, metric]
+            )
+            result = client.list_metrics(
+                PROJECT, page_size=42, page_token="token", max_results=1
+            )
+        # Check the request
+        call.assert_called_once()
+        assert len(list(result)) == 1
+
+    def test_list_metrics_negative_max_results(self):
+        client = self.make_metrics_api()
+
+        with self.assertRaises(ValueError):
+            with mock.patch.object(
+                type(client._gapic_api.transport.list_log_metrics), "__call__"
+            ) as call:
+                call.return_value = logging_v2.types.ListLogMetricsResponse(metrics=[])
+                result = client.list_metrics(
+                    PROJECT, page_size=42, page_token="token", max_results=-1
+                )
+            # Check the request
+            list(result)
+            call.assert_called_once()
 
     def test_metric_create(self):
         client = self.make_metrics_api()

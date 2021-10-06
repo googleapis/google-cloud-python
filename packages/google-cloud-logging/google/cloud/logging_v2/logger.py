@@ -264,10 +264,11 @@ class Logger(object):
         resource_names=None,
         filter_=None,
         order_by=None,
+        max_results=None,
         page_size=None,
         page_token=None,
     ):
-        """Return a page of log entries.
+        """Return a generator of log entry resources.
 
         See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list
@@ -289,19 +290,16 @@ class Logger(object):
                 By default, a 24 hour filter is applied.
             order_by (Optional[str]): One of :data:`~logging_v2.ASCENDING`
                 or :data:`~logging_v2.DESCENDING`.
-            page_size (Optional[int]):
-                Optional. The maximum number of entries in each page of results
-                from this request. Non-positive values are ignored. Defaults
-                to a sensible value set by the API.
-            page_token (Optional[str]):
-                Optional. If present, return the next batch of entries, using
-                the value, which must correspond to the ``nextPageToken`` value
-                returned in the previous response.  Deprecated: use the ``pages``
-                property of the returned iterator instead of manually passing
-                the token.
-
+            max_results (Optional[int]):
+                Optional. The maximum number of entries to return.
+                Non-positive values are treated as 0. If None, uses API defaults.
+            page_size (int): number of entries to fetch in each API call. Although
+                requests are paged internally, logs are returned by the generator
+                one at a time. If not passed, defaults to a value set by the API.
+            page_token (str): opaque marker for the starting "page" of entries. If not
+                passed, the API will return the first page of entries.
         Returns:
-            Iterator[~logging_v2.entries.LogEntry]
+            Generator[~logging_v2.LogEntry]
         """
 
         if resource_names is None:
@@ -317,6 +315,7 @@ class Logger(object):
             resource_names=resource_names,
             filter_=filter_,
             order_by=order_by,
+            max_results=max_results,
             page_size=page_size,
             page_token=page_token,
         )
