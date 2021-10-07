@@ -496,5 +496,8 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
             )
         return self._stubs["run_transfer_job"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("StorageTransferServiceGrpcAsyncIOTransport",)

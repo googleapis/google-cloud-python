@@ -48,6 +48,7 @@ __protobuf__ = proto.module(
 
 class GoogleServiceAccount(proto.Message):
     r"""Google service account
+
     Attributes:
         account_email (str):
             Email address of the service account.
@@ -446,6 +447,7 @@ class TransferOptions(proto.Message):
 
 class TransferSpec(proto.Message):
     r"""Configuration for running a transfer.
+
     Attributes:
         gcs_data_sink (google.cloud.storage_transfer_v1.types.GcsData):
             A Cloud Storage data sink.
@@ -494,6 +496,7 @@ class TransferSpec(proto.Message):
 
 class Schedule(proto.Message):
     r"""Transfers can be scheduled to recur or to run just once.
+
     Attributes:
         schedule_start_date (google.type.date_pb2.Date):
             Required. The start date of a transfer. Date boundaries are
@@ -685,6 +688,7 @@ class TransferJob(proto.Message):
 
 class ErrorLogEntry(proto.Message):
     r"""An entry describing an error that has occurred.
+
     Attributes:
         url (str):
             Required. A URL that refers to the target (a
@@ -868,6 +872,7 @@ class NotificationConfig(proto.Message):
 
 class TransferOperation(proto.Message):
     r"""A description of the execution of a transfer.
+
     Attributes:
         name (str):
             A globally unique ID assigned by the system.

@@ -480,5 +480,8 @@ class StorageTransferServiceGrpcTransport(StorageTransferServiceTransport):
             )
         return self._stubs["run_transfer_job"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("StorageTransferServiceGrpcTransport",)
