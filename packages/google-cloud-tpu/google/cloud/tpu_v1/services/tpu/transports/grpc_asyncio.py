@@ -544,5 +544,8 @@ class TpuGrpcAsyncIOTransport(TpuTransport):
             )
         return self._stubs["get_accelerator_type"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("TpuGrpcAsyncIOTransport",)

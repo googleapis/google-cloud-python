@@ -532,5 +532,8 @@ class TpuGrpcTransport(TpuTransport):
             )
         return self._stubs["get_accelerator_type"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("TpuGrpcTransport",)
