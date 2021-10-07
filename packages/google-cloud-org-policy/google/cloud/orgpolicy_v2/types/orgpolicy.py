@@ -149,6 +149,7 @@ class PolicySpec(proto.Message):
 
     class PolicyRule(proto.Message):
         r"""A rule used to express this policy.
+
         Attributes:
             values (google.cloud.orgpolicy_v2.types.PolicySpec.PolicyRule.StringValues):
                 List of values to be used for this

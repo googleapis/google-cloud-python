@@ -110,7 +110,8 @@ class Constraint(proto.Message):
         ``constraints/compute.disableSerialPortAccess``. If it is enforced
         on a VM instance, serial port connections will not be opened to that
         instance.
-            """
+
+        """
 
     name = proto.Field(proto.STRING, number=1,)
     display_name = proto.Field(proto.STRING, number=2,)

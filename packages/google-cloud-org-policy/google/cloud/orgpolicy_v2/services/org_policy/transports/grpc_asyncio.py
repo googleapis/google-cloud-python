@@ -466,5 +466,8 @@ class OrgPolicyGrpcAsyncIOTransport(OrgPolicyTransport):
             )
         return self._stubs["delete_policy"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("OrgPolicyGrpcAsyncIOTransport",)
