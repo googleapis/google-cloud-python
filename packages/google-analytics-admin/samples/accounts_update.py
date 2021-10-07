@@ -17,7 +17,7 @@
 """Google Analytics Admin API sample application which updates the Google
 Analytics account.
 
-See https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/accounts/update
+See https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/accounts/patch
 for more information.
 """
 # [START analyticsadmin_accounts_update]

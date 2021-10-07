@@ -17,7 +17,7 @@
 """Google Analytics Admin API sample application which updates the account
 user link.
 
-See https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/accounts.userLinks/update
+See https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/accounts.userLinks/patch
 for more information.
 """
 # [START analyticsadmin_accounts_user_links_update]
