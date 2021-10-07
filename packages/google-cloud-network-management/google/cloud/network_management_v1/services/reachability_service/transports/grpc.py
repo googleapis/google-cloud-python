@@ -462,5 +462,8 @@ class ReachabilityServiceGrpcTransport(ReachabilityServiceTransport):
             )
         return self._stubs["delete_connectivity_test"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ReachabilityServiceGrpcTransport",)

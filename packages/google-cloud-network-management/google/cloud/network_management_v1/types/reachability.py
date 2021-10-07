@@ -37,6 +37,7 @@ __protobuf__ = proto.module(
 
 class ListConnectivityTestsRequest(proto.Message):
     r"""Request for the ``ListConnectivityTests`` method.
+
     Attributes:
         parent (str):
             Required. The parent resource of the Connectivity Tests:
@@ -80,6 +81,7 @@ class ListConnectivityTestsRequest(proto.Message):
 
 class ListConnectivityTestsResponse(proto.Message):
     r"""Response for the ``ListConnectivityTests`` method.
+
     Attributes:
         resources (Sequence[google.cloud.network_management_v1.types.ConnectivityTest]):
             List of Connectivity Tests.
@@ -104,6 +106,7 @@ class ListConnectivityTestsResponse(proto.Message):
 
 class GetConnectivityTestRequest(proto.Message):
     r"""Request for the ``GetConnectivityTest`` method.
+
     Attributes:
         name (str):
             Required. ``ConnectivityTest`` resource name using the form:
@@ -115,6 +118,7 @@ class GetConnectivityTestRequest(proto.Message):
 
 class CreateConnectivityTestRequest(proto.Message):
     r"""Request for the ``CreateConnectivityTest`` method.
+
     Attributes:
         parent (str):
             Required. The parent resource of the Connectivity Test to
@@ -142,6 +146,7 @@ class CreateConnectivityTestRequest(proto.Message):
 
 class UpdateConnectivityTestRequest(proto.Message):
     r"""Request for the ``UpdateConnectivityTest`` method.
+
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Mask of fields to update. At least
@@ -160,6 +165,7 @@ class UpdateConnectivityTestRequest(proto.Message):
 
 class DeleteConnectivityTestRequest(proto.Message):
     r"""Request for the ``DeleteConnectivityTest`` method.
+
     Attributes:
         name (str):
             Required. Connectivity Test resource name using the form:
@@ -171,6 +177,7 @@ class DeleteConnectivityTestRequest(proto.Message):
 
 class RerunConnectivityTestRequest(proto.Message):
     r"""Request for the ``RerunConnectivityTest`` method.
+
     Attributes:
         name (str):
             Required. Connectivity Test resource name using the form:
@@ -182,6 +189,7 @@ class RerunConnectivityTestRequest(proto.Message):
 
 class OperationMetadata(proto.Message):
     r"""Metadata describing an [Operation][google.longrunning.Operation]
+
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time the operation was created.

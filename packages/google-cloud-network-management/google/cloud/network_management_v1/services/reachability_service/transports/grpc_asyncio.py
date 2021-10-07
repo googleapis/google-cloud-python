@@ -471,5 +471,8 @@ class ReachabilityServiceGrpcAsyncIOTransport(ReachabilityServiceTransport):
             )
         return self._stubs["delete_connectivity_test"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ReachabilityServiceGrpcAsyncIOTransport",)

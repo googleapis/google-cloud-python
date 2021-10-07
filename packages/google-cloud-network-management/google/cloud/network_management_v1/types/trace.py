@@ -428,6 +428,7 @@ class ForwardingRuleInfo(proto.Message):
 
 class LoadBalancerInfo(proto.Message):
     r"""For display only. Metadata associated with a load balancer.
+
     Attributes:
         load_balancer_type (google.cloud.network_management_v1.types.LoadBalancerInfo.LoadBalancerType):
             Type of the load balancer.
@@ -626,6 +627,7 @@ class EndpointInfo(proto.Message):
 
 class DeliverInfo(proto.Message):
     r"""Details of the final state "deliver" and associated resource.
+
     Attributes:
         target (google.cloud.network_management_v1.types.DeliverInfo.Target):
             Target type where the packet is delivered to.
@@ -649,6 +651,7 @@ class DeliverInfo(proto.Message):
 
 class ForwardInfo(proto.Message):
     r"""Details of the final state "forward" and associated resource.
+
     Attributes:
         target (google.cloud.network_management_v1.types.ForwardInfo.Target):
             Target type where this packet is forwarded
@@ -674,6 +677,7 @@ class ForwardInfo(proto.Message):
 
 class AbortInfo(proto.Message):
     r"""Details of the final state "abort" and associated resource.
+
     Attributes:
         cause (google.cloud.network_management_v1.types.AbortInfo.Cause):
             Causes that the analysis is aborted.
@@ -705,6 +709,7 @@ class AbortInfo(proto.Message):
 
 class DropInfo(proto.Message):
     r"""Details of the final state "drop" and associated resource.
+
     Attributes:
         cause (google.cloud.network_management_v1.types.DropInfo.Cause):
             Cause that the packet is dropped.
