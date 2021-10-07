@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.19.3](https://www.github.com/googleapis/proto-plus-python/compare/v1.19.2...v1.19.3) (2021-10-07)
+
+
+### Bug Fixes
+
+* setting bytes field from python string base64 decodes before assignment ([#255](https://www.github.com/googleapis/proto-plus-python/issues/255)) ([b6f3eb6](https://www.github.com/googleapis/proto-plus-python/commit/b6f3eb6575484748126170997b8c98512763ea66))
+
 ### [1.19.2](https://www.github.com/googleapis/proto-plus-python/compare/v1.19.1...v1.19.2) (2021-09-29)
 
 
