@@ -84,6 +84,7 @@ class Execution(proto.Message):
 
     class Error(proto.Message):
         r"""Error describes why the execution was abnormally terminated.
+
         Attributes:
             payload (str):
                 Error payload returned by the execution,
@@ -108,6 +109,7 @@ class Execution(proto.Message):
 
 class ListExecutionsRequest(proto.Message):
     r"""Request for the [ListExecutions][] method.
+
     Attributes:
         parent (str):
             Required. Name of the workflow for which the

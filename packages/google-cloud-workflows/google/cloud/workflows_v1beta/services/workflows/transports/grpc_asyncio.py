@@ -398,5 +398,8 @@ class WorkflowsGrpcAsyncIOTransport(WorkflowsTransport):
             )
         return self._stubs["update_workflow"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("WorkflowsGrpcAsyncIOTransport",)

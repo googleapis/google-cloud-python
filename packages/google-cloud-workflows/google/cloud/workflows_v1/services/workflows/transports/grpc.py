@@ -385,5 +385,8 @@ class WorkflowsGrpcTransport(WorkflowsTransport):
             )
         return self._stubs["update_workflow"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("WorkflowsGrpcTransport",)
