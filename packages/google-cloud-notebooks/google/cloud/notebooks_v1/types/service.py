@@ -71,6 +71,7 @@ __protobuf__ = proto.module(
 
 class OperationMetadata(proto.Message):
     r"""Represents the metadata of the long-running operation.
+
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time the operation was created.
@@ -108,6 +109,7 @@ class OperationMetadata(proto.Message):
 
 class ListInstancesRequest(proto.Message):
     r"""Request for listing notebook instances.
+
     Attributes:
         parent (str):
             Required. Format:
@@ -126,6 +128,7 @@ class ListInstancesRequest(proto.Message):
 
 class ListInstancesResponse(proto.Message):
     r"""Response for listing notebook instances.
+
     Attributes:
         instances (Sequence[google.cloud.notebooks_v1.types.Instance]):
             A list of returned instances.
@@ -152,6 +155,7 @@ class ListInstancesResponse(proto.Message):
 
 class GetInstanceRequest(proto.Message):
     r"""Request for getting a notebook instance.
+
     Attributes:
         name (str):
             Required. Format:
@@ -163,6 +167,7 @@ class GetInstanceRequest(proto.Message):
 
 class CreateInstanceRequest(proto.Message):
     r"""Request for creating a notebook instance.
+
     Attributes:
         parent (str):
             Required. Format:
@@ -181,6 +186,7 @@ class CreateInstanceRequest(proto.Message):
 
 class RegisterInstanceRequest(proto.Message):
     r"""Request for registering a notebook instance.
+
     Attributes:
         parent (str):
             Required. Format:
@@ -199,6 +205,7 @@ class RegisterInstanceRequest(proto.Message):
 
 class SetInstanceAcceleratorRequest(proto.Message):
     r"""Request for setting instance accelerator.
+
     Attributes:
         name (str):
             Required. Format:
@@ -222,6 +229,7 @@ class SetInstanceAcceleratorRequest(proto.Message):
 
 class SetInstanceMachineTypeRequest(proto.Message):
     r"""Request for setting instance machine type.
+
     Attributes:
         name (str):
             Required. Format:
@@ -237,6 +245,7 @@ class SetInstanceMachineTypeRequest(proto.Message):
 
 class UpdateInstanceConfigRequest(proto.Message):
     r"""Request for updating instance configurations.
+
     Attributes:
         name (str):
             Required. Format:
@@ -253,6 +262,7 @@ class UpdateInstanceConfigRequest(proto.Message):
 
 class SetInstanceLabelsRequest(proto.Message):
     r"""Request for setting instance labels.
+
     Attributes:
         name (str):
             Required. Format:
@@ -288,6 +298,7 @@ class UpdateShieldedInstanceConfigRequest(proto.Message):
 
 class DeleteInstanceRequest(proto.Message):
     r"""Request for deleting a notebook instance.
+
     Attributes:
         name (str):
             Required. Format:
@@ -299,6 +310,7 @@ class DeleteInstanceRequest(proto.Message):
 
 class StartInstanceRequest(proto.Message):
     r"""Request for starting a notebook instance
+
     Attributes:
         name (str):
             Required. Format:
@@ -310,6 +322,7 @@ class StartInstanceRequest(proto.Message):
 
 class StopInstanceRequest(proto.Message):
     r"""Request for stopping a notebook instance
+
     Attributes:
         name (str):
             Required. Format:
@@ -321,6 +334,7 @@ class StopInstanceRequest(proto.Message):
 
 class ResetInstanceRequest(proto.Message):
     r"""Request for reseting a notebook instance
+
     Attributes:
         name (str):
             Required. Format:
@@ -355,6 +369,7 @@ class ReportInstanceInfoRequest(proto.Message):
 
 class IsInstanceUpgradeableRequest(proto.Message):
     r"""Request for checking if a notebook instance is upgradeable.
+
     Attributes:
         notebook_instance (str):
             Required. Format:
@@ -366,6 +381,7 @@ class IsInstanceUpgradeableRequest(proto.Message):
 
 class IsInstanceUpgradeableResponse(proto.Message):
     r"""Response for checking if a notebook instance is upgradeable.
+
     Attributes:
         upgradeable (bool):
             If an instance is upgradeable.
@@ -390,6 +406,7 @@ class IsInstanceUpgradeableResponse(proto.Message):
 
 class GetInstanceHealthRequest(proto.Message):
     r"""Request for checking if a notebook instance is healthy.
+
     Attributes:
         name (str):
             Required. Format:
@@ -401,6 +418,7 @@ class GetInstanceHealthRequest(proto.Message):
 
 class GetInstanceHealthResponse(proto.Message):
     r"""Response for checking if a notebook instance is healthy.
+
     Attributes:
         health_state (google.cloud.notebooks_v1.types.GetInstanceHealthResponse.HealthState):
             Output only. Runtime health_state.
@@ -426,6 +444,7 @@ class GetInstanceHealthResponse(proto.Message):
 
 class UpgradeInstanceRequest(proto.Message):
     r"""Request for upgrading a notebook instance
+
     Attributes:
         name (str):
             Required. Format:
@@ -437,6 +456,7 @@ class UpgradeInstanceRequest(proto.Message):
 
 class RollbackInstanceRequest(proto.Message):
     r"""Request for rollbacking a notebook instance
+
     Attributes:
         name (str):
             Required. Format:
@@ -453,6 +473,7 @@ class RollbackInstanceRequest(proto.Message):
 
 class UpgradeInstanceInternalRequest(proto.Message):
     r"""Request for upgrading a notebook instance from within the VM
+
     Attributes:
         name (str):
             Required. Format:
@@ -470,6 +491,7 @@ class UpgradeInstanceInternalRequest(proto.Message):
 
 class ListEnvironmentsRequest(proto.Message):
     r"""Request for listing environments.
+
     Attributes:
         parent (str):
             Required. Format:
@@ -488,6 +510,7 @@ class ListEnvironmentsRequest(proto.Message):
 
 class ListEnvironmentsResponse(proto.Message):
     r"""Response for listing environments.
+
     Attributes:
         environments (Sequence[google.cloud.notebooks_v1.types.Environment]):
             A list of returned environments.
@@ -512,6 +535,7 @@ class ListEnvironmentsResponse(proto.Message):
 
 class GetEnvironmentRequest(proto.Message):
     r"""Request for getting a notebook environment.
+
     Attributes:
         name (str):
             Required. Format:
@@ -523,6 +547,7 @@ class GetEnvironmentRequest(proto.Message):
 
 class CreateEnvironmentRequest(proto.Message):
     r"""Request for creating a notebook environment.
+
     Attributes:
         parent (str):
             Required. Format:
@@ -546,6 +571,7 @@ class CreateEnvironmentRequest(proto.Message):
 
 class DeleteEnvironmentRequest(proto.Message):
     r"""Request for deleting a notebook environment.
+
     Attributes:
         name (str):
             Required. Format:
@@ -557,6 +583,7 @@ class DeleteEnvironmentRequest(proto.Message):
 
 class ListSchedulesRequest(proto.Message):
     r"""Request for listing scheduled notebook job.
+
     Attributes:
         parent (str):
             Required. Format:
@@ -581,6 +608,7 @@ class ListSchedulesRequest(proto.Message):
 
 class ListSchedulesResponse(proto.Message):
     r"""Response for listing scheduled notebook job.
+
     Attributes:
         schedules (Sequence[google.cloud.notebooks_v1.types.Schedule]):
             A list of returned instances.
@@ -610,6 +638,7 @@ class ListSchedulesResponse(proto.Message):
 
 class GetScheduleRequest(proto.Message):
     r"""Request for getting scheduled notebook.
+
     Attributes:
         name (str):
             Required. Format:
@@ -621,6 +650,7 @@ class GetScheduleRequest(proto.Message):
 
 class DeleteScheduleRequest(proto.Message):
     r"""Request for deleting an Schedule
+
     Attributes:
         name (str):
             Required. Format:
@@ -632,6 +662,7 @@ class DeleteScheduleRequest(proto.Message):
 
 class CreateScheduleRequest(proto.Message):
     r"""Request for created scheduled notebooks
+
     Attributes:
         parent (str):
             Required. Format:
@@ -650,6 +681,7 @@ class CreateScheduleRequest(proto.Message):
 
 class TriggerScheduleRequest(proto.Message):
     r"""Request for created scheduled notebooks
+
     Attributes:
         name (str):
             Required. Format:
@@ -661,6 +693,7 @@ class TriggerScheduleRequest(proto.Message):
 
 class ListExecutionsRequest(proto.Message):
     r"""Request for listing scheduled notebook executions.
+
     Attributes:
         parent (str):
             Required. Format:
@@ -687,6 +720,7 @@ class ListExecutionsRequest(proto.Message):
 
 class ListExecutionsResponse(proto.Message):
     r"""Response for listing scheduled notebook executions
+
     Attributes:
         executions (Sequence[google.cloud.notebooks_v1.types.Execution]):
             A list of returned instances.
@@ -716,6 +750,7 @@ class ListExecutionsResponse(proto.Message):
 
 class GetExecutionRequest(proto.Message):
     r"""Request for getting scheduled notebook execution
+
     Attributes:
         name (str):
             Required. Format:
@@ -727,6 +762,7 @@ class GetExecutionRequest(proto.Message):
 
 class DeleteExecutionRequest(proto.Message):
     r"""Request for deleting a scheduled notebook execution
+
     Attributes:
         name (str):
             Required. Format:
@@ -738,6 +774,7 @@ class DeleteExecutionRequest(proto.Message):
 
 class CreateExecutionRequest(proto.Message):
     r"""Request to create notebook execution
+
     Attributes:
         parent (str):
             Required. Format:

@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
 
 class ExecutionTemplate(proto.Message):
     r"""The description a notebook execution workload.
+
     Attributes:
         scale_tier (google.cloud.notebooks_v1.types.ExecutionTemplate.ScaleTier):
             Required. Scale tier of the hardware used for
@@ -174,6 +175,7 @@ class ExecutionTemplate(proto.Message):
 
     class DataprocParameters(proto.Message):
         r"""Parameters used in Dataproc JobType executions.
+
         Attributes:
             cluster (str):
                 URI for cluster used to run Dataproc execution. Format:
@@ -202,6 +204,7 @@ class ExecutionTemplate(proto.Message):
 
 class Execution(proto.Message):
     r"""The definition of a single executed notebook.
+
     Attributes:
         execution_template (google.cloud.notebooks_v1.types.ExecutionTemplate):
             execute metadata including name, hardware

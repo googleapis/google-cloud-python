@@ -39,6 +39,7 @@ __protobuf__ = proto.module(
 
 class Runtime(proto.Message):
     r"""The definition of a Runtime for a managed notebook instance.
+
     Attributes:
         name (str):
             Output only. The resource name of the runtime. Format:
@@ -158,6 +159,7 @@ class EncryptionConfig(proto.Message):
 
 class LocalDisk(proto.Message):
     r"""An Local attached disk resource.
+
     Attributes:
         auto_delete (bool):
             Optional. Output only. Specifies whether the
@@ -331,6 +333,7 @@ class LocalDiskInitializeParams(proto.Message):
 
 class RuntimeAccessConfig(proto.Message):
     r"""Specifies the login configuration for Runtime
+
     Attributes:
         access_type (google.cloud.notebooks_v1.types.RuntimeAccessConfig.RuntimeAccessType):
             The type of access mode this instance.
@@ -446,6 +449,7 @@ class RuntimeShieldedInstanceConfig(proto.Message):
 
 class VirtualMachine(proto.Message):
     r"""Runtime using Virtual Machine for computing.
+
     Attributes:
         instance_name (str):
             Output only. The user-friendly name of the
@@ -466,6 +470,7 @@ class VirtualMachine(proto.Message):
 
 class VirtualMachineConfig(proto.Message):
     r"""The config settings for virtual machine.
+
     Attributes:
         zone (str):
             Output only. The zone where the virtual machine is located.

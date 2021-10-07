@@ -513,5 +513,8 @@ class ManagedNotebookServiceGrpcAsyncIOTransport(ManagedNotebookServiceTransport
             )
         return self._stubs["report_runtime_event"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ManagedNotebookServiceGrpcAsyncIOTransport",)

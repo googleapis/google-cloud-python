@@ -1146,5 +1146,8 @@ class NotebookServiceGrpcAsyncIOTransport(NotebookServiceTransport):
             )
         return self._stubs["create_execution"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("NotebookServiceGrpcAsyncIOTransport",)

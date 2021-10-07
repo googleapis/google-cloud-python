@@ -1099,5 +1099,8 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
             )
         return self._stubs["create_execution"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("NotebookServiceGrpcTransport",)

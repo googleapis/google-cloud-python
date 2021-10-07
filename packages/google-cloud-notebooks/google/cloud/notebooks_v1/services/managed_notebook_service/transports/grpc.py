@@ -495,5 +495,8 @@ class ManagedNotebookServiceGrpcTransport(ManagedNotebookServiceTransport):
             )
         return self._stubs["report_runtime_event"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ManagedNotebookServiceGrpcTransport",)

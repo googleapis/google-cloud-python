@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
 
 class InstanceConfig(proto.Message):
     r"""Notebook instance configurations that can be updated.
+
     Attributes:
         notebook_upgrade_schedule (str):
             Cron expression in UTC timezone, used to schedule instance

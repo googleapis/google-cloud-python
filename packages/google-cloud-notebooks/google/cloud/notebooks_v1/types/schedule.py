@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
 
 class Schedule(proto.Message):
     r"""The definition of a schedule.
+
     Attributes:
         name (str):
             Output only. The name of this schedule. Format:
