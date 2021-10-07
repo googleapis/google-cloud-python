@@ -434,5 +434,8 @@ class ServiceUsageGrpcTransport(ServiceUsageTransport):
             )
         return self._stubs["batch_get_services"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ServiceUsageGrpcTransport",)

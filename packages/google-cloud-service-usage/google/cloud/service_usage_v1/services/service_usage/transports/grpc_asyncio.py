@@ -446,5 +446,8 @@ class ServiceUsageGrpcAsyncIOTransport(ServiceUsageTransport):
             )
         return self._stubs["batch_get_services"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ServiceUsageGrpcAsyncIOTransport",)

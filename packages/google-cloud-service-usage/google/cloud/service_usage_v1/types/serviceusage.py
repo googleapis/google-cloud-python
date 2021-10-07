@@ -236,6 +236,7 @@ class BatchEnableServicesResponse(proto.Message):
 
     class EnableFailure(proto.Message):
         r"""Provides error messages for the failing services.
+
         Attributes:
             service_id (str):
                 The service id of a service that could not be
