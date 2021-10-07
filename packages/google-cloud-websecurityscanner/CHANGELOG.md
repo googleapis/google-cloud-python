@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.5.0](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.4.3...v1.5.0) (2021-10-07)
+
+
+### Features
+
+* add context manager support in client ([#114](https://www.github.com/googleapis/python-websecurityscanner/issues/114)) ([7210ecd](https://www.github.com/googleapis/python-websecurityscanner/commit/7210ecdcf196a10d6ac26b3d039857c9e958f2bb))
+
 ### [1.4.3](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.4.2...v1.4.3) (2021-09-30)
 
 
