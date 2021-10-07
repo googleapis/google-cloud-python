@@ -280,5 +280,8 @@ class TextToSpeechGrpcTransport(TextToSpeechTransport):
             )
         return self._stubs["synthesize_speech"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("TextToSpeechGrpcTransport",)

@@ -286,5 +286,8 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
             )
         return self._stubs["synthesize_speech"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("TextToSpeechGrpcAsyncIOTransport",)

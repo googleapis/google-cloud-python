@@ -76,6 +76,7 @@ class ListVoicesRequest(proto.Message):
 
 class ListVoicesResponse(proto.Message):
     r"""The message returned to the client by the ``ListVoices`` method.
+
     Attributes:
         voices (Sequence[google.cloud.texttospeech_v1.types.Voice]):
             The list of voices.
@@ -86,6 +87,7 @@ class ListVoicesResponse(proto.Message):
 
 class Voice(proto.Message):
     r"""Description of a voice supported by the TTS service.
+
     Attributes:
         language_codes (Sequence[str]):
             The languages that this voice supports, expressed as
@@ -151,6 +153,7 @@ class SynthesisInput(proto.Message):
 
 class VoiceSelectionParams(proto.Message):
     r"""Description of which voice to use for a synthesis request.
+
     Attributes:
         language_code (str):
             Required. The language (and potentially also the region) of
@@ -187,6 +190,7 @@ class VoiceSelectionParams(proto.Message):
 
 class AudioConfig(proto.Message):
     r"""Description of audio data to be synthesized.
+
     Attributes:
         audio_encoding (google.cloud.texttospeech_v1.types.AudioEncoding):
             Required. The format of the audio byte
