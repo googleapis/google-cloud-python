@@ -126,14 +126,15 @@ class Field:
 
     @property
     def pb_type(self):
-        """Return the composite type of the field, or None for primitives."""
+        """Return the composite type of the field, or the primitive type if a primitive."""
         # For enums, return the Python enum.
         if self.enum:
             return self.enum
 
-        # For non-enum primitives, return None.
+        # For primitive fields, we still want to know
+        # what the type is.
         if not self.message:
-            return None
+            return self.proto_type
 
         # Return the internal protobuf message.
         if hasattr(self.message, "_meta"):

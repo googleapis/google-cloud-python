@@ -44,6 +44,34 @@ Protocol buffer type                Python type             Nullable
     If you *write* a timestamp field using a Python ``datetime`` value,
     any existing nanosecond precision will be overwritten.
 
+.. note::
+
+   Setting a ``bytes`` field from a string value will first base64 decode the string.
+   This is necessary to preserve the original protobuf semantics when converting between
+   Python dicts and proto messages.
+   Converting a message containing a bytes field to a dict will
+   base64 encode the bytes field and yield a value of type str.
+
+.. code-block:: python
+
+  import proto
+  from google.protobuf.json_format import ParseDict
+
+  class MyMessage(proto.Message):
+      data = proto.Field(proto.BYTES, number=1)
+
+  msg = MyMessage(data=b"this is a message")
+  msg_dict = MyMessage.to_dict(msg)
+
+  # Note: the value is the base64 encoded string of the bytes field.
+  # It has a type of str, NOT bytes.
+  assert type(msg_dict['data']) == str
+
+  msg_pb = ParseDict(msg_dict, MyMessage.pb())
+  msg_two = MyMessage(msg_dict)
+
+  assert msg == msg_pb == msg_two
+
 
 Wrapper types
 -------------
