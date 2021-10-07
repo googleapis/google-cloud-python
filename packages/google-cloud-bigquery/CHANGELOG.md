@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+### [2.28.1](https://www.github.com/googleapis/python-bigquery/compare/v2.28.0...v2.28.1) (2021-10-07)
+
+
+### Bug Fixes
+
+* support ARRAY data type when loading from DataFrame with Parquet ([#980](https://www.github.com/googleapis/python-bigquery/issues/980)) ([1e59083](https://www.github.com/googleapis/python-bigquery/commit/1e5908302d36e15442013af6f46b1c20af28255e))
+
 ## [2.28.0](https://www.github.com/googleapis/python-bigquery/compare/v2.27.1...v2.28.0) (2021-09-30)
 
 
