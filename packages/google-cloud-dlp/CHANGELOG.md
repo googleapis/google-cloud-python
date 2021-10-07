@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+### [3.2.4](https://www.github.com/googleapis/python-dlp/compare/v3.2.3...v3.2.4) (2021-10-05)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([164977f](https://www.github.com/googleapis/python-dlp/commit/164977fda1fff85a245869ff197c3ca9f200f544))
+
 ### [3.2.3](https://www.github.com/googleapis/python-dlp/compare/v3.2.2...v3.2.3) (2021-09-24)
 
 
