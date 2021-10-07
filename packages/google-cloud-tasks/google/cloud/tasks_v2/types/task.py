@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
 
 class Task(proto.Message):
     r"""A unit of scheduled work.
+
     Attributes:
         name (str):
             Optionally caller-specified in
@@ -177,6 +178,7 @@ class Task(proto.Message):
 
 class Attempt(proto.Message):
     r"""The status of a task attempt.
+
     Attributes:
         schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time that this attempt was scheduled.

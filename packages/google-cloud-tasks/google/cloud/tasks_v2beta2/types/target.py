@@ -40,7 +40,8 @@ class HttpMethod(proto.Enum):
 
 
 class PullTarget(proto.Message):
-    r"""Pull target.    """
+    r"""Pull target.
+    """
 
 
 class PullMessage(proto.Message):

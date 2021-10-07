@@ -768,5 +768,8 @@ class CloudTasksGrpcTransport(CloudTasksTransport):
             )
         return self._stubs["run_task"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("CloudTasksGrpcTransport",)

@@ -433,6 +433,7 @@ class StackdriverLoggingConfig(proto.Message):
 
 class QueueStats(proto.Message):
     r"""Statistics for a queue.
+
     Attributes:
         tasks_count (int):
             Output only. An estimation of the number of
