@@ -81,6 +81,7 @@ class TranslateTextGlossaryConfig(proto.Message):
 
 class TranslateTextRequest(proto.Message):
     r"""The request message for synchronous translation.
+
     Attributes:
         contents (Sequence[str]):
             Required. The content of the input in string
@@ -170,6 +171,7 @@ class TranslateTextRequest(proto.Message):
 
 class TranslateTextResponse(proto.Message):
     r"""
+
     Attributes:
         translations (Sequence[google.cloud.translate_v3beta1.types.Translation]):
             Text translation responses with no glossary applied. This
@@ -191,6 +193,7 @@ class TranslateTextResponse(proto.Message):
 
 class Translation(proto.Message):
     r"""A single translation response.
+
     Attributes:
         translated_text (str):
             Text translated into the target language.
@@ -226,6 +229,7 @@ class Translation(proto.Message):
 
 class DetectLanguageRequest(proto.Message):
     r"""The request message for language detection.
+
     Attributes:
         parent (str):
             Required. Project or location to make a call. Must refer to
@@ -281,6 +285,7 @@ class DetectLanguageRequest(proto.Message):
 
 class DetectedLanguage(proto.Message):
     r"""The response message for language detection.
+
     Attributes:
         language_code (str):
             The BCP-47 language code of source content in
@@ -296,6 +301,7 @@ class DetectedLanguage(proto.Message):
 
 class DetectLanguageResponse(proto.Message):
     r"""The response message for language detection.
+
     Attributes:
         languages (Sequence[google.cloud.translate_v3beta1.types.DetectedLanguage]):
             A list of detected languages sorted by
@@ -310,6 +316,7 @@ class DetectLanguageResponse(proto.Message):
 
 class GetSupportedLanguagesRequest(proto.Message):
     r"""The request message for discovering supported languages.
+
     Attributes:
         parent (str):
             Required. Project or location to make a call. Must refer to
@@ -355,6 +362,7 @@ class GetSupportedLanguagesRequest(proto.Message):
 
 class SupportedLanguages(proto.Message):
     r"""The response message for discovering supported languages.
+
     Attributes:
         languages (Sequence[google.cloud.translate_v3beta1.types.SupportedLanguage]):
             A list of supported language responses. This
@@ -396,6 +404,7 @@ class SupportedLanguage(proto.Message):
 
 class GcsSource(proto.Message):
     r"""The Google Cloud Storage location for the input content.
+
     Attributes:
         input_uri (str):
             Required. Source data URI. For example,
@@ -407,6 +416,7 @@ class GcsSource(proto.Message):
 
 class InputConfig(proto.Message):
     r"""Input configuration for BatchTranslateText request.
+
     Attributes:
         mime_type (str):
             Optional. Can be "text/plain" or "text/html". For ``.tsv``,
@@ -443,6 +453,7 @@ class InputConfig(proto.Message):
 
 class GcsDestination(proto.Message):
     r"""The Google Cloud Storage location for the output content.
+
     Attributes:
         output_uri_prefix (str):
             Required. There must be no files under 'output_uri_prefix'.
@@ -456,6 +467,7 @@ class GcsDestination(proto.Message):
 
 class OutputConfig(proto.Message):
     r"""Output configuration for BatchTranslateText request.
+
     Attributes:
         gcs_destination (google.cloud.translate_v3beta1.types.GcsDestination):
             Google Cloud Storage destination for output content. For
@@ -543,6 +555,7 @@ class OutputConfig(proto.Message):
 
 class DocumentInputConfig(proto.Message):
     r"""A document translation request input config.
+
     Attributes:
         content (bytes):
             Document's content represented as a stream of
@@ -573,6 +586,7 @@ class DocumentInputConfig(proto.Message):
 
 class DocumentOutputConfig(proto.Message):
     r"""A document translation request output config.
+
     Attributes:
         gcs_destination (google.cloud.translate_v3beta1.types.GcsDestination):
             Optional. Google Cloud Storage destination for the
@@ -644,6 +658,7 @@ class DocumentOutputConfig(proto.Message):
 
 class TranslateDocumentRequest(proto.Message):
     r"""A document translation request.
+
     Attributes:
         parent (str):
             Required. Location to make a regional call.
@@ -734,6 +749,7 @@ class TranslateDocumentRequest(proto.Message):
 
 class DocumentTranslation(proto.Message):
     r"""A translated document message.
+
     Attributes:
         byte_stream_outputs (Sequence[bytes]):
             The array of translated documents. It is
@@ -759,6 +775,7 @@ class DocumentTranslation(proto.Message):
 
 class TranslateDocumentResponse(proto.Message):
     r"""A translated document response message.
+
     Attributes:
         document_translation (google.cloud.translate_v3beta1.types.DocumentTranslation):
             Translated document.
@@ -794,6 +811,7 @@ class TranslateDocumentResponse(proto.Message):
 
 class BatchTranslateTextRequest(proto.Message):
     r"""The batch translation request.
+
     Attributes:
         parent (str):
             Required. Location to make a call. Must refer to a caller's
@@ -870,6 +888,7 @@ class BatchTranslateTextRequest(proto.Message):
 
 class BatchTranslateMetadata(proto.Message):
     r"""State metadata for the batch translation operation.
+
     Attributes:
         state (google.cloud.translate_v3beta1.types.BatchTranslateMetadata.State):
             The state of the operation.
@@ -938,6 +957,7 @@ class BatchTranslateResponse(proto.Message):
 
 class GlossaryInputConfig(proto.Message):
     r"""Input configuration for glossaries.
+
     Attributes:
         gcs_source (google.cloud.translate_v3beta1.types.GcsSource):
             Required. Google Cloud Storage location of glossary data.
@@ -974,6 +994,7 @@ class GlossaryInputConfig(proto.Message):
 
 class Glossary(proto.Message):
     r"""Represents a glossary built from user provided data.
+
     Attributes:
         name (str):
             Required. The resource name of the glossary. Glossary names
@@ -999,6 +1020,7 @@ class Glossary(proto.Message):
 
     class LanguageCodePair(proto.Message):
         r"""Used with unidirectional glossaries.
+
         Attributes:
             source_language_code (str):
                 Required. The BCP-47 language code of the input text, for
@@ -1015,6 +1037,7 @@ class Glossary(proto.Message):
 
     class LanguageCodesSet(proto.Message):
         r"""Used with equivalent term set glossaries.
+
         Attributes:
             language_codes (Sequence[str]):
                 The BCP-47 language code(s) for terms defined in the
@@ -1040,6 +1063,7 @@ class Glossary(proto.Message):
 
 class CreateGlossaryRequest(proto.Message):
     r"""Request message for CreateGlossary.
+
     Attributes:
         parent (str):
             Required. The project name.
@@ -1053,6 +1077,7 @@ class CreateGlossaryRequest(proto.Message):
 
 class GetGlossaryRequest(proto.Message):
     r"""Request message for GetGlossary.
+
     Attributes:
         name (str):
             Required. The name of the glossary to
@@ -1064,6 +1089,7 @@ class GetGlossaryRequest(proto.Message):
 
 class DeleteGlossaryRequest(proto.Message):
     r"""Request message for DeleteGlossary.
+
     Attributes:
         name (str):
             Required. The name of the glossary to delete.
@@ -1074,6 +1100,7 @@ class DeleteGlossaryRequest(proto.Message):
 
 class ListGlossariesRequest(proto.Message):
     r"""Request message for ListGlossaries.
+
     Attributes:
         parent (str):
             Required. The name of the project from which
@@ -1124,6 +1151,7 @@ class ListGlossariesRequest(proto.Message):
 
 class ListGlossariesResponse(proto.Message):
     r"""Response message for ListGlossaries.
+
     Attributes:
         glossaries (Sequence[google.cloud.translate_v3beta1.types.Glossary]):
             The list of glossaries for a project.
@@ -1232,6 +1260,7 @@ class DeleteGlossaryResponse(proto.Message):
 
 class BatchTranslateDocumentRequest(proto.Message):
     r"""The BatchTranslateDocument request.
+
     Attributes:
         parent (str):
             Required. Location to make a regional call.
@@ -1317,6 +1346,7 @@ class BatchTranslateDocumentRequest(proto.Message):
 
 class BatchDocumentInputConfig(proto.Message):
     r"""Input configuration for BatchTranslateDocument request.
+
     Attributes:
         gcs_source (google.cloud.translate_v3beta1.types.GcsSource):
             Google Cloud Storage location for the source input. This can
@@ -1348,6 +1378,7 @@ class BatchDocumentInputConfig(proto.Message):
 
 class BatchDocumentOutputConfig(proto.Message):
     r"""Output configuration for BatchTranslateDocument request.
+
     Attributes:
         gcs_destination (google.cloud.translate_v3beta1.types.GcsDestination):
             Google Cloud Storage destination for output content. For
@@ -1466,6 +1497,7 @@ class BatchTranslateDocumentResponse(proto.Message):
 
 class BatchTranslateDocumentMetadata(proto.Message):
     r"""State metadata for the batch translation operation.
+
     Attributes:
         state (google.cloud.translate_v3beta1.types.BatchTranslateDocumentMetadata.State):
             The state of the operation.

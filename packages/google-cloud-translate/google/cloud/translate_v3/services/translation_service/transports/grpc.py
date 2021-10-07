@@ -549,5 +549,8 @@ class TranslationServiceGrpcTransport(TranslationServiceTransport):
             )
         return self._stubs["delete_glossary"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("TranslationServiceGrpcTransport",)
