@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-tpu/compare/v1.0.2...v1.1.0) (2021-10-07)
+
+
+### Features
+
+* add context manager support in client ([#48](https://www.github.com/googleapis/python-tpu/issues/48)) ([f51a651](https://www.github.com/googleapis/python-tpu/commit/f51a6513f7f13c8aa0c9b06a63134a04ae6463f2))
+
 ### [1.0.2](https://www.github.com/googleapis/python-tpu/compare/v1.0.1...v1.0.2) (2021-09-30)
 
 
