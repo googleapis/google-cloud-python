@@ -45,6 +45,7 @@ class CustomClass(proto.Message):
 
     class ClassItem(proto.Message):
         r"""An item of the class.
+
         Attributes:
             value (str):
                 The class item's value.
@@ -132,6 +133,7 @@ class PhraseSet(proto.Message):
 
 class SpeechAdaptation(proto.Message):
     r"""Speech adaptation configuration.
+
     Attributes:
         phrase_sets (Sequence[google.cloud.speech_v1p1beta1.types.PhraseSet]):
             A collection of phrase sets. To specify the hints inline,
@@ -173,6 +175,7 @@ class TranscriptNormalization(proto.Message):
 
     class Entry(proto.Message):
         r"""A single replacement configuration.
+
         Attributes:
             search (str):
                 What to replace. Max length is 100

@@ -502,5 +502,8 @@ class AdaptationGrpcTransport(AdaptationTransport):
             )
         return self._stubs["delete_custom_class"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("AdaptationGrpcTransport",)

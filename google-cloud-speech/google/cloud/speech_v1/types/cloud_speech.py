@@ -381,6 +381,7 @@ class RecognitionConfig(proto.Message):
 
 class SpeakerDiarizationConfig(proto.Message):
     r"""Config to enable speaker diarization.
+
     Attributes:
         enable_speaker_diarization (bool):
             If 'true', enables speaker detection for each recognized
@@ -410,6 +411,7 @@ class SpeakerDiarizationConfig(proto.Message):
 
 class RecognitionMetadata(proto.Message):
     r"""Description of audio data to be recognized.
+
     Attributes:
         interaction_type (google.cloud.speech_v1.types.RecognitionMetadata.InteractionType):
             The use case most closely describing the
@@ -793,6 +795,7 @@ class SpeechRecognitionResult(proto.Message):
 
 class SpeechRecognitionAlternative(proto.Message):
     r"""Alternative hypotheses (a.k.a. n-best list).
+
     Attributes:
         transcript (str):
             Transcript text representing the words that
@@ -819,6 +822,7 @@ class SpeechRecognitionAlternative(proto.Message):
 
 class WordInfo(proto.Message):
     r"""Word-specific information for recognized words.
+
     Attributes:
         start_time (google.protobuf.duration_pb2.Duration):
             Time offset relative to the beginning of the audio, and
