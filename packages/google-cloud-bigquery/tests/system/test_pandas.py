@@ -24,6 +24,7 @@ import operator
 import google.api_core.retry
 import pkg_resources
 import pytest
+import numpy
 
 from google.cloud import bigquery
 from . import helpers
@@ -84,6 +85,81 @@ def test_load_table_from_dataframe_w_automatic_schema(bigquery_client, dataset_i
             ("uint8_col", pandas.Series([0, 1, 2], dtype="uint8")),
             ("uint16_col", pandas.Series([3, 4, 5], dtype="uint16")),
             ("uint32_col", pandas.Series([6, 7, 8], dtype="uint32")),
+            ("array_bool_col", pandas.Series([[True], [False], [True]])),
+            (
+                "array_ts_col",
+                pandas.Series(
+                    [
+                        [
+                            datetime.datetime(
+                                2010, 1, 2, 3, 44, 50, tzinfo=datetime.timezone.utc
+                            ),
+                        ],
+                        [
+                            datetime.datetime(
+                                2011, 2, 3, 14, 50, 59, tzinfo=datetime.timezone.utc
+                            ),
+                        ],
+                        [
+                            datetime.datetime(
+                                2012, 3, 14, 15, 16, tzinfo=datetime.timezone.utc
+                            ),
+                        ],
+                    ],
+                ),
+            ),
+            (
+                "array_dt_col",
+                pandas.Series(
+                    [
+                        [datetime.datetime(2010, 1, 2, 3, 44, 50)],
+                        [datetime.datetime(2011, 2, 3, 14, 50, 59)],
+                        [datetime.datetime(2012, 3, 14, 15, 16)],
+                    ],
+                ),
+            ),
+            (
+                "array_float32_col",
+                pandas.Series(
+                    [numpy.array([_], dtype="float32") for _ in [1.0, 2.0, 3.0]]
+                ),
+            ),
+            (
+                "array_float64_col",
+                pandas.Series(
+                    [numpy.array([_], dtype="float64") for _ in [4.0, 5.0, 6.0]]
+                ),
+            ),
+            (
+                "array_int8_col",
+                pandas.Series(
+                    [numpy.array([_], dtype="int8") for _ in [-12, -11, -10]]
+                ),
+            ),
+            (
+                "array_int16_col",
+                pandas.Series([numpy.array([_], dtype="int16") for _ in [-9, -8, -7]]),
+            ),
+            (
+                "array_int32_col",
+                pandas.Series([numpy.array([_], dtype="int32") for _ in [-6, -5, -4]]),
+            ),
+            (
+                "array_int64_col",
+                pandas.Series([numpy.array([_], dtype="int64") for _ in [-3, -2, -1]]),
+            ),
+            (
+                "array_uint8_col",
+                pandas.Series([numpy.array([_], dtype="uint8") for _ in [0, 1, 2]]),
+            ),
+            (
+                "array_uint16_col",
+                pandas.Series([numpy.array([_], dtype="uint16") for _ in [3, 4, 5]]),
+            ),
+            (
+                "array_uint32_col",
+                pandas.Series([numpy.array([_], dtype="uint32") for _ in [6, 7, 8]]),
+            ),
         ]
     )
     dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
@@ -99,9 +175,8 @@ def test_load_table_from_dataframe_w_automatic_schema(bigquery_client, dataset_i
     assert tuple(table.schema) == (
         bigquery.SchemaField("bool_col", "BOOLEAN"),
         bigquery.SchemaField("ts_col", "TIMESTAMP"),
-        # BigQuery does not support uploading DATETIME values from
-        # Parquet files. See:
-        # https://github.com/googleapis/google-cloud-python/issues/9996
+        # TODO: Update to DATETIME in V3
+        # https://github.com/googleapis/python-bigquery/issues/985
         bigquery.SchemaField("dt_col", "TIMESTAMP"),
         bigquery.SchemaField("float32_col", "FLOAT"),
         bigquery.SchemaField("float64_col", "FLOAT"),
@@ -112,6 +187,20 @@ def test_load_table_from_dataframe_w_automatic_schema(bigquery_client, dataset_i
         bigquery.SchemaField("uint8_col", "INTEGER"),
         bigquery.SchemaField("uint16_col", "INTEGER"),
         bigquery.SchemaField("uint32_col", "INTEGER"),
+        bigquery.SchemaField("array_bool_col", "BOOLEAN", mode="REPEATED"),
+        bigquery.SchemaField("array_ts_col", "TIMESTAMP", mode="REPEATED"),
+        # TODO: Update to DATETIME in V3
+        # https://github.com/googleapis/python-bigquery/issues/985
+        bigquery.SchemaField("array_dt_col", "TIMESTAMP", mode="REPEATED"),
+        bigquery.SchemaField("array_float32_col", "FLOAT", mode="REPEATED"),
+        bigquery.SchemaField("array_float64_col", "FLOAT", mode="REPEATED"),
+        bigquery.SchemaField("array_int8_col", "INTEGER", mode="REPEATED"),
+        bigquery.SchemaField("array_int16_col", "INTEGER", mode="REPEATED"),
+        bigquery.SchemaField("array_int32_col", "INTEGER", mode="REPEATED"),
+        bigquery.SchemaField("array_int64_col", "INTEGER", mode="REPEATED"),
+        bigquery.SchemaField("array_uint8_col", "INTEGER", mode="REPEATED"),
+        bigquery.SchemaField("array_uint16_col", "INTEGER", mode="REPEATED"),
+        bigquery.SchemaField("array_uint32_col", "INTEGER", mode="REPEATED"),
     )
     assert table.num_rows == 3
 

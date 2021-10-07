@@ -27,18 +27,10 @@ import itertools
 import json
 import math
 import os
-import packaging.version
 import tempfile
 from typing import Any, BinaryIO, Dict, Iterable, Optional, Sequence, Tuple, Union
 import uuid
 import warnings
-
-try:
-    import pyarrow
-
-    _PYARROW_VERSION = packaging.version.parse(pyarrow.__version__)
-except ImportError:  # pragma: NO COVER
-    pyarrow = None
 
 from google import resumable_media  # type: ignore
 from google.resumable_media.requests import MultipartUpload
@@ -103,6 +95,10 @@ from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import RowIterator
+from google.cloud.bigquery.format_options import ParquetOptions
+from google.cloud.bigquery import _helpers
+
+pyarrow = _helpers.PYARROW_VERSIONS.try_import()
 
 
 _DEFAULT_CHUNKSIZE = 100 * 1024 * 1024  # 100 MB
@@ -128,8 +124,6 @@ _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS = "jobReference,totalRows,pageToken,rows"
 # https://github.com/googleapis/python-bigquery/issues/438
 _MIN_GET_QUERY_RESULTS_TIMEOUT = 120
 
-# https://github.com/googleapis/python-bigquery/issues/781#issuecomment-883497414
-_PYARROW_BAD_VERSIONS = frozenset([packaging.version.Version("2.0.0")])
 
 TIMEOUT_HEADER = "X-Server-Timeout"
 
@@ -2469,10 +2463,10 @@ class Client(ClientWithProject):
             They are supported when using the PARQUET source format, but
             due to the way they are encoded in the ``parquet`` file,
             a mismatch with the existing table schema can occur, so
-            100% compatibility cannot be guaranteed for REPEATED fields when
+            REPEATED fields are not properly supported when using ``pyarrow<4.0.0``
             using the parquet format.
 
-            https://github.com/googleapis/python-bigquery/issues/17
+            https://github.com/googleapis/python-bigquery/issues/19
 
         Args:
             dataframe (pandas.DataFrame):
@@ -2519,18 +2513,18 @@ class Client(ClientWithProject):
                 :attr:`~google.cloud.bigquery.job.SourceFormat.PARQUET` are
                 supported.
             parquet_compression (Optional[str]):
-                 [Beta] The compression method to use if intermittently
-                 serializing ``dataframe`` to a parquet file.
+                [Beta] The compression method to use if intermittently
+                serializing ``dataframe`` to a parquet file.
 
-                 The argument is directly passed as the ``compression``
-                 argument to the underlying ``pyarrow.parquet.write_table()``
-                 method (the default value "snappy" gets converted to uppercase).
-                 https://arrow.apache.org/docs/python/generated/pyarrow.parquet.write_table.html#pyarrow-parquet-write-table
+                The argument is directly passed as the ``compression``
+                argument to the underlying ``pyarrow.parquet.write_table()``
+                method (the default value "snappy" gets converted to uppercase).
+                https://arrow.apache.org/docs/python/generated/pyarrow.parquet.write_table.html#pyarrow-parquet-write-table
 
-                 If the job config schema is missing, the argument is directly
-                 passed as the ``compression`` argument to the underlying
-                 ``DataFrame.to_parquet()`` method.
-                 https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_parquet.html#pandas.DataFrame.to_parquet
+                If the job config schema is missing, the argument is directly
+                passed as the ``compression`` argument to the underlying
+                ``DataFrame.to_parquet()`` method.
+                https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_parquet.html#pandas.DataFrame.to_parquet
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
@@ -2562,6 +2556,16 @@ class Client(ClientWithProject):
         if job_config.source_format is None:
             # default value
             job_config.source_format = job.SourceFormat.PARQUET
+
+        if (
+            job_config.source_format == job.SourceFormat.PARQUET
+            and job_config.parquet_options is None
+        ):
+            parquet_options = ParquetOptions()
+            # default value
+            parquet_options.enable_list_inference = True
+            job_config.parquet_options = parquet_options
+
         if job_config.source_format not in supported_formats:
             raise ValueError(
                 "Got unexpected source_format: '{}'. Currently, only PARQUET and CSV are supported".format(
@@ -2628,12 +2632,12 @@ class Client(ClientWithProject):
         try:
 
             if job_config.source_format == job.SourceFormat.PARQUET:
-                if _PYARROW_VERSION in _PYARROW_BAD_VERSIONS:
+                if _helpers.PYARROW_VERSIONS.is_bad_version:
                     msg = (
                         "Loading dataframe data in PARQUET format with pyarrow "
-                        f"{_PYARROW_VERSION} can result in data corruption. It is "
-                        "therefore *strongly* advised to use a different pyarrow "
-                        "version or a different source format. "
+                        f"{_helpers.PYARROW_VERSIONS.installed_version} can result in data "
+                        "corruption. It is therefore *strongly* advised to use a "
+                        "different pyarrow version or a different source format. "
                         "See: https://github.com/googleapis/python-bigquery/issues/781"
                     )
                     warnings.warn(msg, category=RuntimeWarning)
@@ -2647,9 +2651,19 @@ class Client(ClientWithProject):
                         job_config.schema,
                         tmppath,
                         parquet_compression=parquet_compression,
+                        parquet_use_compliant_nested_type=True,
                     )
                 else:
-                    dataframe.to_parquet(tmppath, compression=parquet_compression)
+                    dataframe.to_parquet(
+                        tmppath,
+                        engine="pyarrow",
+                        compression=parquet_compression,
+                        **(
+                            {"use_compliant_nested_type": True}
+                            if _helpers.PYARROW_VERSIONS.use_compliant_nested_type
+                            else {}
+                        ),
+                    )
 
             else:
 

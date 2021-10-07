@@ -107,6 +107,9 @@ class BQStorageVersions:
 class PyarrowVersions:
     """Version comparisons for pyarrow package."""
 
+    # https://github.com/googleapis/python-bigquery/issues/781#issuecomment-883497414
+    _PYARROW_BAD_VERSIONS = frozenset([packaging.version.Version("2.0.0")])
+
     def __init__(self):
         self._installed_version = None
 
@@ -125,6 +128,14 @@ class PyarrowVersions:
             )
 
         return self._installed_version
+
+    @property
+    def is_bad_version(self) -> bool:
+        return self.installed_version in self._PYARROW_BAD_VERSIONS
+
+    @property
+    def use_compliant_nested_type(self) -> bool:
+        return self.installed_version.major >= 4
 
     def try_import(self, raise_if_error: bool = False) -> Any:
         """Verify that a recent enough version of pyarrow extra is
