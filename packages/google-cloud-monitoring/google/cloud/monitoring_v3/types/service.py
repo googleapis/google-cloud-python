@@ -87,7 +87,8 @@ class Service(proto.Message):
     class Custom(proto.Message):
         r"""Custom view of service telemetry. Currently a place-holder
         pending final design.
-            """
+
+        """
 
     class AppEngine(proto.Message):
         r"""App Engine service. Learn more at
@@ -200,6 +201,7 @@ class Service(proto.Message):
 
     class Telemetry(proto.Message):
         r"""Configuration for how to query telemetry on a Service.
+
         Attributes:
             resource_name (str):
                 The full name of the resource that defines this service.
@@ -384,10 +386,12 @@ class BasicSli(proto.Message):
     """
 
     class AvailabilityCriteria(proto.Message):
-        r"""Future parameters for the availability SLI.    """
+        r"""Future parameters for the availability SLI.
+        """
 
     class LatencyCriteria(proto.Message):
         r"""Parameters for a latency threshold SLI.
+
         Attributes:
             threshold (google.protobuf.duration_pb2.Duration):
                 Good service is defined to be the count of requests made to

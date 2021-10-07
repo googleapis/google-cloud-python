@@ -42,6 +42,7 @@ __protobuf__ = proto.module(
 
 class ListNotificationChannelDescriptorsRequest(proto.Message):
     r"""The ``ListNotificationChannelDescriptors`` request.
+
     Attributes:
         name (str):
             Required. The REST resource name of the parent from which to
@@ -76,6 +77,7 @@ class ListNotificationChannelDescriptorsRequest(proto.Message):
 
 class ListNotificationChannelDescriptorsResponse(proto.Message):
     r"""The ``ListNotificationChannelDescriptors`` response.
+
     Attributes:
         channel_descriptors (Sequence[google.cloud.monitoring_v3.types.NotificationChannelDescriptor]):
             The monitored resource descriptors supported
@@ -99,6 +101,7 @@ class ListNotificationChannelDescriptorsResponse(proto.Message):
 
 class GetNotificationChannelDescriptorRequest(proto.Message):
     r"""The ``GetNotificationChannelDescriptor`` response.
+
     Attributes:
         name (str):
             Required. The channel type for which to execute the request.
@@ -114,6 +117,7 @@ class GetNotificationChannelDescriptorRequest(proto.Message):
 
 class CreateNotificationChannelRequest(proto.Message):
     r"""The ``CreateNotificationChannel`` request.
+
     Attributes:
         name (str):
             Required. The
@@ -143,6 +147,7 @@ class CreateNotificationChannelRequest(proto.Message):
 
 class ListNotificationChannelsRequest(proto.Message):
     r"""The ``ListNotificationChannels`` request.
+
     Attributes:
         name (str):
             Required. The
@@ -192,6 +197,7 @@ class ListNotificationChannelsRequest(proto.Message):
 
 class ListNotificationChannelsResponse(proto.Message):
     r"""The ``ListNotificationChannels`` response.
+
     Attributes:
         notification_channels (Sequence[google.cloud.monitoring_v3.types.NotificationChannel]):
             The notification channels defined for the
@@ -221,6 +227,7 @@ class ListNotificationChannelsResponse(proto.Message):
 
 class GetNotificationChannelRequest(proto.Message):
     r"""The ``GetNotificationChannel`` request.
+
     Attributes:
         name (str):
             Required. The channel for which to execute the request. The
@@ -236,6 +243,7 @@ class GetNotificationChannelRequest(proto.Message):
 
 class UpdateNotificationChannelRequest(proto.Message):
     r"""The ``UpdateNotificationChannel`` request.
+
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The fields to update.
@@ -256,6 +264,7 @@ class UpdateNotificationChannelRequest(proto.Message):
 
 class DeleteNotificationChannelRequest(proto.Message):
     r"""The ``DeleteNotificationChannel`` request.
+
     Attributes:
         name (str):
             Required. The channel for which to execute the request. The
@@ -279,6 +288,7 @@ class DeleteNotificationChannelRequest(proto.Message):
 
 class SendNotificationChannelVerificationCodeRequest(proto.Message):
     r"""The ``SendNotificationChannelVerificationCode`` request.
+
     Attributes:
         name (str):
             Required. The notification channel to which
@@ -290,6 +300,7 @@ class SendNotificationChannelVerificationCodeRequest(proto.Message):
 
 class GetNotificationChannelVerificationCodeRequest(proto.Message):
     r"""The ``GetNotificationChannelVerificationCode`` request.
+
     Attributes:
         name (str):
             Required. The notification channel for which
@@ -320,6 +331,7 @@ class GetNotificationChannelVerificationCodeRequest(proto.Message):
 
 class GetNotificationChannelVerificationCodeResponse(proto.Message):
     r"""The ``GetNotificationChannelVerificationCode`` request.
+
     Attributes:
         code (str):
             The verification code, which may be used to
@@ -342,6 +354,7 @@ class GetNotificationChannelVerificationCodeResponse(proto.Message):
 
 class VerifyNotificationChannelRequest(proto.Message):
     r"""The ``VerifyNotificationChannel`` request.
+
     Attributes:
         name (str):
             Required. The notification channel to verify.

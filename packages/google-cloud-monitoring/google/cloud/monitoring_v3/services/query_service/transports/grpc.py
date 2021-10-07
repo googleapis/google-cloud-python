@@ -256,5 +256,8 @@ class QueryServiceGrpcTransport(QueryServiceTransport):
             )
         return self._stubs["query_time_series"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("QueryServiceGrpcTransport",)

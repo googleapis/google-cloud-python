@@ -41,6 +41,7 @@ class ComparisonType(proto.Enum):
 
 class TypedValue(proto.Message):
     r"""A single strongly-typed value.
+
     Attributes:
         bool_value (bool):
             A Boolean value: ``true`` or ``false``.

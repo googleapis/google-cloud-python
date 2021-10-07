@@ -471,5 +471,8 @@ class MetricServiceGrpcTransport(MetricServiceTransport):
             )
         return self._stubs["create_time_series"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("MetricServiceGrpcTransport",)

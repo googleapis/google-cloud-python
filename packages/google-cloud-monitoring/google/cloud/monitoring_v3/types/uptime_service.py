@@ -36,6 +36,7 @@ __protobuf__ = proto.module(
 
 class ListUptimeCheckConfigsRequest(proto.Message):
     r"""The protocol for the ``ListUptimeCheckConfigs`` request.
+
     Attributes:
         parent (str):
             Required. The
@@ -65,6 +66,7 @@ class ListUptimeCheckConfigsRequest(proto.Message):
 
 class ListUptimeCheckConfigsResponse(proto.Message):
     r"""The protocol for the ``ListUptimeCheckConfigs`` response.
+
     Attributes:
         uptime_check_configs (Sequence[google.cloud.monitoring_v3.types.UptimeCheckConfig]):
             The returned Uptime check configurations.
@@ -94,6 +96,7 @@ class ListUptimeCheckConfigsResponse(proto.Message):
 
 class GetUptimeCheckConfigRequest(proto.Message):
     r"""The protocol for the ``GetUptimeCheckConfig`` request.
+
     Attributes:
         name (str):
             Required. The Uptime check configuration to retrieve. The
@@ -109,6 +112,7 @@ class GetUptimeCheckConfigRequest(proto.Message):
 
 class CreateUptimeCheckConfigRequest(proto.Message):
     r"""The protocol for the ``CreateUptimeCheckConfig`` request.
+
     Attributes:
         parent (str):
             Required. The
@@ -130,6 +134,7 @@ class CreateUptimeCheckConfigRequest(proto.Message):
 
 class UpdateUptimeCheckConfigRequest(proto.Message):
     r"""The protocol for the ``UpdateUptimeCheckConfig`` request.
+
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. If present, only the listed fields
@@ -163,6 +168,7 @@ class UpdateUptimeCheckConfigRequest(proto.Message):
 
 class DeleteUptimeCheckConfigRequest(proto.Message):
     r"""The protocol for the ``DeleteUptimeCheckConfig`` request.
+
     Attributes:
         name (str):
             Required. The Uptime check configuration to delete. The
@@ -178,6 +184,7 @@ class DeleteUptimeCheckConfigRequest(proto.Message):
 
 class ListUptimeCheckIpsRequest(proto.Message):
     r"""The protocol for the ``ListUptimeCheckIps`` request.
+
     Attributes:
         page_size (int):
             The maximum number of results to return in a single
@@ -200,6 +207,7 @@ class ListUptimeCheckIpsRequest(proto.Message):
 
 class ListUptimeCheckIpsResponse(proto.Message):
     r"""The protocol for the ``ListUptimeCheckIps`` response.
+
     Attributes:
         uptime_check_ips (Sequence[google.cloud.monitoring_v3.types.UptimeCheckIp]):
             The returned list of IP addresses (including

@@ -40,6 +40,7 @@ __protobuf__ = proto.module(
 
 class CreateServiceRequest(proto.Message):
     r"""The ``CreateService`` request.
+
     Attributes:
         parent (str):
             Required. Resource
@@ -64,6 +65,7 @@ class CreateServiceRequest(proto.Message):
 
 class GetServiceRequest(proto.Message):
     r"""The ``GetService`` request.
+
     Attributes:
         name (str):
             Required. Resource name of the ``Service``. The format is:
@@ -78,6 +80,7 @@ class GetServiceRequest(proto.Message):
 
 class ListServicesRequest(proto.Message):
     r"""The ``ListServices`` request.
+
     Attributes:
         parent (str):
             Required. Resource name of the parent containing the listed
@@ -132,6 +135,7 @@ class ListServicesRequest(proto.Message):
 
 class ListServicesResponse(proto.Message):
     r"""The ``ListServices`` response.
+
     Attributes:
         services (Sequence[google.cloud.monitoring_v3.types.Service]):
             The ``Service``\ s matching the specified filter.
@@ -152,6 +156,7 @@ class ListServicesResponse(proto.Message):
 
 class UpdateServiceRequest(proto.Message):
     r"""The ``UpdateService`` request.
+
     Attributes:
         service (google.cloud.monitoring_v3.types.Service):
             Required. The ``Service`` to draw updates from. The given
@@ -169,6 +174,7 @@ class UpdateServiceRequest(proto.Message):
 
 class DeleteServiceRequest(proto.Message):
     r"""The ``DeleteService`` request.
+
     Attributes:
         name (str):
             Required. Resource name of the ``Service`` to delete. The
@@ -184,6 +190,7 @@ class DeleteServiceRequest(proto.Message):
 
 class CreateServiceLevelObjectiveRequest(proto.Message):
     r"""The ``CreateServiceLevelObjective`` request.
+
     Attributes:
         parent (str):
             Required. Resource name of the parent ``Service``. The
@@ -211,6 +218,7 @@ class CreateServiceLevelObjectiveRequest(proto.Message):
 
 class GetServiceLevelObjectiveRequest(proto.Message):
     r"""The ``GetServiceLevelObjective`` request.
+
     Attributes:
         name (str):
             Required. Resource name of the ``ServiceLevelObjective`` to
@@ -236,6 +244,7 @@ class GetServiceLevelObjectiveRequest(proto.Message):
 
 class ListServiceLevelObjectivesRequest(proto.Message):
     r"""The ``ListServiceLevelObjectives`` request.
+
     Attributes:
         parent (str):
             Required. Resource name of the parent containing the listed
@@ -278,6 +287,7 @@ class ListServiceLevelObjectivesRequest(proto.Message):
 
 class ListServiceLevelObjectivesResponse(proto.Message):
     r"""The ``ListServiceLevelObjectives`` response.
+
     Attributes:
         service_level_objectives (Sequence[google.cloud.monitoring_v3.types.ServiceLevelObjective]):
             The ``ServiceLevelObjective``\ s matching the specified
@@ -301,6 +311,7 @@ class ListServiceLevelObjectivesResponse(proto.Message):
 
 class UpdateServiceLevelObjectiveRequest(proto.Message):
     r"""The ``UpdateServiceLevelObjective`` request.
+
     Attributes:
         service_level_objective (google.cloud.monitoring_v3.types.ServiceLevelObjective):
             Required. The ``ServiceLevelObjective`` to draw updates
@@ -320,6 +331,7 @@ class UpdateServiceLevelObjectiveRequest(proto.Message):
 
 class DeleteServiceLevelObjectiveRequest(proto.Message):
     r"""The ``DeleteServiceLevelObjective`` request.
+
     Attributes:
         name (str):
             Required. Resource name of the ``ServiceLevelObjective`` to

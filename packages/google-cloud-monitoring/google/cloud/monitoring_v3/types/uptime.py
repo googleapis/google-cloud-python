@@ -203,6 +203,7 @@ class UptimeCheckConfig(proto.Message):
 
     class HttpCheck(proto.Message):
         r"""Information involved in an HTTP/HTTPS Uptime check request.
+
         Attributes:
             request_method (google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.RequestMethod):
                 The HTTP request method to use for the check. If set to
@@ -329,6 +330,7 @@ class UptimeCheckConfig(proto.Message):
 
     class TcpCheck(proto.Message):
         r"""Information required for a TCP Uptime check request.
+
         Attributes:
             port (int):
                 The TCP port on the server against which to run the check.

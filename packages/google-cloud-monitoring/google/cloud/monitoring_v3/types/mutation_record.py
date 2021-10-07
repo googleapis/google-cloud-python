@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
 
 class MutationRecord(proto.Message):
     r"""Describes a change made to a configuration.
+
     Attributes:
         mutate_time (google.protobuf.timestamp_pb2.Timestamp):
             When the change occurred.

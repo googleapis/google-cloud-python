@@ -37,6 +37,7 @@ __protobuf__ = proto.module(
 
 class Point(proto.Message):
     r"""A single data point in a time series.
+
     Attributes:
         interval (google.cloud.monitoring_v3.types.TimeInterval):
             The time interval to which the data point applies. For
@@ -140,6 +141,7 @@ class TimeSeries(proto.Message):
 
 class TimeSeriesDescriptor(proto.Message):
     r"""A descriptor for the labels and points in a time series.
+
     Attributes:
         label_descriptors (Sequence[google.api.label_pb2.LabelDescriptor]):
             Descriptors for the labels.
@@ -149,6 +151,7 @@ class TimeSeriesDescriptor(proto.Message):
 
     class ValueDescriptor(proto.Message):
         r"""A descriptor for the value columns in a data point.
+
         Attributes:
             key (str):
                 The value key.
@@ -221,6 +224,7 @@ class TimeSeriesData(proto.Message):
 
 class LabelValue(proto.Message):
     r"""A label value.
+
     Attributes:
         bool_value (bool):
             A bool label value.
@@ -300,6 +304,7 @@ class TextLocator(proto.Message):
 
     class Position(proto.Message):
         r"""The position of a byte within the text.
+
         Attributes:
             line (int):
                 The line, starting with 1, where the byte is

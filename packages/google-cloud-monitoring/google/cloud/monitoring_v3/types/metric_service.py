@@ -47,6 +47,7 @@ __protobuf__ = proto.module(
 
 class ListMonitoredResourceDescriptorsRequest(proto.Message):
     r"""The ``ListMonitoredResourceDescriptors`` request.
+
     Attributes:
         name (str):
             Required. The
@@ -85,6 +86,7 @@ class ListMonitoredResourceDescriptorsRequest(proto.Message):
 
 class ListMonitoredResourceDescriptorsResponse(proto.Message):
     r"""The ``ListMonitoredResourceDescriptors`` response.
+
     Attributes:
         resource_descriptors (Sequence[google.api.monitored_resource_pb2.MonitoredResourceDescriptor]):
             The monitored resource descriptors that are available to
@@ -110,6 +112,7 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
 
 class GetMonitoredResourceDescriptorRequest(proto.Message):
     r"""The ``GetMonitoredResourceDescriptor`` request.
+
     Attributes:
         name (str):
             Required. The monitored resource descriptor to get. The
@@ -128,6 +131,7 @@ class GetMonitoredResourceDescriptorRequest(proto.Message):
 
 class ListMetricDescriptorsRequest(proto.Message):
     r"""The ``ListMetricDescriptors`` request.
+
     Attributes:
         name (str):
             Required. The
@@ -166,6 +170,7 @@ class ListMetricDescriptorsRequest(proto.Message):
 
 class ListMetricDescriptorsResponse(proto.Message):
     r"""The ``ListMetricDescriptors`` response.
+
     Attributes:
         metric_descriptors (Sequence[google.api.metric_pb2.MetricDescriptor]):
             The metric descriptors that are available to the project and
@@ -189,6 +194,7 @@ class ListMetricDescriptorsResponse(proto.Message):
 
 class GetMetricDescriptorRequest(proto.Message):
     r"""The ``GetMetricDescriptor`` request.
+
     Attributes:
         name (str):
             Required. The metric descriptor on which to execute the
@@ -207,6 +213,7 @@ class GetMetricDescriptorRequest(proto.Message):
 
 class CreateMetricDescriptorRequest(proto.Message):
     r"""The ``CreateMetricDescriptor`` request.
+
     Attributes:
         name (str):
             Required. The
@@ -227,6 +234,7 @@ class CreateMetricDescriptorRequest(proto.Message):
 
 class DeleteMetricDescriptorRequest(proto.Message):
     r"""The ``DeleteMetricDescriptor`` request.
+
     Attributes:
         name (str):
             Required. The metric descriptor on which to execute the
@@ -245,6 +253,7 @@ class DeleteMetricDescriptorRequest(proto.Message):
 
 class ListTimeSeriesRequest(proto.Message):
     r"""The ``ListTimeSeries`` request.
+
     Attributes:
         name (str):
             Required. The
@@ -325,6 +334,7 @@ class ListTimeSeriesRequest(proto.Message):
 
 class ListTimeSeriesResponse(proto.Message):
     r"""The ``ListTimeSeries`` response.
+
     Attributes:
         time_series (Sequence[google.cloud.monitoring_v3.types.TimeSeries]):
             One or more time series that match the filter
@@ -362,6 +372,7 @@ class ListTimeSeriesResponse(proto.Message):
 
 class CreateTimeSeriesRequest(proto.Message):
     r"""The ``CreateTimeSeries`` request.
+
     Attributes:
         name (str):
             Required. The
@@ -391,6 +402,7 @@ class CreateTimeSeriesRequest(proto.Message):
 
 class CreateTimeSeriesError(proto.Message):
     r"""DEPRECATED. Used to hold per-time-series error status.
+
     Attributes:
         time_series (google.cloud.monitoring_v3.types.TimeSeries):
             DEPRECATED. Time series ID that resulted in the ``status``
@@ -421,6 +433,7 @@ class CreateTimeSeriesSummary(proto.Message):
 
     class Error(proto.Message):
         r"""Detailed information about an error category.
+
         Attributes:
             status (google.rpc.status_pb2.Status):
                 The status of the requested write operation.
@@ -439,6 +452,7 @@ class CreateTimeSeriesSummary(proto.Message):
 
 class QueryTimeSeriesRequest(proto.Message):
     r"""The ``QueryTimeSeries`` request.
+
     Attributes:
         name (str):
             Required. The
@@ -470,6 +484,7 @@ class QueryTimeSeriesRequest(proto.Message):
 
 class QueryTimeSeriesResponse(proto.Message):
     r"""The ``QueryTimeSeries`` response.
+
     Attributes:
         time_series_descriptor (google.cloud.monitoring_v3.types.TimeSeriesDescriptor):
             The descriptor for the time series data.

@@ -37,6 +37,7 @@ __protobuf__ = proto.module(
 
 class ListGroupsRequest(proto.Message):
     r"""The ``ListGroup`` request.
+
     Attributes:
         name (str):
             Required. The
@@ -99,6 +100,7 @@ class ListGroupsRequest(proto.Message):
 
 class ListGroupsResponse(proto.Message):
     r"""The ``ListGroups`` response.
+
     Attributes:
         group (Sequence[google.cloud.monitoring_v3.types.Group]):
             The groups that match the specified filters.
@@ -119,6 +121,7 @@ class ListGroupsResponse(proto.Message):
 
 class GetGroupRequest(proto.Message):
     r"""The ``GetGroup`` request.
+
     Attributes:
         name (str):
             Required. The group to retrieve. The format is:
@@ -133,6 +136,7 @@ class GetGroupRequest(proto.Message):
 
 class CreateGroupRequest(proto.Message):
     r"""The ``CreateGroup`` request.
+
     Attributes:
         name (str):
             Required. The
@@ -157,6 +161,7 @@ class CreateGroupRequest(proto.Message):
 
 class UpdateGroupRequest(proto.Message):
     r"""The ``UpdateGroup`` request.
+
     Attributes:
         group (google.cloud.monitoring_v3.types.Group):
             Required. The new definition of the group. All fields of the
@@ -196,6 +201,7 @@ class DeleteGroupRequest(proto.Message):
 
 class ListGroupMembersRequest(proto.Message):
     r"""The ``ListGroupMembers`` request.
+
     Attributes:
         name (str):
             Required. The group whose members are listed. The format is:
@@ -241,6 +247,7 @@ class ListGroupMembersRequest(proto.Message):
 
 class ListGroupMembersResponse(proto.Message):
     r"""The ``ListGroupMembers`` response.
+
     Attributes:
         members (Sequence[google.api.monitored_resource_pb2.MonitoredResource]):
             A set of monitored resources in the group.

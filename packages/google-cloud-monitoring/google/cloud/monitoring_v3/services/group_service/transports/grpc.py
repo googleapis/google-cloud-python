@@ -397,5 +397,8 @@ class GroupServiceGrpcTransport(GroupServiceTransport):
             )
         return self._stubs["list_group_members"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("GroupServiceGrpcTransport",)

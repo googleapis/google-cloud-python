@@ -420,5 +420,8 @@ class UptimeCheckServiceGrpcAsyncIOTransport(UptimeCheckServiceTransport):
             )
         return self._stubs["list_uptime_check_ips"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("UptimeCheckServiceGrpcAsyncIOTransport",)

@@ -479,5 +479,8 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
             )
         return self._stubs["create_time_series"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("MetricServiceGrpcAsyncIOTransport",)

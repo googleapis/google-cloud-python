@@ -574,5 +574,8 @@ class NotificationChannelServiceGrpcTransport(NotificationChannelServiceTranspor
             )
         return self._stubs["verify_notification_channel"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("NotificationChannelServiceGrpcTransport",)

@@ -372,5 +372,8 @@ class AlertPolicyServiceGrpcTransport(AlertPolicyServiceTransport):
             )
         return self._stubs["update_alert_policy"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("AlertPolicyServiceGrpcTransport",)

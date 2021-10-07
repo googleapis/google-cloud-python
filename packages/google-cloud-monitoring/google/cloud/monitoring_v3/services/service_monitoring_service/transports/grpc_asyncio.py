@@ -523,5 +523,8 @@ class ServiceMonitoringServiceGrpcAsyncIOTransport(ServiceMonitoringServiceTrans
             )
         return self._stubs["delete_service_level_objective"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ServiceMonitoringServiceGrpcAsyncIOTransport",)
