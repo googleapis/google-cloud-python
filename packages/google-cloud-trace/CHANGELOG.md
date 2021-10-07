@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.4.0](https://www.github.com/googleapis/python-trace/compare/v1.3.4...v1.4.0) (2021-10-07)
+
+
+### Features
+
+* add context manager support in client ([#141](https://www.github.com/googleapis/python-trace/issues/141)) ([2bf8ab7](https://www.github.com/googleapis/python-trace/commit/2bf8ab7c0ac288feb63cbd84ed1826f996136200))
+
 ### [1.3.4](https://www.github.com/googleapis/python-trace/compare/v1.3.3...v1.3.4) (2021-09-30)
 
 
