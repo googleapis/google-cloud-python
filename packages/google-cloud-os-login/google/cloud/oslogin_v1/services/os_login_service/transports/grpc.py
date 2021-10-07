@@ -393,5 +393,8 @@ class OsLoginServiceGrpcTransport(OsLoginServiceTransport):
             )
         return self._stubs["update_ssh_public_key"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("OsLoginServiceGrpcTransport",)

@@ -60,6 +60,7 @@ class LoginProfile(proto.Message):
 
 class DeletePosixAccountRequest(proto.Message):
     r"""A request message for deleting a POSIX account entry.
+
     Attributes:
         name (str):
             Required. A reference to the POSIX account to update. POSIX
@@ -73,6 +74,7 @@ class DeletePosixAccountRequest(proto.Message):
 
 class DeleteSshPublicKeyRequest(proto.Message):
     r"""A request message for deleting an SSH public key.
+
     Attributes:
         name (str):
             Required. The fingerprint of the public key to update.
@@ -107,6 +109,7 @@ class GetLoginProfileRequest(proto.Message):
 
 class GetSshPublicKeyRequest(proto.Message):
     r"""A request message for retrieving an SSH public key.
+
     Attributes:
         name (str):
             Required. The fingerprint of the public key to retrieve.
@@ -120,6 +123,7 @@ class GetSshPublicKeyRequest(proto.Message):
 
 class ImportSshPublicKeyRequest(proto.Message):
     r"""A request message for importing an SSH public key.
+
     Attributes:
         parent (str):
             Required. The unique ID for the user in format
@@ -139,6 +143,7 @@ class ImportSshPublicKeyRequest(proto.Message):
 
 class ImportSshPublicKeyResponse(proto.Message):
     r"""A response message for importing an SSH public key.
+
     Attributes:
         login_profile (google.cloud.oslogin_v1.types.LoginProfile):
             The login profile information for the user.
@@ -149,6 +154,7 @@ class ImportSshPublicKeyResponse(proto.Message):
 
 class UpdateSshPublicKeyRequest(proto.Message):
     r"""A request message for updating an SSH public key.
+
     Attributes:
         name (str):
             Required. The fingerprint of the public key to update.
