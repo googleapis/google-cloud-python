@@ -340,5 +340,8 @@ class SpeechGrpcAsyncIOTransport(SpeechTransport):
             )
         return self._stubs["streaming_recognize"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("SpeechGrpcAsyncIOTransport",)
