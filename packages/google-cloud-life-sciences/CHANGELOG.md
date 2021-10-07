@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-life-sciences/compare/v0.2.3...v0.3.0) (2021-10-07)
+
+
+### Features
+
+* add context manager support in client ([#43](https://www.github.com/googleapis/python-life-sciences/issues/43)) ([44bd253](https://www.github.com/googleapis/python-life-sciences/commit/44bd253271c7a6cb77bfc95ecf124e35b3f8a351))
+
 ### [0.2.3](https://www.github.com/googleapis/python-life-sciences/compare/v0.2.2...v0.2.3) (2021-09-24)
 
 
