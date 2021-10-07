@@ -5138,7 +5138,7 @@ class TestModel:
         entity = Simple.get_or_insert("one", foo=42)
         assert entity.foo == 42
         assert entity._key == MockKey("Simple", "one")
-        assert entity.put_async.called_once_with(_options=_options.ReadOptions())
+        entity.put_async.assert_called_once_with(_options=_options.ReadOptions())
 
         entity._key.get_async.assert_called_once_with(_options=_options.ReadOptions())
 
@@ -5163,9 +5163,128 @@ class TestModel:
         entity = Simple.get_or_insert("one", foo=42)
         assert entity.foo == 42
         assert entity._key == MockKey("Simple", "one")
-        assert entity.put_async.called_once_with(_options=_options.ReadOptions())
+        entity.put_async.assert_called_once_with(_options=_options.ReadOptions())
 
         entity._key.get_async.assert_called_once_with(_options=_options.ReadOptions())
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb.model._transaction")
+    @mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_or_insert_insert_model_has_name_and_parent_properties(
+        patched_key_module, _transaction
+    ):
+        class MockKey(key_module.Key):
+            get_async = mock.Mock(return_value=utils.future_result(None))
+
+        patched_key_module.Key = MockKey
+
+        class Simple(model.Model):
+            parent = model.IntegerProperty()
+            name = model.StringProperty()
+
+            put_async = mock.Mock(return_value=utils.future_result(None))
+
+        _transaction.in_transaction.return_value = False
+        _transaction.transaction_async = lambda f: f()
+
+        entity = Simple.get_or_insert("one", parent=42, name="Priscilla")
+        assert entity.parent == 42
+        assert entity.name == "Priscilla"
+        assert entity._key == MockKey("Simple", "one")
+        entity.put_async.assert_called_once_with(_options=_options.ReadOptions())
+
+        entity._key.get_async.assert_called_once_with(_options=_options.ReadOptions())
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb.model._transaction")
+    @mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_or_insert_w_parent_insert_model_has_name_and_parent_properties(
+        patched_key_module, _transaction
+    ):
+        parent_key = key_module.Key("SomeKind", "parent_name")
+
+        class MockKey(key_module.Key):
+            get_async = mock.Mock(return_value=utils.future_result(None))
+
+        patched_key_module.Key = MockKey
+
+        class Simple(model.Model):
+            parent = model.IntegerProperty()
+            name = model.StringProperty()
+
+            put_async = mock.Mock(return_value=utils.future_result(None))
+
+        _transaction.in_transaction.return_value = False
+        _transaction.transaction_async = lambda f: f()
+
+        entity = Simple.get_or_insert(
+            "one", _parent=parent_key, parent=42, name="Priscilla"
+        )
+        assert entity.parent == 42
+        assert entity.name == "Priscilla"
+        assert entity._key == MockKey("SomeKind", "parent_name", "Simple", "one")
+        entity.put_async.assert_called_once_with(_options=_options.ReadOptions())
+
+        entity._key.get_async.assert_called_once_with(_options=_options.ReadOptions())
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb.model._transaction")
+    @mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_or_insert_insert_model_has_timeout_property(
+        patched_key_module, _transaction
+    ):
+        class MockKey(key_module.Key):
+            get_async = mock.Mock(return_value=utils.future_result(None))
+
+        patched_key_module.Key = MockKey
+
+        class Simple(model.Model):
+            timeout = model.IntegerProperty()
+
+            put_async = mock.Mock(return_value=utils.future_result(None))
+
+        _transaction.in_transaction.return_value = False
+        _transaction.transaction_async = lambda f: f()
+
+        entity = Simple.get_or_insert("one", timeout=42)
+        assert entity.timeout == 42
+        assert entity._key == MockKey("Simple", "one")
+        entity.put_async.assert_called_once_with(_options=_options.ReadOptions())
+
+        entity._key.get_async.assert_called_once_with(_options=_options.ReadOptions())
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    @mock.patch("google.cloud.ndb.model._transaction")
+    @mock.patch("google.cloud.ndb.model.key_module")
+    def test_get_or_insert_insert_with_timeout_model_has_timeout_property(
+        patched_key_module, _transaction
+    ):
+        class MockKey(key_module.Key):
+            get_async = mock.Mock(return_value=utils.future_result(None))
+
+        patched_key_module.Key = MockKey
+
+        class Simple(model.Model):
+            timeout = model.IntegerProperty()
+
+            put_async = mock.Mock(return_value=utils.future_result(None))
+
+        _transaction.in_transaction.return_value = False
+        _transaction.transaction_async = lambda f: f()
+
+        entity = Simple.get_or_insert("one", _timeout=60, timeout=42)
+        assert entity.timeout == 42
+        assert entity._key == MockKey("Simple", "one")
+        entity.put_async.assert_called_once_with(
+            _options=_options.ReadOptions(timeout=60)
+        )
+        entity._key.get_async.assert_called_once_with(
+            _options=_options.ReadOptions(timeout=60)
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

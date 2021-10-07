@@ -269,7 +269,7 @@ from google.cloud.ndb import _legacy_entity_pb
 from google.cloud.ndb import _datastore_types
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
-from google.cloud.ndb import _options
+from google.cloud.ndb import _options as options_module
 from google.cloud.ndb import query as query_module
 from google.cloud.ndb import _transaction
 from google.cloud.ndb import tasklets
@@ -5332,7 +5332,7 @@ class Model(_NotEqualMixin):
 
     gql = _gql
 
-    @_options.Options.options
+    @options_module.Options.options
     @utils.keyword_only(
         retries=None,
         timeout=None,
@@ -5383,7 +5383,7 @@ class Model(_NotEqualMixin):
 
     put = _put
 
-    @_options.Options.options
+    @options_module.Options.options
     @utils.keyword_only(
         retries=None,
         timeout=None,
@@ -5538,7 +5538,7 @@ class Model(_NotEqualMixin):
     query = _query
 
     @classmethod
-    @_options.Options.options
+    @options_module.Options.options
     @utils.positional(4)
     def _allocate_ids(
         cls,
@@ -5595,7 +5595,7 @@ class Model(_NotEqualMixin):
     allocate_ids = _allocate_ids
 
     @classmethod
-    @_options.Options.options
+    @options_module.Options.options
     @utils.positional(4)
     def _allocate_ids_async(
         cls,
@@ -5683,7 +5683,7 @@ class Model(_NotEqualMixin):
     allocate_ids_async = _allocate_ids_async
 
     @classmethod
-    @_options.ReadOptions.options
+    @options_module.ReadOptions.options
     @utils.positional(6)
     def _get_by_id(
         cls,
@@ -5766,7 +5766,7 @@ class Model(_NotEqualMixin):
     get_by_id = _get_by_id
 
     @classmethod
-    @_options.ReadOptions.options
+    @options_module.ReadOptions.options
     @utils.positional(6)
     def _get_by_id_async(
         cls,
@@ -5860,32 +5860,9 @@ class Model(_NotEqualMixin):
     get_by_id_async = _get_by_id_async
 
     @classmethod
-    @_options.ReadOptions.options
+    @options_module.ReadOptions.options_or_model_properties
     @utils.positional(6)
-    def _get_or_insert(
-        cls,
-        name,
-        parent=None,
-        namespace=None,
-        project=None,
-        app=None,
-        read_consistency=None,
-        read_policy=None,
-        transaction=None,
-        retries=None,
-        timeout=None,
-        deadline=None,
-        use_cache=None,
-        use_global_cache=None,
-        global_cache_timeout=None,
-        use_datastore=None,
-        use_memcache=None,
-        memcache_timeout=None,
-        max_memcache_items=None,
-        force_writes=None,
-        _options=None,
-        **kw_model_args
-    ):
+    def _get_or_insert(_cls, _name, *args, **kwargs):
         """Transactionally retrieves an existing entity or creates a new one.
 
         Will attempt to look up an entity with the given ``name`` and
@@ -5943,45 +5920,14 @@ class Model(_NotEqualMixin):
         Returns:
             Model: The entity that was either just retrieved or created.
         """
-        return cls._get_or_insert_async(
-            name,
-            parent=parent,
-            namespace=namespace,
-            project=project,
-            app=app,
-            _options=_options,
-            **kw_model_args
-        ).result()
+        return _cls._get_or_insert_async(_name, *args, **kwargs).result()
 
     get_or_insert = _get_or_insert
 
     @classmethod
-    @_options.ReadOptions.options
+    @options_module.ReadOptions.options_or_model_properties
     @utils.positional(6)
-    def _get_or_insert_async(
-        cls,
-        name,
-        parent=None,
-        namespace=None,
-        project=None,
-        app=None,
-        read_consistency=None,
-        read_policy=None,
-        transaction=None,
-        retries=None,
-        timeout=None,
-        deadline=None,
-        use_cache=None,
-        use_global_cache=None,
-        global_cache_timeout=None,
-        use_datastore=None,
-        use_memcache=None,
-        memcache_timeout=None,
-        max_memcache_items=None,
-        force_writes=None,
-        _options=None,
-        **kw_model_args
-    ):
+    def _get_or_insert_async(_cls, _name, *args, **kwargs):
         """Transactionally retrieves an existing entity or creates a new one.
 
         This is the asynchronous version of :meth:``_get_or_insert``.
@@ -6034,6 +5980,13 @@ class Model(_NotEqualMixin):
             tasklets.Future: Model: The entity that was either just retrieved
                 or created.
         """
+        name = _name
+        parent = _cls._get_arg(kwargs, "parent")
+        namespace = _cls._get_arg(kwargs, "namespace")
+        app = _cls._get_arg(kwargs, "app")
+        project = _cls._get_arg(kwargs, "project")
+        options = kwargs.pop("_options")
+
         if not isinstance(name, six.string_types):
             raise TypeError("'name' must be a string; received {!r}".format(name))
 
@@ -6056,21 +6009,21 @@ class Model(_NotEqualMixin):
         if namespace is not None:
             key_args["namespace"] = namespace
 
-        key = key_module.Key(cls._get_kind(), name, parent=parent, **key_args)
+        key = key_module.Key(_cls._get_kind(), name, parent=parent, **key_args)
 
         @tasklets.tasklet
         def get_or_insert():
             @tasklets.tasklet
             def insert():
-                entity = cls(**kw_model_args)
+                entity = _cls(**kwargs)
                 entity._key = key
-                yield entity.put_async(_options=_options)
+                yield entity.put_async(_options=options)
 
                 raise tasklets.Return(entity)
 
             # We don't need to start a transaction just to check if the entity
             # exists already
-            entity = yield key.get_async(_options=_options)
+            entity = yield key.get_async(_options=options)
             if entity is not None:
                 raise tasklets.Return(entity)
 
@@ -6303,7 +6256,7 @@ class Expando(Model):
         del self._properties[name]
 
 
-@_options.ReadOptions.options
+@options_module.ReadOptions.options
 @utils.positional(1)
 def get_multi_async(
     keys,
@@ -6364,7 +6317,7 @@ def get_multi_async(
     return [key.get_async(_options=_options) for key in keys]
 
 
-@_options.ReadOptions.options
+@options_module.ReadOptions.options
 @utils.positional(1)
 def get_multi(
     keys,
@@ -6427,7 +6380,7 @@ def get_multi(
     return [future.result() for future in futures]
 
 
-@_options.Options.options
+@options_module.Options.options
 @utils.positional(1)
 def put_multi_async(
     entities,
@@ -6476,7 +6429,7 @@ def put_multi_async(
     return [entity.put_async(_options=_options) for entity in entities]
 
 
-@_options.Options.options
+@options_module.Options.options
 @utils.positional(1)
 def put_multi(
     entities,
@@ -6526,7 +6479,7 @@ def put_multi(
     return [future.result() for future in futures]
 
 
-@_options.Options.options
+@options_module.Options.options
 @utils.positional(1)
 def delete_multi_async(
     keys,
@@ -6575,7 +6528,7 @@ def delete_multi_async(
     return [key.delete_async(_options=_options) for key in keys]
 
 
-@_options.Options.options
+@options_module.Options.options
 @utils.positional(1)
 def delete_multi(
     keys,

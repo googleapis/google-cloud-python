@@ -42,7 +42,11 @@ class Options(object):
     )
 
     @classmethod
-    def options(cls, wrapped):
+    def options_or_model_properties(cls, wrapped):
+        return cls.options(wrapped, _disambiguate_from_model_properties=True)
+
+    @classmethod
+    def options(cls, wrapped, _disambiguate_from_model_properties=False):
         slots = set(cls.slots())
         # If there are any positional arguments, get their names.
         # inspect.signature is not available in Python 2.7, so we use the
@@ -76,10 +80,19 @@ class Options(object):
                 else:
                     pass_args.append(value)
 
+            if _disambiguate_from_model_properties:
+                model_class = args[0]
+                get_arg = model_class._get_arg
+
+            else:
+
+                def get_arg(kwargs, name):
+                    return kwargs.pop(name, None)
+
             # Process keyword args
             for name in slots:
                 if name not in kw_options:
-                    kw_options[name] = kwargs.pop(name, None)
+                    kw_options[name] = get_arg(kwargs, name)
 
             # If another function that uses options is delegating to this one,
             # we'll already have options.
