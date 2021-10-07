@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-service-usage/compare/v1.0.1...v1.1.0) (2021-10-07)
+
+
+### Features
+
+* add context manager support in client ([#49](https://www.github.com/googleapis/python-service-usage/issues/49)) ([b50e7cb](https://www.github.com/googleapis/python-service-usage/commit/b50e7cbbf53e0efb6809bce5c25cdc7369e65f5d))
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([b230f5f](https://www.github.com/googleapis/python-service-usage/commit/b230f5fd83f21b7ac86bb01dac85ce403d694228))
+
 ### [1.0.1](https://www.github.com/googleapis/python-service-usage/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
