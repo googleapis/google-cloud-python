@@ -56,6 +56,7 @@ class NormalizedVertex(proto.Message):
 
 class BoundingPoly(proto.Message):
     r"""A bounding polygon for the detected image annotation.
+
     Attributes:
         vertices (Sequence[google.cloud.vision_v1p2beta1.types.Vertex]):
             The bounding polygon vertices.

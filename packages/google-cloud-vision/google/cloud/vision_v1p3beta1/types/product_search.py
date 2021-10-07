@@ -46,6 +46,7 @@ class ProductSearchResultsView(proto.Enum):
 
 class ProductSearchParams(proto.Message):
     r"""Parameters for a product search request.
+
     Attributes:
         catalog_name (str):
             The resource name of the catalog to search.
@@ -109,6 +110,7 @@ class ProductSearchParams(proto.Message):
 
 class ProductSearchResults(proto.Message):
     r"""Results for a product search request.
+
     Attributes:
         category (google.cloud.vision_v1p3beta1.types.ProductSearchCategory):
             Product category. [Deprecated] Use ``product_category``.
@@ -128,6 +130,7 @@ class ProductSearchResults(proto.Message):
 
     class ProductInfo(proto.Message):
         r"""Information about a product.
+
         Attributes:
             product_id (str):
                 Product ID.
@@ -150,6 +153,7 @@ class ProductSearchResults(proto.Message):
 
     class Result(proto.Message):
         r"""Information about a product.
+
         Attributes:
             product (google.cloud.vision_v1p3beta1.types.Product):
                 The Product.

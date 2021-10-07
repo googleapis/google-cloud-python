@@ -258,5 +258,8 @@ class ImageAnnotatorGrpcTransport(ImageAnnotatorTransport):
             )
         return self._stubs["batch_annotate_images"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ImageAnnotatorGrpcTransport",)

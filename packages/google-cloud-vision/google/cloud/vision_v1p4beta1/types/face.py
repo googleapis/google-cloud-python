@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
 
 class FaceRecognitionParams(proto.Message):
     r"""Parameters for a celebrity recognition request.
+
     Attributes:
         celebrity_set (Sequence[str]):
             The resource names for one or more
@@ -39,6 +40,7 @@ class FaceRecognitionParams(proto.Message):
 
 class Celebrity(proto.Message):
     r"""A Celebrity is a group of Faces with an identity.
+
     Attributes:
         name (str):
             The resource name of the preloaded Celebrity. Has the format
@@ -56,6 +58,7 @@ class Celebrity(proto.Message):
 
 class FaceRecognitionResult(proto.Message):
     r"""Information about a face's identity.
+
     Attributes:
         celebrity (google.cloud.vision_v1p4beta1.types.Celebrity):
             The [Celebrity][google.cloud.vision.v1p4beta1.Celebrity]

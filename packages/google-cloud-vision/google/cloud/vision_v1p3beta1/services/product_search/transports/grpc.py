@@ -917,5 +917,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
             )
         return self._stubs["import_product_sets"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ProductSearchGrpcTransport",)

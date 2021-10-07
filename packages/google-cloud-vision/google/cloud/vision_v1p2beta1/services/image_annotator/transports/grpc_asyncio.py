@@ -315,5 +315,8 @@ class ImageAnnotatorGrpcAsyncIOTransport(ImageAnnotatorTransport):
             )
         return self._stubs["async_batch_annotate_files"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ImageAnnotatorGrpcAsyncIOTransport",)

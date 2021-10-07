@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
 
 class ProductSearchParams(proto.Message):
     r"""Parameters for a product search request.
+
     Attributes:
         bounding_poly (google.cloud.vision_v1.types.BoundingPoly):
             The bounding polygon around the area of
@@ -74,6 +75,7 @@ class ProductSearchParams(proto.Message):
 
 class ProductSearchResults(proto.Message):
     r"""Results for a product search request.
+
     Attributes:
         index_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp of the index which provided these
@@ -93,6 +95,7 @@ class ProductSearchResults(proto.Message):
 
     class Result(proto.Message):
         r"""Information about a product.
+
         Attributes:
             product (google.cloud.vision_v1.types.Product):
                 The Product.
@@ -112,6 +115,7 @@ class ProductSearchResults(proto.Message):
 
     class ObjectAnnotation(proto.Message):
         r"""Prediction for what the object in the bounding box is.
+
         Attributes:
             mid (str):
                 Object ID that should align with

@@ -165,6 +165,7 @@ class ImageSource(proto.Message):
 
 class Image(proto.Message):
     r"""Client image to perform Google Cloud Vision API tasks over.
+
     Attributes:
         content (bytes):
             Image content, represented as a stream of bytes. Note: As
@@ -248,6 +249,7 @@ class FaceAnnotation(proto.Message):
 
     class Landmark(proto.Message):
         r"""A face-specific landmark (for example, a face feature).
+
         Attributes:
             type_ (google.cloud.vision_v1p4beta1.types.FaceAnnotation.Landmark.Type):
                 Face landmark type.
@@ -324,6 +326,7 @@ class FaceAnnotation(proto.Message):
 
 class LocationInfo(proto.Message):
     r"""Detected entity location information.
+
     Attributes:
         lat_lng (google.type.latlng_pb2.LatLng):
             lat/long location coordinates.
@@ -334,6 +337,7 @@ class LocationInfo(proto.Message):
 
 class Property(proto.Message):
     r"""A ``Property`` consists of a user-supplied name/value pair.
+
     Attributes:
         name (str):
             Name of the property.
@@ -350,6 +354,7 @@ class Property(proto.Message):
 
 class EntityAnnotation(proto.Message):
     r"""Set of detected entity features.
+
     Attributes:
         mid (str):
             Opaque entity ID. Some IDs may be available in `Google
@@ -405,6 +410,7 @@ class EntityAnnotation(proto.Message):
 
 class LocalizedObjectAnnotation(proto.Message):
     r"""Set of detected objects with bounding boxes.
+
     Attributes:
         mid (str):
             Object ID that should align with
@@ -467,6 +473,7 @@ class SafeSearchAnnotation(proto.Message):
 
 class LatLongRect(proto.Message):
     r"""Rectangle determined by min and max ``LatLng`` pairs.
+
     Attributes:
         min_lat_lng (google.type.latlng_pb2.LatLng):
             Min lat/long pair.
@@ -499,6 +506,7 @@ class ColorInfo(proto.Message):
 
 class DominantColorsAnnotation(proto.Message):
     r"""Set of dominant colors and their corresponding scores.
+
     Attributes:
         colors (Sequence[google.cloud.vision_v1p4beta1.types.ColorInfo]):
             RGB color values with their score and pixel
@@ -510,6 +518,7 @@ class DominantColorsAnnotation(proto.Message):
 
 class ImageProperties(proto.Message):
     r"""Stores image properties, such as dominant colors.
+
     Attributes:
         dominant_colors (google.cloud.vision_v1p4beta1.types.DominantColorsAnnotation):
             If present, dominant colors completed
@@ -556,6 +565,7 @@ class CropHintsAnnotation(proto.Message):
 
 class CropHintsParams(proto.Message):
     r"""Parameters for crop hints annotation request.
+
     Attributes:
         aspect_ratios (Sequence[float]):
             Aspect ratios in floats, representing the
@@ -573,6 +583,7 @@ class CropHintsParams(proto.Message):
 
 class WebDetectionParams(proto.Message):
     r"""Parameters for web detection request.
+
     Attributes:
         include_geo_results (bool):
             Whether to include results derived from the
@@ -598,6 +609,7 @@ class TextDetectionParams(proto.Message):
 
 class ImageContext(proto.Message):
     r"""Image context and/or feature-specific parameters.
+
     Attributes:
         lat_long_rect (google.cloud.vision_v1p4beta1.types.LatLongRect):
             Not used.
@@ -682,6 +694,7 @@ class ImageAnnotationContext(proto.Message):
 
 class AnnotateImageResponse(proto.Message):
     r"""Response to an image annotation request.
+
     Attributes:
         face_annotations (Sequence[google.cloud.vision_v1p4beta1.types.FaceAnnotation]):
             If present, face detection has completed
@@ -788,6 +801,7 @@ class BatchAnnotateImagesRequest(proto.Message):
 
 class BatchAnnotateImagesResponse(proto.Message):
     r"""Response to a batch image annotation request.
+
     Attributes:
         responses (Sequence[google.cloud.vision_v1p4beta1.types.AnnotateImageResponse]):
             Individual responses to image annotation
@@ -882,6 +896,7 @@ class BatchAnnotateFilesRequest(proto.Message):
 
 class BatchAnnotateFilesResponse(proto.Message):
     r"""A list of file annotation responses.
+
     Attributes:
         responses (Sequence[google.cloud.vision_v1p4beta1.types.AnnotateFileResponse]):
             The list of file annotation responses, each
@@ -897,6 +912,7 @@ class BatchAnnotateFilesResponse(proto.Message):
 
 class AsyncAnnotateFileRequest(proto.Message):
     r"""An offline file annotation request.
+
     Attributes:
         input_config (google.cloud.vision_v1p4beta1.types.InputConfig):
             Required. Information about the input file.
@@ -918,6 +934,7 @@ class AsyncAnnotateFileRequest(proto.Message):
 
 class AsyncAnnotateFileResponse(proto.Message):
     r"""The response for a single offline file annotation request.
+
     Attributes:
         output_config (google.cloud.vision_v1p4beta1.types.OutputConfig):
             The output location and metadata from
@@ -929,6 +946,7 @@ class AsyncAnnotateFileResponse(proto.Message):
 
 class AsyncBatchAnnotateImagesRequest(proto.Message):
     r"""Request for async image annotation for a list of images.
+
     Attributes:
         requests (Sequence[google.cloud.vision_v1p4beta1.types.AnnotateImageRequest]):
             Required. Individual image annotation
@@ -946,6 +964,7 @@ class AsyncBatchAnnotateImagesRequest(proto.Message):
 
 class AsyncBatchAnnotateImagesResponse(proto.Message):
     r"""Response to an async batch image annotation request.
+
     Attributes:
         output_config (google.cloud.vision_v1p4beta1.types.OutputConfig):
             The output location and metadata from
@@ -972,6 +991,7 @@ class AsyncBatchAnnotateFilesRequest(proto.Message):
 
 class AsyncBatchAnnotateFilesResponse(proto.Message):
     r"""Response to an async batch file annotation request.
+
     Attributes:
         responses (Sequence[google.cloud.vision_v1p4beta1.types.AsyncAnnotateFileResponse]):
             The list of file annotation responses, one
@@ -986,6 +1006,7 @@ class AsyncBatchAnnotateFilesResponse(proto.Message):
 
 class InputConfig(proto.Message):
     r"""The desired input location and metadata.
+
     Attributes:
         gcs_source (google.cloud.vision_v1p4beta1.types.GcsSource):
             The Google Cloud Storage location to read the
@@ -1011,6 +1032,7 @@ class InputConfig(proto.Message):
 
 class OutputConfig(proto.Message):
     r"""The desired output location and metadata.
+
     Attributes:
         gcs_destination (google.cloud.vision_v1p4beta1.types.GcsDestination):
             The Google Cloud Storage location to write
@@ -1086,6 +1108,7 @@ class GcsDestination(proto.Message):
 
 class OperationMetadata(proto.Message):
     r"""Contains metadata for the BatchAnnotateImages operation.
+
     Attributes:
         state (google.cloud.vision_v1p4beta1.types.OperationMetadata.State):
             Current state of the batch operation.

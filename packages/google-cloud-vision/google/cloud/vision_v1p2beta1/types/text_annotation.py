@@ -43,6 +43,7 @@ class TextAnnotation(proto.Message):
 
     class DetectedLanguage(proto.Message):
         r"""Detected language for a structural component.
+
         Attributes:
             language_code (str):
                 The BCP-47 language code, such as "en-US" or "sr-Latn". For
@@ -57,6 +58,7 @@ class TextAnnotation(proto.Message):
 
     class DetectedBreak(proto.Message):
         r"""Detected start or end of a structural component.
+
         Attributes:
             type_ (google.cloud.vision_v1p2beta1.types.TextAnnotation.DetectedBreak.BreakType):
                 Detected break type.
@@ -80,6 +82,7 @@ class TextAnnotation(proto.Message):
 
     class TextProperty(proto.Message):
         r"""Additional information detected on the structural component.
+
         Attributes:
             detected_languages (Sequence[google.cloud.vision_v1p2beta1.types.TextAnnotation.DetectedLanguage]):
                 A list of detected languages together with
@@ -101,6 +104,7 @@ class TextAnnotation(proto.Message):
 
 class Page(proto.Message):
     r"""Detected page from OCR.
+
     Attributes:
         property (google.cloud.vision_v1p2beta1.types.TextAnnotation.TextProperty):
             Additional information detected on the page.
@@ -128,6 +132,7 @@ class Page(proto.Message):
 
 class Block(proto.Message):
     r"""Logical element on the page.
+
     Attributes:
         property (google.cloud.vision_v1p2beta1.types.TextAnnotation.TextProperty):
             Additional information detected for the
@@ -222,6 +227,7 @@ class Paragraph(proto.Message):
 
 class Word(proto.Message):
     r"""A word representation.
+
     Attributes:
         property (google.cloud.vision_v1p2beta1.types.TextAnnotation.TextProperty):
             Additional information detected for the word.
@@ -255,6 +261,7 @@ class Word(proto.Message):
 
 class Symbol(proto.Message):
     r"""A single symbol representation.
+
     Attributes:
         property (google.cloud.vision_v1p2beta1.types.TextAnnotation.TextProperty):
             Additional information detected for the

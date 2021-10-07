@@ -953,5 +953,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
             )
         return self._stubs["purge_products"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ProductSearchGrpcTransport",)

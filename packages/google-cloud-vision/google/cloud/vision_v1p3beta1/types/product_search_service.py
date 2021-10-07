@@ -59,6 +59,7 @@ __protobuf__ = proto.module(
 
 class Product(proto.Message):
     r"""A Product contains ReferenceImages.
+
     Attributes:
         name (str):
             The resource name of the product.
@@ -96,6 +97,7 @@ class Product(proto.Message):
 
     class KeyValue(proto.Message):
         r"""A product label represented as a key-value pair.
+
         Attributes:
             key (str):
                 The key of the label attached to the product.
@@ -196,6 +198,7 @@ class ReferenceImage(proto.Message):
 
 class CreateProductRequest(proto.Message):
     r"""Request message for the ``CreateProduct`` method.
+
     Attributes:
         parent (str):
             Required. The project in which the Product should be
@@ -219,6 +222,7 @@ class CreateProductRequest(proto.Message):
 
 class ListProductsRequest(proto.Message):
     r"""Request message for the ``ListProducts`` method.
+
     Attributes:
         parent (str):
             Required. The project OR ProductSet from which Products
@@ -240,6 +244,7 @@ class ListProductsRequest(proto.Message):
 
 class ListProductsResponse(proto.Message):
     r"""Response message for the ``ListProducts`` method.
+
     Attributes:
         products (Sequence[google.cloud.vision_v1p3beta1.types.Product]):
             List of products.
@@ -259,6 +264,7 @@ class ListProductsResponse(proto.Message):
 
 class GetProductRequest(proto.Message):
     r"""Request message for the ``GetProduct`` method.
+
     Attributes:
         name (str):
             Required. Resource name of the Product to get.
@@ -272,6 +278,7 @@ class GetProductRequest(proto.Message):
 
 class UpdateProductRequest(proto.Message):
     r"""Request message for the ``UpdateProduct`` method.
+
     Attributes:
         product (google.cloud.vision_v1p3beta1.types.Product):
             Required. The Product resource which replaces
@@ -292,6 +299,7 @@ class UpdateProductRequest(proto.Message):
 
 class DeleteProductRequest(proto.Message):
     r"""Request message for the ``DeleteProduct`` method.
+
     Attributes:
         name (str):
             Required. Resource name of product to delete.
@@ -305,6 +313,7 @@ class DeleteProductRequest(proto.Message):
 
 class CreateProductSetRequest(proto.Message):
     r"""Request message for the ``CreateProductSet`` method.
+
     Attributes:
         parent (str):
             Required. The project in which the ProductSet should be
@@ -328,6 +337,7 @@ class CreateProductSetRequest(proto.Message):
 
 class ListProductSetsRequest(proto.Message):
     r"""Request message for the ``ListProductSets`` method.
+
     Attributes:
         parent (str):
             Required. The project from which ProductSets should be
@@ -349,6 +359,7 @@ class ListProductSetsRequest(proto.Message):
 
 class ListProductSetsResponse(proto.Message):
     r"""Response message for the ``ListProductSets`` method.
+
     Attributes:
         product_sets (Sequence[google.cloud.vision_v1p3beta1.types.ProductSet]):
             List of ProductSets.
@@ -368,6 +379,7 @@ class ListProductSetsResponse(proto.Message):
 
 class GetProductSetRequest(proto.Message):
     r"""Request message for the ``GetProductSet`` method.
+
     Attributes:
         name (str):
             Required. Resource name of the ProductSet to get.
@@ -381,6 +393,7 @@ class GetProductSetRequest(proto.Message):
 
 class UpdateProductSetRequest(proto.Message):
     r"""Request message for the ``UpdateProductSet`` method.
+
     Attributes:
         product_set (google.cloud.vision_v1p3beta1.types.ProductSet):
             Required. The ProductSet resource which
@@ -400,6 +413,7 @@ class UpdateProductSetRequest(proto.Message):
 
 class DeleteProductSetRequest(proto.Message):
     r"""Request message for the ``DeleteProductSet`` method.
+
     Attributes:
         name (str):
             Required. Resource name of the ProductSet to delete.
@@ -413,6 +427,7 @@ class DeleteProductSetRequest(proto.Message):
 
 class CreateReferenceImageRequest(proto.Message):
     r"""Request message for the ``CreateReferenceImage`` method.
+
     Attributes:
         parent (str):
             Required. Resource name of the product in which to create
@@ -438,6 +453,7 @@ class CreateReferenceImageRequest(proto.Message):
 
 class ListReferenceImagesRequest(proto.Message):
     r"""Request message for the ``ListReferenceImages`` method.
+
     Attributes:
         parent (str):
             Required. Resource name of the product containing the
@@ -463,6 +479,7 @@ class ListReferenceImagesRequest(proto.Message):
 
 class ListReferenceImagesResponse(proto.Message):
     r"""Response message for the ``ListReferenceImages`` method.
+
     Attributes:
         reference_images (Sequence[google.cloud.vision_v1p3beta1.types.ReferenceImage]):
             The list of reference images.
@@ -487,6 +504,7 @@ class ListReferenceImagesResponse(proto.Message):
 
 class GetReferenceImageRequest(proto.Message):
     r"""Request message for the ``GetReferenceImage`` method.
+
     Attributes:
         name (str):
             Required. The resource name of the ReferenceImage to get.
@@ -501,6 +519,7 @@ class GetReferenceImageRequest(proto.Message):
 
 class DeleteReferenceImageRequest(proto.Message):
     r"""Request message for the ``DeleteReferenceImage`` method.
+
     Attributes:
         name (str):
             Required. The resource name of the reference image to
@@ -516,6 +535,7 @@ class DeleteReferenceImageRequest(proto.Message):
 
 class AddProductToProductSetRequest(proto.Message):
     r"""Request message for the ``AddProductToProductSet`` method.
+
     Attributes:
         name (str):
             Required. The resource name for the ProductSet to modify.
@@ -536,6 +556,7 @@ class AddProductToProductSetRequest(proto.Message):
 
 class RemoveProductFromProductSetRequest(proto.Message):
     r"""Request message for the ``RemoveProductFromProductSet`` method.
+
     Attributes:
         name (str):
             Required. The resource name for the ProductSet to modify.
@@ -556,6 +577,7 @@ class RemoveProductFromProductSetRequest(proto.Message):
 
 class ListProductsInProductSetRequest(proto.Message):
     r"""Request message for the ``ListProductsInProductSet`` method.
+
     Attributes:
         name (str):
             Required. The ProductSet resource for which to retrieve
@@ -578,6 +600,7 @@ class ListProductsInProductSetRequest(proto.Message):
 
 class ListProductsInProductSetResponse(proto.Message):
     r"""Response message for the ``ListProductsInProductSet`` method.
+
     Attributes:
         products (Sequence[google.cloud.vision_v1p3beta1.types.Product]):
             The list of Products.
@@ -668,6 +691,7 @@ class ImportProductSetsGcsSource(proto.Message):
 
 class ImportProductSetsInputConfig(proto.Message):
     r"""The input content for the ``ImportProductSets`` method.
+
     Attributes:
         gcs_source (google.cloud.vision_v1p3beta1.types.ImportProductSetsGcsSource):
             The Google Cloud Storage location for a csv
@@ -682,6 +706,7 @@ class ImportProductSetsInputConfig(proto.Message):
 
 class ImportProductSetsRequest(proto.Message):
     r"""Request message for the ``ImportProductSets`` method.
+
     Attributes:
         parent (str):
             Required. The project in which the ProductSets should be

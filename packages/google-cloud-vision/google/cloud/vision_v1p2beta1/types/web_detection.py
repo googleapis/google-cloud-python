@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
 
 class WebDetection(proto.Message):
     r"""Relevant information for the image from the Internet.
+
     Attributes:
         web_entities (Sequence[google.cloud.vision_v1p2beta1.types.WebDetection.WebEntity]):
             Deduced entities from similar images on the
@@ -47,6 +48,7 @@ class WebDetection(proto.Message):
 
     class WebEntity(proto.Message):
         r"""Entity deduced from similar images on the Internet.
+
         Attributes:
             entity_id (str):
                 Opaque entity ID.
@@ -65,6 +67,7 @@ class WebDetection(proto.Message):
 
     class WebImage(proto.Message):
         r"""Metadata for online images.
+
         Attributes:
             url (str):
                 The result image URL.
@@ -78,6 +81,7 @@ class WebDetection(proto.Message):
 
     class WebPage(proto.Message):
         r"""Metadata for web pages.
+
         Attributes:
             url (str):
                 The result web page URL.
@@ -110,6 +114,7 @@ class WebDetection(proto.Message):
 
     class WebLabel(proto.Message):
         r"""Label to provide extra metadata for the web detection.
+
         Attributes:
             label (str):
                 Label for extra metadata.
