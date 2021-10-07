@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-iap/compare/v1.0.1...v1.0.2) (2021-10-05)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([242d445](https://www.github.com/googleapis/python-iap/commit/242d44516fe55141a26024653158ea94fa93e525))
+
 ### [1.0.1](https://www.github.com/googleapis/python-iap/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
