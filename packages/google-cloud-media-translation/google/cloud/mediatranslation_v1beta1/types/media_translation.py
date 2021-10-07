@@ -107,6 +107,7 @@ class TranslateSpeechConfig(proto.Message):
 
 class StreamingTranslateSpeechConfig(proto.Message):
     r"""Config used for streaming translation.
+
     Attributes:
         audio_config (google.cloud.mediatranslation_v1beta1.types.TranslateSpeechConfig):
             Required. The common config for all the
@@ -187,6 +188,7 @@ class StreamingTranslateSpeechResult(proto.Message):
 
     class TextTranslationResult(proto.Message):
         r"""Text translation result.
+
         Attributes:
             translation (str):
                 Output only. The translated sentence.

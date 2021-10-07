@@ -256,5 +256,8 @@ class SpeechTranslationServiceGrpcTransport(SpeechTranslationServiceTransport):
             )
         return self._stubs["streaming_translate_speech"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("SpeechTranslationServiceGrpcTransport",)
