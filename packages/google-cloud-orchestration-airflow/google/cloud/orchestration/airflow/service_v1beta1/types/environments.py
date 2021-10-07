@@ -462,6 +462,7 @@ class WebServerNetworkAccessControl(proto.Message):
 
     class AllowedIpRange(proto.Message):
         r"""Allowed IP range with user-provided description.
+
         Attributes:
             value (str):
                 IP address or range, defined using CIDR notation, of
@@ -964,6 +965,7 @@ class WorkloadsConfig(proto.Message):
 
     class SchedulerResource(proto.Message):
         r"""Configuration for resources used by Airflow schedulers.
+
         Attributes:
             cpu (float):
                 Optional. CPU request and limit for a single
@@ -985,6 +987,7 @@ class WorkloadsConfig(proto.Message):
 
     class WebServerResource(proto.Message):
         r"""Configuration for resources used by Airflow web server.
+
         Attributes:
             cpu (float):
                 Optional. CPU request and limit for Airflow
@@ -1003,6 +1006,7 @@ class WorkloadsConfig(proto.Message):
 
     class WorkerResource(proto.Message):
         r"""Configuration for resources used by Airflow workers.
+
         Attributes:
             cpu (float):
                 Optional. CPU request and limit for a single

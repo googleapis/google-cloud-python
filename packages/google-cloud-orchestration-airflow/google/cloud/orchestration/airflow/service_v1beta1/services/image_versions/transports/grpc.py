@@ -254,5 +254,8 @@ class ImageVersionsGrpcTransport(ImageVersionsTransport):
             )
         return self._stubs["list_image_versions"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ImageVersionsGrpcTransport",)

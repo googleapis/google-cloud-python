@@ -447,5 +447,8 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
             )
         return self._stubs["check_upgrade"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("EnvironmentsGrpcAsyncIOTransport",)

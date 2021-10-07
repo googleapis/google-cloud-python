@@ -71,7 +71,7 @@ class ListImageVersionsResponse(proto.Message):
 
 
 class ImageVersion(proto.Message):
-    r"""ImageVersion informatio.
+    r"""ImageVersion information
 
     Attributes:
         image_version_id (str):

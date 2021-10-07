@@ -257,5 +257,8 @@ class ImageVersionsGrpcAsyncIOTransport(ImageVersionsTransport):
             )
         return self._stubs["list_image_versions"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ImageVersionsGrpcAsyncIOTransport",)

@@ -380,6 +380,7 @@ class WebServerNetworkAccessControl(proto.Message):
 
     class AllowedIpRange(proto.Message):
         r"""Allowed IP range with user-provided description.
+
         Attributes:
             value (str):
                 IP address or range, defined using CIDR notation, of
