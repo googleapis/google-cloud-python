@@ -407,5 +407,8 @@ class LanguageServiceGrpcTransport(LanguageServiceTransport):
             )
         return self._stubs["annotate_text"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("LanguageServiceGrpcTransport",)

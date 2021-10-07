@@ -101,6 +101,7 @@ class Document(proto.Message):
 
 class Sentence(proto.Message):
     r"""Represents a sentence in the input document.
+
     Attributes:
         text (google.cloud.language_v1.types.TextSpan):
             The sentence text.
@@ -182,6 +183,7 @@ class Entity(proto.Message):
 
 class Token(proto.Message):
     r"""Represents the smallest syntactic building block of the text.
+
     Attributes:
         text (google.cloud.language_v1.types.TextSpan):
             The token text.
@@ -538,6 +540,7 @@ class EntityMention(proto.Message):
 
 class TextSpan(proto.Message):
     r"""Represents an output piece of text.
+
     Attributes:
         content (str):
             The content of the output text.
@@ -554,6 +557,7 @@ class TextSpan(proto.Message):
 
 class ClassificationCategory(proto.Message):
     r"""Represents a category returned from the text classifier.
+
     Attributes:
         name (str):
             The name of the category representing the document, from the
@@ -571,6 +575,7 @@ class ClassificationCategory(proto.Message):
 
 class AnalyzeSentimentRequest(proto.Message):
     r"""The sentiment analysis request message.
+
     Attributes:
         document (google.cloud.language_v1.types.Document):
             Input document.
@@ -585,6 +590,7 @@ class AnalyzeSentimentRequest(proto.Message):
 
 class AnalyzeSentimentResponse(proto.Message):
     r"""The sentiment analysis response message.
+
     Attributes:
         document_sentiment (google.cloud.language_v1.types.Sentiment):
             The overall sentiment of the input document.
@@ -606,6 +612,7 @@ class AnalyzeSentimentResponse(proto.Message):
 
 class AnalyzeEntitySentimentRequest(proto.Message):
     r"""The entity-level sentiment analysis request message.
+
     Attributes:
         document (google.cloud.language_v1.types.Document):
             Input document.
@@ -620,6 +627,7 @@ class AnalyzeEntitySentimentRequest(proto.Message):
 
 class AnalyzeEntitySentimentResponse(proto.Message):
     r"""The entity-level sentiment analysis response message.
+
     Attributes:
         entities (Sequence[google.cloud.language_v1.types.Entity]):
             The recognized entities in the input document
@@ -638,6 +646,7 @@ class AnalyzeEntitySentimentResponse(proto.Message):
 
 class AnalyzeEntitiesRequest(proto.Message):
     r"""The entity analysis request message.
+
     Attributes:
         document (google.cloud.language_v1.types.Document):
             Input document.
@@ -652,6 +661,7 @@ class AnalyzeEntitiesRequest(proto.Message):
 
 class AnalyzeEntitiesResponse(proto.Message):
     r"""The entity analysis response message.
+
     Attributes:
         entities (Sequence[google.cloud.language_v1.types.Entity]):
             The recognized entities in the input
@@ -670,6 +680,7 @@ class AnalyzeEntitiesResponse(proto.Message):
 
 class AnalyzeSyntaxRequest(proto.Message):
     r"""The syntax analysis request message.
+
     Attributes:
         document (google.cloud.language_v1.types.Document):
             Input document.
@@ -684,6 +695,7 @@ class AnalyzeSyntaxRequest(proto.Message):
 
 class AnalyzeSyntaxResponse(proto.Message):
     r"""The syntax analysis response message.
+
     Attributes:
         sentences (Sequence[google.cloud.language_v1.types.Sentence]):
             Sentences in the input document.
@@ -705,6 +717,7 @@ class AnalyzeSyntaxResponse(proto.Message):
 
 class ClassifyTextRequest(proto.Message):
     r"""The document classification request message.
+
     Attributes:
         document (google.cloud.language_v1.types.Document):
             Input document.
@@ -715,6 +728,7 @@ class ClassifyTextRequest(proto.Message):
 
 class ClassifyTextResponse(proto.Message):
     r"""The document classification response message.
+
     Attributes:
         categories (Sequence[google.cloud.language_v1.types.ClassificationCategory]):
             Categories representing the input document.
@@ -772,6 +786,7 @@ class AnnotateTextRequest(proto.Message):
 
 class AnnotateTextResponse(proto.Message):
     r"""The text annotations response message.
+
     Attributes:
         sentences (Sequence[google.cloud.language_v1.types.Sentence]):
             Sentences in the input document. Populated if the user
