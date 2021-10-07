@@ -118,6 +118,7 @@ class OSPolicy(proto.Message):
 
         class File(proto.Message):
             r"""A remote or local file.
+
             Attributes:
                 remote (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.File.Remote):
                     A generic remote file.
@@ -135,6 +136,7 @@ class OSPolicy(proto.Message):
 
             class Remote(proto.Message):
                 r"""Specifies a file available via some URI.
+
                 Attributes:
                     uri (str):
                         Required. URI from which to fetch the object. It should
@@ -149,6 +151,7 @@ class OSPolicy(proto.Message):
 
             class Gcs(proto.Message):
                 r"""Specifies a file available as a Cloud Storage Object.
+
                 Attributes:
                     bucket (str):
                         Required. Bucket of the Cloud Storage object.
@@ -180,6 +183,7 @@ class OSPolicy(proto.Message):
 
         class PackageResource(proto.Message):
             r"""A resource that manages a system package.
+
             Attributes:
                 desired_state (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.PackageResource.DesiredState):
                     Required. The desired state the agent should
@@ -303,6 +307,7 @@ class OSPolicy(proto.Message):
 
             class MSI(proto.Message):
                 r"""An MSI package. MSI packages only support INSTALLED state.
+
                 Attributes:
                     source (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.File):
                         Required. The MSI package.
@@ -367,6 +372,7 @@ class OSPolicy(proto.Message):
 
         class RepositoryResource(proto.Message):
             r"""A resource that manages a package repository.
+
             Attributes:
                 apt (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.RepositoryResource.AptRepository):
                     An Apt Repository.
@@ -554,6 +560,7 @@ class OSPolicy(proto.Message):
 
             class Exec(proto.Message):
                 r"""A file or script to execute.
+
                 Attributes:
                     file (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.File):
                         A remote or local file.
@@ -607,6 +614,7 @@ class OSPolicy(proto.Message):
 
         class FileResource(proto.Message):
             r"""A resource that manages the state of a file.
+
             Attributes:
                 file (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.File):
                     A remote or local source.

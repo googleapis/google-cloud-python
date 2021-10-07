@@ -345,5 +345,8 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
             )
         return self._stubs["list_vulnerability_reports"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("OsConfigZonalServiceGrpcTransport",)

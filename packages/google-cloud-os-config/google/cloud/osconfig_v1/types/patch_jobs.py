@@ -94,6 +94,7 @@ class ExecutePatchJobRequest(proto.Message):
 
 class GetPatchJobRequest(proto.Message):
     r"""Request to get an active or completed patch job.
+
     Attributes:
         name (str):
             Required. Name of the patch in the form
@@ -184,6 +185,7 @@ class PatchJobInstanceDetails(proto.Message):
 
 class ListPatchJobsRequest(proto.Message):
     r"""A request message for listing patch jobs.
+
     Attributes:
         parent (str):
             Required. In the form of ``projects/*``
@@ -208,6 +210,7 @@ class ListPatchJobsRequest(proto.Message):
 
 class ListPatchJobsResponse(proto.Message):
     r"""A response message for listing patch jobs.
+
     Attributes:
         patch_jobs (Sequence[google.cloud.osconfig_v1.types.PatchJob]):
             The list of patch jobs.
@@ -424,7 +427,8 @@ class PatchConfig(proto.Message):
 
 
 class Instance(proto.Message):
-    r"""Namespace for instance state enums.    """
+    r"""Namespace for instance state enums.
+    """
 
     class PatchState(proto.Enum):
         r"""Patch state of an instance."""
@@ -448,6 +452,7 @@ class Instance(proto.Message):
 
 class CancelPatchJobRequest(proto.Message):
     r"""Message for canceling a patch job.
+
     Attributes:
         name (str):
             Required. Name of the patch in the form
@@ -520,7 +525,8 @@ class YumSettings(proto.Message):
 
 
 class GooSettings(proto.Message):
-    r"""Googet patching is performed by running ``googet update``.    """
+    r"""Googet patching is performed by running ``googet update``.
+    """
 
 
 class ZypperSettings(proto.Message):
@@ -559,6 +565,7 @@ class ZypperSettings(proto.Message):
 
 class WindowsUpdateSettings(proto.Message):
     r"""Windows patching is performed using the Windows Update Agent.
+
     Attributes:
         classifications (Sequence[google.cloud.osconfig_v1.types.WindowsUpdateSettings.Classification]):
             Only apply updates of these windows update
@@ -595,6 +602,7 @@ class WindowsUpdateSettings(proto.Message):
 
 class ExecStep(proto.Message):
     r"""A step that runs an executable for a PatchJob.
+
     Attributes:
         linux_exec_step_config (google.cloud.osconfig_v1.types.ExecStepConfig):
             The ExecStepConfig for all Linux VMs targeted
@@ -614,6 +622,7 @@ class ExecStep(proto.Message):
 
 class ExecStepConfig(proto.Message):
     r"""Common configurations for an ExecStep.
+
     Attributes:
         local_path (str):
             An absolute path to the executable on the VM.
@@ -647,6 +656,7 @@ class ExecStepConfig(proto.Message):
 
 class GcsObject(proto.Message):
     r"""Cloud Storage object representation.
+
     Attributes:
         bucket (str):
             Required. Bucket of the Cloud Storage object.

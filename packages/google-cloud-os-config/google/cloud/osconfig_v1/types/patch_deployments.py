@@ -128,6 +128,7 @@ class OneTimeSchedule(proto.Message):
 
 class RecurringSchedule(proto.Message):
     r"""Sets the time for recurring patch deployments.
+
     Attributes:
         time_zone (google.type.datetime_pb2.TimeZone):
             Required. Defines the time zone that ``time_of_day`` is
@@ -185,6 +186,7 @@ class RecurringSchedule(proto.Message):
 
 class WeeklySchedule(proto.Message):
     r"""Represents a weekly schedule.
+
     Attributes:
         day_of_week (google.type.dayofweek_pb2.DayOfWeek):
             Required. Day of the week.
@@ -235,6 +237,7 @@ class WeekDayOfMonth(proto.Message):
 
 class CreatePatchDeploymentRequest(proto.Message):
     r"""A request message for creating a patch deployment.
+
     Attributes:
         parent (str):
             Required. The project to apply this patch deployment to in
@@ -260,6 +263,7 @@ class CreatePatchDeploymentRequest(proto.Message):
 
 class GetPatchDeploymentRequest(proto.Message):
     r"""A request message for retrieving a patch deployment.
+
     Attributes:
         name (str):
             Required. The resource name of the patch deployment in the
@@ -271,6 +275,7 @@ class GetPatchDeploymentRequest(proto.Message):
 
 class ListPatchDeploymentsRequest(proto.Message):
     r"""A request message for listing patch deployments.
+
     Attributes:
         parent (str):
             Required. The resource name of the parent in the form
@@ -292,6 +297,7 @@ class ListPatchDeploymentsRequest(proto.Message):
 
 class ListPatchDeploymentsResponse(proto.Message):
     r"""A response message for listing patch deployments.
+
     Attributes:
         patch_deployments (Sequence[google.cloud.osconfig_v1.types.PatchDeployment]):
             The list of patch deployments.
@@ -312,6 +318,7 @@ class ListPatchDeploymentsResponse(proto.Message):
 
 class DeletePatchDeploymentRequest(proto.Message):
     r"""A request message for deleting a patch deployment.
+
     Attributes:
         name (str):
             Required. The resource name of the patch deployment in the

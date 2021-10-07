@@ -270,6 +270,7 @@ class OSPolicyAssignmentOperationMetadata(proto.Message):
 
 class CreateOSPolicyAssignmentRequest(proto.Message):
     r"""A request message to create an OS policy assignment
+
     Attributes:
         parent (str):
             Required. The parent resource name in the
@@ -298,6 +299,7 @@ class CreateOSPolicyAssignmentRequest(proto.Message):
 
 class UpdateOSPolicyAssignmentRequest(proto.Message):
     r"""A request message to update an OS policy assignment
+
     Attributes:
         os_policy_assignment (google.cloud.osconfig_v1alpha.types.OSPolicyAssignment):
             Required. The updated OS policy assignment.
@@ -316,6 +318,7 @@ class UpdateOSPolicyAssignmentRequest(proto.Message):
 
 class GetOSPolicyAssignmentRequest(proto.Message):
     r"""A request message to get an OS policy assignment
+
     Attributes:
         name (str):
             Required. The resource name of OS policy assignment.
@@ -414,6 +417,7 @@ class ListOSPolicyAssignmentRevisionsResponse(proto.Message):
 
 class DeleteOSPolicyAssignmentRequest(proto.Message):
     r"""A request message for deleting a OS policy assignment.
+
     Attributes:
         name (str):
             Required. The name of the OS policy

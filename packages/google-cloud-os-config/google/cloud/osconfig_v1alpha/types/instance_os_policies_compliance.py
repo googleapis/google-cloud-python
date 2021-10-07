@@ -94,6 +94,7 @@ class InstanceOSPoliciesCompliance(proto.Message):
 
     class OSPolicyCompliance(proto.Message):
         r"""Compliance data for an OS policy
+
         Attributes:
             os_policy_id (str):
                 The OS policy id
