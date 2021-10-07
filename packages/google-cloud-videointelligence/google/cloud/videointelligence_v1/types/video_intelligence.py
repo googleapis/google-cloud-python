@@ -107,6 +107,7 @@ class Likelihood(proto.Enum):
 
 class AnnotateVideoRequest(proto.Message):
     r"""Video annotation request.
+
     Attributes:
         input_uri (str):
             Input video location. Currently, only `Cloud
@@ -157,6 +158,7 @@ class AnnotateVideoRequest(proto.Message):
 
 class VideoContext(proto.Message):
     r"""Video context and/or feature-specific parameters.
+
     Attributes:
         segments (Sequence[google.cloud.videointelligence_v1.types.VideoSegment]):
             Video segments to annotate. The segments may
@@ -210,6 +212,7 @@ class VideoContext(proto.Message):
 
 class LabelDetectionConfig(proto.Message):
     r"""Config for LABEL_DETECTION.
+
     Attributes:
         label_detection_mode (google.cloud.videointelligence_v1.types.LabelDetectionMode):
             What labels should be detected with LABEL_DETECTION, in
@@ -251,6 +254,7 @@ class LabelDetectionConfig(proto.Message):
 
 class ShotChangeDetectionConfig(proto.Message):
     r"""Config for SHOT_CHANGE_DETECTION.
+
     Attributes:
         model (str):
             Model to use for shot change detection.
@@ -263,6 +267,7 @@ class ShotChangeDetectionConfig(proto.Message):
 
 class ObjectTrackingConfig(proto.Message):
     r"""Config for OBJECT_TRACKING.
+
     Attributes:
         model (str):
             Model to use for object tracking.
@@ -275,6 +280,7 @@ class ObjectTrackingConfig(proto.Message):
 
 class FaceDetectionConfig(proto.Message):
     r"""Config for FACE_DETECTION.
+
     Attributes:
         model (str):
             Model to use for face detection.
@@ -296,6 +302,7 @@ class FaceDetectionConfig(proto.Message):
 
 class PersonDetectionConfig(proto.Message):
     r"""Config for PERSON_DETECTION.
+
     Attributes:
         include_bounding_boxes (bool):
             Whether bounding boxes are included in the
@@ -317,6 +324,7 @@ class PersonDetectionConfig(proto.Message):
 
 class ExplicitContentDetectionConfig(proto.Message):
     r"""Config for EXPLICIT_CONTENT_DETECTION.
+
     Attributes:
         model (str):
             Model to use for explicit content detection.
@@ -329,6 +337,7 @@ class ExplicitContentDetectionConfig(proto.Message):
 
 class TextDetectionConfig(proto.Message):
     r"""Config for TEXT_DETECTION.
+
     Attributes:
         language_hints (Sequence[str]):
             Language hint can be specified if the
@@ -351,6 +360,7 @@ class TextDetectionConfig(proto.Message):
 
 class VideoSegment(proto.Message):
     r"""Video segment.
+
     Attributes:
         start_time_offset (google.protobuf.duration_pb2.Duration):
             Time-offset, relative to the beginning of the
@@ -372,6 +382,7 @@ class VideoSegment(proto.Message):
 
 class LabelSegment(proto.Message):
     r"""Video segment level annotation results for label detection.
+
     Attributes:
         segment (google.cloud.videointelligence_v1.types.VideoSegment):
             Video segment where a label was detected.
@@ -385,6 +396,7 @@ class LabelSegment(proto.Message):
 
 class LabelFrame(proto.Message):
     r"""Video frame level annotation results for label detection.
+
     Attributes:
         time_offset (google.protobuf.duration_pb2.Duration):
             Time-offset, relative to the beginning of the
@@ -400,6 +412,7 @@ class LabelFrame(proto.Message):
 
 class Entity(proto.Message):
     r"""Detected entity from video analysis.
+
     Attributes:
         entity_id (str):
             Opaque entity ID. Some IDs may be available in `Google
@@ -418,6 +431,7 @@ class Entity(proto.Message):
 
 class LabelAnnotation(proto.Message):
     r"""Label annotation.
+
     Attributes:
         entity (google.cloud.videointelligence_v1.types.Entity):
             Detected entity.
@@ -444,6 +458,7 @@ class LabelAnnotation(proto.Message):
 
 class ExplicitContentFrame(proto.Message):
     r"""Video frame level annotation results for explicit content.
+
     Attributes:
         time_offset (google.protobuf.duration_pb2.Duration):
             Time-offset, relative to the beginning of the
@@ -499,6 +514,7 @@ class NormalizedBoundingBox(proto.Message):
 
 class FaceDetectionAnnotation(proto.Message):
     r"""Face detection annotation.
+
     Attributes:
         tracks (Sequence[google.cloud.videointelligence_v1.types.Track]):
             The face tracks with attributes.
@@ -515,6 +531,7 @@ class FaceDetectionAnnotation(proto.Message):
 
 class PersonDetectionAnnotation(proto.Message):
     r"""Person detection annotation per video.
+
     Attributes:
         tracks (Sequence[google.cloud.videointelligence_v1.types.Track]):
             The detected tracks of a person.
@@ -528,6 +545,7 @@ class PersonDetectionAnnotation(proto.Message):
 
 class FaceSegment(proto.Message):
     r"""Video segment level annotation results for face detection.
+
     Attributes:
         segment (google.cloud.videointelligence_v1.types.VideoSegment):
             Video segment where a face was detected.
@@ -538,6 +556,7 @@ class FaceSegment(proto.Message):
 
 class FaceFrame(proto.Message):
     r"""Deprecated. No effect.
+
     Attributes:
         normalized_bounding_boxes (Sequence[google.cloud.videointelligence_v1.types.NormalizedBoundingBox]):
             Normalized Bounding boxes in a frame.
@@ -558,6 +577,7 @@ class FaceFrame(proto.Message):
 
 class FaceAnnotation(proto.Message):
     r"""Deprecated. No effect.
+
     Attributes:
         thumbnail (bytes):
             Thumbnail of a representative face view (in
@@ -606,6 +626,7 @@ class TimestampedObject(proto.Message):
 
 class Track(proto.Message):
     r"""A track of an object instance.
+
     Attributes:
         segment (google.cloud.videointelligence_v1.types.VideoSegment):
             Video segment of a track.
@@ -675,6 +696,7 @@ class DetectedLandmark(proto.Message):
 
 class VideoAnnotationResults(proto.Message):
     r"""Annotation results for a single video.
+
     Attributes:
         input_uri (str):
             Video file location in `Cloud
@@ -806,6 +828,7 @@ class AnnotateVideoResponse(proto.Message):
 
 class VideoAnnotationProgress(proto.Message):
     r"""Annotation progress for a single video.
+
     Attributes:
         input_uri (str):
             Video file location in `Cloud
@@ -851,6 +874,7 @@ class AnnotateVideoProgress(proto.Message):
 
 class SpeechTranscriptionConfig(proto.Message):
     r"""Config for SPEECH_TRANSCRIPTION.
+
     Attributes:
         language_code (str):
             Required. *Required* The language of the supplied audio as a
@@ -969,6 +993,7 @@ class SpeechTranscription(proto.Message):
 
 class SpeechRecognitionAlternative(proto.Message):
     r"""Alternative hypotheses (a.k.a. n-best list).
+
     Attributes:
         transcript (str):
             Transcript text representing the words that
@@ -1077,6 +1102,7 @@ class NormalizedBoundingPoly(proto.Message):
 
 class TextSegment(proto.Message):
     r"""Video segment level annotation results for text detection.
+
     Attributes:
         segment (google.cloud.videointelligence_v1.types.VideoSegment):
             Video segment where a text snippet was
@@ -1155,6 +1181,7 @@ class ObjectTrackingFrame(proto.Message):
 
 class ObjectTrackingAnnotation(proto.Message):
     r"""Annotations corresponding to one tracked object.
+
     Attributes:
         segment (google.cloud.videointelligence_v1.types.VideoSegment):
             Non-streaming batch mode ONLY.
