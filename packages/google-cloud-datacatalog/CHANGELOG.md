@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+### [3.4.3](https://www.github.com/googleapis/python-datacatalog/compare/v3.4.2...v3.4.3) (2021-10-05)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([322cf9e](https://www.github.com/googleapis/python-datacatalog/commit/322cf9e543147b0b40e3b044e5822acf12e2d216))
+
 ### [3.4.2](https://www.github.com/googleapis/python-datacatalog/compare/v3.4.1...v3.4.2) (2021-09-24)
 
 
