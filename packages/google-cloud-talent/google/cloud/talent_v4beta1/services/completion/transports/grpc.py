@@ -256,5 +256,8 @@ class CompletionGrpcTransport(CompletionTransport):
             )
         return self._stubs["complete_query"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("CompletionGrpcTransport",)

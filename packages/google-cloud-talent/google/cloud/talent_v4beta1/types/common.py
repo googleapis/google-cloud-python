@@ -250,6 +250,7 @@ class AvailabilitySignalType(proto.Enum):
 
 class TimestampRange(proto.Message):
     r"""Message representing a period of time between two timestamps.
+
     Attributes:
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Begin of the period (inclusive).
@@ -488,6 +489,7 @@ class CustomAttribute(proto.Message):
 
 class SpellingCorrection(proto.Message):
     r"""Spell check result.
+
     Attributes:
         corrected (bool):
             Indicates if the query was corrected by the
@@ -513,6 +515,7 @@ class SpellingCorrection(proto.Message):
 
 class CompensationInfo(proto.Message):
     r"""Job compensation details.
+
     Attributes:
         entries (Sequence[google.cloud.talent_v4beta1.types.CompensationInfo.CompensationEntry]):
             Job compensation information.
@@ -671,6 +674,7 @@ class CompensationInfo(proto.Message):
 
     class CompensationRange(proto.Message):
         r"""Compensation range.
+
         Attributes:
             max_compensation (google.type.money_pb2.Money):
                 The maximum amount of compensation. If left empty, the value
@@ -702,6 +706,7 @@ class CompensationInfo(proto.Message):
 
 class Certification(proto.Message):
     r"""Resource that represents a license or certification.
+
     Attributes:
         display_name (str):
             Name of license or certification.
@@ -728,6 +733,7 @@ class Certification(proto.Message):
 
 class Skill(proto.Message):
     r"""Resource that represents a skill of a candidate.
+
     Attributes:
         display_name (str):
             Skill display name.
@@ -759,6 +765,7 @@ class Skill(proto.Message):
 
 class Interview(proto.Message):
     r"""Details of an interview.
+
     Attributes:
         rating (google.cloud.talent_v4beta1.types.Rating):
             The rating on this interview.

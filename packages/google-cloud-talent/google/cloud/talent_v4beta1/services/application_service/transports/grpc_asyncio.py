@@ -375,5 +375,8 @@ class ApplicationServiceGrpcAsyncIOTransport(ApplicationServiceTransport):
             )
         return self._stubs["list_applications"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ApplicationServiceGrpcAsyncIOTransport",)

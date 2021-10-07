@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
 
 class CreateClientEventRequest(proto.Message):
     r"""The report event request.
+
     Attributes:
         parent (str):
             Required. Resource name of the tenant under which the event

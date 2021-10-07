@@ -400,5 +400,8 @@ class ProfileServiceGrpcTransport(ProfileServiceTransport):
             )
         return self._stubs["search_profiles"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ProfileServiceGrpcTransport",)

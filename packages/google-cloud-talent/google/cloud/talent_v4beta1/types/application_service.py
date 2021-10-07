@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
 
 class CreateApplicationRequest(proto.Message):
     r"""The Request of the CreateApplication method.
+
     Attributes:
         parent (str):
             Required. Resource name of the profile under which the
@@ -55,6 +56,7 @@ class CreateApplicationRequest(proto.Message):
 
 class GetApplicationRequest(proto.Message):
     r"""Request for getting a application by name.
+
     Attributes:
         name (str):
             Required. The resource name of the application to be
@@ -71,6 +73,7 @@ class GetApplicationRequest(proto.Message):
 
 class UpdateApplicationRequest(proto.Message):
     r"""Request for updating a specified application.
+
     Attributes:
         application (google.cloud.talent_v4beta1.types.Application):
             Required. The application resource to replace
@@ -100,6 +103,7 @@ class UpdateApplicationRequest(proto.Message):
 
 class DeleteApplicationRequest(proto.Message):
     r"""Request to delete a application.
+
     Attributes:
         name (str):
             Required. The resource name of the application to be
@@ -116,6 +120,7 @@ class DeleteApplicationRequest(proto.Message):
 
 class ListApplicationsRequest(proto.Message):
     r"""List applications for which the client has ACL visibility.
+
     Attributes:
         parent (str):
             Required. Resource name of the profile under which the
@@ -140,6 +145,7 @@ class ListApplicationsRequest(proto.Message):
 
 class ListApplicationsResponse(proto.Message):
     r"""The List applications response object.
+
     Attributes:
         applications (Sequence[google.cloud.talent_v4beta1.types.Application]):
             Applications for the current client.

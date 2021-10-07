@@ -263,5 +263,8 @@ class EventServiceGrpcAsyncIOTransport(EventServiceTransport):
             )
         return self._stubs["create_client_event"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("EventServiceGrpcAsyncIOTransport",)

@@ -60,6 +60,7 @@ class JobView(proto.Enum):
 
 class CreateJobRequest(proto.Message):
     r"""Create job request.
+
     Attributes:
         parent (str):
             Required. The resource name of the tenant under which the
@@ -79,6 +80,7 @@ class CreateJobRequest(proto.Message):
 
 class GetJobRequest(proto.Message):
     r"""Get job request.
+
     Attributes:
         name (str):
             Required. The resource name of the job to retrieve.
@@ -96,6 +98,7 @@ class GetJobRequest(proto.Message):
 
 class UpdateJobRequest(proto.Message):
     r"""Update job request.
+
     Attributes:
         job (google.cloud.talent_v4beta1.types.Job):
             Required. The Job to be updated.
@@ -121,6 +124,7 @@ class UpdateJobRequest(proto.Message):
 
 class DeleteJobRequest(proto.Message):
     r"""Delete job request.
+
     Attributes:
         name (str):
             Required. The resource name of the job to be deleted.
@@ -138,6 +142,7 @@ class DeleteJobRequest(proto.Message):
 
 class BatchDeleteJobsRequest(proto.Message):
     r"""Batch delete jobs request.
+
     Attributes:
         parent (str):
             Required. The resource name of the tenant under which the
@@ -168,6 +173,7 @@ class BatchDeleteJobsRequest(proto.Message):
 
 class ListJobsRequest(proto.Message):
     r"""List jobs request.
+
     Attributes:
         parent (str):
             Required. The resource name of the tenant under which the
@@ -227,6 +233,7 @@ class ListJobsRequest(proto.Message):
 
 class ListJobsResponse(proto.Message):
     r"""List jobs response.
+
     Attributes:
         jobs (Sequence[google.cloud.talent_v4beta1.types.Job]):
             The Jobs for a given company.
@@ -250,6 +257,7 @@ class ListJobsResponse(proto.Message):
 
 class SearchJobsRequest(proto.Message):
     r"""The Request body of the ``SearchJobs`` call.
+
     Attributes:
         parent (str):
             Required. The resource name of the tenant to search within.
@@ -644,6 +652,7 @@ class SearchJobsRequest(proto.Message):
 
 class SearchJobsResponse(proto.Message):
     r"""Response for SearchJob method.
+
     Attributes:
         matching_jobs (Sequence[google.cloud.talent_v4beta1.types.SearchJobsResponse.MatchingJob]):
             The Job entities that match the specified
@@ -733,6 +742,7 @@ class SearchJobsResponse(proto.Message):
 
     class CommuteInfo(proto.Message):
         r"""Commute details related to this job.
+
         Attributes:
             job_location (google.cloud.talent_v4beta1.types.Location):
                 Location used as the destination in the
@@ -773,6 +783,7 @@ class SearchJobsResponse(proto.Message):
 
 class BatchCreateJobsRequest(proto.Message):
     r"""Request to create a batch of jobs.
+
     Attributes:
         parent (str):
             Required. The resource name of the tenant under which the
@@ -792,6 +803,7 @@ class BatchCreateJobsRequest(proto.Message):
 
 class BatchUpdateJobsRequest(proto.Message):
     r"""Request to update a batch of jobs.
+
     Attributes:
         parent (str):
             Required. The resource name of the tenant under which the
@@ -854,6 +866,7 @@ class JobOperationResult(proto.Message):
 
     class JobResult(proto.Message):
         r"""Mutation result of a job.
+
         Attributes:
             job (google.cloud.talent_v4beta1.types.Job):
                 Here [Job][google.cloud.talent.v4beta1.Job] only contains

@@ -258,5 +258,8 @@ class EventServiceGrpcTransport(EventServiceTransport):
             )
         return self._stubs["create_client_event"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("EventServiceGrpcTransport",)

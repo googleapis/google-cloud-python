@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
 
 class CreateCompanyRequest(proto.Message):
     r"""The Request of the CreateCompany method.
+
     Attributes:
         parent (str):
             Required. Resource name of the tenant under which the
@@ -52,6 +53,7 @@ class CreateCompanyRequest(proto.Message):
 
 class GetCompanyRequest(proto.Message):
     r"""Request for getting a company by name.
+
     Attributes:
         name (str):
             Required. The resource name of the company to be retrieved.
@@ -67,6 +69,7 @@ class GetCompanyRequest(proto.Message):
 
 class UpdateCompanyRequest(proto.Message):
     r"""Request for updating a specified company.
+
     Attributes:
         company (google.cloud.talent_v4.types.Company):
             Required. The company resource to replace the
@@ -93,6 +96,7 @@ class UpdateCompanyRequest(proto.Message):
 
 class DeleteCompanyRequest(proto.Message):
     r"""Request to delete a company.
+
     Attributes:
         name (str):
             Required. The resource name of the company to be deleted.
@@ -107,6 +111,7 @@ class DeleteCompanyRequest(proto.Message):
 
 class ListCompaniesRequest(proto.Message):
     r"""List companies for which the client has ACL visibility.
+
     Attributes:
         parent (str):
             Required. Resource name of the tenant under which the
@@ -140,6 +145,7 @@ class ListCompaniesRequest(proto.Message):
 
 class ListCompaniesResponse(proto.Message):
     r"""The List companies response object.
+
     Attributes:
         companies (Sequence[google.cloud.talent_v4.types.Company]):
             Companies for the current client.

@@ -101,6 +101,7 @@ class Company(proto.Message):
 
     class DerivedInfo(proto.Message):
         r"""Derived details about the company.
+
         Attributes:
             headquarters_location (google.cloud.talent_v4beta1.types.Location):
                 A structured headquarters location of the company, resolved

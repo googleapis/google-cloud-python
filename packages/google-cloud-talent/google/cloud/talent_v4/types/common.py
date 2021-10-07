@@ -207,6 +207,7 @@ class CommuteMethod(proto.Enum):
 
 class TimestampRange(proto.Message):
     r"""Message representing a period of time between two timestamps.
+
     Attributes:
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Begin of the period (inclusive).
@@ -455,6 +456,7 @@ class CustomAttribute(proto.Message):
 
 class SpellingCorrection(proto.Message):
     r"""Spell check result.
+
     Attributes:
         corrected (bool):
             Indicates if the query was corrected by the
@@ -480,6 +482,7 @@ class SpellingCorrection(proto.Message):
 
 class CompensationInfo(proto.Message):
     r"""Job compensation details.
+
     Attributes:
         entries (Sequence[google.cloud.talent_v4.types.CompensationInfo.CompensationEntry]):
             Job compensation information.
@@ -638,6 +641,7 @@ class CompensationInfo(proto.Message):
 
     class CompensationRange(proto.Message):
         r"""Compensation range.
+
         Attributes:
             max_compensation (google.type.money_pb2.Money):
                 The maximum amount of compensation. If left empty, the value

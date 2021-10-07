@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
 
 class HistogramQuery(proto.Message):
     r"""The histogram request.
+
     Attributes:
         histogram_query (str):
             An expression specifies a histogram request against matching

@@ -50,6 +50,7 @@ __protobuf__ = proto.module(
 
 class JobQuery(proto.Message):
     r"""The query required to perform a search query.
+
     Attributes:
         query (str):
             The query string that matches against the job
@@ -236,6 +237,7 @@ class JobQuery(proto.Message):
 
 class ProfileQuery(proto.Message):
     r"""Filters to apply when performing the search query.
+
     Attributes:
         query (str):
             Keywords to match any text fields of
@@ -585,6 +587,7 @@ class ProfileQuery(proto.Message):
 
 class LocationFilter(proto.Message):
     r"""Geographic region of the search.
+
     Attributes:
         address (str):
             The address name, such as "Mountain View" or
@@ -662,6 +665,7 @@ class LocationFilter(proto.Message):
 
 class CompensationFilter(proto.Message):
     r"""Filter on job compensation type and amount.
+
     Attributes:
         type_ (google.cloud.talent_v4beta1.types.CompensationFilter.FilterType):
             Required. Type of filter.
@@ -697,6 +701,7 @@ class CompensationFilter(proto.Message):
 
 class CommuteFilter(proto.Message):
     r"""Parameters needed for commute search.
+
     Attributes:
         commute_method (google.cloud.talent_v4beta1.types.CommuteMethod):
             Required. The method of transportation to
@@ -752,6 +757,7 @@ class CommuteFilter(proto.Message):
 
 class JobTitleFilter(proto.Message):
     r"""Job title of the search.
+
     Attributes:
         job_title (str):
             Required. The job title. For example,
@@ -767,6 +773,7 @@ class JobTitleFilter(proto.Message):
 
 class SkillFilter(proto.Message):
     r"""Skill filter of the search.
+
     Attributes:
         skill (str):
             Required. The skill name. For example,
@@ -782,6 +789,7 @@ class SkillFilter(proto.Message):
 
 class EmployerFilter(proto.Message):
     r"""Employer filter of the search.
+
     Attributes:
         employer (str):
             Required. The name of the employer, for
@@ -815,6 +823,7 @@ class EmployerFilter(proto.Message):
 
 class EducationFilter(proto.Message):
     r"""Education filter of the search.
+
     Attributes:
         school (str):
             The school name. For example "MIT",
@@ -895,6 +904,7 @@ class ApplicationDateFilter(proto.Message):
 
 class ApplicationOutcomeNotesFilter(proto.Message):
     r"""Outcome Notes Filter.
+
     Attributes:
         outcome_notes (str):
             Required. User entered or selected outcome reason. The API
@@ -913,6 +923,7 @@ class ApplicationOutcomeNotesFilter(proto.Message):
 
 class ApplicationJobFilter(proto.Message):
     r"""Filter on the job information of Application.
+
     Attributes:
         job_requisition_id (str):
             The job requisition id in the application. The API does an
@@ -940,6 +951,7 @@ class ApplicationJobFilter(proto.Message):
 
 class TimeFilter(proto.Message):
     r"""Filter on create timestamp or update timestamp of profiles.
+
     Attributes:
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Start timestamp, matching profiles with the
@@ -984,6 +996,7 @@ class CandidateAvailabilityFilter(proto.Message):
 
 class AvailabilityFilter(proto.Message):
     r"""Filter on availability signals.
+
     Attributes:
         signal_type (google.cloud.talent_v4beta1.types.AvailabilitySignalType):
             Required. Type of signal to apply filter on.
@@ -1007,6 +1020,7 @@ class AvailabilityFilter(proto.Message):
 
 class PersonNameFilter(proto.Message):
     r"""Filter on person name.
+
     Attributes:
         person_name (str):
             Required. The person name. For example, "John Smith".

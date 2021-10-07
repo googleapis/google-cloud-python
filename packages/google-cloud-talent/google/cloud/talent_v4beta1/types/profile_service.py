@@ -40,6 +40,7 @@ __protobuf__ = proto.module(
 
 class ListProfilesRequest(proto.Message):
     r"""List profiles request.
+
     Attributes:
         parent (str):
             Required. The resource name of the tenant under which the
@@ -95,6 +96,7 @@ class ListProfilesRequest(proto.Message):
 
 class ListProfilesResponse(proto.Message):
     r"""The List profiles response object.
+
     Attributes:
         profiles (Sequence[google.cloud.talent_v4beta1.types.Profile]):
             Profiles for the specific tenant.
@@ -115,6 +117,7 @@ class ListProfilesResponse(proto.Message):
 
 class CreateProfileRequest(proto.Message):
     r"""Create profile request.
+
     Attributes:
         parent (str):
             Required. The name of the tenant this profile belongs to.
@@ -131,6 +134,7 @@ class CreateProfileRequest(proto.Message):
 
 class GetProfileRequest(proto.Message):
     r"""Get profile request.
+
     Attributes:
         name (str):
             Required. Resource name of the profile to get.
@@ -145,6 +149,7 @@ class GetProfileRequest(proto.Message):
 
 class UpdateProfileRequest(proto.Message):
     r"""Update profile request
+
     Attributes:
         profile (google.cloud.talent_v4beta1.types.Profile):
             Required. Profile to be updated.
@@ -162,6 +167,7 @@ class UpdateProfileRequest(proto.Message):
 
 class DeleteProfileRequest(proto.Message):
     r"""Delete profile request.
+
     Attributes:
         name (str):
             Required. Resource name of the profile to be deleted.
@@ -176,6 +182,7 @@ class DeleteProfileRequest(proto.Message):
 
 class SearchProfilesRequest(proto.Message):
     r"""The request body of the ``SearchProfiles`` call.
+
     Attributes:
         parent (str):
             Required. The resource name of the tenant to search within.
@@ -431,6 +438,7 @@ class SearchProfilesRequest(proto.Message):
 
 class SearchProfilesResponse(proto.Message):
     r"""Response of SearchProfiles method.
+
     Attributes:
         estimated_total_size (int):
             An estimation of the number of profiles that

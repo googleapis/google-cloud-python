@@ -547,5 +547,8 @@ class JobServiceGrpcAsyncIOTransport(JobServiceTransport):
             )
         return self._stubs["search_jobs_for_alert"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("JobServiceGrpcAsyncIOTransport",)

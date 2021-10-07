@@ -524,5 +524,8 @@ class JobServiceGrpcTransport(JobServiceTransport):
             )
         return self._stubs["search_jobs_for_alert"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("JobServiceGrpcTransport",)
