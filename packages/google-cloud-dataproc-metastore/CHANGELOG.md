@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.2](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.1.1...v1.1.2) (2021-10-05)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([fd7978b](https://www.github.com/googleapis/python-dataproc-metastore/commit/fd7978b1e2552dd47ea4ecf109d6266d165766b9))
+
 ### [1.1.1](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.1.0...v1.1.1) (2021-09-24)
 
 
