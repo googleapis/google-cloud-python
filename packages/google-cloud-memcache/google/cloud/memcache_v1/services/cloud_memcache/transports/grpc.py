@@ -450,5 +450,8 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
             )
         return self._stubs["apply_parameters"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("CloudMemcacheGrpcTransport",)

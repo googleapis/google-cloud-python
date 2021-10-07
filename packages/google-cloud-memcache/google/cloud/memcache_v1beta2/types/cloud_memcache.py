@@ -49,6 +49,7 @@ class MemcacheVersion(proto.Enum):
 
 class Instance(proto.Message):
     r"""A Memorystore for Memcached instance
+
     Attributes:
         name (str):
             Required. Unique name of the resource in this scope
@@ -138,6 +139,7 @@ class Instance(proto.Message):
 
     class NodeConfig(proto.Message):
         r"""Configuration for a Memcached Node.
+
         Attributes:
             cpu_count (int):
                 Required. Number of cpus per Memcached node.
@@ -151,6 +153,7 @@ class Instance(proto.Message):
 
     class Node(proto.Message):
         r"""
+
         Attributes:
             node_id (str):
                 Output only. Identifier of the Memcached
@@ -195,6 +198,7 @@ class Instance(proto.Message):
 
     class InstanceMessage(proto.Message):
         r"""
+
         Attributes:
             code (google.cloud.memcache_v1beta2.types.Instance.InstanceMessage.Code):
                 A code that correspond to one type of user-
@@ -475,6 +479,7 @@ class MemcacheParameters(proto.Message):
 
 class OperationMetadata(proto.Message):
     r"""Represents the metadata of a long-running operation.
+
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the operation was
@@ -529,7 +534,8 @@ class LocationMetadata(proto.Message):
 
 
 class ZoneMetadata(proto.Message):
-    r"""    """
+    r"""
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
