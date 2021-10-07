@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.4.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.3.2...v1.4.0) (2021-10-05)
+
+
+### Features
+
+* expose dtmf input info in the query result ([#181](https://www.github.com/googleapis/python-dialogflow-cx/issues/181)) ([e44d0ce](https://www.github.com/googleapis/python-dialogflow-cx/commit/e44d0cee6b51842e45255773c33ae0bbfc672f30))
+* exposed DTMF input info in the query result ([1383bf8](https://www.github.com/googleapis/python-dialogflow-cx/commit/1383bf82b8b2ae0cd92d81768a693a2732a53a46))
+* **v3:** added deployment API ([#182](https://www.github.com/googleapis/python-dialogflow-cx/issues/182)) ([1383bf8](https://www.github.com/googleapis/python-dialogflow-cx/commit/1383bf82b8b2ae0cd92d81768a693a2732a53a46))
+* **v3beta1:** added support for DeployFlow api under Environments ([977e2aa](https://www.github.com/googleapis/python-dialogflow-cx/commit/977e2aa9c17c235d125c633a6f4ba9f5a1dade7b))
+* **v3beta1:** added support for Deployments with ListDeployments and GetDeployment apis  ([#177](https://www.github.com/googleapis/python-dialogflow-cx/issues/177)) ([977e2aa](https://www.github.com/googleapis/python-dialogflow-cx/commit/977e2aa9c17c235d125c633a6f4ba9f5a1dade7b))
+* **v3beta1:** added support for TestCasesConfig under Environment ([977e2aa](https://www.github.com/googleapis/python-dialogflow-cx/commit/977e2aa9c17c235d125c633a6f4ba9f5a1dade7b))
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([615718b](https://www.github.com/googleapis/python-dialogflow-cx/commit/615718bf80e5c2f3060ff38675a7f4fe8deb59b1))
+* **v3beta1:** marked resource name of security setting as not-required ([977e2aa](https://www.github.com/googleapis/python-dialogflow-cx/commit/977e2aa9c17c235d125c633a6f4ba9f5a1dade7b))
+
+
+### Documentation
+
+* added notes on long running operation ([1383bf8](https://www.github.com/googleapis/python-dialogflow-cx/commit/1383bf82b8b2ae0cd92d81768a693a2732a53a46))
+* **v3beta1:** added long running operation explanation for several apis ([977e2aa](https://www.github.com/googleapis/python-dialogflow-cx/commit/977e2aa9c17c235d125c633a6f4ba9f5a1dade7b))
+
 ### [1.3.2](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.3.1...v1.3.2) (2021-09-24)
 
 
