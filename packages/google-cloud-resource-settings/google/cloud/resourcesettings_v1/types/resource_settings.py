@@ -41,6 +41,7 @@ class SettingView(proto.Enum):
 
 class Setting(proto.Message):
     r"""The schema for settings.
+
     Attributes:
         name (str):
             The resource name of the setting. Must be in one of the
@@ -139,6 +140,7 @@ class SettingMetadata(proto.Message):
 
 class Value(proto.Message):
     r"""The data in a setting value.
+
     Attributes:
         boolean_value (bool):
             Defines this value as being a boolean value.
@@ -184,6 +186,7 @@ class Value(proto.Message):
 
 class ListSettingsRequest(proto.Message):
     r"""The request for ListSettings.
+
     Attributes:
         parent (str):
             Required. The Cloud resource that parents the setting. Must
@@ -210,6 +213,7 @@ class ListSettingsRequest(proto.Message):
 
 class ListSettingsResponse(proto.Message):
     r"""The response from ListSettings.
+
     Attributes:
         settings (Sequence[google.cloud.resourcesettings_v1.types.Setting]):
             A list of settings that are available at the
@@ -229,6 +233,7 @@ class ListSettingsResponse(proto.Message):
 
 class GetSettingRequest(proto.Message):
     r"""The request for GetSetting.
+
     Attributes:
         name (str):
             Required. The name of the setting to get. See
@@ -244,6 +249,7 @@ class GetSettingRequest(proto.Message):
 
 class UpdateSettingRequest(proto.Message):
     r"""The request for UpdateSetting.
+
     Attributes:
         setting (google.cloud.resourcesettings_v1.types.Setting):
             Required. The setting to update. See

@@ -344,5 +344,8 @@ class ResourceSettingsServiceGrpcAsyncIOTransport(ResourceSettingsServiceTranspo
             )
         return self._stubs["update_setting"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ResourceSettingsServiceGrpcAsyncIOTransport",)

@@ -336,5 +336,8 @@ class ResourceSettingsServiceGrpcTransport(ResourceSettingsServiceTransport):
             )
         return self._stubs["update_setting"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ResourceSettingsServiceGrpcTransport",)
