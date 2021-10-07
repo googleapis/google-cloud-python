@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
 
 class BatchWriteSpansRequest(proto.Message):
     r"""The request message for the ``BatchWriteSpans`` method.
+
     Attributes:
         name (str):
             Required. The name of the project where the spans belong.

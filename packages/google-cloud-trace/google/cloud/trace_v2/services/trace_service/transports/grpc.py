@@ -283,5 +283,8 @@ class TraceServiceGrpcTransport(TraceServiceTransport):
             )
         return self._stubs["create_span"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("TraceServiceGrpcTransport",)
