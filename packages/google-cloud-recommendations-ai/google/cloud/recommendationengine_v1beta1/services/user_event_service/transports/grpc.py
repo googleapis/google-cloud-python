@@ -397,5 +397,8 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
             )
         return self._stubs["import_user_events"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("UserEventServiceGrpcTransport",)

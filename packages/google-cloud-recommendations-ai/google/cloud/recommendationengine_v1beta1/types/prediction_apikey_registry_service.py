@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
 
 class PredictionApiKeyRegistration(proto.Message):
     r"""Registered Api Key.
+
     Attributes:
         api_key (str):
             The API key.
@@ -59,6 +60,7 @@ class CreatePredictionApiKeyRegistrationRequest(proto.Message):
 
 class ListPredictionApiKeyRegistrationsRequest(proto.Message):
     r"""Request message for the ``ListPredictionApiKeyRegistrations``.
+
     Attributes:
         parent (str):
             Required. The parent placement resource name such as
@@ -79,6 +81,7 @@ class ListPredictionApiKeyRegistrationsRequest(proto.Message):
 
 class ListPredictionApiKeyRegistrationsResponse(proto.Message):
     r"""Response message for the ``ListPredictionApiKeyRegistrations``.
+
     Attributes:
         prediction_api_key_registrations (Sequence[google.cloud.recommendationengine_v1beta1.types.PredictionApiKeyRegistration]):
             The list of registered API keys.
@@ -100,6 +103,7 @@ class ListPredictionApiKeyRegistrationsResponse(proto.Message):
 
 class DeletePredictionApiKeyRegistrationRequest(proto.Message):
     r"""Request message for ``DeletePredictionApiKeyRegistration`` method.
+
     Attributes:
         name (str):
             Required. The API key to unregister including full resource

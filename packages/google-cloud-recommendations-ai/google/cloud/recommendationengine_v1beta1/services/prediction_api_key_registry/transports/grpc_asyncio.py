@@ -335,5 +335,8 @@ class PredictionApiKeyRegistryGrpcAsyncIOTransport(PredictionApiKeyRegistryTrans
             )
         return self._stubs["delete_prediction_api_key_registration"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("PredictionApiKeyRegistryGrpcAsyncIOTransport",)

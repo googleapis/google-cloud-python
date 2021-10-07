@@ -412,5 +412,8 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
             )
         return self._stubs["import_catalog_items"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("CatalogServiceGrpcTransport",)

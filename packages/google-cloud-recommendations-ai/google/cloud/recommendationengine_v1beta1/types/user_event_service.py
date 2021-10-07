@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
 
 class PurgeUserEventsRequest(proto.Message):
     r"""Request message for PurgeUserEvents method.
+
     Attributes:
         parent (str):
             Required. The resource name of the event_store under which
@@ -111,6 +112,7 @@ class PurgeUserEventsResponse(proto.Message):
 
 class WriteUserEventRequest(proto.Message):
     r"""Request message for WriteUserEvent method.
+
     Attributes:
         parent (str):
             Required. The parent eventStore resource name, such as
@@ -125,6 +127,7 @@ class WriteUserEventRequest(proto.Message):
 
 class CollectUserEventRequest(proto.Message):
     r"""Request message for CollectUserEvent method.
+
     Attributes:
         parent (str):
             Required. The parent eventStore name, such as
@@ -153,6 +156,7 @@ class CollectUserEventRequest(proto.Message):
 
 class ListUserEventsRequest(proto.Message):
     r"""Request message for ListUserEvents method.
+
     Attributes:
         parent (str):
             Required. The parent eventStore resource name, such as
@@ -211,6 +215,7 @@ class ListUserEventsRequest(proto.Message):
 
 class ListUserEventsResponse(proto.Message):
     r"""Response message for ListUserEvents method.
+
     Attributes:
         user_events (Sequence[google.cloud.recommendationengine_v1beta1.types.UserEvent]):
             The user events.

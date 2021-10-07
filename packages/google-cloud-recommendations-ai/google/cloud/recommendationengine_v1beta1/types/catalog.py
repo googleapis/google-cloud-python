@@ -92,6 +92,7 @@ class CatalogItem(proto.Message):
 
     class CategoryHierarchy(proto.Message):
         r"""Category represents catalog item category hierarchy.
+
         Attributes:
             categories (Sequence[str]):
                 Required. Catalog item categories. Each
@@ -172,6 +173,7 @@ class ProductCatalogItem(proto.Message):
 
     class ExactPrice(proto.Message):
         r"""Exact product price.
+
         Attributes:
             display_price (float):
                 Optional. Display price of the product.
@@ -214,6 +216,7 @@ class ProductCatalogItem(proto.Message):
 
 class Image(proto.Message):
     r"""Catalog item thumbnail/detail image.
+
     Attributes:
         uri (str):
             Required. URL of the image with a length

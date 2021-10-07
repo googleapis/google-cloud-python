@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
 
 class CreateCatalogItemRequest(proto.Message):
     r"""Request message for CreateCatalogItem method.
+
     Attributes:
         parent (str):
             Required. The parent catalog resource name, such as
@@ -48,6 +49,7 @@ class CreateCatalogItemRequest(proto.Message):
 
 class GetCatalogItemRequest(proto.Message):
     r"""Request message for GetCatalogItem method.
+
     Attributes:
         name (str):
             Required. Full resource name of catalog item, such as
@@ -59,6 +61,7 @@ class GetCatalogItemRequest(proto.Message):
 
 class ListCatalogItemsRequest(proto.Message):
     r"""Request message for ListCatalogItems method.
+
     Attributes:
         parent (str):
             Required. The parent catalog resource name, such as
@@ -83,6 +86,7 @@ class ListCatalogItemsRequest(proto.Message):
 
 class ListCatalogItemsResponse(proto.Message):
     r"""Response message for ListCatalogItems method.
+
     Attributes:
         catalog_items (Sequence[google.cloud.recommendationengine_v1beta1.types.CatalogItem]):
             The catalog items.
@@ -104,6 +108,7 @@ class ListCatalogItemsResponse(proto.Message):
 
 class UpdateCatalogItemRequest(proto.Message):
     r"""Request message for UpdateCatalogItem method.
+
     Attributes:
         name (str):
             Required. Full resource name of catalog item, such as
@@ -126,6 +131,7 @@ class UpdateCatalogItemRequest(proto.Message):
 
 class DeleteCatalogItemRequest(proto.Message):
     r"""Request message for DeleteCatalogItem method.
+
     Attributes:
         name (str):
             Required. Full resource name of catalog item, such as
