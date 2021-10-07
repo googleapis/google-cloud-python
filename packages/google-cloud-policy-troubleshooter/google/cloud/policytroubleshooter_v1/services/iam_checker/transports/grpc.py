@@ -257,5 +257,8 @@ class IamCheckerGrpcTransport(IamCheckerTransport):
             )
         return self._stubs["troubleshoot_iam_policy"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("IamCheckerGrpcTransport",)

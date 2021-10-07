@@ -222,6 +222,7 @@ class BindingExplanation(proto.Message):
 
     class AnnotatedMembership(proto.Message):
         r"""Details about whether the binding includes the member.
+
         Attributes:
             membership (google.cloud.policytroubleshooter_v1.types.BindingExplanation.Membership):
                 Indicates whether the binding includes the

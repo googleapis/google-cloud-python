@@ -261,5 +261,8 @@ class IamCheckerGrpcAsyncIOTransport(IamCheckerTransport):
             )
         return self._stubs["troubleshoot_iam_policy"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("IamCheckerGrpcAsyncIOTransport",)
