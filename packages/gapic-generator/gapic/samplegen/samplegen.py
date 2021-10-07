@@ -250,8 +250,7 @@ class Validator:
         ("value", "field", "value_is_file", "input_parameter", "comment")
     )
 
-    # TODO(dovs): make the schema a required param.
-    def __init__(self, method: wrappers.Method, api_schema=None):
+    def __init__(self, method: wrappers.Method, api_schema: api.API):
         # The response ($resp) variable is special and guaranteed to exist.
         self.method = method
         self.request_type_ = method.input
@@ -1058,7 +1057,7 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str
 
     calling_form = types.CallingForm.method_default(rpc)
 
-    v = Validator(rpc)
+    v = Validator(rpc, api_schema)
     # Tweak some small aspects of the sample to set defaults for optional
     # fields, add fields that are required for the template, and so forth.
     v.preprocess_sample(sample, api_schema, rpc)

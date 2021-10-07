@@ -36,48 +36,76 @@ from gapic.samplegen_utils import utils
 
 # validate_response tests
 
+@pytest.fixture(scope="module")
+def dummy_api_schema():
+    # For most of the unit tests in this file the internals of API Schema do not matter
+    classify_request_message = DummyMessage(
+        fields={
+            "parent": DummyField(is_primitive=True, type=str, required=True, name="parent"),
+            },
+        type=DummyMessageTypePB(name="ClassifyRequest"),
+        ident=DummyIdent(name="ClassifyRequest")
+        )
 
-def test_define():
+    return DummyApiSchema(
+        services={"Mollusc": DummyService(
+            methods={}, client_name="MolluscClient",
+            resource_messages_dict={}
+            )},
+        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
+                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+        messages=classify_request_message,
+
+    )
+
+
+def test_define(dummy_api_schema):
     define = {"define": "squid=$resp"}
-    v = samplegen.Validator(DummyMethod(output=message_factory("mollusc")))
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("mollusc")), api_schema=dummy_api_schema)
     v.validate_response([define])
 
 
-def test_define_undefined_var():
+def test_define_undefined_var(dummy_api_schema):
     define = {"define": "squid=humboldt"}
-    v = samplegen.Validator(DummyMethod(output=message_factory("mollusc")))
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("mollusc")), api_schema=dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response([define])
 
 
-def test_define_reserved_varname():
+def test_define_reserved_varname(dummy_api_schema):
     define = {"define": "class=$resp"}
-    v = samplegen.Validator(DummyMethod(output=message_factory("mollusc")))
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("mollusc")), api_schema=dummy_api_schema)
     with pytest.raises(types.ReservedVariableName):
         v.validate_response([define])
 
 
-def test_define_add_var():
+def test_define_add_var(dummy_api_schema):
     v = samplegen.Validator(DummyMethod(
-        output=message_factory("mollusc.name")))
+        output=message_factory("mollusc.name")),
+        api_schema=dummy_api_schema)
     v.validate_response([{"define": "squid=$resp"},
                          {"define": "name=squid.name"}])
 
 
-def test_define_bad_form():
+def test_define_bad_form(dummy_api_schema):
     define = {"define": "mollusc=$resp.squid=$resp.clam"}
-    v = samplegen.Validator(DummyMethod(output=message_factory("mollusc")))
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("mollusc")), api_schema=dummy_api_schema)
     with pytest.raises(types.BadAssignment):
         v.validate_response([define])
 
 
-def test_define_redefinition():
+def test_define_redefinition(dummy_api_schema):
     statements = [
         {"define": "molluscs=$resp.molluscs"},
         {"define": "molluscs=$resp.molluscs"},
     ]
     v = samplegen.Validator(DummyMethod(output=message_factory("$resp.molluscs",
-                                                               repeated_iter=[True])))
+                                                               repeated_iter=[True])),
+                            api_schema=dummy_api_schema)
     with pytest.raises(types.RedefinedVariable):
         v.validate_response(statements)
 
@@ -285,9 +313,10 @@ def test_preprocess_sample_void_method():
     assert sample["response"] == []
 
 
-def test_define_input_param():
+def test_define_input_param(dummy_api_schema):
     v = samplegen.Validator(
-        DummyMethod(input=message_factory("mollusc.squid.mantle_length")))
+        DummyMethod(input=message_factory("mollusc.squid.mantle_length")),
+        dummy_api_schema)
     v.validate_and_transform_request(
         types.CallingForm.Request,
         [
@@ -301,9 +330,10 @@ def test_define_input_param():
     v.validate_response([{"define": "length=mantle_length"}])
 
 
-def test_define_input_param_redefinition():
+def test_define_input_param_redefinition(dummy_api_schema):
     v = samplegen.Validator(DummyMethod(
-        input=message_factory("mollusc.squid.mantle_length")))
+        input=message_factory("mollusc.squid.mantle_length")),
+        dummy_api_schema)
     v.validate_and_transform_request(
         types.CallingForm.Request,
         [
@@ -319,71 +349,78 @@ def test_define_input_param_redefinition():
             [{"define": "mantle_length=mantle_length"}])
 
 
-def test_print_basic():
+def test_print_basic(dummy_api_schema):
     print_statement = {"print": ["This is a squid"]}
-    samplegen.Validator(DummyMethod()).validate_response([print_statement])
+    samplegen.Validator(DummyMethod(), dummy_api_schema).validate_response(
+        [print_statement])
 
 
-def test_print_fmt_str():
+def test_print_fmt_str(dummy_api_schema):
     print_statement = {"print": ["This is a squid named %s", "$resp.name"]}
-    v = samplegen.Validator(DummyMethod(output=message_factory("$resp.name")))
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("$resp.name")), dummy_api_schema)
     v.validate_response([print_statement])
 
 
-def test_print_fmt_mismatch():
+def test_print_fmt_mismatch(dummy_api_schema):
     print_statement = {"print": ["This is a squid named %s"]}
-    v = samplegen.Validator(DummyMethod(output=message_factory("$resp.name")))
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("$resp.name")), dummy_api_schema)
     with pytest.raises(types.MismatchedFormatSpecifier):
         v.validate_response([print_statement])
 
 
-def test_print_fmt_mismatch2():
+def test_print_fmt_mismatch2(dummy_api_schema):
     print_statement = {"print": ["This is a squid", "$resp.name"]}
-    v = samplegen.Validator(DummyMethod(output=message_factory("$resp.name")))
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("$resp.name")), dummy_api_schema)
     with pytest.raises(types.MismatchedFormatSpecifier):
         v.validate_response([print_statement])
 
 
-def test_print_undefined_var():
+def test_print_undefined_var(dummy_api_schema):
     print_statement = {"print": ["This mollusc is a %s", "mollusc.type"]}
-    v = samplegen.Validator(DummyMethod(output=message_factory("$resp.type")))
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("$resp.type")), dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response([print_statement])
 
 
-def test_comment():
+def test_comment(dummy_api_schema):
     comment = {"comment": ["This is a mollusc"]}
-    samplegen.Validator(DummyMethod()).validate_response([comment])
+    samplegen.Validator(
+        DummyMethod(), dummy_api_schema).validate_response([comment])
 
 
-def test_comment_fmt_str():
+def test_comment_fmt_str(dummy_api_schema):
     comment = {"comment": ["This is a mollusc of class %s", "$resp.klass"]}
-    v = samplegen.Validator(DummyMethod(output=message_factory("$resp.klass")))
+    v = samplegen.Validator(DummyMethod(
+        output=message_factory("$resp.klass")), dummy_api_schema)
     v.validate_response([comment])
 
 
-def test_comment_fmt_undefined_var():
+def test_comment_fmt_undefined_var(dummy_api_schema):
     comment = {"comment": ["This is a mollusc of class %s", "cephalopod"]}
-    v = samplegen.Validator(DummyMethod())
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response([comment])
 
 
-def test_comment_fmt_mismatch():
+def test_comment_fmt_mismatch(dummy_api_schema):
     comment = {"comment": ["This is a mollusc of class %s"]}
-    v = samplegen.Validator(DummyMethod())
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.MismatchedFormatSpecifier):
         v.validate_response([comment])
 
 
-def test_comment_fmt_mismatch2():
+def test_comment_fmt_mismatch2(dummy_api_schema):
     comment = {"comment": ["This is a mollusc of class ", "$resp.class"]}
-    v = samplegen.Validator(DummyMethod())
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.MismatchedFormatSpecifier):
         v.validate_response([comment])
 
 
-def test_loop_collection():
+def test_loop_collection(dummy_api_schema):
     loop = {
         "loop": {
             "collection": "$resp.molluscs",
@@ -393,11 +430,11 @@ def test_loop_collection():
     }
     OutputType = message_factory(
         "$resp.molluscs.class", repeated_iter=[True, False])
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     v.validate_response([loop])
 
 
-def test_loop_collection_redefinition():
+def test_loop_collection_redefinition(dummy_api_schema):
     statements = [
         {"define": "m=$resp.molluscs"},
         {
@@ -409,12 +446,12 @@ def test_loop_collection_redefinition():
         },
     ]
     v = samplegen.Validator(
-        DummyMethod(output=message_factory("$resp.molluscs", repeated_iter=[True])))
+        DummyMethod(output=message_factory("$resp.molluscs", repeated_iter=[True])), dummy_api_schema)
     with pytest.raises(types.RedefinedVariable):
         v.validate_response(statements)
 
 
-def test_loop_undefined_collection():
+def test_loop_undefined_collection(dummy_api_schema):
     loop = {
         "loop": {
             "collection": "squid",
@@ -422,12 +459,12 @@ def test_loop_undefined_collection():
             "body": [{"print": ["Squid: %s", "s"]}],
         }
     }
-    v = samplegen.Validator(DummyMethod())
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response([loop])
 
 
-def test_loop_collection_extra_kword():
+def test_loop_collection_extra_kword(dummy_api_schema):
     loop = {
         "loop": {
             "collection": "$resp.molluscs",
@@ -436,24 +473,24 @@ def test_loop_collection_extra_kword():
             "body": [{"print": ["Mollusc of class: %s", "m.class"]}],
         }
     }
-    v = samplegen.Validator(DummyMethod())
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.BadLoop):
         v.validate_response([loop])
 
 
-def test_loop_collection_missing_kword():
+def test_loop_collection_missing_kword(dummy_api_schema):
     loop = {
         "loop": {
             "collection": "$resp.molluscs",
             "body": [{"print": ["Mollusc of class: %s", "m.class"]}],
         }
     }
-    v = samplegen.Validator(DummyMethod())
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.BadLoop):
         v.validate_response([loop])
 
 
-def test_loop_collection_reserved_loop_var():
+def test_loop_collection_reserved_loop_var(dummy_api_schema):
     loop = {
         "loop": {
             "collection": "$resp.molluscs",
@@ -462,12 +499,12 @@ def test_loop_collection_reserved_loop_var():
         }
     }
     v = samplegen.Validator(DummyMethod(
-        output=message_factory("$resp.molluscs", repeated_iter=[True])))
+        output=message_factory("$resp.molluscs", repeated_iter=[True])), dummy_api_schema)
     with pytest.raises(types.ReservedVariableName):
         v.validate_response([loop])
 
 
-def test_loop_map():
+def test_loop_map(dummy_api_schema):
     loop = {
         "loop": {
             "map": "$resp.molluscs",
@@ -497,11 +534,11 @@ def test_loop_map():
         },
         type="RESPONSE_TYPE"
     )
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     v.validate_response([loop])
 
 
-def test_collection_loop_lexical_scope_variable():
+def test_collection_loop_lexical_scope_variable(dummy_api_schema):
     statements = [
         {
             "loop": {
@@ -513,12 +550,13 @@ def test_collection_loop_lexical_scope_variable():
         {"define": "cephalopod=m"},
     ]
     v = samplegen.Validator(DummyMethod(
-        output=message_factory("$resp.molluscs", repeated_iter=[True])))
+        output=message_factory("$resp.molluscs", repeated_iter=[True])),
+        dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response(statements)
 
 
-def test_collection_loop_lexical_scope_inline():
+def test_collection_loop_lexical_scope_inline(dummy_api_schema):
     statements = [
         {
             "loop": {
@@ -530,12 +568,13 @@ def test_collection_loop_lexical_scope_inline():
         {"define": "cephalopod=squid"},
     ]
     v = samplegen.Validator(DummyMethod(
-        output=message_factory("$resp.molluscs", repeated_iter=[True])))
+        output=message_factory("$resp.molluscs", repeated_iter=[True])),
+        dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response(statements)
 
 
-def test_map_loop_lexical_scope_key():
+def test_map_loop_lexical_scope_key(dummy_api_schema):
     statements = [
         {
             "loop": {
@@ -571,12 +610,12 @@ def test_map_loop_lexical_scope_key():
         type="RESPONSE_TYPE"
     )
 
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response(statements)
 
 
-def test_map_loop_lexical_scope_value():
+def test_map_loop_lexical_scope_value(dummy_api_schema):
     statements = [
         {
             "loop": {
@@ -612,12 +651,12 @@ def test_map_loop_lexical_scope_value():
         type="RESPONSE_TYPE"
     )
 
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response(statements)
 
 
-def test_map_loop_lexical_scope_inline():
+def test_map_loop_lexical_scope_inline(dummy_api_schema):
     statements = [
         {
             "loop": {
@@ -652,12 +691,12 @@ def test_map_loop_lexical_scope_inline():
         },
         type="RESPONSE_TYPE"
     )
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response(statements)
 
 
-def test_loop_map_reserved_key():
+def test_loop_map_reserved_key(dummy_api_schema):
     loop = {
         "loop": {
             "map": "$resp.molluscs",
@@ -689,12 +728,12 @@ def test_loop_map_reserved_key():
         type="RESPONSE_TYPE"
     )
 
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     with pytest.raises(types.ReservedVariableName):
         v.validate_response([loop])
 
 
-def test_loop_map_reserved_val():
+def test_loop_map_reserved_val(dummy_api_schema):
     loop = {
         "loop": {
             "map": "$resp.molluscs",
@@ -726,12 +765,12 @@ def test_loop_map_reserved_val():
         type="RESPONSE_TYPE"
     )
 
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     with pytest.raises(types.ReservedVariableName):
         v.validate_response([loop])
 
 
-def test_loop_map_undefined():
+def test_loop_map_undefined(dummy_api_schema):
     loop = {
         "loop": {
             "map": "molluscs",
@@ -740,12 +779,12 @@ def test_loop_map_undefined():
             "body": [{"print": ["A %s is a %s", "mollusc", "name"]}],
         }
     }
-    v = samplegen.Validator(DummyMethod())
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response([loop])
 
 
-def test_loop_map_no_key():
+def test_loop_map_no_key(dummy_api_schema):
     loop = {
         "loop": {
             "map": "$resp.molluscs",
@@ -775,11 +814,11 @@ def test_loop_map_no_key():
         type="RESPONSE_TYPE"
     )
 
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     v.validate_response([loop])
 
 
-def test_loop_map_no_value():
+def test_loop_map_no_value(dummy_api_schema):
     loop = {
         "loop": {
             "map": "$resp.molluscs",
@@ -809,11 +848,11 @@ def test_loop_map_no_value():
         type="RESPONSE_TYPE"
     )
 
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     v.validate_response([loop])
 
 
-def test_loop_map_no_key_or_value():
+def test_loop_map_no_key_or_value(dummy_api_schema):
     loop = {"loop": {"map": "$resp.molluscs",
                      # Need at least one of 'key' or 'value'
                      "body": [{"print": ["Dead loop"]}]}}
@@ -839,12 +878,12 @@ def test_loop_map_no_key_or_value():
         type="RESPONSE_TYPE"
     )
 
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     with pytest.raises(types.BadLoop):
         v.validate_response([loop])
 
 
-def test_loop_map_no_map():
+def test_loop_map_no_map(dummy_api_schema):
     loop = {
         "loop": {
             "key": "name",
@@ -852,19 +891,19 @@ def test_loop_map_no_map():
             "body": [{"print": ["A %s is a %s", "mollusc", "name"]}],
         }
     }
-    v = samplegen.Validator(DummyMethod())
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.BadLoop):
         v.validate_response([loop])
 
 
-def test_loop_map_no_body():
+def test_loop_map_no_body(dummy_api_schema):
     loop = {"loop": {"map": "$resp.molluscs", "key": "name", "value": "mollusc"}}
-    v = samplegen.Validator(DummyMethod())
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.BadLoop):
         v.validate_response([loop])
 
 
-def test_loop_map_extra_kword():
+def test_loop_map_extra_kword(dummy_api_schema):
     loop = {
         "loop": {
             "map": "$resp.molluscs",
@@ -874,12 +913,12 @@ def test_loop_map_extra_kword():
             "body": [{"print": ["A %s is a %s", "mollusc", "name"]}],
         }
     }
-    v = samplegen.Validator(DummyMethod())
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.BadLoop):
         v.validate_response([loop])
 
 
-def test_loop_map_redefined_key():
+def test_loop_map_redefined_key(dummy_api_schema):
     statements = [
         {"define": "mollusc=$resp.molluscs"},
         {
@@ -913,12 +952,12 @@ def test_loop_map_redefined_key():
         type="RESPONSE_TYPE"
     )
 
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     with pytest.raises(types.RedefinedVariable):
         v.validate_response(statements)
 
 
-def test_loop_map_redefined_value():
+def test_loop_map_redefined_value(dummy_api_schema):
     statements = [
         {"define": "mollusc=$resp.molluscs"},
         {
@@ -952,12 +991,12 @@ def test_loop_map_redefined_value():
         type="RESPONSE_TYPE"
     )
 
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     with pytest.raises(types.RedefinedVariable):
         v.validate_response(statements)
 
 
-def test_validate_write_file():
+def test_validate_write_file(dummy_api_schema):
     statements = [
         {
             "write_file": {
@@ -972,31 +1011,31 @@ def test_validate_write_file():
             "photo": DummyField(message=DummyMessage(fields={}))
         }
     )
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     v.validate_response(statements)
 
 
-def test_validate_write_file_fname_fmt():
+def test_validate_write_file_fname_fmt(dummy_api_schema):
     statements = [{"write_file":
                    {"filename": ["specimen-%s"], "contents": "$resp.photo"}}]
-    v = samplegen.Validator(DummyMethod())
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.MismatchedFormatSpecifier):
         v.validate_response(statements)
 
 
-def test_validate_write_file_fname_bad_var():
+def test_validate_write_file_fname_bad_var(dummy_api_schema):
     statements = [{
         "write_file": {
             "filename": ["specimen-%s", "squid.species"],
             "contents": "$resp.photo",
         }
     }]
-    v = samplegen.Validator(DummyMethod())
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response(statements)
 
 
-def test_validate_write_file_missing_fname():
+def test_validate_write_file_missing_fname(dummy_api_schema):
     statements = [{"write_file": {"contents": "$resp.photo"}}]
     OutputType = DummyMessage(
         fields={
@@ -1004,12 +1043,12 @@ def test_validate_write_file_missing_fname():
             "photo": DummyField(message=DummyMessage(fields={}))
         }
     )
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     with pytest.raises(types.InvalidStatement):
         v.validate_response(statements)
 
 
-def test_validate_write_file_missing_contents():
+def test_validate_write_file_missing_contents(dummy_api_schema):
     statements = [{"write_file": {"filename": ["specimen-%s",
                                                "$resp.species"]}}]
     OutputType = DummyMessage(
@@ -1019,12 +1058,12 @@ def test_validate_write_file_missing_contents():
         }
     )
 
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     with pytest.raises(types.InvalidStatement):
         v.validate_response(statements)
 
 
-def test_validate_write_file_bad_contents_var():
+def test_validate_write_file_bad_contents_var(dummy_api_schema):
     statements = [{
         "write_file": {
             "filename": ["specimen-%s", "$resp.species"],
@@ -1037,27 +1076,27 @@ def test_validate_write_file_bad_contents_var():
             "photo": DummyField(message=DummyMessage(fields={}))
         }
     )
-    v = samplegen.Validator(DummyMethod(output=OutputType))
+    v = samplegen.Validator(DummyMethod(output=OutputType), dummy_api_schema)
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_response(statements)
 
 
-def test_invalid_statement():
+def test_invalid_statement(dummy_api_schema):
     statements = [{"print": ["Name"], "comment": ["Value"]}]
-    v = samplegen.Validator(DummyMethod())
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.InvalidStatement):
         v.validate_response(statements)
 
 
-def test_invalid_statement2():
+def test_invalid_statement2(dummy_api_schema):
     statements = [{"squidify": ["Statement body"]}]
-    v = samplegen.Validator(DummyMethod())
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.InvalidStatement):
         v.validate_response(statements)
 
 
 # validate_and_transform_request tests
-def test_validate_request_basic():
+def test_validate_request_basic(dummy_api_schema):
     input_type = DummyMessage(
         fields={
             "squid": DummyField(
@@ -1077,7 +1116,7 @@ def test_validate_request_basic():
         type="REQUEST_TYPE"
     )
 
-    v = samplegen.Validator(DummyMethod(input=input_type))
+    v = samplegen.Validator(DummyMethod(input=input_type), dummy_api_schema)
     actual = v.validate_and_transform_request(
         types.CallingForm.Request,
         [
@@ -1106,9 +1145,9 @@ def test_validate_request_basic():
     assert actual == expected
 
 
-def test_validate_request_no_field_parameter():
+def test_validate_request_no_field_parameter(dummy_api_schema):
     # May need to remeove this test because it doesn't necessarily make sense any more.
-    v = samplegen.Validator(DummyMethod())
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.InvalidRequestSetup):
         v.validate_and_transform_request(
             types.CallingForm.Request, [{"squid": "humboldt",
@@ -1116,9 +1155,10 @@ def test_validate_request_no_field_parameter():
         )
 
 
-def test_validate_request_no_such_attribute():
+def test_validate_request_no_such_attribute(dummy_api_schema):
     v = samplegen.Validator(DummyMethod(
-        input=message_factory("mollusc.squid.mantle")))
+        input=message_factory("mollusc.squid.mantle")),
+        dummy_api_schema)
     with pytest.raises(types.BadAttributeLookup):
         v.validate_and_transform_request(
             types.CallingForm.Request,
@@ -1126,9 +1166,10 @@ def test_validate_request_no_such_attribute():
         )
 
 
-def test_validate_request_top_level_field():
+def test_validate_request_top_level_field(dummy_api_schema):
     v = samplegen.Validator(DummyMethod(
-        input=message_factory("mollusc.squid")))
+        input=message_factory("mollusc.squid")),
+        dummy_api_schema)
     actual = v.validate_and_transform_request(
         types.CallingForm.Request,
         [{"field": "squid", "value": "humboldt"}]
@@ -1147,9 +1188,10 @@ def test_validate_request_top_level_field():
     assert actual == expected
 
 
-def test_validate_request_missing_keyword(kword="field"):
+def test_validate_request_missing_keyword(dummy_api_schema, kword="field"):
     v = samplegen.Validator(DummyMethod(
-        input=message_factory("mollusc.squid")))
+        input=message_factory("mollusc.squid")),
+        dummy_api_schema)
     with pytest.raises(types.InvalidRequestSetup):
         v.validate_and_transform_request(
             types.CallingForm.Request,
@@ -1157,13 +1199,14 @@ def test_validate_request_missing_keyword(kword="field"):
         )
 
 
-def test_validate_request_missing_value():
-    test_validate_request_missing_keyword(kword="value")
+def test_validate_request_missing_value(dummy_api_schema):
+    test_validate_request_missing_keyword(dummy_api_schema, kword="value")
 
 
-def test_validate_request_spurious_kword():
+def test_validate_request_spurious_kword(dummy_api_schema):
     v = samplegen.Validator(
-        DummyMethod(input=message_factory("mollusc.squid")))
+        DummyMethod(input=message_factory("mollusc.squid")),
+        dummy_api_schema)
     with pytest.raises(types.InvalidRequestSetup):
         v.validate_and_transform_request(
             types.CallingForm.Request,
@@ -1171,9 +1214,9 @@ def test_validate_request_spurious_kword():
         )
 
 
-def test_validate_request_unknown_field_type():
+def test_validate_request_unknown_field_type(dummy_api_schema):
     v = samplegen.Validator(DummyMethod(
-        input=DummyMessage(fields={"squid": DummyField()})))
+        input=DummyMessage(fields={"squid": DummyField()})), dummy_api_schema)
     with pytest.raises(TypeError):
         v.validate_and_transform_request(
             types.CallingForm.Request,
@@ -1181,9 +1224,9 @@ def test_validate_request_unknown_field_type():
         )
 
 
-def test_validate_request_duplicate_top_level_fields():
+def test_validate_request_duplicate_top_level_fields(dummy_api_schema):
     v = samplegen.Validator(DummyMethod(
-        input=message_factory("mollusc.squid")))
+        input=message_factory("mollusc.squid")), dummy_api_schema)
     with pytest.raises(types.InvalidRequestSetup):
         v.validate_and_transform_request(
             types.CallingForm.Request,
@@ -1192,7 +1235,7 @@ def test_validate_request_duplicate_top_level_fields():
         )
 
 
-def test_validate_request_multiple_arguments():
+def test_validate_request_multiple_arguments(dummy_api_schema):
     input_type = DummyMessage(
         fields={
             "squid": DummyField(
@@ -1213,7 +1256,7 @@ def test_validate_request_multiple_arguments():
         type="REQUEST_TYPE"
     )
 
-    v = samplegen.Validator(DummyMethod(input=input_type))
+    v = samplegen.Validator(DummyMethod(input=input_type), dummy_api_schema)
     actual = v.validate_and_transform_request(
         types.CallingForm.Request,
         [
@@ -1252,7 +1295,7 @@ def test_validate_request_multiple_arguments():
     assert actual == expected
 
 
-def test_validate_request_duplicate_input_param():
+def test_validate_request_duplicate_input_param(dummy_api_schema):
     input_type = DummyMessage(
         fields={
             "squid": DummyField(
@@ -1273,7 +1316,7 @@ def test_validate_request_duplicate_input_param():
         type="REQUEST_TYPE"
     )
 
-    v = samplegen.Validator(DummyMethod(input=input_type))
+    v = samplegen.Validator(DummyMethod(input=input_type), dummy_api_schema)
     with pytest.raises(types.RedefinedVariable):
         v.validate_and_transform_request(
             types.CallingForm.Request,
@@ -1292,8 +1335,8 @@ def test_validate_request_duplicate_input_param():
         )
 
 
-def test_validate_request_reserved_input_param():
-    v = samplegen.Validator(DummyMethod())
+def test_validate_request_reserved_input_param(dummy_api_schema):
+    v = samplegen.Validator(DummyMethod(), dummy_api_schema)
     with pytest.raises(types.ReservedVariableName):
         v.validate_and_transform_request(
             types.CallingForm.Request,
@@ -1307,7 +1350,7 @@ def test_validate_request_reserved_input_param():
         )
 
 
-def test_single_request_client_streaming(
+def test_single_request_client_streaming(dummy_api_schema,
         calling_form=types.CallingForm.RequestStreamingClient):
     # Each API client method really only takes one parameter:
     # either a single protobuf message or an iterable of protobuf messages.
@@ -1342,7 +1385,7 @@ def test_single_request_client_streaming(
         },
         type="MOLLUSC_TYPE"
     )
-    v = samplegen.Validator(DummyMethod(input=input_type))
+    v = samplegen.Validator(DummyMethod(input=input_type), dummy_api_schema)
     with pytest.raises(types.InvalidRequestSetup):
         v.validate_and_transform_request(
             types.CallingForm.RequestStreamingClient,
@@ -1396,25 +1439,25 @@ def test_coerce_response_name():
     assert utils.coerce_response_name("mollusc.squid") == "mollusc.squid"
 
 
-def test_regular_response_type():
+def test_regular_response_type(dummy_api_schema):
     OutputType = TypeVar("OutputType")
     method = DummyMethod(output=OutputType)
 
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     assert v.var_field("$resp").message == OutputType
 
 
-def test_paged_response_type():
+def test_paged_response_type(dummy_api_schema):
     OutputType = TypeVar("OutputType")
     PagedType = TypeVar("PagedType")
     PagedField = DummyField(message=PagedType)
     method = DummyMethod(output=OutputType, paged_result_field=PagedField)
 
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     assert v.var_field("$resp").message == PagedType
 
 
-def test_lro_response_type():
+def test_lro_response_type(dummy_api_schema):
     OutputType = TypeVar("OutputType")
     LroType = TypeVar("LroType")
     method = DummyMethod(
@@ -1422,58 +1465,58 @@ def test_lro_response_type():
             "operation", ["response_type"])(LroType)
     )
 
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     assert v.var_field("$resp").message == LroType
 
 
-def test_validate_expression():
+def test_validate_expression(dummy_api_schema):
     exp = "$resp.coleoidea.octopodiformes.octopus"
     OutputType = message_factory(exp)
     method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
 
     exp_type = v.validate_expression(exp)
     assert exp_type.message.type == "OCTOPUS_TYPE"
 
 
-def test_validate_expression_undefined_base():
+def test_validate_expression_undefined_base(dummy_api_schema):
     exp = "$resp.coleoidea.octopodiformes.octopus"
     OutputType = message_factory(exp)
     method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
 
     with pytest.raises(types.UndefinedVariableReference):
         v.validate_expression("mollusc")
 
 
-def test_validate_expression_no_such_attr():
+def test_validate_expression_no_such_attr(dummy_api_schema):
     OutputType = message_factory("$resp.coleoidea")
     method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
 
     with pytest.raises(types.BadAttributeLookup):
         v.validate_expression("$resp.nautiloidea")
 
 
-def test_validate_expression_non_indexed_non_terminal_repeated():
+def test_validate_expression_non_indexed_non_terminal_repeated(dummy_api_schema):
     # This is a little tricky: there's an attribute hierarchy
     # of response/coleoidea/octopodiformes, but coleoidea is a repeated field,
     # so accessing $resp.coleoidea.octopodiformes doesn't make any sense.
     exp = "$resp.coleoidea.octopodiformes"
     OutputType = message_factory(exp, repeated_iter=[True, False])
     method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
 
     with pytest.raises(types.BadAttributeLookup):
         v.validate_response(
             [{"define": "octopus=$resp.coleoidea.octopodiformes"}])
 
 
-def test_validate_expression_collection():
+def test_validate_expression_collection(dummy_api_schema):
     exp = "$resp.molluscs"
     OutputType = message_factory(exp, repeated_iter=[True])
     method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     v.validate_response(
         [
             {
@@ -1487,7 +1530,7 @@ def test_validate_expression_collection():
     )
 
 
-def test_validate_expression_collection_error():
+def test_validate_expression_collection_error(dummy_api_schema):
     exp = "$resp.molluscs.mollusc"
     OutputType = message_factory(exp)
     method = DummyMethod(output=OutputType)
@@ -1500,48 +1543,48 @@ def test_validate_expression_collection_error():
         }
     }
 
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
 
     # Because 'molluscs' isn't repeated
     with pytest.raises(types.BadLoop):
         v.validate_response([statement])
 
 
-def test_validate_expression_repeated_lookup():
+def test_validate_expression_repeated_lookup(dummy_api_schema):
     exp = "$resp.molluscs.mantle"
     OutputType = message_factory(exp, repeated_iter=[True, False])
     method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     v.validate_expression("$resp.molluscs[0].mantle")
 
 
-def test_validate_expression_repeated_lookup_nested():
+def test_validate_expression_repeated_lookup_nested(dummy_api_schema):
     exp = "$resp.molluscs.tentacles.club"
     OutputType = message_factory(exp, [True, True, False])
     method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     v.validate_expression("$resp.molluscs[0].tentacles[0].club")
 
 
-def test_validate_expression_repeated_lookup_invalid():
+def test_validate_expression_repeated_lookup_invalid(dummy_api_schema):
     exp = "$resp.molluscs.mantle"
     OutputType = message_factory(exp)
     method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     with pytest.raises(types.BadAttributeLookup):
         v.validate_expression("$resp.molluscs[0].mantle")
 
 
-def test_validate_expression_base_attr_is_repeated():
+def test_validate_expression_base_attr_is_repeated(dummy_api_schema):
     exp = "$resp.molluscs.mantle"
     OutputType = message_factory(exp, repeated_iter=[True, False])
     method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     v.validate_response([{"define": "molluscs=$resp.molluscs"}])
     v.validate_expression("molluscs[0].mantle")
 
 
-def test_validate_expression_map_lookup():
+def test_validate_expression_map_lookup(dummy_api_schema):
     # See https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/descriptor.proto#L475
     # for details on how mapped attributes get transformed by the protoc compiler.
     OutputType = DummyMessage(
@@ -1571,11 +1614,11 @@ def test_validate_expression_map_lookup():
         type="MOLLUSC_TYPE"
     )
     method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     v.validate_expression('$resp.cephalopods{"squid"}.mantle')
 
 
-def test_validate_expression_map_lookup_terminal_lookup():
+def test_validate_expression_map_lookup_terminal_lookup(dummy_api_schema):
     OutputType = DummyMessage(
         fields={
             "cephalopods": DummyField(
@@ -1602,11 +1645,11 @@ def test_validate_expression_map_lookup_terminal_lookup():
         type="MOLLUSC_TYPE"
     )
     method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     v.validate_expression('$resp.cephalopods{"squid"}')
 
 
-def test_validate_expression_mapped_no_map_field():
+def test_validate_expression_mapped_no_map_field(dummy_api_schema):
     OutputType = DummyMessage(
         fields={
             "cephalopods": DummyField(
@@ -1634,12 +1677,12 @@ def test_validate_expression_mapped_no_map_field():
         type="MOLLUSC_TYPE"
     )
     method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     with pytest.raises(types.BadAttributeLookup):
         v.validate_expression('$resp.cephalopods{"squid"}.mantle')
 
 
-def test_validate_expression_mapped_no_value():
+def test_validate_expression_mapped_no_value(dummy_api_schema):
     OutputType = DummyMessage(
         fields={
             "cephalopods": DummyField(
@@ -1654,12 +1697,12 @@ def test_validate_expression_mapped_no_value():
         type="MOLLUSC_TYPE"
     )
     method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     with pytest.raises(types.BadAttributeLookup):
         v.validate_expression('$resp.cephalopods{"squid"}.mantle')
 
 
-def test_validate_expression_mapped_no_message():
+def test_validate_expression_mapped_no_message(dummy_api_schema):
     OutputType = DummyMessage(
         fields={
             "cephalopods": DummyField(
@@ -1677,45 +1720,45 @@ def test_validate_expression_mapped_no_message():
         type="MOLLUSC_TYPE"
     )
     method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     with pytest.raises(types.BadAttributeLookup):
         v.validate_expression('$resp.cephalopods{"squid"}.mantle')
 
 
-def test_validate_expresssion_lookup_unrepeated_base():
+def test_validate_expresssion_lookup_unrepeated_base(dummy_api_schema):
     exp = "$resp.molluscs"
     OutputType = message_factory(exp)
     method = DummyMethod(output=OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     with pytest.raises(types.BadAttributeLookup):
         v.validate_response([{"define": "m=$resp[0]"}])
 
 
-def test_validate_expression_malformed_base():
+def test_validate_expression_malformed_base(dummy_api_schema):
     # Note the mistype
     exp = "r$esp.mollusc"
     OutputType = message_factory(exp)
     method = DummyMethod(OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     with pytest.raises(types.BadAttributeLookup):
         v.validate_expression(exp)
 
 
-def test_validate_expression_malformed_attr():
+def test_validate_expression_malformed_attr(dummy_api_schema):
     # Note the mistype
     exp = "$resp.mollu$c"
     OutputType = message_factory(exp)
     method = DummyMethod(OutputType)
-    v = samplegen.Validator(method)
+    v = samplegen.Validator(method, dummy_api_schema)
     with pytest.raises(types.BadAttributeLookup):
         v.validate_expression(exp)
 
 
-def test_validate_request_enum():
+def test_validate_request_enum(dummy_api_schema):
     enum = enum_factory("subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"])
     request_type = message_factory("mollusc.cephalopod.subclass", enum=enum)
 
-    v = samplegen.Validator(DummyMethod(input=request_type))
+    v = samplegen.Validator(DummyMethod(input=request_type), dummy_api_schema)
     actual = v.validate_and_transform_request(
         types.CallingForm.Request,
         [{"field": "cephalopod.subclass", "value": "COLEOIDEA"}]
@@ -1733,11 +1776,11 @@ def test_validate_request_enum():
     assert actual == expected
 
 
-def test_validate_request_enum_top_level():
+def test_validate_request_enum_top_level(dummy_api_schema):
     enum = enum_factory("subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"])
     request_type = message_factory("mollusc.subclass", enum=enum)
 
-    v = samplegen.Validator(DummyMethod(input=request_type))
+    v = samplegen.Validator(DummyMethod(input=request_type), dummy_api_schema)
     actual = v.validate_and_transform_request(
         types.CallingForm.Request,
         [{"field": "subclass", "value": "COLEOIDEA"}]
@@ -1749,11 +1792,11 @@ def test_validate_request_enum_top_level():
     assert actual == expected
 
 
-def test_validate_request_enum_invalid_value():
+def test_validate_request_enum_invalid_value(dummy_api_schema):
     enum = enum_factory("subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"])
     request_type = message_factory("mollusc.cephalopod.subclass", enum=enum)
     v = samplegen.Validator(DummyMethod(output=message_factory("mollusc_result"),
-                                        input=request_type))
+                                        input=request_type), dummy_api_schema)
     with pytest.raises(types.InvalidEnumVariant):
         v.validate_and_transform_request(
             types.CallingForm.Request,
@@ -1762,7 +1805,7 @@ def test_validate_request_enum_invalid_value():
         )
 
 
-def test_validate_request_enum_not_last_attr():
+def test_validate_request_enum_not_last_attr(dummy_api_schema):
     # enum = enum_factory("subclass", ["AMMONOIDEA", "COLEOIDEA", "NAUTILOIDEA"])
     # field = make_field(name="subclass", enum=enum)
     request_type = make_message(
@@ -1779,7 +1822,7 @@ def test_validate_request_enum_not_last_attr():
 
     # request_type = message_factory("mollusc.subclass", enum=enum)
     v = samplegen.Validator(DummyMethod(output=message_factory("mollusc_result"),
-                                        input=request_type))
+                                        input=request_type), dummy_api_schema)
     with pytest.raises(types.NonTerminalPrimitiveOrEnum):
         v.validate_and_transform_request(
             types.CallingForm.Request,
@@ -1852,7 +1895,7 @@ def test_validate_request_resource_name():
     assert actual == expected
 
 
-def test_validate_request_primitive_field():
+def test_validate_request_primitive_field(dummy_api_schema):
     field = make_field(name="species", type="TYPE_STRING")
     request_type = make_message(name="request", fields=[field])
 
@@ -1861,7 +1904,8 @@ def test_validate_request_primitive_field():
         DummyMethod(
             output=message_factory("mollusc_result"),
             input=request_type
-        )
+        ),
+        dummy_api_schema
     )
 
     actual = v.validate_and_transform_request(types.CallingForm.Request,
@@ -1926,18 +1970,18 @@ def test_validate_request_resource_name_mixed_reversed():
     test_validate_request_resource_name_mixed(request)
 
 
-def test_validate_request_no_such_attr():
+def test_validate_request_no_such_attr(dummy_api_schema):
     request = [
         {"field": "taxon%kingdom", "value": "animalia"}
     ]
     method = DummyMethod(input=make_message(name="Request"))
-    v = samplegen.Validator(method=method)
+    v = samplegen.Validator(method, dummy_api_schema)
 
     with pytest.raises(types.BadAttributeLookup):
         v.validate_and_transform_request(types.CallingForm.Request, request)
 
 
-def test_validate_request_no_such_resource():
+def test_validate_request_no_such_resource(dummy_api_schema):
     request = [
         {"field": "taxon%kingdom", "value": "animalia"}
     ]
@@ -1992,7 +2036,7 @@ def test_validate_request_no_such_pattern():
         v.validate_and_transform_request(types.CallingForm.Request, request)
 
 
-def test_validate_request_non_terminal_primitive_field():
+def test_validate_request_non_terminal_primitive_field(dummy_api_schema):
     field = make_field(name="species", type="TYPE_STRING")
     request_type = make_message(name="request", fields=[field])
 
@@ -2001,7 +2045,8 @@ def test_validate_request_non_terminal_primitive_field():
         DummyMethod(
             output=message_factory("mollusc_result"),
             input=request_type
-        )
+        ),
+        dummy_api_schema
     )
 
     with pytest.raises(types.NonTerminalPrimitiveOrEnum):
