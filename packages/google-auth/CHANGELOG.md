@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.3.0](https://www.github.com/googleapis/google-auth-library-python/compare/v2.2.1...v2.3.0) (2021-10-07)
+
+
+### Features
+
+* add support for Python 3.10 ([#882](https://www.github.com/googleapis/google-auth-library-python/issues/882)) ([19d41f8](https://www.github.com/googleapis/google-auth-library-python/commit/19d41f8ec94ab0148d2f09a5d560ae237a87ffdb))
+
+
+### Bug Fixes
+
+* ADC with impersonated workforce pools ([#877](https://www.github.com/googleapis/google-auth-library-python/issues/877)) ([10bd9fb](https://www.github.com/googleapis/google-auth-library-python/commit/10bd9fbecd462435246afa46fd666a2836cd9e89))
+
 ### [2.2.1](https://www.github.com/googleapis/google-auth-library-python/compare/v2.2.0...v2.2.1) (2021-09-28)
 
 
