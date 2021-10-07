@@ -331,5 +331,8 @@ class SpeechGrpcTransport(SpeechTransport):
             )
         return self._stubs["streaming_recognize"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("SpeechGrpcTransport",)
