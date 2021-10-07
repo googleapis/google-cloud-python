@@ -114,6 +114,7 @@ class ListTagValuesRequest(proto.Message):
 
 class ListTagValuesResponse(proto.Message):
     r"""The ListTagValues response.
+
     Attributes:
         tag_values (Sequence[google.cloud.resourcemanager_v3.types.TagValue]):
             A possibly paginated list of TagValues that
@@ -136,6 +137,7 @@ class ListTagValuesResponse(proto.Message):
 
 class GetTagValueRequest(proto.Message):
     r"""The request message for getting a TagValue.
+
     Attributes:
         name (str):
             Required. Resource name for TagValue to be fetched in the
@@ -147,6 +149,7 @@ class GetTagValueRequest(proto.Message):
 
 class CreateTagValueRequest(proto.Message):
     r"""The request message for creating a TagValue.
+
     Attributes:
         tag_value (google.cloud.resourcemanager_v3.types.TagValue):
             Required. The TagValue to be created. Only fields
@@ -163,11 +166,13 @@ class CreateTagValueRequest(proto.Message):
 
 
 class CreateTagValueMetadata(proto.Message):
-    r"""Runtime operation information for creating a TagValue.    """
+    r"""Runtime operation information for creating a TagValue.
+    """
 
 
 class UpdateTagValueRequest(proto.Message):
     r"""The request message for updating a TagValue.
+
     Attributes:
         tag_value (google.cloud.resourcemanager_v3.types.TagValue):
             Required. The new definition of the TagValue. Only fields
@@ -191,11 +196,13 @@ class UpdateTagValueRequest(proto.Message):
 
 
 class UpdateTagValueMetadata(proto.Message):
-    r"""Runtime operation information for updating a TagValue.    """
+    r"""Runtime operation information for updating a TagValue.
+    """
 
 
 class DeleteTagValueRequest(proto.Message):
     r"""The request message for deleting a TagValue.
+
     Attributes:
         name (str):
             Required. Resource name for TagValue to be
@@ -216,7 +223,8 @@ class DeleteTagValueRequest(proto.Message):
 
 
 class DeleteTagValueMetadata(proto.Message):
-    r"""Runtime operation information for deleting a TagValue.    """
+    r"""Runtime operation information for deleting a TagValue.
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

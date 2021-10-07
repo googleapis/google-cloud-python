@@ -57,11 +57,13 @@ class TagBinding(proto.Message):
 
 
 class CreateTagBindingMetadata(proto.Message):
-    r"""Runtime operation information for creating a TagValue.    """
+    r"""Runtime operation information for creating a TagValue.
+    """
 
 
 class CreateTagBindingRequest(proto.Message):
     r"""The request message to create a TagBinding.
+
     Attributes:
         tag_binding (google.cloud.resourcemanager_v3.types.TagBinding):
             Required. The TagBinding to be created.
@@ -76,11 +78,13 @@ class CreateTagBindingRequest(proto.Message):
 
 
 class DeleteTagBindingMetadata(proto.Message):
-    r"""Runtime operation information for deleting a TagBinding.    """
+    r"""Runtime operation information for deleting a TagBinding.
+    """
 
 
 class DeleteTagBindingRequest(proto.Message):
     r"""The request message to delete a TagBinding.
+
     Attributes:
         name (str):
             Required. The name of the TagBinding. This is a String of
@@ -93,6 +97,7 @@ class DeleteTagBindingRequest(proto.Message):
 
 class ListTagBindingsRequest(proto.Message):
     r"""The request message to list all TagBindings for a parent.
+
     Attributes:
         parent (str):
             Required. The full resource name of a
@@ -118,6 +123,7 @@ class ListTagBindingsRequest(proto.Message):
 
 class ListTagBindingsResponse(proto.Message):
     r"""The ListTagBindings response.
+
     Attributes:
         tag_bindings (Sequence[google.cloud.resourcemanager_v3.types.TagBinding]):
             A possibly paginated list of TagBindings for

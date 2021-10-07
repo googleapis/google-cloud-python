@@ -105,6 +105,7 @@ class GetOrganizationRequest(proto.Message):
 
 class SearchOrganizationsRequest(proto.Message):
     r"""The request sent to the ``SearchOrganizations`` method.
+
     Attributes:
         page_size (int):
             Optional. The maximum number of organizations
@@ -143,6 +144,7 @@ class SearchOrganizationsRequest(proto.Message):
 
 class SearchOrganizationsResponse(proto.Message):
     r"""The response returned from the ``SearchOrganizations`` method.
+
     Attributes:
         organizations (Sequence[google.cloud.resourcemanager_v3.types.Organization]):
             The list of Organizations that matched the
@@ -171,13 +173,15 @@ class SearchOrganizationsResponse(proto.Message):
 class DeleteOrganizationMetadata(proto.Message):
     r"""A status object which is used as the ``metadata`` field for the
     operation returned by DeleteOrganization.
-        """
+
+    """
 
 
 class UndeleteOrganizationMetadata(proto.Message):
     r"""A status object which is used as the ``metadata`` field for the
     Operation returned by UndeleteOrganization.
-        """
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

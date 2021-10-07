@@ -38,6 +38,7 @@ __protobuf__ = proto.module(
 
 class TagKey(proto.Message):
     r"""A TagKey, used to group a set of TagValues.
+
     Attributes:
         name (str):
             Immutable. The resource name for a TagKey. Must be in the
@@ -110,6 +111,7 @@ class ListTagKeysRequest(proto.Message):
 
 class ListTagKeysResponse(proto.Message):
     r"""The ListTagKeys response message.
+
     Attributes:
         tag_keys (Sequence[google.cloud.resourcemanager_v3.types.TagKey]):
             List of TagKeys that live under the specified
@@ -130,6 +132,7 @@ class ListTagKeysResponse(proto.Message):
 
 class GetTagKeyRequest(proto.Message):
     r"""The request message for getting a TagKey.
+
     Attributes:
         name (str):
             Required. A resource name in the format ``tagKeys/{id}``,
@@ -141,6 +144,7 @@ class GetTagKeyRequest(proto.Message):
 
 class CreateTagKeyRequest(proto.Message):
     r"""The request message for creating a TagKey.
+
     Attributes:
         tag_key (google.cloud.resourcemanager_v3.types.TagKey):
             Required. The TagKey to be created. Only fields
@@ -157,11 +161,13 @@ class CreateTagKeyRequest(proto.Message):
 
 
 class CreateTagKeyMetadata(proto.Message):
-    r"""Runtime operation information for creating a TagKey.    """
+    r"""Runtime operation information for creating a TagKey.
+    """
 
 
 class UpdateTagKeyRequest(proto.Message):
     r"""The request message for updating a TagKey.
+
     Attributes:
         tag_key (google.cloud.resourcemanager_v3.types.TagKey):
             Required. The new definition of the TagKey. Only the
@@ -187,11 +193,13 @@ class UpdateTagKeyRequest(proto.Message):
 
 
 class UpdateTagKeyMetadata(proto.Message):
-    r"""Runtime operation information for updating a TagKey.    """
+    r"""Runtime operation information for updating a TagKey.
+    """
 
 
 class DeleteTagKeyRequest(proto.Message):
     r"""The request message for deleting a TagKey.
+
     Attributes:
         name (str):
             Required. The resource name of a TagKey to be deleted in the
@@ -213,7 +221,8 @@ class DeleteTagKeyRequest(proto.Message):
 
 
 class DeleteTagKeyMetadata(proto.Message):
-    r"""Runtime operation information for deleting a TagKey.    """
+    r"""Runtime operation information for deleting a TagKey.
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -297,7 +297,8 @@ class UpdateFolderRequest(proto.Message):
 class UpdateFolderMetadata(proto.Message):
     r"""A status object which is used as the ``metadata`` field for the
     Operation returned by UpdateFolder.
-        """
+
+    """
 
 
 class MoveFolderRequest(proto.Message):
@@ -350,7 +351,8 @@ class DeleteFolderRequest(proto.Message):
 class DeleteFolderMetadata(proto.Message):
     r"""A status object which is used as the ``metadata`` field for the
     ``Operation`` returned by ``DeleteFolder``.
-        """
+
+    """
 
 
 class UndeleteFolderRequest(proto.Message):
@@ -368,7 +370,8 @@ class UndeleteFolderRequest(proto.Message):
 class UndeleteFolderMetadata(proto.Message):
     r"""A status object which is used as the ``metadata`` field for the
     ``Operation`` returned by ``UndeleteFolder``.
-        """
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -385,7 +385,8 @@ class UpdateProjectRequest(proto.Message):
 class UpdateProjectMetadata(proto.Message):
     r"""A status object which is used as the ``metadata`` field for the
     Operation returned by UpdateProject.
-        """
+
+    """
 
 
 class MoveProjectRequest(proto.Message):
@@ -408,7 +409,8 @@ class MoveProjectRequest(proto.Message):
 class MoveProjectMetadata(proto.Message):
     r"""A status object which is used as the ``metadata`` field for the
     Operation returned by MoveProject.
-        """
+
+    """
 
 
 class DeleteProjectRequest(proto.Message):
@@ -427,7 +429,8 @@ class DeleteProjectRequest(proto.Message):
 class DeleteProjectMetadata(proto.Message):
     r"""A status object which is used as the ``metadata`` field for the
     Operation returned by ``DeleteProject``.
-        """
+
+    """
 
 
 class UndeleteProjectRequest(proto.Message):
@@ -448,7 +451,8 @@ class UndeleteProjectRequest(proto.Message):
 class UndeleteProjectMetadata(proto.Message):
     r"""A status object which is used as the ``metadata`` field for the
     Operation returned by ``UndeleteProject``.
-        """
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
