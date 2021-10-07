@@ -362,5 +362,8 @@ class VpcAccessServiceGrpcAsyncIOTransport(VpcAccessServiceTransport):
             )
         return self._stubs["delete_connector"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("VpcAccessServiceGrpcAsyncIOTransport",)

@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
 
 class Connector(proto.Message):
     r"""Definition of a Serverless VPC Access connector.
+
     Attributes:
         name (str):
             The resource name in the format
@@ -71,6 +72,7 @@ class Connector(proto.Message):
 
     class Subnet(proto.Message):
         r"""The subnet in which to house the connector
+
         Attributes:
             name (str):
                 Subnet name (relative, not fully qualified).
@@ -100,6 +102,7 @@ class Connector(proto.Message):
 
 class CreateConnectorRequest(proto.Message):
     r"""Request for creating a Serverless VPC Access connector.
+
     Attributes:
         parent (str):
             Required. The project and location in which the
@@ -118,6 +121,7 @@ class CreateConnectorRequest(proto.Message):
 
 class GetConnectorRequest(proto.Message):
     r"""Request for getting a Serverless VPC Access connector.
+
     Attributes:
         name (str):
             Required. Name of a Serverless VPC Access
@@ -149,6 +153,7 @@ class ListConnectorsRequest(proto.Message):
 
 class ListConnectorsResponse(proto.Message):
     r"""Response for listing Serverless VPC Access connectors.
+
     Attributes:
         connectors (Sequence[google.cloud.vpcaccess_v1.types.Connector]):
             List of Serverless VPC Access connectors.
@@ -166,6 +171,7 @@ class ListConnectorsResponse(proto.Message):
 
 class DeleteConnectorRequest(proto.Message):
     r"""Request for deleting a Serverless VPC Access connector.
+
     Attributes:
         name (str):
             Required. Name of a Serverless VPC Access
@@ -177,6 +183,7 @@ class DeleteConnectorRequest(proto.Message):
 
 class OperationMetadata(proto.Message):
     r"""Metadata for google.longrunning.Operation.
+
     Attributes:
         method (str):
             Output only. Method that initiated the
