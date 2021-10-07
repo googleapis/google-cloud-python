@@ -937,5 +937,8 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
             )
         return self._stubs["update_security_marks"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("SecurityCenterGrpcAsyncIOTransport",)

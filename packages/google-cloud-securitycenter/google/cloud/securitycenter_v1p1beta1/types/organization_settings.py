@@ -43,6 +43,7 @@ class OrganizationSettings(proto.Message):
 
     class AssetDiscoveryConfig(proto.Message):
         r"""The configuration used for Asset Discovery runs.
+
         Attributes:
             project_ids (Sequence[str]):
                 The project ids to use for filtering asset

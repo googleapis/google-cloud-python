@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
 
 class RunAssetDiscoveryResponse(proto.Message):
     r"""Response of asset discovery run
+
     Attributes:
         state (google.cloud.securitycenter_v1.types.RunAssetDiscoveryResponse.State):
             The state of an asset discovery run.

@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
 
 class NotificationMessage(proto.Message):
     r"""Cloud SCC's Notification
+
     Attributes:
         notification_config_name (str):
             Name of the notification config that

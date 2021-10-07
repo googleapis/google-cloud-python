@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
 
 class Resource(proto.Message):
     r"""Information related to the Google Cloud resource.
+
     Attributes:
         name (str):
             The full resource name of the resource. See:
