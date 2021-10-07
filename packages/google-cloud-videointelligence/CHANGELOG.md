@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-videointelligence/compare/v2.3.3...v2.4.0) (2021-10-07)
+
+
+### Features
+
+* add context manager support in client ([#229](https://www.github.com/googleapis/python-videointelligence/issues/229)) ([ac75850](https://www.github.com/googleapis/python-videointelligence/commit/ac75850925ac29bd3ad238bebd48cbedfe638942))
+
 ### [2.3.3](https://www.github.com/googleapis/python-videointelligence/compare/v2.3.2...v2.3.3) (2021-09-24)
 
 
