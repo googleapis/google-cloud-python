@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-resource-settings/compare/v1.0.2...v1.1.0) (2021-10-07)
+
+
+### Features
+
+* add context manager support in client ([#49](https://www.github.com/googleapis/python-resource-settings/issues/49)) ([91201e0](https://www.github.com/googleapis/python-resource-settings/commit/91201e09bed298a96fa9e4223d454f5ac4336441))
+
 ### [1.0.2](https://www.github.com/googleapis/python-resource-settings/compare/v1.0.1...v1.0.2) (2021-09-30)
 
 
