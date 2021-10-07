@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.5.2](https://www.github.com/googleapis/python-analytics-admin/compare/v0.5.1...v0.5.2) (2021-10-07)
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([aa076a9](https://www.github.com/googleapis/python-analytics-admin/commit/aa076a9bde90aaa2ceeaaa580c499a42e212b39f))
+
+
+### Documentation
+
+* add samples for accounts.search_change_history_events() method ([#137](https://www.github.com/googleapis/python-analytics-admin/issues/137)) ([c299b37](https://www.github.com/googleapis/python-analytics-admin/commit/c299b370c42a8684faa86f5bb5f65b3da8a2d0a8))
+
 ### [0.5.1](https://www.github.com/googleapis/python-analytics-admin/compare/v0.5.0...v0.5.1) (2021-09-24)
 
 
