@@ -94,7 +94,8 @@ class RunPipelineRequest(proto.Message):
 class RunPipelineResponse(proto.Message):
     r"""The response to the RunPipeline method, returned in the
     operation's result field on success.
-        """
+
+    """
 
 
 class Pipeline(proto.Message):
@@ -131,6 +132,7 @@ class Pipeline(proto.Message):
 
 class Action(proto.Message):
     r"""Specifies a single action that runs a Docker container.
+
     Attributes:
         container_name (str):
             An optional name for the container. The
@@ -379,6 +381,7 @@ class Resources(proto.Message):
 
 class VirtualMachine(proto.Message):
     r"""Carries information about a Compute Engine VM resource.
+
     Attributes:
         machine_type (str):
             Required. The machine type of the virtual machine to create.
@@ -501,6 +504,7 @@ class VirtualMachine(proto.Message):
 
 class ServiceAccount(proto.Message):
     r"""Carries information about a Google Cloud service account.
+
     Attributes:
         email (str):
             Email address of the service account. If not
@@ -543,6 +547,7 @@ class Accelerator(proto.Message):
 
 class Network(proto.Message):
     r"""VM networking options.
+
     Attributes:
         network (str):
             The network name to attach the VM's network interface to.
@@ -683,6 +688,7 @@ class PersistentDisk(proto.Message):
 
 class ExistingDisk(proto.Message):
     r"""Configuration for an existing disk to be attached to the VM.
+
     Attributes:
         disk (str):
             If ``disk`` contains slashes, the Cloud Life Sciences API
@@ -705,6 +711,7 @@ class ExistingDisk(proto.Message):
 
 class NFSMount(proto.Message):
     r"""Configuration for an ``NFSMount`` to be attached to the VM.
+
     Attributes:
         target (str):
             A target NFS mount. The target must be specified as
@@ -888,6 +895,7 @@ class WorkerReleasedEvent(proto.Message):
 
 class PullStartedEvent(proto.Message):
     r"""An event generated when the worker starts pulling an image.
+
     Attributes:
         image_uri (str):
             The URI of the image that was pulled.
@@ -898,6 +906,7 @@ class PullStartedEvent(proto.Message):
 
 class PullStoppedEvent(proto.Message):
     r"""An event generated when the worker stops pulling an image.
+
     Attributes:
         image_uri (str):
             The URI of the image that was pulled.
@@ -908,6 +917,7 @@ class PullStoppedEvent(proto.Message):
 
 class ContainerStartedEvent(proto.Message):
     r"""An event generated when a container starts.
+
     Attributes:
         action_id (int):
             The numeric ID of the action that started
@@ -933,6 +943,7 @@ class ContainerStartedEvent(proto.Message):
 
 class ContainerStoppedEvent(proto.Message):
     r"""An event generated when a container exits.
+
     Attributes:
         action_id (int):
             The numeric ID of the action that started
