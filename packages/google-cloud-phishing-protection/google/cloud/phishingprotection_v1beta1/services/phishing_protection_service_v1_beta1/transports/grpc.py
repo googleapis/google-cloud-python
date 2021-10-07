@@ -264,5 +264,8 @@ class PhishingProtectionServiceV1Beta1GrpcTransport(
             )
         return self._stubs["report_phishing"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("PhishingProtectionServiceV1Beta1GrpcTransport",)
