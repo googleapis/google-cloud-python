@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-retail/compare/v1.0.2...v1.1.0) (2021-10-07)
+
+
+### Features
+
+* add context manager support in client ([#101](https://www.github.com/googleapis/python-retail/issues/101)) ([3e68d78](https://www.github.com/googleapis/python-retail/commit/3e68d78e6f0c5d2e65f148935446baa92b5dd8ef))
+
 ### [1.0.2](https://www.github.com/googleapis/python-retail/compare/v1.0.1...v1.0.2) (2021-09-30)
 
 
