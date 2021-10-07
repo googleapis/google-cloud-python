@@ -260,5 +260,8 @@ class LookupServiceGrpcAsyncIOTransport(LookupServiceTransport):
             )
         return self._stubs["resolve_service"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("LookupServiceGrpcAsyncIOTransport",)

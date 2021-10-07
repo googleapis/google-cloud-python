@@ -255,5 +255,8 @@ class LookupServiceGrpcTransport(LookupServiceTransport):
             )
         return self._stubs["resolve_service"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("LookupServiceGrpcTransport",)
