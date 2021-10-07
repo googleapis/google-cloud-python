@@ -84,6 +84,7 @@ class ExtendedSourceContext(proto.Message):
 
 class AliasContext(proto.Message):
     r"""An alias to a repo revision.
+
     Attributes:
         kind (google.cloud.source_context_v1.types.AliasContext.Kind):
             The alias kind.
@@ -143,6 +144,7 @@ class CloudWorkspaceSourceContext(proto.Message):
 
 class GerritSourceContext(proto.Message):
     r"""A SourceContext referring to a Gerrit project.
+
     Attributes:
         host_uri (str):
             The URI of a running Gerrit instance.
@@ -186,6 +188,7 @@ class GitSourceContext(proto.Message):
 
 class RepoId(proto.Message):
     r"""A unique identifier for a cloud repo.
+
     Attributes:
         project_repo_id (google.cloud.source_context_v1.types.ProjectRepoId):
             A combination of a project ID and a repo
