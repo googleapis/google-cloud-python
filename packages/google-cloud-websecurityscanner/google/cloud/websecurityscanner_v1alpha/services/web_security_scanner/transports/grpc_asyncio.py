@@ -608,5 +608,8 @@ class WebSecurityScannerGrpcAsyncIOTransport(WebSecurityScannerTransport):
             )
         return self._stubs["list_finding_type_stats"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("WebSecurityScannerGrpcAsyncIOTransport",)

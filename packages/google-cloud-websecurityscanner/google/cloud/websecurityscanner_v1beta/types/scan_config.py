@@ -102,6 +102,7 @@ class ScanConfig(proto.Message):
 
     class Authentication(proto.Message):
         r"""Scan authentication configuration.
+
         Attributes:
             google_account (google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.GoogleAccount):
                 Authentication using a Google account.
@@ -163,6 +164,7 @@ class ScanConfig(proto.Message):
 
     class Schedule(proto.Message):
         r"""Scan schedule configuration.
+
         Attributes:
             schedule_time (google.protobuf.timestamp_pb2.Timestamp):
                 A timestamp indicates when the next run will

@@ -52,6 +52,7 @@ __protobuf__ = proto.module(
 
 class CreateScanConfigRequest(proto.Message):
     r"""Request for the ``CreateScanConfig`` method.
+
     Attributes:
         parent (str):
             Required. The parent resource name where the
@@ -70,6 +71,7 @@ class CreateScanConfigRequest(proto.Message):
 
 class DeleteScanConfigRequest(proto.Message):
     r"""Request for the ``DeleteScanConfig`` method.
+
     Attributes:
         name (str):
             Required. The resource name of the ScanConfig
@@ -82,6 +84,7 @@ class DeleteScanConfigRequest(proto.Message):
 
 class GetScanConfigRequest(proto.Message):
     r"""Request for the ``GetScanConfig`` method.
+
     Attributes:
         name (str):
             Required. The resource name of the ScanConfig
@@ -94,6 +97,7 @@ class GetScanConfigRequest(proto.Message):
 
 class ListScanConfigsRequest(proto.Message):
     r"""Request for the ``ListScanConfigs`` method.
+
     Attributes:
         parent (str):
             Required. The parent resource name, which
@@ -118,6 +122,7 @@ class ListScanConfigsRequest(proto.Message):
 
 class UpdateScanConfigRequest(proto.Message):
     r"""Request for the ``UpdateScanConfigRequest`` method.
+
     Attributes:
         scan_config (google.cloud.websecurityscanner_v1alpha.types.ScanConfig):
             Required. The ScanConfig to be updated. The
@@ -140,6 +145,7 @@ class UpdateScanConfigRequest(proto.Message):
 
 class ListScanConfigsResponse(proto.Message):
     r"""Response for the ``ListScanConfigs`` method.
+
     Attributes:
         scan_configs (Sequence[google.cloud.websecurityscanner_v1alpha.types.ScanConfig]):
             The list of ScanConfigs returned.
@@ -161,6 +167,7 @@ class ListScanConfigsResponse(proto.Message):
 
 class StartScanRunRequest(proto.Message):
     r"""Request for the ``StartScanRun`` method.
+
     Attributes:
         name (str):
             Required. The resource name of the ScanConfig
@@ -173,6 +180,7 @@ class StartScanRunRequest(proto.Message):
 
 class GetScanRunRequest(proto.Message):
     r"""Request for the ``GetScanRun`` method.
+
     Attributes:
         name (str):
             Required. The resource name of the ScanRun to
@@ -185,6 +193,7 @@ class GetScanRunRequest(proto.Message):
 
 class ListScanRunsRequest(proto.Message):
     r"""Request for the ``ListScanRuns`` method.
+
     Attributes:
         parent (str):
             Required. The parent resource name, which
@@ -209,6 +218,7 @@ class ListScanRunsRequest(proto.Message):
 
 class ListScanRunsResponse(proto.Message):
     r"""Response for the ``ListScanRuns`` method.
+
     Attributes:
         scan_runs (Sequence[google.cloud.websecurityscanner_v1alpha.types.ScanRun]):
             The list of ScanRuns returned.
@@ -228,6 +238,7 @@ class ListScanRunsResponse(proto.Message):
 
 class StopScanRunRequest(proto.Message):
     r"""Request for the ``StopScanRun`` method.
+
     Attributes:
         name (str):
             Required. The resource name of the ScanRun to
@@ -240,6 +251,7 @@ class StopScanRunRequest(proto.Message):
 
 class ListCrawledUrlsRequest(proto.Message):
     r"""Request for the ``ListCrawledUrls`` method.
+
     Attributes:
         parent (str):
             Required. The parent resource name, which
@@ -264,6 +276,7 @@ class ListCrawledUrlsRequest(proto.Message):
 
 class ListCrawledUrlsResponse(proto.Message):
     r"""Response for the ``ListCrawledUrls`` method.
+
     Attributes:
         crawled_urls (Sequence[google.cloud.websecurityscanner_v1alpha.types.CrawledUrl]):
             The list of CrawledUrls returned.
@@ -285,6 +298,7 @@ class ListCrawledUrlsResponse(proto.Message):
 
 class GetFindingRequest(proto.Message):
     r"""Request for the ``GetFinding`` method.
+
     Attributes:
         name (str):
             Required. The resource name of the Finding to
@@ -297,6 +311,7 @@ class GetFindingRequest(proto.Message):
 
 class ListFindingsRequest(proto.Message):
     r"""Request for the ``ListFindings`` method.
+
     Attributes:
         parent (str):
             Required. The parent resource name, which
@@ -326,6 +341,7 @@ class ListFindingsRequest(proto.Message):
 
 class ListFindingsResponse(proto.Message):
     r"""Response for the ``ListFindings`` method.
+
     Attributes:
         findings (Sequence[google.cloud.websecurityscanner_v1alpha.types.Finding]):
             The list of Findings returned.
@@ -345,6 +361,7 @@ class ListFindingsResponse(proto.Message):
 
 class ListFindingTypeStatsRequest(proto.Message):
     r"""Request for the ``ListFindingTypeStats`` method.
+
     Attributes:
         parent (str):
             Required. The parent resource name, which
@@ -357,6 +374,7 @@ class ListFindingTypeStatsRequest(proto.Message):
 
 class ListFindingTypeStatsResponse(proto.Message):
     r"""Response for the ``ListFindingTypeStats`` method.
+
     Attributes:
         finding_type_stats (Sequence[google.cloud.websecurityscanner_v1alpha.types.FindingTypeStats]):
             The list of FindingTypeStats returned.
