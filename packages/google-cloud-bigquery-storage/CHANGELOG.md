@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+### [2.9.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.9.0...v2.9.1) (2021-10-06)
+
+
+### Documentation
+
+* **samples:** Add minimal sample to show Write API in pending mode ([#322](https://www.github.com/googleapis/python-bigquery-storage/issues/322)) ([db51469](https://www.github.com/googleapis/python-bigquery-storage/commit/db5146980bd1a358413c56f6e090c07277bfac26))
+
 ## [2.9.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.8.0...v2.9.0) (2021-09-27)
 
 
