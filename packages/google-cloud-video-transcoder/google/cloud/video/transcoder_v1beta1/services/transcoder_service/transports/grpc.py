@@ -437,5 +437,8 @@ class TranscoderServiceGrpcTransport(TranscoderServiceTransport):
             )
         return self._stubs["delete_job_template"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("TranscoderServiceGrpcTransport",)

@@ -37,6 +37,7 @@ __protobuf__ = proto.module(
 
 class CreateJobRequest(proto.Message):
     r"""Request message for ``TranscoderService.CreateJob``.
+
     Attributes:
         parent (str):
             Required. The parent location to create and process this
@@ -81,6 +82,7 @@ class ListJobsRequest(proto.Message):
 
 class GetJobRequest(proto.Message):
     r"""Request message for ``TranscoderService.GetJob``.
+
     Attributes:
         name (str):
             Required. The name of the job to retrieve. Format:
@@ -92,6 +94,7 @@ class GetJobRequest(proto.Message):
 
 class DeleteJobRequest(proto.Message):
     r"""Request message for ``TranscoderService.DeleteJob``.
+
     Attributes:
         name (str):
             Required. The name of the job to delete. Format:
@@ -108,6 +111,7 @@ class DeleteJobRequest(proto.Message):
 
 class ListJobsResponse(proto.Message):
     r"""Response message for ``TranscoderService.ListJobs``.
+
     Attributes:
         jobs (Sequence[google.cloud.video.transcoder_v1.types.Job]):
             List of jobs in the specified region.
@@ -128,6 +132,7 @@ class ListJobsResponse(proto.Message):
 
 class CreateJobTemplateRequest(proto.Message):
     r"""Request message for ``TranscoderService.CreateJobTemplate``.
+
     Attributes:
         parent (str):
             Required. The parent location to create this job template.
@@ -152,6 +157,7 @@ class CreateJobTemplateRequest(proto.Message):
 
 class ListJobTemplatesRequest(proto.Message):
     r"""Request message for ``TranscoderService.ListJobTemplates``.
+
     Attributes:
         parent (str):
             Required. The parent location from which to retrieve the
@@ -180,6 +186,7 @@ class ListJobTemplatesRequest(proto.Message):
 
 class GetJobTemplateRequest(proto.Message):
     r"""Request message for ``TranscoderService.GetJobTemplate``.
+
     Attributes:
         name (str):
             Required. The name of the job template to retrieve. Format:
@@ -191,6 +198,7 @@ class GetJobTemplateRequest(proto.Message):
 
 class DeleteJobTemplateRequest(proto.Message):
     r"""Request message for ``TranscoderService.DeleteJobTemplate``.
+
     Attributes:
         name (str):
             Required. The name of the job template to delete.
@@ -207,6 +215,7 @@ class DeleteJobTemplateRequest(proto.Message):
 
 class ListJobTemplatesResponse(proto.Message):
     r"""Response message for ``TranscoderService.ListJobTemplates``.
+
     Attributes:
         job_templates (Sequence[google.cloud.video.transcoder_v1.types.JobTemplate]):
             List of job templates in the specified
