@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-vpc-access/compare/v1.0.2...v1.1.0) (2021-10-07)
+
+
+### Features
+
+* add context manager support in client ([#51](https://www.github.com/googleapis/python-vpc-access/issues/51)) ([f031d91](https://www.github.com/googleapis/python-vpc-access/commit/f031d910e7924ae6db9ac20bf26a38b74e36597f))
+
 ### [1.0.2](https://www.github.com/googleapis/python-vpc-access/compare/v1.0.1...v1.0.2) (2021-09-30)
 
 
