@@ -112,6 +112,7 @@ class Secret(proto.Message):
 
 class SecretVersion(proto.Message):
     r"""A secret version resource in the Secret Manager API.
+
     Attributes:
         name (str):
             Output only. The resource name of the
@@ -377,6 +378,7 @@ class ReplicationStatus(proto.Message):
 
 class CustomerManagedEncryptionStatus(proto.Message):
     r"""Describes the status of customer-managed encryption.
+
     Attributes:
         kms_key_version_name (str):
             Required. The resource name of the Cloud KMS
