@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://www.github.com/googleapis/python-media-translation/compare/v0.5.4...v0.6.0) (2021-10-07)
+
+
+### Features
+
+* add context manager support in client ([#116](https://www.github.com/googleapis/python-media-translation/issues/116)) ([50de95e](https://www.github.com/googleapis/python-media-translation/commit/50de95e8586e900dad8d8c43c2c69f7ec578f9a1))
+
 ### [0.5.4](https://www.github.com/googleapis/python-media-translation/compare/v0.5.3...v0.5.4) (2021-09-24)
 
 
