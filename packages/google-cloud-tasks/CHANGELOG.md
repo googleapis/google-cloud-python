@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.6.0](https://www.github.com/googleapis/python-tasks/compare/v2.5.3...v2.6.0) (2021-10-07)
+
+
+### Features
+
+* add context manager support in client ([#173](https://www.github.com/googleapis/python-tasks/issues/173)) ([ceec8f1](https://www.github.com/googleapis/python-tasks/commit/ceec8f173af696d26cf367af2d969bf98987df2a))
+
 ### [2.5.3](https://www.github.com/googleapis/python-tasks/compare/v2.5.2...v2.5.3) (2021-09-30)
 
 
