@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.6.0](https://www.github.com/googleapis/python-texttospeech/compare/v2.5.3...v2.6.0) (2021-10-07)
+
+
+### Features
+
+* add context manager support in client ([#196](https://www.github.com/googleapis/python-texttospeech/issues/196)) ([73d9290](https://www.github.com/googleapis/python-texttospeech/commit/73d9290cdea69a00ba317ae017a1d07bcf734989))
+
 ### [2.5.3](https://www.github.com/googleapis/python-texttospeech/compare/v2.5.2...v2.5.3) (2021-09-24)
 
 
