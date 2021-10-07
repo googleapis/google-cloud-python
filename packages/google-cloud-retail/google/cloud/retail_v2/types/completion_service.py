@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
 
 class CompleteQueryRequest(proto.Message):
     r"""Auto-complete parameters.
+
     Attributes:
         catalog (str):
             Required. Catalog for which the completion is performed.
@@ -105,6 +106,7 @@ class CompleteQueryRequest(proto.Message):
 
 class CompleteQueryResponse(proto.Message):
     r"""Response of the auto-complete query.
+
     Attributes:
         completion_results (Sequence[google.cloud.retail_v2.types.CompleteQueryResponse.CompletionResult]):
             Results of the matching suggestions. The
@@ -140,6 +142,7 @@ class CompleteQueryResponse(proto.Message):
 
     class CompletionResult(proto.Message):
         r"""Resource that represents completion results.
+
         Attributes:
             suggestion (str):
                 The suggestion for the query.
@@ -155,6 +158,7 @@ class CompleteQueryResponse(proto.Message):
 
     class RecentSearchResult(proto.Message):
         r"""Recent search of this user.
+
         Attributes:
             recent_search (str):
                 The recent search query.

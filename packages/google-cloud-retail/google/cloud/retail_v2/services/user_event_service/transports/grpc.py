@@ -403,5 +403,8 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
             )
         return self._stubs["rejoin_user_events"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("UserEventServiceGrpcTransport",)

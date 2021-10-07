@@ -225,6 +225,7 @@ class FulfillmentInfo(proto.Message):
 
 class Image(proto.Message):
     r"""[Product][google.cloud.retail.v2.Product] thumbnail/detail image.
+
     Attributes:
         uri (str):
             Required. URI of the image.
@@ -256,6 +257,7 @@ class Image(proto.Message):
 
 class Interval(proto.Message):
     r"""A floating point interval.
+
     Attributes:
         minimum (float):
             Inclusive lower bound.
@@ -405,6 +407,7 @@ class PriceInfo(proto.Message):
 
 class Rating(proto.Message):
     r"""The rating of a [Product][google.cloud.retail.v2.Product].
+
     Attributes:
         rating_count (int):
             The total number of ratings. This value is independent of
@@ -437,6 +440,7 @@ class Rating(proto.Message):
 
 class UserInfo(proto.Message):
     r"""Information of an end user.
+
     Attributes:
         user_id (str):
             Highly recommended for logged-in users. Unique identifier
@@ -498,6 +502,7 @@ class UserInfo(proto.Message):
 
 class Promotion(proto.Message):
     r"""Promotion information.
+
     Attributes:
         promotion_id (str):
             ID of the promotion. For example, "free gift".

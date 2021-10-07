@@ -383,5 +383,8 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
             )
         return self._stubs["get_default_branch"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("CatalogServiceGrpcTransport",)

@@ -323,5 +323,8 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
             )
         return self._stubs["import_completion_data"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("CompletionServiceGrpcAsyncIOTransport",)

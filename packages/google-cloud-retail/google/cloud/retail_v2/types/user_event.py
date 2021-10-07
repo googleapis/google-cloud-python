@@ -300,6 +300,7 @@ class UserEvent(proto.Message):
 
 class ProductDetail(proto.Message):
     r"""Detailed product information associated with a user event.
+
     Attributes:
         product (google.cloud.retail_v2.types.Product):
             Required. [Product][google.cloud.retail.v2.Product]
@@ -357,6 +358,7 @@ class CompletionDetail(proto.Message):
 
 class PurchaseTransaction(proto.Message):
     r"""A transaction represents the entire purchase transaction.
+
     Attributes:
         id (str):
             The transaction ID with a length limit of 128

@@ -131,6 +131,7 @@ class UpdateCatalogRequest(proto.Message):
 
 class SetDefaultBranchRequest(proto.Message):
     r"""Request message to set a specified branch as new default_branch.
+
     Attributes:
         catalog (str):
             Full resource name of the catalog, such as

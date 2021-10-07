@@ -88,6 +88,7 @@ class GcsSource(proto.Message):
 
 class BigQuerySource(proto.Message):
     r"""BigQuery source import data from.
+
     Attributes:
         partition_date (google.type.date_pb2.Date):
             BigQuery time partitioned table's \_PARTITIONDATE in
@@ -177,6 +178,7 @@ class UserEventInlineSource(proto.Message):
 
 class ImportErrorsConfig(proto.Message):
     r"""Configuration of destination for Import related errors.
+
     Attributes:
         gcs_prefix (str):
             Google Cloud Storage path for import errors. This must be an
@@ -190,6 +192,7 @@ class ImportErrorsConfig(proto.Message):
 
 class ImportProductsRequest(proto.Message):
     r"""Request message for Import methods.
+
     Attributes:
         parent (str):
             Required.
@@ -257,6 +260,7 @@ class ImportProductsRequest(proto.Message):
 
 class ImportUserEventsRequest(proto.Message):
     r"""Request message for the ImportUserEvents request.
+
     Attributes:
         parent (str):
             Required.
@@ -277,6 +281,7 @@ class ImportUserEventsRequest(proto.Message):
 
 class ImportCompletionDataRequest(proto.Message):
     r"""Request message for ImportCompletionData methods.
+
     Attributes:
         parent (str):
             Required. The catalog which the suggestions dataset belongs
@@ -305,6 +310,7 @@ class ImportCompletionDataRequest(proto.Message):
 
 class ProductInputConfig(proto.Message):
     r"""The input config source for products.
+
     Attributes:
         product_inline_source (google.cloud.retail_v2.types.ProductInlineSource):
             The Inline source for the input content for
@@ -329,6 +335,7 @@ class ProductInputConfig(proto.Message):
 
 class UserEventInputConfig(proto.Message):
     r"""The input config source for user events.
+
     Attributes:
         user_event_inline_source (google.cloud.retail_v2.types.UserEventInlineSource):
             Required. The Inline source for the input
@@ -353,6 +360,7 @@ class UserEventInputConfig(proto.Message):
 
 class CompletionDataInputConfig(proto.Message):
     r"""The input config source for completion data.
+
     Attributes:
         big_query_source (google.cloud.retail_v2.types.BigQuerySource):
             Required. BigQuery input source.

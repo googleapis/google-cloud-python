@@ -32,6 +32,7 @@ __protobuf__ = proto.module(
 
 class WriteUserEventRequest(proto.Message):
     r"""Request message for WriteUserEvent method.
+
     Attributes:
         parent (str):
             Required. The parent catalog resource name, such as
@@ -46,6 +47,7 @@ class WriteUserEventRequest(proto.Message):
 
 class CollectUserEventRequest(proto.Message):
     r"""Request message for CollectUserEvent method.
+
     Attributes:
         parent (str):
             Required. The parent catalog name, such as
@@ -74,6 +76,7 @@ class CollectUserEventRequest(proto.Message):
 
 class RejoinUserEventsRequest(proto.Message):
     r"""Request message for RejoinUserEvents method.
+
     Attributes:
         parent (str):
             Required. The parent catalog resource name, such as
@@ -107,6 +110,7 @@ class RejoinUserEventsRequest(proto.Message):
 
 class RejoinUserEventsResponse(proto.Message):
     r"""Response message for RejoinUserEvents method.
+
     Attributes:
         rejoined_user_events_count (int):
             Number of user events that were joined with
@@ -117,7 +121,8 @@ class RejoinUserEventsResponse(proto.Message):
 
 
 class RejoinUserEventsMetadata(proto.Message):
-    r"""Metadata for RejoinUserEvents method.    """
+    r"""Metadata for RejoinUserEvents method.
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

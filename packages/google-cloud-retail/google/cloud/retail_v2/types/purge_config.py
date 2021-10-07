@@ -26,11 +26,13 @@ class PurgeMetadata(proto.Message):
     r"""Metadata related to the progress of the Purge operation.
     This will be returned by the
     google.longrunning.Operation.metadata field.
-        """
+
+    """
 
 
 class PurgeUserEventsRequest(proto.Message):
     r"""Request message for PurgeUserEvents method.
+
     Attributes:
         parent (str):
             Required. The resource name of the catalog under which the

@@ -417,5 +417,8 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
             )
         return self._stubs["rejoin_user_events"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("UserEventServiceGrpcAsyncIOTransport",)

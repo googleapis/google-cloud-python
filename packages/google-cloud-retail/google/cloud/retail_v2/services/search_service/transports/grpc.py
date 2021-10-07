@@ -261,5 +261,8 @@ class SearchServiceGrpcTransport(SearchServiceTransport):
             )
         return self._stubs["search"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("SearchServiceGrpcTransport",)
