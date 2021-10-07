@@ -863,5 +863,8 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
             )
         return self._stubs["list_reusable_configs"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("CertificateAuthorityServiceGrpcTransport",)

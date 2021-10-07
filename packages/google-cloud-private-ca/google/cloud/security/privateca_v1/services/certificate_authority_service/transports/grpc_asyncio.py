@@ -1128,5 +1128,8 @@ class CertificateAuthorityServiceGrpcAsyncIOTransport(
             )
         return self._stubs["update_certificate_template"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("CertificateAuthorityServiceGrpcAsyncIOTransport",)

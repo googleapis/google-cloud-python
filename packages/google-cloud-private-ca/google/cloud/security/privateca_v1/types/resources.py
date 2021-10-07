@@ -904,6 +904,7 @@ class X509Parameters(proto.Message):
 
     class CaOptions(proto.Message):
         r"""Describes values that are relevant in a CA certificate.
+
         Attributes:
             is_ca (bool):
                 Optional. Refers to the "CA" X.509 extension,
@@ -1141,6 +1142,7 @@ class CertificateDescription(proto.Message):
 
     class CertificateFingerprint(proto.Message):
         r"""A group of fingerprints for the x509 certificate.
+
         Attributes:
             sha256_hash (str):
                 The SHA 256 hash, encoded in hexadecimal, of

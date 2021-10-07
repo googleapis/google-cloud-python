@@ -319,6 +319,7 @@ class CertificateAuthority(proto.Message):
 
         class AllowedConfigList(proto.Message):
             r"""
+
             Attributes:
                 allowed_config_values (Sequence[google.cloud.security.privateca_v1beta1.types.ReusableConfigWrapper]):
                     Required. All
@@ -770,6 +771,7 @@ class ReusableConfigValues(proto.Message):
 
     class CaOptions(proto.Message):
         r"""Describes values that are relevant in a CA certificate.
+
         Attributes:
             is_ca (google.protobuf.wrappers_pb2.BoolValue):
                 Optional. Refers to the "CA" X.509 extension,
@@ -1038,6 +1040,7 @@ class CertificateDescription(proto.Message):
 
     class CertificateFingerprint(proto.Message):
         r"""A group of fingerprints for the x509 certificate.
+
         Attributes:
             sha256_hash (str):
                 The SHA 256 hash, encoded in hexadecimal, of
