@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.6.0](https://www.github.com/googleapis/python-monitoring/compare/v2.5.2...v2.6.0) (2021-10-07)
+
+
+### Features
+
+* add context manager support in client ([#230](https://www.github.com/googleapis/python-monitoring/issues/230)) ([954dd18](https://www.github.com/googleapis/python-monitoring/commit/954dd18966520dbc623470ef528166d83d3e19ba))
+
 ### [2.5.2](https://www.github.com/googleapis/python-monitoring/compare/v2.5.1...v2.5.2) (2021-09-30)
 
 
