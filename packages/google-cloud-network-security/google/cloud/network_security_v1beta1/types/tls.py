@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
 
 class GrpcEndpoint(proto.Message):
     r"""Specification of the GRPC Endpoint.
+
     Attributes:
         target_uri (str):
             Required. The target URI of the gRPC

@@ -89,6 +89,7 @@ class ClientTlsPolicy(proto.Message):
 
 class ListClientTlsPoliciesRequest(proto.Message):
     r"""Request used by the ListClientTlsPolicies method.
+
     Attributes:
         parent (str):
             Required. The project and location from which the
@@ -111,6 +112,7 @@ class ListClientTlsPoliciesRequest(proto.Message):
 
 class ListClientTlsPoliciesResponse(proto.Message):
     r"""Response returned by the ListClientTlsPolicies method.
+
     Attributes:
         client_tls_policies (Sequence[google.cloud.network_security_v1beta1.types.ClientTlsPolicy]):
             List of ClientTlsPolicy resources.
@@ -133,6 +135,7 @@ class ListClientTlsPoliciesResponse(proto.Message):
 
 class GetClientTlsPolicyRequest(proto.Message):
     r"""Request used by the GetClientTlsPolicy method.
+
     Attributes:
         name (str):
             Required. A name of the ClientTlsPolicy to get. Must be in
@@ -145,6 +148,7 @@ class GetClientTlsPolicyRequest(proto.Message):
 
 class CreateClientTlsPolicyRequest(proto.Message):
     r"""Request used by the CreateClientTlsPolicy method.
+
     Attributes:
         parent (str):
             Required. The parent resource of the ClientTlsPolicy. Must
@@ -167,6 +171,7 @@ class CreateClientTlsPolicyRequest(proto.Message):
 
 class UpdateClientTlsPolicyRequest(proto.Message):
     r"""Request used by UpdateClientTlsPolicy method.
+
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Field mask is used to specify the fields to be
@@ -187,6 +192,7 @@ class UpdateClientTlsPolicyRequest(proto.Message):
 
 class DeleteClientTlsPolicyRequest(proto.Message):
     r"""Request used by the DeleteClientTlsPolicy method.
+
     Attributes:
         name (str):
             Required. A name of the ClientTlsPolicy to delete. Must be

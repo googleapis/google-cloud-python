@@ -77,6 +77,7 @@ class AuthorizationPolicy(proto.Message):
 
     class Rule(proto.Message):
         r"""Specification of rules.
+
         Attributes:
             sources (Sequence[google.cloud.network_security_v1beta1.types.AuthorizationPolicy.Rule.Source]):
                 Optional. List of attributes for the traffic source. All of
@@ -96,6 +97,7 @@ class AuthorizationPolicy(proto.Message):
 
         class Source(proto.Message):
             r"""Specification of traffic source attributes.
+
             Attributes:
                 principals (Sequence[str]):
                     Optional. List of peer identities to match for
@@ -115,6 +117,7 @@ class AuthorizationPolicy(proto.Message):
 
         class Destination(proto.Message):
             r"""Specification of traffic destination attributes.
+
             Attributes:
                 hosts (Sequence[str]):
                     Required. List of host names to match. Matched against HOST
@@ -138,6 +141,7 @@ class AuthorizationPolicy(proto.Message):
 
             class HttpHeaderMatch(proto.Message):
                 r"""Specification of HTTP header match atrributes.
+
                 Attributes:
                     regex_match (str):
                         Required. The value of the header must match
@@ -186,6 +190,7 @@ class AuthorizationPolicy(proto.Message):
 
 class ListAuthorizationPoliciesRequest(proto.Message):
     r"""Request used with the ListAuthorizationPolicies method.
+
     Attributes:
         parent (str):
             Required. The project and location from which the
@@ -209,6 +214,7 @@ class ListAuthorizationPoliciesRequest(proto.Message):
 
 class ListAuthorizationPoliciesResponse(proto.Message):
     r"""Response returned by the ListAuthorizationPolicies method.
+
     Attributes:
         authorization_policies (Sequence[google.cloud.network_security_v1beta1.types.AuthorizationPolicy]):
             List of AuthorizationPolicies resources.
@@ -231,6 +237,7 @@ class ListAuthorizationPoliciesResponse(proto.Message):
 
 class GetAuthorizationPolicyRequest(proto.Message):
     r"""Request used by the GetAuthorizationPolicy method.
+
     Attributes:
         name (str):
             Required. A name of the AuthorizationPolicy to get. Must be
@@ -243,6 +250,7 @@ class GetAuthorizationPolicyRequest(proto.Message):
 
 class CreateAuthorizationPolicyRequest(proto.Message):
     r"""Request used by the CreateAuthorizationPolicy method.
+
     Attributes:
         parent (str):
             Required. The parent resource of the AuthorizationPolicy.
@@ -267,6 +275,7 @@ class CreateAuthorizationPolicyRequest(proto.Message):
 
 class UpdateAuthorizationPolicyRequest(proto.Message):
     r"""Request used by the UpdateAuthorizationPolicy method.
+
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Field mask is used to specify the fields to be
@@ -290,6 +299,7 @@ class UpdateAuthorizationPolicyRequest(proto.Message):
 
 class DeleteAuthorizationPolicyRequest(proto.Message):
     r"""Request used by the DeleteAuthorizationPolicy method.
+
     Attributes:
         name (str):
             Required. A name of the AuthorizationPolicy to delete. Must

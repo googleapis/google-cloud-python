@@ -698,5 +698,8 @@ class NetworkSecurityGrpcAsyncIOTransport(NetworkSecurityTransport):
             )
         return self._stubs["delete_client_tls_policy"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("NetworkSecurityGrpcAsyncIOTransport",)
