@@ -267,5 +267,8 @@ class QuotaControllerGrpcTransport(QuotaControllerTransport):
             )
         return self._stubs["allocate_quota"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("QuotaControllerGrpcTransport",)

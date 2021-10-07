@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
 
 class Operation(proto.Message):
     r"""Represents information regarding an operation.
+
     Attributes:
         operation_id (str):
             Identity of the operation. This must be

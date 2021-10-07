@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
 
 class MetricValue(proto.Message):
     r"""Represents a single metric value.
+
     Attributes:
         labels (Sequence[google.cloud.servicecontrol_v1.types.MetricValue.LabelsEntry]):
             The labels describing the metric value. See comments on

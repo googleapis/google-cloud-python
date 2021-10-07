@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
 
 class CheckRequest(proto.Message):
     r"""Request message for the Check method.
+
     Attributes:
         service_name (str):
             The service name as specified in its service configuration.
@@ -53,6 +54,7 @@ class CheckRequest(proto.Message):
 
 class CheckResponse(proto.Message):
     r"""Response message for the Check method.
+
     Attributes:
         operation_id (str):
             The same operation_id value used in the
@@ -77,6 +79,7 @@ class CheckResponse(proto.Message):
 
     class CheckInfo(proto.Message):
         r"""Contains additional information about the check operation.
+
         Attributes:
             unused_arguments (Sequence[str]):
                 A list of fields and label keys that are
@@ -94,6 +97,7 @@ class CheckResponse(proto.Message):
 
     class ConsumerInfo(proto.Message):
         r"""``ConsumerInfo`` provides information about the consumer.
+
         Attributes:
             project_number (int):
                 The Google cloud project number, e.g.
@@ -140,6 +144,7 @@ class CheckResponse(proto.Message):
 
 class ReportRequest(proto.Message):
     r"""Request message for the Report method.
+
     Attributes:
         service_name (str):
             The service name as specified in its service configuration.
@@ -178,6 +183,7 @@ class ReportRequest(proto.Message):
 
 class ReportResponse(proto.Message):
     r"""Response message for the Report method.
+
     Attributes:
         report_errors (Sequence[google.cloud.servicecontrol_v1.types.ReportResponse.ReportError]):
             Partial failures, one for each ``Operation`` in the request

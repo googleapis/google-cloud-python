@@ -32,6 +32,7 @@ __protobuf__ = proto.module(
 
 class AllocateQuotaRequest(proto.Message):
     r"""Request message for the AllocateQuota method.
+
     Attributes:
         service_name (str):
             Name of the service as specified in the service
@@ -56,6 +57,7 @@ class AllocateQuotaRequest(proto.Message):
 
 class QuotaOperation(proto.Message):
     r"""Represents information regarding a quota operation.
+
     Attributes:
         operation_id (str):
             Identity of the operation. This is expected to be unique
@@ -128,6 +130,7 @@ class QuotaOperation(proto.Message):
 
 class AllocateQuotaResponse(proto.Message):
     r"""Response message for the AllocateQuota method.
+
     Attributes:
         operation_id (str):
             The same operation_id value used in the

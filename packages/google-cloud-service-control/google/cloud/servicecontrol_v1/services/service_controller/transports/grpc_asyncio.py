@@ -322,5 +322,8 @@ class ServiceControllerGrpcAsyncIOTransport(ServiceControllerTransport):
             )
         return self._stubs["report"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ServiceControllerGrpcAsyncIOTransport",)

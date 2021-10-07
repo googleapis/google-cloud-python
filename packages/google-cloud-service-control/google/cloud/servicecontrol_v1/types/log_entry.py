@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
 
 class LogEntry(proto.Message):
     r"""An individual log entry.
+
     Attributes:
         name (str):
             Required. The log to which this log entry belongs. Examples:

@@ -317,5 +317,8 @@ class ServiceControllerGrpcTransport(ServiceControllerTransport):
             )
         return self._stubs["report"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ServiceControllerGrpcTransport",)
