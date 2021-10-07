@@ -11,6 +11,13 @@
 
 * add context manager support in client ([#120](https://www.github.com/googleapis/python-resource-manager/issues/120)) ([49df2ea](https://www.github.com/googleapis/python-resource-manager/commit/49df2eaef49e1f844a65f2b499a172e1e4b37b61))
 
+## [1.2.0](https://www.github.com/googleapis/python-resource-manager/compare/v1.1.2...v1.2.0) (2021-10-07)
+
+
+### Features
+
+* add context manager support in client ([#120](https://www.github.com/googleapis/python-resource-manager/issues/120)) ([49df2ea](https://www.github.com/googleapis/python-resource-manager/commit/49df2eaef49e1f844a65f2b499a172e1e4b37b61))
+
 ### [1.1.2](https://www.github.com/googleapis/python-resource-manager/compare/v1.1.1...v1.1.2) (2021-09-30)
 
 
