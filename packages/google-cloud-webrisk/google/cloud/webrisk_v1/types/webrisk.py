@@ -59,6 +59,7 @@ class CompressionType(proto.Enum):
 
 class ComputeThreatListDiffRequest(proto.Message):
     r"""Describes an API diff request.
+
     Attributes:
         threat_type (google.cloud.webrisk_v1.types.ThreatType):
             Required. The threat list to update. Only a
@@ -78,6 +79,7 @@ class ComputeThreatListDiffRequest(proto.Message):
 
     class Constraints(proto.Message):
         r"""The constraints for this diff.
+
         Attributes:
             max_diff_entries (int):
                 The maximum size in number of entries. The diff will not
@@ -107,6 +109,7 @@ class ComputeThreatListDiffRequest(proto.Message):
 
 class ComputeThreatListDiffResponse(proto.Message):
     r"""
+
     Attributes:
         response_type (google.cloud.webrisk_v1.types.ComputeThreatListDiffResponse.ResponseType):
             The type of response. This may indicate that
@@ -147,6 +150,7 @@ class ComputeThreatListDiffResponse(proto.Message):
 
     class Checksum(proto.Message):
         r"""The expected state of a client's local database.
+
         Attributes:
             sha256 (bytes):
                 The SHA256 hash of the client state; that is,
@@ -168,6 +172,7 @@ class ComputeThreatListDiffResponse(proto.Message):
 
 class SearchUrisRequest(proto.Message):
     r"""Request to check URI entries against threatLists.
+
     Attributes:
         uri (str):
             Required. The URI to be checked for matches.
@@ -182,6 +187,7 @@ class SearchUrisRequest(proto.Message):
 
 class SearchUrisResponse(proto.Message):
     r"""
+
     Attributes:
         threat (google.cloud.webrisk_v1.types.SearchUrisResponse.ThreatUri):
             The threat list matches. This may be empty if
@@ -190,6 +196,7 @@ class SearchUrisResponse(proto.Message):
 
     class ThreatUri(proto.Message):
         r"""Contains threat information on a matching uri.
+
         Attributes:
             threat_types (Sequence[google.cloud.webrisk_v1.types.ThreatType]):
                 The ThreatList this threat belongs to.
@@ -227,6 +234,7 @@ class SearchHashesRequest(proto.Message):
 
 class SearchHashesResponse(proto.Message):
     r"""
+
     Attributes:
         threats (Sequence[google.cloud.webrisk_v1.types.SearchHashesResponse.ThreatHash]):
             The full hashes that matched the requested
@@ -239,6 +247,7 @@ class SearchHashesResponse(proto.Message):
 
     class ThreatHash(proto.Message):
         r"""Contains threat information on a matching hash.
+
         Attributes:
             threat_types (Sequence[google.cloud.webrisk_v1.types.ThreatType]):
                 The ThreatList this threat belongs to.
@@ -288,6 +297,7 @@ class ThreatEntryAdditions(proto.Message):
 
 class ThreatEntryRemovals(proto.Message):
     r"""Contains the set of entries to remove from a local database.
+
     Attributes:
         raw_indices (google.cloud.webrisk_v1.types.RawIndices):
             The raw removal indices for a local list.
@@ -305,6 +315,7 @@ class ThreatEntryRemovals(proto.Message):
 
 class RawIndices(proto.Message):
     r"""A set of raw indices to remove from a local list.
+
     Attributes:
         indices (Sequence[int]):
             The indices to remove from a
@@ -373,6 +384,7 @@ class RiceDeltaEncoding(proto.Message):
 
 class Submission(proto.Message):
     r"""Wraps a URI that might be displaying phishing content.
+
     Attributes:
         uri (str):
             Required. The URI that is being reported for
@@ -384,6 +396,7 @@ class Submission(proto.Message):
 
 class CreateSubmissionRequest(proto.Message):
     r"""Request to send a potentially phishy URI to WebRisk.
+
     Attributes:
         parent (str):
             Required. The name of the project that is making the

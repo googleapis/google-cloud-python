@@ -312,5 +312,8 @@ class WebRiskServiceV1Beta1GrpcTransport(WebRiskServiceV1Beta1Transport):
             )
         return self._stubs["search_hashes"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("WebRiskServiceV1Beta1GrpcTransport",)
