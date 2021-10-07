@@ -73,6 +73,7 @@ class Insight(proto.Message):
 
     class RecommendationReference(proto.Message):
         r"""Reference to an associated recommendation.
+
         Attributes:
             recommendation (str):
                 Recommendation resource name, e.g.
@@ -102,6 +103,7 @@ class Insight(proto.Message):
 
 class InsightStateInfo(proto.Message):
     r"""Information related to insight state.
+
     Attributes:
         state (google.cloud.recommender_v1.types.InsightStateInfo.State):
             Insight state.

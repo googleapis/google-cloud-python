@@ -500,5 +500,8 @@ class RecommenderGrpcTransport(RecommenderTransport):
             )
         return self._stubs["mark_recommendation_failed"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("RecommenderGrpcTransport",)

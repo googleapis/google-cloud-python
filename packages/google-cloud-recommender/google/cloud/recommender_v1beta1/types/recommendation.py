@@ -87,6 +87,7 @@ class Recommendation(proto.Message):
 
     class InsightReference(proto.Message):
         r"""Reference to an associated insight.
+
         Attributes:
             insight (str):
                 Insight resource name, e.g.
@@ -132,6 +133,7 @@ class RecommendationContent(proto.Message):
 
 class OperationGroup(proto.Message):
     r"""Group of operations that need to be performed atomically.
+
     Attributes:
         operations (Sequence[google.cloud.recommender_v1beta1.types.Operation]):
             List of operations across one or more
@@ -301,6 +303,7 @@ class Impact(proto.Message):
 
 class RecommendationStateInfo(proto.Message):
     r"""Information for state. Contains state and metadata.
+
     Attributes:
         state (google.cloud.recommender_v1beta1.types.RecommendationStateInfo.State):
             The state of the recommendation, Eg ACTIVE,
