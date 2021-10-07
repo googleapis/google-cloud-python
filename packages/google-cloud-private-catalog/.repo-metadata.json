@@ -6,8 +6,10 @@
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
-    "library_type" : "GAPIC_AUTO",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-private-catalog",
     "distribution_name": "google-cloud-private-catalog",
-    "api_id": "cloudprivatecatalog.googleapis.com"
-  }
+    "api_id": "cloudprivatecatalog.googleapis.com",
+    "default_version": "v1beta1",
+    "codeowner_team": ""
+}
