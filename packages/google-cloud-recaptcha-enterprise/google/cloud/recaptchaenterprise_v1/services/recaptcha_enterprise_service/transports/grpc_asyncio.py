@@ -495,5 +495,8 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
             )
         return self._stubs["get_metrics"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("RecaptchaEnterpriseServiceGrpcAsyncIOTransport",)

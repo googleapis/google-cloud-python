@@ -52,6 +52,7 @@ __protobuf__ = proto.module(
 
 class CreateAssessmentRequest(proto.Message):
     r"""The create assessment request message.
+
     Attributes:
         parent (str):
             Required. The name of the project in which
@@ -67,6 +68,7 @@ class CreateAssessmentRequest(proto.Message):
 
 class AnnotateAssessmentRequest(proto.Message):
     r"""The request message to annotate an Assessment.
+
     Attributes:
         name (str):
             Required. The resource name of the
@@ -110,11 +112,13 @@ class AnnotateAssessmentRequest(proto.Message):
 
 
 class AnnotateAssessmentResponse(proto.Message):
-    r"""Empty response for AnnotateAssessment.    """
+    r"""Empty response for AnnotateAssessment.
+    """
 
 
 class Assessment(proto.Message):
     r"""A recaptcha assessment resource.
+
     Attributes:
         name (str):
             Output only. The resource name for the
@@ -138,6 +142,7 @@ class Assessment(proto.Message):
 
 class Event(proto.Message):
     r"""
+
     Attributes:
         token (str):
             Optional. The user response token provided by
@@ -171,6 +176,7 @@ class Event(proto.Message):
 
 class RiskAnalysis(proto.Message):
     r"""Risk analysis result for an event.
+
     Attributes:
         score (float):
             Legitimate event score from 0.0 to 1.0.
@@ -196,6 +202,7 @@ class RiskAnalysis(proto.Message):
 
 class TokenProperties(proto.Message):
     r"""
+
     Attributes:
         valid (bool):
             Whether the provided user response token is valid. When
@@ -236,6 +243,7 @@ class TokenProperties(proto.Message):
 
 class CreateKeyRequest(proto.Message):
     r"""The create key request message.
+
     Attributes:
         parent (str):
             Required. The name of the project in which
@@ -252,6 +260,7 @@ class CreateKeyRequest(proto.Message):
 
 class ListKeysRequest(proto.Message):
     r"""The list keys request message.
+
     Attributes:
         parent (str):
             Required. The name of the project that
@@ -272,6 +281,7 @@ class ListKeysRequest(proto.Message):
 
 class ListKeysResponse(proto.Message):
     r"""Response to request to list keys in a project.
+
     Attributes:
         keys (Sequence[google.cloud.recaptchaenterprise_v1.types.Key]):
             Key details.
@@ -290,6 +300,7 @@ class ListKeysResponse(proto.Message):
 
 class GetKeyRequest(proto.Message):
     r"""The get key request message.
+
     Attributes:
         name (str):
             Required. The name of the requested key, in
@@ -301,6 +312,7 @@ class GetKeyRequest(proto.Message):
 
 class UpdateKeyRequest(proto.Message):
     r"""The update key request message.
+
     Attributes:
         key (google.cloud.recaptchaenterprise_v1.types.Key):
             Required. The key to update.
@@ -318,6 +330,7 @@ class UpdateKeyRequest(proto.Message):
 
 class DeleteKeyRequest(proto.Message):
     r"""The delete key request message.
+
     Attributes:
         name (str):
             Required. The name of the key to be deleted,
@@ -329,6 +342,7 @@ class DeleteKeyRequest(proto.Message):
 
 class MigrateKeyRequest(proto.Message):
     r"""The migrate key request message.
+
     Attributes:
         name (str):
             Required. The name of the key to be migrated,
@@ -340,6 +354,7 @@ class MigrateKeyRequest(proto.Message):
 
 class GetMetricsRequest(proto.Message):
     r"""The get metrics request message.
+
     Attributes:
         name (str):
             Required. The name of the requested metrics,
@@ -352,6 +367,7 @@ class GetMetricsRequest(proto.Message):
 
 class Metrics(proto.Message):
     r"""Metrics for a single Key.
+
     Attributes:
         name (str):
             Output only. The name of the metrics, in the
@@ -432,6 +448,7 @@ class Key(proto.Message):
 
 class TestingOptions(proto.Message):
     r"""Options for user acceptance testing.
+
     Attributes:
         testing_score (float):
             All assessments for this Key will return this
@@ -458,6 +475,7 @@ class TestingOptions(proto.Message):
 
 class WebKeySettings(proto.Message):
     r"""Settings specific to keys that can be used by websites.
+
     Attributes:
         allow_all_domains (bool):
             If set to true, it means allowed_domains will not be
@@ -510,6 +528,7 @@ class WebKeySettings(proto.Message):
 
 class AndroidKeySettings(proto.Message):
     r"""Settings specific to keys that can be used by Android apps.
+
     Attributes:
         allow_all_package_names (bool):
             If set to true, it means allowed_package_names will not be
@@ -525,6 +544,7 @@ class AndroidKeySettings(proto.Message):
 
 class IOSKeySettings(proto.Message):
     r"""Settings specific to keys that can be used by iOS apps.
+
     Attributes:
         allow_all_bundle_ids (bool):
             If set to true, it means allowed_bundle_ids will not be
@@ -541,6 +561,7 @@ class IOSKeySettings(proto.Message):
 
 class ScoreDistribution(proto.Message):
     r"""Score distribution.
+
     Attributes:
         score_buckets (Sequence[google.cloud.recaptchaenterprise_v1.types.ScoreDistribution.ScoreBucketsEntry]):
             Map key is score value multiplied by 100. The scores are
@@ -554,6 +575,7 @@ class ScoreDistribution(proto.Message):
 
 class ScoreMetrics(proto.Message):
     r"""Metrics related to scoring.
+
     Attributes:
         overall_metrics (google.cloud.recaptchaenterprise_v1.types.ScoreDistribution):
             Aggregated score metrics for all traffic.
@@ -572,6 +594,7 @@ class ScoreMetrics(proto.Message):
 
 class ChallengeMetrics(proto.Message):
     r"""Metrics related to challenges.
+
     Attributes:
         pageload_count (int):
             Count of reCAPTCHA checkboxes or badges
