@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
 
 class AlertChart(proto.Message):
     r"""A chart that displays alert policy data.
+
     Attributes:
         name (str):
             Required. The resource name of the alert policy. The format

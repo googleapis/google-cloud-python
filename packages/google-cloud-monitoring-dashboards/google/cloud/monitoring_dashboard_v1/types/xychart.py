@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
 
 class XyChart(proto.Message):
     r"""A chart that displays data on a 2D (X and Y axes) plane.
+
     Attributes:
         data_sets (Sequence[google.cloud.monitoring_dashboard_v1.types.XyChart.DataSet]):
             Required. The data displayed in this chart.
@@ -50,6 +51,7 @@ class XyChart(proto.Message):
 
     class DataSet(proto.Message):
         r"""Groups a time series query definition with charting options.
+
         Attributes:
             time_series_query (google.cloud.monitoring_dashboard_v1.types.TimeSeriesQuery):
                 Required. Fields for querying time series
@@ -90,6 +92,7 @@ class XyChart(proto.Message):
 
     class Axis(proto.Message):
         r"""A chart axis.
+
         Attributes:
             label (str):
                 The label of the axis.
@@ -121,6 +124,7 @@ class XyChart(proto.Message):
 
 class ChartOptions(proto.Message):
     r"""Options to control visual rendering of a chart.
+
     Attributes:
         mode (google.cloud.monitoring_dashboard_v1.types.ChartOptions.Mode):
             The chart mode.

@@ -104,6 +104,7 @@ class RowLayout(proto.Message):
 
     class Row(proto.Message):
         r"""Defines the layout properties and content for a row.
+
         Attributes:
             weight (int):
                 The relative weight of this row. The row
@@ -137,6 +138,7 @@ class ColumnLayout(proto.Message):
 
     class Column(proto.Message):
         r"""Defines the layout properties and content for a column.
+
         Attributes:
             weight (int):
                 The relative weight of this column. The

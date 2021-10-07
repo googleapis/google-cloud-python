@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
 
 class CreateDashboardRequest(proto.Message):
     r"""The ``CreateDashboard`` request.
+
     Attributes:
         parent (str):
             Required. The project on which to execute the request. The
@@ -59,6 +60,7 @@ class CreateDashboardRequest(proto.Message):
 
 class ListDashboardsRequest(proto.Message):
     r"""The ``ListDashboards`` request.
+
     Attributes:
         parent (str):
             Required. The scope of the dashboards to list. The format
@@ -85,6 +87,7 @@ class ListDashboardsRequest(proto.Message):
 
 class ListDashboardsResponse(proto.Message):
     r"""The ``ListDashboards`` request.
+
     Attributes:
         dashboards (Sequence[google.cloud.monitoring_dashboard_v1.types.Dashboard]):
             The list of requested dashboards.
@@ -107,6 +110,7 @@ class ListDashboardsResponse(proto.Message):
 
 class GetDashboardRequest(proto.Message):
     r"""The ``GetDashboard`` request.
+
     Attributes:
         name (str):
             Required. The resource name of the Dashboard. The format is
@@ -122,6 +126,7 @@ class GetDashboardRequest(proto.Message):
 
 class DeleteDashboardRequest(proto.Message):
     r"""The ``DeleteDashboard`` request.
+
     Attributes:
         name (str):
             Required. The resource name of the Dashboard. The format is:
@@ -136,6 +141,7 @@ class DeleteDashboardRequest(proto.Message):
 
 class UpdateDashboardRequest(proto.Message):
     r"""The ``UpdateDashboard`` request.
+
     Attributes:
         dashboard (google.cloud.monitoring_dashboard_v1.types.Dashboard):
             Required. The dashboard that will replace the
