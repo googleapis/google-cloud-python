@@ -435,6 +435,7 @@ class Product(proto.Message):
 
 class AssetReference(proto.Message):
     r"""Defines the reference of an asset belonging to a product.
+
     Attributes:
         id (str):
             Output only. A unique identifier among asset
@@ -502,6 +503,7 @@ class AssetReference(proto.Message):
 
 class Inputs(proto.Message):
     r"""Defines definition of input parameters of asset templates.
+
     Attributes:
         parameters (google.protobuf.struct_pb2.Struct):
             Output only. The JSON schema defining the
@@ -513,6 +515,7 @@ class Inputs(proto.Message):
 
 class GcsSource(proto.Message):
     r"""Defines how to access Cloud Storage source.
+
     Attributes:
         gcs_path (str):
             Output only. the cloud storage object path.
@@ -532,6 +535,7 @@ class GcsSource(proto.Message):
 
 class GitSource(proto.Message):
     r"""Defines how to access a Git Source.
+
     Attributes:
         repo (str):
             Location of the Git repo to build.
