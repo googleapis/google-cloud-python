@@ -1,13 +1,15 @@
 {
-  "name": "secretmanager",
-  "name_pretty": "Cloud Secret Manager",
-  "product_documentation": "https://cloud.google.com/secret-manager/",
-  "client_documentation": "https://googleapis.dev/python/secretmanager/latest",
-  "issue_tracker": "",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-secret-manager",
-  "distribution_name": "google-cloud-secret-manager",
-  "api_id": "secretmanager.googleapis.com"
+    "name": "secretmanager",
+    "name_pretty": "Cloud Secret Manager",
+    "product_documentation": "https://cloud.google.com/secret-manager/",
+    "client_documentation": "https://googleapis.dev/python/secretmanager/latest",
+    "issue_tracker": "",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-secret-manager",
+    "distribution_name": "google-cloud-secret-manager",
+    "api_id": "secretmanager.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": ""
 }
