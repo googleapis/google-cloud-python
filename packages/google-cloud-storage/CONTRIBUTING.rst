@@ -22,7 +22,7 @@ In order to add a feature:
   documentation.
 
 - The feature must work fully on the following CPython versions:  2.7,
-  3.5, 3.6, 3.7 and 3.8 on both UNIX and Windows.
+  3.5, 3.6, 3.7, 3.8, 3.9 and 3.10 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -111,7 +111,7 @@ Coding Style
   should point to the official ``googleapis`` checkout and the
   the branch should be the main branch on that remote (``main``).
 
-- This repository contains configuration for the 
+- This repository contains configuration for the
   `pre-commit <https://pre-commit.com/>`__ tool, which automates checking
   our linters during a commit.  If you have it installed on your ``$PATH``,
   you can enable enforcing those checks via:
@@ -156,7 +156,7 @@ Running System Tests
     `docs <https://cloud.google.com/storage/docs/authentication#generating-a-private-key>`__
     for more details.
 
-- Once you have downloaded your json keys, set the environment variable 
+- Once you have downloaded your json keys, set the environment variable
   ``GOOGLE_APPLICATION_CREDENTIALS`` to the absolute path of the json file::
 
    $ export GOOGLE_APPLICATION_CREDENTIALS="/Users/<your_username>/path/to/app_credentials.json"
