@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.6.0](https://www.github.com/googleapis/python-securitycenter/compare/v1.5.2...v1.6.0) (2021-10-07)
+
+
+### Features
+
+* add context manager support in client ([#230](https://www.github.com/googleapis/python-securitycenter/issues/230)) ([740af33](https://www.github.com/googleapis/python-securitycenter/commit/740af33ce79a027c5592aabadb58cc367461d6ec))
+
 ### [1.5.2](https://www.github.com/googleapis/python-securitycenter/compare/v1.5.1...v1.5.2) (2021-09-30)
 
 
