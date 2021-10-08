@@ -219,6 +219,15 @@ class AccessApprovalTransport(abc.ABC):
             ),
         }
 
+    def close(self):
+        """Closes resources associated with the transport.
+
+       .. warning::
+            Only call this method if the transport is NOT shared
+            with other clients - this may cause errors in other clients!
+        """
+        raise NotImplementedError()
+
     @property
     def list_approval_requests(
         self,

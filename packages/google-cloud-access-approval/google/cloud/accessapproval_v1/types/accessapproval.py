@@ -53,6 +53,7 @@ class EnrollmentLevel(proto.Enum):
 
 class AccessLocations(proto.Message):
     r"""Home office and physical location of the principal.
+
     Attributes:
         principal_office_country (str):
             The "home office" location of the principal.
@@ -96,6 +97,7 @@ class AccessLocations(proto.Message):
 
 class AccessReason(proto.Message):
     r"""
+
     Attributes:
         type_ (google.cloud.accessapproval_v1.types.AccessReason.Type):
             Type of access justification.
@@ -134,6 +136,7 @@ class ApproveDecision(proto.Message):
 
 class DismissDecision(proto.Message):
     r"""A decision that has been made to dismiss an approval request.
+
     Attributes:
         dismiss_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the approval request was
@@ -147,6 +150,7 @@ class DismissDecision(proto.Message):
 
 class ResourceProperties(proto.Message):
     r"""The properties associated with the resource of the request.
+
     Attributes:
         excludes_descendants (bool):
             Whether an approval will exclude the
@@ -158,6 +162,7 @@ class ResourceProperties(proto.Message):
 
 class ApprovalRequest(proto.Message):
     r"""A request for the customer to approve access to a resource.
+
     Attributes:
         name (str):
             The resource name of the request. Format is
@@ -296,6 +301,7 @@ class AccessApprovalSettings(proto.Message):
 
 class ListApprovalRequestsMessage(proto.Message):
     r"""Request to list approval requests.
+
     Attributes:
         parent (str):
             The parent resource. This may be "projects/{project_id}",
@@ -325,6 +331,7 @@ class ListApprovalRequestsMessage(proto.Message):
 
 class ListApprovalRequestsResponse(proto.Message):
     r"""Response to listing of ApprovalRequest objects.
+
     Attributes:
         approval_requests (Sequence[google.cloud.accessapproval_v1.types.ApprovalRequest]):
             Approval request details.
@@ -345,6 +352,7 @@ class ListApprovalRequestsResponse(proto.Message):
 
 class GetApprovalRequestMessage(proto.Message):
     r"""Request to get an approval request.
+
     Attributes:
         name (str):
             Name of the approval request to retrieve.
@@ -355,6 +363,7 @@ class GetApprovalRequestMessage(proto.Message):
 
 class ApproveApprovalRequestMessage(proto.Message):
     r"""Request to approve an ApprovalRequest.
+
     Attributes:
         name (str):
             Name of the approval request to approve.
@@ -368,6 +377,7 @@ class ApproveApprovalRequestMessage(proto.Message):
 
 class DismissApprovalRequestMessage(proto.Message):
     r"""Request to dismiss an approval request.
+
     Attributes:
         name (str):
             Name of the ApprovalRequest to dismiss.
@@ -378,6 +388,7 @@ class DismissApprovalRequestMessage(proto.Message):
 
 class GetAccessApprovalSettingsMessage(proto.Message):
     r"""Request to get access approval settings.
+
     Attributes:
         name (str):
             Name of the AccessApprovalSettings to
@@ -389,6 +400,7 @@ class GetAccessApprovalSettingsMessage(proto.Message):
 
 class UpdateAccessApprovalSettingsMessage(proto.Message):
     r"""Request to update access approval settings.
+
     Attributes:
         settings (google.cloud.accessapproval_v1.types.AccessApprovalSettings):
             The new AccessApprovalSettings.
@@ -414,6 +426,7 @@ class UpdateAccessApprovalSettingsMessage(proto.Message):
 
 class DeleteAccessApprovalSettingsMessage(proto.Message):
     r"""Request to delete access approval settings.
+
     Attributes:
         name (str):
             Name of the AccessApprovalSettings to delete.

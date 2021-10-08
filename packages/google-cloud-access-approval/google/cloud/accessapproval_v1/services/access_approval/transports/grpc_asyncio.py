@@ -498,5 +498,8 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
             )
         return self._stubs["delete_access_approval_settings"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("AccessApprovalGrpcAsyncIOTransport",)
