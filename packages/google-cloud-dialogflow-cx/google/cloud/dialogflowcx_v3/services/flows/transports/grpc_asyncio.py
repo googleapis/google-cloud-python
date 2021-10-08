@@ -564,5 +564,8 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
             )
         return self._stubs["export_flow"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("FlowsGrpcAsyncIOTransport",)

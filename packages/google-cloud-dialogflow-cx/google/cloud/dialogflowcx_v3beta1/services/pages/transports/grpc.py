@@ -348,5 +348,8 @@ class PagesGrpcTransport(PagesTransport):
             )
         return self._stubs["delete_page"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("PagesGrpcTransport",)

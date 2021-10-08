@@ -628,5 +628,8 @@ class TestCasesGrpcAsyncIOTransport(TestCasesTransport):
             )
         return self._stubs["get_test_case_result"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("TestCasesGrpcAsyncIOTransport",)

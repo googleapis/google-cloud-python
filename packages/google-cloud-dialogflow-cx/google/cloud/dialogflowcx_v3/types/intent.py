@@ -148,6 +148,7 @@ class Intent(proto.Message):
 
         class Part(proto.Message):
             r"""Represents a part of a training phrase.
+
             Attributes:
                 text (str):
                     Required. The text for this part.
@@ -170,6 +171,7 @@ class Intent(proto.Message):
 
     class Parameter(proto.Message):
         r"""Represents an intent parameter.
+
         Attributes:
             id (str):
                 Required. The unique identifier of the parameter. This field

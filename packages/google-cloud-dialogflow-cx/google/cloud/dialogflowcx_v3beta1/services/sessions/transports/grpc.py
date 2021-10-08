@@ -355,5 +355,8 @@ class SessionsGrpcTransport(SessionsTransport):
             )
         return self._stubs["fulfill_intent"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("SessionsGrpcTransport",)

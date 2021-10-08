@@ -77,6 +77,7 @@ class TestResult(proto.Enum):
 
 class TestCase(proto.Message):
     r"""Represents a test case.
+
     Attributes:
         name (str):
             The unique identifier of the test case.
@@ -155,6 +156,7 @@ class TestCaseResult(proto.Message):
 
 class TestConfig(proto.Message):
     r"""Represents configurations for a test case.
+
     Attributes:
         tracking_parameters (Sequence[str]):
             Session parameters to be compared when
@@ -182,6 +184,7 @@ class ConversationTurn(proto.Message):
 
     class UserInput(proto.Message):
         r"""The input from the human user.
+
         Attributes:
             input (google.cloud.dialogflowcx_v3.types.QueryInput):
                 Supports [text
@@ -211,6 +214,7 @@ class ConversationTurn(proto.Message):
 
     class VirtualAgentOutput(proto.Message):
         r"""The output from the virtual agent.
+
         Attributes:
             session_parameters (google.protobuf.struct_pb2.Struct):
                 The session parameters available to the bot
@@ -305,6 +309,7 @@ class TransitionCoverage(proto.Message):
 
     class TransitionNode(proto.Message):
         r"""The source or target of a transition.
+
         Attributes:
             page (google.cloud.dialogflowcx_v3.types.Page):
                 Indicates a transition to a
@@ -325,6 +330,7 @@ class TransitionCoverage(proto.Message):
 
     class Transition(proto.Message):
         r"""A transition in a page.
+
         Attributes:
             source (google.cloud.dialogflowcx_v3.types.TransitionCoverage.TransitionNode):
                 The start node of a transition.
@@ -377,6 +383,7 @@ class TransitionRouteGroupCoverage(proto.Message):
 
     class Coverage(proto.Message):
         r"""Coverage result message for one transition route group.
+
         Attributes:
             route_group (google.cloud.dialogflowcx_v3.types.TransitionRouteGroup):
                 Transition route group metadata. Only name
@@ -391,6 +398,7 @@ class TransitionRouteGroupCoverage(proto.Message):
 
         class Transition(proto.Message):
             r"""A transition coverage in a transition route group.
+
             Attributes:
                 transition_route (google.cloud.dialogflowcx_v3.types.TransitionRoute):
                     Intent route or condition route.
@@ -436,6 +444,7 @@ class IntentCoverage(proto.Message):
 
     class Intent(proto.Message):
         r"""The agent's intent.
+
         Attributes:
             intent (str):
                 The intent full resource name
@@ -666,7 +675,8 @@ class RunTestCaseMetadata(proto.Message):
     r"""Metadata returned for the
     [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3.TestCases.RunTestCase]
     long running operation. This message currently has no fields.
-        """
+
+    """
 
 
 class BatchRunTestCasesRequest(proto.Message):
@@ -719,6 +729,7 @@ class BatchRunTestCasesMetadata(proto.Message):
 
 class TestError(proto.Message):
     r"""Error info for running a test.
+
     Attributes:
         test_case (str):
             The test case resource name.
@@ -783,6 +794,7 @@ class ImportTestCasesMetadata(proto.Message):
 
 class TestCaseError(proto.Message):
     r"""Error info for importing a test.
+
     Attributes:
         test_case (google.cloud.dialogflowcx_v3.types.TestCase):
             The test case.
@@ -857,7 +869,8 @@ class ExportTestCasesMetadata(proto.Message):
     r"""Metadata returned for the
     [TestCases.ExportTestCases][google.cloud.dialogflow.cx.v3.TestCases.ExportTestCases]
     long running operation. This message currently has no fields.
-        """
+
+    """
 
 
 class ListTestCaseResultsRequest(proto.Message):

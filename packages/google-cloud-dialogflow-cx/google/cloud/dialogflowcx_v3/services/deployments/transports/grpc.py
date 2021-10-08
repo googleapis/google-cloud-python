@@ -282,5 +282,8 @@ class DeploymentsGrpcTransport(DeploymentsTransport):
             )
         return self._stubs["get_deployment"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("DeploymentsGrpcTransport",)

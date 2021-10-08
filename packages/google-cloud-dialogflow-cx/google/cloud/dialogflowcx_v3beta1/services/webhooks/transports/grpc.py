@@ -357,5 +357,8 @@ class WebhooksGrpcTransport(WebhooksTransport):
             )
         return self._stubs["delete_webhook"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("WebhooksGrpcTransport",)

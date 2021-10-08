@@ -75,6 +75,7 @@ class Webhook(proto.Message):
 
     class GenericWebService(proto.Message):
         r"""Represents configuration for a generic web service.
+
         Attributes:
             uri (str):
                 Required. The webhook URI for receiving POST
@@ -315,6 +316,7 @@ class WebhookRequest(proto.Message):
 
     class IntentInfo(proto.Message):
         r"""Represents intent information communicated to the webhook.
+
         Attributes:
             last_matched_intent (str):
                 Always present. The unique identifier of the last matched
@@ -338,6 +340,7 @@ class WebhookRequest(proto.Message):
 
         class IntentParameterValue(proto.Message):
             r"""Represents a value for an intent parameter.
+
             Attributes:
                 original_value (str):
                     Always present. Original text value extracted
@@ -364,6 +367,7 @@ class WebhookRequest(proto.Message):
 
     class SentimentAnalysisResult(proto.Message):
         r"""Represents the result of sentiment analysis.
+
         Attributes:
             score (float):
                 Sentiment score between -1.0 (negative
@@ -398,6 +402,7 @@ class WebhookRequest(proto.Message):
 
 class WebhookResponse(proto.Message):
     r"""The response message for a webhook call.
+
     Attributes:
         fulfillment_response (google.cloud.dialogflowcx_v3beta1.types.WebhookResponse.FulfillmentResponse):
             The fulfillment response to send to the user.
@@ -425,6 +430,7 @@ class WebhookResponse(proto.Message):
 
     class FulfillmentResponse(proto.Message):
         r"""Represents a fulfillment response to the user.
+
         Attributes:
             messages (Sequence[google.cloud.dialogflowcx_v3beta1.types.ResponseMessage]):
                 The list of rich message responses to present
@@ -480,6 +486,7 @@ class PageInfo(proto.Message):
 
     class FormInfo(proto.Message):
         r"""Represents form information.
+
         Attributes:
             parameter_info (Sequence[google.cloud.dialogflowcx_v3beta1.types.PageInfo.FormInfo.ParameterInfo]):
                 Optional for both
@@ -492,6 +499,7 @@ class PageInfo(proto.Message):
 
         class ParameterInfo(proto.Message):
             r"""Represents parameter information.
+
             Attributes:
                 display_name (str):
                     Always present for

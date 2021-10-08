@@ -376,5 +376,8 @@ class SecuritySettingsServiceGrpcTransport(SecuritySettingsServiceTransport):
             )
         return self._stubs["delete_security_settings"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("SecuritySettingsServiceGrpcTransport",)

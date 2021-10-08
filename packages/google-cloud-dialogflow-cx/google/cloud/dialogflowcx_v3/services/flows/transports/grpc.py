@@ -547,5 +547,8 @@ class FlowsGrpcTransport(FlowsTransport):
             )
         return self._stubs["export_flow"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("FlowsGrpcTransport",)

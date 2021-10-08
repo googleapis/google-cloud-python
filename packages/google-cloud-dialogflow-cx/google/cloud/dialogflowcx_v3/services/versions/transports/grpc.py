@@ -424,5 +424,8 @@ class VersionsGrpcTransport(VersionsTransport):
             )
         return self._stubs["load_version"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("VersionsGrpcTransport",)

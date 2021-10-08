@@ -515,5 +515,8 @@ class AgentsGrpcTransport(AgentsTransport):
             )
         return self._stubs["get_agent_validation_result"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("AgentsGrpcTransport",)

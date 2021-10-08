@@ -69,6 +69,7 @@ class UpdateSecuritySettingsRequest(proto.Message):
 
 class ListSecuritySettingsRequest(proto.Message):
     r"""The request message for [SecuritySettings.ListSecuritySettings][].
+
     Attributes:
         parent (str):
             Required. The location to list all security settings for.
@@ -88,6 +89,7 @@ class ListSecuritySettingsRequest(proto.Message):
 
 class ListSecuritySettingsResponse(proto.Message):
     r"""The response message for [SecuritySettings.ListSecuritySettings][].
+
     Attributes:
         security_settings (Sequence[google.cloud.dialogflowcx_v3beta1.types.SecuritySettings]):
             The list of security settings.
@@ -109,6 +111,7 @@ class ListSecuritySettingsResponse(proto.Message):
 
 class CreateSecuritySettingsRequest(proto.Message):
     r"""The request message for [SecuritySettings.CreateSecuritySettings][].
+
     Attributes:
         parent (str):
             Required. The location to create an
@@ -127,6 +130,7 @@ class CreateSecuritySettingsRequest(proto.Message):
 
 class DeleteSecuritySettingsRequest(proto.Message):
     r"""The request message for [SecuritySettings.DeleteSecuritySettings][].
+
     Attributes:
         name (str):
             Required. The name of the

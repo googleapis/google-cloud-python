@@ -286,5 +286,8 @@ class DeploymentsGrpcAsyncIOTransport(DeploymentsTransport):
             )
         return self._stubs["get_deployment"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("DeploymentsGrpcAsyncIOTransport",)

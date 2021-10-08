@@ -373,5 +373,8 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
             )
         return self._stubs["delete_entity_type"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("EntityTypesGrpcTransport",)

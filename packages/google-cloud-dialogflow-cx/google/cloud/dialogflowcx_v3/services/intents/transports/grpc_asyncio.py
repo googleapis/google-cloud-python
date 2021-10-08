@@ -374,5 +374,8 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
             )
         return self._stubs["delete_intent"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("IntentsGrpcAsyncIOTransport",)

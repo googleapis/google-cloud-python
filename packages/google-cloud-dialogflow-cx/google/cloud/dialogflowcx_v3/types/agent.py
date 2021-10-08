@@ -45,6 +45,7 @@ __protobuf__ = proto.module(
 
 class SpeechToTextSettings(proto.Message):
     r"""Settings related to speech recognition.
+
     Attributes:
         enable_speech_adaptation (bool):
             Whether to use speech adaptation for speech

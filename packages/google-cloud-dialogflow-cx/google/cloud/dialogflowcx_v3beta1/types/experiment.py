@@ -42,6 +42,7 @@ __protobuf__ = proto.module(
 
 class Experiment(proto.Message):
     r"""Represents an experiment in an environment.
+
     Attributes:
         name (str):
             The name of the experiment.
@@ -110,6 +111,7 @@ class Experiment(proto.Message):
 
     class Definition(proto.Message):
         r"""Definition of the experiment.
+
         Attributes:
             condition (str):
                 The condition defines which subset of sessions are selected
@@ -181,6 +183,7 @@ class Experiment(proto.Message):
 
         class Metric(proto.Message):
             r"""Metric and corresponding confidence intervals.
+
             Attributes:
                 type_ (google.cloud.dialogflowcx_v3beta1.types.Experiment.Result.MetricType):
                     Ratio-based metric type. Only one of type or count_type is
@@ -211,6 +214,7 @@ class Experiment(proto.Message):
 
         class VersionMetrics(proto.Message):
             r"""Version variant and associated metrics.
+
             Attributes:
                 version (str):
                     The name of the flow
@@ -263,6 +267,7 @@ class Experiment(proto.Message):
 
 class VersionVariants(proto.Message):
     r"""A list of flow version variants.
+
     Attributes:
         variants (Sequence[google.cloud.dialogflowcx_v3beta1.types.VersionVariants.Variant]):
             A list of flow version variants.
@@ -270,6 +275,7 @@ class VersionVariants(proto.Message):
 
     class Variant(proto.Message):
         r"""A single flow version with specified traffic allocation.
+
         Attributes:
             version (str):
                 The name of the flow version. Format:
@@ -291,6 +297,7 @@ class VersionVariants(proto.Message):
 
 class RolloutConfig(proto.Message):
     r"""The configuration for auto rollout.
+
     Attributes:
         rollout_steps (Sequence[google.cloud.dialogflowcx_v3beta1.types.RolloutConfig.RolloutStep]):
             Steps to roll out a flow version. Steps
@@ -313,6 +320,7 @@ class RolloutConfig(proto.Message):
 
     class RolloutStep(proto.Message):
         r"""A single rollout step with specified traffic allocation.
+
         Attributes:
             display_name (str):
                 The name of the rollout step;
@@ -339,6 +347,7 @@ class RolloutConfig(proto.Message):
 
 class RolloutState(proto.Message):
     r"""State of the auto-rollout process.
+
     Attributes:
         step (str):
             Display name of the current auto rollout
@@ -357,6 +366,7 @@ class RolloutState(proto.Message):
 
 class VariantsHistory(proto.Message):
     r"""The history of variants update.
+
     Attributes:
         version_variants (google.cloud.dialogflowcx_v3beta1.types.VersionVariants):
             The flow versions as the variants.

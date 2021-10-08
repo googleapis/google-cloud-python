@@ -46,6 +46,7 @@ __protobuf__ = proto.module(
 
 class NluSettings(proto.Message):
     r"""Settings related to NLU.
+
     Attributes:
         model_type (google.cloud.dialogflowcx_v3.types.NluSettings.ModelType):
             Indicates the type of NLU model.

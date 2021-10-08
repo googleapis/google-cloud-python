@@ -67,6 +67,7 @@ class Deployment(proto.Message):
 
     class Result(proto.Message):
         r"""Result of the deployment.
+
         Attributes:
             deployment_test_results (Sequence[str]):
                 Results of test cases running before the deployment. Format:
