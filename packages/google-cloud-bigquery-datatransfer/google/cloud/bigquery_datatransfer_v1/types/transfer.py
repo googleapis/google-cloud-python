@@ -67,6 +67,7 @@ class EmailPreferences(proto.Message):
 
 class ScheduleOptions(proto.Message):
     r"""Options customizing the data transfer schedule.
+
     Attributes:
         disable_auto_scheduling (bool):
             If true, automatic scheduling of data
@@ -205,6 +206,7 @@ class TransferConfig(proto.Message):
 
 class TransferRun(proto.Message):
     r"""Represents a data transfer run.
+
     Attributes:
         name (str):
             The resource name of the transfer run. Transfer run names

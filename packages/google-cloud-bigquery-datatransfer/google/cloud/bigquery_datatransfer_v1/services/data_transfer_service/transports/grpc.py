@@ -631,5 +631,8 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
             )
         return self._stubs["check_valid_creds"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("DataTransferServiceGrpcTransport",)
