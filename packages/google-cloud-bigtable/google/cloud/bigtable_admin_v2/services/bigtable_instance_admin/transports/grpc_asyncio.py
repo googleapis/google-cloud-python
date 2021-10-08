@@ -796,5 +796,8 @@ class BigtableInstanceAdminGrpcAsyncIOTransport(BigtableInstanceAdminTransport):
             )
         return self._stubs["test_iam_permissions"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("BigtableInstanceAdminGrpcAsyncIOTransport",)

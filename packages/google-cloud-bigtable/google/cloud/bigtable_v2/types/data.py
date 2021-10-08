@@ -129,6 +129,7 @@ class Cell(proto.Message):
 
 class RowRange(proto.Message):
     r"""Specifies a contiguous range of rows.
+
     Attributes:
         start_key_closed (bytes):
             Used when giving an inclusive lower bound for
@@ -152,6 +153,7 @@ class RowRange(proto.Message):
 
 class RowSet(proto.Message):
     r"""Specifies a non-contiguous set of rows.
+
     Attributes:
         row_keys (Sequence[bytes]):
             Single rows included in the set.
@@ -198,6 +200,7 @@ class ColumnRange(proto.Message):
 
 class TimestampRange(proto.Message):
     r"""Specified a contiguous range of microsecond timestamps.
+
     Attributes:
         start_timestamp_micros (int):
             Inclusive lower bound. If left empty,
@@ -213,6 +216,7 @@ class TimestampRange(proto.Message):
 
 class ValueRange(proto.Message):
     r"""Specifies a contiguous range of raw byte values.
+
     Attributes:
         start_value_closed (bytes):
             Used when giving an inclusive lower bound for
@@ -567,6 +571,7 @@ class Mutation(proto.Message):
 
     class SetCell(proto.Message):
         r"""A Mutation which sets the value of the specified cell.
+
         Attributes:
             family_name (str):
                 The name of the family into which new data should be
@@ -627,7 +632,8 @@ class Mutation(proto.Message):
         family_name = proto.Field(proto.STRING, number=1,)
 
     class DeleteFromRow(proto.Message):
-        r"""A Mutation which deletes all cells from the containing row.    """
+        r"""A Mutation which deletes all cells from the containing row.
+        """
 
     set_cell = proto.Field(proto.MESSAGE, number=1, oneof="mutation", message=SetCell,)
     delete_from_column = proto.Field(

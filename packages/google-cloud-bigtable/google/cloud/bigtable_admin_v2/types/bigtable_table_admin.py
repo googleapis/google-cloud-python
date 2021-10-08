@@ -183,6 +183,7 @@ class CreateTableRequest(proto.Message):
 
     class Split(proto.Message):
         r"""An initial split point for a newly created table.
+
         Attributes:
             key (bytes):
                 Row key to use as an initial tablet boundary.
@@ -357,6 +358,7 @@ class ModifyColumnFamiliesRequest(proto.Message):
 
     class Modification(proto.Message):
         r"""A create, update, or delete of a particular column family.
+
         Attributes:
             id (str):
                 The ID of the column family to be modified.

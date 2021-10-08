@@ -51,6 +51,7 @@ __protobuf__ = proto.module(
 
 class CreateInstanceRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.CreateInstance.
+
     Attributes:
         parent (str):
             Required. The unique name of the project in which to create
@@ -82,6 +83,7 @@ class CreateInstanceRequest(proto.Message):
 
 class GetInstanceRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.GetInstance.
+
     Attributes:
         name (str):
             Required. The unique name of the requested instance. Values
@@ -93,6 +95,7 @@ class GetInstanceRequest(proto.Message):
 
 class ListInstancesRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.ListInstances.
+
     Attributes:
         parent (str):
             Required. The unique name of the project for which a list of
@@ -108,6 +111,7 @@ class ListInstancesRequest(proto.Message):
 
 class ListInstancesResponse(proto.Message):
     r"""Response message for BigtableInstanceAdmin.ListInstances.
+
     Attributes:
         instances (Sequence[google.cloud.bigtable_admin_v2.types.Instance]):
             The list of requested instances.
@@ -155,6 +159,7 @@ class PartialUpdateInstanceRequest(proto.Message):
 
 class DeleteInstanceRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.DeleteInstance.
+
     Attributes:
         name (str):
             Required. The unique name of the instance to be deleted.
@@ -167,6 +172,7 @@ class DeleteInstanceRequest(proto.Message):
 
 class CreateClusterRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.CreateCluster.
+
     Attributes:
         parent (str):
             Required. The unique name of the instance in which to create
@@ -189,6 +195,7 @@ class CreateClusterRequest(proto.Message):
 
 class GetClusterRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.GetCluster.
+
     Attributes:
         name (str):
             Required. The unique name of the requested cluster. Values
@@ -201,6 +208,7 @@ class GetClusterRequest(proto.Message):
 
 class ListClustersRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.ListClusters.
+
     Attributes:
         parent (str):
             Required. The unique name of the instance for which a list
@@ -218,6 +226,7 @@ class ListClustersRequest(proto.Message):
 
 class ListClustersResponse(proto.Message):
     r"""Response message for BigtableInstanceAdmin.ListClusters.
+
     Attributes:
         clusters (Sequence[google.cloud.bigtable_admin_v2.types.Cluster]):
             The list of requested clusters.
@@ -245,6 +254,7 @@ class ListClustersResponse(proto.Message):
 
 class DeleteClusterRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.DeleteCluster.
+
     Attributes:
         name (str):
             Required. The unique name of the cluster to be deleted.
@@ -257,6 +267,7 @@ class DeleteClusterRequest(proto.Message):
 
 class CreateInstanceMetadata(proto.Message):
     r"""The metadata for the Operation returned by CreateInstance.
+
     Attributes:
         original_request (google.cloud.bigtable_admin_v2.types.CreateInstanceRequest):
             The request that prompted the initiation of
@@ -280,6 +291,7 @@ class CreateInstanceMetadata(proto.Message):
 
 class UpdateInstanceMetadata(proto.Message):
     r"""The metadata for the Operation returned by UpdateInstance.
+
     Attributes:
         original_request (google.cloud.bigtable_admin_v2.types.PartialUpdateInstanceRequest):
             The request that prompted the initiation of
@@ -303,6 +315,7 @@ class UpdateInstanceMetadata(proto.Message):
 
 class CreateClusterMetadata(proto.Message):
     r"""The metadata for the Operation returned by CreateCluster.
+
     Attributes:
         original_request (google.cloud.bigtable_admin_v2.types.CreateClusterRequest):
             The request that prompted the initiation of
@@ -326,6 +339,7 @@ class CreateClusterMetadata(proto.Message):
 
 class UpdateClusterMetadata(proto.Message):
     r"""The metadata for the Operation returned by UpdateCluster.
+
     Attributes:
         original_request (google.cloud.bigtable_admin_v2.types.Cluster):
             The request that prompted the initiation of
@@ -349,6 +363,7 @@ class UpdateClusterMetadata(proto.Message):
 
 class CreateAppProfileRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.CreateAppProfile.
+
     Attributes:
         parent (str):
             Required. The unique name of the instance in which to create
@@ -375,6 +390,7 @@ class CreateAppProfileRequest(proto.Message):
 
 class GetAppProfileRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.GetAppProfile.
+
     Attributes:
         name (str):
             Required. The unique name of the requested app profile.
@@ -387,6 +403,7 @@ class GetAppProfileRequest(proto.Message):
 
 class ListAppProfilesRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.ListAppProfiles.
+
     Attributes:
         parent (str):
             Required. The unique name of the instance for which a list
@@ -418,6 +435,7 @@ class ListAppProfilesRequest(proto.Message):
 
 class ListAppProfilesResponse(proto.Message):
     r"""Response message for BigtableInstanceAdmin.ListAppProfiles.
+
     Attributes:
         app_profiles (Sequence[google.cloud.bigtable_admin_v2.types.AppProfile]):
             The list of requested app profiles.
@@ -446,6 +464,7 @@ class ListAppProfilesResponse(proto.Message):
 
 class UpdateAppProfileRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.UpdateAppProfile.
+
     Attributes:
         app_profile (google.cloud.bigtable_admin_v2.types.AppProfile):
             Required. The app profile which will
@@ -468,6 +487,7 @@ class UpdateAppProfileRequest(proto.Message):
 
 class DeleteAppProfileRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.DeleteAppProfile.
+
     Attributes:
         name (str):
             Required. The unique name of the app profile to be deleted.
@@ -483,7 +503,8 @@ class DeleteAppProfileRequest(proto.Message):
 
 
 class UpdateAppProfileMetadata(proto.Message):
-    r"""The metadata for the Operation returned by UpdateAppProfile.    """
+    r"""The metadata for the Operation returned by UpdateAppProfile.
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

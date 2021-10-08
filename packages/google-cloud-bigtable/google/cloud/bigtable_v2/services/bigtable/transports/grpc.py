@@ -405,5 +405,8 @@ class BigtableGrpcTransport(BigtableTransport):
             )
         return self._stubs["read_modify_write_row"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("BigtableGrpcTransport",)

@@ -44,6 +44,7 @@ class RestoreSourceType(proto.Enum):
 
 class RestoreInfo(proto.Message):
     r"""Information about a table restore.
+
     Attributes:
         source_type (google.cloud.bigtable_admin_v2.types.RestoreSourceType):
             The type of the restore source.
@@ -111,6 +112,7 @@ class Table(proto.Message):
 
     class ClusterState(proto.Message):
         r"""The state of a table's data in a particular cluster.
+
         Attributes:
             replication_state (google.cloud.bigtable_admin_v2.types.Table.ClusterState.ReplicationState):
                 Output only. The state of replication for the
@@ -193,6 +195,7 @@ class GcRule(proto.Message):
 
     class Intersection(proto.Message):
         r"""A GcRule which deletes cells matching all of the given rules.
+
         Attributes:
             rules (Sequence[google.cloud.bigtable_admin_v2.types.GcRule]):
                 Only delete cells which would be deleted by every element of
@@ -203,6 +206,7 @@ class GcRule(proto.Message):
 
     class Union(proto.Message):
         r"""A GcRule which deletes cells matching any of the given rules.
+
         Attributes:
             rules (Sequence[google.cloud.bigtable_admin_v2.types.GcRule]):
                 Delete cells which would be deleted by any element of
@@ -310,6 +314,7 @@ class Snapshot(proto.Message):
 
 class Backup(proto.Message):
     r"""A backup of a Cloud Bigtable table.
+
     Attributes:
         name (str):
             Output only. A globally unique identifier for the backup
@@ -369,6 +374,7 @@ class Backup(proto.Message):
 
 class BackupInfo(proto.Message):
     r"""Information about a backup.
+
     Attributes:
         backup (str):
             Output only. Name of the backup.

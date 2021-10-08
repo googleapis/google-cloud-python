@@ -412,5 +412,8 @@ class BigtableGrpcAsyncIOTransport(BigtableTransport):
             )
         return self._stubs["read_modify_write_row"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("BigtableGrpcAsyncIOTransport",)
