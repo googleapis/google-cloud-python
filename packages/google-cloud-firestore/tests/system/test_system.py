@@ -1584,8 +1584,7 @@ def test_repro_429(client, cleanup):
     now = datetime.datetime.utcnow().replace(tzinfo=UTC)
     collection = client.collection("repro-429" + UNIQUE_RESOURCE_ID)
 
-    document_ids = [f"doc-{doc_id:02d}" for doc_id in range(30)]
-    for document_id in document_ids:
+    for document_id in [f"doc-{doc_id:02d}" for doc_id in range(30)]:
         data = {"now": now, "paymentId": None}
         _, document = collection.add(data, document_id)
         cleanup(document.delete)
@@ -1601,3 +1600,17 @@ def test_repro_429(client, cleanup):
 
     for snapshot in query2.stream():
         print(f"id: {snapshot.id}")
+
+
+def test_repro_391(client, cleanup):
+    # See: https://github.com/googleapis/python-firestore/issues/391
+    now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+    collection = client.collection("repro-391" + UNIQUE_RESOURCE_ID)
+
+    document_ids = [f"doc-{doc_id:02d}" for doc_id in range(30)]
+
+    for document_id in [f"doc-{doc_id:02d}" for doc_id in range(30)]:
+        data = {"now": now}
+        _, document = collection.add(data, document_id)
+
+    assert len(set(collection.stream())) == len(document_ids)

@@ -342,11 +342,11 @@ class DocumentSnapshot(object):
         exists (bool):
             Indicates if the document existed at the time the snapshot was
             retrieved.
-        read_time (:class:`google.protobuf.timestamp_pb2.Timestamp`):
+        read_time (:class:`proto.datetime_helpers.DatetimeWithNanoseconds`):
             The time that this snapshot was read from the server.
-        create_time (:class:`google.protobuf.timestamp_pb2.Timestamp`):
+        create_time (:class:`proto.datetime_helpers.DatetimeWithNanoseconds`):
             The time that this document was created.
-        update_time (:class:`google.protobuf.timestamp_pb2.Timestamp`):
+        update_time (:class:`proto.datetime_helpers.DatetimeWithNanoseconds`):
             The time that this document was last updated.
     """
 
@@ -368,9 +368,7 @@ class DocumentSnapshot(object):
         return self._reference == other._reference and self._data == other._data
 
     def __hash__(self):
-        seconds = int(self.update_time.timestamp())
-        nanos = self.update_time.nanosecond
-        return hash(self._reference) + hash(seconds) + hash(nanos)
+        return hash(self._reference) + hash(self.update_time)
 
     @property
     def _client(self):
