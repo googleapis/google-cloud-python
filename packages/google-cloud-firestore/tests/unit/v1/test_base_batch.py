@@ -18,7 +18,7 @@ from google.cloud.firestore_v1.base_batch import BaseWriteBatch
 import mock
 
 
-class TestableBaseWriteBatch(BaseWriteBatch):
+class DerivedBaseWriteBatch(BaseWriteBatch):
     def __init__(self, client):
         super().__init__(client=client)
 
@@ -32,7 +32,7 @@ class TestableBaseWriteBatch(BaseWriteBatch):
 class TestBaseWriteBatch(unittest.TestCase):
     @staticmethod
     def _get_target_class():
-        return TestableBaseWriteBatch
+        return DerivedBaseWriteBatch
 
     def _make_one(self, *args, **kwargs):
         klass = self._get_target_class()
