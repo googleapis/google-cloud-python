@@ -468,5 +468,8 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
             )
         return self._stubs["check_compatibility"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("BetaAnalyticsDataGrpcAsyncIOTransport",)

@@ -462,5 +462,8 @@ class BetaAnalyticsDataGrpcTransport(BetaAnalyticsDataTransport):
             )
         return self._stubs["check_compatibility"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("BetaAnalyticsDataGrpcTransport",)

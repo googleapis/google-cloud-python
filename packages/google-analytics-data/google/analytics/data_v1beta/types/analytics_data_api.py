@@ -129,6 +129,7 @@ class Metadata(proto.Message):
 
 class RunReportRequest(proto.Message):
     r"""The request to generate a report.
+
     Attributes:
         property (str):
             A Google Analytics GA4 property identifier whose events are
@@ -235,6 +236,7 @@ class RunReportRequest(proto.Message):
 
 class RunReportResponse(proto.Message):
     r"""The response report table corresponding to a request.
+
     Attributes:
         dimension_headers (Sequence[google.analytics.data_v1beta.types.DimensionHeader]):
             Describes dimension columns. The number of
@@ -295,6 +297,7 @@ class RunReportResponse(proto.Message):
 
 class RunPivotReportRequest(proto.Message):
     r"""The request to generate a pivot report.
+
     Attributes:
         property (str):
             A Google Analytics GA4 property identifier whose events are
@@ -467,6 +470,7 @@ class RunPivotReportResponse(proto.Message):
 
 class BatchRunReportsRequest(proto.Message):
     r"""The batch request containing multiple report requests.
+
     Attributes:
         property (str):
             A Google Analytics GA4 property identifier whose events are
@@ -490,6 +494,7 @@ class BatchRunReportsRequest(proto.Message):
 
 class BatchRunReportsResponse(proto.Message):
     r"""The batch response containing multiple reports.
+
     Attributes:
         reports (Sequence[google.analytics.data_v1beta.types.RunReportResponse]):
             Individual responses. Each response has a
@@ -507,6 +512,7 @@ class BatchRunReportsResponse(proto.Message):
 
 class BatchRunPivotReportsRequest(proto.Message):
     r"""The batch request containing multiple pivot report requests.
+
     Attributes:
         property (str):
             A Google Analytics GA4 property identifier whose events are
@@ -532,6 +538,7 @@ class BatchRunPivotReportsRequest(proto.Message):
 
 class BatchRunPivotReportsResponse(proto.Message):
     r"""The batch response containing multiple pivot reports.
+
     Attributes:
         pivot_reports (Sequence[google.analytics.data_v1beta.types.RunPivotReportResponse]):
             Individual responses. Each response has a
@@ -551,6 +558,7 @@ class BatchRunPivotReportsResponse(proto.Message):
 
 class GetMetadataRequest(proto.Message):
     r"""Request for a property's dimension and metric metadata.
+
     Attributes:
         name (str):
             Required. The resource name of the metadata to retrieve.
@@ -572,6 +580,7 @@ class GetMetadataRequest(proto.Message):
 
 class RunRealtimeReportRequest(proto.Message):
     r"""The request to generate a realtime report.
+
     Attributes:
         property (str):
             A Google Analytics GA4 property identifier whose events are
