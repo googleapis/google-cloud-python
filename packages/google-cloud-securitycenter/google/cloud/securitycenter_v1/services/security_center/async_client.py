@@ -46,6 +46,7 @@ from google.cloud.securitycenter_v1.types import security_marks as gcs_security_
 from google.cloud.securitycenter_v1.types import securitycenter_service
 from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
+from google.cloud.securitycenter_v1.types import vulnerability
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore

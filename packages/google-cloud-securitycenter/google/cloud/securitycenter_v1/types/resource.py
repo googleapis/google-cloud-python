@@ -40,6 +40,8 @@ class Resource(proto.Message):
             The full resource name of resource's parent.
         parent_display_name (str):
             The human readable name of resource's parent.
+        type_ (str):
+            The full resource type of the resource.
         folders (Sequence[google.cloud.securitycenter_v1.types.Folder]):
             Output only. Contains a Folder message for
             each folder in the assets ancestry. The first
@@ -53,6 +55,7 @@ class Resource(proto.Message):
     project_display_name = proto.Field(proto.STRING, number=3,)
     parent = proto.Field(proto.STRING, number=4,)
     parent_display_name = proto.Field(proto.STRING, number=5,)
+    type_ = proto.Field(proto.STRING, number=6,)
     folders = proto.RepeatedField(proto.MESSAGE, number=7, message=folder.Folder,)
 
 

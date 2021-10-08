@@ -55,6 +55,10 @@ from .types.securitycenter_service import UpdateOrganizationSettingsRequest
 from .types.securitycenter_service import UpdateSecurityMarksRequest
 from .types.securitycenter_service import UpdateSourceRequest
 from .types.source import Source
+from .types.vulnerability import Cve
+from .types.vulnerability import Cvssv3
+from .types.vulnerability import Reference
+from .types.vulnerability import Vulnerability
 
 __all__ = (
     "SecurityCenterAsyncClient",
@@ -62,6 +66,8 @@ __all__ = (
     "CreateFindingRequest",
     "CreateNotificationConfigRequest",
     "CreateSourceRequest",
+    "Cve",
+    "Cvssv3",
     "DeleteNotificationConfigRequest",
     "Finding",
     "Folder",
@@ -85,6 +91,7 @@ __all__ = (
     "NotificationConfig",
     "NotificationMessage",
     "OrganizationSettings",
+    "Reference",
     "Resource",
     "RunAssetDiscoveryRequest",
     "RunAssetDiscoveryResponse",
@@ -97,4 +104,5 @@ __all__ = (
     "UpdateOrganizationSettingsRequest",
     "UpdateSecurityMarksRequest",
     "UpdateSourceRequest",
+    "Vulnerability",
 )
