@@ -419,5 +419,8 @@ class JobControllerGrpcTransport(JobControllerTransport):
             )
         return self._stubs["delete_job"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("JobControllerGrpcTransport",)

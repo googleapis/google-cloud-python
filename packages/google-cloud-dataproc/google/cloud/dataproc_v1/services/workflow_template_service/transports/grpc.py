@@ -500,5 +500,8 @@ class WorkflowTemplateServiceGrpcTransport(WorkflowTemplateServiceTransport):
             )
         return self._stubs["delete_workflow_template"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("WorkflowTemplateServiceGrpcTransport",)

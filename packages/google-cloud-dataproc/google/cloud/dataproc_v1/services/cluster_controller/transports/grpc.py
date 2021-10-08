@@ -467,5 +467,8 @@ class ClusterControllerGrpcTransport(ClusterControllerTransport):
             )
         return self._stubs["diagnose_cluster"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ClusterControllerGrpcTransport",)

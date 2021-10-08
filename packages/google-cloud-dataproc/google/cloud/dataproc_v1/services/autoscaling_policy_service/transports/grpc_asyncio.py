@@ -380,5 +380,8 @@ class AutoscalingPolicyServiceGrpcAsyncIOTransport(AutoscalingPolicyServiceTrans
             )
         return self._stubs["delete_autoscaling_policy"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("AutoscalingPolicyServiceGrpcAsyncIOTransport",)

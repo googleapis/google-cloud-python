@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
 
 class ClusterOperationStatus(proto.Message):
     r"""The status of the operation.
+
     Attributes:
         state (google.cloud.dataproc_v1.types.ClusterOperationStatus.State):
             Output only. A message containing the
@@ -57,6 +58,7 @@ class ClusterOperationStatus(proto.Message):
 
 class ClusterOperationMetadata(proto.Message):
     r"""Metadata describing the operation.
+
     Attributes:
         cluster_name (str):
             Output only. Name of the cluster for the

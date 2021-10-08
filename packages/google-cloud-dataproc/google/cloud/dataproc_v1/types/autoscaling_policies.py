@@ -84,6 +84,7 @@ class AutoscalingPolicy(proto.Message):
 
 class BasicAutoscalingAlgorithm(proto.Message):
     r"""Basic algorithm for autoscaling.
+
     Attributes:
         yarn_config (google.cloud.dataproc_v1.types.BasicYarnAutoscalingConfig):
             Required. YARN autoscaling configuration.
@@ -105,6 +106,7 @@ class BasicAutoscalingAlgorithm(proto.Message):
 
 class BasicYarnAutoscalingConfig(proto.Message):
     r"""Basic autoscaling configurations for YARN.
+
     Attributes:
         graceful_decommission_timeout (google.protobuf.duration_pb2.Duration):
             Required. Timeout for YARN graceful decommissioning of Node
@@ -216,6 +218,7 @@ class InstanceGroupAutoscalingPolicyConfig(proto.Message):
 
 class CreateAutoscalingPolicyRequest(proto.Message):
     r"""A request to create an autoscaling policy.
+
     Attributes:
         parent (str):
             Required. The "resource name" of the region or location, as
@@ -239,6 +242,7 @@ class CreateAutoscalingPolicyRequest(proto.Message):
 
 class GetAutoscalingPolicyRequest(proto.Message):
     r"""A request to fetch an autoscaling policy.
+
     Attributes:
         name (str):
             Required. The "resource name" of the autoscaling policy, as
@@ -259,6 +263,7 @@ class GetAutoscalingPolicyRequest(proto.Message):
 
 class UpdateAutoscalingPolicyRequest(proto.Message):
     r"""A request to update an autoscaling policy.
+
     Attributes:
         policy (google.cloud.dataproc_v1.types.AutoscalingPolicy):
             Required. The updated autoscaling policy.
@@ -292,6 +297,7 @@ class DeleteAutoscalingPolicyRequest(proto.Message):
 
 class ListAutoscalingPoliciesRequest(proto.Message):
     r"""A request to list autoscaling policies in a project.
+
     Attributes:
         parent (str):
             Required. The "resource name" of the region or location, as
