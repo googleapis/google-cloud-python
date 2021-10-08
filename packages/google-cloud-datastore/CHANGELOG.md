@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-datastore/compare/v2.1.6...v2.2.0) (2021-10-08)
+
+
+### Features
+
+* add support for Python 3.10 ([#233](https://www.github.com/googleapis/python-datastore/issues/233)) ([f524c40](https://www.github.com/googleapis/python-datastore/commit/f524c40e8251c2b716ea87cd512404f0d6f1b019))
+
 ### [2.1.6](https://www.github.com/googleapis/python-datastore/compare/v2.1.5...v2.1.6) (2021-07-26)
 
 
