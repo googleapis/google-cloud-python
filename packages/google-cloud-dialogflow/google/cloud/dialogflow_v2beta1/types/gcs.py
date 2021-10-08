@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
 
 class GcsSources(proto.Message):
     r"""Google Cloud Storage locations for the inputs.
+
     Attributes:
         uris (Sequence[str]):
             Required. Google Cloud Storage URIs for the
@@ -37,6 +38,7 @@ class GcsSources(proto.Message):
 
 class GcsSource(proto.Message):
     r"""Google Cloud Storage location for single input.
+
     Attributes:
         uri (str):
             Required. The Google Cloud Storage URIs for

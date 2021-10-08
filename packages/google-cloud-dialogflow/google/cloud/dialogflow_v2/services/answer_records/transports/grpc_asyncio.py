@@ -289,5 +289,8 @@ class AnswerRecordsGrpcAsyncIOTransport(AnswerRecordsTransport):
             )
         return self._stubs["update_answer_record"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("AnswerRecordsGrpcAsyncIOTransport",)

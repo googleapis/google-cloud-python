@@ -94,6 +94,7 @@ class Fulfillment(proto.Message):
 
     class Feature(proto.Message):
         r"""Whether fulfillment is enabled for the specific feature.
+
         Attributes:
             type_ (google.cloud.dialogflow_v2beta1.types.Fulfillment.Feature.Type):
                 The type of the feature that enabled for

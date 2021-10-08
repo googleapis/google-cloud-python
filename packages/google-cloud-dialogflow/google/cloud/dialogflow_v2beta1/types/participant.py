@@ -127,6 +127,7 @@ class Participant(proto.Message):
 
 class Message(proto.Message):
     r"""Represents a message posted into a conversation.
+
     Attributes:
         name (str):
             Optional. The unique identifier of the message. Format:
@@ -281,6 +282,7 @@ class OutputAudio(proto.Message):
 
 class AutomatedAgentReply(proto.Message):
     r"""Represents a response from an automated agent.
+
     Attributes:
         detect_intent_response (google.cloud.dialogflow_v2beta1.types.DetectIntentResponse):
             Response of the Dialogflow
@@ -548,6 +550,7 @@ class AnnotatedMessagePart(proto.Message):
 
 class MessageAnnotation(proto.Message):
     r"""Represents the result of annotation for the message.
+
     Attributes:
         parts (Sequence[google.cloud.dialogflow_v2beta1.types.AnnotatedMessagePart]):
             Optional. The collection of annotated message parts ordered
@@ -567,6 +570,7 @@ class MessageAnnotation(proto.Message):
 
 class ArticleAnswer(proto.Message):
     r"""Represents article answer.
+
     Attributes:
         title (str):
             The article title.
@@ -592,6 +596,7 @@ class ArticleAnswer(proto.Message):
 
 class FaqAnswer(proto.Message):
     r"""Represents answer from "frequently asked questions".
+
     Attributes:
         answer (str):
             The piece of text from the ``source`` knowledge base
@@ -626,6 +631,7 @@ class FaqAnswer(proto.Message):
 
 class SmartReplyAnswer(proto.Message):
     r"""Represents a smart reply answer.
+
     Attributes:
         reply (str):
             The content of the reply.
@@ -874,6 +880,7 @@ class SuggestSmartRepliesResponse(proto.Message):
 
 class Suggestion(proto.Message):
     r"""Represents a suggestion for a human agent.
+
     Attributes:
         name (str):
             Output only. The name of this suggestion. Format:
@@ -897,6 +904,7 @@ class Suggestion(proto.Message):
 
     class Article(proto.Message):
         r"""Represents suggested article.
+
         Attributes:
             title (str):
                 Output only. The article title.
@@ -1079,6 +1087,7 @@ class CompileSuggestionResponse(proto.Message):
 
 class ResponseMessage(proto.Message):
     r"""Response messages from an automated agent.
+
     Attributes:
         text (google.cloud.dialogflow_v2beta1.types.ResponseMessage.Text):
             Returns a text response.
@@ -1098,6 +1107,7 @@ class ResponseMessage(proto.Message):
 
     class Text(proto.Message):
         r"""The text response message.
+
         Attributes:
             text (Sequence[str]):
                 A collection of text responses.
@@ -1131,7 +1141,8 @@ class ResponseMessage(proto.Message):
     class EndInteraction(proto.Message):
         r"""Indicates that interaction with the Dialogflow agent has
         ended.
-            """
+
+        """
 
     class TelephonyTransferCall(proto.Message):
         r"""Represents the signal that telles the client to transfer the

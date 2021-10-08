@@ -504,5 +504,8 @@ class DocumentsGrpcTransport(DocumentsTransport):
             )
         return self._stubs["reload_document"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("DocumentsGrpcTransport",)

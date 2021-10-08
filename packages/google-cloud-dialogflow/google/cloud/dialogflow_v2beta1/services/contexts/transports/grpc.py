@@ -385,5 +385,8 @@ class ContextsGrpcTransport(ContextsTransport):
             )
         return self._stubs["delete_all_contexts"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ContextsGrpcTransport",)

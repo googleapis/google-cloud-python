@@ -392,5 +392,8 @@ class ConversationsGrpcTransport(ConversationsTransport):
             )
         return self._stubs["list_messages"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ConversationsGrpcTransport",)

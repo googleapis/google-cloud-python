@@ -312,5 +312,8 @@ class AnswerRecordsGrpcTransport(AnswerRecordsTransport):
             )
         return self._stubs["update_answer_record"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("AnswerRecordsGrpcTransport",)

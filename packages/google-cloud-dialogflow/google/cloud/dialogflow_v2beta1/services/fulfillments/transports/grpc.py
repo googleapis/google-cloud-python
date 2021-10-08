@@ -281,5 +281,8 @@ class FulfillmentsGrpcTransport(FulfillmentsTransport):
             )
         return self._stubs["update_fulfillment"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("FulfillmentsGrpcTransport",)

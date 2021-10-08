@@ -343,6 +343,7 @@ class EnvironmentHistory(proto.Message):
 
     class Entry(proto.Message):
         r"""Represents an environment history entry.
+
         Attributes:
             agent_version (str):
                 The agent version loaded into this

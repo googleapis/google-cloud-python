@@ -400,5 +400,8 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
             )
         return self._stubs["get_environment_history"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("EnvironmentsGrpcTransport",)

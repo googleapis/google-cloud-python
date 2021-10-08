@@ -393,5 +393,8 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
             )
         return self._stubs["delete_session_entity_type"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("SessionEntityTypesGrpcTransport",)

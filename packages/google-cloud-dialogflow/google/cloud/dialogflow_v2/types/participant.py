@@ -87,6 +87,7 @@ class Participant(proto.Message):
 
 class Message(proto.Message):
     r"""Represents a message posted into a conversation.
+
     Attributes:
         name (str):
             The unique identifier of the message. Format:
@@ -464,6 +465,7 @@ class OutputAudio(proto.Message):
 
 class AutomatedAgentReply(proto.Message):
     r"""Represents a response from an automated agent.
+
     Attributes:
         detect_intent_response (google.cloud.dialogflow_v2.types.DetectIntentResponse):
             Response of the Dialogflow
@@ -496,6 +498,7 @@ class AutomatedAgentReply(proto.Message):
 
 class ArticleAnswer(proto.Message):
     r"""Represents article answer.
+
     Attributes:
         title (str):
             The article title.
@@ -528,6 +531,7 @@ class ArticleAnswer(proto.Message):
 
 class FaqAnswer(proto.Message):
     r"""Represents answer from "frequently asked questions".
+
     Attributes:
         answer (str):
             The piece of text from the ``source`` knowledge base
@@ -633,6 +637,7 @@ class AnnotatedMessagePart(proto.Message):
 
 class MessageAnnotation(proto.Message):
     r"""Represents the result of annotation for the message.
+
     Attributes:
         parts (Sequence[google.cloud.dialogflow_v2.types.AnnotatedMessagePart]):
             The collection of annotated message parts ordered by their

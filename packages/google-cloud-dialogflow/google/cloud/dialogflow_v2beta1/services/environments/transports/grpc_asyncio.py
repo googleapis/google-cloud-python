@@ -411,5 +411,8 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
             )
         return self._stubs["get_environment_history"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("EnvironmentsGrpcAsyncIOTransport",)

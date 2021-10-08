@@ -125,6 +125,7 @@ class Document(proto.Message):
 
     class ReloadStatus(proto.Message):
         r"""The status of a reload attempt.
+
         Attributes:
             time (google.protobuf.timestamp_pb2.Timestamp):
                 Output only. The time of a reload attempt.
@@ -291,6 +292,7 @@ class ImportDocumentsRequest(proto.Message):
 
 class ImportDocumentTemplate(proto.Message):
     r"""The template used for importing documents.
+
     Attributes:
         mime_type (str):
             Required. The MIME type of the document.

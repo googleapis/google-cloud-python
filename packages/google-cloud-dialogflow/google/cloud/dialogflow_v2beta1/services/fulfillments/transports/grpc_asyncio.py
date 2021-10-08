@@ -287,5 +287,8 @@ class FulfillmentsGrpcAsyncIOTransport(FulfillmentsTransport):
             )
         return self._stubs["update_fulfillment"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("FulfillmentsGrpcAsyncIOTransport",)

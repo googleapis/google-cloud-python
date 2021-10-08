@@ -465,5 +465,8 @@ class IntentsGrpcTransport(IntentsTransport):
             )
         return self._stubs["batch_delete_intents"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("IntentsGrpcTransport",)

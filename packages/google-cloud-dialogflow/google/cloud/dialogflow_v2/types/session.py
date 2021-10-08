@@ -48,6 +48,7 @@ __protobuf__ = proto.module(
 
 class DetectIntentRequest(proto.Message):
     r"""The request to detect user's intent.
+
     Attributes:
         session (str):
             Required. The name of the session this query is sent to.
@@ -118,6 +119,7 @@ class DetectIntentRequest(proto.Message):
 
 class DetectIntentResponse(proto.Message):
     r"""The message returned from the DetectIntent method.
+
     Attributes:
         response_id (str):
             The unique identifier of the response. It can
@@ -157,6 +159,7 @@ class DetectIntentResponse(proto.Message):
 
 class QueryParameters(proto.Message):
     r"""Represents the parameters of the conversational query.
+
     Attributes:
         time_zone (str):
             The time zone of this conversational query from the `time
@@ -652,6 +655,7 @@ class StreamingRecognitionResult(proto.Message):
 
 class TextInput(proto.Message):
     r"""Represents the natural language text to be processed.
+
     Attributes:
         text (str):
             Required. The UTF-8 encoded natural language
@@ -716,6 +720,7 @@ class EventInput(proto.Message):
 
 class SentimentAnalysisRequestConfig(proto.Message):
     r"""Configures the types of sentiment analysis to perform.
+
     Attributes:
         analyze_query_text_sentiment (bool):
             Instructs the service to perform sentiment analysis on

@@ -429,5 +429,8 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
             )
         return self._stubs["suggest_faq_answers"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ParticipantsGrpcTransport",)

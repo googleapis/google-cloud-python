@@ -115,6 +115,7 @@ class Document(proto.Message):
 
     class ReloadStatus(proto.Message):
         r"""The status of a reload attempt.
+
         Attributes:
             time (google.protobuf.timestamp_pb2.Timestamp):
                 The time of a reload attempt.

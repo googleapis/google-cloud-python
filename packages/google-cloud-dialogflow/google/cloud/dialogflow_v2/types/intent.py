@@ -175,6 +175,7 @@ class Intent(proto.Message):
 
     class TrainingPhrase(proto.Message):
         r"""Represents an example that the agent is trained on.
+
         Attributes:
             name (str):
                 Output only. The unique identifier of this
@@ -221,6 +222,7 @@ class Intent(proto.Message):
 
         class Part(proto.Message):
             r"""Represents a part of a training phrase.
+
             Attributes:
                 text (str):
                     Required. The text for this part.
@@ -255,6 +257,7 @@ class Intent(proto.Message):
 
     class Parameter(proto.Message):
         r"""Represents intent parameters.
+
         Attributes:
             name (str):
                 The unique identifier of this parameter.
@@ -362,6 +365,7 @@ class Intent(proto.Message):
 
         class Text(proto.Message):
             r"""The text response message.
+
             Attributes:
                 text (Sequence[str]):
                     Optional. The collection of the agent's
@@ -372,6 +376,7 @@ class Intent(proto.Message):
 
         class Image(proto.Message):
             r"""The image response message.
+
             Attributes:
                 image_uri (str):
                     Optional. The public URI to an image file.
@@ -385,6 +390,7 @@ class Intent(proto.Message):
 
         class QuickReplies(proto.Message):
             r"""The quick replies response message.
+
             Attributes:
                 title (str):
                     Optional. The title of the collection of
@@ -398,6 +404,7 @@ class Intent(proto.Message):
 
         class Card(proto.Message):
             r"""The card response message.
+
             Attributes:
                 title (str):
                     Optional. The title of the card.
@@ -412,6 +419,7 @@ class Intent(proto.Message):
 
             class Button(proto.Message):
                 r"""Contains information about a button.
+
                 Attributes:
                     text (str):
                         Optional. The text to show on the button.
@@ -432,6 +440,7 @@ class Intent(proto.Message):
 
         class SimpleResponse(proto.Message):
             r"""The simple response message containing speech or text.
+
             Attributes:
                 text_to_speech (str):
                     One of text_to_speech or ssml must be provided. The plain
@@ -465,6 +474,7 @@ class Intent(proto.Message):
 
         class BasicCard(proto.Message):
             r"""The basic card message. Useful for displaying information.
+
             Attributes:
                 title (str):
                     Optional. The title of the card.
@@ -481,6 +491,7 @@ class Intent(proto.Message):
 
             class Button(proto.Message):
                 r"""The button object that appears at the bottom of a card.
+
                 Attributes:
                     title (str):
                         Required. The title of the button.
@@ -491,6 +502,7 @@ class Intent(proto.Message):
 
                 class OpenUriAction(proto.Message):
                     r"""Opens the given URI.
+
                     Attributes:
                         uri (str):
                             Required. The HTTP or HTTPS scheme URI.
@@ -529,6 +541,7 @@ class Intent(proto.Message):
 
         class Suggestions(proto.Message):
             r"""The collection of suggestions.
+
             Attributes:
                 suggestions (Sequence[google.cloud.dialogflow_v2.types.Intent.Message.Suggestion]):
                     Required. The list of suggested replies.
@@ -556,6 +569,7 @@ class Intent(proto.Message):
 
         class ListSelect(proto.Message):
             r"""The card for presenting a list of options to select from.
+
             Attributes:
                 title (str):
                     Optional. The overall title of the list.
@@ -567,6 +581,7 @@ class Intent(proto.Message):
 
             class Item(proto.Message):
                 r"""An item in the list.
+
                 Attributes:
                     info (google.cloud.dialogflow_v2.types.Intent.Message.SelectItemInfo):
                         Required. Additional information about this
@@ -596,6 +611,7 @@ class Intent(proto.Message):
 
         class CarouselSelect(proto.Message):
             r"""The card for presenting a carousel of options to select from.
+
             Attributes:
                 items (Sequence[google.cloud.dialogflow_v2.types.Intent.Message.CarouselSelect.Item]):
                     Required. Carousel items.
@@ -603,6 +619,7 @@ class Intent(proto.Message):
 
             class Item(proto.Message):
                 r"""An item in the carousel.
+
                 Attributes:
                     info (google.cloud.dialogflow_v2.types.Intent.Message.SelectItemInfo):
                         Required. Additional info about the option
@@ -646,6 +663,7 @@ class Intent(proto.Message):
 
         class MediaContent(proto.Message):
             r"""The media content card for Actions on Google.
+
             Attributes:
                 media_type (google.cloud.dialogflow_v2.types.Intent.Message.MediaContent.ResponseMediaType):
                     Optional. What type of media is the content
@@ -661,6 +679,7 @@ class Intent(proto.Message):
 
             class ResponseMediaObject(proto.Message):
                 r"""Response media object for media content card.
+
                 Attributes:
                     name (str):
                         Required. Name of media card.
@@ -731,6 +750,7 @@ class Intent(proto.Message):
 
             class BrowseCarouselCardItem(proto.Message):
                 r"""Browsing carousel tile
+
                 Attributes:
                     open_uri_action (google.cloud.dialogflow_v2.types.Intent.Message.BrowseCarouselCard.BrowseCarouselCardItem.OpenUrlAction):
                         Required. Action to present to the user.
@@ -750,6 +770,7 @@ class Intent(proto.Message):
 
                 class OpenUrlAction(proto.Message):
                     r"""Actions on Google action to open a given url.
+
                     Attributes:
                         url (str):
                             Required. URL
@@ -797,6 +818,7 @@ class Intent(proto.Message):
 
         class TableCard(proto.Message):
             r"""Table card for Actions on Google.
+
             Attributes:
                 title (str):
                     Required. Title of the card.
@@ -960,6 +982,7 @@ class Intent(proto.Message):
 
     class FollowupIntentInfo(proto.Message):
         r"""Represents a single followup intent in the chain.
+
         Attributes:
             followup_intent_name (str):
                 The unique identifier of the followup intent. Format:
@@ -1163,6 +1186,7 @@ class DeleteIntentRequest(proto.Message):
 
 class BatchUpdateIntentsRequest(proto.Message):
     r"""
+
     Attributes:
         parent (str):
             Required. The name of the agent to update or create intents
@@ -1233,6 +1257,7 @@ class BatchDeleteIntentsRequest(proto.Message):
 
 class IntentBatch(proto.Message):
     r"""This message is a wrapper around a collection of intents.
+
     Attributes:
         intents (Sequence[google.cloud.dialogflow_v2.types.Intent]):
             A collection of intents.

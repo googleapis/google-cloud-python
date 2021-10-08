@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
 
 class ValidationError(proto.Message):
     r"""Represents a single validation error.
+
     Attributes:
         severity (google.cloud.dialogflow_v2.types.ValidationError.Severity):
             The severity of the error.
@@ -66,6 +67,7 @@ class ValidationError(proto.Message):
 
 class ValidationResult(proto.Message):
     r"""Represents the output of agent validation.
+
     Attributes:
         validation_errors (Sequence[google.cloud.dialogflow_v2.types.ValidationError]):
             Contains all validation errors.

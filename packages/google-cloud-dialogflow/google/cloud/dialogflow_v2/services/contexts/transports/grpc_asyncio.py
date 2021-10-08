@@ -391,5 +391,8 @@ class ContextsGrpcAsyncIOTransport(ContextsTransport):
             )
         return self._stubs["delete_all_contexts"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ContextsGrpcAsyncIOTransport",)

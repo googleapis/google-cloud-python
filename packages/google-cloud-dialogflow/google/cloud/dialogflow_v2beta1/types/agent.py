@@ -194,6 +194,7 @@ class DeleteAgentRequest(proto.Message):
 
 class SubAgent(proto.Message):
     r"""Contains basic configuration for a sub-agent.
+
     Attributes:
         project (str):
             Required. The project of this agent. Format:

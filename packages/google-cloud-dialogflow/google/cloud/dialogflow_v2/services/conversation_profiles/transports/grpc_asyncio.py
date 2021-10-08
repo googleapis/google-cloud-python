@@ -391,5 +391,8 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
             )
         return self._stubs["delete_conversation_profile"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ConversationProfilesGrpcAsyncIOTransport",)

@@ -384,5 +384,8 @@ class KnowledgeBasesGrpcTransport(KnowledgeBasesTransport):
             )
         return self._stubs["update_knowledge_base"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("KnowledgeBasesGrpcTransport",)
