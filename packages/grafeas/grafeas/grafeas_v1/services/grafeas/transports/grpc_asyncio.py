@@ -623,5 +623,8 @@ class GrafeasGrpcAsyncIOTransport(GrafeasTransport):
             )
         return self._stubs["list_note_occurrences"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("GrafeasGrpcAsyncIOTransport",)

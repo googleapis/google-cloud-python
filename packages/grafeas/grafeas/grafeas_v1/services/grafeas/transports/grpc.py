@@ -608,5 +608,8 @@ class GrafeasGrpcTransport(GrafeasTransport):
             )
         return self._stubs["list_note_occurrences"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("GrafeasGrpcTransport",)
