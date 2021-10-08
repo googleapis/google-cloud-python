@@ -1739,7 +1739,8 @@ class ReceiveTriggerWebhookRequest(proto.Message):
 class ReceiveTriggerWebhookResponse(proto.Message):
     r"""ReceiveTriggerWebhookResponse [Experimental] is the response object
     for the ReceiveTriggerWebhook method.
-        """
+
+    """
 
 
 class WorkerPool(proto.Message):
@@ -1852,6 +1853,7 @@ class PrivatePoolV1Config(proto.Message):
 
     class NetworkConfig(proto.Message):
         r"""Defines the network configuration for the pool.
+
         Attributes:
             peered_network (str):
                 Required. Immutable. The network definition that the workers
