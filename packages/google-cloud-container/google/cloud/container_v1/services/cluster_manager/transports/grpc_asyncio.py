@@ -1173,5 +1173,8 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
             )
         return self._stubs["list_usable_subnetworks"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ClusterManagerGrpcAsyncIOTransport",)

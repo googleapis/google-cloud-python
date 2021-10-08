@@ -1206,5 +1206,8 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
             )
         return self._stubs["list_locations"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ClusterManagerGrpcAsyncIOTransport",)

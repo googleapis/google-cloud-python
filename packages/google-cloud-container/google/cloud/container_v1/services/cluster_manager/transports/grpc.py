@@ -1123,5 +1123,8 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
             )
         return self._stubs["list_usable_subnetworks"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ClusterManagerGrpcTransport",)

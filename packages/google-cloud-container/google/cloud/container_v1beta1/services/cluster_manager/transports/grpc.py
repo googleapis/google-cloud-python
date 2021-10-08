@@ -1155,5 +1155,8 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
             )
         return self._stubs["list_locations"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ClusterManagerGrpcTransport",)
