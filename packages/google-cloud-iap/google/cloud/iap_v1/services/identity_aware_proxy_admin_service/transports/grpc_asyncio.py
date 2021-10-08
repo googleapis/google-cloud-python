@@ -376,5 +376,8 @@ class IdentityAwareProxyAdminServiceGrpcAsyncIOTransport(
             )
         return self._stubs["update_iap_settings"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("IdentityAwareProxyAdminServiceGrpcAsyncIOTransport",)

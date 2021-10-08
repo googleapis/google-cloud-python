@@ -478,5 +478,8 @@ class IdentityAwareProxyOAuthServiceGrpcTransport(
             )
         return self._stubs["delete_identity_aware_proxy_client"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("IdentityAwareProxyOAuthServiceGrpcTransport",)

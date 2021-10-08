@@ -373,5 +373,8 @@ class IdentityAwareProxyAdminServiceGrpcTransport(
             )
         return self._stubs["update_iap_settings"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("IdentityAwareProxyAdminServiceGrpcTransport",)
