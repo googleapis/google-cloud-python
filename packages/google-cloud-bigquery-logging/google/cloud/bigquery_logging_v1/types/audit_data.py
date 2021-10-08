@@ -189,6 +189,7 @@ class AuditData(proto.Message):
 
 class TableInsertRequest(proto.Message):
     r"""Table insert request.
+
     Attributes:
         resource (google.cloud.bigquery_logging_v1.types.Table):
             The new table.
@@ -199,6 +200,7 @@ class TableInsertRequest(proto.Message):
 
 class TableUpdateRequest(proto.Message):
     r"""Table update request.
+
     Attributes:
         resource (google.cloud.bigquery_logging_v1.types.Table):
             The table to be updated.
@@ -209,6 +211,7 @@ class TableUpdateRequest(proto.Message):
 
 class TableInsertResponse(proto.Message):
     r"""Table insert response.
+
     Attributes:
         resource (google.cloud.bigquery_logging_v1.types.Table):
             Final state of the inserted table.
@@ -219,6 +222,7 @@ class TableInsertResponse(proto.Message):
 
 class TableUpdateResponse(proto.Message):
     r"""Table update response.
+
     Attributes:
         resource (google.cloud.bigquery_logging_v1.types.Table):
             Final state of the updated table.
@@ -229,6 +233,7 @@ class TableUpdateResponse(proto.Message):
 
 class DatasetListRequest(proto.Message):
     r"""Dataset list request.
+
     Attributes:
         list_all (bool):
             Whether to list all datasets, including
@@ -240,6 +245,7 @@ class DatasetListRequest(proto.Message):
 
 class DatasetInsertRequest(proto.Message):
     r"""Dataset insert request.
+
     Attributes:
         resource (google.cloud.bigquery_logging_v1.types.Dataset):
             The dataset to be inserted.
@@ -250,6 +256,7 @@ class DatasetInsertRequest(proto.Message):
 
 class DatasetInsertResponse(proto.Message):
     r"""Dataset insert response.
+
     Attributes:
         resource (google.cloud.bigquery_logging_v1.types.Dataset):
             Final state of the inserted dataset.
@@ -260,6 +267,7 @@ class DatasetInsertResponse(proto.Message):
 
 class DatasetUpdateRequest(proto.Message):
     r"""Dataset update request.
+
     Attributes:
         resource (google.cloud.bigquery_logging_v1.types.Dataset):
             The dataset to be updated.
@@ -270,6 +278,7 @@ class DatasetUpdateRequest(proto.Message):
 
 class DatasetUpdateResponse(proto.Message):
     r"""Dataset update response.
+
     Attributes:
         resource (google.cloud.bigquery_logging_v1.types.Dataset):
             Final state of the updated dataset.
@@ -280,6 +289,7 @@ class DatasetUpdateResponse(proto.Message):
 
 class JobInsertRequest(proto.Message):
     r"""Job insert request.
+
     Attributes:
         resource (google.cloud.bigquery_logging_v1.types.Job):
             Job insert request.
@@ -290,6 +300,7 @@ class JobInsertRequest(proto.Message):
 
 class JobInsertResponse(proto.Message):
     r"""Job insert response.
+
     Attributes:
         resource (google.cloud.bigquery_logging_v1.types.Job):
             Job insert response.
@@ -300,6 +311,7 @@ class JobInsertResponse(proto.Message):
 
 class JobQueryRequest(proto.Message):
     r"""Job query request.
+
     Attributes:
         query (str):
             The query.
@@ -324,6 +336,7 @@ class JobQueryRequest(proto.Message):
 
 class JobQueryResponse(proto.Message):
     r"""Job query response.
+
     Attributes:
         total_results (int):
             The total number of rows in the full query
@@ -338,6 +351,7 @@ class JobQueryResponse(proto.Message):
 
 class JobGetQueryResultsRequest(proto.Message):
     r"""Job getQueryResults request.
+
     Attributes:
         max_results (int):
             Maximum number of results to return.
@@ -351,6 +365,7 @@ class JobGetQueryResultsRequest(proto.Message):
 
 class JobGetQueryResultsResponse(proto.Message):
     r"""Job getQueryResults response.
+
     Attributes:
         total_results (int):
             Total number of results in query results.
@@ -366,6 +381,7 @@ class JobGetQueryResultsResponse(proto.Message):
 
 class JobQueryDoneResponse(proto.Message):
     r"""Job getQueryDone response.
+
     Attributes:
         job (google.cloud.bigquery_logging_v1.types.Job):
             The job and status information. The job completed if
@@ -377,6 +393,7 @@ class JobQueryDoneResponse(proto.Message):
 
 class JobCompletedEvent(proto.Message):
     r"""Query job completed event.
+
     Attributes:
         event_name (str):
             Name of the event.
@@ -409,6 +426,7 @@ class TableDataReadEvent(proto.Message):
 
 class TableDataListRequest(proto.Message):
     r"""Table data-list request.
+
     Attributes:
         start_row (int):
             Starting row offset.
@@ -469,6 +487,7 @@ class Table(proto.Message):
 
 class TableInfo(proto.Message):
     r"""User-provided metadata for a table.
+
     Attributes:
         friendly_name (str):
             A short name for the table, such
@@ -488,6 +507,7 @@ class TableInfo(proto.Message):
 
 class TableViewDefinition(proto.Message):
     r"""Describes a virtual table defined by a SQL query.
+
     Attributes:
         query (str):
             SQL query defining the view.
@@ -531,6 +551,7 @@ class Dataset(proto.Message):
 
 class DatasetInfo(proto.Message):
     r"""User-provided metadata for a dataset.
+
     Attributes:
         friendly_name (str):
             A short name for the dataset, such
@@ -550,6 +571,7 @@ class DatasetInfo(proto.Message):
 
 class BigQueryAcl(proto.Message):
     r"""An access control list.
+
     Attributes:
         entries (Sequence[google.cloud.bigquery_logging_v1.types.BigQueryAcl.Entry]):
             Access control entry list.
@@ -557,6 +579,7 @@ class BigQueryAcl(proto.Message):
 
     class Entry(proto.Message):
         r"""Access control entry.
+
         Attributes:
             role (str):
                 The granted role, which can be ``READER``, ``WRITER``, or
@@ -589,6 +612,7 @@ class BigQueryAcl(proto.Message):
 
 class Job(proto.Message):
     r"""Describes a job.
+
     Attributes:
         job_name (google.cloud.bigquery_logging_v1.types.JobName):
             Job name.
@@ -631,6 +655,7 @@ class JobConfiguration(proto.Message):
 
     class Query(proto.Message):
         r"""Describes a query job, which executes a SQL-like query.
+
         Attributes:
             query (str):
                 The SQL query to run.
@@ -766,6 +791,7 @@ class JobConfiguration(proto.Message):
 
 class TableDefinition(proto.Message):
     r"""Describes an external data source used in a query.
+
     Attributes:
         name (str):
             Name of the table, used in queries.
@@ -780,6 +806,7 @@ class TableDefinition(proto.Message):
 
 class JobStatus(proto.Message):
     r"""Running state of a job.
+
     Attributes:
         state (str):
             State of a job: ``PENDING``, ``RUNNING``, or ``DONE``.
@@ -801,6 +828,7 @@ class JobStatus(proto.Message):
 
 class JobStatistics(proto.Message):
     r"""Job statistics that may change after a job starts.
+
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the job was created.
@@ -849,6 +877,7 @@ class JobStatistics(proto.Message):
 
     class ReservationResourceUsage(proto.Message):
         r"""Job resource usage breakdown by reservation.
+
         Attributes:
             name (str):
                 Reservation name or "unreserved" for on-
@@ -885,6 +914,7 @@ class JobStatistics(proto.Message):
 
 class DatasetName(proto.Message):
     r"""The fully-qualified name for a dataset.
+
     Attributes:
         project_id (str):
             The project ID.
@@ -898,6 +928,7 @@ class DatasetName(proto.Message):
 
 class TableName(proto.Message):
     r"""The fully-qualified name for a table.
+
     Attributes:
         project_id (str):
             The project ID.
@@ -914,6 +945,7 @@ class TableName(proto.Message):
 
 class JobName(proto.Message):
     r"""The fully-qualified name for a job.
+
     Attributes:
         project_id (str):
             The project ID.
@@ -930,6 +962,7 @@ class JobName(proto.Message):
 
 class EncryptionInfo(proto.Message):
     r"""Describes encryption properties for a table or a job
+
     Attributes:
         kms_key_name (str):
             unique identifier for cloud kms key
