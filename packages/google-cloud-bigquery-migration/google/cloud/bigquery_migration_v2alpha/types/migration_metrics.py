@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
 
 class TimeSeries(proto.Message):
     r"""The metrics object for a SubTask.
+
     Attributes:
         metric (str):
             Required. The name of the metric.
@@ -67,6 +68,7 @@ class TimeSeries(proto.Message):
 
 class Point(proto.Message):
     r"""A single data point in a time series.
+
     Attributes:
         interval (google.cloud.bigquery_migration_v2alpha.types.TimeInterval):
             The time interval to which the data point applies. For
@@ -109,6 +111,7 @@ class TimeInterval(proto.Message):
 
 class TypedValue(proto.Message):
     r"""A single strongly-typed value.
+
     Attributes:
         bool_value (bool):
             A Boolean value: ``true`` or ``false``.

@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
 
 class ResourceErrorDetail(proto.Message):
     r"""Provides details for errors and the corresponding resources.
+
     Attributes:
         resource_info (google.rpc.error_details_pb2.ResourceInfo):
             Required. Information about the resource
@@ -67,6 +68,7 @@ class ErrorDetail(proto.Message):
 
 class ErrorLocation(proto.Message):
     r"""Holds information about where the error is located.
+
     Attributes:
         line (int):
             Optional. If applicable, denotes the line

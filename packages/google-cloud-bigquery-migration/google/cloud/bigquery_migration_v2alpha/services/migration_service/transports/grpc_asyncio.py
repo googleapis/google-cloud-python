@@ -435,5 +435,8 @@ class MigrationServiceGrpcAsyncIOTransport(MigrationServiceTransport):
             )
         return self._stubs["list_migration_subtasks"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("MigrationServiceGrpcAsyncIOTransport",)

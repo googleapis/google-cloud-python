@@ -428,5 +428,8 @@ class MigrationServiceGrpcTransport(MigrationServiceTransport):
             )
         return self._stubs["list_migration_subtasks"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("MigrationServiceGrpcTransport",)

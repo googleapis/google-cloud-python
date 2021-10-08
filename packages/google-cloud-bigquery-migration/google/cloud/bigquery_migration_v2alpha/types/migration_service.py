@@ -37,6 +37,7 @@ __protobuf__ = proto.module(
 
 class CreateMigrationWorkflowRequest(proto.Message):
     r"""Request to create a migration workflow resource.
+
     Attributes:
         parent (str):
             Required. The name of the project to which this migration
@@ -53,6 +54,7 @@ class CreateMigrationWorkflowRequest(proto.Message):
 
 class GetMigrationWorkflowRequest(proto.Message):
     r"""A request to get a previously created migration workflow.
+
     Attributes:
         name (str):
             Required. The unique identifier for the migration workflow.
@@ -67,6 +69,7 @@ class GetMigrationWorkflowRequest(proto.Message):
 
 class ListMigrationWorkflowsRequest(proto.Message):
     r"""A request to list previously created migration workflows.
+
     Attributes:
         parent (str):
             Required. The project and location of the migration
@@ -95,6 +98,7 @@ class ListMigrationWorkflowsRequest(proto.Message):
 
 class ListMigrationWorkflowsResponse(proto.Message):
     r"""Response object for a ``ListMigrationWorkflows`` call.
+
     Attributes:
         migration_workflows (Sequence[google.cloud.bigquery_migration_v2alpha.types.MigrationWorkflow]):
             The migration workflows for the specified
@@ -117,6 +121,7 @@ class ListMigrationWorkflowsResponse(proto.Message):
 
 class DeleteMigrationWorkflowRequest(proto.Message):
     r"""A request to delete a previously created migration workflow.
+
     Attributes:
         name (str):
             Required. The unique identifier for the migration workflow.
@@ -128,6 +133,7 @@ class DeleteMigrationWorkflowRequest(proto.Message):
 
 class StartMigrationWorkflowRequest(proto.Message):
     r"""A request to start a previously created migration workflow.
+
     Attributes:
         name (str):
             Required. The unique identifier for the migration workflow.
@@ -139,6 +145,7 @@ class StartMigrationWorkflowRequest(proto.Message):
 
 class GetMigrationSubtaskRequest(proto.Message):
     r"""A request to get a previously created migration subtasks.
+
     Attributes:
         name (str):
             Required. The unique identifier for the migration subtask.
@@ -154,6 +161,7 @@ class GetMigrationSubtaskRequest(proto.Message):
 
 class ListMigrationSubtasksRequest(proto.Message):
     r"""A request to list previously created migration subtasks.
+
     Attributes:
         parent (str):
             Required. The migration task of the subtasks to list.
@@ -188,6 +196,7 @@ class ListMigrationSubtasksRequest(proto.Message):
 
 class ListMigrationSubtasksResponse(proto.Message):
     r"""Response object for a ``ListMigrationSubtasks`` call.
+
     Attributes:
         migration_subtasks (Sequence[google.cloud.bigquery_migration_v2alpha.types.MigrationSubtask]):
             The migration subtasks for the specified
