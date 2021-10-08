@@ -95,6 +95,7 @@ class Version(proto.Message):
 
 class Accelerator(proto.Message):
     r"""Identifies Data Fusion accelerators for an instance.
+
     Attributes:
         accelerator_type (google.cloud.data_fusion_v1.types.Accelerator.AcceleratorType):
             The type of an accelator for a CDF instance.
@@ -139,6 +140,7 @@ class CryptoKeyConfig(proto.Message):
 
 class Instance(proto.Message):
     r"""Represents a Data Fusion instance.
+
     Attributes:
         name (str):
             Output only. The name of this instance is in
@@ -291,6 +293,7 @@ class Instance(proto.Message):
 
 class ListInstancesRequest(proto.Message):
     r"""Request message for listing Data Fusion instances.
+
     Attributes:
         parent (str):
             The project and location for which to
@@ -320,6 +323,7 @@ class ListInstancesRequest(proto.Message):
 
 class ListInstancesResponse(proto.Message):
     r"""Response message for the list instance request.
+
     Attributes:
         instances (Sequence[google.cloud.data_fusion_v1.types.Instance]):
             Represents a list of Data Fusion instances.
@@ -341,6 +345,7 @@ class ListInstancesResponse(proto.Message):
 
 class ListAvailableVersionsRequest(proto.Message):
     r"""Request message for the list available versions request.
+
     Attributes:
         parent (str):
             Required. The project and location for which
@@ -366,6 +371,7 @@ class ListAvailableVersionsRequest(proto.Message):
 
 class ListAvailableVersionsResponse(proto.Message):
     r"""Response message for the list available versions request.
+
     Attributes:
         available_versions (Sequence[google.cloud.data_fusion_v1.types.Version]):
             Represents a list of versions that are
@@ -400,6 +406,7 @@ class GetInstanceRequest(proto.Message):
 
 class CreateInstanceRequest(proto.Message):
     r"""Request message for creating a Data Fusion instance.
+
     Attributes:
         parent (str):
             The instance's project and location in the
@@ -417,6 +424,7 @@ class CreateInstanceRequest(proto.Message):
 
 class DeleteInstanceRequest(proto.Message):
     r"""Request message for deleting a Data Fusion instance.
+
     Attributes:
         name (str):
             The instance resource name in the format
@@ -428,6 +436,7 @@ class DeleteInstanceRequest(proto.Message):
 
 class UpdateInstanceRequest(proto.Message):
     r"""
+
     Attributes:
         instance (google.cloud.data_fusion_v1.types.Instance):
             The instance resource that replaces the
@@ -453,6 +462,7 @@ class UpdateInstanceRequest(proto.Message):
 
 class RestartInstanceRequest(proto.Message):
     r"""Request message for restarting a Data Fusion instance.
+
     Attributes:
         name (str):
             Name of the Data Fusion instance which need
@@ -465,6 +475,7 @@ class RestartInstanceRequest(proto.Message):
 
 class OperationMetadata(proto.Message):
     r"""Represents the metadata of a long-running operation.
+
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time the operation was created.

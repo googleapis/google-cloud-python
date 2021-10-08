@@ -433,5 +433,8 @@ class DataFusionGrpcTransport(DataFusionTransport):
             )
         return self._stubs["restart_instance"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("DataFusionGrpcTransport",)

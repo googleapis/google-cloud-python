@@ -448,5 +448,8 @@ class DataFusionGrpcAsyncIOTransport(DataFusionTransport):
             )
         return self._stubs["restart_instance"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("DataFusionGrpcAsyncIOTransport",)
