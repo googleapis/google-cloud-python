@@ -456,5 +456,8 @@ class BinauthzManagementServiceV1Beta1GrpcTransport(
             )
         return self._stubs["delete_attestor"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("BinauthzManagementServiceV1Beta1GrpcTransport",)

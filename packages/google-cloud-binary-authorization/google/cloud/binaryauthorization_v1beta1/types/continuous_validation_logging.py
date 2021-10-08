@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
 
 class ContinuousValidationEvent(proto.Message):
     r"""Represents an auditing event from Continuous Validation.
+
     Attributes:
         pod_event (google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.ContinuousValidationPodEvent):
             Pod event.
@@ -35,6 +36,7 @@ class ContinuousValidationEvent(proto.Message):
 
     class ContinuousValidationPodEvent(proto.Message):
         r"""An auditing event for one Pod.
+
         Attributes:
             pod (str):
                 The name of the Pod.
@@ -56,6 +58,7 @@ class ContinuousValidationEvent(proto.Message):
 
         class ImageDetails(proto.Message):
             r"""Container image with auditing details.
+
             Attributes:
                 image (str):
                     The name of the image.

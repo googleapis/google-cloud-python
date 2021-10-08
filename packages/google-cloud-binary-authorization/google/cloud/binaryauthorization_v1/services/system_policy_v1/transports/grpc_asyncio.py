@@ -256,5 +256,8 @@ class SystemPolicyV1GrpcAsyncIOTransport(SystemPolicyV1Transport):
             )
         return self._stubs["get_system_policy"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("SystemPolicyV1GrpcAsyncIOTransport",)

@@ -258,5 +258,8 @@ class ValidationHelperV1GrpcTransport(ValidationHelperV1Transport):
             )
         return self._stubs["validate_attestation_occurrence"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ValidationHelperV1GrpcTransport",)

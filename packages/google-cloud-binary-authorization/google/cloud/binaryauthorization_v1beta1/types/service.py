@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
 
 class GetPolicyRequest(proto.Message):
     r"""Request message for [BinauthzManagementService.GetPolicy][].
+
     Attributes:
         name (str):
             Required. The resource name of the
@@ -47,6 +48,7 @@ class GetPolicyRequest(proto.Message):
 
 class UpdatePolicyRequest(proto.Message):
     r"""Request message for [BinauthzManagementService.UpdatePolicy][].
+
     Attributes:
         policy (google.cloud.binaryauthorization_v1beta1.types.Policy):
             Required. A new or updated
@@ -62,6 +64,7 @@ class UpdatePolicyRequest(proto.Message):
 
 class CreateAttestorRequest(proto.Message):
     r"""Request message for [BinauthzManagementService.CreateAttestor][].
+
     Attributes:
         parent (str):
             Required. The parent of this
@@ -86,6 +89,7 @@ class CreateAttestorRequest(proto.Message):
 
 class GetAttestorRequest(proto.Message):
     r"""Request message for [BinauthzManagementService.GetAttestor][].
+
     Attributes:
         name (str):
             Required. The name of the
@@ -98,6 +102,7 @@ class GetAttestorRequest(proto.Message):
 
 class UpdateAttestorRequest(proto.Message):
     r"""Request message for [BinauthzManagementService.UpdateAttestor][].
+
     Attributes:
         attestor (google.cloud.binaryauthorization_v1beta1.types.Attestor):
             Required. The updated
@@ -113,6 +118,7 @@ class UpdateAttestorRequest(proto.Message):
 
 class ListAttestorsRequest(proto.Message):
     r"""Request message for [BinauthzManagementService.ListAttestors][].
+
     Attributes:
         parent (str):
             Required. The resource name of the project associated with
@@ -138,6 +144,7 @@ class ListAttestorsRequest(proto.Message):
 
 class ListAttestorsResponse(proto.Message):
     r"""Response message for [BinauthzManagementService.ListAttestors][].
+
     Attributes:
         attestors (Sequence[google.cloud.binaryauthorization_v1beta1.types.Attestor]):
             The list of
@@ -162,6 +169,7 @@ class ListAttestorsResponse(proto.Message):
 
 class DeleteAttestorRequest(proto.Message):
     r"""Request message for [BinauthzManagementService.DeleteAttestor][].
+
     Attributes:
         name (str):
             Required. The name of the

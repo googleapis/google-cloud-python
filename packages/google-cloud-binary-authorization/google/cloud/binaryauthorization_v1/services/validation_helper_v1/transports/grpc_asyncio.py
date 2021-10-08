@@ -261,5 +261,8 @@ class ValidationHelperV1GrpcAsyncIOTransport(ValidationHelperV1Transport):
             )
         return self._stubs["validate_attestation_occurrence"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ValidationHelperV1GrpcAsyncIOTransport",)
