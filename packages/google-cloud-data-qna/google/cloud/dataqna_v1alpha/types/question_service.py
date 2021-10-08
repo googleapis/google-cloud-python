@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
 
 class GetQuestionRequest(proto.Message):
     r"""A request to get a previously created question.
+
     Attributes:
         name (str):
             Required. The unique identifier for the question. Example:
@@ -48,6 +49,7 @@ class GetQuestionRequest(proto.Message):
 
 class CreateQuestionRequest(proto.Message):
     r"""Request to create a question resource.
+
     Attributes:
         parent (str):
             Required. The name of the project this data source reference
@@ -62,6 +64,7 @@ class CreateQuestionRequest(proto.Message):
 
 class ExecuteQuestionRequest(proto.Message):
     r"""Request to execute an interpretation.
+
     Attributes:
         name (str):
             Required. The unique identifier for the question. Example:
@@ -77,6 +80,7 @@ class ExecuteQuestionRequest(proto.Message):
 
 class GetUserFeedbackRequest(proto.Message):
     r"""Request to get user feedback.
+
     Attributes:
         name (str):
             Required. The unique identifier for the user feedback. User
@@ -89,6 +93,7 @@ class GetUserFeedbackRequest(proto.Message):
 
 class UpdateUserFeedbackRequest(proto.Message):
     r"""Request to updates user feedback.
+
     Attributes:
         user_feedback (google.cloud.dataqna_v1alpha.types.UserFeedback):
             Required. The user feedback to update. This

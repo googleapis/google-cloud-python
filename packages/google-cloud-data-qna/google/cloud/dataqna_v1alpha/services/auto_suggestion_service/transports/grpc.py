@@ -325,5 +325,8 @@ class AutoSuggestionServiceGrpcTransport(AutoSuggestionServiceTransport):
             )
         return self._stubs["suggest_queries"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("AutoSuggestionServiceGrpcTransport",)

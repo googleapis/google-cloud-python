@@ -39,6 +39,7 @@ class SuggestionType(proto.Enum):
 
 class SuggestQueriesRequest(proto.Message):
     r"""Request for query suggestions.
+
     Attributes:
         parent (str):
             Required. The parent of the suggestion query
@@ -72,6 +73,7 @@ class SuggestQueriesRequest(proto.Message):
 
 class Suggestion(proto.Message):
     r"""A suggestion for a query with a ranking score.
+
     Attributes:
         suggestion_info (google.cloud.dataqna_v1alpha.types.SuggestionInfo):
             Detailed information about the suggestion.
@@ -91,6 +93,7 @@ class Suggestion(proto.Message):
 
 class SuggestionInfo(proto.Message):
     r"""Detailed information about the suggestion.
+
     Attributes:
         annotated_suggestion (google.cloud.dataqna_v1alpha.types.AnnotatedString):
             Annotations for the suggestion. This provides
@@ -148,6 +151,7 @@ class SuggestionInfo(proto.Message):
 
 class SuggestQueriesResponse(proto.Message):
     r"""Response to SuggestQueries.
+
     Attributes:
         suggestions (Sequence[google.cloud.dataqna_v1alpha.types.Suggestion]):
             A list of suggestions.

@@ -380,5 +380,8 @@ class QuestionServiceGrpcTransport(QuestionServiceTransport):
             )
         return self._stubs["update_user_feedback"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("QuestionServiceGrpcTransport",)

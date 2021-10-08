@@ -388,5 +388,8 @@ class QuestionServiceGrpcAsyncIOTransport(QuestionServiceTransport):
             )
         return self._stubs["update_user_feedback"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("QuestionServiceGrpcAsyncIOTransport",)
