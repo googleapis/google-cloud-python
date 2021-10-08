@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
 
 class LogLine(proto.Message):
     r"""Application log line emitted while processing a request.
+
     Attributes:
         time (google.protobuf.timestamp_pb2.Timestamp):
             Approximate time when this log entry was
@@ -49,6 +50,7 @@ class LogLine(proto.Message):
 
 class SourceLocation(proto.Message):
     r"""Specifies a location in a source code file.
+
     Attributes:
         file (str):
             Source file name. Depending on the runtime
