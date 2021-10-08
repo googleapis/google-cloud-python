@@ -834,5 +834,8 @@ class DatastreamGrpcTransport(DatastreamTransport):
             )
         return self._stubs["delete_route"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("DatastreamGrpcTransport",)
