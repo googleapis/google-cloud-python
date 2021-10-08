@@ -243,3 +243,32 @@ already allows construction from mapping types.
    song_dict = Song.to_dict(song)
 
    new_song = Song(song_dict)
+
+.. note::
+
+   Protobuf messages **CANNOT** be safely pickled or unpickled. This has serious consequences for programs that use multiprocessing or write messages to files.
+   The preferred mechanism for serializing proto messages is :meth:`~.Message.serialize`.
+
+   Multiprocessing example:
+
+   .. code-block:: python
+
+       import proto
+       from multiprocessing import Pool
+
+       class Composer(proto.Message):
+          name = proto.Field(proto.STRING, number=1)
+          genre = proto.Field(proto.STRING, number=2)
+
+       composers = [Composer(name=n) for n in ["Bach", "Mozart", "Brahms", "Strauss"]]
+
+       with multiprocessing.Pool(2) as p:
+          def add_genre(comp_bytes):
+              composer = Composer.deserialize(comp_bytes)
+              composer.genre = "classical"
+              return Composer.serialize(composer)
+
+       updated_composers = [
+          Composer.deserialize(comp_bytes)
+          for comp_bytes in p.map(add_genre, (Composer.serialize(comp) for comp in composers))
+       ]
