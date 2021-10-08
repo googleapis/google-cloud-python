@@ -655,5 +655,8 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
             )
         return self._stubs["delete_backup"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("DataprocMetastoreGrpcTransport",)

@@ -61,6 +61,7 @@ __protobuf__ = proto.module(
 
 class Service(proto.Message):
     r"""A managed metastore service that serves metadata queries.
+
     Attributes:
         hive_metastore_config (google.cloud.metastore_v1.types.HiveMetastoreConfig):
             Configuration information specific to running
@@ -219,6 +220,7 @@ class HiveMetastoreConfig(proto.Message):
 
 class KerberosConfig(proto.Message):
     r"""Configuration information for a Kerberos principal.
+
     Attributes:
         keytab (google.cloud.metastore_v1.types.Secret):
             A Kerberos keytab file that can be used to
@@ -242,6 +244,7 @@ class KerberosConfig(proto.Message):
 
 class Secret(proto.Message):
     r"""A securely stored value.
+
     Attributes:
         cloud_secret (str):
             The relative resource name of a Secret Manager secret
@@ -255,6 +258,7 @@ class Secret(proto.Message):
 
 class MetadataManagementActivity(proto.Message):
     r"""The metadata management activities of the metastore service.
+
     Attributes:
         metadata_exports (Sequence[google.cloud.metastore_v1.types.MetadataExport]):
             Output only. The latest metadata exports of
@@ -272,6 +276,7 @@ class MetadataManagementActivity(proto.Message):
 
 class MetadataImport(proto.Message):
     r"""A metastore resource that imports metadata.
+
     Attributes:
         database_dump (google.cloud.metastore_v1.types.MetadataImport.DatabaseDump):
             Immutable. A database dump from a pre-
@@ -345,6 +350,7 @@ class MetadataImport(proto.Message):
 
 class MetadataExport(proto.Message):
     r"""The details of a metadata export operation.
+
     Attributes:
         destination_gcs_uri (str):
             Output only. A Cloud Storage URI of a folder that metadata
@@ -381,6 +387,7 @@ class MetadataExport(proto.Message):
 
 class Backup(proto.Message):
     r"""The details of a backup resource.
+
     Attributes:
         name (str):
             Immutable. The relative resource name of the backup, in the
@@ -425,6 +432,7 @@ class Backup(proto.Message):
 
 class Restore(proto.Message):
     r"""The details of a metadata restore operation.
+
     Attributes:
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the restore
@@ -1054,6 +1062,7 @@ class ExportMetadataRequest(proto.Message):
 
 class RestoreServiceRequest(proto.Message):
     r"""Request message for [DataprocMetastore.Restore][].
+
     Attributes:
         service (str):
             Required. The relative resource name of the metastore
@@ -1094,6 +1103,7 @@ class RestoreServiceRequest(proto.Message):
 
 class OperationMetadata(proto.Message):
     r"""Represents the metadata of a long-running operation.
+
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the operation was
@@ -1132,6 +1142,7 @@ class OperationMetadata(proto.Message):
 
 class LocationMetadata(proto.Message):
     r"""Metadata about the service in a location.
+
     Attributes:
         supported_hive_metastore_versions (Sequence[google.cloud.metastore_v1.types.LocationMetadata.HiveMetastoreVersion]):
             The versions of Hive Metastore that can be used when
@@ -1165,7 +1176,8 @@ class LocationMetadata(proto.Message):
 class DatabaseDumpSpec(proto.Message):
     r"""The specification of database dump to import from or export
     to.
-        """
+
+    """
 
     class Type(proto.Enum):
         r"""The type of the database dump."""
