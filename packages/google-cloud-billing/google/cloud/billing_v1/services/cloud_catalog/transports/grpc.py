@@ -282,5 +282,8 @@ class CloudCatalogGrpcTransport(CloudCatalogTransport):
             )
         return self._stubs["list_skus"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("CloudCatalogGrpcTransport",)

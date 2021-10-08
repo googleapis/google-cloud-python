@@ -578,5 +578,8 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
             )
         return self._stubs["test_iam_permissions"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("CloudBillingGrpcTransport",)

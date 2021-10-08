@@ -38,6 +38,7 @@ __protobuf__ = proto.module(
 
 class Service(proto.Message):
     r"""Encapsulates a single service in Google Cloud Platform.
+
     Attributes:
         name (str):
             The resource name for the service.
@@ -62,6 +63,7 @@ class Service(proto.Message):
 
 class Sku(proto.Message):
     r"""Encapsulates a single SKU in Google Cloud Platform
+
     Attributes:
         name (str):
             The resource name for the SKU.
@@ -101,6 +103,7 @@ class Sku(proto.Message):
 
 class Category(proto.Message):
     r"""Represents the category hierarchy of a SKU.
+
     Attributes:
         service_display_name (str):
             The display name of the service this SKU
@@ -284,6 +287,7 @@ class AggregationInfo(proto.Message):
 
 class ListServicesRequest(proto.Message):
     r"""Request message for ``ListServices``.
+
     Attributes:
         page_size (int):
             Requested page size. Defaults to 5000.
@@ -300,6 +304,7 @@ class ListServicesRequest(proto.Message):
 
 class ListServicesResponse(proto.Message):
     r"""Response message for ``ListServices``.
+
     Attributes:
         services (Sequence[google.cloud.billing_v1.types.Service]):
             A list of services.
@@ -320,6 +325,7 @@ class ListServicesResponse(proto.Message):
 
 class ListSkusRequest(proto.Message):
     r"""Request message for ``ListSkus``.
+
     Attributes:
         parent (str):
             Required. The name of the service.
@@ -361,6 +367,7 @@ class ListSkusRequest(proto.Message):
 
 class ListSkusResponse(proto.Message):
     r"""Response message for ``ListSkus``.
+
     Attributes:
         skus (Sequence[google.cloud.billing_v1.types.Sku]):
             The list of public SKUs of the given service.

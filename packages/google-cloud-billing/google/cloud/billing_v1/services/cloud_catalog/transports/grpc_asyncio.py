@@ -288,5 +288,8 @@ class CloudCatalogGrpcAsyncIOTransport(CloudCatalogTransport):
             )
         return self._stubs["list_skus"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("CloudCatalogGrpcAsyncIOTransport",)

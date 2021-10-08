@@ -114,6 +114,7 @@ class ProjectBillingInfo(proto.Message):
 
 class GetBillingAccountRequest(proto.Message):
     r"""Request message for ``GetBillingAccount``.
+
     Attributes:
         name (str):
             Required. The resource name of the billing account to
@@ -126,6 +127,7 @@ class GetBillingAccountRequest(proto.Message):
 
 class ListBillingAccountsRequest(proto.Message):
     r"""Request message for ``ListBillingAccounts``.
+
     Attributes:
         page_size (int):
             Requested page size. The maximum page size is
@@ -152,6 +154,7 @@ class ListBillingAccountsRequest(proto.Message):
 
 class ListBillingAccountsResponse(proto.Message):
     r"""Response message for ``ListBillingAccounts``.
+
     Attributes:
         billing_accounts (Sequence[google.cloud.billing_v1.types.BillingAccount]):
             A list of billing accounts.
@@ -174,6 +177,7 @@ class ListBillingAccountsResponse(proto.Message):
 
 class CreateBillingAccountRequest(proto.Message):
     r"""Request message for ``CreateBillingAccount``.
+
     Attributes:
         billing_account (google.cloud.billing_v1.types.BillingAccount):
             Required. The billing account resource to
@@ -188,6 +192,7 @@ class CreateBillingAccountRequest(proto.Message):
 
 class UpdateBillingAccountRequest(proto.Message):
     r"""Request message for ``UpdateBillingAccount``.
+
     Attributes:
         name (str):
             Required. The name of the billing account
@@ -209,6 +214,7 @@ class UpdateBillingAccountRequest(proto.Message):
 
 class ListProjectBillingInfoRequest(proto.Message):
     r"""Request message for ``ListProjectBillingInfo``.
+
     Attributes:
         name (str):
             Required. The resource name of the billing account
@@ -231,6 +237,7 @@ class ListProjectBillingInfoRequest(proto.Message):
 
 class ListProjectBillingInfoResponse(proto.Message):
     r"""Request message for ``ListProjectBillingInfoResponse``.
+
     Attributes:
         project_billing_info (Sequence[google.cloud.billing_v1.types.ProjectBillingInfo]):
             A list of ``ProjectBillingInfo`` resources representing the
@@ -254,6 +261,7 @@ class ListProjectBillingInfoResponse(proto.Message):
 
 class GetProjectBillingInfoRequest(proto.Message):
     r"""Request message for ``GetProjectBillingInfo``.
+
     Attributes:
         name (str):
             Required. The resource name of the project for which billing
@@ -266,6 +274,7 @@ class GetProjectBillingInfoRequest(proto.Message):
 
 class UpdateProjectBillingInfoRequest(proto.Message):
     r"""Request message for ``UpdateProjectBillingInfo``.
+
     Attributes:
         name (str):
             Required. The resource name of the project associated with
