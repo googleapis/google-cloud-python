@@ -260,5 +260,8 @@ class TetherGrpcTransport(TetherTransport):
             )
         return self._stubs["egress"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("TetherGrpcTransport",)

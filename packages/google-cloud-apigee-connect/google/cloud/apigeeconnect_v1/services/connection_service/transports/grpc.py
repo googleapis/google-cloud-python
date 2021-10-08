@@ -255,5 +255,8 @@ class ConnectionServiceGrpcTransport(ConnectionServiceTransport):
             )
         return self._stubs["list_connections"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ConnectionServiceGrpcTransport",)

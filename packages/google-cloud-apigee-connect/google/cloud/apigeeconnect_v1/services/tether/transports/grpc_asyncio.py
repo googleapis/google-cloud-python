@@ -265,5 +265,8 @@ class TetherGrpcAsyncIOTransport(TetherTransport):
             )
         return self._stubs["egress"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("TetherGrpcAsyncIOTransport",)

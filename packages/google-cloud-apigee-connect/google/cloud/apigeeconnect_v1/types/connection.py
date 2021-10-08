@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
 
 class ListConnectionsRequest(proto.Message):
     r"""The request for [ListConnections][Management.ListConnections].
+
     Attributes:
         parent (str):
             Required. Parent name of the form:
@@ -55,6 +56,7 @@ class ListConnectionsRequest(proto.Message):
 
 class ListConnectionsResponse(proto.Message):
     r"""The response for [ListConnections][Management.ListConnections].
+
     Attributes:
         connections (Sequence[google.cloud.apigeeconnect_v1.types.Connection]):
             A list of clients.
@@ -74,6 +76,7 @@ class ListConnectionsResponse(proto.Message):
 
 class Connection(proto.Message):
     r"""
+
     Attributes:
         endpoint (str):
             The endpoint that the connection is made against. Format:
@@ -91,6 +94,7 @@ class Connection(proto.Message):
 
 class Cluster(proto.Message):
     r"""
+
     Attributes:
         name (str):
             The name of the cluster.

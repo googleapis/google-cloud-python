@@ -59,6 +59,7 @@ class Scheme(proto.Enum):
 
 class EgressRequest(proto.Message):
     r"""gRPC request payload for tether.
+
     Attributes:
         id (str):
             Unique identifier for the request.
@@ -85,6 +86,7 @@ class EgressRequest(proto.Message):
 
 class Payload(proto.Message):
     r"""Payload for EgressRequest.
+
     Attributes:
         http_request (google.cloud.apigeeconnect_v1.types.HttpRequest):
             The HttpRequest proto.
@@ -105,6 +107,7 @@ class Payload(proto.Message):
 
 class StreamInfo(proto.Message):
     r"""The Information of bi-directional stream.
+
     Attributes:
         id (str):
             Unique identifier for the stream.
@@ -115,6 +118,7 @@ class StreamInfo(proto.Message):
 
 class EgressResponse(proto.Message):
     r"""gRPC response payload for tether.
+
     Attributes:
         id (str):
             Unique identifier for the response. Matches
@@ -148,6 +152,7 @@ class EgressResponse(proto.Message):
 
 class HttpRequest(proto.Message):
     r"""The proto definition of http request.
+
     Attributes:
         id (str):
             A unique identifier for the request.
@@ -192,6 +197,7 @@ class Url(proto.Message):
 
 class Header(proto.Message):
     r"""The http headers.
+
     Attributes:
         key (str):
 
@@ -205,6 +211,7 @@ class Header(proto.Message):
 
 class HttpResponse(proto.Message):
     r"""The proto definition of http response.
+
     Attributes:
         id (str):
             A unique identifier that matches the request
