@@ -153,6 +153,11 @@
                 "create_metric_descriptor"
               ]
             },
+            "CreateServiceTimeSeries": {
+              "methods": [
+                "create_service_time_series"
+              ]
+            },
             "CreateTimeSeries": {
               "methods": [
                 "create_time_series"
@@ -196,6 +201,11 @@
             "CreateMetricDescriptor": {
               "methods": [
                 "create_metric_descriptor"
+              ]
+            },
+            "CreateServiceTimeSeries": {
+              "methods": [
+                "create_service_time_series"
               ]
             },
             "CreateTimeSeries": {

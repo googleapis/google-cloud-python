@@ -367,8 +367,10 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
     ]:
         r"""Return a callable for the create metric descriptor method over gRPC.
 
-        Creates a new metric descriptor. User-created metric descriptors
-        define `custom
+        Creates a new metric descriptor. The creation is executed
+        asynchronously and callers may check the returned operation to
+        track its progress. User-created metric descriptors define
+        `custom
         metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
 
         Returns:
@@ -478,6 +480,40 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["create_time_series"]
+
+    @property
+    def create_service_time_series(
+        self,
+    ) -> Callable[[metric_service.CreateTimeSeriesRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the create service time series method over gRPC.
+
+        Creates or adds data to one or more service time series. A
+        service time series is a time series for a metric from a Google
+        Cloud service. The response is empty if all time series in the
+        request were written. If any time series could not be written, a
+        corresponding failure message is included in the error response.
+        This endpoint rejects writes to user-defined metrics. This
+        method is only for use by Google Cloud services. Use
+        [projects.timeSeries.create][google.monitoring.v3.MetricService.CreateTimeSeries]
+        instead.
+
+        Returns:
+            Callable[[~.CreateTimeSeriesRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_service_time_series" not in self._stubs:
+            self._stubs["create_service_time_series"] = self.grpc_channel.unary_unary(
+                "/google.monitoring.v3.MetricService/CreateServiceTimeSeries",
+                request_serializer=metric_service.CreateTimeSeriesRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["create_service_time_series"]
 
     def close(self):
         return self.grpc_channel.close()

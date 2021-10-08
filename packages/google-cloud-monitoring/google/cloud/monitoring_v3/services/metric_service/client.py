@@ -742,8 +742,10 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metric_pb2.MetricDescriptor:
-        r"""Creates a new metric descriptor. User-created metric descriptors
-        define `custom
+        r"""Creates a new metric descriptor. The creation is executed
+        asynchronously and callers may check the returned operation to
+        track its progress. User-created metric descriptors define
+        `custom
         metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
 
         Args:
@@ -1101,6 +1103,102 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_time_series]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
+
+    def create_service_time_series(
+        self,
+        request: Union[metric_service.CreateTimeSeriesRequest, dict] = None,
+        *,
+        name: str = None,
+        time_series: Sequence[gm_metric.TimeSeries] = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Creates or adds data to one or more service time series. A
+        service time series is a time series for a metric from a Google
+        Cloud service. The response is empty if all time series in the
+        request were written. If any time series could not be written, a
+        corresponding failure message is included in the error response.
+        This endpoint rejects writes to user-defined metrics. This
+        method is only for use by Google Cloud services. Use
+        [projects.timeSeries.create][google.monitoring.v3.MetricService.CreateTimeSeries]
+        instead.
+
+        Args:
+            request (Union[google.cloud.monitoring_v3.types.CreateTimeSeriesRequest, dict]):
+                The request object. The `CreateTimeSeries` request.
+            name (str):
+                Required. The
+                `project <https://cloud.google.com/monitoring/api/v3#project_name>`__
+                on which to execute the request. The format is:
+
+                ::
+
+                    projects/[PROJECT_ID_OR_NUMBER]
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            time_series (Sequence[google.cloud.monitoring_v3.types.TimeSeries]):
+                Required. The new data to be added to a list of time
+                series. Adds at most one data point to each of several
+                time series. The new data point must be more recent than
+                any other point in its time series. Each ``TimeSeries``
+                value must fully specify a unique time series by
+                supplying all label values for the metric and the
+                monitored resource.
+
+                The maximum number of ``TimeSeries`` objects per
+                ``Create`` request is 200.
+
+                This corresponds to the ``time_series`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, time_series])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a metric_service.CreateTimeSeriesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, metric_service.CreateTimeSeriesRequest):
+            request = metric_service.CreateTimeSeriesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if time_series is not None:
+                request.time_series = time_series
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_service_time_series
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

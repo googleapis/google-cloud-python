@@ -45,6 +45,7 @@ class monitoringCallTransformer(cst.CSTTransformer):
         'create_notification_channel': ('name', 'notification_channel', ),
         'create_service': ('parent', 'service', 'service_id', ),
         'create_service_level_objective': ('parent', 'service_level_objective', 'service_level_objective_id', ),
+        'create_service_time_series': ('name', 'time_series', ),
         'create_time_series': ('name', 'time_series', ),
         'create_uptime_check_config': ('parent', 'uptime_check_config', ),
         'delete_alert_policy': ('name', ),

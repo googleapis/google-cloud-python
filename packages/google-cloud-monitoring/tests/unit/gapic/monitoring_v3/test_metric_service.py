@@ -2872,6 +2872,238 @@ async def test_create_time_series_flattened_error_async():
         )
 
 
+def test_create_service_time_series(
+    transport: str = "grpc", request_type=metric_service.CreateTimeSeriesRequest
+):
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_service_time_series), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.create_service_time_series(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metric_service.CreateTimeSeriesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_create_service_time_series_from_dict():
+    test_create_service_time_series(request_type=dict)
+
+
+def test_create_service_time_series_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_service_time_series), "__call__"
+    ) as call:
+        client.create_service_time_series()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metric_service.CreateTimeSeriesRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_service_time_series_async(
+    transport: str = "grpc_asyncio", request_type=metric_service.CreateTimeSeriesRequest
+):
+    client = MetricServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_service_time_series), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.create_service_time_series(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metric_service.CreateTimeSeriesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_create_service_time_series_async_from_dict():
+    await test_create_service_time_series_async(request_type=dict)
+
+
+def test_create_service_time_series_field_headers():
+    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metric_service.CreateTimeSeriesRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_service_time_series), "__call__"
+    ) as call:
+        call.return_value = None
+        client.create_service_time_series(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_service_time_series_field_headers_async():
+    client = MetricServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metric_service.CreateTimeSeriesRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_service_time_series), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.create_service_time_series(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_create_service_time_series_flattened():
+    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_service_time_series), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_service_time_series(
+            name="name_value",
+            time_series=[
+                gm_metric.TimeSeries(metric=metric_pb2.Metric(type="type_value"))
+            ],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].name == "name_value"
+        assert args[0].time_series == [
+            gm_metric.TimeSeries(metric=metric_pb2.Metric(type="type_value"))
+        ]
+
+
+def test_create_service_time_series_flattened_error():
+    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_service_time_series(
+            metric_service.CreateTimeSeriesRequest(),
+            name="name_value",
+            time_series=[
+                gm_metric.TimeSeries(metric=metric_pb2.Metric(type="type_value"))
+            ],
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_service_time_series_flattened_async():
+    client = MetricServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_service_time_series), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_service_time_series(
+            name="name_value",
+            time_series=[
+                gm_metric.TimeSeries(metric=metric_pb2.Metric(type="type_value"))
+            ],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].name == "name_value"
+        assert args[0].time_series == [
+            gm_metric.TimeSeries(metric=metric_pb2.Metric(type="type_value"))
+        ]
+
+
+@pytest.mark.asyncio
+async def test_create_service_time_series_flattened_error_async():
+    client = MetricServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_service_time_series(
+            metric_service.CreateTimeSeriesRequest(),
+            name="name_value",
+            time_series=[
+                gm_metric.TimeSeries(metric=metric_pb2.Metric(type="type_value"))
+            ],
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.MetricServiceGrpcTransport(
@@ -2977,6 +3209,7 @@ def test_metric_service_base_transport():
         "delete_metric_descriptor",
         "list_time_series",
         "create_time_series",
+        "create_service_time_series",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
