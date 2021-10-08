@@ -382,5 +382,8 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
             )
         return self._stubs["delete_authorized_certificate"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("AuthorizedCertificatesGrpcTransport",)

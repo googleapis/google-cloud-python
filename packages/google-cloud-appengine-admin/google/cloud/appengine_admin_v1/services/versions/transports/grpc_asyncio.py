@@ -423,5 +423,8 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
             )
         return self._stubs["delete_version"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("VersionsGrpcAsyncIOTransport",)

@@ -412,5 +412,8 @@ class FirewallGrpcAsyncIOTransport(FirewallTransport):
             )
         return self._stubs["delete_ingress_rule"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("FirewallGrpcAsyncIOTransport",)

@@ -93,7 +93,8 @@ class Instance(proto.Message):
         DYNAMIC = 2
 
     class Liveness(proto.Message):
-        r"""Wrapper for LivenessState enum.    """
+        r"""Wrapper for LivenessState enum.
+        """
 
         class LivenessState(proto.Enum):
             r"""Liveness health check status for Flex instances."""

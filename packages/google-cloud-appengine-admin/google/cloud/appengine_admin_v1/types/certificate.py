@@ -131,6 +131,7 @@ class AuthorizedCertificate(proto.Message):
 
 class CertificateRawData(proto.Message):
     r"""An SSL certificate obtained from a certificate authority.
+
     Attributes:
         public_certificate (str):
             PEM encoded x.509 public key certificate. This field is set
@@ -167,6 +168,7 @@ class CertificateRawData(proto.Message):
 
 class ManagedCertificate(proto.Message):
     r"""A certificate managed by App Engine.
+
     Attributes:
         last_renewal_time (google.protobuf.timestamp_pb2.Timestamp):
             Time at which the certificate was last renewed. The renewal

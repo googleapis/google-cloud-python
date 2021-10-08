@@ -374,5 +374,8 @@ class InstancesGrpcTransport(InstancesTransport):
             )
         return self._stubs["debug_instance"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("InstancesGrpcTransport",)

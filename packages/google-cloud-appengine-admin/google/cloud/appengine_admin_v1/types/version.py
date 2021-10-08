@@ -488,6 +488,7 @@ class ManualScaling(proto.Message):
 
 class CpuUtilization(proto.Message):
     r"""Target scaling by CPU usage.
+
     Attributes:
         aggregation_window_length (google.protobuf.duration_pb2.Duration):
             Period of time over which CPU utilization is
@@ -562,6 +563,7 @@ class NetworkUtilization(proto.Message):
 
 class StandardSchedulerSettings(proto.Message):
     r"""Scheduler settings for standard environment.
+
     Attributes:
         target_cpu_utilization (float):
             Target CPU utilization ratio to maintain when
@@ -657,6 +659,7 @@ class Volume(proto.Message):
 
 class Resources(proto.Message):
     r"""Machine resources for a version.
+
     Attributes:
         cpu (float):
             Number of CPU cores needed.
@@ -681,6 +684,7 @@ class Resources(proto.Message):
 
 class VpcAccessConnector(proto.Message):
     r"""VPC access connector specification.
+
     Attributes:
         name (str):
             Full Serverless VPC Access Connector name
@@ -693,6 +697,7 @@ class VpcAccessConnector(proto.Message):
 
 class Entrypoint(proto.Message):
     r"""The entrypoint for the application.
+
     Attributes:
         shell (str):
             The format should be a shell command that can be fed to

@@ -132,6 +132,7 @@ class CloudBuildOptions(proto.Message):
 
 class ZipInfo(proto.Message):
     r"""The zip file information for a zip deployment.
+
     Attributes:
         source_url (str):
             URL of the zip file to deploy from. Must be a

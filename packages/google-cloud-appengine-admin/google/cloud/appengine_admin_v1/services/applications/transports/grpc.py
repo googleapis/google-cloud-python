@@ -373,5 +373,8 @@ class ApplicationsGrpcTransport(ApplicationsTransport):
             )
         return self._stubs["repair_application"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ApplicationsGrpcTransport",)

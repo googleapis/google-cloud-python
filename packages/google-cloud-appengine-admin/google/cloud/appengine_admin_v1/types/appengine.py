@@ -103,6 +103,7 @@ class DomainOverrideStrategy(proto.Enum):
 
 class GetApplicationRequest(proto.Message):
     r"""Request message for ``Applications.GetApplication``.
+
     Attributes:
         name (str):
             Name of the Application resource to get. Example:
@@ -114,6 +115,7 @@ class GetApplicationRequest(proto.Message):
 
 class CreateApplicationRequest(proto.Message):
     r"""Request message for ``Applications.CreateApplication``.
+
     Attributes:
         application (google.cloud.appengine_admin_v1.types.Application):
             Application configuration.
@@ -126,6 +128,7 @@ class CreateApplicationRequest(proto.Message):
 
 class UpdateApplicationRequest(proto.Message):
     r"""Request message for ``Applications.UpdateApplication``.
+
     Attributes:
         name (str):
             Name of the Application resource to update. Example:
@@ -149,6 +152,7 @@ class UpdateApplicationRequest(proto.Message):
 
 class RepairApplicationRequest(proto.Message):
     r"""Request message for 'Applications.RepairApplication'.
+
     Attributes:
         name (str):
             Name of the application to repair. Example: ``apps/myapp``
@@ -159,6 +163,7 @@ class RepairApplicationRequest(proto.Message):
 
 class ListServicesRequest(proto.Message):
     r"""Request message for ``Services.ListServices``.
+
     Attributes:
         parent (str):
             Name of the parent Application resource. Example:
@@ -177,6 +182,7 @@ class ListServicesRequest(proto.Message):
 
 class ListServicesResponse(proto.Message):
     r"""Response message for ``Services.ListServices``.
+
     Attributes:
         services (Sequence[google.cloud.appengine_admin_v1.types.Service]):
             The services belonging to the requested
@@ -196,6 +202,7 @@ class ListServicesResponse(proto.Message):
 
 class GetServiceRequest(proto.Message):
     r"""Request message for ``Services.GetService``.
+
     Attributes:
         name (str):
             Name of the resource requested. Example:
@@ -207,6 +214,7 @@ class GetServiceRequest(proto.Message):
 
 class UpdateServiceRequest(proto.Message):
     r"""Request message for ``Services.UpdateService``.
+
     Attributes:
         name (str):
             Name of the resource to update. Example:
@@ -245,6 +253,7 @@ class UpdateServiceRequest(proto.Message):
 
 class DeleteServiceRequest(proto.Message):
     r"""Request message for ``Services.DeleteService``.
+
     Attributes:
         name (str):
             Name of the resource requested. Example:
@@ -256,6 +265,7 @@ class DeleteServiceRequest(proto.Message):
 
 class ListVersionsRequest(proto.Message):
     r"""Request message for ``Versions.ListVersions``.
+
     Attributes:
         parent (str):
             Name of the parent Service resource. Example:
@@ -278,6 +288,7 @@ class ListVersionsRequest(proto.Message):
 
 class ListVersionsResponse(proto.Message):
     r"""Response message for ``Versions.ListVersions``.
+
     Attributes:
         versions (Sequence[google.cloud.appengine_admin_v1.types.Version]):
             The versions belonging to the requested
@@ -297,6 +308,7 @@ class ListVersionsResponse(proto.Message):
 
 class GetVersionRequest(proto.Message):
     r"""Request message for ``Versions.GetVersion``.
+
     Attributes:
         name (str):
             Name of the resource requested. Example:
@@ -311,6 +323,7 @@ class GetVersionRequest(proto.Message):
 
 class CreateVersionRequest(proto.Message):
     r"""Request message for ``Versions.CreateVersion``.
+
     Attributes:
         parent (str):
             Name of the parent resource to create this version under.
@@ -325,6 +338,7 @@ class CreateVersionRequest(proto.Message):
 
 class UpdateVersionRequest(proto.Message):
     r"""Request message for ``Versions.UpdateVersion``.
+
     Attributes:
         name (str):
             Name of the resource to update. Example:
@@ -347,6 +361,7 @@ class UpdateVersionRequest(proto.Message):
 
 class DeleteVersionRequest(proto.Message):
     r"""Request message for ``Versions.DeleteVersion``.
+
     Attributes:
         name (str):
             Name of the resource requested. Example:
@@ -358,6 +373,7 @@ class DeleteVersionRequest(proto.Message):
 
 class ListInstancesRequest(proto.Message):
     r"""Request message for ``Instances.ListInstances``.
+
     Attributes:
         parent (str):
             Name of the parent Version resource. Example:
@@ -376,6 +392,7 @@ class ListInstancesRequest(proto.Message):
 
 class ListInstancesResponse(proto.Message):
     r"""Response message for ``Instances.ListInstances``.
+
     Attributes:
         instances (Sequence[google.cloud.appengine_admin_v1.types.Instance]):
             The instances belonging to the requested
@@ -395,6 +412,7 @@ class ListInstancesResponse(proto.Message):
 
 class GetInstanceRequest(proto.Message):
     r"""Request message for ``Instances.GetInstance``.
+
     Attributes:
         name (str):
             Name of the resource requested. Example:
@@ -406,6 +424,7 @@ class GetInstanceRequest(proto.Message):
 
 class DeleteInstanceRequest(proto.Message):
     r"""Request message for ``Instances.DeleteInstance``.
+
     Attributes:
         name (str):
             Name of the resource requested. Example:
@@ -417,6 +436,7 @@ class DeleteInstanceRequest(proto.Message):
 
 class DebugInstanceRequest(proto.Message):
     r"""Request message for ``Instances.DebugInstance``.
+
     Attributes:
         name (str):
             Name of the resource requested. Example:
@@ -437,6 +457,7 @@ class DebugInstanceRequest(proto.Message):
 
 class ListIngressRulesRequest(proto.Message):
     r"""Request message for ``Firewall.ListIngressRules``.
+
     Attributes:
         parent (str):
             Name of the Firewall collection to retrieve. Example:
@@ -461,6 +482,7 @@ class ListIngressRulesRequest(proto.Message):
 
 class ListIngressRulesResponse(proto.Message):
     r"""Response message for ``Firewall.ListIngressRules``.
+
     Attributes:
         ingress_rules (Sequence[google.cloud.appengine_admin_v1.types.FirewallRule]):
             The ingress FirewallRules for this
@@ -482,6 +504,7 @@ class ListIngressRulesResponse(proto.Message):
 
 class BatchUpdateIngressRulesRequest(proto.Message):
     r"""Request message for ``Firewall.BatchUpdateIngressRules``.
+
     Attributes:
         name (str):
             Name of the Firewall collection to set. Example:
@@ -499,6 +522,7 @@ class BatchUpdateIngressRulesRequest(proto.Message):
 
 class BatchUpdateIngressRulesResponse(proto.Message):
     r"""Response message for ``Firewall.UpdateAllIngressRules``.
+
     Attributes:
         ingress_rules (Sequence[google.cloud.appengine_admin_v1.types.FirewallRule]):
             The full list of ingress FirewallRules for
@@ -512,6 +536,7 @@ class BatchUpdateIngressRulesResponse(proto.Message):
 
 class CreateIngressRuleRequest(proto.Message):
     r"""Request message for ``Firewall.CreateIngressRule``.
+
     Attributes:
         parent (str):
             Name of the parent Firewall collection in which to create a
@@ -537,6 +562,7 @@ class CreateIngressRuleRequest(proto.Message):
 
 class GetIngressRuleRequest(proto.Message):
     r"""Request message for ``Firewall.GetIngressRule``.
+
     Attributes:
         name (str):
             Name of the Firewall resource to retrieve. Example:
@@ -548,6 +574,7 @@ class GetIngressRuleRequest(proto.Message):
 
 class UpdateIngressRuleRequest(proto.Message):
     r"""Request message for ``Firewall.UpdateIngressRule``.
+
     Attributes:
         name (str):
             Name of the Firewall resource to update. Example:
@@ -569,6 +596,7 @@ class UpdateIngressRuleRequest(proto.Message):
 
 class DeleteIngressRuleRequest(proto.Message):
     r"""Request message for ``Firewall.DeleteIngressRule``.
+
     Attributes:
         name (str):
             Name of the Firewall resource to delete. Example:
@@ -580,6 +608,7 @@ class DeleteIngressRuleRequest(proto.Message):
 
 class ListAuthorizedDomainsRequest(proto.Message):
     r"""Request message for ``AuthorizedDomains.ListAuthorizedDomains``.
+
     Attributes:
         parent (str):
             Name of the parent Application resource. Example:
@@ -598,6 +627,7 @@ class ListAuthorizedDomainsRequest(proto.Message):
 
 class ListAuthorizedDomainsResponse(proto.Message):
     r"""Response message for ``AuthorizedDomains.ListAuthorizedDomains``.
+
     Attributes:
         domains (Sequence[google.cloud.appengine_admin_v1.types.AuthorizedDomain]):
             The authorized domains belonging to the user.
@@ -738,6 +768,7 @@ class DeleteAuthorizedCertificateRequest(proto.Message):
 
 class ListDomainMappingsRequest(proto.Message):
     r"""Request message for ``DomainMappings.ListDomainMappings``.
+
     Attributes:
         parent (str):
             Name of the parent Application resource. Example:
@@ -756,6 +787,7 @@ class ListDomainMappingsRequest(proto.Message):
 
 class ListDomainMappingsResponse(proto.Message):
     r"""Response message for ``DomainMappings.ListDomainMappings``.
+
     Attributes:
         domain_mappings (Sequence[google.cloud.appengine_admin_v1.types.DomainMapping]):
             The domain mappings for the application.
@@ -776,6 +808,7 @@ class ListDomainMappingsResponse(proto.Message):
 
 class GetDomainMappingRequest(proto.Message):
     r"""Request message for ``DomainMappings.GetDomainMapping``.
+
     Attributes:
         name (str):
             Name of the resource requested. Example:
@@ -787,6 +820,7 @@ class GetDomainMappingRequest(proto.Message):
 
 class CreateDomainMappingRequest(proto.Message):
     r"""Request message for ``DomainMappings.CreateDomainMapping``.
+
     Attributes:
         parent (str):
             Name of the parent Application resource. Example:
@@ -810,6 +844,7 @@ class CreateDomainMappingRequest(proto.Message):
 
 class UpdateDomainMappingRequest(proto.Message):
     r"""Request message for ``DomainMappings.UpdateDomainMapping``.
+
     Attributes:
         name (str):
             Name of the resource to update. Example:
@@ -834,6 +869,7 @@ class UpdateDomainMappingRequest(proto.Message):
 
 class DeleteDomainMappingRequest(proto.Message):
     r"""Request message for ``DomainMappings.DeleteDomainMapping``.
+
     Attributes:
         name (str):
             Name of the resource to delete. Example:
