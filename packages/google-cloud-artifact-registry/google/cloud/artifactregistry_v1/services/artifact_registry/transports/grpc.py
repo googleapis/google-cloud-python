@@ -320,5 +320,8 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
             )
         return self._stubs["get_repository"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ArtifactRegistryGrpcTransport",)

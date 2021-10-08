@@ -22,7 +22,8 @@ __protobuf__ = proto.module(
 
 
 class OperationMetadata(proto.Message):
-    r"""Metadata type for longrunning-operations, currently empty.    """
+    r"""Metadata type for longrunning-operations, currently empty.
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

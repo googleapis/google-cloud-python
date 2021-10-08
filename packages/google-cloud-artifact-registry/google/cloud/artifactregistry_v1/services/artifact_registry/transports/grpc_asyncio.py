@@ -324,5 +324,8 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
             )
         return self._stubs["get_repository"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ArtifactRegistryGrpcAsyncIOTransport",)
