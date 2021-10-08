@@ -79,6 +79,7 @@ class FileType(proto.Enum):
 
 class InfoType(proto.Message):
     r"""Type of information detected by the API.
+
     Attributes:
         name (str):
             Name of the information type. Either a name of your choosing
@@ -94,6 +95,7 @@ class InfoType(proto.Message):
 
 class StoredType(proto.Message):
     r"""A reference to a StoredInfoType to use with scanning.
+
     Attributes:
         name (str):
             Resource name of the requested ``StoredInfoType``, for
@@ -217,6 +219,7 @@ class CustomInfoType(proto.Message):
 
     class Regex(proto.Message):
         r"""Message defining a custom regular expression.
+
         Attributes:
             pattern (str):
                 Pattern defining the regular expression. Its
@@ -242,7 +245,8 @@ class CustomInfoType(proto.Message):
         should be used in conjunction with a field on the transformation
         such as ``surrogate_info_type``. This CustomInfoType does not
         support the use of ``detection_rules``.
-            """
+
+        """
 
     class DetectionRule(proto.Message):
         r"""Deprecated; use ``InspectionRuleSet`` instead. Rule for modifying a
@@ -363,6 +367,7 @@ class CustomInfoType(proto.Message):
 
 class FieldId(proto.Message):
     r"""General identifier of a data field in a storage service.
+
     Attributes:
         name (str):
             Name describing the field.
@@ -394,6 +399,7 @@ class PartitionId(proto.Message):
 
 class KindExpression(proto.Message):
     r"""A representation of a Datastore kind.
+
     Attributes:
         name (str):
             The name of the kind.
@@ -404,6 +410,7 @@ class KindExpression(proto.Message):
 
 class DatastoreOptions(proto.Message):
     r"""Options defining a data set within Google Cloud Datastore.
+
     Attributes:
         partition_id (google.cloud.dlp_v2.types.PartitionId):
             A partition ID identifies a grouping of
@@ -533,6 +540,7 @@ class CloudStorageOptions(proto.Message):
 
     class FileSet(proto.Message):
         r"""Set of files to scan.
+
         Attributes:
             url (str):
                 The Cloud Storage url of the file(s) to scan, in the format
@@ -567,6 +575,7 @@ class CloudStorageOptions(proto.Message):
 
 class CloudStorageFileSet(proto.Message):
     r"""Message representing a set of files in Cloud Storage.
+
     Attributes:
         url (str):
             The url, in the format ``gs://<bucket>/<path>``. Trailing
@@ -578,6 +587,7 @@ class CloudStorageFileSet(proto.Message):
 
 class CloudStoragePath(proto.Message):
     r"""Message representing a single file or path in Cloud Storage.
+
     Attributes:
         path (str):
             A url representing a file or path (no wildcards) in Cloud
@@ -589,6 +599,7 @@ class CloudStoragePath(proto.Message):
 
 class BigQueryOptions(proto.Message):
     r"""Options defining BigQuery table and row identifiers.
+
     Attributes:
         table_reference (google.cloud.dlp_v2.types.BigQueryTable):
             Complete BigQuery table reference.
@@ -641,6 +652,7 @@ class BigQueryOptions(proto.Message):
 
 class StorageConfig(proto.Message):
     r"""Shared message indicating Cloud storage type.
+
     Attributes:
         datastore_options (google.cloud.dlp_v2.types.DatastoreOptions):
             Google Cloud Datastore options.
@@ -777,6 +789,7 @@ class HybridOptions(proto.Message):
 
 class BigQueryKey(proto.Message):
     r"""Row key for identifying a record in BigQuery table.
+
     Attributes:
         table_reference (google.cloud.dlp_v2.types.BigQueryTable):
             Complete BigQuery table reference.
@@ -795,6 +808,7 @@ class BigQueryKey(proto.Message):
 
 class DatastoreKey(proto.Message):
     r"""Record key for a finding in Cloud Datastore.
+
     Attributes:
         entity_key (google.cloud.dlp_v2.types.Key):
             Datastore entity key.
@@ -908,6 +922,7 @@ class BigQueryTable(proto.Message):
 
 class BigQueryField(proto.Message):
     r"""Message defining a field of a BigQuery table.
+
     Attributes:
         table (google.cloud.dlp_v2.types.BigQueryTable):
             Source table of the field.
@@ -938,6 +953,7 @@ class EntityId(proto.Message):
 
 class TableOptions(proto.Message):
     r"""Instructions regarding the table content being inspected.
+
     Attributes:
         identifying_fields (Sequence[google.cloud.dlp_v2.types.FieldId]):
             The columns that are the primary keys for

@@ -1233,5 +1233,8 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
             )
         return self._stubs["finish_dlp_job"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("DlpServiceGrpcTransport",)
