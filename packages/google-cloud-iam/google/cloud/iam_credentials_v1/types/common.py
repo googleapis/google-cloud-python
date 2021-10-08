@@ -36,6 +36,7 @@ __protobuf__ = proto.module(
 
 class GenerateAccessTokenRequest(proto.Message):
     r"""
+
     Attributes:
         name (str):
             Required. The resource name of the service account for which
@@ -79,6 +80,7 @@ class GenerateAccessTokenRequest(proto.Message):
 
 class GenerateAccessTokenResponse(proto.Message):
     r"""
+
     Attributes:
         access_token (str):
             The OAuth 2.0 access token.
@@ -93,6 +95,7 @@ class GenerateAccessTokenResponse(proto.Message):
 
 class SignBlobRequest(proto.Message):
     r"""
+
     Attributes:
         name (str):
             Required. The resource name of the service account for which
@@ -125,6 +128,7 @@ class SignBlobRequest(proto.Message):
 
 class SignBlobResponse(proto.Message):
     r"""
+
     Attributes:
         key_id (str):
             The ID of the key used to sign the blob.
@@ -138,6 +142,7 @@ class SignBlobResponse(proto.Message):
 
 class SignJwtRequest(proto.Message):
     r"""
+
     Attributes:
         name (str):
             Required. The resource name of the service account for which
@@ -171,6 +176,7 @@ class SignJwtRequest(proto.Message):
 
 class SignJwtResponse(proto.Message):
     r"""
+
     Attributes:
         key_id (str):
             The ID of the key used to sign the JWT.
@@ -184,6 +190,7 @@ class SignJwtResponse(proto.Message):
 
 class GenerateIdTokenRequest(proto.Message):
     r"""
+
     Attributes:
         name (str):
             Required. The resource name of the service account for which
@@ -223,6 +230,7 @@ class GenerateIdTokenRequest(proto.Message):
 
 class GenerateIdTokenResponse(proto.Message):
     r"""
+
     Attributes:
         token (str):
             The OpenId Connect ID token.

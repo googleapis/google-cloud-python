@@ -350,5 +350,8 @@ class IAMCredentialsGrpcAsyncIOTransport(IAMCredentialsTransport):
             )
         return self._stubs["sign_jwt"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("IAMCredentialsGrpcAsyncIOTransport",)
