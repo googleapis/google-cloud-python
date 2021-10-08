@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
 
 class DataSource(proto.Message):
     r"""Physical location of an entry.
+
     Attributes:
         service (google.cloud.datacatalog_v1.types.DataSource.Service):
             Service that physically stores the data.

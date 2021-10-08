@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
 
 class GcsFilesetSpec(proto.Message):
     r"""Describes a Cloud Storage fileset entry.
+
     Attributes:
         file_patterns (Sequence[str]):
             Required. Patterns to identify a set of files in Google
@@ -74,6 +75,7 @@ class GcsFilesetSpec(proto.Message):
 
 class GcsFileSpec(proto.Message):
     r"""Specifications of a single file in Cloud Storage.
+
     Attributes:
         file_path (str):
             Required. The full file path. Example:

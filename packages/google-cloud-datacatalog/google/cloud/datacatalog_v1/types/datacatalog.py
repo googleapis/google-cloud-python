@@ -786,6 +786,7 @@ class RoutineSpec(proto.Message):
 
     class Argument(proto.Message):
         r"""Input or output argument of a function or stored procedure.
+
         Attributes:
             name (str):
                 The name of the argument. A return argument

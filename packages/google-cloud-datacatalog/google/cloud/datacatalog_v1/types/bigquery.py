@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
 
 class BigQueryConnectionSpec(proto.Message):
     r"""Specification for the BigQuery connection.
+
     Attributes:
         connection_type (google.cloud.datacatalog_v1.types.BigQueryConnectionSpec.ConnectionType):
             The type of the BigQuery connection.
@@ -81,6 +82,7 @@ class CloudSqlBigQueryConnectionSpec(proto.Message):
 
 class BigQueryRoutineSpec(proto.Message):
     r"""Fields specific for BigQuery routines.
+
     Attributes:
         imported_libraries (Sequence[str]):
             Paths of the imported libraries.

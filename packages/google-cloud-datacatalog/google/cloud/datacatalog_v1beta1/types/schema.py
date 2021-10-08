@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
 
 class Schema(proto.Message):
     r"""Represents a schema (e.g. BigQuery, GoogleSQL, Avro schema).
+
     Attributes:
         columns (Sequence[google.cloud.datacatalog_v1beta1.types.ColumnSchema]):
             Required. Schema of columns. A maximum of

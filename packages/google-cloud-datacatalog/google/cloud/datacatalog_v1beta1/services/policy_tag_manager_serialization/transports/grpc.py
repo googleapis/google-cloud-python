@@ -295,5 +295,8 @@ class PolicyTagManagerSerializationGrpcTransport(
             )
         return self._stubs["export_taxonomies"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("PolicyTagManagerSerializationGrpcTransport",)
