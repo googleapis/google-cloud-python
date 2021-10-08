@@ -363,13 +363,15 @@ class FailurePolicy(proto.Message):
         failed execution will be retried up to 7 days with an
         exponential backoff (capped at 10 seconds).
         Retried execution is charged as any other execution.
-            """
+
+        """
 
     retry = proto.Field(proto.MESSAGE, number=1, oneof="action", message=Retry,)
 
 
 class CreateFunctionRequest(proto.Message):
     r"""Request for the ``CreateFunction`` method.
+
     Attributes:
         location (str):
             Required. The project and location in which the function
@@ -385,6 +387,7 @@ class CreateFunctionRequest(proto.Message):
 
 class UpdateFunctionRequest(proto.Message):
     r"""Request for the ``UpdateFunction`` method.
+
     Attributes:
         function (google.cloud.functions_v1.types.CloudFunction):
             Required. New version of the function.
@@ -401,6 +404,7 @@ class UpdateFunctionRequest(proto.Message):
 
 class GetFunctionRequest(proto.Message):
     r"""Request for the ``GetFunction`` method.
+
     Attributes:
         name (str):
             Required. The name of the function which
@@ -412,6 +416,7 @@ class GetFunctionRequest(proto.Message):
 
 class ListFunctionsRequest(proto.Message):
     r"""Request for the ``ListFunctions`` method.
+
     Attributes:
         parent (str):
             The project and location from which the function should be
@@ -438,6 +443,7 @@ class ListFunctionsRequest(proto.Message):
 
 class ListFunctionsResponse(proto.Message):
     r"""Response for the ``ListFunctions`` method.
+
     Attributes:
         functions (Sequence[google.cloud.functions_v1.types.CloudFunction]):
             The functions that match the request.
@@ -463,6 +469,7 @@ class ListFunctionsResponse(proto.Message):
 
 class DeleteFunctionRequest(proto.Message):
     r"""Request for the ``DeleteFunction`` method.
+
     Attributes:
         name (str):
             Required. The name of the function which
@@ -474,6 +481,7 @@ class DeleteFunctionRequest(proto.Message):
 
 class CallFunctionRequest(proto.Message):
     r"""Request for the ``CallFunction`` method.
+
     Attributes:
         name (str):
             Required. The name of the function to be
@@ -488,6 +496,7 @@ class CallFunctionRequest(proto.Message):
 
 class CallFunctionResponse(proto.Message):
     r"""Response of ``CallFunction`` method.
+
     Attributes:
         execution_id (str):
             Execution id of function invocation.
@@ -508,6 +517,7 @@ class CallFunctionResponse(proto.Message):
 
 class GenerateUploadUrlRequest(proto.Message):
     r"""Request of ``GenerateSourceUploadUrl`` method.
+
     Attributes:
         parent (str):
             The project and location in which the Google Cloud Storage
@@ -520,6 +530,7 @@ class GenerateUploadUrlRequest(proto.Message):
 
 class GenerateUploadUrlResponse(proto.Message):
     r"""Response of ``GenerateSourceUploadUrl`` method.
+
     Attributes:
         upload_url (str):
             The generated Google Cloud Storage signed URL
@@ -533,6 +544,7 @@ class GenerateUploadUrlResponse(proto.Message):
 
 class GenerateDownloadUrlRequest(proto.Message):
     r"""Request of ``GenerateDownloadUrl`` method.
+
     Attributes:
         name (str):
             The name of function for which source code
@@ -549,6 +561,7 @@ class GenerateDownloadUrlRequest(proto.Message):
 
 class GenerateDownloadUrlResponse(proto.Message):
     r"""Response of ``GenerateDownloadUrl`` method.
+
     Attributes:
         download_url (str):
             The generated Google Cloud Storage signed URL

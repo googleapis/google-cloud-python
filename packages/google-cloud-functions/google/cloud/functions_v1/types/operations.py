@@ -35,6 +35,7 @@ class OperationType(proto.Enum):
 
 class OperationMetadataV1(proto.Message):
     r"""Metadata describing an [Operation][google.longrunning.Operation]
+
     Attributes:
         target (str):
             Target of the operation - for example
