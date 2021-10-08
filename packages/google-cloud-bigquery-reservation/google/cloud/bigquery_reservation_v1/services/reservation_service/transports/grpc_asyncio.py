@@ -974,5 +974,8 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
             )
         return self._stubs["update_bi_reservation"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ReservationServiceGrpcAsyncIOTransport",)

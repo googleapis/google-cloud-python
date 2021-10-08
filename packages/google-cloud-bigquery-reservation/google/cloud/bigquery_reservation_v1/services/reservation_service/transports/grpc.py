@@ -950,5 +950,8 @@ class ReservationServiceGrpcTransport(ReservationServiceTransport):
             )
         return self._stubs["update_bi_reservation"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ReservationServiceGrpcTransport",)
