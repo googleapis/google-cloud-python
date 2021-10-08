@@ -178,6 +178,7 @@ class LinkProposalState(proto.Enum):
 
 class Account(proto.Message):
     r"""A resource message representing a Google Analytics account.
+
     Attributes:
         name (str):
             Output only. Resource name of this account.
@@ -538,6 +539,7 @@ class EnhancedMeasurementSettings(proto.Message):
 
 class FirebaseLink(proto.Message):
     r"""A link between an GA4 property and a Firebase project.
+
     Attributes:
         name (str):
             Output only. Example format:
@@ -581,6 +583,7 @@ class GlobalSiteTag(proto.Message):
 
 class GoogleAdsLink(proto.Message):
     r"""A link between an GA4 property and a Google Ads account.
+
     Attributes:
         name (str):
             Output only. Format:
@@ -692,6 +695,7 @@ class AccountSummary(proto.Message):
 
 class PropertySummary(proto.Message):
     r"""A virtual resource representing metadata for an GA4 property.
+
     Attributes:
         property (str):
             Resource name of property referred to by this property
@@ -708,6 +712,7 @@ class PropertySummary(proto.Message):
 
 class MeasurementProtocolSecret(proto.Message):
     r"""A secret value used for sending hits to Measurement Protocol.
+
     Attributes:
         name (str):
             Output only. Resource name of this secret.
@@ -1031,6 +1036,7 @@ class DisplayVideo360AdvertiserLinkProposal(proto.Message):
 
 class LinkProposalStatusDetails(proto.Message):
     r"""Status information for a link proposal.
+
     Attributes:
         link_proposal_initiating_product (google.analytics.admin_v1alpha.types.LinkProposalInitiatingProduct):
             Output only. The source of this proposal.
@@ -1050,6 +1056,7 @@ class LinkProposalStatusDetails(proto.Message):
 
 class ConversionEvent(proto.Message):
     r"""A conversion event in a Google Analytics property.
+
     Attributes:
         name (str):
             Output only. Resource name of this conversion event. Format:
@@ -1105,6 +1112,7 @@ class GoogleSignalsSettings(proto.Message):
 
 class CustomDimension(proto.Message):
     r"""A definition for a CustomDimension.
+
     Attributes:
         name (str):
             Output only. Resource name for this
@@ -1159,6 +1167,7 @@ class CustomDimension(proto.Message):
 
 class CustomMetric(proto.Message):
     r"""A definition for a custom metric.
+
     Attributes:
         name (str):
             Output only. Resource name for this
