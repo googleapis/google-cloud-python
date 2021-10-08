@@ -45,6 +45,7 @@ class ProtoSchema(proto.Message):
 
 class ProtoRows(proto.Message):
     r"""
+
     Attributes:
         serialized_rows (Sequence[bytes]):
             A sequence of rows serialized as a Protocol

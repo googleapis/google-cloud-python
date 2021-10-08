@@ -424,5 +424,8 @@ class BigQueryWriteGrpcTransport(BigQueryWriteTransport):
             )
         return self._stubs["flush_rows"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("BigQueryWriteGrpcTransport",)

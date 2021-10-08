@@ -348,5 +348,8 @@ class BigQueryReadGrpcTransport(BigQueryReadTransport):
             )
         return self._stubs["split_read_stream"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("BigQueryReadGrpcTransport",)

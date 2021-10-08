@@ -36,6 +36,7 @@ class DataFormat(proto.Enum):
 
 class ReadSession(proto.Message):
     r"""Information about the ReadSession.
+
     Attributes:
         name (str):
             Output only. Unique identifier for the session, in the form
@@ -79,6 +80,7 @@ class ReadSession(proto.Message):
 
     class TableModifiers(proto.Message):
         r"""Additional attributes when reading a table.
+
         Attributes:
             snapshot_time (google.protobuf.timestamp_pb2.Timestamp):
                 The snapshot time of the table. If not set,
@@ -91,6 +93,7 @@ class ReadSession(proto.Message):
 
     class TableReadOptions(proto.Message):
         r"""Options dictating how we read a table.
+
         Attributes:
             selected_fields (Sequence[str]):
                 Names of the fields in the table that should be read. If

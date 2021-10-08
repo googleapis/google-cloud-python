@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
 
 class AvroSchema(proto.Message):
     r"""Avro schema.
+
     Attributes:
         schema (str):
             Json serialized schema, as described at
@@ -35,6 +36,7 @@ class AvroSchema(proto.Message):
 
 class AvroRows(proto.Message):
     r"""Avro rows.
+
     Attributes:
         serialized_binary_rows (bytes):
             Binary serialized rows in a block.

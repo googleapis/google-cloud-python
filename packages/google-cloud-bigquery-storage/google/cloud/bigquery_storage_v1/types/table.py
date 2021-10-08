@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
 
 class TableSchema(proto.Message):
     r"""Schema of a table.
+
     Attributes:
         fields (Sequence[google.cloud.bigquery_storage_v1.types.TableFieldSchema]):
             Describes the fields in a table.

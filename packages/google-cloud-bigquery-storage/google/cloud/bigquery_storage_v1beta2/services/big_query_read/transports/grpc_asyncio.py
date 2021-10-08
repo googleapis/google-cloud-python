@@ -353,5 +353,8 @@ class BigQueryReadGrpcAsyncIOTransport(BigQueryReadTransport):
             )
         return self._stubs["split_read_stream"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("BigQueryReadGrpcAsyncIOTransport",)

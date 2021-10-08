@@ -428,5 +428,8 @@ class BigQueryWriteGrpcAsyncIOTransport(BigQueryWriteTransport):
             )
         return self._stubs["flush_rows"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("BigQueryWriteGrpcAsyncIOTransport",)
