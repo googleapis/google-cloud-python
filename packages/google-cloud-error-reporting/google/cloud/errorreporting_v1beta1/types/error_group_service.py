@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
 
 class GetGroupRequest(proto.Message):
     r"""A request to return an individual group.
+
     Attributes:
         group_name (str):
             Required. The group resource name. Written as
@@ -41,6 +42,7 @@ class GetGroupRequest(proto.Message):
 
 class UpdateGroupRequest(proto.Message):
     r"""A request to replace the existing data for the given group.
+
     Attributes:
         group (google.cloud.errorreporting_v1beta1.types.ErrorGroup):
             Required. The group which replaces the

@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
 
 class ReportErrorEventRequest(proto.Message):
     r"""A request for reporting an individual error event.
+
     Attributes:
         project_name (str):
             Required. The resource name of the Google Cloud Platform
@@ -50,7 +51,8 @@ class ReportErrorEventRequest(proto.Message):
 class ReportErrorEventResponse(proto.Message):
     r"""Response for reporting an individual error event.
     Data may be added to this message in the future.
-        """
+
+    """
 
 
 class ReportedErrorEvent(proto.Message):

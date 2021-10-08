@@ -312,5 +312,8 @@ class ErrorStatsServiceGrpcTransport(ErrorStatsServiceTransport):
             )
         return self._stubs["delete_events"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ErrorStatsServiceGrpcTransport",)

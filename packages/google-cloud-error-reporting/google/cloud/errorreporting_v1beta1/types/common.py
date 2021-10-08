@@ -44,6 +44,7 @@ class ResolutionStatus(proto.Enum):
 
 class ErrorGroup(proto.Message):
     r"""Description of a group of similar error events.
+
     Attributes:
         name (str):
             The group resource name.

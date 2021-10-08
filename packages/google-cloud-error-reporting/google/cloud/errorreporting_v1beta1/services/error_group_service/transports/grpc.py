@@ -279,5 +279,8 @@ class ErrorGroupServiceGrpcTransport(ErrorGroupServiceTransport):
             )
         return self._stubs["update_group"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ErrorGroupServiceGrpcTransport",)

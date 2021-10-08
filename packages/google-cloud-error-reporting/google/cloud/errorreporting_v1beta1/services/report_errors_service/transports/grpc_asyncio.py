@@ -272,5 +272,8 @@ class ReportErrorsServiceGrpcAsyncIOTransport(ReportErrorsServiceTransport):
             )
         return self._stubs["report_error_event"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ReportErrorsServiceGrpcAsyncIOTransport",)

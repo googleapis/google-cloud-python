@@ -269,5 +269,8 @@ class ReportErrorsServiceGrpcTransport(ReportErrorsServiceTransport):
             )
         return self._stubs["report_error_event"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ReportErrorsServiceGrpcTransport",)
