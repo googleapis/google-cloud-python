@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
 
 class ModelReference(proto.Message):
     r"""Id path of a model.
+
     Attributes:
         project_id (str):
             Required. The ID of the project containing

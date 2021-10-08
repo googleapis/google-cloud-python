@@ -38,6 +38,7 @@ __protobuf__ = proto.module(
 
 class Model(proto.Message):
     r"""
+
     Attributes:
         etag (str):
             Output only. A hash of this resource.
@@ -251,7 +252,8 @@ class Model(proto.Message):
         EXPLICIT = 2
 
     class SeasonalPeriod(proto.Message):
-        r"""    """
+        r"""
+        """
 
         class SeasonalPeriodType(proto.Enum):
             r""""""
@@ -264,7 +266,8 @@ class Model(proto.Message):
             YEARLY = 6
 
     class KmeansEnums(proto.Message):
-        r"""    """
+        r"""
+        """
 
         class KmeansInitializationMethod(proto.Enum):
             r"""Indicates the method used to initialize the centroids for
@@ -386,6 +389,7 @@ class Model(proto.Message):
 
         class BinaryConfusionMatrix(proto.Message):
             r"""Confusion matrix for binary classification models.
+
             Attributes:
                 positive_class_threshold (google.protobuf.wrappers_pb2.DoubleValue):
                     Threshold value used when computing each of
@@ -464,6 +468,7 @@ class Model(proto.Message):
 
         class ConfusionMatrix(proto.Message):
             r"""Confusion matrix for multi-class classification models.
+
             Attributes:
                 confidence_threshold (google.protobuf.wrappers_pb2.DoubleValue):
                     Confidence threshold used when computing the
@@ -474,6 +479,7 @@ class Model(proto.Message):
 
             class Entry(proto.Message):
                 r"""A single entry in the confusion matrix.
+
                 Attributes:
                     predicted_label (str):
                         The predicted label. For confidence_threshold > 0, we will
@@ -491,6 +497,7 @@ class Model(proto.Message):
 
             class Row(proto.Message):
                 r"""A single row in the confusion matrix.
+
                 Attributes:
                     actual_label (str):
                         The original label of this row.
@@ -525,6 +532,7 @@ class Model(proto.Message):
 
     class ClusteringMetrics(proto.Message):
         r"""Evaluation metrics for clustering models.
+
         Attributes:
             davies_bouldin_index (google.protobuf.wrappers_pb2.DoubleValue):
                 Davies-Bouldin index.
@@ -537,6 +545,7 @@ class Model(proto.Message):
 
         class Cluster(proto.Message):
             r"""Message containing the information about one cluster.
+
             Attributes:
                 centroid_id (int):
                     Centroid id.
@@ -550,6 +559,7 @@ class Model(proto.Message):
 
             class FeatureValue(proto.Message):
                 r"""Representative value of a single feature within the cluster.
+
                 Attributes:
                     feature_column (str):
                         The feature column name.
@@ -562,6 +572,7 @@ class Model(proto.Message):
 
                 class CategoricalValue(proto.Message):
                     r"""Representative value of a categorical feature.
+
                     Attributes:
                         category_counts (Sequence[google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount]):
                             Counts of all categories for the categorical feature. If
@@ -573,6 +584,7 @@ class Model(proto.Message):
 
                     class CategoryCount(proto.Message):
                         r"""Represents the count of a single category within the cluster.
+
                         Attributes:
                             category (str):
                                 The name of category.
@@ -668,6 +680,7 @@ class Model(proto.Message):
 
     class ArimaForecastingMetrics(proto.Message):
         r"""Model evaluation metrics for ARIMA forecasting models.
+
         Attributes:
             non_seasonal_order (Sequence[google.cloud.bigquery_v2.types.Model.ArimaOrder]):
                 Non-seasonal order.
@@ -857,6 +870,7 @@ class Model(proto.Message):
 
     class ArimaFittingMetrics(proto.Message):
         r"""ARIMA model fitting metrics.
+
         Attributes:
             log_likelihood (float):
                 Log-likelihood.
@@ -888,6 +902,7 @@ class Model(proto.Message):
 
         class Explanation(proto.Message):
             r"""Explanation for a single feature.
+
             Attributes:
                 feature_name (str):
                     Full name of the feature. For non-numerical features, will
@@ -910,6 +925,7 @@ class Model(proto.Message):
 
     class TrainingRun(proto.Message):
         r"""Information about a single training query run for the model.
+
         Attributes:
             training_options (google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions):
                 Options that were used for this training run,
@@ -935,6 +951,7 @@ class Model(proto.Message):
 
         class TrainingOptions(proto.Message):
             r"""Options used in model training.
+
             Attributes:
                 max_iterations (int):
                     The maximum number of iterations in training.
@@ -1182,6 +1199,7 @@ class Model(proto.Message):
 
         class IterationResult(proto.Message):
             r"""Information about a single iteration of the training run.
+
             Attributes:
                 index (google.protobuf.wrappers_pb2.Int32Value):
                     Index of the iteration, 0 based.
@@ -1205,6 +1223,7 @@ class Model(proto.Message):
 
             class ClusterInfo(proto.Message):
                 r"""Information about a single cluster for clustering model.
+
                 Attributes:
                     centroid_id (int):
                         Centroid id.
@@ -1241,6 +1260,7 @@ class Model(proto.Message):
 
                 class ArimaCoefficients(proto.Message):
                     r"""Arima coefficients.
+
                     Attributes:
                         auto_regressive_coefficients (Sequence[float]):
                             Auto-regressive coefficients, an array of
@@ -1263,6 +1283,7 @@ class Model(proto.Message):
 
                 class ArimaModelInfo(proto.Message):
                     r"""Arima model information.
+
                     Attributes:
                         non_seasonal_order (google.cloud.bigquery_v2.types.Model.ArimaOrder):
                             Non-seasonal order.
@@ -1409,6 +1430,7 @@ class Model(proto.Message):
 
 class GetModelRequest(proto.Message):
     r"""
+
     Attributes:
         project_id (str):
             Required. Project ID of the requested model.
@@ -1425,6 +1447,7 @@ class GetModelRequest(proto.Message):
 
 class PatchModelRequest(proto.Message):
     r"""
+
     Attributes:
         project_id (str):
             Required. Project ID of the model to patch.
@@ -1447,6 +1470,7 @@ class PatchModelRequest(proto.Message):
 
 class DeleteModelRequest(proto.Message):
     r"""
+
     Attributes:
         project_id (str):
             Required. Project ID of the model to delete.
@@ -1463,6 +1487,7 @@ class DeleteModelRequest(proto.Message):
 
 class ListModelsRequest(proto.Message):
     r"""
+
     Attributes:
         project_id (str):
             Required. Project ID of the models to list.
@@ -1487,6 +1512,7 @@ class ListModelsRequest(proto.Message):
 
 class ListModelsResponse(proto.Message):
     r"""
+
     Attributes:
         models (Sequence[google.cloud.bigquery_v2.types.Model]):
             Models in the requested dataset. Only the following fields

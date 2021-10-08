@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
 
 class EncryptionConfiguration(proto.Message):
     r"""
+
     Attributes:
         kms_key_name (google.protobuf.wrappers_pb2.StringValue):
             Optional. Describes the Cloud KMS encryption
