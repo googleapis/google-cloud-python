@@ -740,5 +740,8 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
             )
         return self._stubs["delete_connection_profile"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("DataMigrationServiceGrpcAsyncIOTransport",)

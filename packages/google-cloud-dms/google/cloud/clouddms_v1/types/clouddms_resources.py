@@ -395,7 +395,8 @@ class StaticIpConnectivity(proto.Message):
     destination database's public IP. You can retrieve the Cloud SQL
     instance's public IP from the Cloud SQL console or using Cloud
     SQL APIs. No additional configuration is required.
-        """
+
+    """
 
 
 class ReverseSshConnectivity(proto.Message):

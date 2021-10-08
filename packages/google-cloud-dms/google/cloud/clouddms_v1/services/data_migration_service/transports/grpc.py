@@ -707,5 +707,8 @@ class DataMigrationServiceGrpcTransport(DataMigrationServiceTransport):
             )
         return self._stubs["delete_connection_profile"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("DataMigrationServiceGrpcTransport",)

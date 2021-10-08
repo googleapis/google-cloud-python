@@ -329,7 +329,7 @@ class GenerateSshScriptRequest(proto.Message):
 
 
 class VmCreationConfig(proto.Message):
-    r"""VM creation configuration messag.
+    r"""VM creation configuration message
 
     Attributes:
         vm_machine_type (str):
@@ -348,7 +348,7 @@ class VmCreationConfig(proto.Message):
 
 
 class VmSelectionConfig(proto.Message):
-    r"""VM selection configuration messag.
+    r"""VM selection configuration message
 
     Attributes:
         vm_zone (str):
