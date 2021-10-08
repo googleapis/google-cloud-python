@@ -109,6 +109,7 @@ class FieldOperationMetadata(proto.Message):
 
     class IndexConfigDelta(proto.Message):
         r"""Information about an index configuration change.
+
         Attributes:
             change_type (google.cloud.firestore_admin_v1.types.FieldOperationMetadata.IndexConfigDelta.ChangeType):
                 Specifies how the index is changing.

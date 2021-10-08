@@ -540,5 +540,8 @@ class FirestoreAdminGrpcAsyncIOTransport(FirestoreAdminTransport):
             )
         return self._stubs["import_documents"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("FirestoreAdminGrpcAsyncIOTransport",)

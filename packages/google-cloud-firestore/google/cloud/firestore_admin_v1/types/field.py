@@ -62,6 +62,7 @@ class Field(proto.Message):
 
     class IndexConfig(proto.Message):
         r"""The index configuration for this field.
+
         Attributes:
             indexes (Sequence[google.cloud.firestore_admin_v1.types.Index]):
                 The indexes supported for this field.

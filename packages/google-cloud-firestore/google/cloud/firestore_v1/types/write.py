@@ -36,6 +36,7 @@ __protobuf__ = proto.module(
 
 class Write(proto.Message):
     r"""A write on a document.
+
     Attributes:
         update (google.cloud.firestore_v1.types.Document):
             A document to write.
@@ -86,6 +87,7 @@ class Write(proto.Message):
 
 class DocumentTransform(proto.Message):
     r"""A transformation of a document.
+
     Attributes:
         document (str):
             The name of the document to transform.
@@ -97,6 +99,7 @@ class DocumentTransform(proto.Message):
 
     class FieldTransform(proto.Message):
         r"""A transformation of a field of the document.
+
         Attributes:
             field_path (str):
                 The path of the field. See
@@ -221,6 +224,7 @@ class DocumentTransform(proto.Message):
 
 class WriteResult(proto.Message):
     r"""The result of applying a write.
+
     Attributes:
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             The last update time of the document after applying the
@@ -334,6 +338,7 @@ class DocumentRemove(proto.Message):
 
 class ExistenceFilter(proto.Message):
     r"""A digest of all the documents that match a given target.
+
     Attributes:
         target_id (int):
             The target ID to which this filter applies.

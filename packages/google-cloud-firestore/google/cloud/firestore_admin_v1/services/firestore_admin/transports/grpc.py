@@ -521,5 +521,8 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
             )
         return self._stubs["import_documents"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("FirestoreAdminGrpcTransport",)

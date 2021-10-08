@@ -65,6 +65,7 @@ class Precondition(proto.Message):
 
 class TransactionOptions(proto.Message):
     r"""Options for creating a new transaction.
+
     Attributes:
         read_only (google.cloud.firestore_v1.types.TransactionOptions.ReadOnly):
             The transaction can only be used for read
