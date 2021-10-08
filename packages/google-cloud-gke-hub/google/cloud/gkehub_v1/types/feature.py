@@ -172,7 +172,7 @@ class FeatureState(proto.Message):
 
 
 class CommonFeatureSpec(proto.Message):
-    r"""CommonFeatureSpec contains Hub-wide configuration informatio.
+    r"""CommonFeatureSpec contains Hub-wide configuration information
 
     Attributes:
         multiclusteringress (google.cloud.gkehub_v1.multiclusteringress_v1.FeatureSpec):

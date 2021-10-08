@@ -556,5 +556,8 @@ class GkeHubGrpcTransport(GkeHubTransport):
             )
         return self._stubs["generate_connect_manifest"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("GkeHubGrpcTransport",)

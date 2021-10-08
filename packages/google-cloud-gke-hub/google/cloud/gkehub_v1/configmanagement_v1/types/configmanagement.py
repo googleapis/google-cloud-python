@@ -123,7 +123,7 @@ class MembershipSpec(proto.Message):
 
 
 class ConfigSync(proto.Message):
-    r"""Configuration for Config Syn.
+    r"""Configuration for Config Sync
 
     Attributes:
         git (google.cloud.gkehub.configmanagement_v1.types.GitConfig):
@@ -179,7 +179,7 @@ class GitConfig(proto.Message):
 
 
 class PolicyController(proto.Message):
-    r"""Configuration for Policy Controlle.
+    r"""Configuration for Policy Controller
 
     Attributes:
         enabled (bool):
@@ -214,7 +214,7 @@ class PolicyController(proto.Message):
 
 
 class HierarchyControllerConfig(proto.Message):
-    r"""Configuration for Hierarchy Controlle.
+    r"""Configuration for Hierarchy Controller
 
     Attributes:
         enabled (bool):
@@ -234,7 +234,7 @@ class HierarchyControllerConfig(proto.Message):
 
 
 class HierarchyControllerDeploymentState(proto.Message):
-    r"""Deployment state for Hierarchy Controlle.
+    r"""Deployment state for Hierarchy Controller
 
     Attributes:
         hnc (google.cloud.gkehub.configmanagement_v1.types.DeploymentState):
@@ -250,7 +250,7 @@ class HierarchyControllerDeploymentState(proto.Message):
 
 
 class HierarchyControllerVersion(proto.Message):
-    r"""Version for Hierarchy Controlle.
+    r"""Version for Hierarchy Controller
 
     Attributes:
         hnc (str):
@@ -264,7 +264,7 @@ class HierarchyControllerVersion(proto.Message):
 
 
 class HierarchyControllerState(proto.Message):
-    r"""State for Hierarchy Controlle.
+    r"""State for Hierarchy Controller
 
     Attributes:
         version (google.cloud.gkehub.configmanagement_v1.types.HierarchyControllerVersion):
@@ -282,7 +282,7 @@ class HierarchyControllerState(proto.Message):
 
 
 class OperatorState(proto.Message):
-    r"""State information for an ACM's Operato.
+    r"""State information for an ACM's Operator
 
     Attributes:
         version (str):
@@ -299,7 +299,7 @@ class OperatorState(proto.Message):
 
 
 class InstallError(proto.Message):
-    r"""Errors pertaining to the installation of AC.
+    r"""Errors pertaining to the installation of ACM
 
     Attributes:
         error_message (str):
@@ -311,7 +311,7 @@ class InstallError(proto.Message):
 
 
 class ConfigSyncState(proto.Message):
-    r"""State information for ConfigSyn.
+    r"""State information for ConfigSync
 
     Attributes:
         version (google.cloud.gkehub.configmanagement_v1.types.ConfigSyncVersion):
@@ -362,7 +362,7 @@ class ConfigSyncVersion(proto.Message):
 
 
 class ConfigSyncDeploymentState(proto.Message):
-    r"""The state of ConfigSync's deployment on a cluste.
+    r"""The state of ConfigSync's deployment on a cluster
 
     Attributes:
         importer (google.cloud.gkehub.configmanagement_v1.types.DeploymentState):
@@ -484,7 +484,7 @@ class ErrorResource(proto.Message):
 
 
 class GroupVersionKind(proto.Message):
-    r"""A Kubernetes object's GV.
+    r"""A Kubernetes object's GVK
 
     Attributes:
         group (str):
