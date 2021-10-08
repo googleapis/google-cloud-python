@@ -142,6 +142,7 @@ class InputConfig(proto.Message):
 
 class TextMetadata(proto.Message):
     r"""Metadata for the text.
+
     Attributes:
         language_code (str):
             The language of this text, as a
@@ -154,6 +155,7 @@ class TextMetadata(proto.Message):
 
 class ClassificationMetadata(proto.Message):
     r"""Metadata for classification annotations.
+
     Attributes:
         is_multi_label (bool):
             Whether the classification task is multi-
@@ -165,6 +167,7 @@ class ClassificationMetadata(proto.Message):
 
 class GcsSource(proto.Message):
     r"""Source of the Cloud Storage file to be imported.
+
     Attributes:
         input_uri (str):
             Required. The input URI of source file. This must be a Cloud
@@ -208,6 +211,7 @@ class BigQuerySource(proto.Message):
 
 class OutputConfig(proto.Message):
     r"""The configuration of output data.
+
     Attributes:
         gcs_destination (google.cloud.datalabeling_v1beta1.types.GcsDestination):
             Output to a file in Cloud Storage. Should be
@@ -245,6 +249,7 @@ class GcsDestination(proto.Message):
 
 class GcsFolderDestination(proto.Message):
     r"""Export folder destination of the data.
+
     Attributes:
         output_folder_uri (str):
             Required. Cloud Storage directory to export
@@ -349,6 +354,7 @@ class AnnotatedDataset(proto.Message):
 
 class LabelStats(proto.Message):
     r"""Statistics about annotation specs.
+
     Attributes:
         example_count (Sequence[google.cloud.datalabeling_v1beta1.types.LabelStats.ExampleCountEntry]):
             Map of each annotation spec's example count.
@@ -365,6 +371,7 @@ class LabelStats(proto.Message):
 
 class AnnotatedDatasetMetadata(proto.Message):
     r"""Metadata on AnnotatedDataset.
+
     Attributes:
         image_classification_config (google.cloud.datalabeling_v1beta1.types.ImageClassificationConfig):
             Configuration for image classification task.
