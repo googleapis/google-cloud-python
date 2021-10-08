@@ -39,6 +39,7 @@ __protobuf__ = proto.module(
 
 class Contact(proto.Message):
     r"""A contact that will receive notifications from Google Cloud.
+
     Attributes:
         name (str):
             The identifier for the contact. Format:
@@ -79,6 +80,7 @@ class Contact(proto.Message):
 
 class ListContactsRequest(proto.Message):
     r"""Request message for the ListContacts method.
+
     Attributes:
         parent (str):
             Required. The parent resource name. Format:
@@ -105,6 +107,7 @@ class ListContactsRequest(proto.Message):
 
 class ListContactsResponse(proto.Message):
     r"""Response message for the ListContacts method.
+
     Attributes:
         contacts (Sequence[google.cloud.essential_contacts_v1.types.Contact]):
             The contacts for the specified resource.
@@ -126,6 +129,7 @@ class ListContactsResponse(proto.Message):
 
 class GetContactRequest(proto.Message):
     r"""Request message for the GetContact method.
+
     Attributes:
         name (str):
             Required. The name of the contact to retrieve. Format:
@@ -139,6 +143,7 @@ class GetContactRequest(proto.Message):
 
 class DeleteContactRequest(proto.Message):
     r"""Request message for the DeleteContact method.
+
     Attributes:
         name (str):
             Required. The name of the contact to delete. Format:
@@ -152,6 +157,7 @@ class DeleteContactRequest(proto.Message):
 
 class CreateContactRequest(proto.Message):
     r"""Request message for the CreateContact method.
+
     Attributes:
         parent (str):
             Required. The resource to save this contact for. Format:
@@ -168,6 +174,7 @@ class CreateContactRequest(proto.Message):
 
 class UpdateContactRequest(proto.Message):
     r"""Request message for the UpdateContact method.
+
     Attributes:
         contact (google.cloud.essential_contacts_v1.types.Contact):
             Required. The contact resource to replace the
@@ -187,6 +194,7 @@ class UpdateContactRequest(proto.Message):
 
 class ComputeContactsRequest(proto.Message):
     r"""Request message for the ComputeContacts method.
+
     Attributes:
         parent (str):
             Required. The name of the resource to compute contacts for.
@@ -221,6 +229,7 @@ class ComputeContactsRequest(proto.Message):
 
 class ComputeContactsResponse(proto.Message):
     r"""Response message for the ComputeContacts method.
+
     Attributes:
         contacts (Sequence[google.cloud.essential_contacts_v1.types.Contact]):
             All contacts for the resource that are
@@ -245,6 +254,7 @@ class ComputeContactsResponse(proto.Message):
 
 class SendTestMessageRequest(proto.Message):
     r"""Request message for the SendTestMessage method.
+
     Attributes:
         contacts (Sequence[str]):
             Required. The list of names of the contacts to send a test
