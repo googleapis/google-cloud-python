@@ -221,7 +221,8 @@ def test_mock_value_repeated():
 
 def test_mock_value_original_type_repeated():
     field = make_field(name='foo_bar', type='TYPE_STRING', label=3)
-    assert field.mock_value_original_type == ["foo_bar_value"]
+    assert field.mock_value_original_type == [
+        "foo_bar_value_1", "foo_bar_value_2"]
 
 
 def test_mock_value_map():

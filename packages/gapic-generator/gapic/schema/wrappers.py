@@ -99,7 +99,9 @@ class Field:
         # If this is a repeated field, then the mock answer should
         # be a list.
         if self.repeated:
-            answer = [answer]
+            first_item = self.primitive_mock(suffix=1) or None
+            second_item = self.primitive_mock(suffix=2) or None
+            answer = [first_item, second_item]
 
         return answer
 
@@ -160,9 +162,12 @@ class Field:
         # Done; return the mock value.
         return answer
 
-    def primitive_mock(self) -> Union[bool, str, bytes, int, float, List[Any], None]:
+    def primitive_mock(self, suffix: int = 0) -> Union[bool, str, bytes, int, float, List[Any], None]:
         """Generate a valid mock for a primitive type. This function
         returns the original (Python) type.
+
+        If a suffix is provided, generate a slightly different mock
+        using the provided integer.
         """
         answer: Union[bool, str, bytes, int, float, List[Any], None] = None
 
@@ -174,13 +179,14 @@ class Field:
             if self.type.python_type == bool:
                 answer = True
             elif self.type.python_type == str:
-                answer = f"{self.name}_value"
+                answer = f"{self.name}_value_{suffix}" if suffix else f"{self.name}_value"
             elif self.type.python_type == bytes:
-                answer = bytes(f"{self.name}_blob", encoding="utf-8")
+                answer_str = f"{self.name}_blob_{suffix}" if suffix else f"{self.name}_blob"
+                answer = bytes(answer_str, encoding="utf-8")
             elif self.type.python_type == int:
-                answer = sum([ord(i) for i in self.name])
+                answer = sum([ord(i) for i in self.name]) + suffix
             elif self.type.python_type == float:
-                name_sum = sum([ord(i) for i in self.name])
+                name_sum = sum([ord(i) for i in self.name]) + suffix
                 answer = name_sum * pow(10, -1 * len(str(name_sum)))
             else:  # Impossible; skip coverage checks.
                 raise TypeError('Unrecognized PrimitiveType. This should '
