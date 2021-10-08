@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
 
 class Trigger(proto.Message):
     r"""A representation of the trigger resource.
+
     Attributes:
         name (str):
             Required. The resource name of the trigger. Must be unique
@@ -124,6 +125,7 @@ class EventFilter(proto.Message):
 
 class Destination(proto.Message):
     r"""Represents a target of an invocation over HTTP.
+
     Attributes:
         cloud_run (google.cloud.eventarc_v1.types.CloudRun):
             Cloud Run fully-managed service that receives
@@ -153,6 +155,7 @@ class Transport(proto.Message):
 
 class CloudRun(proto.Message):
     r"""Represents a Cloud Run destination.
+
     Attributes:
         service (str):
             Required. The name of the Cloud Run service
@@ -179,6 +182,7 @@ class CloudRun(proto.Message):
 
 class Pubsub(proto.Message):
     r"""Represents a Pub/Sub transport.
+
     Attributes:
         topic (str):
             Optional. The name of the Pub/Sub topic created and managed
