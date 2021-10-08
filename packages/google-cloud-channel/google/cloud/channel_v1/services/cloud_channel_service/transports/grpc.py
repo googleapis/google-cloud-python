@@ -1866,5 +1866,8 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
             )
         return self._stubs["list_subscribers"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("CloudChannelServiceGrpcTransport",)

@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
 
 class Customer(proto.Message):
     r"""Entity representing a customer of a reseller or distributor.
+
     Attributes:
         name (str):
             Output only. Resource name of the customer. Format:
@@ -98,6 +99,7 @@ class Customer(proto.Message):
 
 class ContactInfo(proto.Message):
     r"""Contact information for a customer account.
+
     Attributes:
         first_name (str):
             The customer account contact's first name.

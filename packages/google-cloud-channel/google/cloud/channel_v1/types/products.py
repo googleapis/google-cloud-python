@@ -85,6 +85,7 @@ class MarketingInfo(proto.Message):
 
 class Media(proto.Message):
     r"""Represents media information.
+
     Attributes:
         title (str):
             Title of the media.

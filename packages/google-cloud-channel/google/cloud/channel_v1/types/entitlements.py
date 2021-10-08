@@ -126,6 +126,7 @@ class Entitlement(proto.Message):
 
 class Parameter(proto.Message):
     r"""Definition for extended entitlement parameters.
+
     Attributes:
         name (str):
             Name of the parameter.
@@ -158,6 +159,7 @@ class AssociationInfo(proto.Message):
 
 class ProvisionedService(proto.Message):
     r"""Service provisioned for an entitlement.
+
     Attributes:
         provisioning_id (str):
             Output only. Provisioning ID of the
@@ -178,6 +180,7 @@ class ProvisionedService(proto.Message):
 
 class CommitmentSettings(proto.Message):
     r"""Commitment settings for commitment-based offers.
+
     Attributes:
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Commitment start timestamp.
@@ -195,6 +198,7 @@ class CommitmentSettings(proto.Message):
 
 class RenewalSettings(proto.Message):
     r"""Renewal settings for renewable Offers.
+
     Attributes:
         enable_renewal (bool):
             If false, the plan will be completed at the
@@ -218,6 +222,7 @@ class RenewalSettings(proto.Message):
 
 class TrialSettings(proto.Message):
     r"""Settings for trial offers.
+
     Attributes:
         trial (bool):
             Determines if the entitlement is in a trial or not:
@@ -259,6 +264,7 @@ class TransferableSku(proto.Message):
 
 class TransferEligibility(proto.Message):
     r"""Specifies transfer eligibility of a SKU.
+
     Attributes:
         is_eligible (bool):
             Whether reseller is eligible to transfer the

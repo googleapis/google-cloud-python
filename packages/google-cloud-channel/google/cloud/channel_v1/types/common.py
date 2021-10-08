@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
 
 class EduData(proto.Message):
     r"""Required Edu Attributes
+
     Attributes:
         institute_type (google.cloud.channel_v1.types.EduData.InstituteType):
             Designated institute type of customer.
@@ -60,6 +61,7 @@ class EduData(proto.Message):
 
 class CloudIdentityInfo(proto.Message):
     r"""Cloud Identity information for the Cloud Channel Customer.
+
     Attributes:
         customer_type (google.cloud.channel_v1.types.CloudIdentityInfo.CustomerType):
             CustomerType indicates verification type
@@ -105,6 +107,7 @@ class CloudIdentityInfo(proto.Message):
 
 class Value(proto.Message):
     r"""Data type and value of a parameter.
+
     Attributes:
         int64_value (int):
             Represents an int64 value.
