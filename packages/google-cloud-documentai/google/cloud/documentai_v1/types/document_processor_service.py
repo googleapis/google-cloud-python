@@ -40,6 +40,7 @@ __protobuf__ = proto.module(
 
 class ProcessRequest(proto.Message):
     r"""Request message for the process document method.
+
     Attributes:
         inline_document (google.cloud.documentai_v1.types.Document):
             An inline document proto.
@@ -64,6 +65,7 @@ class ProcessRequest(proto.Message):
 
 class HumanReviewStatus(proto.Message):
     r"""The status of human review on a processed document.
+
     Attributes:
         state (google.cloud.documentai_v1.types.HumanReviewStatus.State):
             The state of human review on the processing
@@ -94,6 +96,7 @@ class HumanReviewStatus(proto.Message):
 
 class ProcessResponse(proto.Message):
     r"""Response message for the process document method.
+
     Attributes:
         document (google.cloud.documentai_v1.types.Document):
             The document payload, will populate fields
@@ -111,6 +114,7 @@ class ProcessResponse(proto.Message):
 
 class BatchProcessRequest(proto.Message):
     r"""Request message for batch process document method.
+
     Attributes:
         name (str):
             Required. The processor resource name.
@@ -134,11 +138,13 @@ class BatchProcessRequest(proto.Message):
 
 
 class BatchProcessResponse(proto.Message):
-    r"""Response message for batch process document method.    """
+    r"""Response message for batch process document method.
+    """
 
 
 class BatchProcessMetadata(proto.Message):
     r"""The long running operation metadata for batch process method.
+
     Attributes:
         state (google.cloud.documentai_v1.types.BatchProcessMetadata.State):
             The state of the current batch processing.
@@ -205,6 +211,7 @@ class BatchProcessMetadata(proto.Message):
 
 class ReviewDocumentRequest(proto.Message):
     r"""Request message for review document method.
+
     Attributes:
         inline_document (google.cloud.documentai_v1.types.Document):
             An inline document proto.
@@ -234,6 +241,7 @@ class ReviewDocumentRequest(proto.Message):
 
 class ReviewDocumentResponse(proto.Message):
     r"""Response message for review document method.
+
     Attributes:
         gcs_destination (str):
             The Cloud Storage uri for the human reviewed

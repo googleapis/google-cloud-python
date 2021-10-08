@@ -55,6 +55,7 @@ __protobuf__ = proto.module(
 
 class ProcessRequest(proto.Message):
     r"""Request message for the process document method.
+
     Attributes:
         inline_document (google.cloud.documentai_v1beta3.types.Document):
             An inline document proto.
@@ -83,6 +84,7 @@ class ProcessRequest(proto.Message):
 
 class HumanReviewStatus(proto.Message):
     r"""The status of human review on a processed document.
+
     Attributes:
         state (google.cloud.documentai_v1beta3.types.HumanReviewStatus.State):
             The state of human review on the processing
@@ -113,6 +115,7 @@ class HumanReviewStatus(proto.Message):
 
 class ProcessResponse(proto.Message):
     r"""Response message for the process document method.
+
     Attributes:
         document (google.cloud.documentai_v1beta3.types.Document):
             The document payload, will populate fields
@@ -138,6 +141,7 @@ class ProcessResponse(proto.Message):
 
 class BatchProcessRequest(proto.Message):
     r"""Request message for batch process document method.
+
     Attributes:
         name (str):
             Required. The processor resource name.
@@ -157,6 +161,7 @@ class BatchProcessRequest(proto.Message):
 
     class BatchInputConfig(proto.Message):
         r"""The message for input config in batch process.
+
         Attributes:
             gcs_source (str):
                 The Cloud Storage location as the source of
@@ -173,6 +178,7 @@ class BatchProcessRequest(proto.Message):
 
     class BatchOutputConfig(proto.Message):
         r"""The message for output config in batch process.
+
         Attributes:
             gcs_destination (str):
                 The output Cloud Storage directory to put the
@@ -196,11 +202,13 @@ class BatchProcessRequest(proto.Message):
 
 
 class BatchProcessResponse(proto.Message):
-    r"""Response message for batch process document method.    """
+    r"""Response message for batch process document method.
+    """
 
 
 class BatchProcessMetadata(proto.Message):
     r"""The long running operation metadata for batch process method.
+
     Attributes:
         state (google.cloud.documentai_v1beta3.types.BatchProcessMetadata.State):
             The state of the current batch processing.
@@ -275,6 +283,7 @@ class BatchProcessMetadata(proto.Message):
 
 class FetchProcessorTypesRequest(proto.Message):
     r"""Request message for fetch processor types.
+
     Attributes:
         parent (str):
             Required. The project of processor type to
@@ -287,6 +296,7 @@ class FetchProcessorTypesRequest(proto.Message):
 
 class FetchProcessorTypesResponse(proto.Message):
     r"""Response message for fetch processor types.
+
     Attributes:
         processor_types (Sequence[google.cloud.documentai_v1beta3.types.ProcessorType]):
             The list of processor types.
@@ -299,6 +309,7 @@ class FetchProcessorTypesResponse(proto.Message):
 
 class ListProcessorsRequest(proto.Message):
     r"""Request message for list all processors belongs to a project.
+
     Attributes:
         parent (str):
             Required. The parent (project and location)
@@ -322,6 +333,7 @@ class ListProcessorsRequest(proto.Message):
 
 class ListProcessorsResponse(proto.Message):
     r"""Response message for list processors.
+
     Attributes:
         processors (Sequence[google.cloud.documentai_v1beta3.types.Processor]):
             The list of processors.
@@ -362,6 +374,7 @@ class CreateProcessorRequest(proto.Message):
 
 class DeleteProcessorRequest(proto.Message):
     r"""Request message for the delete processor method.
+
     Attributes:
         name (str):
             Required. The processor resource name to be
@@ -388,6 +401,7 @@ class DeleteProcessorMetadata(proto.Message):
 
 class EnableProcessorRequest(proto.Message):
     r"""Request message for the enable processor method.
+
     Attributes:
         name (str):
             Required. The processor resource name to be
@@ -398,7 +412,8 @@ class EnableProcessorRequest(proto.Message):
 
 
 class EnableProcessorResponse(proto.Message):
-    r"""Response message for the enable processor method.    """
+    r"""Response message for the enable processor method.
+    """
 
 
 class EnableProcessorMetadata(proto.Message):
@@ -418,6 +433,7 @@ class EnableProcessorMetadata(proto.Message):
 
 class DisableProcessorRequest(proto.Message):
     r"""Request message for the disable processor method.
+
     Attributes:
         name (str):
             Required. The processor resource name to be
@@ -428,7 +444,8 @@ class DisableProcessorRequest(proto.Message):
 
 
 class DisableProcessorResponse(proto.Message):
-    r"""Response message for the disable processor method.    """
+    r"""Response message for the disable processor method.
+    """
 
 
 class DisableProcessorMetadata(proto.Message):
@@ -482,6 +499,7 @@ class ReviewDocumentRequest(proto.Message):
 
 class ReviewDocumentResponse(proto.Message):
     r"""Response message for review document method.
+
     Attributes:
         gcs_destination (str):
             The Cloud Storage uri for the human reviewed

@@ -333,5 +333,8 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
             )
         return self._stubs["review_document"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("DocumentProcessorServiceGrpcTransport",)

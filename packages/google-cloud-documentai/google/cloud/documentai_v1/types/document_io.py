@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
 
 class RawDocument(proto.Message):
     r"""Payload message of raw document content (bytes).
+
     Attributes:
         content (bytes):
             Inline document content.
@@ -45,6 +46,7 @@ class RawDocument(proto.Message):
 
 class GcsDocument(proto.Message):
     r"""Specifies a document stored on Cloud Storage.
+
     Attributes:
         gcs_uri (str):
             The Cloud Storage object uri.
@@ -58,6 +60,7 @@ class GcsDocument(proto.Message):
 
 class GcsDocuments(proto.Message):
     r"""Specifies a set of documents on Cloud Storage.
+
     Attributes:
         documents (Sequence[google.cloud.documentai_v1.types.GcsDocument]):
             The list of documents.
@@ -111,6 +114,7 @@ class DocumentOutputConfig(proto.Message):
 
     class GcsOutputConfig(proto.Message):
         r"""The configuration used when outputting documents.
+
         Attributes:
             gcs_uri (str):
                 The Cloud Storage uri (a directory) of the

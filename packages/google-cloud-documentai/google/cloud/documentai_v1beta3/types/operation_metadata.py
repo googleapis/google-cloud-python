@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
 
 class CommonOperationMetadata(proto.Message):
     r"""The common metadata for long running operations.
+
     Attributes:
         state (google.cloud.documentai_v1beta3.types.CommonOperationMetadata.State):
             The state of the operation.
