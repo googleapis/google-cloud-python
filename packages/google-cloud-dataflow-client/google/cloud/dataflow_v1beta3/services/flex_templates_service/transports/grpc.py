@@ -254,5 +254,8 @@ class FlexTemplatesServiceGrpcTransport(FlexTemplatesServiceTransport):
             )
         return self._stubs["launch_flex_template"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("FlexTemplatesServiceGrpcTransport",)

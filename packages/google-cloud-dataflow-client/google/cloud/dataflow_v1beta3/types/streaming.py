@@ -128,6 +128,7 @@ class StreamingStageLocation(proto.Message):
 
 class StreamingSideInputLocation(proto.Message):
     r"""Identifies the location of a streaming side input.
+
     Attributes:
         tag (str):
             Identifies the particular side input within
@@ -143,6 +144,7 @@ class StreamingSideInputLocation(proto.Message):
 
 class CustomSourceLocation(proto.Message):
     r"""Identifies the location of a custom souce.
+
     Attributes:
         stateful (bool):
             Whether this source is stateful.
@@ -183,6 +185,7 @@ class StreamLocation(proto.Message):
 
 class StateFamilyConfig(proto.Message):
     r"""State family configuration.
+
     Attributes:
         state_family (str):
             The state family value.
@@ -197,6 +200,7 @@ class StateFamilyConfig(proto.Message):
 
 class ComputationTopology(proto.Message):
     r"""All configuration data for a particular Computation.
+
     Attributes:
         system_stage_name (str):
             The system stage name.
@@ -260,6 +264,7 @@ class KeyRangeLocation(proto.Message):
 
 class MountedDataDisk(proto.Message):
     r"""Describes mounted data disk.
+
     Attributes:
         data_disk (str):
             The name of the data disk.
@@ -274,6 +279,7 @@ class MountedDataDisk(proto.Message):
 
 class DataDiskAssignment(proto.Message):
     r"""Data disk assignment for a given VM instance.
+
     Attributes:
         vm_instance (str):
             VM instance name the data disks mounted to,
@@ -338,6 +344,7 @@ class StreamingComputationRanges(proto.Message):
 
 class StreamingApplianceSnapshotConfig(proto.Message):
     r"""Streaming appliance snapshot configuration.
+
     Attributes:
         snapshot_id (str):
             If set, indicates the snapshot id for the

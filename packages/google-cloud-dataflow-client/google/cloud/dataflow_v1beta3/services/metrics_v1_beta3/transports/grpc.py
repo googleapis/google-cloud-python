@@ -321,5 +321,8 @@ class MetricsV1Beta3GrpcTransport(MetricsV1Beta3Transport):
             )
         return self._stubs["get_stage_execution_details"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("MetricsV1Beta3GrpcTransport",)

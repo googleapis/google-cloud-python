@@ -116,6 +116,7 @@ class ShuffleMode(proto.Enum):
 
 class Environment(proto.Message):
     r"""Describes the environment in which a Dataflow Job runs.
+
     Attributes:
         temp_storage_prefix (str):
             The prefix of the resources the system should use for
@@ -264,6 +265,7 @@ class Package(proto.Message):
 
 class Disk(proto.Message):
     r"""Describes the data disk used by a workflow job.
+
     Attributes:
         size_gb (int):
             Size of disk in GB.  If zero or unspecified,
@@ -305,6 +307,7 @@ class Disk(proto.Message):
 
 class WorkerSettings(proto.Message):
     r"""Provides data to pass through to the worker harness.
+
     Attributes:
         base_url (str):
             The base URL for accessing Google Cloud APIs.
@@ -351,6 +354,7 @@ class WorkerSettings(proto.Message):
 
 class TaskRunnerSettings(proto.Message):
     r"""Taskrunner configuration settings.
+
     Attributes:
         task_user (str):
             The UNIX user ID on the worker VM to use for
@@ -450,6 +454,7 @@ class TaskRunnerSettings(proto.Message):
 
 class AutoscalingSettings(proto.Message):
     r"""Settings for WorkerPool autoscaling.
+
     Attributes:
         algorithm (google.cloud.dataflow_v1beta3.types.AutoscalingAlgorithm):
             The algorithm to use for autoscaling.

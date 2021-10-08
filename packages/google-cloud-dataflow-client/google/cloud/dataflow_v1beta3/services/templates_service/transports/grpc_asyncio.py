@@ -312,5 +312,8 @@ class TemplatesServiceGrpcAsyncIOTransport(TemplatesServiceTransport):
             )
         return self._stubs["get_template"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("TemplatesServiceGrpcAsyncIOTransport",)

@@ -64,6 +64,7 @@ class ParameterType(proto.Enum):
 
 class LaunchFlexTemplateResponse(proto.Message):
     r"""Response to the request to launch a job from Flex Template.
+
     Attributes:
         job (google.cloud.dataflow_v1beta3.types.Job):
             The job that was launched, if the request was
@@ -76,6 +77,7 @@ class LaunchFlexTemplateResponse(proto.Message):
 
 class ContainerSpec(proto.Message):
     r"""Container Spec.
+
     Attributes:
         image (str):
             Name of the docker container image. E.g.,
@@ -99,6 +101,7 @@ class ContainerSpec(proto.Message):
 
 class LaunchFlexTemplateParameter(proto.Message):
     r"""Launch FlexTemplate Parameter.
+
     Attributes:
         job_name (str):
             Required. The job name to use for the created
@@ -253,6 +256,7 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
 
 class LaunchFlexTemplateRequest(proto.Message):
     r"""A request to launch a Cloud Dataflow job from a FlexTemplate.
+
     Attributes:
         project_id (str):
             Required. The ID of the Cloud Platform
@@ -279,6 +283,7 @@ class LaunchFlexTemplateRequest(proto.Message):
 
 class RuntimeEnvironment(proto.Message):
     r"""The environment values to set at runtime.
+
     Attributes:
         num_workers (int):
             The initial number of Google Compute Engine
@@ -374,6 +379,7 @@ class RuntimeEnvironment(proto.Message):
 
 class ParameterMetadata(proto.Message):
     r"""Metadata for a specific parameter.
+
     Attributes:
         name (str):
             Required. The name of the parameter.
@@ -408,6 +414,7 @@ class ParameterMetadata(proto.Message):
 
 class TemplateMetadata(proto.Message):
     r"""Metadata describing a template.
+
     Attributes:
         name (str):
             Required. The name of the template.
@@ -426,6 +433,7 @@ class TemplateMetadata(proto.Message):
 
 class SDKInfo(proto.Message):
     r"""SDK Information.
+
     Attributes:
         language (google.cloud.dataflow_v1beta3.types.SDKInfo.Language):
             Required. The SDK Language.
@@ -445,6 +453,7 @@ class SDKInfo(proto.Message):
 
 class RuntimeMetadata(proto.Message):
     r"""RuntimeMetadata describing a runtime environment.
+
     Attributes:
         sdk_info (google.cloud.dataflow_v1beta3.types.SDKInfo):
             SDK Info for the template.
@@ -460,6 +469,7 @@ class RuntimeMetadata(proto.Message):
 
 class CreateJobFromTemplateRequest(proto.Message):
     r"""A request to create a Cloud Dataflow job from a template.
+
     Attributes:
         project_id (str):
             Required. The ID of the Cloud Platform
@@ -491,6 +501,7 @@ class CreateJobFromTemplateRequest(proto.Message):
 
 class GetTemplateRequest(proto.Message):
     r"""A request to retrieve a Cloud Dataflow job template.
+
     Attributes:
         project_id (str):
             Required. The ID of the Cloud Platform
@@ -520,6 +531,7 @@ class GetTemplateRequest(proto.Message):
 
 class GetTemplateResponse(proto.Message):
     r"""The response to a GetTemplate request.
+
     Attributes:
         status (google.rpc.status_pb2.Status):
             The status of the get template request. Any problems with
@@ -548,6 +560,7 @@ class GetTemplateResponse(proto.Message):
 
 class LaunchTemplateParameters(proto.Message):
     r"""Parameters to provide to the template being launched.
+
     Attributes:
         job_name (str):
             Required. The job name to use for the created
@@ -576,6 +589,7 @@ class LaunchTemplateParameters(proto.Message):
 
 class LaunchTemplateRequest(proto.Message):
     r"""A request to launch a template.
+
     Attributes:
         project_id (str):
             Required. The ID of the Cloud Platform
@@ -617,6 +631,7 @@ class LaunchTemplateRequest(proto.Message):
 
 class LaunchTemplateResponse(proto.Message):
     r"""Response to the request to launch a template.
+
     Attributes:
         job (google.cloud.dataflow_v1beta3.types.Job):
             The job that was launched, if the request was
@@ -639,6 +654,7 @@ class InvalidTemplateParameters(proto.Message):
 
     class ParameterViolation(proto.Message):
         r"""A specific template-parameter violation.
+
         Attributes:
             parameter (str):
                 The parameter that failed to validate.

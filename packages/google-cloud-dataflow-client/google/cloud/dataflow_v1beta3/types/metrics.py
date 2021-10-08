@@ -78,6 +78,7 @@ class MetricStructuredName(proto.Message):
 
 class MetricUpdate(proto.Message):
     r"""Describes the state of a metric.
+
     Attributes:
         name (google.cloud.dataflow_v1beta3.types.MetricStructuredName):
             Name of the metric.
@@ -152,6 +153,7 @@ class MetricUpdate(proto.Message):
 
 class GetJobMetricsRequest(proto.Message):
     r"""Request to get job metrics.
+
     Attributes:
         project_id (str):
             A project id.
@@ -196,6 +198,7 @@ class JobMetrics(proto.Message):
 
 class GetJobExecutionDetailsRequest(proto.Message):
     r"""Request to get job execution details.
+
     Attributes:
         project_id (str):
             A project id.
@@ -238,6 +241,7 @@ class ProgressTimeseries(proto.Message):
 
     class Point(proto.Message):
         r"""A point in the timeseries.
+
         Attributes:
             time (google.protobuf.timestamp_pb2.Timestamp):
                 The timestamp of the point.
@@ -254,6 +258,7 @@ class ProgressTimeseries(proto.Message):
 
 class StageSummary(proto.Message):
     r"""Information about a particular execution stage of a job.
+
     Attributes:
         stage_id (str):
             ID of this stage
@@ -283,6 +288,7 @@ class StageSummary(proto.Message):
 
 class JobExecutionDetails(proto.Message):
     r"""Information about the execution of a job.
+
     Attributes:
         stages (Sequence[google.cloud.dataflow_v1beta3.types.StageSummary]):
             The stages of the job execution.
@@ -345,6 +351,7 @@ class GetStageExecutionDetailsRequest(proto.Message):
 
 class WorkItemDetails(proto.Message):
     r"""Information about an individual work item execution.
+
     Attributes:
         task_id (str):
             Name of this work item.
@@ -376,6 +383,7 @@ class WorkItemDetails(proto.Message):
 
 class WorkerDetails(proto.Message):
     r"""Information about a worker
+
     Attributes:
         worker_name (str):
             Name of this worker
@@ -392,6 +400,7 @@ class WorkerDetails(proto.Message):
 
 class StageExecutionDetails(proto.Message):
     r"""Information about the workers and work items within a stage.
+
     Attributes:
         workers (Sequence[google.cloud.dataflow_v1beta3.types.WorkerDetails]):
             Workers that have done work on the stage.

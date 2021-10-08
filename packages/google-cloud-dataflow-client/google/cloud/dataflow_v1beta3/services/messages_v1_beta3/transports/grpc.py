@@ -260,5 +260,8 @@ class MessagesV1Beta3GrpcTransport(MessagesV1Beta3Transport):
             )
         return self._stubs["list_job_messages"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("MessagesV1Beta3GrpcTransport",)

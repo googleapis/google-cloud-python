@@ -304,5 +304,8 @@ class SnapshotsV1Beta3GrpcTransport(SnapshotsV1Beta3Transport):
             )
         return self._stubs["list_snapshots"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("SnapshotsV1Beta3GrpcTransport",)

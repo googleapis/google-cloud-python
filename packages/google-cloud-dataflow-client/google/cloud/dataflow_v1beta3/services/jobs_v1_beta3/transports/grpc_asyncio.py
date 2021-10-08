@@ -437,5 +437,8 @@ class JobsV1Beta3GrpcAsyncIOTransport(JobsV1Beta3Transport):
             )
         return self._stubs["snapshot_job"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("JobsV1Beta3GrpcAsyncIOTransport",)
