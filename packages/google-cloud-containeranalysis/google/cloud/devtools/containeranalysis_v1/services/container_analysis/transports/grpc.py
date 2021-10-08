@@ -378,5 +378,8 @@ class ContainerAnalysisGrpcTransport(ContainerAnalysisTransport):
             )
         return self._stubs["get_vulnerability_occurrences_summary"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ContainerAnalysisGrpcTransport",)

@@ -381,5 +381,8 @@ class ContainerAnalysisGrpcAsyncIOTransport(ContainerAnalysisTransport):
             )
         return self._stubs["get_vulnerability_occurrences_summary"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ContainerAnalysisGrpcAsyncIOTransport",)
