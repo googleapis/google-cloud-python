@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
 
 class AnnotationSpec(proto.Message):
     r"""A definition of an annotation spec.
+
     Attributes:
         name (str):
             Output only. Resource name of the annotation spec. Form:

@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
 
 class ModelEvaluation(proto.Message):
     r"""Evaluation results of a model.
+
     Attributes:
         classification_evaluation_metrics (google.cloud.automl_v1.types.ClassificationEvaluationMetrics):
             Model evaluation metrics for image, text,

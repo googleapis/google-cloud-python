@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
 
 class TablesDatasetMetadata(proto.Message):
     r"""Metadata for a dataset used for AutoML Tables.
+
     Attributes:
         primary_table_spec_id (str):
             Output only. The table_spec_id of the primary table of this
@@ -115,6 +116,7 @@ class TablesDatasetMetadata(proto.Message):
 
 class TablesModelMetadata(proto.Message):
     r"""Model metadata specific to AutoML Tables.
+
     Attributes:
         optimization_objective_recall_value (float):
             Required when optimization_objective is
@@ -241,6 +243,7 @@ class TablesModelMetadata(proto.Message):
 
 class TablesAnnotation(proto.Message):
     r"""Contains annotation details specific to Tables.
+
     Attributes:
         score (float):
             Output only. A confidence estimate between 0.0 and 1.0,

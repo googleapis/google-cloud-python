@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
 
 class TranslationDatasetMetadata(proto.Message):
     r"""Dataset metadata that is specific to translation.
+
     Attributes:
         source_language_code (str):
             Required. The BCP-47 language code of the
@@ -46,6 +47,7 @@ class TranslationDatasetMetadata(proto.Message):
 
 class TranslationEvaluationMetrics(proto.Message):
     r"""Evaluation metrics for the dataset.
+
     Attributes:
         bleu_score (float):
             Output only. BLEU score.
@@ -59,6 +61,7 @@ class TranslationEvaluationMetrics(proto.Message):
 
 class TranslationModelMetadata(proto.Message):
     r"""Model metadata that is specific to translation.
+
     Attributes:
         base_model (str):
             The resource name of the model to use as a baseline to train
@@ -81,6 +84,7 @@ class TranslationModelMetadata(proto.Message):
 
 class TranslationAnnotation(proto.Message):
     r"""Annotation details specific to translation.
+
     Attributes:
         translated_content (google.cloud.automl_v1.types.TextSnippet):
             Output only . The translated content.

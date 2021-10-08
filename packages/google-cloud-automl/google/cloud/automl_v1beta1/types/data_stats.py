@@ -81,6 +81,7 @@ class DataStats(proto.Message):
 
 class Float64Stats(proto.Message):
     r"""The data statistics of a series of FLOAT64 values.
+
     Attributes:
         mean (float):
             The mean of the series.
@@ -102,6 +103,7 @@ class Float64Stats(proto.Message):
 
     class HistogramBucket(proto.Message):
         r"""A bucket of a histogram.
+
         Attributes:
             min_ (float):
                 The minimum value of the bucket, inclusive.
@@ -127,6 +129,7 @@ class Float64Stats(proto.Message):
 
 class StringStats(proto.Message):
     r"""The data statistics of a series of STRING values.
+
     Attributes:
         top_unigram_stats (Sequence[google.cloud.automl_v1beta1.types.StringStats.UnigramStats]):
             The statistics of the top 20 unigrams, ordered by
@@ -135,6 +138,7 @@ class StringStats(proto.Message):
 
     class UnigramStats(proto.Message):
         r"""The statistics of a unigram.
+
         Attributes:
             value (str):
                 The unigram.
@@ -153,6 +157,7 @@ class StringStats(proto.Message):
 
 class TimestampStats(proto.Message):
     r"""The data statistics of a series of TIMESTAMP values.
+
     Attributes:
         granular_stats (Sequence[google.cloud.automl_v1beta1.types.TimestampStats.GranularStatsEntry]):
             The string key is the pre-defined granularity. Currently
@@ -164,6 +169,7 @@ class TimestampStats(proto.Message):
 
     class GranularStats(proto.Message):
         r"""Stats split by a defined in context granularity.
+
         Attributes:
             buckets (Sequence[google.cloud.automl_v1beta1.types.TimestampStats.GranularStats.BucketsEntry]):
                 A map from granularity key to example count for that key.
@@ -180,6 +186,7 @@ class TimestampStats(proto.Message):
 
 class ArrayStats(proto.Message):
     r"""The data statistics of a series of ARRAY values.
+
     Attributes:
         member_stats (google.cloud.automl_v1beta1.types.DataStats):
             Stats of all the values of all arrays, as if
@@ -192,6 +199,7 @@ class ArrayStats(proto.Message):
 
 class StructStats(proto.Message):
     r"""The data statistics of a series of STRUCT values.
+
     Attributes:
         field_stats (Sequence[google.cloud.automl_v1beta1.types.StructStats.FieldStatsEntry]):
             Map from a field name of the struct to data
@@ -206,6 +214,7 @@ class StructStats(proto.Message):
 
 class CategoryStats(proto.Message):
     r"""The data statistics of a series of CATEGORY values.
+
     Attributes:
         top_category_stats (Sequence[google.cloud.automl_v1beta1.types.CategoryStats.SingleCategoryStats]):
             The statistics of the top 20 CATEGORY values, ordered by
@@ -215,6 +224,7 @@ class CategoryStats(proto.Message):
 
     class SingleCategoryStats(proto.Message):
         r"""The statistics of a single CATEGORY value.
+
         Attributes:
             value (str):
                 The CATEGORY value.

@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
 
 class TextExtractionAnnotation(proto.Message):
     r"""Annotation for identifying spans of text.
+
     Attributes:
         text_segment (google.cloud.automl_v1beta1.types.TextSegment):
             An entity annotation will set this, which is
@@ -48,6 +49,7 @@ class TextExtractionAnnotation(proto.Message):
 
 class TextExtractionEvaluationMetrics(proto.Message):
     r"""Model evaluation metrics for text extraction problems.
+
     Attributes:
         au_prc (float):
             Output only. The Area under precision recall
@@ -60,6 +62,7 @@ class TextExtractionEvaluationMetrics(proto.Message):
 
     class ConfidenceMetricsEntry(proto.Message):
         r"""Metrics for a single confidence threshold.
+
         Attributes:
             confidence_threshold (float):
                 Output only. The confidence threshold value

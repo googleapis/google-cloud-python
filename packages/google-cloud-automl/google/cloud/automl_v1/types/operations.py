@@ -137,31 +137,38 @@ class OperationMetadata(proto.Message):
 
 
 class DeleteOperationMetadata(proto.Message):
-    r"""Details of operations that perform deletes of any entities.    """
+    r"""Details of operations that perform deletes of any entities.
+    """
 
 
 class DeployModelOperationMetadata(proto.Message):
-    r"""Details of DeployModel operation.    """
+    r"""Details of DeployModel operation.
+    """
 
 
 class UndeployModelOperationMetadata(proto.Message):
-    r"""Details of UndeployModel operation.    """
+    r"""Details of UndeployModel operation.
+    """
 
 
 class CreateDatasetOperationMetadata(proto.Message):
-    r"""Details of CreateDataset operation.    """
+    r"""Details of CreateDataset operation.
+    """
 
 
 class CreateModelOperationMetadata(proto.Message):
-    r"""Details of CreateModel operation.    """
+    r"""Details of CreateModel operation.
+    """
 
 
 class ImportDataOperationMetadata(proto.Message):
-    r"""Details of ImportData operation.    """
+    r"""Details of ImportData operation.
+    """
 
 
 class ExportDataOperationMetadata(proto.Message):
     r"""Details of ExportData operation.
+
     Attributes:
         output_info (google.cloud.automl_v1.types.ExportDataOperationMetadata.ExportDataOutputInfo):
             Output only. Information further describing
@@ -188,6 +195,7 @@ class ExportDataOperationMetadata(proto.Message):
 
 class BatchPredictOperationMetadata(proto.Message):
     r"""Details of BatchPredict operation.
+
     Attributes:
         input_config (google.cloud.automl_v1.types.BatchPredictInputConfig):
             Output only. The input config that was given
@@ -221,6 +229,7 @@ class BatchPredictOperationMetadata(proto.Message):
 
 class ExportModelOperationMetadata(proto.Message):
     r"""Details of ExportModel operation.
+
     Attributes:
         output_info (google.cloud.automl_v1.types.ExportModelOperationMetadata.ExportModelOutputInfo):
             Output only. Information further describing

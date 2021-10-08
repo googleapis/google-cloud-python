@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
 
 class ImageClassificationDatasetMetadata(proto.Message):
     r"""Dataset metadata that is specific to image classification.
+
     Attributes:
         classification_type (google.cloud.automl_v1.types.ClassificationType):
             Required. Type of the classification problem.
@@ -44,11 +45,13 @@ class ImageClassificationDatasetMetadata(proto.Message):
 
 
 class ImageObjectDetectionDatasetMetadata(proto.Message):
-    r"""Dataset metadata specific to image object detection.    """
+    r"""Dataset metadata specific to image object detection.
+    """
 
 
 class ImageClassificationModelMetadata(proto.Message):
     r"""Model metadata for image classification.
+
     Attributes:
         base_model_id (str):
             Optional. The ID of the ``base`` model. If it is specified,
@@ -150,6 +153,7 @@ class ImageClassificationModelMetadata(proto.Message):
 
 class ImageObjectDetectionModelMetadata(proto.Message):
     r"""Model metadata specific to image object detection.
+
     Attributes:
         model_type (str):
             Optional. Type of the model. The available values are:
@@ -232,6 +236,7 @@ class ImageObjectDetectionModelMetadata(proto.Message):
 
 class ImageClassificationModelDeploymentMetadata(proto.Message):
     r"""Model deployment metadata specific to Image Classification.
+
     Attributes:
         node_count (int):
             Input only. The number of nodes to deploy the model on. A
@@ -247,6 +252,7 @@ class ImageClassificationModelDeploymentMetadata(proto.Message):
 
 class ImageObjectDetectionModelDeploymentMetadata(proto.Message):
     r"""Model deployment metadata specific to Image Object Detection.
+
     Attributes:
         node_count (int):
             Input only. The number of nodes to deploy the model on. A

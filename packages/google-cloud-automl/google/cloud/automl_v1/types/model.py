@@ -26,6 +26,7 @@ __protobuf__ = proto.module(package="google.cloud.automl.v1", manifest={"Model",
 
 class Model(proto.Message):
     r"""API proto representing a trained machine learning model.
+
     Attributes:
         translation_model_metadata (google.cloud.automl_v1.types.TranslationModelMetadata):
             Metadata for translation models.

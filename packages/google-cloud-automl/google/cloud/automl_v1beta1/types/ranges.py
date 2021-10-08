@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
 
 class DoubleRange(proto.Message):
     r"""A range between two double numbers.
+
     Attributes:
         start (float):
             Start of the range, inclusive.

@@ -38,6 +38,7 @@ class ClassificationType(proto.Enum):
 
 class ClassificationAnnotation(proto.Message):
     r"""Contains annotation details specific to classification.
+
     Attributes:
         score (float):
             Output only. A confidence estimate between
@@ -54,6 +55,7 @@ class ClassificationAnnotation(proto.Message):
 
 class VideoClassificationAnnotation(proto.Message):
     r"""Contains annotation details specific to video classification.
+
     Attributes:
         type_ (str):
             Output only. Expresses the type of video classification.
@@ -140,6 +142,7 @@ class ClassificationEvaluationMetrics(proto.Message):
 
     class ConfidenceMetricsEntry(proto.Message):
         r"""Metrics for a single confidence threshold.
+
         Attributes:
             confidence_threshold (float):
                 Output only. Metrics are computed with an
@@ -215,6 +218,7 @@ class ClassificationEvaluationMetrics(proto.Message):
 
     class ConfusionMatrix(proto.Message):
         r"""Confusion matrix of the model running the classification.
+
         Attributes:
             annotation_spec_id (Sequence[str]):
                 Output only. IDs of the annotation specs used in the
@@ -242,6 +246,7 @@ class ClassificationEvaluationMetrics(proto.Message):
 
         class Row(proto.Message):
             r"""Output only. A row in the confusion matrix.
+
             Attributes:
                 example_count (Sequence[int]):
                     Output only. Value of the specific cell in the confusion

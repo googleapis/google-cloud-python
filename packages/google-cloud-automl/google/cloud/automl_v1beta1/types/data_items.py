@@ -59,6 +59,7 @@ class Image(proto.Message):
 
 class TextSnippet(proto.Message):
     r"""A representation of a text snippet.
+
     Attributes:
         content (str):
             Required. The content of the text snippet as
@@ -82,6 +83,7 @@ class TextSnippet(proto.Message):
 
 class DocumentDimensions(proto.Message):
     r"""Message that describes dimension of a document.
+
     Attributes:
         unit (google.cloud.automl_v1beta1.types.DocumentDimensions.DocumentDimensionUnit):
             Unit of the dimension.
@@ -107,6 +109,7 @@ class DocumentDimensions(proto.Message):
 
 class Document(proto.Message):
     r"""A structured text document e.g. a PDF.
+
     Attributes:
         input_config (google.cloud.automl_v1beta1.types.DocumentInputConfig):
             An input config specifying the content of the
@@ -189,6 +192,7 @@ class Document(proto.Message):
 
 class Row(proto.Message):
     r"""A representation of a row in a relational table.
+
     Attributes:
         column_spec_ids (Sequence[str]):
             The resource IDs of the column specs describing the columns
@@ -214,6 +218,7 @@ class Row(proto.Message):
 
 class ExamplePayload(proto.Message):
     r"""Example data used for training or prediction.
+
     Attributes:
         image (google.cloud.automl_v1beta1.types.Image):
             Example image.

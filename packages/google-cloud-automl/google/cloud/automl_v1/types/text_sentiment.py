@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
 
 class TextSentimentAnnotation(proto.Message):
     r"""Contains annotation details specific to text sentiment.
+
     Attributes:
         sentiment (int):
             Output only. The sentiment with the semantic, as given to
@@ -51,6 +52,7 @@ class TextSentimentAnnotation(proto.Message):
 
 class TextSentimentEvaluationMetrics(proto.Message):
     r"""Model evaluation metrics for text sentiment problems.
+
     Attributes:
         precision (float):
             Output only. Precision.

@@ -956,5 +956,8 @@ class AutoMlGrpcTransport(AutoMlTransport):
             )
         return self._stubs["list_model_evaluations"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("AutoMlGrpcTransport",)

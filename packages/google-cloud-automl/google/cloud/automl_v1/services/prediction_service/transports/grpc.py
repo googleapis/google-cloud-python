@@ -354,5 +354,8 @@ class PredictionServiceGrpcTransport(PredictionServiceTransport):
             )
         return self._stubs["batch_predict"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("PredictionServiceGrpcTransport",)
