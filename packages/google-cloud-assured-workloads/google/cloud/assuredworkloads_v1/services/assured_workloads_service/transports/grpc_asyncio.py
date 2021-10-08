@@ -392,5 +392,8 @@ class AssuredWorkloadsServiceGrpcAsyncIOTransport(AssuredWorkloadsServiceTranspo
             )
         return self._stubs["list_workloads"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("AssuredWorkloadsServiceGrpcAsyncIOTransport",)
