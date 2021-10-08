@@ -22,7 +22,7 @@ In order to add a feature:
   documentation.
 
 - The feature must work fully on the following CPython versions:
-  3.6, 3.7, 3.8 and 3.9 on both UNIX and Windows.
+  3.6, 3.7, 3.8, 3.9 and 3.10 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -72,7 +72,7 @@ We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 
 - To run a single unit test::
 
-    $ nox -s unit-3.9 -- -k <name of test>
+    $ nox -s unit-3.10 -- -k <name of test>
 
 
   .. note::
@@ -225,11 +225,13 @@ We support:
 -  `Python 3.7`_
 -  `Python 3.8`_
 -  `Python 3.9`_
+-  `Python 3.10`_
 
 .. _Python 3.6: https://docs.python.org/3.6/
 .. _Python 3.7: https://docs.python.org/3.7/
 .. _Python 3.8: https://docs.python.org/3.8/
 .. _Python 3.9: https://docs.python.org/3.9/
+.. _Python 3.10: https://docs.python.org/3.10/
 
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
