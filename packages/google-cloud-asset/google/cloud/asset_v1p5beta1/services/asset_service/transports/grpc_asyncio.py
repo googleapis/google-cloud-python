@@ -257,5 +257,8 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
             )
         return self._stubs["list_assets"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("AssetServiceGrpcAsyncIOTransport",)

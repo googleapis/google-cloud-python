@@ -296,5 +296,8 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
             )
         return self._stubs["search_all_iam_policies"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("AssetServiceGrpcTransport",)

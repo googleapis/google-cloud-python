@@ -48,6 +48,7 @@ class TemporalAsset(proto.Message):
 
 class TimeWindow(proto.Message):
     r"""A time window of (start_time, end_time].
+
     Attributes:
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Start time of the time window (exclusive).
@@ -101,6 +102,7 @@ class Asset(proto.Message):
 
 class Resource(proto.Message):
     r"""Representation of a cloud resource.
+
     Attributes:
         version (str):
             The API version. Example: "v1".

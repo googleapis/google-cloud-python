@@ -565,6 +565,12 @@ class AssetServiceAsyncClient:
             request, retry=retry, timeout=timeout, metadata=metadata,
         )
 
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        await self.transport.close()
+
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

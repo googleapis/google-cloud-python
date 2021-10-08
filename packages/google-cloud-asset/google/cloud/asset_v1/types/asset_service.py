@@ -94,6 +94,7 @@ class AnalyzeIamPolicyLongrunningMetadata(proto.Message):
 
 class ExportAssetsRequest(proto.Message):
     r"""Export asset request.
+
     Attributes:
         parent (str):
             Required. The relative name of the root
@@ -196,6 +197,7 @@ class ExportAssetsResponse(proto.Message):
 
 class ListAssetsRequest(proto.Message):
     r"""ListAssets request.
+
     Attributes:
         parent (str):
             Required. Name of the organization or project the assets
@@ -278,6 +280,7 @@ class ListAssetsRequest(proto.Message):
 
 class ListAssetsResponse(proto.Message):
     r"""ListAssets response.
+
     Attributes:
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time the snapshot was taken.
@@ -301,6 +304,7 @@ class ListAssetsResponse(proto.Message):
 
 class BatchGetAssetsHistoryRequest(proto.Message):
     r"""Batch get assets history request.
+
     Attributes:
         parent (str):
             Required. The relative name of the root
@@ -358,6 +362,7 @@ class BatchGetAssetsHistoryRequest(proto.Message):
 
 class BatchGetAssetsHistoryResponse(proto.Message):
     r"""Batch get assets history response.
+
     Attributes:
         assets (Sequence[google.cloud.asset_v1.types.TemporalAsset]):
             A list of assets with valid time windows.
@@ -370,6 +375,7 @@ class BatchGetAssetsHistoryResponse(proto.Message):
 
 class CreateFeedRequest(proto.Message):
     r"""Create asset feed request.
+
     Attributes:
         parent (str):
             Required. The name of the
@@ -399,6 +405,7 @@ class CreateFeedRequest(proto.Message):
 
 class GetFeedRequest(proto.Message):
     r"""Get asset feed request.
+
     Attributes:
         name (str):
             Required. The name of the Feed and it must be in the format
@@ -412,6 +419,7 @@ class GetFeedRequest(proto.Message):
 
 class ListFeedsRequest(proto.Message):
     r"""List asset feeds request.
+
     Attributes:
         parent (str):
             Required. The parent
@@ -427,6 +435,7 @@ class ListFeedsRequest(proto.Message):
 
 class ListFeedsResponse(proto.Message):
     r"""
+
     Attributes:
         feeds (Sequence[google.cloud.asset_v1.types.Feed]):
             A list of feeds.
@@ -437,6 +446,7 @@ class ListFeedsResponse(proto.Message):
 
 class UpdateFeedRequest(proto.Message):
     r"""Update asset feed request.
+
     Attributes:
         feed (google.cloud.asset_v1.types.Feed):
             Required. The new values of feed details. It must match an
@@ -458,6 +468,7 @@ class UpdateFeedRequest(proto.Message):
 
 class DeleteFeedRequest(proto.Message):
     r"""
+
     Attributes:
         name (str):
             Required. The name of the feed and it must be in the format
@@ -471,6 +482,7 @@ class DeleteFeedRequest(proto.Message):
 
 class OutputConfig(proto.Message):
     r"""Output configuration for export assets destination.
+
     Attributes:
         gcs_destination (google.cloud.asset_v1.types.GcsDestination):
             Destination on Cloud Storage.
@@ -490,6 +502,7 @@ class OutputConfig(proto.Message):
 
 class OutputResult(proto.Message):
     r"""Output result of export assets.
+
     Attributes:
         gcs_result (google.cloud.asset_v1.types.GcsOutputResult):
             Export result on Cloud Storage.
@@ -502,6 +515,7 @@ class OutputResult(proto.Message):
 
 class GcsOutputResult(proto.Message):
     r"""A Cloud Storage output result.
+
     Attributes:
         uris (Sequence[str]):
             List of uris of the Cloud Storage objects. Example:
@@ -513,6 +527,7 @@ class GcsOutputResult(proto.Message):
 
 class GcsDestination(proto.Message):
     r"""A Cloud Storage location.
+
     Attributes:
         uri (str):
             The uri of the Cloud Storage object. It's the same uri that
@@ -543,6 +558,7 @@ class GcsDestination(proto.Message):
 
 class BigQueryDestination(proto.Message):
     r"""A BigQuery destination for exporting assets to.
+
     Attributes:
         dataset (str):
             Required. The BigQuery dataset in format
@@ -651,6 +667,7 @@ class PartitionSpec(proto.Message):
 
 class PubsubDestination(proto.Message):
     r"""A Pub/Sub destination.
+
     Attributes:
         topic (str):
             The name of the Pub/Sub topic to publish to. Example:
@@ -662,6 +679,7 @@ class PubsubDestination(proto.Message):
 
 class FeedOutputConfig(proto.Message):
     r"""Output configuration for asset feed destination.
+
     Attributes:
         pubsub_destination (google.cloud.asset_v1.types.PubsubDestination):
             Destination on Pub/Sub.
@@ -765,6 +783,7 @@ class Feed(proto.Message):
 
 class SearchAllResourcesRequest(proto.Message):
     r"""Search all resources request.
+
     Attributes:
         scope (str):
             Required. A scope can be a project, a folder, or an
@@ -925,6 +944,7 @@ class SearchAllResourcesRequest(proto.Message):
 
 class SearchAllResourcesResponse(proto.Message):
     r"""Search all resources response.
+
     Attributes:
         results (Sequence[google.cloud.asset_v1.types.ResourceSearchResult]):
             A list of Resources that match the search
@@ -949,6 +969,7 @@ class SearchAllResourcesResponse(proto.Message):
 
 class SearchAllIamPoliciesRequest(proto.Message):
     r"""Search all IAM policies request.
+
     Attributes:
         scope (str):
             Required. A scope can be a project, a folder, or an
@@ -1069,6 +1090,7 @@ class SearchAllIamPoliciesRequest(proto.Message):
 
 class SearchAllIamPoliciesResponse(proto.Message):
     r"""Search all IAM policies response.
+
     Attributes:
         results (Sequence[google.cloud.asset_v1.types.IamPolicySearchResult]):
             A list of IamPolicy that match the search
@@ -1093,6 +1115,7 @@ class SearchAllIamPoliciesResponse(proto.Message):
 
 class IamPolicyAnalysisQuery(proto.Message):
     r"""## IAM policy analysis query message.
+
     Attributes:
         scope (str):
             Required. The relative name of the root asset. Only
@@ -1181,6 +1204,7 @@ class IamPolicyAnalysisQuery(proto.Message):
 
     class Options(proto.Message):
         r"""Contains query options.
+
         Attributes:
             expand_groups (bool):
                 Optional. If true, the identities section of the result will
@@ -1279,6 +1303,7 @@ class IamPolicyAnalysisQuery(proto.Message):
 
     class ConditionContext(proto.Message):
         r"""The IAM conditions context.
+
         Attributes:
             access_time (google.protobuf.timestamp_pb2.Timestamp):
                 The hypothetical access timestamp to evaluate IAM
@@ -1354,6 +1379,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
 
     class IamPolicyAnalysis(proto.Message):
         r"""An analysis message to group the query and results.
+
         Attributes:
             analysis_query (google.cloud.asset_v1.types.IamPolicyAnalysisQuery):
                 The analysis query.
@@ -1402,6 +1428,7 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
 
     class GcsDestination(proto.Message):
         r"""A Cloud Storage location.
+
         Attributes:
             uri (str):
                 Required. The uri of the Cloud Storage object. It's the same
@@ -1421,6 +1448,7 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
 
     class BigQueryDestination(proto.Message):
         r"""A BigQuery destination.
+
         Attributes:
             dataset (str):
                 Required. The BigQuery dataset in format
@@ -1512,11 +1540,13 @@ class AnalyzeIamPolicyLongrunningRequest(proto.Message):
 class AnalyzeIamPolicyLongrunningResponse(proto.Message):
     r"""A response message for
     [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
-        """
+
+    """
 
 
 class AnalyzeMoveRequest(proto.Message):
     r"""The request message for performing resource move analysis.
+
     Attributes:
         resource (str):
             Required. Name of the resource to perform the
@@ -1552,6 +1582,7 @@ class AnalyzeMoveRequest(proto.Message):
 
 class AnalyzeMoveResponse(proto.Message):
     r"""The response message for resource move analysis.
+
     Attributes:
         move_analysis (Sequence[google.cloud.asset_v1.types.MoveAnalysis]):
             The list of analyses returned from performing
@@ -1566,6 +1597,7 @@ class AnalyzeMoveResponse(proto.Message):
 
 class MoveAnalysis(proto.Message):
     r"""A message to group the analysis information.
+
     Attributes:
         display_name (str):
             The user friendly display name of the
@@ -1589,6 +1621,7 @@ class MoveAnalysis(proto.Message):
 
 class MoveAnalysisResult(proto.Message):
     r"""An analysis result including blockers and warnings.
+
     Attributes:
         blockers (Sequence[google.cloud.asset_v1.types.MoveImpact]):
             Blocking information that would prevent the
@@ -1608,6 +1641,7 @@ class MoveAnalysisResult(proto.Message):
 
 class MoveImpact(proto.Message):
     r"""A message to group impacts of moving the target resource.
+
     Attributes:
         detail (str):
             User friendly impact detail in a free form

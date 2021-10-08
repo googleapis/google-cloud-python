@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
 
 class StandardResourceMetadata(proto.Message):
     r"""The standard metadata of a cloud resource.
+
     Attributes:
         name (str):
             The full resource name. For example:
@@ -79,6 +80,7 @@ class StandardResourceMetadata(proto.Message):
 
 class IamPolicySearchResult(proto.Message):
     r"""The result for a IAM Policy search.
+
     Attributes:
         resource (str):
             The `full resource
@@ -107,6 +109,7 @@ class IamPolicySearchResult(proto.Message):
 
     class Explanation(proto.Message):
         r"""Explanation about the IAM policy search result.
+
         Attributes:
             matched_permissions (Sequence[google.cloud.asset_v1p1beta1.types.IamPolicySearchResult.Explanation.MatchedPermissionsEntry]):
                 The map from roles to their included permission matching the
@@ -129,6 +132,7 @@ class IamPolicySearchResult(proto.Message):
 
 class Permissions(proto.Message):
     r"""IAM permissions
+
     Attributes:
         permissions (Sequence[str]):
             A list of permissions. A sample permission

@@ -642,5 +642,8 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
             )
         return self._stubs["analyze_move"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("AssetServiceGrpcTransport",)
