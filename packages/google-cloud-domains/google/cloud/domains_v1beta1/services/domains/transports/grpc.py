@@ -648,5 +648,8 @@ class DomainsGrpcTransport(DomainsTransport):
             )
         return self._stubs["reset_authorization_code"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("DomainsGrpcTransport",)
