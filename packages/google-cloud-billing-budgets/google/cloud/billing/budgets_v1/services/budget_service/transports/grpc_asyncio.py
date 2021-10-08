@@ -383,5 +383,8 @@ class BudgetServiceGrpcAsyncIOTransport(BudgetServiceTransport):
             )
         return self._stubs["delete_budget"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("BudgetServiceGrpcAsyncIOTransport",)

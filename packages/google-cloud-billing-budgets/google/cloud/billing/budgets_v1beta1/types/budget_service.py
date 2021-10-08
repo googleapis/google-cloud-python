@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
 
 class CreateBudgetRequest(proto.Message):
     r"""Request for CreateBudget
+
     Attributes:
         parent (str):
             Required. The name of the billing account to create the
@@ -49,6 +50,7 @@ class CreateBudgetRequest(proto.Message):
 
 class UpdateBudgetRequest(proto.Message):
     r"""Request for UpdateBudget
+
     Attributes:
         budget (google.cloud.billing.budgets_v1beta1.types.Budget):
             Required. The updated budget object.
@@ -71,6 +73,7 @@ class UpdateBudgetRequest(proto.Message):
 
 class GetBudgetRequest(proto.Message):
     r"""Request for GetBudget
+
     Attributes:
         name (str):
             Required. Name of budget to get. Values are of the form
@@ -82,6 +85,7 @@ class GetBudgetRequest(proto.Message):
 
 class ListBudgetsRequest(proto.Message):
     r"""Request for ListBudgets
+
     Attributes:
         parent (str):
             Required. Name of billing account to list budgets under.
@@ -105,6 +109,7 @@ class ListBudgetsRequest(proto.Message):
 
 class ListBudgetsResponse(proto.Message):
     r"""Response for ListBudgets
+
     Attributes:
         budgets (Sequence[google.cloud.billing.budgets_v1beta1.types.Budget]):
             List of the budgets owned by the requested
@@ -125,6 +130,7 @@ class ListBudgetsResponse(proto.Message):
 
 class DeleteBudgetRequest(proto.Message):
     r"""Request for DeleteBudget
+
     Attributes:
         name (str):
             Required. Name of the budget to delete. Values are of the

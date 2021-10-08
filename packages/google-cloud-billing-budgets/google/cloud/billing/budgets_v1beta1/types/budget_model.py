@@ -99,6 +99,7 @@ class Budget(proto.Message):
 
 class BudgetAmount(proto.Message):
     r"""The budgeted amount for each usage period.
+
     Attributes:
         specified_amount (google.type.money_pb2.Money):
             A specified amount to use as the budget. ``currency_code``
@@ -133,7 +134,8 @@ class LastPeriodAmount(proto.Message):
     configuring a percentage of last period's spend). LastPeriodAmount
     cannot be set for a budget configured with a
     [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].
-        """
+
+    """
 
 
 class ThresholdRule(proto.Message):

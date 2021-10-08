@@ -379,5 +379,8 @@ class BudgetServiceGrpcTransport(BudgetServiceTransport):
             )
         return self._stubs["delete_budget"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("BudgetServiceGrpcTransport",)
