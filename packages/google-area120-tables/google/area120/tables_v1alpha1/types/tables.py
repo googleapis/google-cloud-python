@@ -59,6 +59,7 @@ class View(proto.Enum):
 
 class GetTableRequest(proto.Message):
     r"""Request message for TablesService.GetTable.
+
     Attributes:
         name (str):
             Required. The name of the table to retrieve.
@@ -70,6 +71,7 @@ class GetTableRequest(proto.Message):
 
 class ListTablesRequest(proto.Message):
     r"""Request message for TablesService.ListTables.
+
     Attributes:
         page_size (int):
             The maximum number of tables to return. The
@@ -93,6 +95,7 @@ class ListTablesRequest(proto.Message):
 
 class ListTablesResponse(proto.Message):
     r"""Response message for TablesService.ListTables.
+
     Attributes:
         tables (Sequence[google.area120.tables_v1alpha1.types.Table]):
             The list of tables.
@@ -112,6 +115,7 @@ class ListTablesResponse(proto.Message):
 
 class GetWorkspaceRequest(proto.Message):
     r"""Request message for TablesService.GetWorkspace.
+
     Attributes:
         name (str):
             Required. The name of the workspace to
@@ -123,6 +127,7 @@ class GetWorkspaceRequest(proto.Message):
 
 class ListWorkspacesRequest(proto.Message):
     r"""Request message for TablesService.ListWorkspaces.
+
     Attributes:
         page_size (int):
             The maximum number of workspaces to return.
@@ -145,6 +150,7 @@ class ListWorkspacesRequest(proto.Message):
 
 class ListWorkspacesResponse(proto.Message):
     r"""Response message for TablesService.ListWorkspaces.
+
     Attributes:
         workspaces (Sequence[google.area120.tables_v1alpha1.types.Workspace]):
             The list of workspaces.
@@ -164,6 +170,7 @@ class ListWorkspacesResponse(proto.Message):
 
 class GetRowRequest(proto.Message):
     r"""Request message for TablesService.GetRow.
+
     Attributes:
         name (str):
             Required. The name of the row to retrieve.
@@ -179,6 +186,7 @@ class GetRowRequest(proto.Message):
 
 class ListRowsRequest(proto.Message):
     r"""Request message for TablesService.ListRows.
+
     Attributes:
         parent (str):
             Required. The parent table.
@@ -216,6 +224,7 @@ class ListRowsRequest(proto.Message):
 
 class ListRowsResponse(proto.Message):
     r"""Response message for TablesService.ListRows.
+
     Attributes:
         rows (Sequence[google.area120.tables_v1alpha1.types.Row]):
             The rows from the specified table.
@@ -235,6 +244,7 @@ class ListRowsResponse(proto.Message):
 
 class CreateRowRequest(proto.Message):
     r"""Request message for TablesService.CreateRow.
+
     Attributes:
         parent (str):
             Required. The parent table where this row
@@ -253,6 +263,7 @@ class CreateRowRequest(proto.Message):
 
 class BatchCreateRowsRequest(proto.Message):
     r"""Request message for TablesService.BatchCreateRows.
+
     Attributes:
         parent (str):
             Required. The parent table where the rows
@@ -270,6 +281,7 @@ class BatchCreateRowsRequest(proto.Message):
 
 class BatchCreateRowsResponse(proto.Message):
     r"""Response message for TablesService.BatchCreateRows.
+
     Attributes:
         rows (Sequence[google.area120.tables_v1alpha1.types.Row]):
             The created rows.
@@ -280,6 +292,7 @@ class BatchCreateRowsResponse(proto.Message):
 
 class UpdateRowRequest(proto.Message):
     r"""Request message for TablesService.UpdateRow.
+
     Attributes:
         row (google.area120.tables_v1alpha1.types.Row):
             Required. The row to update.
@@ -299,6 +312,7 @@ class UpdateRowRequest(proto.Message):
 
 class BatchUpdateRowsRequest(proto.Message):
     r"""Request message for TablesService.BatchUpdateRows.
+
     Attributes:
         parent (str):
             Required. The parent table shared by all rows
@@ -316,6 +330,7 @@ class BatchUpdateRowsRequest(proto.Message):
 
 class BatchUpdateRowsResponse(proto.Message):
     r"""Response message for TablesService.BatchUpdateRows.
+
     Attributes:
         rows (Sequence[google.area120.tables_v1alpha1.types.Row]):
             The updated rows.
@@ -326,6 +341,7 @@ class BatchUpdateRowsResponse(proto.Message):
 
 class DeleteRowRequest(proto.Message):
     r"""Request message for TablesService.DeleteRow
+
     Attributes:
         name (str):
             Required. The name of the row to delete.
@@ -337,6 +353,7 @@ class DeleteRowRequest(proto.Message):
 
 class BatchDeleteRowsRequest(proto.Message):
     r"""Request message for TablesService.BatchDeleteRows
+
     Attributes:
         parent (str):
             Required. The parent table shared by all rows
@@ -355,6 +372,7 @@ class BatchDeleteRowsRequest(proto.Message):
 
 class Table(proto.Message):
     r"""A single table.
+
     Attributes:
         name (str):
             The resource name of the table. Table names have the form
@@ -373,6 +391,7 @@ class Table(proto.Message):
 
 class ColumnDescription(proto.Message):
     r"""Details on a column in the table.
+
     Attributes:
         name (str):
             column name
@@ -416,6 +435,7 @@ class ColumnDescription(proto.Message):
 
 class LabeledItem(proto.Message):
     r"""A single item in a labeled column.
+
     Attributes:
         name (str):
             Display string as entered by user.
@@ -429,6 +449,7 @@ class LabeledItem(proto.Message):
 
 class RelationshipDetails(proto.Message):
     r"""Details about a relationship column.
+
     Attributes:
         linked_table (str):
             The name of the table this relationship is
@@ -456,6 +477,7 @@ class LookupDetails(proto.Message):
 
 class Row(proto.Message):
     r"""A single row in a table.
+
     Attributes:
         name (str):
             The resource name of the row. Row names have the form
@@ -476,6 +498,7 @@ class Row(proto.Message):
 
 class Workspace(proto.Message):
     r"""A single workspace.
+
     Attributes:
         name (str):
             The resource name of the workspace. Workspace names have the

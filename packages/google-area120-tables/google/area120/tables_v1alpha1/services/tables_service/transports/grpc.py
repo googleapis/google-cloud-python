@@ -540,5 +540,8 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
             )
         return self._stubs["batch_delete_rows"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("TablesServiceGrpcTransport",)
