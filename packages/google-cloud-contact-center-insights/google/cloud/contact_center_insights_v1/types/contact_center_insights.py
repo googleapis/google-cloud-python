@@ -132,6 +132,7 @@ class CalculateStatsResponse(proto.Message):
 
     class TimeSeries(proto.Message):
         r"""A time series representing conversations over time.
+
         Attributes:
             interval_duration (google.protobuf.duration_pb2.Duration):
                 The duration of each interval.
@@ -144,6 +145,7 @@ class CalculateStatsResponse(proto.Message):
 
         class Interval(proto.Message):
             r"""A single interval in a time series.
+
             Attributes:
                 start_time (google.protobuf.timestamp_pb2.Timestamp):
                     The start time of this interval.
@@ -441,6 +443,7 @@ class ExportInsightsDataRequest(proto.Message):
 
     class BigQueryDestination(proto.Message):
         r"""A BigQuery Table Reference.
+
         Attributes:
             project_id (str):
                 A project ID or number. If specified, then
@@ -496,7 +499,8 @@ class ExportInsightsDataMetadata(proto.Message):
 
 
 class ExportInsightsDataResponse(proto.Message):
-    r"""Response for an export insights operation.    """
+    r"""Response for an export insights operation.
+    """
 
 
 class CreateIssueModelRequest(proto.Message):
@@ -628,7 +632,8 @@ class DeployIssueModelRequest(proto.Message):
 
 
 class DeployIssueModelResponse(proto.Message):
-    r"""The response to deploy an issue model.    """
+    r"""The response to deploy an issue model.
+    """
 
 
 class DeployIssueModelMetadata(proto.Message):
@@ -662,7 +667,8 @@ class UndeployIssueModelRequest(proto.Message):
 
 
 class UndeployIssueModelResponse(proto.Message):
-    r"""The response to undeploy an issue model.    """
+    r"""The response to undeploy an issue model.
+    """
 
 
 class UndeployIssueModelMetadata(proto.Message):

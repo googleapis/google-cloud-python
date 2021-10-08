@@ -137,6 +137,7 @@ class Conversation(proto.Message):
 
     class CallMetadata(proto.Message):
         r"""Call-specific metadata.
+
         Attributes:
             customer_channel (int):
                 The audio channel that contains the customer.
@@ -149,6 +150,7 @@ class Conversation(proto.Message):
 
     class Transcript(proto.Message):
         r"""A message representing the transcript of a conversation.
+
         Attributes:
             transcript_segments (Sequence[google.cloud.contact_center_insights_v1.types.Conversation.Transcript.TranscriptSegment]):
                 A list of sequential transcript segments that
@@ -157,6 +159,7 @@ class Conversation(proto.Message):
 
         class TranscriptSegment(proto.Message):
             r"""A segment of a full transcript.
+
             Attributes:
                 message_time (google.protobuf.timestamp_pb2.Timestamp):
                     The time that the message occurred, if
@@ -192,6 +195,7 @@ class Conversation(proto.Message):
 
             class WordInfo(proto.Message):
                 r"""Word-level info for words in a transcript.
+
                 Attributes:
                     start_offset (google.protobuf.duration_pb2.Duration):
                         Time offset of the start of this word
@@ -387,6 +391,7 @@ class AnalysisResult(proto.Message):
 
     class CallAnalysisMetadata(proto.Message):
         r"""Call-specific metadata created during analysis.
+
         Attributes:
             annotations (Sequence[google.cloud.contact_center_insights_v1.types.CallAnnotation]):
                 A list of call annotations that apply to this
@@ -659,15 +664,18 @@ class DialogflowIntent(proto.Message):
 
 
 class InterruptionData(proto.Message):
-    r"""The data for an interruption annotation.    """
+    r"""The data for an interruption annotation.
+    """
 
 
 class SilenceData(proto.Message):
-    r"""The data for a silence annotation.    """
+    r"""The data for a silence annotation.
+    """
 
 
 class HoldData(proto.Message):
-    r"""The data for a hold annotation.    """
+    r"""The data for a hold annotation.
+    """
 
 
 class EntityMentionData(proto.Message):
@@ -766,6 +774,7 @@ class IssueModel(proto.Message):
 
     class InputDataConfig(proto.Message):
         r"""Configs for the input data used to create the issue model.
+
         Attributes:
             medium (google.cloud.contact_center_insights_v1.types.Conversation.Medium):
                 Medium of conversations used in training data. This field is
@@ -835,6 +844,7 @@ class IssueModelLabelStats(proto.Message):
 
     class IssueStats(proto.Message):
         r"""Aggregated statistics about an issue.
+
         Attributes:
             issue (str):
                 Issue resource. Format:
@@ -1055,6 +1065,7 @@ class Settings(proto.Message):
 
     class AnalysisConfig(proto.Message):
         r"""Default configuration when creating Analyses in Insights.
+
         Attributes:
             runtime_integration_analysis_percentage (float):
                 Percentage of conversations created using Dialogflow runtime

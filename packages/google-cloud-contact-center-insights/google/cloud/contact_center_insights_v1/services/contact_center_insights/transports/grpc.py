@@ -1026,5 +1026,8 @@ class ContactCenterInsightsGrpcTransport(ContactCenterInsightsTransport):
             )
         return self._stubs["update_settings"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ContactCenterInsightsGrpcTransport",)
