@@ -20,7 +20,7 @@ from synthtool.languages import python
 # Copy the generated client from the owl-bot staging directory
 # ----------------------------------------------------------------------------
 
-default_version = "v1"
+default_version = "v2alpha"
 
 for library in s.get_staging_dirs(default_version):
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
