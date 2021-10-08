@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.19.4](https://www.github.com/googleapis/proto-plus-python/compare/v1.19.3...v1.19.4) (2021-10-08)
+
+
+### Documentation
+
+* clarify that proto plus messages are not pickleable ([#260](https://www.github.com/googleapis/proto-plus-python/issues/260)) ([6e691dc](https://www.github.com/googleapis/proto-plus-python/commit/6e691dc27b1e540ef0661597fd89ece8f0155c97))
+
 ### [1.19.3](https://www.github.com/googleapis/proto-plus-python/compare/v1.19.2...v1.19.3) (2021-10-07)
 
 
