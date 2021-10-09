@@ -34,6 +34,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         "DateField": "DATE",
         "DateTimeField": "TIMESTAMP",
         "DecimalField": "NUMERIC",
+        "JSONField": "JSON",
         "DurationField": "INT64",
         "EmailField": "STRING(%(max_length)s)",
         "FileField": "STRING(%(max_length)s)",
@@ -45,6 +46,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         "GenericIPAddressField": "STRING(39)",
         "NullBooleanField": "BOOL",
         "OneToOneField": "INT64",
+        "PositiveBigIntegerField": "INT64",
         "PositiveIntegerField": "INT64",
         "PositiveSmallIntegerField": "INT64",
         "SlugField": "STRING(%(max_length)s)",
@@ -94,6 +96,12 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         "istartswith": "",
         "endswith": "",
         "iendswith": "",
+    }
+
+    data_type_check_constraints = {
+        "PositiveBigIntegerField": "%(column)s >= 0",
+        "PositiveIntegerField": "%(column)s >= 0",
+        "PositiveSmallIntegerField": "%(column)s >= 0",
     }
 
     Database = spanner_dbapi

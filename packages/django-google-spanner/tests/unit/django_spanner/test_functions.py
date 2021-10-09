@@ -6,6 +6,7 @@
 
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
 from django_spanner.compiler import SQLCompiler
+from django_spanner import USING_DJANGO_3
 from django.db.models import CharField, FloatField, Value
 from django.db.models.functions import (
     Cast,
@@ -176,10 +177,18 @@ class TestUtils(SpannerSimpleTestClass):
 
         compiler = SQLCompiler(q1.query, self.connection, "default")
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
+        if USING_DJANGO_3:
+            expected_sql = (
+                "SELECT tests_author.num FROM tests_author WHERE tests_author.num "
+                + "= 3.141592653589793"
+            )
+        else:
+            expected_sql = (
+                "SELECT tests_author.num FROM tests_author WHERE tests_author.num "
+                + "= (3.141592653589793)"
+            )
         self.assertEqual(
-            sql_query,
-            "SELECT tests_author.num FROM tests_author WHERE tests_author.num "
-            + "= (3.141592653589793)",
+            sql_query, expected_sql,
         )
         self.assertEqual(params, ())
 

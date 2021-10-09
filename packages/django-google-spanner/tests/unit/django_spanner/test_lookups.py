@@ -9,6 +9,7 @@ from django.db.models import F
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
 from decimal import Decimal
 from .models import Number, Author
+from django_spanner import USING_DJANGO_3
 
 
 class TestLookups(SpannerSimpleTestClass):
@@ -56,11 +57,17 @@ class TestLookups(SpannerSimpleTestClass):
         qs1 = Number.objects.filter(item_id__exact=F("num")).values("num")
         compiler = SQLCompiler(qs1.query, self.connection, "default")
         sql_compiled, params = compiler.as_sql()
-        self.assertEqual(
-            sql_compiled,
-            "SELECT tests_number.num FROM tests_number WHERE "
-            + "tests_number.item_id = (tests_number.num)",
-        )
+        if USING_DJANGO_3:
+            expected_sql = (
+                "SELECT tests_number.num FROM tests_number WHERE "
+                + "tests_number.item_id = tests_number.num"
+            )
+        else:
+            expected_sql = (
+                "SELECT tests_number.num FROM tests_number WHERE "
+                + "tests_number.item_id = (tests_number.num)"
+            )
+        self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ())
 
     def test_startswith_endswith_sql_query_with_startswith(self):
@@ -107,13 +114,21 @@ class TestLookups(SpannerSimpleTestClass):
 
         compiler = SQLCompiler(qs1.query, self.connection, "default")
         sql_compiled, params = compiler.as_sql()
-        self.assertEqual(
-            sql_compiled,
-            "SELECT tests_author.name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
-            + "REPLACE(REPLACE(REPLACE(CONCAT('^', (UPPER(%s))), "
-            + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))',
-        )
+        if USING_DJANGO_3:
+            expected_sql = (
+                "SELECT tests_author.name FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+                + "REPLACE(REPLACE(REPLACE(CONCAT('^', UPPER(%s)), "
+                + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
+            )
+        else:
+            expected_sql = (
+                "SELECT tests_author.name FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+                + "REPLACE(REPLACE(REPLACE(CONCAT('^', (UPPER(%s))), "
+                + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
+            )
+        self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))
 
     def test_startswith_endswith_case_insensitive_transform_sql_query(self):
@@ -124,13 +139,21 @@ class TestLookups(SpannerSimpleTestClass):
 
         compiler = SQLCompiler(qs1.query, self.connection, "default")
         sql_compiled, params = compiler.as_sql()
-        self.assertEqual(
-            sql_compiled,
-            "SELECT tests_author.name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
-            + "REPLACE(REPLACE(REPLACE(CONCAT('^(?i)', (UPPER(%s))), "
-            + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))',
-        )
+        if USING_DJANGO_3:
+            expected_sql = (
+                "SELECT tests_author.name FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+                + "REPLACE(REPLACE(REPLACE(CONCAT('^(?i)', UPPER(%s)), "
+                + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
+            )
+        else:
+            expected_sql = (
+                "SELECT tests_author.name FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+                + "REPLACE(REPLACE(REPLACE(CONCAT('^(?i)', (UPPER(%s))), "
+                + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
+            )
+        self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))
 
     def test_startswith_endswith_endswith_sql_query_with_transform(self):
@@ -140,13 +163,21 @@ class TestLookups(SpannerSimpleTestClass):
         compiler = SQLCompiler(qs1.query, self.connection, "default")
         sql_compiled, params = compiler.as_sql()
 
-        self.assertEqual(
-            sql_compiled,
-            "SELECT tests_author.name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
-            + "REPLACE(REPLACE(REPLACE(CONCAT('', (UPPER(%s)), '$'), "
-            + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))',
-        )
+        if USING_DJANGO_3:
+            expected_sql = (
+                "SELECT tests_author.name FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+                + "REPLACE(REPLACE(REPLACE(CONCAT('', UPPER(%s), '$'), "
+                + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
+            )
+        else:
+            expected_sql = (
+                "SELECT tests_author.name FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+                + "REPLACE(REPLACE(REPLACE(CONCAT('', (UPPER(%s)), '$'), "
+                + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
+            )
+        self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))
 
     def test_regex_sql_query_case_sensitive(self):
@@ -179,12 +210,19 @@ class TestLookups(SpannerSimpleTestClass):
         compiler = SQLCompiler(qs1.query, self.connection, "default")
         sql_compiled, params = compiler.as_sql()
 
-        self.assertEqual(
-            sql_compiled,
-            "SELECT tests_author.num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
-            + "(UPPER(%s)))",
-        )
+        if USING_DJANGO_3:
+            expected_sql = (
+                "SELECT tests_author.num FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+                + "UPPER(%s))"
+            )
+        else:
+            expected_sql = (
+                "SELECT tests_author.num FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+                + "(UPPER(%s)))"
+            )
+        self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))
 
     def test_regex_sql_query_case_insensitive_with_transform(self):
@@ -193,12 +231,19 @@ class TestLookups(SpannerSimpleTestClass):
         compiler = SQLCompiler(qs1.query, self.connection, "default")
         sql_compiled, params = compiler.as_sql()
 
-        self.assertEqual(
-            sql_compiled,
-            "SELECT tests_author.num FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
-            + "CONCAT('(?i)', (UPPER(%s))))",
-        )
+        if USING_DJANGO_3:
+            expected_sql = (
+                "SELECT tests_author.num FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+                + "CONCAT('(?i)', UPPER(%s)))"
+            )
+        else:
+            expected_sql = (
+                "SELECT tests_author.num FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+                + "CONCAT('(?i)', (UPPER(%s))))"
+            )
+        self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))
 
     def test_contains_sql_query_case_insensitive(self):
@@ -232,13 +277,21 @@ class TestLookups(SpannerSimpleTestClass):
         )
         compiler = SQLCompiler(qs1.query, self.connection, "default")
         sql_compiled, params = compiler.as_sql()
-        self.assertEqual(
-            sql_compiled,
-            "SELECT tests_author.name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
-            + "REPLACE(REPLACE(REPLACE(CONCAT('(?i)', (UPPER(%s))), "
-            + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))',
-        )
+        if USING_DJANGO_3:
+            expected_sql = (
+                "SELECT tests_author.name FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+                + "REPLACE(REPLACE(REPLACE(CONCAT('(?i)', UPPER(%s)), "
+                + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
+            )
+        else:
+            expected_sql = (
+                "SELECT tests_author.name FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+                + "REPLACE(REPLACE(REPLACE(CONCAT('(?i)', (UPPER(%s))), "
+                + '"\\\\", "\\\\\\\\"), "%%", r"\\%%"), "_", r"\\_"))'
+            )
+        self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))
 
     def test_contains_sql_query_case_sensitive_transform(self):
@@ -246,13 +299,21 @@ class TestLookups(SpannerSimpleTestClass):
         qs1 = Author.objects.filter(name__upper__contains="abc").values("name")
         compiler = SQLCompiler(qs1.query, self.connection, "default")
         sql_compiled, params = compiler.as_sql()
-        self.assertEqual(
-            sql_compiled,
-            "SELECT tests_author.name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
-            + 'REPLACE(REPLACE(REPLACE((UPPER(%s)), "\\\\", "\\\\\\\\"), '
-            + '"%%", r"\\%%"), "_", r"\\_"))',
-        )
+        if USING_DJANGO_3:
+            expected_sql = (
+                "SELECT tests_author.name FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+                + 'REPLACE(REPLACE(REPLACE(UPPER(%s), "\\\\", "\\\\\\\\"), '
+                + '"%%", r"\\%%"), "_", r"\\_"))'
+            )
+        else:
+            expected_sql = (
+                "SELECT tests_author.name FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(CAST(UPPER(tests_author.name) AS STRING), "
+                + 'REPLACE(REPLACE(REPLACE((UPPER(%s)), "\\\\", "\\\\\\\\"), '
+                + '"%%", r"\\%%"), "_", r"\\_"))'
+            )
+        self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))
 
     def test_iexact_sql_query_case_insensitive(self):
@@ -276,12 +337,19 @@ class TestLookups(SpannerSimpleTestClass):
         compiler = SQLCompiler(qs1.query, self.connection, "default")
         sql_compiled, params = compiler.as_sql()
 
-        self.assertEqual(
-            sql_compiled,
-            "SELECT tests_author.name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS((UPPER(tests_author.last_name)), "
-            + "CONCAT('^(?i)', CAST(UPPER(tests_author.name) AS STRING), '$'))",
-        )
+        if USING_DJANGO_3:
+            expected_sql = (
+                "SELECT tests_author.name FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(UPPER(tests_author.last_name), "
+                + "CONCAT('^(?i)', CAST(UPPER(tests_author.name) AS STRING), '$'))"
+            )
+        else:
+            expected_sql = (
+                "SELECT tests_author.name FROM tests_author WHERE "
+                + "REGEXP_CONTAINS((UPPER(tests_author.last_name)), "
+                + "CONCAT('^(?i)', CAST(UPPER(tests_author.name) AS STRING), '$'))"
+            )
+        self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ())
 
     def test_iexact_sql_query_case_insensitive_value_match(self):
@@ -290,10 +358,17 @@ class TestLookups(SpannerSimpleTestClass):
         compiler = SQLCompiler(qs1.query, self.connection, "default")
         sql_compiled, params = compiler.as_sql()
 
-        self.assertEqual(
-            sql_compiled,
-            "SELECT tests_author.name FROM tests_author WHERE "
-            + "REGEXP_CONTAINS((UPPER(CONCAT('^(?i)', "
-            + "CAST(UPPER(tests_author.name) AS STRING), '$'))), %s)",
-        )
+        if USING_DJANGO_3:
+            expected_sql = (
+                "SELECT tests_author.name FROM tests_author WHERE "
+                + "REGEXP_CONTAINS(UPPER(CONCAT('^(?i)', "
+                + "CAST(UPPER(tests_author.name) AS STRING), '$')), %s)"
+            )
+        else:
+            expected_sql = (
+                "SELECT tests_author.name FROM tests_author WHERE "
+                + "REGEXP_CONTAINS((UPPER(CONCAT('^(?i)', "
+                + "CAST(UPPER(tests_author.name) AS STRING), '$'))), %s)"
+            )
+        self.assertEqual(sql_compiled, expected_sql)
         self.assertEqual(params, ("abc",))

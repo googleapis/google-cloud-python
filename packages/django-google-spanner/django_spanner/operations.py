@@ -377,7 +377,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         :rtype: str
         :returns: A SQL statement for extracting.
         """
-        tzname = tzname if settings.USE_TZ else "UTC"
+        tzname = tzname if settings.USE_TZ and tzname else "UTC"
         lookup_type = self.extract_names.get(lookup_type, lookup_type)
         return 'EXTRACT(%s FROM %s AT TIME ZONE "%s")' % (
             lookup_type,
@@ -403,7 +403,7 @@ class DatabaseOperations(BaseDatabaseOperations):
             field_name,
         )
 
-    def date_trunc_sql(self, lookup_type, field_name):
+    def date_trunc_sql(self, lookup_type, field_name, tzname=None):
         """Truncate date in the lookup.
 
         :type lookup_type: str
@@ -411,6 +411,10 @@ class DatabaseOperations(BaseDatabaseOperations):
 
         :type field_name: str
         :param field_name: The name of the field.
+
+        :type tzname: str
+        :param tzname: The name of the timezone. This is ignored because
+        Spanner does not support Timezone conversion in DATE_TRUNC function.
 
         :rtype: str
         :returns: A SQL statement for truncating.
@@ -429,7 +433,7 @@ class DatabaseOperations(BaseDatabaseOperations):
             sql = "DATE_ADD(CAST(" + sql + " AS DATE), INTERVAL 1 DAY)"
         return sql
 
-    def datetime_trunc_sql(self, lookup_type, field_name, tzname):
+    def datetime_trunc_sql(self, lookup_type, field_name, tzname="UTC"):
         """Truncate datetime in the lookup.
 
         :type lookup_type: str
@@ -438,11 +442,14 @@ class DatabaseOperations(BaseDatabaseOperations):
         :type field_name: str
         :param field_name: The name of the field.
 
+        :type tzname: str
+        :param tzname: The name of the timezone.
+
         :rtype: str
         :returns: A SQL statement for truncating.
         """
         # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
-        tzname = tzname if settings.USE_TZ else "UTC"
+        tzname = tzname if settings.USE_TZ and tzname else "UTC"
         if lookup_type == "week":
             # Spanner truncates to Sunday but Django expects Monday. First,
             # subtract a day so that a Sunday will be truncated to the previous
@@ -458,7 +465,7 @@ class DatabaseOperations(BaseDatabaseOperations):
             sql = "TIMESTAMP_ADD(" + sql + ", INTERVAL 1 DAY)"
         return sql
 
-    def time_trunc_sql(self, lookup_type, field_name):
+    def time_trunc_sql(self, lookup_type, field_name, tzname="UTC"):
         """Truncate time in the lookup.
 
         :type lookup_type: str
@@ -467,11 +474,19 @@ class DatabaseOperations(BaseDatabaseOperations):
         :type field_name: str
         :param field_name: The name of the field.
 
+        :type tzname: str
+        :param tzname: The name of the timezone. Defaults to 'UTC' For backward compatability.
+
         :rtype: str
         :returns: A SQL statement for truncating.
         """
         # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
-        return 'TIMESTAMP_TRUNC(%s, %s, "UTC")' % (field_name, lookup_type)
+        tzname = tzname if settings.USE_TZ and tzname else "UTC"
+        return 'TIMESTAMP_TRUNC(%s, %s, "%s")' % (
+            field_name,
+            lookup_type,
+            tzname,
+        )
 
     def datetime_cast_date_sql(self, field_name, tzname):
         """Cast date in the lookup.
@@ -487,7 +502,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         :returns: A SQL statement for casting.
         """
         # https://cloud.google.com/spanner/docs/functions-and-operators#date
-        tzname = tzname if settings.USE_TZ else "UTC"
+        tzname = tzname if settings.USE_TZ and tzname else "UTC"
         return 'DATE(%s, "%s")' % (field_name, tzname)
 
     def datetime_cast_time_sql(self, field_name, tzname):
@@ -503,7 +518,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         :rtype: str
         :returns: A SQL statement for casting.
         """
-        tzname = tzname if settings.USE_TZ else "UTC"
+        tzname = tzname if settings.USE_TZ and tzname else "UTC"
         # Cloud Spanner doesn't have a function for converting
         # TIMESTAMP to another time zone.
         return (
@@ -549,6 +564,10 @@ class DatabaseOperations(BaseDatabaseOperations):
             return "MOD(%s)" % ", ".join(sub_expressions)
         elif connector == "^":
             return "POWER(%s)" % ", ".join(sub_expressions)
+        elif connector == "#":
+            # Connector '#' represents Bit Xor in django.
+            # Spanner represents the same fuction with '^' symbol.
+            return super().combine_expression("^", sub_expressions)
         elif connector == ">>":
             lhs, rhs = sub_expressions
             # Use an alternate computation because Cloud Sapnner's '>>'

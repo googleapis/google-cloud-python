@@ -6,29 +6,49 @@
 
 import datetime
 import os
+import django
 
 # Monkey-patch AutoField to generate a random value since Cloud Spanner can't
 # do that.
 from uuid import uuid4
 
 import pkg_resources
-from django.db.models.fields import AutoField, Field
-
-# Monkey-patch google.DatetimeWithNanoseconds's __eq__ compare against
-# datetime.datetime.
-from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.cloud.spanner_v1 import JsonObject
+from django.db.models.fields import (
+    AutoField,
+    Field,
+)
 
 from .expressions import register_expressions
 from .functions import register_functions
 from .lookups import register_lookups
 from .utils import check_django_compatability
 
+# Monkey-patch google.DatetimeWithNanoseconds's __eq__ compare against
+# datetime.datetime.
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+
+
+USING_DJANGO_3 = False
+if django.VERSION[:2] == (3, 2):
+    USING_DJANGO_3 = True
+
+if USING_DJANGO_3:
+    from django.db.models.fields import (
+        SmallAutoField,
+        BigAutoField,
+    )
+    from django.db.models import JSONField
+
 __version__ = pkg_resources.get_distribution("django-google-spanner").version
 
 USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
 
-check_django_compatability()
-register_expressions()
+# Only active LTS django versions (2.2.*, 3.2.*) are supported by this library right now.
+SUPPORTED_DJANGO_VERSIONS = [(2, 2), (3, 2)]
+
+check_django_compatability(SUPPORTED_DJANGO_VERSIONS)
+register_expressions(USING_DJANGO_3)
 register_functions()
 register_lookups()
 
@@ -45,6 +65,25 @@ def autofield_init(self, *args, **kwargs):
 
 
 AutoField.__init__ = autofield_init
+AutoField.db_returning = False
+AutoField.validators = []
+if USING_DJANGO_3:
+    SmallAutoField.__init__ = autofield_init
+    BigAutoField.__init__ = autofield_init
+    SmallAutoField.db_returning = False
+    BigAutoField.db_returning = False
+    SmallAutoField.validators = []
+    BigAutoField.validators = []
+
+    def get_prep_value(self, value):
+        # Json encoding and decoding for spanner is done in python-spanner.
+        if not isinstance(value, JsonObject) and isinstance(value, dict):
+            return JsonObject(value)
+
+        return value
+
+    JSONField.get_prep_value = get_prep_value
+
 
 old_datetimewithnanoseconds_eq = getattr(
     DatetimeWithNanoseconds, "__eq__", None

@@ -8,6 +8,7 @@
 Different models used by system tests in django-spanner code.
 """
 from django.db import models
+from django_spanner import USING_DJANGO_3
 
 
 class Author(models.Model):
@@ -34,3 +35,9 @@ class Event(models.Model):
                 name="check_start_date",
             ),
         ]
+
+
+if USING_DJANGO_3:
+
+    class Detail(models.Model):
+        value = models.JSONField()

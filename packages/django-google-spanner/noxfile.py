@@ -66,17 +66,17 @@ def lint_setup_py(session):
     )
 
 
-def default(session):
+def default(session, django_version="2.2"):
     # Install all test dependencies, then install this package in-place.
     session.install(
-        "django~=2.2",
+        "django~={}".format(django_version),
         "mock",
         "mock-import",
         "pytest",
         "pytest-cov",
         "coverage",
         "sqlparse==0.3.0",
-        "google-cloud-spanner==3.0.0",
+        "google-cloud-spanner==3.11.1",
         "opentelemetry-api==1.1.0",
         "opentelemetry-sdk==1.1.0",
         "opentelemetry-instrumentation==0.20b0",
@@ -101,11 +101,13 @@ def default(session):
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     """Run the unit test suite."""
+    print("Unit tests with django 2.2")
     default(session)
+    print("Unit tests with django 3.2")
+    default(session, django_version="3.2")
 
 
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-def system(session):
+def system_test(session, django_version="2.2"):
     """Run the system test suite."""
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -136,7 +138,7 @@ def system(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install(
-        "django~=2.2",
+        "django~={}".format(django_version),
         "mock",
         "pytest",
         "google-cloud-testutils",
@@ -152,6 +154,14 @@ def system(session):
         session.run(
             "py.test", "--quiet", system_test_folder_path, *session.posargs
         )
+
+
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+def system(session):
+    print("System tests with django 2.2")
+    system_test(session)
+    print("System tests with django 3.2")
+    system_test(session, django_version="3.2")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

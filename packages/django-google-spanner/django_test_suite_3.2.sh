@@ -18,14 +18,14 @@ mkdir -p $DJANGO_TESTS_DIR
 if [ $SPANNER_EMULATOR_HOST != 0 ]
 then
     pip3 install .
-    git clone --depth 1 --single-branch --branch "spanner/stable/2.2.x" https://github.com/c24t/django.git $DJANGO_TESTS_DIR/django
+    git clone --depth 1 --single-branch --branch "stable/spanner/3.2.x" https://github.com/vi3k6i5/django.git $DJANGO_TESTS_DIR/django3.2
 fi
 
 # Install dependencies for Django tests.
 sudo apt-get update
 sudo apt-get install -y libffi-dev libjpeg-dev zlib1g-devel
 
-cd $DJANGO_TESTS_DIR/django && pip3 install -e . && pip3 install -r tests/requirements/py3.txt; cd ../../
+cd $DJANGO_TESTS_DIR/django3.2 && pip3 install -e . && pip3 install -r tests/requirements/py3.txt; cd ../../
 
 python3 create_test_instance.py
 
@@ -64,7 +64,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 !
 }
 
-cd $TESTS_DIR/django/tests
+cd $TESTS_DIR/django3.2/tests
 create_settings
 
 EXIT_STATUS=0

@@ -100,10 +100,18 @@ def iexact(self, compiler, connection):
         # lhs_sql is the expression/column to use as the regular expression.
         # Use concat to make the value case-insensitive.
         lhs_sql = "CONCAT('^(?i)', " + lhs_sql + ", '$')"
-        if not self.rhs_is_direct_value() and not params:
-            # If rhs is not a direct value and parameter is not present we want
-            # to have only 1 formatable argument in rhs_sql else we need 2.
-            rhs_sql = rhs_sql.replace("%%s", "%s")
+        if not self.rhs_is_direct_value():
+            # If rhs is not a direct value
+            if not params:
+                # if params is not present, then we have only 1 formatable
+                # argument in rhs_sql.
+                rhs_sql = rhs_sql.replace("%%s", "%s")
+            else:
+                # If params is present and rhs_sql is to be replaced as well.
+                # Example: model_fields.test_uuid.TestQuerying.test_iexact.
+                rhs_sql = rhs_sql.replace("%%s", "__PLACEHOLDER_FOR_LHS_SQL__")
+                rhs_sql = rhs_sql.replace("%s", "%%s")
+                rhs_sql = rhs_sql.replace("__PLACEHOLDER_FOR_LHS_SQL__", "%s")
     # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
     return rhs_sql % lhs_sql, params
 

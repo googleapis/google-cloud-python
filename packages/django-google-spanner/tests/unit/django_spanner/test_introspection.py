@@ -11,6 +11,7 @@ from google.cloud.spanner_dbapi.cursor import ColumnDetails
 from google.cloud.spanner_v1 import TypeCode
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
 from unittest import mock
+from django_spanner import USING_DJANGO_3
 
 
 class TestUtils(SpannerSimpleTestClass):
@@ -49,9 +50,9 @@ class TestUtils(SpannerSimpleTestClass):
         cursor = mock.MagicMock()
 
         def list_tables(*args, **kwargs):
-            return [["Table_1"], ["Table_2"]]
+            return [["Table_1", "t"], ["Table_2", "t"]]
 
-        cursor.list_tables = list_tables
+        cursor.run_sql_in_snapshot = list_tables
         table_list = db_introspection.get_table_list(cursor=cursor)
         self.assertEqual(
             table_list,
@@ -86,31 +87,60 @@ class TestUtils(SpannerSimpleTestClass):
         table_description = db_introspection.get_table_description(
             cursor=cursor, table_name="Table_1"
         )
-        self.assertEqual(
-            table_description,
-            [
-                FieldInfo(
-                    name="name",
-                    type_code=TypeCode.STRING,
-                    display_size=None,
-                    internal_size=10,
-                    precision=None,
-                    scale=None,
-                    null_ok=False,
-                    default=None,
-                ),
-                FieldInfo(
-                    name="age",
-                    type_code=TypeCode.INT64,
-                    display_size=None,
-                    internal_size=None,
-                    precision=None,
-                    scale=None,
-                    null_ok=True,
-                    default=None,
-                ),
-            ],
-        )
+        if USING_DJANGO_3:
+            self.assertEqual(
+                table_description,
+                [
+                    FieldInfo(
+                        name="name",
+                        type_code=TypeCode.STRING,
+                        display_size=None,
+                        internal_size=10,
+                        precision=None,
+                        scale=None,
+                        null_ok=False,
+                        default=None,
+                        collation=None,
+                    ),
+                    FieldInfo(
+                        name="age",
+                        type_code=TypeCode.INT64,
+                        display_size=None,
+                        internal_size=None,
+                        precision=None,
+                        scale=None,
+                        null_ok=True,
+                        default=None,
+                        collation=None,
+                    ),
+                ],
+            )
+        else:
+            self.assertEqual(
+                table_description,
+                [
+                    FieldInfo(
+                        name="name",
+                        type_code=TypeCode.STRING,
+                        display_size=None,
+                        internal_size=10,
+                        precision=None,
+                        scale=None,
+                        null_ok=False,
+                        default=None,
+                    ),
+                    FieldInfo(
+                        name="age",
+                        type_code=TypeCode.INT64,
+                        display_size=None,
+                        internal_size=None,
+                        precision=None,
+                        scale=None,
+                        null_ok=True,
+                        default=None,
+                    ),
+                ],
+            )
 
     def test_get_primary_key_column(self):
         """
