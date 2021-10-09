@@ -1,13 +1,15 @@
 {
-  "name": "pubsub",
-  "name_pretty": "Google Cloud Pub/Sub",
-  "product_documentation": "https://cloud.google.com/pubsub/docs/",
-  "client_documentation": "https://googleapis.dev/python/pubsub/latest",
-  "issue_tracker": "https://issuetracker.google.com/savedsearches/559741",
-  "release_level": "ga",
-  "language": "python",
-  "repo": "googleapis/python-pubsub",
-  "distribution_name": "google-cloud-pubsub",
-  "api_id": "pubsub.googleapis.com",
-  "requires_billing": true
+    "name": "pubsub",
+    "name_pretty": "Google Cloud Pub/Sub",
+    "product_documentation": "https://cloud.google.com/pubsub/docs/",
+    "client_documentation": "https://googleapis.dev/python/pubsub/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559741",
+    "release_level": "ga",
+    "language": "python",
+    "repo": "googleapis/python-pubsub",
+    "distribution_name": "google-cloud-pubsub",
+    "api_id": "pubsub.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": "@googleapis/api-pubsub"
 }
