@@ -438,7 +438,8 @@ class DetachSubscriptionRequest(proto.Message):
 class DetachSubscriptionResponse(proto.Message):
     r"""Response for the DetachSubscription method.
     Reserved for future use.
-        """
+
+    """
 
 
 class Subscription(proto.Message):
@@ -1312,7 +1313,8 @@ class SeekRequest(proto.Message):
 
 
 class SeekResponse(proto.Message):
-    r"""Response for the ``Seek`` method (this response is empty).    """
+    r"""Response for the ``Seek`` method (this response is empty).
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

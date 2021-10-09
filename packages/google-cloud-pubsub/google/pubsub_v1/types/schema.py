@@ -195,7 +195,8 @@ class ValidateSchemaRequest(proto.Message):
 
 
 class ValidateSchemaResponse(proto.Message):
-    r"""Response for the ``ValidateSchema`` method. Empty for now.    """
+    r"""Response for the ``ValidateSchema`` method. Empty for now.
+    """
 
 
 class ValidateMessageRequest(proto.Message):
@@ -227,7 +228,8 @@ class ValidateMessageRequest(proto.Message):
 
 
 class ValidateMessageResponse(proto.Message):
-    r"""Response for the ``ValidateMessage`` method. Empty for now.    """
+    r"""Response for the ``ValidateMessage`` method. Empty for now.
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
