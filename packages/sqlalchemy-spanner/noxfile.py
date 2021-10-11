@@ -60,6 +60,12 @@ UPGRADE_CODE = """def upgrade():
         sa.Column('id', sa.Integer, primary_key=True),
         sa.Column('name', sa.String(50), nullable=False),
         sa.Column('description', sa.Unicode(200)),
+    )
+    op.alter_column(
+        'account',
+        'name',
+        existing_type=sa.String(50),
+        nullable=True,
     )"""
 
 

@@ -27,11 +27,11 @@ else:
     config.read("setup.cfg")
 db_url = config.get("db", "default")
 
-project = re.findall(r'projects(.*?)instances', db_url)
-instance_id = re.findall(r'instances(.*?)databases', db_url)
+project = re.findall(r"projects(.*?)instances", db_url)
+instance_id = re.findall(r"instances(.*?)databases", db_url)
 
-client = spanner.Client(project="".join(project).replace('/', ''))
-instance = client.instance(instance_id="".join(instance_id).replace('/', ''))
+client = spanner.Client(project="".join(project).replace("/", ""))
+instance = client.instance(instance_id="".join(instance_id).replace("/", ""))
 database = instance.database("compliance-test")
 
 database.update_ddl(["DROP TABLE account", "DROP TABLE alembic_version"]).result(120)

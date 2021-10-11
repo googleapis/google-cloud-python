@@ -15,10 +15,17 @@
 import pkg_resources
 import re
 
-from sqlalchemy import types, ForeignKeyConstraint
+from alembic.ddl.base import (
+    ColumnNullable,
+    ColumnType,
+    alter_column,
+    alter_table,
+    format_type,
+)
+from sqlalchemy import ForeignKeyConstraint, types, util
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.engine.default import DefaultDialect
-from sqlalchemy import util
+from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.sql.compiler import (
     selectable,
     DDLCompiler,
@@ -27,6 +34,7 @@ from sqlalchemy.sql.compiler import (
     SQLCompiler,
     RESERVED_WORDS,
 )
+
 from google.cloud import spanner_dbapi
 from google.cloud.sqlalchemy_spanner._opentelemetry_tracing import trace_call
 
@@ -864,3 +872,28 @@ LIMIT 1
         }
         with trace_call("SpannerSqlAlchemy.ExecuteNoParams", trace_attributes):
             cursor.execute(statement)
+
+
+# Alembic ALTER operation override
+@compiles(ColumnNullable, "spanner")
+def visit_column_nullable(
+    element: "ColumnNullable", compiler: "SpannerDDLCompiler", **kw
+) -> str:
+    return "%s %s %s %s" % (
+        alter_table(compiler, element.table_name, element.schema),
+        alter_column(compiler, element.column_name),
+        format_type(compiler, element.existing_type),
+        "" if element.nullable else "NOT NULL",
+    )
+
+
+# Alembic ALTER operation override
+@compiles(ColumnType, "spanner")
+def visit_column_type(
+    element: "ColumnType", compiler: "SpannerDDLCompiler", **kw
+) -> str:
+    return "%s %s %s" % (
+        alter_table(compiler, element.table_name, element.schema),
+        alter_column(compiler, element.column_name),
+        "%s" % format_type(compiler, element.type_),
+    )

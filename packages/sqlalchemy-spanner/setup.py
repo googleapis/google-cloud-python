@@ -19,7 +19,11 @@ import setuptools
 
 name = "sqlalchemy-spanner"
 description = "SQLAlchemy dialect integrated into Cloud Spanner database"
-dependencies = ["sqlalchemy>=1.1.13, <=1.3.23", "google-cloud-spanner>=3.3.0"]
+dependencies = [
+    "sqlalchemy>=1.1.13, <=1.3.23",
+    "google-cloud-spanner>=3.3.0",
+    "alembic",
+]
 extras = {
     "tracing": [
         "opentelemetry-api >= 1.1.0",
