@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.3.0](https://www.github.com/googleapis/python-error-reporting/compare/v1.2.3...v1.3.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#187](https://www.github.com/googleapis/python-error-reporting/issues/187)) ([a4e2cd4](https://www.github.com/googleapis/python-error-reporting/commit/a4e2cd4654ae6b3f785727e279ce362798368598))
+
+
+### Bug Fixes
+
+* exception thrown when grpc is disabled ([#190](https://www.github.com/googleapis/python-error-reporting/issues/190)) ([929e293](https://www.github.com/googleapis/python-error-reporting/commit/929e293a479dea3059bfca152b93d7740348fc39))
+* improper types in pagers generation ([18c93a9](https://www.github.com/googleapis/python-error-reporting/commit/18c93a99a967b6d86e7409f4e26ff56f1c9788de))
+
 ### [1.2.3](https://www.github.com/googleapis/python-error-reporting/compare/v1.2.2...v1.2.3) (2021-09-24)
 
 
