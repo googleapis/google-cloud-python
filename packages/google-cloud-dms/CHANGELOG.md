@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-dms/compare/v1.0.2...v1.1.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#50](https://www.github.com/googleapis/python-dms/issues/50)) ([01d2652](https://www.github.com/googleapis/python-dms/commit/01d2652f1a619688fe8baf7478540787cdcf7530))
+
 ### [1.0.2](https://www.github.com/googleapis/python-dms/compare/v1.0.1...v1.0.2) (2021-09-30)
 
 
