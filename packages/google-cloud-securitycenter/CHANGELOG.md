@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.7.0](https://www.github.com/googleapis/python-securitycenter/compare/v1.6.0...v1.7.0) (2021-10-08)
+
+
+### Features
+
+* Added type field to the resource which is surfaced in NotificationMessage ([a233f7a](https://www.github.com/googleapis/python-securitycenter/commit/a233f7a0d85ba1a2932a1ee8305e48eda5aafa75))
+* Added vulnerability field to Finding ([#235](https://www.github.com/googleapis/python-securitycenter/issues/235)) ([a233f7a](https://www.github.com/googleapis/python-securitycenter/commit/a233f7a0d85ba1a2932a1ee8305e48eda5aafa75))
+
 ## [1.6.0](https://www.github.com/googleapis/python-securitycenter/compare/v1.5.2...v1.6.0) (2021-10-07)
 
 
