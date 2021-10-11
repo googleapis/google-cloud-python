@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-iap/compare/v1.0.2...v1.1.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#34](https://www.github.com/googleapis/python-iap/issues/34)) ([a985591](https://www.github.com/googleapis/python-iap/commit/a985591b016e768a5a172ab5f8de873319b1e7e0))
+
 ### [1.0.2](https://www.github.com/googleapis/python-iap/compare/v1.0.1...v1.0.2) (2021-10-05)
 
 
