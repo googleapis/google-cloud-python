@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.0](https://www.github.com/googleapis/python-analytics-data/compare/v0.8.1...v0.9.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#147](https://www.github.com/googleapis/python-analytics-data/issues/147)) ([4773796](https://www.github.com/googleapis/python-analytics-data/commit/4773796b8f645e26d60b097d7c52c3c84549a759))
+* add trove classifier for python 3.9 and python 3.10 ([#150](https://www.github.com/googleapis/python-analytics-data/issues/150)) ([199ab6f](https://www.github.com/googleapis/python-analytics-data/commit/199ab6f2fac2fe4729a2fba36cce2cc5d5ec7bc4))
+
 ### [0.8.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.8.0...v0.8.1) (2021-09-24)
 
 
