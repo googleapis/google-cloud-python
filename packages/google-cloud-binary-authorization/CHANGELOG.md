@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/python-binary-authorization/compare/v0.4.1...v0.5.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#84](https://www.github.com/googleapis/python-binary-authorization/issues/84)) ([0991f56](https://www.github.com/googleapis/python-binary-authorization/commit/0991f564af01dc8b0172693290a9aba566035848))
+
 ### [0.4.1](https://www.github.com/googleapis/python-binary-authorization/compare/v0.4.0...v0.4.1) (2021-09-30)
 
 
