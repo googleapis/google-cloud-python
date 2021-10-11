@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.4.0...v1.5.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#187](https://www.github.com/googleapis/python-dialogflow-cx/issues/187)) ([70d4776](https://www.github.com/googleapis/python-dialogflow-cx/commit/70d4776d80f1f60b3f45e08e8dc64a47e2fae3e6))
+
 ## [1.4.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.3.2...v1.4.0) (2021-10-05)
 
 
