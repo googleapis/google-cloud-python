@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.19.5](https://www.github.com/googleapis/proto-plus-python/compare/v1.19.4...v1.19.5) (2021-10-11)
+
+
+### Documentation
+
+* Clarify semantics of multiple oneof variants passed to msg ctor ([#263](https://www.github.com/googleapis/proto-plus-python/issues/263)) ([6f8a5b2](https://www.github.com/googleapis/proto-plus-python/commit/6f8a5b2098e4f6748945c53bda3d5821e62e5a0a))
+
 ### [1.19.4](https://www.github.com/googleapis/proto-plus-python/compare/v1.19.3...v1.19.4) (2021-10-08)
 
 
