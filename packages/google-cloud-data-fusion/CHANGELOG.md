@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-data-fusion/compare/v1.0.2...v1.1.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#36](https://www.github.com/googleapis/python-data-fusion/issues/36)) ([3c238d5](https://www.github.com/googleapis/python-data-fusion/commit/3c238d5d26f219dd107f09dcec3fc09977d64760))
+
 ### [1.0.2](https://www.github.com/googleapis/python-data-fusion/compare/v1.0.1...v1.0.2) (2021-10-04)
 
 
