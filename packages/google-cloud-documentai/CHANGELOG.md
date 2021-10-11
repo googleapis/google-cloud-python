@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-documentai/compare/v1.0.0...v1.1.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#224](https://www.github.com/googleapis/python-documentai/issues/224)) ([8b65652](https://www.github.com/googleapis/python-documentai/commit/8b6565236ec9c8f598efb55bd85937789c70fe3f))
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([a95fac8](https://www.github.com/googleapis/python-documentai/commit/a95fac859f1c175080f6fa8c856abd64e5ea9f19))
+* improper types in pagers generation ([fd5dd70](https://www.github.com/googleapis/python-documentai/commit/fd5dd70ada7caf40d3dcd4b86e71e05820d5631f))
+* **v1beta2:** enable self signed jwt for grpc ([#191](https://www.github.com/googleapis/python-documentai/issues/191)) ([14e7765](https://www.github.com/googleapis/python-documentai/commit/14e77652ec6d49fc8b60808f9322004899b04cf3))
+* **v1beta2:** Update DocumentUnderstandingService default_host from a regional endpoint to non-regional  ([#195](https://www.github.com/googleapis/python-documentai/issues/195)) ([090bcc5](https://www.github.com/googleapis/python-documentai/commit/090bcc568a2f448c00a0062bc0a3eddddc8ded87))
+
 ## [1.0.0](https://www.github.com/googleapis/python-documentai/compare/v0.5.0...v1.0.0) (2021-07-26)
 
 
