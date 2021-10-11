@@ -70,8 +70,8 @@ class _ErrorReportingLoggingAPI(object):
         client_options=None,
     ):
         self.logging_client = google.cloud.logging.Client(
-            project,
-            credentials,
+            project=project,
+            credentials=credentials,
             _http=_http,
             client_info=client_info,
             client_options=client_options,

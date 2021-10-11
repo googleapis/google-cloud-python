@@ -15,6 +15,7 @@
 import functools
 import operator
 import unittest
+import mock
 
 from google.cloud import error_reporting
 import google.cloud.errorreporting_v1beta1
@@ -127,3 +128,9 @@ class TestErrorReporting(unittest.TestCase):
 
         error_count = wrapped_get_count(class_name, Config.CLIENT)
         self.assertEqual(error_count, 1)
+
+    def test_report_exception_no_grpc(self):
+        with mock.patch.dict(
+            "os.environ", {"GOOGLE_CLOUD_DISABLE_GRPC": "true"}, clear=True
+        ):
+            self.test_report_exception()
