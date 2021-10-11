@@ -151,6 +151,33 @@ a string (which should match for all fields within the oneof):
     have consecutive field numbers, but they must be declared in consecutive
     order.
 
+.. warning::
+
+   If a message is constructed with multiple variants of a single ``oneof`` passed
+   to its constructor, the **last** keyword/value pair passed will be the final
+   value set.
+
+   This is consistent with PEP-468_, which specifies the order that keyword args
+   are seen by called functions, and with the regular protocol buffers runtime,
+   which exhibits the same behavior.
+
+   Example:
+
+   .. code-block:: python
+
+      import proto
+
+      class Song(proto.Message):
+          name = proto.Field(proto.STRING, number=1, oneof="identifier")
+          database_id = proto.Field(proto.STRING, number=2, oneof="identifier")
+
+      s = Song(name="Canon in D minor", database_id="b5a37aad3")
+      assert "database_id" in s and "name" not in s
+
+      s = Song(database_id="e6aa708c7e", name="Little Fugue")
+      assert "name" in s and "database_id" not in s
+
+
 
 Optional fields
 ---------------
@@ -199,5 +226,4 @@ information.
 
 .. _documentation: https://github.com/protocolbuffers/protobuf/blob/v3.12.0/docs/field_presence.md
 
-
-
+.. _PEP-468: https://www.python.org/dev/peps/pep-0468/
