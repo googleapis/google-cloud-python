@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://www.github.com/googleapis/python-channel/compare/v1.3.2...v1.4.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#102](https://www.github.com/googleapis/python-channel/issues/102)) ([acf8bb2](https://www.github.com/googleapis/python-channel/commit/acf8bb2ce65cf64a9bee20362b49c207f17ffe91))
+
 ### [1.3.2](https://www.github.com/googleapis/python-channel/compare/v1.3.1...v1.3.2) (2021-09-30)
 
 
