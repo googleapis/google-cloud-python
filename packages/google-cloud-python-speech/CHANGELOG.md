@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.10.0](https://www.github.com/googleapis/python-speech/compare/v2.9.3...v2.10.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#268](https://www.github.com/googleapis/python-speech/issues/268)) ([a5e2005](https://www.github.com/googleapis/python-speech/commit/a5e200515c621695c8c8ed76f739e0b744f32382))
+
 ### [2.9.3](https://www.github.com/googleapis/python-speech/compare/v2.9.2...v2.9.3) (2021-10-04)
 
 
