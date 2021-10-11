@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.1.2...v1.2.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#83](https://www.github.com/googleapis/python-dataproc-metastore/issues/83)) ([d6b8569](https://www.github.com/googleapis/python-dataproc-metastore/commit/d6b85696e21df07a63c93f5e993972fba157aa77))
+
 ### [1.1.2](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.1.1...v1.1.2) (2021-10-05)
 
 
