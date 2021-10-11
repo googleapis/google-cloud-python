@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.2.0](https://www.github.com/googleapis/python-grafeas/compare/v1.1.4...v1.2.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#114](https://www.github.com/googleapis/python-grafeas/issues/114)) ([13240ae](https://www.github.com/googleapis/python-grafeas/commit/13240ae230782816916edda9e665c9457620a094))
+
 ### [1.1.4](https://www.github.com/googleapis/python-grafeas/compare/v1.1.3...v1.1.4) (2021-09-30)
 
 
