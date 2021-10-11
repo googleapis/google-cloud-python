@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://www.github.com/googleapis/python-assured-workloads/compare/v0.7.2...v0.8.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#94](https://www.github.com/googleapis/python-assured-workloads/issues/94)) ([1dd0e98](https://www.github.com/googleapis/python-assured-workloads/commit/1dd0e982ae7268996ecbf534ed310e446f2d0070))
+* add trove classifier for python 3.10 ([#97](https://www.github.com/googleapis/python-assured-workloads/issues/97)) ([4db7fe0](https://www.github.com/googleapis/python-assured-workloads/commit/4db7fe0f9655b09c47eef5142a8c0a7ba0e270d9))
+
 ### [0.7.2](https://www.github.com/googleapis/python-assured-workloads/compare/v0.7.1...v0.7.2) (2021-09-30)
 
 
