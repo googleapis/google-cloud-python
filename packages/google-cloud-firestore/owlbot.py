@@ -162,6 +162,13 @@ def system_emulated(session):
     import signal
 
     try:
+        # https://github.com/googleapis/python-firestore/issues/472
+        # Kokoro image doesn't have java installed, don't attempt to run emulator.
+        subprocess.call(["java", "--version"])
+    except OSError:
+        session.skip("java not found but required for emulator support")
+
+    try:
         subprocess.call(["gcloud", "--version"])
     except OSError:
         session.skip("gcloud not found but required for emulator support")
