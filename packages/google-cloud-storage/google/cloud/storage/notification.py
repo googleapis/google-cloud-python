@@ -253,6 +253,8 @@ class BucketNotification(object):
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
+
+        :raises ValueError: if the notification already exists.
         """
         if self.notification_id is not None:
             raise ValueError(
@@ -267,7 +269,14 @@ class BucketNotification(object):
 
         path = "/b/{}/notificationConfigs".format(self.bucket.name)
         properties = self._properties.copy()
-        properties["topic"] = _TOPIC_REF_FMT.format(self.topic_project, self.topic_name)
+
+        if self.topic_name is None:
+            properties["topic"] = _TOPIC_REF_FMT.format(self.topic_project, "")
+        else:
+            properties["topic"] = _TOPIC_REF_FMT.format(
+                self.topic_project, self.topic_name
+            )
+
         self._properties = client._post_resource(
             path, properties, query_params=query_params, timeout=timeout, retry=retry,
         )

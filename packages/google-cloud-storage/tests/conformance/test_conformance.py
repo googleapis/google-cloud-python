@@ -52,6 +52,7 @@ _CONF_TEST_PROJECT_ID = "my-project-id"
 _CONF_TEST_SERVICE_ACCOUNT_EMAIL = (
     "my-service-account@my-project-id.iam.gserviceaccount.com"
 )
+_CONF_TEST_PUBSUB_TOPIC_NAME = "my-topic-name"
 
 _STRING_CONTENT = "hello world"
 _BYTE_CONTENT = b"12345678"
@@ -190,7 +191,7 @@ def client_get_service_account_email(client, _preconditions, **_):
 
 def notification_create(client, _preconditions, **resources):
     bucket = client.bucket(resources.get("bucket").name)
-    notification = bucket.notification()
+    notification = bucket.notification(topic_name=_CONF_TEST_PUBSUB_TOPIC_NAME)
     notification.create()
 
 
@@ -761,7 +762,9 @@ def object(client, bucket):
 
 @pytest.fixture
 def notification(client, bucket):
-    notification = client.bucket(bucket.name).notification()
+    notification = client.bucket(bucket.name).notification(
+        topic_name=_CONF_TEST_PUBSUB_TOPIC_NAME
+    )
     notification.create()
     notification.reload()
     yield notification

@@ -149,6 +149,34 @@ def test_notification_create_w_user_project(
         notification.delete()
 
 
+def test_notification_create_wo_topic_name(
+    storage_client,
+    buckets_to_delete,
+    topic_name,
+    notification_topic,
+    event_types,
+    payload_format,
+):
+    from google.cloud.exceptions import BadRequest
+
+    bucket_name = _helpers.unique_name("notification-wo-name")
+    bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket_name)
+    buckets_to_delete.append(bucket)
+
+    assert list(bucket.list_notifications()) == []
+
+    notification = bucket.notification(
+        topic_name=None,
+        custom_attributes=custom_attributes,
+        event_types=event_types,
+        blob_name_prefix=blob_name_prefix,
+        payload_format=payload_format,
+    )
+
+    with pytest.raises(BadRequest):
+        notification.create()
+
+
 def test_bucket_get_notification(
     storage_client,
     buckets_to_delete,

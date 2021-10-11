@@ -242,6 +242,35 @@ class TestBucketNotification(unittest.TestCase):
 
         client._post_resource.assert_not_called()
 
+    def test_create_wo_topic_name(self):
+        from google.cloud.exceptions import BadRequest
+        from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
+
+        client = mock.Mock(spec=["_post_resource", "project"])
+        client.project = self.BUCKET_PROJECT
+        client._post_resource.side_effect = BadRequest(
+            "Invalid Google Cloud Pub/Sub topic."
+        )
+        bucket = self._make_bucket(client)
+        notification = self._make_one(bucket, None)
+
+        with self.assertRaises(BadRequest):
+            notification.create()
+
+        expected_topic = self.TOPIC_REF_FMT.format(self.BUCKET_PROJECT, "")
+        expected_data = {
+            "topic": expected_topic,
+            "payload_format": NONE_PAYLOAD_FORMAT,
+        }
+        expected_query_params = {}
+        client._post_resource.assert_called_once_with(
+            self.CREATE_PATH,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=None,
+        )
+
     def test_create_w_defaults(self):
         from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
