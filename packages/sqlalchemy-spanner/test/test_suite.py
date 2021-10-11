@@ -1574,3 +1574,31 @@ class UserAgentTest(fixtures.TestBase):
                 connection.connection.instance._client._client_info.user_agent
                 == dist.project_name + "/" + dist.version
             )
+
+
+class ExecutionOptionsTest(fixtures.TestBase):
+    """
+    Check that `execution_options()` method correctly
+    sets parameters on the underlying DB API connection.
+    """
+
+    def setUp(self):
+        self._engine = create_engine(
+            "spanner:///projects/appdev-soda-spanner-staging/instances/"
+            "sqlalchemy-dialect-test/databases/compliance-test"
+        )
+        self._metadata = MetaData(bind=self._engine)
+
+        self._table = Table(
+            "execution_options",
+            self._metadata,
+            Column("opt_id", Integer, primary_key=True),
+            Column("opt_name", String(16), nullable=False),
+        )
+
+        self._metadata.create_all(self._engine)
+
+    def test_read_only(self):
+        with self._engine.connect().execution_options(read_only=True) as connection:
+            connection.execute(select(["*"], from_obj=self._table)).fetchall()
+            assert connection.connection.read_only is True

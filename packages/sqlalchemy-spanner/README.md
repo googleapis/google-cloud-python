@@ -158,6 +158,16 @@ eng = create_engine("spanner:///projects/project-id/instances/instance-id/databa
 autocommit_engine = eng.execution_options(isolation_level="AUTOCOMMIT")
 ```
 
+**ReadOnly transactions**  
+By default, transactions produced by a Spanner connection are in ReadWrite mode. However, some applications require an ability to grant ReadOnly access to users/methods; for these cases Spanner dialect supports the `read_only` execution option, which switches a connection into ReadOnly mode:
+```python
+with engine.connect().execution_options(read_only=True) as connection:
+    connection.execute(select(["*"], from_obj=table)).fetchall()
+```
+Note that execution options are applied lazily - on the `execute()` method call, right before it.
+
+ReadOnly/ReadWrite mode of a connection can't be changed while a transaction is in progress - first you must commit or rollback it.
+
 **DDL and transactions**  
 DDL statements are executed outside the regular transactions mechanism, which means DDL statements will not be rolled back on normal transaction rollback.
 
