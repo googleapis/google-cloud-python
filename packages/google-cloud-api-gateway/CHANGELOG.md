@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-api-gateway/compare/v1.0.4...v1.1.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#74](https://www.github.com/googleapis/python-api-gateway/issues/74)) ([5b43933](https://www.github.com/googleapis/python-api-gateway/commit/5b4393306e81eb8fff207b167ecee3fe904a1e8c))
+* add trove classifier for python 3.9 and python 3.10 ([#77](https://www.github.com/googleapis/python-api-gateway/issues/77)) ([394dd62](https://www.github.com/googleapis/python-api-gateway/commit/394dd62dafaf81855c5a7f1f238cafc089530ffc))
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([fc86cd1](https://www.github.com/googleapis/python-api-gateway/commit/fc86cd1c93a932c3c205524040d8547f70dbfb1c))
+
 ### [1.0.4](https://www.github.com/googleapis/python-api-gateway/compare/v1.0.3...v1.0.4) (2021-09-24)
 
 
