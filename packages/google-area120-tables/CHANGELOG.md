@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/python-area120-tables/compare/v0.4.4...v0.5.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#96](https://www.github.com/googleapis/python-area120-tables/issues/96)) ([8990f1b](https://www.github.com/googleapis/python-area120-tables/commit/8990f1b4539f8bf0d3a327c4327a12d486447cbf))
+* add trove classifier for python 3.9 and python 3.10 ([#99](https://www.github.com/googleapis/python-area120-tables/issues/99)) ([c9cee0f](https://www.github.com/googleapis/python-area120-tables/commit/c9cee0f8cb1bf6ddb4b7bcedfd88494e9cedcf32))
+
 ### [0.4.4](https://www.github.com/googleapis/python-area120-tables/compare/v0.4.3...v0.4.4) (2021-09-30)
 
 
