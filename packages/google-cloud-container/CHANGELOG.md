@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.9.0](https://www.github.com/googleapis/python-container/compare/v2.8.1...v2.9.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#157](https://www.github.com/googleapis/python-container/issues/157)) ([03953f8](https://www.github.com/googleapis/python-container/commit/03953f8087b2583369b877672be81f2b8638020c))
+
 ### [2.8.1](https://www.github.com/googleapis/python-container/compare/v2.8.0...v2.8.1) (2021-10-04)
 
 
