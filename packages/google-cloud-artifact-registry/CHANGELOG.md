@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/python-artifact-registry/compare/v0.4.1...v0.5.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#88](https://www.github.com/googleapis/python-artifact-registry/issues/88)) ([0f631cc](https://www.github.com/googleapis/python-artifact-registry/commit/0f631cc8bd8ff0928d5403e756d2206f1842c35c))
+* add trove classifier for python 3.10 ([#91](https://www.github.com/googleapis/python-artifact-registry/issues/91)) ([e392f56](https://www.github.com/googleapis/python-artifact-registry/commit/e392f565e5e9252bff8a5f6ede67c11b25438cdd))
+
 ### [0.4.1](https://www.github.com/googleapis/python-artifact-registry/compare/v0.4.0...v0.4.1) (2021-09-30)
 
 
