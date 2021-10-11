@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-deploy/compare/v0.1.1...v0.2.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#9](https://www.github.com/googleapis/python-deploy/issues/9)) ([bdcf454](https://www.github.com/googleapis/python-deploy/commit/bdcf454b8d976004caa7ef5bcccf9f928cfbfe63))
+
 ### [0.1.1](https://www.github.com/googleapis/python-deploy/compare/v0.1.0...v0.1.1) (2021-09-30)
 
 
