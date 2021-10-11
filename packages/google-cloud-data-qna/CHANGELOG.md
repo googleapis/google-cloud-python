@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-data-qna/compare/v0.3.3...v0.4.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#93](https://www.github.com/googleapis/python-data-qna/issues/93)) ([9a0ef96](https://www.github.com/googleapis/python-data-qna/commit/9a0ef9636ec8deb2d7b8f0cc18eb3a2d363d5da1))
+
 ### [0.3.3](https://www.github.com/googleapis/python-data-qna/compare/v0.3.2...v0.3.3) (2021-09-24)
 
 
