@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-gke-hub/compare/v1.0.0...v1.1.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#87](https://www.github.com/googleapis/python-gke-hub/issues/87)) ([e32a6f6](https://www.github.com/googleapis/python-gke-hub/commit/e32a6f677368bd0637267aea058b344325ddb678))
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([80c87ba](https://www.github.com/googleapis/python-gke-hub/commit/80c87baf1ce13e9c4377a2fb5d59f0776580758e))
+
 ## [1.0.0](https://www.github.com/googleapis/python-gke-hub/compare/v0.2.2...v1.0.0) (2021-09-29)
 
 
