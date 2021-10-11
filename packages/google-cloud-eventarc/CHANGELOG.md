@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-eventarc/compare/v1.0.2...v1.1.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#44](https://www.github.com/googleapis/python-eventarc/issues/44)) ([d732a44](https://www.github.com/googleapis/python-eventarc/commit/d732a44510336c7725809b797d082e4fc58c444c))
+
 ### [1.0.2](https://www.github.com/googleapis/python-eventarc/compare/v1.0.1...v1.0.2) (2021-09-30)
 
 
