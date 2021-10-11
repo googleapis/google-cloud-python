@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-appengine-admin/compare/v1.1.5...v1.2.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#75](https://www.github.com/googleapis/python-appengine-admin/issues/75)) ([e5d86ee](https://www.github.com/googleapis/python-appengine-admin/commit/e5d86eef07ee05454135b5b392a6841f7932a303))
+* add trove classifier for python 3.10 ([#78](https://www.github.com/googleapis/python-appengine-admin/issues/78)) ([e915580](https://www.github.com/googleapis/python-appengine-admin/commit/e915580dd5e66a4d44cede94acfde0e181e9fe3a))
+
 ### [1.1.5](https://www.github.com/googleapis/python-appengine-admin/compare/v1.1.4...v1.1.5) (2021-09-30)
 
 
