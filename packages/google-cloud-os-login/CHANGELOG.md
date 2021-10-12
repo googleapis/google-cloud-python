@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-oslogin/compare/v2.3.2...v2.4.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#121](https://www.github.com/googleapis/python-oslogin/issues/121)) ([8118ca8](https://www.github.com/googleapis/python-oslogin/commit/8118ca84de385fe3f8a673fbee596be33352eeb5))
+
 ### [2.3.2](https://www.github.com/googleapis/python-oslogin/compare/v2.3.1...v2.3.2) (2021-09-24)
 
 
