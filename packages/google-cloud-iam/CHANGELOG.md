@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-iam/compare/v2.3.2...v2.4.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#125](https://www.github.com/googleapis/python-iam/issues/125)) ([070897f](https://www.github.com/googleapis/python-iam/commit/070897fd1656ec23bc7da85ef44781d7861f4559))
+
 ### [2.3.2](https://www.github.com/googleapis/python-iam/compare/v2.3.1...v2.3.2) (2021-09-24)
 
 
