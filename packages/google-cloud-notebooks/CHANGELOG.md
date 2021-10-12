@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-notebooks/compare/v0.4.3...v1.0.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#99](https://www.github.com/googleapis/python-notebooks/issues/99)) ([22efa38](https://www.github.com/googleapis/python-notebooks/commit/22efa38a5e9be1e1137a68329fa947e8a116753c))
+* bump release level to production/stable ([#96](https://www.github.com/googleapis/python-notebooks/issues/96)) ([92d6b71](https://www.github.com/googleapis/python-notebooks/commit/92d6b71d5954ca7fab6a4e2a1deaa95c85032e12))
+
 ### [0.4.3](https://www.github.com/googleapis/python-notebooks/compare/v0.4.2...v0.4.3) (2021-10-05)
 
 
