@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.4...v0.3.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#51](https://www.github.com/googleapis/python-private-catalog/issues/51)) ([6ce5227](https://www.github.com/googleapis/python-private-catalog/commit/6ce5227eec47542014817ce912e64c39e6723676))
+
 ### [0.2.4](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.3...v0.2.4) (2021-09-30)
 
 
