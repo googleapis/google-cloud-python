@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-network-security/compare/v0.1.5...v0.2.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#37](https://www.github.com/googleapis/python-network-security/issues/37)) ([173b3db](https://www.github.com/googleapis/python-network-security/commit/173b3dbd36c5118853b8d93dcb32635d64208876))
+
 ### [0.1.5](https://www.github.com/googleapis/python-network-security/compare/v0.1.4...v0.1.5) (2021-09-30)
 
 
