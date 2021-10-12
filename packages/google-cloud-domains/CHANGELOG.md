@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-domains/compare/v0.2.3...v0.3.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#71](https://www.github.com/googleapis/python-domains/issues/71)) ([9b49d70](https://www.github.com/googleapis/python-domains/commit/9b49d7047d5a71899670d87dd522f8a83566e627))
+
 ### [0.2.3](https://www.github.com/googleapis/python-domains/compare/v0.2.2...v0.2.3) (2021-09-30)
 
 
