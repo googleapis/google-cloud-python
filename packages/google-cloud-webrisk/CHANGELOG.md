@@ -3,6 +3,13 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.5.0](https://www.github.com/googleapis/python-webrisk/compare/v1.4.3...v1.5.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#129](https://www.github.com/googleapis/python-webrisk/issues/129)) ([7b5d09e](https://www.github.com/googleapis/python-webrisk/commit/7b5d09e313bc8bbd252ff0af1aa9a0d0114227e4))
+
 ### [1.4.3](https://www.github.com/googleapis/python-webrisk/compare/v1.4.2...v1.4.3) (2021-09-24)
 
 
