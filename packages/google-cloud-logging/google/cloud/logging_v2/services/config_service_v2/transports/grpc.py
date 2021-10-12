@@ -883,5 +883,8 @@ class ConfigServiceV2GrpcTransport(ConfigServiceV2Transport):
             )
         return self._stubs["update_cmek_settings"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("ConfigServiceV2GrpcTransport",)

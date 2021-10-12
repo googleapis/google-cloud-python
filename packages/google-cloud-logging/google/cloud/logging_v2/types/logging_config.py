@@ -69,6 +69,7 @@ class LifecycleState(proto.Enum):
 
 class LogBucket(proto.Message):
     r"""Describes a repository of logs.
+
     Attributes:
         name (str):
             The resource name of the bucket. For example:
@@ -114,6 +115,7 @@ class LogBucket(proto.Message):
 
 class LogView(proto.Message):
     r"""Describes a view over logs in a bucket.
+
     Attributes:
         name (str):
             The resource name of the view.
@@ -303,6 +305,7 @@ class BigQueryOptions(proto.Message):
 
 class ListBucketsRequest(proto.Message):
     r"""The parameters to ``ListBuckets``.
+
     Attributes:
         parent (str):
             Required. The parent resource whose buckets are to be
@@ -338,6 +341,7 @@ class ListBucketsRequest(proto.Message):
 
 class ListBucketsResponse(proto.Message):
     r"""The response from ListBuckets.
+
     Attributes:
         buckets (Sequence[google.cloud.logging_v2.types.LogBucket]):
             A list of buckets.
@@ -358,6 +362,7 @@ class ListBucketsResponse(proto.Message):
 
 class CreateBucketRequest(proto.Message):
     r"""The parameters to ``CreateBucket``.
+
     Attributes:
         parent (str):
             Required. The resource in which to create the bucket:
@@ -386,6 +391,7 @@ class CreateBucketRequest(proto.Message):
 
 class UpdateBucketRequest(proto.Message):
     r"""The parameters to ``UpdateBucket``.
+
     Attributes:
         name (str):
             Required. The full resource name of the bucket to update.
@@ -425,6 +431,7 @@ class UpdateBucketRequest(proto.Message):
 
 class GetBucketRequest(proto.Message):
     r"""The parameters to ``GetBucket``.
+
     Attributes:
         name (str):
             Required. The resource name of the bucket:
@@ -445,6 +452,7 @@ class GetBucketRequest(proto.Message):
 
 class DeleteBucketRequest(proto.Message):
     r"""The parameters to ``DeleteBucket``.
+
     Attributes:
         name (str):
             Required. The full resource name of the bucket to delete.
@@ -465,6 +473,7 @@ class DeleteBucketRequest(proto.Message):
 
 class UndeleteBucketRequest(proto.Message):
     r"""The parameters to ``UndeleteBucket``.
+
     Attributes:
         name (str):
             Required. The full resource name of the bucket to undelete.
@@ -485,6 +494,7 @@ class UndeleteBucketRequest(proto.Message):
 
 class ListViewsRequest(proto.Message):
     r"""The parameters to ``ListViews``.
+
     Attributes:
         parent (str):
             Required. The bucket whose views are to be listed:
@@ -512,6 +522,7 @@ class ListViewsRequest(proto.Message):
 
 class ListViewsResponse(proto.Message):
     r"""The response from ListViews.
+
     Attributes:
         views (Sequence[google.cloud.logging_v2.types.LogView]):
             A list of views.
@@ -532,6 +543,7 @@ class ListViewsResponse(proto.Message):
 
 class CreateViewRequest(proto.Message):
     r"""The parameters to ``CreateView``.
+
     Attributes:
         parent (str):
             Required. The bucket in which to create the view
@@ -555,6 +567,7 @@ class CreateViewRequest(proto.Message):
 
 class UpdateViewRequest(proto.Message):
     r"""The parameters to ``UpdateView``.
+
     Attributes:
         name (str):
             Required. The full resource name of the view to update
@@ -588,6 +601,7 @@ class UpdateViewRequest(proto.Message):
 
 class GetViewRequest(proto.Message):
     r"""The parameters to ``GetView``.
+
     Attributes:
         name (str):
             Required. The resource name of the policy:
@@ -605,6 +619,7 @@ class GetViewRequest(proto.Message):
 
 class DeleteViewRequest(proto.Message):
     r"""The parameters to ``DeleteView``.
+
     Attributes:
         name (str):
             Required. The full resource name of the view to delete:
@@ -622,6 +637,7 @@ class DeleteViewRequest(proto.Message):
 
 class ListSinksRequest(proto.Message):
     r"""The parameters to ``ListSinks``.
+
     Attributes:
         parent (str):
             Required. The parent resource whose sinks are to be listed:
@@ -652,6 +668,7 @@ class ListSinksRequest(proto.Message):
 
 class ListSinksResponse(proto.Message):
     r"""Result returned from ``ListSinks``.
+
     Attributes:
         sinks (Sequence[google.cloud.logging_v2.types.LogSink]):
             A list of sinks.
@@ -672,6 +689,7 @@ class ListSinksResponse(proto.Message):
 
 class GetSinkRequest(proto.Message):
     r"""The parameters to ``GetSink``.
+
     Attributes:
         sink_name (str):
             Required. The resource name of the sink:
@@ -691,6 +709,7 @@ class GetSinkRequest(proto.Message):
 
 class CreateSinkRequest(proto.Message):
     r"""The parameters to ``CreateSink``.
+
     Attributes:
         parent (str):
             Required. The resource in which to create the sink:
@@ -731,6 +750,7 @@ class CreateSinkRequest(proto.Message):
 
 class UpdateSinkRequest(proto.Message):
     r"""The parameters to ``UpdateSink``.
+
     Attributes:
         sink_name (str):
             Required. The full resource name of the sink to update,
@@ -791,6 +811,7 @@ class UpdateSinkRequest(proto.Message):
 
 class DeleteSinkRequest(proto.Message):
     r"""The parameters to ``DeleteSink``.
+
     Attributes:
         sink_name (str):
             Required. The full resource name of the sink to delete,
@@ -865,6 +886,7 @@ class LogExclusion(proto.Message):
 
 class ListExclusionsRequest(proto.Message):
     r"""The parameters to ``ListExclusions``.
+
     Attributes:
         parent (str):
             Required. The parent resource whose exclusions are to be
@@ -896,6 +918,7 @@ class ListExclusionsRequest(proto.Message):
 
 class ListExclusionsResponse(proto.Message):
     r"""Result returned from ``ListExclusions``.
+
     Attributes:
         exclusions (Sequence[google.cloud.logging_v2.types.LogExclusion]):
             A list of exclusions.
@@ -916,6 +939,7 @@ class ListExclusionsResponse(proto.Message):
 
 class GetExclusionRequest(proto.Message):
     r"""The parameters to ``GetExclusion``.
+
     Attributes:
         name (str):
             Required. The resource name of an existing exclusion:
@@ -936,6 +960,7 @@ class GetExclusionRequest(proto.Message):
 
 class CreateExclusionRequest(proto.Message):
     r"""The parameters to ``CreateExclusion``.
+
     Attributes:
         parent (str):
             Required. The parent resource in which to create the
@@ -962,6 +987,7 @@ class CreateExclusionRequest(proto.Message):
 
 class UpdateExclusionRequest(proto.Message):
     r"""The parameters to ``UpdateExclusion``.
+
     Attributes:
         name (str):
             Required. The resource name of the exclusion to update:
@@ -1000,6 +1026,7 @@ class UpdateExclusionRequest(proto.Message):
 
 class DeleteExclusionRequest(proto.Message):
     r"""The parameters to ``DeleteExclusion``.
+
     Attributes:
         name (str):
             Required. The resource name of an existing exclusion to
