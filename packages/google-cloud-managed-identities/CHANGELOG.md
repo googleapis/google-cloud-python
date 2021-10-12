@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-managed-identities/compare/v1.1.3...v1.2.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#78](https://www.github.com/googleapis/python-managed-identities/issues/78)) ([9cad312](https://www.github.com/googleapis/python-managed-identities/commit/9cad312b3673009f8bcd6b51c8a24fe5dda468f0))
+
 ### [1.1.3](https://www.github.com/googleapis/python-managed-identities/compare/v1.1.2...v1.1.3) (2021-09-30)
 
 
