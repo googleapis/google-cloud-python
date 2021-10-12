@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [2.5.0](https://www.github.com/googleapis/python-vision/compare/v2.4.4...v2.5.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#247](https://www.github.com/googleapis/python-vision/issues/247)) ([629365f](https://www.github.com/googleapis/python-vision/commit/629365f32d67bf3a6863615832e5443e185b8e3b))
+
 ### [2.4.4](https://www.github.com/googleapis/python-vision/compare/v2.4.3...v2.4.4) (2021-09-30)
 
 
