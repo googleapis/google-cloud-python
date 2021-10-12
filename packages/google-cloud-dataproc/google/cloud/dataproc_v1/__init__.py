@@ -39,6 +39,7 @@ from .types.clusters import Cluster
 from .types.clusters import ClusterConfig
 from .types.clusters import ClusterMetrics
 from .types.clusters import ClusterStatus
+from .types.clusters import ConfidentialInstanceConfig
 from .types.clusters import CreateClusterRequest
 from .types.clusters import DeleteClusterRequest
 from .types.clusters import DiagnoseClusterRequest
@@ -90,9 +91,17 @@ from .types.jobs import SparkSqlJob
 from .types.jobs import SubmitJobRequest
 from .types.jobs import UpdateJobRequest
 from .types.jobs import YarnApplication
+from .types.operations import BatchOperationMetadata
 from .types.operations import ClusterOperationMetadata
 from .types.operations import ClusterOperationStatus
+from .types.shared import EnvironmentConfig
+from .types.shared import ExecutionConfig
+from .types.shared import PeripheralsConfig
+from .types.shared import RuntimeConfig
+from .types.shared import RuntimeInfo
+from .types.shared import SparkHistoryServerConfig
 from .types.shared import Component
+from .types.shared import FailureAction
 from .types.workflow_templates import ClusterOperation
 from .types.workflow_templates import ClusterSelector
 from .types.workflow_templates import CreateWorkflowTemplateRequest
@@ -126,6 +135,7 @@ __all__ = (
     "AutoscalingPolicyServiceClient",
     "BasicAutoscalingAlgorithm",
     "BasicYarnAutoscalingConfig",
+    "BatchOperationMetadata",
     "CancelJobRequest",
     "Cluster",
     "ClusterConfig",
@@ -137,6 +147,7 @@ __all__ = (
     "ClusterSelector",
     "ClusterStatus",
     "Component",
+    "ConfidentialInstanceConfig",
     "CreateAutoscalingPolicyRequest",
     "CreateClusterRequest",
     "CreateWorkflowTemplateRequest",
@@ -149,6 +160,9 @@ __all__ = (
     "DiskConfig",
     "EncryptionConfig",
     "EndpointConfig",
+    "EnvironmentConfig",
+    "ExecutionConfig",
+    "FailureAction",
     "GceClusterConfig",
     "GetAutoscalingPolicyRequest",
     "GetClusterRequest",
@@ -187,15 +201,19 @@ __all__ = (
     "NodeInitializationAction",
     "OrderedJob",
     "ParameterValidation",
+    "PeripheralsConfig",
     "PigJob",
     "PrestoJob",
     "PySparkJob",
     "QueryList",
     "RegexValidation",
     "ReservationAffinity",
+    "RuntimeConfig",
+    "RuntimeInfo",
     "SecurityConfig",
     "ShieldedInstanceConfig",
     "SoftwareConfig",
+    "SparkHistoryServerConfig",
     "SparkJob",
     "SparkRJob",
     "SparkSqlJob",

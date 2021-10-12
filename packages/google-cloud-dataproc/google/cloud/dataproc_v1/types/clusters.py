@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
         "GceClusterConfig",
         "NodeGroupAffinity",
         "ShieldedInstanceConfig",
+        "ConfidentialInstanceConfig",
         "InstanceGroupConfig",
         "ManagedGroupConfig",
         "AcceleratorConfig",
@@ -63,7 +64,7 @@ __protobuf__ = proto.module(
 
 class Cluster(proto.Message):
     r"""Describes the identifying information, config, and status of
-    a cluster of Compute Engine instances.
+    a Dataproc cluster
 
     Attributes:
         project_id (str):
@@ -125,10 +126,10 @@ class ClusterConfig(proto.Message):
             your cluster's staging bucket according to the Compute
             Engine zone where your cluster is deployed, and then create
             and manage this project-level, per-location bucket (see
-            `Dataproc staging
-            bucket <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket>`__).
-            **This field requires a Cloud Storage bucket name, not a URI
-            to a Cloud Storage bucket.**
+            `Dataproc staging and temp
+            buckets <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket>`__).
+            **This field requires a Cloud Storage bucket name, not a
+            ``gs://...`` URI to a Cloud Storage bucket.**
         temp_bucket (str):
             Optional. A Cloud Storage bucket used to store ephemeral
             cluster and jobs data, such as Spark and MapReduce history
@@ -138,23 +139,26 @@ class ClusterConfig(proto.Message):
             zone where your cluster is deployed, and then create and
             manage this project-level, per-location bucket. The default
             bucket has a TTL of 90 days, but you can use any TTL (or
-            none) if you specify a bucket. **This field requires a Cloud
-            Storage bucket name, not a URI to a Cloud Storage bucket.**
+            none) if you specify a bucket (see `Dataproc staging and
+            temp
+            buckets <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket>`__).
+            **This field requires a Cloud Storage bucket name, not a
+            ``gs://...`` URI to a Cloud Storage bucket.**
         gce_cluster_config (google.cloud.dataproc_v1.types.GceClusterConfig):
             Optional. The shared Compute Engine config
             settings for all instances in a cluster.
         master_config (google.cloud.dataproc_v1.types.InstanceGroupConfig):
             Optional. The Compute Engine config settings
-            for the master instance in a cluster.
+            for the cluster's master instance.
         worker_config (google.cloud.dataproc_v1.types.InstanceGroupConfig):
             Optional. The Compute Engine config settings
-            for worker instances in a cluster.
+            for the cluster's worker instances.
         secondary_worker_config (google.cloud.dataproc_v1.types.InstanceGroupConfig):
             Optional. The Compute Engine config settings
-            for additional worker instances in a cluster.
+            for a cluster's secondary worker instances
         software_config (google.cloud.dataproc_v1.types.SoftwareConfig):
-            Optional. The config settings for software
-            inside the cluster.
+            Optional. The config settings for cluster
+            software.
         initialization_actions (Sequence[google.cloud.dataproc_v1.types.NodeInitializationAction]):
             Optional. Commands to execute on each node after config is
             completed. By default, executables are run on master and all
@@ -404,6 +408,10 @@ class GceClusterConfig(proto.Message):
             Optional. Shielded Instance Config for clusters using
             `Compute Engine Shielded
             VMs <https://cloud.google.com/security/shielded-cloud/shielded-vm>`__.
+        confidential_instance_config (google.cloud.dataproc_v1.types.ConfidentialInstanceConfig):
+            Optional. Confidential Instance Config for clusters using
+            `Confidential
+            VMs <https://cloud.google.com/compute/confidential-vm/docs>`__.
     """
 
     class PrivateIpv6GoogleAccess(proto.Enum):
@@ -437,6 +445,9 @@ class GceClusterConfig(proto.Message):
     )
     shielded_instance_config = proto.Field(
         proto.MESSAGE, number=14, message="ShieldedInstanceConfig",
+    )
+    confidential_instance_config = proto.Field(
+        proto.MESSAGE, number=15, message="ConfidentialInstanceConfig",
     )
 
 
@@ -480,6 +491,19 @@ class ShieldedInstanceConfig(proto.Message):
     enable_secure_boot = proto.Field(proto.BOOL, number=1,)
     enable_vtpm = proto.Field(proto.BOOL, number=2,)
     enable_integrity_monitoring = proto.Field(proto.BOOL, number=3,)
+
+
+class ConfidentialInstanceConfig(proto.Message):
+    r"""Confidential Instance Config for clusters using `Confidential
+    VMs <https://cloud.google.com/compute/confidential-vm/docs>`__
+
+    Attributes:
+        enable_confidential_compute (bool):
+            Optional. Defines whether the instance should
+            have confidential compute enabled.
+    """
+
+    enable_confidential_compute = proto.Field(proto.BOOL, number=1,)
 
 
 class InstanceGroupConfig(proto.Message):
@@ -714,6 +738,7 @@ class ClusterStatus(proto.Message):
         CREATING = 1
         RUNNING = 2
         ERROR = 3
+        ERROR_DUE_TO_UPDATE = 9
         DELETING = 4
         UPDATING = 5
         STOPPING = 6
@@ -987,7 +1012,7 @@ class CreateClusterRequest(proto.Message):
         cluster (google.cloud.dataproc_v1.types.Cluster):
             Required. The cluster to create.
         request_id (str):
-            Optional. A unique id used to identify the request. If the
+            Optional. A unique ID used to identify the request. If the
             server receives two
             `CreateClusterRequest <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.CreateClusterRequest>`__\ s
             with the same id, then the second request will be ignored
@@ -998,15 +1023,21 @@ class CreateClusterRequest(proto.Message):
             It is recommended to always set this value to a
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
-            The id must contain only letters (a-z, A-Z), numbers (0-9),
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
             underscores (_), and hyphens (-). The maximum length is 40
             characters.
+        action_on_failed_primary_workers (google.cloud.dataproc_v1.types.FailureAction):
+            Optional. Failure action when primary worker
+            creation fails.
     """
 
     project_id = proto.Field(proto.STRING, number=1,)
     region = proto.Field(proto.STRING, number=3,)
     cluster = proto.Field(proto.MESSAGE, number=2, message="Cluster",)
     request_id = proto.Field(proto.STRING, number=4,)
+    action_on_failed_primary_workers = proto.Field(
+        proto.ENUM, number=5, enum=shared.FailureAction,
+    )
 
 
 class UpdateClusterRequest(proto.Message):
@@ -1097,7 +1128,7 @@ class UpdateClusterRequest(proto.Message):
                  </tbody>
                  </table>
         request_id (str):
-            Optional. A unique id used to identify the request. If the
+            Optional. A unique ID used to identify the request. If the
             server receives two
             `UpdateClusterRequest <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.UpdateClusterRequest>`__\ s
             with the same id, then the second request will be ignored
@@ -1108,7 +1139,7 @@ class UpdateClusterRequest(proto.Message):
             It is recommended to always set this value to a
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
-            The id must contain only letters (a-z, A-Z), numbers (0-9),
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
             underscores (_), and hyphens (-). The maximum length is 40
             characters.
     """
@@ -1143,7 +1174,7 @@ class StopClusterRequest(proto.Message):
             fail (with error NOT_FOUND) if a cluster with the specified
             UUID does not exist.
         request_id (str):
-            Optional. A unique id used to identify the request. If the
+            Optional. A unique ID used to identify the request. If the
             server receives two
             `StopClusterRequest <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.StopClusterRequest>`__\ s
             with the same id, then the second request will be ignored
@@ -1154,7 +1185,7 @@ class StopClusterRequest(proto.Message):
             Recommendation: Set this value to a
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
-            The id must contain only letters (a-z, A-Z), numbers (0-9),
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
             underscores (_), and hyphens (-). The maximum length is 40
             characters.
     """
@@ -1183,7 +1214,7 @@ class StartClusterRequest(proto.Message):
             fail (with error NOT_FOUND) if a cluster with the specified
             UUID does not exist.
         request_id (str):
-            Optional. A unique id used to identify the request. If the
+            Optional. A unique ID used to identify the request. If the
             server receives two
             `StartClusterRequest <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.StartClusterRequest>`__\ s
             with the same id, then the second request will be ignored
@@ -1194,7 +1225,7 @@ class StartClusterRequest(proto.Message):
             Recommendation: Set this value to a
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
-            The id must contain only letters (a-z, A-Z), numbers (0-9),
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
             underscores (_), and hyphens (-). The maximum length is 40
             characters.
     """
@@ -1223,7 +1254,7 @@ class DeleteClusterRequest(proto.Message):
             should fail (with error NOT_FOUND) if cluster with specified
             UUID does not exist.
         request_id (str):
-            Optional. A unique id used to identify the request. If the
+            Optional. A unique ID used to identify the request. If the
             server receives two
             `DeleteClusterRequest <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.DeleteClusterRequest>`__\ s
             with the same id, then the second request will be ignored
@@ -1234,7 +1265,7 @@ class DeleteClusterRequest(proto.Message):
             It is recommended to always set this value to a
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__.
 
-            The id must contain only letters (a-z, A-Z), numbers (0-9),
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
             underscores (_), and hyphens (-). The maximum length is 40
             characters.
     """

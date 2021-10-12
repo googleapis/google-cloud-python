@@ -287,6 +287,9 @@ class ClusterControllerGrpcAsyncIOTransport(ClusterControllerTransport):
         [Operation.metadata][google.longrunning.Operation.metadata] will
         be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
+        The cluster must be in a
+        [``RUNNING``][google.cloud.dataproc.v1.ClusterStatus.State]
+        state or an error is returned.
 
         Returns:
             Callable[[~.UpdateClusterRequest],

@@ -64,8 +64,8 @@ class LoggingConfig(proto.Message):
 
     class Level(proto.Enum):
         r"""The Log4j level for job execution. When running an `Apache
-        Hive <http://hive.apache.org/>`__ job, Cloud Dataproc configures the
-        Hive client to an equivalent verbosity level.
+        Hive <https://hive.apache.org/>`__ job, Cloud Dataproc configures
+        the Hive client to an equivalent verbosity level.
         """
         LEVEL_UNSPECIFIED = 0
         ALL = 1

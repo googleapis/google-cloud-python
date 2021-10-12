@@ -32,6 +32,7 @@ from .clusters import (
     ClusterConfig,
     ClusterMetrics,
     ClusterStatus,
+    ConfidentialInstanceConfig,
     CreateClusterRequest,
     DeleteClusterRequest,
     DiagnoseClusterRequest,
@@ -87,8 +88,19 @@ from .jobs import (
     YarnApplication,
 )
 from .operations import (
+    BatchOperationMetadata,
     ClusterOperationMetadata,
     ClusterOperationStatus,
+)
+from .shared import (
+    EnvironmentConfig,
+    ExecutionConfig,
+    PeripheralsConfig,
+    RuntimeConfig,
+    RuntimeInfo,
+    SparkHistoryServerConfig,
+    Component,
+    FailureAction,
 )
 from .workflow_templates import (
     ClusterOperation,
@@ -131,6 +143,7 @@ __all__ = (
     "ClusterConfig",
     "ClusterMetrics",
     "ClusterStatus",
+    "ConfidentialInstanceConfig",
     "CreateClusterRequest",
     "DeleteClusterRequest",
     "DiagnoseClusterRequest",
@@ -182,9 +195,17 @@ __all__ = (
     "SubmitJobRequest",
     "UpdateJobRequest",
     "YarnApplication",
+    "BatchOperationMetadata",
     "ClusterOperationMetadata",
     "ClusterOperationStatus",
+    "EnvironmentConfig",
+    "ExecutionConfig",
+    "PeripheralsConfig",
+    "RuntimeConfig",
+    "RuntimeInfo",
+    "SparkHistoryServerConfig",
     "Component",
+    "FailureAction",
     "ClusterOperation",
     "ClusterSelector",
     "CreateWorkflowTemplateRequest",

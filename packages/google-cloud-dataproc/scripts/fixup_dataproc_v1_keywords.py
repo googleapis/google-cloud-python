@@ -41,7 +41,7 @@ class dataprocCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'cancel_job': ('project_id', 'region', 'job_id', ),
         'create_autoscaling_policy': ('parent', 'policy', ),
-        'create_cluster': ('project_id', 'region', 'cluster', 'request_id', ),
+        'create_cluster': ('project_id', 'region', 'cluster', 'request_id', 'action_on_failed_primary_workers', ),
         'create_workflow_template': ('parent', 'template', ),
         'delete_autoscaling_policy': ('name', ),
         'delete_cluster': ('project_id', 'region', 'cluster_name', 'cluster_uuid', 'request_id', ),

@@ -71,6 +71,7 @@ from google.cloud.dataproc_v1.types.clusters import Cluster
 from google.cloud.dataproc_v1.types.clusters import ClusterConfig
 from google.cloud.dataproc_v1.types.clusters import ClusterMetrics
 from google.cloud.dataproc_v1.types.clusters import ClusterStatus
+from google.cloud.dataproc_v1.types.clusters import ConfidentialInstanceConfig
 from google.cloud.dataproc_v1.types.clusters import CreateClusterRequest
 from google.cloud.dataproc_v1.types.clusters import DeleteClusterRequest
 from google.cloud.dataproc_v1.types.clusters import DiagnoseClusterRequest
@@ -122,9 +123,17 @@ from google.cloud.dataproc_v1.types.jobs import SparkSqlJob
 from google.cloud.dataproc_v1.types.jobs import SubmitJobRequest
 from google.cloud.dataproc_v1.types.jobs import UpdateJobRequest
 from google.cloud.dataproc_v1.types.jobs import YarnApplication
+from google.cloud.dataproc_v1.types.operations import BatchOperationMetadata
 from google.cloud.dataproc_v1.types.operations import ClusterOperationMetadata
 from google.cloud.dataproc_v1.types.operations import ClusterOperationStatus
+from google.cloud.dataproc_v1.types.shared import EnvironmentConfig
+from google.cloud.dataproc_v1.types.shared import ExecutionConfig
+from google.cloud.dataproc_v1.types.shared import PeripheralsConfig
+from google.cloud.dataproc_v1.types.shared import RuntimeConfig
+from google.cloud.dataproc_v1.types.shared import RuntimeInfo
+from google.cloud.dataproc_v1.types.shared import SparkHistoryServerConfig
 from google.cloud.dataproc_v1.types.shared import Component
+from google.cloud.dataproc_v1.types.shared import FailureAction
 from google.cloud.dataproc_v1.types.workflow_templates import ClusterOperation
 from google.cloud.dataproc_v1.types.workflow_templates import ClusterSelector
 from google.cloud.dataproc_v1.types.workflow_templates import (
@@ -186,6 +195,7 @@ __all__ = (
     "ClusterConfig",
     "ClusterMetrics",
     "ClusterStatus",
+    "ConfidentialInstanceConfig",
     "CreateClusterRequest",
     "DeleteClusterRequest",
     "DiagnoseClusterRequest",
@@ -237,9 +247,17 @@ __all__ = (
     "SubmitJobRequest",
     "UpdateJobRequest",
     "YarnApplication",
+    "BatchOperationMetadata",
     "ClusterOperationMetadata",
     "ClusterOperationStatus",
+    "EnvironmentConfig",
+    "ExecutionConfig",
+    "PeripheralsConfig",
+    "RuntimeConfig",
+    "RuntimeInfo",
+    "SparkHistoryServerConfig",
     "Component",
+    "FailureAction",
     "ClusterOperation",
     "ClusterSelector",
     "CreateWorkflowTemplateRequest",

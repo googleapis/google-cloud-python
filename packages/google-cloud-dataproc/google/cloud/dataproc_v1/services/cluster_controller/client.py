@@ -422,7 +422,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.dataproc_v1.types.Cluster` Describes the identifying information, config, and status of
-                   a cluster of Compute Engine instances.
+                   a Dataproc cluster
 
         """
         # Create or coerce a protobuf request object.
@@ -485,6 +485,9 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         [Operation.metadata][google.longrunning.Operation.metadata] will
         be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
+        The cluster must be in a
+        [``RUNNING``][google.cloud.dataproc.v1.ClusterStatus.State]
+        state or an error is returned.
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.UpdateClusterRequest, dict]):
@@ -591,7 +594,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.dataproc_v1.types.Cluster` Describes the identifying information, config, and status of
-                   a cluster of Compute Engine instances.
+                   a Dataproc cluster
 
         """
         # Create or coerce a protobuf request object.
@@ -667,7 +670,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.dataproc_v1.types.Cluster` Describes the identifying information, config, and status of
-                   a cluster of Compute Engine instances.
+                   a Dataproc cluster
 
         """
         # Create or coerce a protobuf request object.
@@ -720,7 +723,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.dataproc_v1.types.Cluster` Describes the identifying information, config, and status of
-                   a cluster of Compute Engine instances.
+                   a Dataproc cluster
 
         """
         # Create or coerce a protobuf request object.
@@ -904,7 +907,7 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
             google.cloud.dataproc_v1.types.Cluster:
                 Describes the identifying
                 information, config, and status of a
-                cluster of Compute Engine instances.
+                Dataproc cluster
 
         """
         # Create or coerce a protobuf request object.
