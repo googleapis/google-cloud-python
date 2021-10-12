@@ -7,5 +7,7 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-access-context-manager",
-    "distribution_name": "google-cloud-access-context-manager"
+    "distribution_name": "google-cloud-access-context-manager",
+    "default_version": "v1",
+    "codeowner_team": ""
 }
