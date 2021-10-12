@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://www.github.com/googleapis/python-access-approval/compare/v1.3.5...v1.4.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#126](https://www.github.com/googleapis/python-access-approval/issues/126)) ([372628b](https://www.github.com/googleapis/python-access-approval/commit/372628b04734c8a15a0ed0ada374120a4ce024db))
+* add trove classifier for python 3.9 and python 3.10 ([#129](https://www.github.com/googleapis/python-access-approval/issues/129)) ([2bb4981](https://www.github.com/googleapis/python-access-approval/commit/2bb4981fc62bfbf918e0c215e97f1edb47dcc045))
+
 ### [1.3.5](https://www.github.com/googleapis/python-access-approval/compare/v1.3.4...v1.3.5) (2021-09-30)
 
 
