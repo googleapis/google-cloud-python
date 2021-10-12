@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-service-control/compare/v1.0.3...v1.1.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#73](https://www.github.com/googleapis/python-service-control/issues/73)) ([98d60e9](https://www.github.com/googleapis/python-service-control/commit/98d60e9e18b1b6301cbb98ffb6b0b7639e6e6fb9))
+
 ### [1.0.3](https://www.github.com/googleapis/python-service-control/compare/v1.0.2...v1.0.3) (2021-09-27)
 
 
