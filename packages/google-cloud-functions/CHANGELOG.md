@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-functions/compare/v1.1.1...v1.2.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#119](https://www.github.com/googleapis/python-functions/issues/119)) ([66772fa](https://www.github.com/googleapis/python-functions/commit/66772faffc88aeb6e84984f402902d51c2d786b2))
+
 ### [1.1.1](https://www.github.com/googleapis/python-functions/compare/v1.1.0...v1.1.1) (2021-09-30)
 
 
