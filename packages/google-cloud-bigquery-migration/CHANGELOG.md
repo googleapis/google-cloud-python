@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-bigquery-migration/compare/v0.1.0...v0.2.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#8](https://www.github.com/googleapis/python-bigquery-migration/issues/8)) ([d9dbb32](https://www.github.com/googleapis/python-bigquery-migration/commit/d9dbb32edeffee1e559f979300713a4a10cd9806))
+
 ## 0.1.0 (2021-09-30)
 
 
