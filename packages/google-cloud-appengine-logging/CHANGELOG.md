@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-appengine-logging/compare/v0.2.0...v1.0.0) (2021-10-12)
+
+
+### Features
+
+* bump release level to production/stable ([#42](https://www.github.com/googleapis/python-appengine-logging/issues/42)) ([afe5f39](https://www.github.com/googleapis/python-appengine-logging/commit/afe5f396287f8bf745b38bdd6ac3c1b70af40cca))
+
 ## [0.2.0](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.5...v0.2.0) (2021-10-08)
 
 
