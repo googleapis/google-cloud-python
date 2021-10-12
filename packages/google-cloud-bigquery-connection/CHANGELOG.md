@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.2.3...v1.3.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#125](https://www.github.com/googleapis/python-bigquery-connection/issues/125)) ([bf9cc26](https://www.github.com/googleapis/python-bigquery-connection/commit/bf9cc268363a2a6e115b6af65ab6b50c05bbde28))
+
 ### [1.2.3](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.2.2...v1.2.3) (2021-10-05)
 
 
