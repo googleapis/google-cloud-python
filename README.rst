@@ -73,6 +73,9 @@ Libraries
    * - `AI Platform <https://github.com/googleapis/python-aiplatform>`_
      - |ga|
      - |PyPI-google-cloud-aiplatform|
+   * - `AI Platform Notebooks <https://github.com/googleapis/python-notebooks>`_
+     - |ga|
+     - |PyPI-google-cloud-notebooks|
    * - `API Gateway <https://github.com/googleapis/python-api-gateway>`_
      - |ga|
      - |PyPI-google-cloud-api-gateway|
@@ -121,6 +124,9 @@ Libraries
    * - `Channel Services <https://github.com/googleapis/python-channel>`_
      - |ga|
      - |PyPI-google-cloud-channel|
+   * - `Composer <https://github.com/googleapis/python-orchestration-airflow>`_
+     - |ga|
+     - |PyPI-google-cloud-orchestration-airflow|
    * - `Container Analysis <https://github.com/googleapis/python-containeranalysis>`_
      - |ga|
      - |PyPI-google-cloud-containeranalysis|
@@ -328,9 +334,6 @@ Libraries
    * - `reCAPTCHA Enterprise <https://github.com/googleapis/python-recaptcha-enterprise>`_
      - |ga|
      - |PyPI-google-cloud-recaptcha-enterprise|
-   * - `AI Platform Notebooks <https://github.com/googleapis/python-notebooks>`_
-     - |beta|
-     - |PyPI-google-cloud-notebooks|
    * - `Analytics Data API <https://github.com/googleapis/python-analytics-data>`_
      - |beta|
      - |PyPI-google-analytics-data|
@@ -358,9 +361,6 @@ Libraries
    * - `Common <https://github.com/googleapis/python-cloud-common>`_
      - |beta|
      - |PyPI-google-cloud-common|
-   * - `Composer <https://github.com/googleapis/python-orchestration-airflow>`_
-     - |beta|
-     - |PyPI-google-cloud-orchestration-airflow|
    * - `Contact Center AI Insights API <https://github.com/googleapis/python-contact-center-insights>`_
      - |beta|
      - |PyPI-google-cloud-contact-center-insights|
@@ -391,9 +391,6 @@ Libraries
    * - `IAM Logging Protos <https://github.com/googleapis/python-iam-logging>`_
      - |beta|
      - |PyPI-google-cloud-iam-logging|
-   * - `Identity Platform <https://github.com/googleapis/python-identity-toolkit>`_
-     - |beta|
-     - |PyPI-google-cloud-identity-toolkit|
    * - `Life Sciences <https://github.com/googleapis/python-life-sciences>`_
      - |beta|
      - |PyPI-google-cloud-life-sciences|
@@ -448,6 +445,8 @@ Libraries
 
 .. |PyPI-google-cloud-aiplatform| image:: https://img.shields.io/pypi/v/google-cloud-aiplatform.svg
      :target: https://pypi.org/project/google-cloud-aiplatform
+.. |PyPI-google-cloud-notebooks| image:: https://img.shields.io/pypi/v/google-cloud-notebooks.svg
+     :target: https://pypi.org/project/google-cloud-notebooks
 .. |PyPI-google-cloud-api-gateway| image:: https://img.shields.io/pypi/v/google-cloud-api-gateway.svg
      :target: https://pypi.org/project/google-cloud-api-gateway
 .. |PyPI-google-cloud-access-approval| image:: https://img.shields.io/pypi/v/google-cloud-access-approval.svg
@@ -480,6 +479,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-build
 .. |PyPI-google-cloud-channel| image:: https://img.shields.io/pypi/v/google-cloud-channel.svg
      :target: https://pypi.org/project/google-cloud-channel
+.. |PyPI-google-cloud-orchestration-airflow| image:: https://img.shields.io/pypi/v/google-cloud-orchestration-airflow.svg
+     :target: https://pypi.org/project/google-cloud-orchestration-airflow
 .. |PyPI-google-cloud-containeranalysis| image:: https://img.shields.io/pypi/v/google-cloud-containeranalysis.svg
      :target: https://pypi.org/project/google-cloud-containeranalysis
 .. |PyPI-google-cloud-datacatalog| image:: https://img.shields.io/pypi/v/google-cloud-datacatalog.svg
@@ -618,8 +619,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-workflows
 .. |PyPI-google-cloud-recaptcha-enterprise| image:: https://img.shields.io/pypi/v/google-cloud-recaptcha-enterprise.svg
      :target: https://pypi.org/project/google-cloud-recaptcha-enterprise
-.. |PyPI-google-cloud-notebooks| image:: https://img.shields.io/pypi/v/google-cloud-notebooks.svg
-     :target: https://pypi.org/project/google-cloud-notebooks
 .. |PyPI-google-analytics-data| image:: https://img.shields.io/pypi/v/google-analytics-data.svg
      :target: https://pypi.org/project/google-analytics-data
 .. |PyPI-google-cloud-appengine-logging| image:: https://img.shields.io/pypi/v/google-cloud-appengine-logging.svg
@@ -638,8 +637,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-binary-authorization
 .. |PyPI-google-cloud-common| image:: https://img.shields.io/pypi/v/google-cloud-common.svg
      :target: https://pypi.org/project/google-cloud-common
-.. |PyPI-google-cloud-orchestration-airflow| image:: https://img.shields.io/pypi/v/google-cloud-orchestration-airflow.svg
-     :target: https://pypi.org/project/google-cloud-orchestration-airflow
 .. |PyPI-google-cloud-contact-center-insights| image:: https://img.shields.io/pypi/v/google-cloud-contact-center-insights.svg
      :target: https://pypi.org/project/google-cloud-contact-center-insights
 .. |PyPI-google-cloud-datalabeling| image:: https://img.shields.io/pypi/v/google-cloud-datalabeling.svg
@@ -660,8 +657,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-gke-connect-gateway
 .. |PyPI-google-cloud-iam-logging| image:: https://img.shields.io/pypi/v/google-cloud-iam-logging.svg
      :target: https://pypi.org/project/google-cloud-iam-logging
-.. |PyPI-google-cloud-identity-toolkit| image:: https://img.shields.io/pypi/v/google-cloud-identity-toolkit.svg
-     :target: https://pypi.org/project/google-cloud-identity-toolkit
 .. |PyPI-google-cloud-life-sciences| image:: https://img.shields.io/pypi/v/google-cloud-life-sciences.svg
      :target: https://pypi.org/project/google-cloud-life-sciences
 .. |PyPI-google-cloud-media-translation| image:: https://img.shields.io/pypi/v/google-cloud-media-translation.svg
