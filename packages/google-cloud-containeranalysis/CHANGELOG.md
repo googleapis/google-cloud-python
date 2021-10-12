@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://www.github.com/googleapis/python-containeranalysis/compare/v2.4.2...v2.5.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#192](https://www.github.com/googleapis/python-containeranalysis/issues/192)) ([5274a93](https://www.github.com/googleapis/python-containeranalysis/commit/5274a933bd7abec9528168fa0530388536269c4c))
+
 ### [2.4.2](https://www.github.com/googleapis/python-containeranalysis/compare/v2.4.1...v2.4.2) (2021-09-24)
 
 
