@@ -29,7 +29,7 @@ showcase_version = os.environ.get("SHOWCASE_VERSION", "0.16.0")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 
 
-@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9", "3.10"])
 def unit(session):
     """Run the unit test suite."""
 
