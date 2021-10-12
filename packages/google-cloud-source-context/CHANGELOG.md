@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-source-context/compare/v1.0.0...v1.1.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#35](https://www.github.com/googleapis/python-source-context/issues/35)) ([e9694fd](https://www.github.com/googleapis/python-source-context/commit/e9694fd650aa24132013f7fd097b344969034b83))
+
 ## [1.0.0](https://www.github.com/googleapis/python-source-context/compare/v0.1.4...v1.0.0) (2021-10-04)
 
 
