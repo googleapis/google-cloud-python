@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-bigquery-logging/compare/v0.3.0...v1.0.0) (2021-10-12)
+
+
+### Features
+
+* bump release level to production/stable ([#41](https://www.github.com/googleapis/python-bigquery-logging/issues/41)) ([19db3eb](https://www.github.com/googleapis/python-bigquery-logging/commit/19db3eb189579fb1c71ff94b3db4ffd279792fe7))
+
 ## [0.3.0](https://www.github.com/googleapis/python-bigquery-logging/compare/v0.2.2...v0.3.0) (2021-10-08)
 
 
