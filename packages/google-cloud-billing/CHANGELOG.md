@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://www.github.com/googleapis/python-billing/compare/v1.3.4...v1.4.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#122](https://www.github.com/googleapis/python-billing/issues/122)) ([9ec2297](https://www.github.com/googleapis/python-billing/commit/9ec229702b9a116e2572dd10c3e40887dfd70f93))
+* add trove classifier for python 3.10 ([#125](https://www.github.com/googleapis/python-billing/issues/125)) ([6b93726](https://www.github.com/googleapis/python-billing/commit/6b93726fba956a41edf7d71f4950c649bc87f96f))
+
 ### [1.3.4](https://www.github.com/googleapis/python-billing/compare/v1.3.3...v1.3.4) (2021-10-04)
 
 
