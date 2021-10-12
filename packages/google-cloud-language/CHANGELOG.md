@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-language/compare/v2.2.2...v2.3.0) (2021-10-09)
+
+
+### Features
+
+* add context manager support in client ([#203](https://www.github.com/googleapis/python-language/issues/203)) ([91d48a8](https://www.github.com/googleapis/python-language/commit/91d48a8fee63b8279b235b70921d018206084b50))
+
 ### [2.2.2](https://www.github.com/googleapis/python-language/compare/v2.2.1...v2.2.2) (2021-07-28)
 
 
