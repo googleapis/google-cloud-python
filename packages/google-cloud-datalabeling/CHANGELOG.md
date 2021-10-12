@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [1.3.0](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.4...v1.3.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#156](https://www.github.com/googleapis/python-datalabeling/issues/156)) ([4332378](https://www.github.com/googleapis/python-datalabeling/commit/43323787435fb3c9e0722f98deec47c81c4de90d))
+
 ### [1.2.4](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.3...v1.2.4) (2021-09-30)
 
 
