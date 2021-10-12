@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-scheduler/compare/v2.3.4...v2.4.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#144](https://www.github.com/googleapis/python-scheduler/issues/144)) ([4bb0fb6](https://www.github.com/googleapis/python-scheduler/commit/4bb0fb62f173edc09b640b0024d2be3bbd97b3b9))
+
 ### [2.3.4](https://www.github.com/googleapis/python-scheduler/compare/v2.3.3...v2.3.4) (2021-09-30)
 
 
