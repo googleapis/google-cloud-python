@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-recommender/compare/v2.3.4...v2.4.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#136](https://www.github.com/googleapis/python-recommender/issues/136)) ([815739b](https://www.github.com/googleapis/python-recommender/commit/815739b3bbe435be5b21732c84d3ada1007ab0ad))
+
 ### [2.3.4](https://www.github.com/googleapis/python-recommender/compare/v2.3.3...v2.3.4) (2021-09-30)
 
 
