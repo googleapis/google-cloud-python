@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-memcache/compare/v1.1.3...v1.2.0) (2021-10-12)
+
+
+### Features
+
+* add context manager support in client ([#111](https://www.github.com/googleapis/python-memcache/issues/111)) ([a385b99](https://www.github.com/googleapis/python-memcache/commit/a385b993b2473a01256042cc2c560f872c6b8c13))
+
 ### [1.1.3](https://www.github.com/googleapis/python-memcache/compare/v1.1.2...v1.1.3) (2021-09-30)
 
 
