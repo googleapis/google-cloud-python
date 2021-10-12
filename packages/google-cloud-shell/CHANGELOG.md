@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-shell/compare/v1.0.1...v1.1.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#41](https://www.github.com/googleapis/python-shell/issues/41)) ([33eb545](https://www.github.com/googleapis/python-shell/commit/33eb545715c52bb3e8e04cba07ee84466ace672e))
+
 ### [1.0.1](https://www.github.com/googleapis/python-shell/compare/v1.0.0...v1.0.1) (2021-09-24)
 
 
