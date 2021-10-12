@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://www.github.com/googleapis/python-os-config/compare/v1.5.2...v1.6.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#129](https://www.github.com/googleapis/python-os-config/issues/129)) ([b207115](https://www.github.com/googleapis/python-os-config/commit/b207115ed97544585c5f0dc7512d71fd94b5aae2))
+
 ### [1.5.2](https://www.github.com/googleapis/python-os-config/compare/v1.5.1...v1.5.2) (2021-09-30)
 
 
