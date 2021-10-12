@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.1.2...v1.2.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#131](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/131)) ([69d2b34](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/69d2b347f9aab3f30a3b0265fc9dcd9a3926f62d))
+
 ### [1.1.2](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.1.1...v1.1.2) (2021-09-30)
 
 
