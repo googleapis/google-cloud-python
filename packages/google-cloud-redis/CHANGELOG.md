@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-redis/compare/v2.2.4...v2.3.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#123](https://www.github.com/googleapis/python-redis/issues/123)) ([4324911](https://www.github.com/googleapis/python-redis/commit/4324911a80baaaa96065e735631bd6c446075f5c))
+
 ### [2.2.4](https://www.github.com/googleapis/python-redis/compare/v2.2.3...v2.2.4) (2021-09-30)
 
 
