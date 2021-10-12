@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-policy-troubleshooter/compare/v1.1.3...v1.2.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#67](https://www.github.com/googleapis/python-policy-troubleshooter/issues/67)) ([b439623](https://www.github.com/googleapis/python-policy-troubleshooter/commit/b439623760bc9f84ce8472f38c3db32439f01bf9))
+
 ### [1.1.3](https://www.github.com/googleapis/python-policy-troubleshooter/compare/v1.1.2...v1.1.3) (2021-09-24)
 
 
