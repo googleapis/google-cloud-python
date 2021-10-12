@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.6.0](https://www.github.com/googleapis/python-cloudbuild/compare/v3.5.2...v3.6.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#184](https://www.github.com/googleapis/python-cloudbuild/issues/184)) ([7ac092c](https://www.github.com/googleapis/python-cloudbuild/commit/7ac092ce44f5884bdf2990a7dbd61dd72e1991d3))
+
 ### [3.5.2](https://www.github.com/googleapis/python-cloudbuild/compare/v3.5.1...v3.5.2) (2021-09-30)
 
 
