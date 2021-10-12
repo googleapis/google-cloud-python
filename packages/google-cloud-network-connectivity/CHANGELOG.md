@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-network-connectivity/compare/v1.0.1...v1.1.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#88](https://www.github.com/googleapis/python-network-connectivity/issues/88)) ([8584d34](https://www.github.com/googleapis/python-network-connectivity/commit/8584d343d2c8709e3c467ee709ebc15fbbcbb970))
+
 ### [1.0.1](https://www.github.com/googleapis/python-network-connectivity/compare/v1.0.0...v1.0.1) (2021-09-30)
 
 
