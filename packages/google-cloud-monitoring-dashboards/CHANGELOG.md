@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.4...v2.3.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#120](https://www.github.com/googleapis/python-monitoring-dashboards/issues/120)) ([05d1e87](https://www.github.com/googleapis/python-monitoring-dashboards/commit/05d1e873eeb2e5c1ee3f98f627d55066dda38b46))
+
 ### [2.2.4](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.3...v2.2.4) (2021-09-30)
 
 
