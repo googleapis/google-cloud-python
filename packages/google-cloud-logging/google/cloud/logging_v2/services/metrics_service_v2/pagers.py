@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.logging_v2.types import logging_metrics
@@ -74,14 +74,14 @@ class ListLogMetricsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[logging_metrics.ListLogMetricsResponse]:
+    def pages(self) -> Iterator[logging_metrics.ListLogMetricsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[logging_metrics.LogMetric]:
+    def __iter__(self) -> Iterator[logging_metrics.LogMetric]:
         for page in self.pages:
             yield from page.metrics
 
@@ -136,14 +136,14 @@ class ListLogMetricsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[logging_metrics.ListLogMetricsResponse]:
+    async def pages(self) -> AsyncIterator[logging_metrics.ListLogMetricsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[logging_metrics.LogMetric]:
+    def __aiter__(self) -> AsyncIterator[logging_metrics.LogMetric]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.metrics:

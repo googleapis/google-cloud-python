@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.api import monitored_resource_pb2  # type: ignore
@@ -76,14 +76,14 @@ class ListLogEntriesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[logging.ListLogEntriesResponse]:
+    def pages(self) -> Iterator[logging.ListLogEntriesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[log_entry.LogEntry]:
+    def __iter__(self) -> Iterator[log_entry.LogEntry]:
         for page in self.pages:
             yield from page.entries
 
@@ -138,14 +138,14 @@ class ListLogEntriesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[logging.ListLogEntriesResponse]:
+    async def pages(self) -> AsyncIterator[logging.ListLogEntriesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[log_entry.LogEntry]:
+    def __aiter__(self) -> AsyncIterator[log_entry.LogEntry]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.entries:
@@ -204,14 +204,14 @@ class ListMonitoredResourceDescriptorsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[logging.ListMonitoredResourceDescriptorsResponse]:
+    def pages(self) -> Iterator[logging.ListMonitoredResourceDescriptorsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[monitored_resource_pb2.MonitoredResourceDescriptor]:
+    def __iter__(self) -> Iterator[monitored_resource_pb2.MonitoredResourceDescriptor]:
         for page in self.pages:
             yield from page.resource_descriptors
 
@@ -270,7 +270,7 @@ class ListMonitoredResourceDescriptorsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[logging.ListMonitoredResourceDescriptorsResponse]:
+    ) -> AsyncIterator[logging.ListMonitoredResourceDescriptorsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
@@ -279,7 +279,7 @@ class ListMonitoredResourceDescriptorsAsyncPager:
 
     def __aiter__(
         self,
-    ) -> AsyncIterable[monitored_resource_pb2.MonitoredResourceDescriptor]:
+    ) -> AsyncIterator[monitored_resource_pb2.MonitoredResourceDescriptor]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.resource_descriptors:
@@ -338,14 +338,14 @@ class ListLogsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[logging.ListLogsResponse]:
+    def pages(self) -> Iterator[logging.ListLogsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[str]:
+    def __iter__(self) -> Iterator[str]:
         for page in self.pages:
             yield from page.log_names
 
@@ -400,14 +400,14 @@ class ListLogsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[logging.ListLogsResponse]:
+    async def pages(self) -> AsyncIterator[logging.ListLogsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[str]:
+    def __aiter__(self) -> AsyncIterator[str]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.log_names:
