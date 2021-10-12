@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.9.0](https://www.github.com/googleapis/python-kms/compare/v2.8.0...v2.9.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#190](https://www.github.com/googleapis/python-kms/issues/190)) ([6707e79](https://www.github.com/googleapis/python-kms/commit/6707e7950f9ebcedaa22d2e1d12aa0af6e35581d))
+
 ## [2.8.0](https://www.github.com/googleapis/python-kms/compare/v2.7.0...v2.8.0) (2021-09-30)
 
 
