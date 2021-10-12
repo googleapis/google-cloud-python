@@ -147,12 +147,12 @@ def data_instance_populated(
     in_emulator,
 ):
     instance = admin_client.instance(data_instance_id, labels=instance_labels)
-    cluster = instance.cluster(
-        data_cluster_id, location_id=location_id, serve_nodes=serve_nodes,
-    )
     # Emulator does not support instance admin operations (create / delete).
     # See: https://cloud.google.com/bigtable/docs/emulator
     if not in_emulator:
+        cluster = instance.cluster(
+            data_cluster_id, location_id=location_id, serve_nodes=serve_nodes,
+        )
         operation = instance.create(clusters=[cluster])
         operation.result(timeout=30)
 

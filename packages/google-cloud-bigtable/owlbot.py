@@ -105,7 +105,7 @@ def place_before(path, text, *before_text, escape=None):
     s.replace([path], text, replacement)
 
 system_emulated_session = """
-@nox.session(python="3.8")
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system_emulated(session):
     import subprocess
     import signal
@@ -119,15 +119,17 @@ def system_emulated(session):
     subprocess.call(["gcloud", "components", "install", "beta", "bigtable"])
 
     hostport = "localhost:8789"
+    session.env["BIGTABLE_EMULATOR_HOST"] = hostport
+
     p = subprocess.Popen(
         ["gcloud", "beta", "emulators", "bigtable", "start", "--host-port", hostport]
     )
 
-    session.env["BIGTABLE_EMULATOR_HOST"] = hostport
-    system(session)
-
-    # Stop Emulator
-    os.killpg(os.getpgid(p.pid), signal.SIGTERM)
+    try:
+        system(session)
+    finally:
+        # Stop Emulator
+        os.killpg(os.getpgid(p.pid), signal.SIGKILL)
 
 """
 

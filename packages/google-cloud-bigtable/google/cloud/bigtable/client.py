@@ -33,6 +33,7 @@ import grpc
 
 from google.api_core.gapic_v1 import client_info
 import google.auth
+from google.auth.credentials import AnonymousCredentials
 
 from google.cloud import bigtable_v2
 from google.cloud import bigtable_admin_v2
@@ -67,6 +68,7 @@ DATA_SCOPE = "https://www.googleapis.com/auth/bigtable.data"
 READ_ONLY_SCOPE = "https://www.googleapis.com/auth/bigtable.data.readonly"
 """Scope for reading table data."""
 
+_DEFAULT_BIGTABLE_EMULATOR_CLIENT = "google-cloud-bigtable-emulator"
 _GRPC_CHANNEL_OPTIONS = (
     ("grpc.max_send_message_length", -1),
     ("grpc.max_receive_message_length", -1),
@@ -169,6 +171,12 @@ class Client(ClientWithProject):
         self._admin = bool(admin)
         self._client_info = client_info
         self._emulator_host = os.getenv(BIGTABLE_EMULATOR)
+
+        if self._emulator_host is not None:
+            if credentials is None:
+                credentials = AnonymousCredentials()
+            if project is None:
+                project = _DEFAULT_BIGTABLE_EMULATOR_CLIENT
 
         if channel is not None:
             warnings.warn(
