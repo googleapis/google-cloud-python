@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-security-private-ca/compare/v1.0.6...v1.1.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#131](https://www.github.com/googleapis/python-security-private-ca/issues/131)) ([eb9fc8b](https://www.github.com/googleapis/python-security-private-ca/commit/eb9fc8b1a324505418ece9636e91d844e11845de))
+
 ### [1.0.6](https://www.github.com/googleapis/python-security-private-ca/compare/v1.0.5...v1.0.6) (2021-09-30)
 
 
