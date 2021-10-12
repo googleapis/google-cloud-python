@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.4.0](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.4...v3.4.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#234](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/234)) ([cba3dad](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/cba3dad55db8a00f95503b9c94d4ca21ed462a4f))
+
 ### [3.3.4](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.3...v3.3.4) (2021-10-04)
 
 
