@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-video-transcoder/compare/v1.0.1...v1.1.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#104](https://www.github.com/googleapis/python-video-transcoder/issues/104)) ([2c5f07d](https://www.github.com/googleapis/python-video-transcoder/commit/2c5f07d5d12d05c65854409f45374b846363328c))
+
+
+### Bug Fixes
+
+* remove Encryption settings that were published erroneously ([#102](https://www.github.com/googleapis/python-video-transcoder/issues/102)) ([824009a](https://www.github.com/googleapis/python-video-transcoder/commit/824009ac01700341071b50af2741ef6493dcbcf5))
+
 ### [1.0.1](https://www.github.com/googleapis/python-video-transcoder/compare/v1.0.0...v1.0.1) (2021-09-30)
 
 
