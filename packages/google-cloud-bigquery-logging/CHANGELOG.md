@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-bigquery-logging/compare/v0.2.2...v0.3.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#43](https://www.github.com/googleapis/python-bigquery-logging/issues/43)) ([493010c](https://www.github.com/googleapis/python-bigquery-logging/commit/493010cbfb288a75a58761d5281993009013e1b6))
+
 ### [0.2.2](https://www.github.com/googleapis/python-bigquery-logging/compare/v0.2.1...v0.2.2) (2021-09-24)
 
 
