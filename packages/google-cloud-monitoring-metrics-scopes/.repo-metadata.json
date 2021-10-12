@@ -1,0 +1,13 @@
+{
+    "name": "google-cloud-monitoring-metrics-scopes",
+    "name_pretty": "Metrics Scopes API",
+    "product_documentation": "https://cloud.google.com/monitoring/docs",
+    "client_documentation": "https://cloud.google.com/monitoring/settings/manage-api",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/559785",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-monitoring-metrics-scopes",
+    "distribution_name": "google-cloud-monitoring-metrics-scopes",
+    "api_id": "monitoring.googleapis.com"
+  }
