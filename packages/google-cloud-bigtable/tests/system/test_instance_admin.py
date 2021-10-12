@@ -96,7 +96,9 @@ def _delete_app_profile_helper(app_profile):
     assert not app_profile.exists()
 
 
-def test_client_list_instances(admin_client, admin_instance_populated, not_in_emulator):
+def test_client_list_instances(
+    admin_client, admin_instance_populated, skip_on_emulator
+):
     instances, failed_locations = admin_client.list_instances()
 
     assert failed_locations == []
@@ -105,20 +107,20 @@ def test_client_list_instances(admin_client, admin_instance_populated, not_in_em
     assert admin_instance_populated.name in found
 
 
-def test_instance_exists_hit(admin_instance_populated):
+def test_instance_exists_hit(admin_instance_populated, skip_on_emulator):
     # Emulator does not support instance admin operations (create / delete).
     # It allows connecting with *any* project / instance name.
     # See: https://cloud.google.com/bigtable/docs/emulator
     assert admin_instance_populated.exists()
 
 
-def test_instance_exists_miss(admin_client):
+def test_instance_exists_miss(admin_client, skip_on_emulator):
     alt_instance = admin_client.instance("nonesuch-instance")
     assert not alt_instance.exists()
 
 
 def test_instance_reload(
-    admin_client, admin_instance_id, admin_instance_populated, not_in_emulator
+    admin_client, admin_instance_id, admin_instance_populated, skip_on_emulator
 ):
     # Use same arguments as 'admin_instance_populated'
     # so we can use reload() on a fresh instance.
@@ -139,7 +141,7 @@ def test_instance_create_prod(
     location_id,
     instance_labels,
     instances_to_delete,
-    not_in_emulator,
+    skip_on_emulator,
 ):
     from google.cloud.bigtable import enums
 
@@ -171,7 +173,7 @@ def test_instance_create_development(
     location_id,
     instance_labels,
     instances_to_delete,
-    not_in_emulator,
+    skip_on_emulator,
 ):
     alt_instance_id = f"new{unique_suffix}"
     instance = admin_client.instance(
@@ -205,7 +207,7 @@ def test_instance_create_w_two_clusters(
     location_id,
     instance_labels,
     instances_to_delete,
-    not_in_emulator,
+    skip_on_emulator,
 ):
     alt_instance_id = f"dif{unique_suffix}"
     instance = admin_client.instance(
@@ -400,7 +402,7 @@ def test_instance_create_w_two_clusters_cmek(
     instance_labels,
     instances_to_delete,
     with_kms_key_name,
-    not_in_emulator,
+    skip_on_emulator,
 ):
     alt_instance_id = f"dif-cmek{unique_suffix}"
     instance = admin_client.instance(
@@ -484,7 +486,7 @@ def test_instance_update_display_name_and_labels(
     admin_instance_populated,
     label_key,
     instance_labels,
-    not_in_emulator,
+    skip_on_emulator,
 ):
     old_display_name = admin_instance_populated.display_name
     new_display_name = "Foo Bar Baz"
@@ -521,7 +523,7 @@ def test_instance_update_w_type(
     location_id,
     instance_labels,
     instances_to_delete,
-    not_in_emulator,
+    skip_on_emulator,
 ):
     alt_instance_id = f"ndif{unique_suffix}"
     instance = admin_client.instance(
@@ -548,17 +550,17 @@ def test_instance_update_w_type(
     assert instance_alt.type_ == enums.Instance.Type.PRODUCTION
 
 
-def test_cluster_exists_hit(admin_cluster, not_in_emulator):
+def test_cluster_exists_hit(admin_cluster, skip_on_emulator):
     assert admin_cluster.exists()
 
 
-def test_cluster_exists_miss(admin_instance_populated, not_in_emulator):
+def test_cluster_exists_miss(admin_instance_populated, skip_on_emulator):
     alt_cluster = admin_instance_populated.cluster("nonesuch-cluster")
     assert not alt_cluster.exists()
 
 
 def test_cluster_create(
-    admin_instance_populated, admin_instance_id,
+    admin_instance_populated, admin_instance_id, skip_on_emulator,
 ):
     alt_cluster_id = f"{admin_instance_id}-c2"
     alt_location_id = "us-central1-f"
@@ -594,7 +596,7 @@ def test_cluster_update(
     admin_cluster_id,
     admin_cluster,
     serve_nodes,
-    not_in_emulator,
+    skip_on_emulator,
 ):
     new_serve_nodes = 4
 

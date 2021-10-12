@@ -210,7 +210,7 @@ def test_rowset_add_row_range_w_pfx(data_table, rows_to_delete):
     assert found_row_keys == expected_row_keys
 
 
-def test_table_read_row_large_cell(data_table, rows_to_delete, not_in_emulator):
+def test_table_read_row_large_cell(data_table, rows_to_delete, skip_on_emulator):
     # Maximum gRPC received message size for emulator is 4194304 bytes.
     row = data_table.direct_row(ROW_KEY)
     rows_to_delete.append(row)
@@ -325,7 +325,7 @@ def test_table_read_rows(data_table, rows_to_delete):
     assert rows_data.rows == expected_rows
 
 
-def test_read_with_label_applied(data_table, rows_to_delete, not_in_emulator):
+def test_read_with_label_applied(data_table, rows_to_delete, skip_on_emulator):
     from google.cloud.bigtable.row_filters import ApplyLabelFilter
     from google.cloud.bigtable.row_filters import ColumnQualifierRegexFilter
     from google.cloud.bigtable.row_filters import RowFilterChain

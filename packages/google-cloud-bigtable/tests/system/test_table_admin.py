@@ -57,7 +57,7 @@ def backups_to_delete():
         backup.delete()
 
 
-def test_instance_list_tables(data_instance_populated, shared_table):
+def test_instance_list_tables(data_instance_populated, shared_table, skip_on_emulator):
     # Since `data_instance_populated` is newly created, the
     # table created in `shared_table` here will be the only one.
     tables = data_instance_populated.list_tables()
@@ -115,7 +115,7 @@ def test_table_create_w_families(
 
 
 def test_table_create_w_split_keys(
-    data_instance_populated, tables_to_delete, not_in_emulator,
+    data_instance_populated, tables_to_delete, skip_on_emulator
 ):
     temp_table_id = "foo-bar-baz-split-table"
     initial_split_keys = [b"split_key_1", b"split_key_10", b"split_key_20"]
@@ -203,7 +203,7 @@ def test_column_family_delete(data_instance_populated, tables_to_delete):
 
 
 def test_table_get_iam_policy(
-    data_instance_populated, tables_to_delete, not_in_emulator,
+    data_instance_populated, tables_to_delete, skip_on_emulator
 ):
     temp_table_id = "test-get-iam-policy-table"
     temp_table = data_instance_populated.table(temp_table_id)
@@ -216,7 +216,7 @@ def test_table_get_iam_policy(
 
 
 def test_table_set_iam_policy(
-    service_account, data_instance_populated, tables_to_delete, not_in_emulator,
+    service_account, data_instance_populated, tables_to_delete, skip_on_emulator
 ):
     from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
     from google.cloud.bigtable.policy import Policy
@@ -236,7 +236,7 @@ def test_table_set_iam_policy(
 
 
 def test_table_test_iam_permissions(
-    data_instance_populated, tables_to_delete, not_in_emulator,
+    data_instance_populated, tables_to_delete, skip_on_emulator,
 ):
     temp_table_id = "test-test-iam-policy-table"
     temp_table = data_instance_populated.table(temp_table_id)
@@ -258,7 +258,7 @@ def test_table_backup(
     instances_to_delete,
     tables_to_delete,
     backups_to_delete,
-    not_in_emulator,
+    skip_on_emulator,
 ):
     from google.cloud._helpers import _datetime_to_pb_timestamp
     from google.cloud.bigtable import enums
