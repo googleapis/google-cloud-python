@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-org-policy/compare/v1.0.2...v1.1.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#92](https://www.github.com/googleapis/python-org-policy/issues/92)) ([c12c571](https://www.github.com/googleapis/python-org-policy/commit/c12c571606cb7f6467479d7f3ddf7fd4f44dbbee))
+
+
+### Bug Fixes
+
+* improper types in pagers generation ([3254812](https://www.github.com/googleapis/python-org-policy/commit/3254812ce2adeb32fe44536c3859c44756bd0c89))
+
 ### [1.0.2](https://www.github.com/googleapis/python-org-policy/compare/v1.0.1...v1.0.2) (2021-09-24)
 
 
