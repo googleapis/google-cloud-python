@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.5...v0.2.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#44](https://www.github.com/googleapis/python-appengine-logging/issues/44)) ([9d23c02](https://www.github.com/googleapis/python-appengine-logging/commit/9d23c02d043cf4c569e445eb13db5f78207fbaa7))
+
 ### [0.1.5](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.4...v0.1.5) (2021-09-24)
 
 
