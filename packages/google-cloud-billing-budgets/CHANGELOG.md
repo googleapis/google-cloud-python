@@ -1,4 +1,12 @@
 # Changelog
+## [1.5.0](https://www.github.com/googleapis/python-billingbudgets/compare/v1.4.4...v1.5.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#145](https://www.github.com/googleapis/python-billingbudgets/issues/145)) ([e8f1dc0](https://www.github.com/googleapis/python-billingbudgets/commit/e8f1dc09a5b932f00bc279d8510aa5518d68b98b))
+* add trove classifier for python 3.10 ([#149](https://www.github.com/googleapis/python-billingbudgets/issues/149)) ([b75cf0c](https://www.github.com/googleapis/python-billingbudgets/commit/b75cf0ca43929d6339647aa99e02ecc6e7f25c5c))
+
 ### [1.4.4](https://www.github.com/googleapis/python-billingbudgets/compare/v1.4.3...v1.4.4) (2021-10-04)
 
 
