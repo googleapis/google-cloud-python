@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.7.0](https://www.github.com/googleapis/python-asset/compare/v3.6.1...v3.7.0) (2021-10-12)
+
+
+### Features
+
+* add context manager support in client ([#314](https://www.github.com/googleapis/python-asset/issues/314)) ([659db45](https://www.github.com/googleapis/python-asset/commit/659db456ff6cc7a09fffd83479b2b43d5905239f))
+
 ### [3.6.1](https://www.github.com/googleapis/python-asset/compare/v3.6.0...v3.6.1) (2021-09-30)
 
 
