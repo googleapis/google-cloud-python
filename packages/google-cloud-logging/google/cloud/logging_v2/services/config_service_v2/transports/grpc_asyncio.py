@@ -915,5 +915,8 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             )
         return self._stubs["update_cmek_settings"]
 
+    def close(self):
+        return self.grpc_channel.close()
+
 
 __all__ = ("ConfigServiceV2GrpcAsyncIOTransport",)

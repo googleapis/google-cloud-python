@@ -358,5 +358,8 @@ class MetricsServiceV2GrpcTransport(MetricsServiceV2Transport):
             )
         return self._stubs["delete_log_metric"]
 
+    def close(self):
+        self.grpc_channel.close()
+
 
 __all__ = ("MetricsServiceV2GrpcTransport",)
