@@ -1,9 +1,12 @@
 # https://github.com/googleapis/repo-automation-bots/tree/main/packages/sync-repo-settings
+# Allow merge commits to sync main and v3 with fewer conflicts.
+mergeCommitAllowed: true
 # Rules for main branch protection
 branchProtectionRules:
 # Identifies the protection rule pattern. Name of the branch to be protected.
 # Defaults to `main`
 - pattern: main
+  requiresLinearHistory: true
   requiresCodeOwnerReviews: true
   requiresStrictStatusChecks: true
   requiredStatusCheckContexts:
@@ -15,6 +18,7 @@ branchProtectionRules:
     - 'Samples - Python 3.7'
     - 'Samples - Python 3.8'
 - pattern: v3
+  requiresLinearHistory: false
   requiresCodeOwnerReviews: true
   requiresStrictStatusChecks: true
   requiredStatusCheckContexts:
