@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://www.github.com/googleapis/python-analytics-admin/compare/v0.5.2...v0.6.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#146](https://www.github.com/googleapis/python-analytics-admin/issues/146)) ([f1559b6](https://www.github.com/googleapis/python-analytics-admin/commit/f1559b6074e75e453e0f3c6f32a21bfac487e562))
+
 ### [0.5.2](https://www.github.com/googleapis/python-analytics-admin/compare/v0.5.1...v0.5.2) (2021-10-07)
 
 
