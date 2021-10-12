@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.4...v0.3.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#51](https://www.github.com/googleapis/python-essential-contacts/issues/51)) ([87911bc](https://www.github.com/googleapis/python-essential-contacts/commit/87911bcb578511d49b1263fc4e3c1c74c328d59a))
+
 ### [0.2.4](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.3...v0.2.4) (2021-10-04)
 
 
