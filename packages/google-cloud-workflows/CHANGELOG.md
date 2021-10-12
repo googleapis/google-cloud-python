@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/googleapis/python-workflows/compare/v1.2.3...v1.3.0) (2021-10-08)
+
+
+### Features
+
+* add context manager support in client ([#102](https://www.github.com/googleapis/python-workflows/issues/102)) ([090c723](https://www.github.com/googleapis/python-workflows/commit/090c723e249c62fa29a519fd1aebdf205d12b03e))
+
 ### [1.2.3](https://www.github.com/googleapis/python-workflows/compare/v1.2.2...v1.2.3) (2021-09-30)
 
 
