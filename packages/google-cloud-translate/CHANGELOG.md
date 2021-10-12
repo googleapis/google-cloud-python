@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.5.0](https://www.github.com/googleapis/python-translate/compare/v3.4.1...v3.5.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#267](https://www.github.com/googleapis/python-translate/issues/267)) ([6e750e8](https://www.github.com/googleapis/python-translate/commit/6e750e8d655cc6ae7967ff5e105b6f64dd05c4c3))
+
+
+### Bug Fixes
+
+* [#254](https://www.github.com/googleapis/python-translate/issues/254) by increasing timeout, use backoff module instead of flaky ([#271](https://www.github.com/googleapis/python-translate/issues/271)) ([0cff0f2](https://www.github.com/googleapis/python-translate/commit/0cff0f2d6c1a6509f03e18a5a3dbd8377f864b27))
+
 ### [3.4.1](https://www.github.com/googleapis/python-translate/compare/v3.4.0...v3.4.1) (2021-09-30)
 
 
