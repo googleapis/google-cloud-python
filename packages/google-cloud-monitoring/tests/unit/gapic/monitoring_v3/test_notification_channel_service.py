@@ -45,6 +45,7 @@ from google.cloud.monitoring_v3.services.notification_channel_service import tra
 from google.cloud.monitoring_v3.services.notification_channel_service.transports.base import (
     _GOOGLE_AUTH_VERSION,
 )
+from google.cloud.monitoring_v3.types import common
 from google.cloud.monitoring_v3.types import mutation_record
 from google.cloud.monitoring_v3.types import notification
 from google.cloud.monitoring_v3.types import notification_service
@@ -987,6 +988,7 @@ def test_get_notification_channel_descriptor(
             type_="type__value",
             display_name="display_name_value",
             description="description_value",
+            supported_tiers=[common.ServiceTier.SERVICE_TIER_BASIC],
         )
         response = client.get_notification_channel_descriptor(request)
 
@@ -1001,6 +1003,7 @@ def test_get_notification_channel_descriptor(
     assert response.type_ == "type__value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.supported_tiers == [common.ServiceTier.SERVICE_TIER_BASIC]
 
 
 def test_get_notification_channel_descriptor_from_dict():
@@ -1048,6 +1051,7 @@ async def test_get_notification_channel_descriptor_async(
                 type_="type__value",
                 display_name="display_name_value",
                 description="description_value",
+                supported_tiers=[common.ServiceTier.SERVICE_TIER_BASIC],
             )
         )
         response = await client.get_notification_channel_descriptor(request)
@@ -1063,6 +1067,7 @@ async def test_get_notification_channel_descriptor_async(
     assert response.type_ == "type__value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
+    assert response.supported_tiers == [common.ServiceTier.SERVICE_TIER_BASIC]
 
 
 @pytest.mark.asyncio

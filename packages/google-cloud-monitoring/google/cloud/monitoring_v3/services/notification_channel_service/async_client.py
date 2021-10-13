@@ -29,6 +29,7 @@ from google.oauth2 import service_account  # type: ignore
 from google.api import label_pb2  # type: ignore
 from google.api import launch_stage_pb2  # type: ignore
 from google.cloud.monitoring_v3.services.notification_channel_service import pagers
+from google.cloud.monitoring_v3.types import common
 from google.cloud.monitoring_v3.types import mutation_record
 from google.cloud.monitoring_v3.types import notification
 from google.cloud.monitoring_v3.types import notification_service

@@ -22,7 +22,13 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.monitoring.v3",
-    manifest={"ComparisonType", "TypedValue", "TimeInterval", "Aggregation",},
+    manifest={
+        "ComparisonType",
+        "ServiceTier",
+        "TypedValue",
+        "TimeInterval",
+        "Aggregation",
+    },
 )
 
 
@@ -37,6 +43,17 @@ class ComparisonType(proto.Enum):
     COMPARISON_LE = 4
     COMPARISON_EQ = 5
     COMPARISON_NE = 6
+
+
+class ServiceTier(proto.Enum):
+    r"""The tier of service for a Workspace. Please see the `service tiers
+    documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__
+    for more details.
+    """
+    _pb_options = {"deprecated": True}
+    SERVICE_TIER_UNSPECIFIED = 0
+    SERVICE_TIER_BASIC = 1
+    SERVICE_TIER_PREMIUM = 2
 
 
 class TypedValue(proto.Message):

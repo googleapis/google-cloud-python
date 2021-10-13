@@ -40,6 +40,7 @@ from .types.common import Aggregation
 from .types.common import TimeInterval
 from .types.common import TypedValue
 from .types.common import ComparisonType
+from .types.common import ServiceTier
 from .types.dropped_labels import DroppedLabels
 from .types.group import Group
 from .types.group_service import CreateGroupRequest
@@ -215,6 +216,7 @@ __all__ = (
     "ServiceLevelIndicator",
     "ServiceLevelObjective",
     "ServiceMonitoringServiceClient",
+    "ServiceTier",
     "SpanContext",
     "TextLocator",
     "TimeInterval",
