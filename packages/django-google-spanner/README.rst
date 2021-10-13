@@ -260,4 +260,4 @@ LIMITATIONS
 Spanner has certain limitations of it's own and a full set of limitations are documented over `here <https://cloud.google.com/spanner/quotas#schema_limits>`_
 It is recommended that you go through that list.
 
-Django spanner has a set of limitations as well, please go through the `list <https://googleapis.dev/python/django-google-spanner/latest/limitations.html>`_.
+Django spanner has a set of limitations as well, please go through the `list <https://github.com/googleapis/python-spanner-django/blob/main/docs/limitations.rst>`_.

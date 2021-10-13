@@ -41,6 +41,10 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
     sql_alter_column_type = "ALTER COLUMN %(column)s %(type)s"
 
     sql_delete_column = "ALTER TABLE %(table)s DROP COLUMN %(column)s"
+    # Spanner does not suppport ON DELETE CASCADE for foreign keys.
+    # This can cause failures in django, hence sql_create_inline_fk is disabled.
+    # sql_create_inline_fk = "CONSTRAINT FK_%(to_table)s_%(to_column)s_%(from_table)s_%(from_column)s FOREIGN KEY (%(from_column_norm)s) REFERENCES %(to_table_norm)s  (%(to_column_norm)s)"  # noqa
+    sql_create_inline_fk = None
 
     def create_model(self, model):
         """
@@ -77,14 +81,21 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             params.extend(extra_params)
             # FK
             if field.remote_field and field.db_constraint:
+                from_table = field.model._meta.db_table
+                from_column = field.column
                 to_table = field.remote_field.model._meta.db_table
                 to_column = field.remote_field.model._meta.get_field(
                     field.remote_field.field_name
                 ).column
                 if self.sql_create_inline_fk:
-                    definition += " " + self.sql_create_inline_fk % {
-                        "to_table": self.quote_name(to_table),
-                        "to_column": self.quote_name(to_column),
+                    definition += ", " + self.sql_create_inline_fk % {
+                        "from_table": from_table,
+                        "from_column": from_column,
+                        "to_table": to_table,
+                        "to_column": to_column,
+                        "from_column_norm": self.quote_name(from_column),
+                        "to_table_norm": self.quote_name(to_table),
+                        "to_column_norm": self.quote_name(to_column),
                     }
                 elif self.connection.features.supports_foreign_keys:
                     self.deferred_sql.append(

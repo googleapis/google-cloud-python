@@ -61,11 +61,12 @@ class DatabaseFeatures(BaseDatabaseFeatures):
 
     # Django tests that aren't supported by Spanner.
     skip_tests = (
-        # No foreign key constraints in Spanner.
+        # Spanner does not support very long FK name: 400 Foreign Key name not valid
         "backends.tests.FkConstraintsTests.test_check_constraints",
+        # No foreign key ON DELETE CASCADE in Spanner.
+        "fixtures_regress.tests.TestFixtures.test_loaddata_raises_error_when_fixture_has_invalid_foreign_key",
         # Spanner does not support empty list of DML statement.
         "backends.tests.BackendTestCase.test_cursor_executemany_with_empty_params_list",
-        "fixtures_regress.tests.TestFixtures.test_loaddata_raises_error_when_fixture_has_invalid_foreign_key",
         # No Django transaction management in Spanner.
         "basic.tests.SelectOnSaveTests.test_select_on_save_lying_update",
         # django_spanner monkey patches AutoField to have a default value.
@@ -119,6 +120,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "validation.test_validators.TestModelsWithValidators.test_custom_validator_raises_error_for_incorrect_value",
         "validation.test_validators.TestModelsWithValidators.test_field_validators_can_be_any_iterable",
         # Tests that assume a serial pk.
+        "servers.tests.LiveServerDatabase.test_fixtures_loaded",
         "admin_filters.tests.ListFiltersTests.test_booleanfieldlistfilter_nullbooleanfield",
         "admin_filters.tests.ListFiltersTests.test_booleanfieldlistfilter_tuple",
         "admin_filters.tests.ListFiltersTests.test_booleanfieldlistfilter",
@@ -283,12 +285,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "transaction_hooks.tests.TestConnectionOnCommit.test_inner_savepoint_does_not_affect_outer",
         # No sequence for AutoField in Spanner.
         "introspection.tests.IntrospectionTests.test_sequence_list",
-        # DatabaseIntrospection.get_key_columns() is only required if this
-        # backend needs it (which it currently doesn't).
-        "introspection.tests.IntrospectionTests.test_get_key_columns",
-        # DatabaseIntrospection.get_relations() isn't implemented:
-        # https://github.com/googleapis/python-spanner-django/issues/311
-        "introspection.tests.IntrospectionTests.test_get_relations",
         # pyformat parameters not supported on INSERT:
         # https://github.com/googleapis/python-spanner-django/issues/343
         "backends.tests.BackendTestCase.test_cursor_execute_with_pyformat",
@@ -375,19 +371,15 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "model_forms.tests.UniqueTest.test_override_unique_together_message",
         # os.chmod() doesn't work on Kokoro?
         "file_uploads.tests.DirectoryCreationTests.test_readonly_root",
-        # Tests that sometimes fail on Kokoro for unknown reasons.
+        # Failing on kokoro but passes locally. Issue: Multiple queries executed expected 1.
         "contenttypes_tests.test_models.ContentTypesTests.test_cache_not_shared_between_managers",
-        "migration_test_data_persistence.tests.MigrationDataNormalPersistenceTestCase.test_persistence",
-        "servers.test_liveserverthread.LiveServerThreadTest.test_closes_connections",
-        "servers.tests.LiveServerDatabase.test_fixtures_loaded",
-        "view_tests.tests.test_csrf.CsrfViewTests.test_no_cookies",
-        "view_tests.tests.test_csrf.CsrfViewTests.test_no_referer",
-        "view_tests.tests.test_i18n.SetLanguageTests.test_lang_from_translated_i18n_pattern",
     )
     if USING_DJANGO_3:
         skip_tests += (
             # Spanner does not support UUID field natively
             "model_fields.test_uuid.TestQuerying.test_iexact",
+            # Spanner does not support very long FK name: 400 Foreign Key name not valid
+            "backends.tests.FkConstraintsTests.test_check_constraints_sql_keywords",
             # Spanner does not support setting a default value on columns.
             "schema.tests.SchemaTests.test_alter_text_field_to_not_null_with_default_value",
             # Direct SQL query test that do not follow spanner syntax.
@@ -452,8 +444,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
             # Spanner does not support SELECTing an arbitrary expression that also
             # appears in the GROUP BY clause.
             "annotations.tests.NonAggregateAnnotationTestCase.test_grouping_by_q_expression_annotation",
-            # No foreign key constraints in Spanner.
-            "backends.tests.FkConstraintsTests.test_check_constraints_sql_keywords",
             # No Django transaction management in Spanner.
             "transactions.tests.DisableDurabiltityCheckTests.test_nested_both_durable",
             "transactions.tests.DisableDurabiltityCheckTests.test_nested_inner_durable",
@@ -489,9 +479,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
             "schema.tests.SchemaTests.test_ci_cs_db_collation",
             # Spanner limitation: Cannot rename tables and columns.
             "migrations.test_operations.OperationTests.test_rename_field_case",
-            # Tests that sometimes fail on Kokoro for unknown reasons.
-            "migrations.test_operations.OperationTests.test_add_constraint_combinable",
-            # Tests that fail but are not related to spanner.
+            # Warning is not raised, not related to spanner.
             "test_utils.test_testcase.TestDataTests.test_undeepcopyable_warning",
         )
     else:

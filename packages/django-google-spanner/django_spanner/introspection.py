@@ -150,11 +150,6 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
         """Return a dictionary of {field_name: (field_name_other_table, other_table)}
         representing all the relationships in the table.
 
-        TODO: DO NOT USE THIS METHOD UNTIL
-            https://github.com/googleapis/python-spanner-django/issues/313
-         is resolved so that foreign keys can be supported, as documented in:
-            https://github.com/googleapis/python-spanner-django/issues/311
-
         :type cursor: :class:`~google.cloud.spanner_dbapi.cursor.Cursor`
         :param cursor: A reference to a Spanner Database cursor.
 
@@ -348,3 +343,33 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
             constraints[index_name]["unique"] = is_unique
 
         return constraints
+
+    def get_key_columns(self, cursor, table_name):
+        """
+        Return a list of (column_name, referenced_table, referenced_column)
+        for all key columns in the given table.
+        """
+        key_columns = []
+        cursor.execute(
+            """SELECT
+                tc.COLUMN_NAME as column_name,
+                ccu.TABLE_NAME as referenced_table,
+                ccu.COLUMN_NAME as referenced_column
+            from
+                INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS tc
+            JOIN
+                INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS as rc
+            ON
+                tc.CONSTRAINT_NAME = rc.CONSTRAINT_NAME
+            JOIN
+                INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE as ccu
+            ON
+                rc.CONSTRAINT_NAME = ccu.CONSTRAINT_NAME
+            WHERE
+                tc.TABLE_NAME="{table}"
+            """.format(
+                table=self.connection.ops.quote_name(table_name)
+            )
+        )
+        key_columns.extend(cursor.fetchall())
+        return key_columns
