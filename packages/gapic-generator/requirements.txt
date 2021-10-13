@@ -5,5 +5,5 @@ jinja2==3.0.2
 MarkupSafe==2.0.1
 protobuf==3.18.1
 pypandoc==1.6.4
-PyYAML==5.4.1
+PyYAML==6.0
 dataclasses==0.6  # TODO(busunkim) remove when 3.6 support is dropped
