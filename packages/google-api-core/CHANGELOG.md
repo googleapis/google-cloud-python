@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [2.1.1](https://www.github.com/googleapis/python-api-core/compare/v2.1.0...v2.1.1) (2021-10-13)
+
+
+### Bug Fixes
+
+* add mypy checking + 'py.typed' file ([#290](https://www.github.com/googleapis/python-api-core/issues/290)) ([0023ee1](https://www.github.com/googleapis/python-api-core/commit/0023ee1fe0e8b80c7a9e8987e0f322a829e5d613))
+
 ## [2.1.0](https://www.github.com/googleapis/python-api-core/compare/v2.0.1...v2.1.0) (2021-10-05)
 
 
