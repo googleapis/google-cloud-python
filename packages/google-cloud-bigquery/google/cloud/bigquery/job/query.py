@@ -1318,6 +1318,8 @@ class QueryJob(_AsyncJob):
                 If Non-``None`` and non-default ``job_retry`` is
                 provided and the job is not retryable.
         """
+        if self.dry_run:
+            return _EmptyRowIterator()
         try:
             retry_do_query = getattr(self, "_retry_do_query", None)
             if retry_do_query is not None:
