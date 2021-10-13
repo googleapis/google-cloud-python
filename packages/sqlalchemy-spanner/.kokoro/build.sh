@@ -21,16 +21,27 @@ export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
 export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 export GOOGLE_CLOUD_PROJECT=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 
-export RUNNING_SPANNER_BACKEND_TESTS=1
+# Remove old nox
+python3 -m pip uninstall --yes --quiet nox-automation
 
-if [[ $KOKORO_JOB_NAME == *"docs"* ]]
-then
-    echo "Running docs generation."
-    # Remove old nox
-    python3 -m pip uninstall --yes --quiet nox-automation
+# Install nox
+python3 -m pip install --upgrade --quiet nox
+python3 -m nox --version
 
-    # Install nox
-    python3 -m pip install --upgrade --quiet nox
-    # Generate docs.
-    python3 -m nox -s docs docfx
+# If this is a continuous build, send the test log to the FlakyBot.
+# See https://github.com/googleapis/repo-automation-bots/tree/main/packages/flakybot.
+if [[ $KOKORO_BUILD_ARTIFACTS_SUBDIR = *"continuous"* ]]; then
+  cleanup() {
+    chmod +x $KOKORO_GFILE_DIR/linux_amd64/flakybot
+    $KOKORO_GFILE_DIR/linux_amd64/flakybot
+  }
+  trap cleanup EXIT HUP
+fi
+
+# If NOX_SESSION is set, it only runs the specified session,
+# otherwise run all the sessions.
+if [[ -n "${NOX_SESSION:-}" ]]; then
+    python3 -m nox -s ${NOX_SESSION:-}
+else
+    python3 -m nox
 fi
