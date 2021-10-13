@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-gke-connect-gateway/compare/v0.2.3...v0.3.0) (2021-10-09)
+
+
+### Features
+
+* add context manager support in client ([#40](https://www.github.com/googleapis/python-gke-connect-gateway/issues/40)) ([862692a](https://www.github.com/googleapis/python-gke-connect-gateway/commit/862692a5685744827c49fa68d7375ad04cdf63b0))
+
 ### [0.2.3](https://www.github.com/googleapis/python-gke-connect-gateway/compare/v0.2.2...v0.2.3) (2021-09-24)
 
 
