@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.10.0](https://www.github.com/googleapis/python-container/compare/v2.9.0...v2.10.0) (2021-10-13)
+
+
+### Features
+
+* add support for python 3.10 ([#160](https://www.github.com/googleapis/python-container/issues/160)) ([ab146a5](https://www.github.com/googleapis/python-container/commit/ab146a5017805ec200dab2b74e025de0c647d742))
+
 ## [2.9.0](https://www.github.com/googleapis/python-container/compare/v2.8.1...v2.9.0) (2021-10-08)
 
 
