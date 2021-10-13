@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.2.0...v1.3.0) (2021-10-13)
+
+
+### Features
+
+* add support for python 3.10 ([#86](https://www.github.com/googleapis/python-dataproc-metastore/issues/86)) ([1ef7b30](https://www.github.com/googleapis/python-dataproc-metastore/commit/1ef7b30871217713eb7be9294044ebe5fa72909a))
+
 ## [1.2.0](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.1.2...v1.2.0) (2021-10-08)
 
 
