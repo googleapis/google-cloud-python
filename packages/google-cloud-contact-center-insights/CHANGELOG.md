@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.5.0...v0.6.0) (2021-10-11)
+
+
+### Features
+
+* add context manager support in client ([#70](https://www.github.com/googleapis/python-contact-center-insights/issues/70)) ([f90696e](https://www.github.com/googleapis/python-contact-center-insights/commit/f90696eb4108ed2c7b917d82116fae03442d2e3a))
+
 ## [0.5.0](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.4.0...v0.5.0) (2021-10-04)
 
 
