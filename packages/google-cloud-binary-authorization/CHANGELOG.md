@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://www.github.com/googleapis/python-binary-authorization/compare/v0.5.0...v0.6.0) (2021-10-13)
+
+
+### Features
+
+* add trove classifier for python 3.9 and python 3.10 ([#87](https://www.github.com/googleapis/python-binary-authorization/issues/87)) ([73acd98](https://www.github.com/googleapis/python-binary-authorization/commit/73acd98ae81bf43591f7599e70e7f1b264eafceb))
+
 ## [0.5.0](https://www.github.com/googleapis/python-binary-authorization/compare/v0.4.1...v0.5.0) (2021-10-08)
 
 
