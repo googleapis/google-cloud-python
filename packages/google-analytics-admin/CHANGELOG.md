@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://www.github.com/googleapis/python-analytics-admin/compare/v0.6.0...v0.7.0) (2021-10-12)
+
+
+### Features
+
+* add support for python 3.10 ([#150](https://www.github.com/googleapis/python-analytics-admin/issues/150)) ([f6d2033](https://www.github.com/googleapis/python-analytics-admin/commit/f6d2033e054e0c13e1134e95ec822a93bf227798))
+
 ## [0.6.0](https://www.github.com/googleapis/python-analytics-admin/compare/v0.5.2...v0.6.0) (2021-10-08)
 
 
