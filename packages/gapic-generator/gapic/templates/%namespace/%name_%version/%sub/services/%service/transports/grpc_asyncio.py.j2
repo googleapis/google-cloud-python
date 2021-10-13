@@ -155,7 +155,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
         {% if service.has_lro %}
-        self._operations_client = None
+        self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
         {% endif %}
 
         if api_mtls_endpoint:

@@ -10,8 +10,10 @@ from google.api_core import path_template         # type: ignore
 from google.api_core import gapic_v1       # type: ignore
 from google.api_core import operations_v1
 from requests import __version__ as requests_version
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+
+OptionalRetry = Union[retries.Retry, object]
 {% extends '_base.py.j2' %}
 
 {% block content %}
@@ -153,7 +155,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
     {%- if method.http_options and not method.lro and not (method.server_streaming or method.client_streaming) %}
     def _{{method.name | snake_case}}(self,
             request: {{method.input.ident}}, *,
-            retry: retries.Retry=gapic_v1.method.DEFAULT,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
             timeout: float=None,
             metadata: Sequence[Tuple[str, str]]=(),
             ) -> {{method.output.ident}}:

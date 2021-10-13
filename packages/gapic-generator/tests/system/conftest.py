@@ -19,7 +19,7 @@ import mock
 import os
 import pytest
 
-import google.api_core.client_options as ClientOptions
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.auth import credentials
 from google.showcase import EchoClient
 from google.showcase import IdentityClient
@@ -77,7 +77,7 @@ def callback():
     return cert, key
 
 
-client_options = ClientOptions.ClientOptions()
+client_options = ClientOptions()
 client_options.client_cert_source = callback
 
 

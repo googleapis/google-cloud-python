@@ -22,6 +22,8 @@ from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 {% filter sort_lines %}
 {% for method in service.methods.values() %}
 {% for ref_type in method.flat_ref_types %}
@@ -322,7 +324,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             requests: Iterator[{{ method.input.ident }}] = None,
             *,
             {% endif %}
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             {% if not method.server_streaming %}
@@ -495,7 +497,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         self,
         request: iam_policy_pb2.SetIamPolicyRequest = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -605,7 +607,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         self,
         request: iam_policy_pb2.GetIamPolicyRequest = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -716,7 +718,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:

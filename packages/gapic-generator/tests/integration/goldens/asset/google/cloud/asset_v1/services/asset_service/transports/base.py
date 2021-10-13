@@ -269,7 +269,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
         raise NotImplementedError()
 
     @property
-    def operations_client(self) -> operations_v1.OperationsClient:
+    def operations_client(self):
         """Return the client designed to process long-running operations."""
         raise NotImplementedError()
 

@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions # type: ignore
+from google.api_core.client_options import ClientOptions # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1                   # type: ignore
 from google.api_core import retry as retries           # type: ignore
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.iam.credentials_v1.types import common
 from google.protobuf import duration_pb2  # type: ignore
@@ -162,7 +164,7 @@ class IAMCredentialsAsyncClient:
             delegates: Sequence[str] = None,
             scope: Sequence[str] = None,
             lifetime: duration_pb2.Duration = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.GenerateAccessTokenResponse:
@@ -295,7 +297,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             delegates: Sequence[str] = None,
             audience: str = None,
             include_email: bool = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.GenerateIdTokenResponse:
@@ -421,7 +423,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             name: str = None,
             delegates: Sequence[str] = None,
             payload: bytes = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.SignBlobResponse:
@@ -534,7 +536,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             name: str = None,
             delegates: Sequence[str] = None,
             payload: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> common.SignJwtResponse:

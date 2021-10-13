@@ -205,7 +205,7 @@ class CloudRedisTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def operations_client(self) -> operations_v1.OperationsClient:
+    def operations_client(self):
         """Return the client designed to process long-running operations."""
         raise NotImplementedError()
 

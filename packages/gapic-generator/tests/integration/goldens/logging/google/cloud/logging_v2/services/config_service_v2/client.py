@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.logging_v2.services.config_service_v2 import pagers
 from google.cloud.logging_v2.types import logging_config
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -382,7 +384,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             request: Union[logging_config.ListBucketsRequest, dict] = None,
             *,
             parent: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListBucketsPager:
@@ -477,7 +479,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
     def get_bucket(self,
             request: Union[logging_config.GetBucketRequest, dict] = None,
             *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogBucket:
@@ -530,7 +532,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
     def create_bucket(self,
             request: Union[logging_config.CreateBucketRequest, dict] = None,
             *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogBucket:
@@ -585,7 +587,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
     def update_bucket(self,
             request: Union[logging_config.UpdateBucketRequest, dict] = None,
             *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogBucket:
@@ -648,7 +650,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
     def delete_bucket(self,
             request: Union[logging_config.DeleteBucketRequest, dict] = None,
             *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> None:
@@ -696,7 +698,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
     def undelete_bucket(self,
             request: Union[logging_config.UndeleteBucketRequest, dict] = None,
             *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> None:
@@ -744,7 +746,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             request: Union[logging_config.ListViewsRequest, dict] = None,
             *,
             parent: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListViewsPager:
@@ -831,7 +833,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
     def get_view(self,
             request: Union[logging_config.GetViewRequest, dict] = None,
             *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogView:
@@ -886,7 +888,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
     def create_view(self,
             request: Union[logging_config.CreateViewRequest, dict] = None,
             *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogView:
@@ -942,7 +944,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
     def update_view(self,
             request: Union[logging_config.UpdateViewRequest, dict] = None,
             *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogView:
@@ -998,7 +1000,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
     def delete_view(self,
             request: Union[logging_config.DeleteViewRequest, dict] = None,
             *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> None:
@@ -1045,7 +1047,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             request: Union[logging_config.ListSinksRequest, dict] = None,
             *,
             parent: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListSinksPager:
@@ -1137,7 +1139,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             request: Union[logging_config.GetSinkRequest, dict] = None,
             *,
             sink_name: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogSink:
@@ -1227,7 +1229,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             *,
             parent: str = None,
             sink: logging_config.LogSink = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogSink:
@@ -1332,7 +1334,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             sink_name: str = None,
             sink: logging_config.LogSink = None,
             update_mask: field_mask_pb2.FieldMask = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogSink:
@@ -1458,7 +1460,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             request: Union[logging_config.DeleteSinkRequest, dict] = None,
             *,
             sink_name: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> None:
@@ -1533,7 +1535,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             request: Union[logging_config.ListExclusionsRequest, dict] = None,
             *,
             parent: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListExclusionsPager:
@@ -1625,7 +1627,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             request: Union[logging_config.GetExclusionRequest, dict] = None,
             *,
             name: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogExclusion:
@@ -1718,7 +1720,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             *,
             parent: str = None,
             exclusion: logging_config.LogExclusion = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogExclusion:
@@ -1826,7 +1828,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             name: str = None,
             exclusion: logging_config.LogExclusion = None,
             update_mask: field_mask_pb2.FieldMask = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogExclusion:
@@ -1945,7 +1947,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             request: Union[logging_config.DeleteExclusionRequest, dict] = None,
             *,
             name: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> None:
@@ -2019,7 +2021,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
     def get_cmek_settings(self,
             request: Union[logging_config.GetCmekSettingsRequest, dict] = None,
             *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.CmekSettings:
@@ -2096,7 +2098,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
     def update_cmek_settings(self,
             request: Union[logging_config.UpdateCmekSettingsRequest, dict] = None,
             *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.CmekSettings:
