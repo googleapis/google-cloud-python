@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.10.5](https://www.github.com/googleapis/python-ndb/compare/v1.10.4...v1.10.5) (2021-10-08)
+
+
+### Bug Fixes
+
+* correct regression in `Model.get_or_insert` ([#731](https://www.github.com/googleapis/python-ndb/issues/731)) ([921ec69](https://www.github.com/googleapis/python-ndb/commit/921ec695e246e548f207b0c6aded7296e4b3b263)), closes [#729](https://www.github.com/googleapis/python-ndb/issues/729)
+
 ### [1.10.4](https://www.github.com/googleapis/python-ndb/compare/v1.10.3...v1.10.4) (2021-09-28)
 
 
