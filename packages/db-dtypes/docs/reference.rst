@@ -1,4 +1,4 @@
 API Reference
 ^^^^^^^^^^^^^
 
-.. automodule:: db_dtypes.version
+.. automodule:: db_dtypes

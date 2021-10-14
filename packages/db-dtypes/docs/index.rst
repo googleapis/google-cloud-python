@@ -1,5 +1,14 @@
 .. include:: README.rst
 
+How-to Guides
+-------------
+
+.. toctree::
+   :maxdepth: 2
+
+   usage
+
+
 API Reference
 -------------
 
