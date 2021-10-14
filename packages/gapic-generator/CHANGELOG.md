@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.53.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.53.0...v0.53.1) (2021-10-13)
+
+
+### Bug Fixes
+
+* use correct typing for retries / operations_client ([#1026](https://www.github.com/googleapis/gapic-generator-python/issues/1026)) ([acb3ea8](https://www.github.com/googleapis/gapic-generator-python/commit/acb3ea83becf6bf85c142739dede556cae2cebae))
+
 ## [0.53.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.52.0...v0.53.0) (2021-10-04)
 
 
