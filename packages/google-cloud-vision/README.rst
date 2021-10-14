@@ -108,6 +108,30 @@ Example Usage
      'features': [{'type_': vision.Feature.Type.FACE_DETECTION}]
    })
 
+Known Limitations
+~~~~~~~~~~~~~~~~~
+
+Pylint Does Not Work Out Of The Box
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Pylint throws errors by default when checking code that uses feature methods on the 
+``ImageAnnotatorClient`` class, such as ``label_detection()`` or ``text_detection()``.
+
+As a workaround, member checking on all methods of the ``ImageAnnotatorClient`` can be
+disabled using Pylint's ``generated-members`` option. To do this on a line-by-line basis,
+add a comment like ``# pylint: disable=no-member`` to suppress this error. To do this
+for a whole project, you can add the following lines to a ``.pylintrc`` file in your project::
+
+  [TYPECHECK]
+  
+  generated-members=<<REGULAR EXPRESSION>>
+
+Substitute a regular expression of your choosing that matches all lines for which you want to
+disable this error check. For example, if you choose a convention of naming your
+``ImageAnnotatorClient`` variables ``image_annotator_client``, then your regex could be
+``image_annotator_client.*`` or something similar.
+
+
 Next Steps
 ~~~~~~~~~~
 
