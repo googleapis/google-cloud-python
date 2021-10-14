@@ -29,11 +29,11 @@ In the hierarchy of API concepts
 """
 import os
 import warnings
-import grpc
+import grpc  # type: ignore
 
-from google.api_core.gapic_v1 import client_info
-import google.auth
-from google.auth.credentials import AnonymousCredentials
+from google.api_core.gapic_v1 import client_info as client_info_lib
+import google.auth  # type: ignore
+from google.auth.credentials import AnonymousCredentials  # type: ignore
 
 from google.cloud import bigtable_v2
 from google.cloud import bigtable_admin_v2
@@ -45,21 +45,20 @@ from google.cloud.bigtable_admin_v2.services.bigtable_table_admin.transports imp
     BigtableTableAdminGrpcTransport,
 )
 
-from google.cloud.bigtable import __version__
+from google.cloud import bigtable
 from google.cloud.bigtable.instance import Instance
 from google.cloud.bigtable.cluster import Cluster
 
-from google.cloud.client import ClientWithProject
+from google.cloud.client import ClientWithProject  # type: ignore
 
 from google.cloud.bigtable_admin_v2.types import instance
 from google.cloud.bigtable.cluster import _CLUSTER_NAME_RE
-from google.cloud.environment_vars import BIGTABLE_EMULATOR
+from google.cloud.environment_vars import BIGTABLE_EMULATOR  # type: ignore
 
 
 INSTANCE_TYPE_PRODUCTION = instance.Instance.Type.PRODUCTION
 INSTANCE_TYPE_DEVELOPMENT = instance.Instance.Type.DEVELOPMENT
 INSTANCE_TYPE_UNSPECIFIED = instance.Instance.Type.TYPE_UNSPECIFIED
-_CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 SPANNER_ADMIN_SCOPE = "https://www.googleapis.com/auth/spanner.admin"
 ADMIN_SCOPE = "https://www.googleapis.com/auth/bigtable.admin"
 """Scope for interacting with the Cluster Admin and Table Admin APIs."""
@@ -155,11 +154,15 @@ class Client(ClientWithProject):
         credentials=None,
         read_only=False,
         admin=False,
-        client_info=_CLIENT_INFO,
+        client_info=None,
         client_options=None,
         admin_client_options=None,
         channel=None,
     ):
+        if client_info is None:
+            client_info = client_info_lib.ClientInfo(
+                client_library_version=bigtable.__version__,
+            )
         if read_only and admin:
             raise ValueError(
                 "A read-only client cannot also perform" "administrative actions."

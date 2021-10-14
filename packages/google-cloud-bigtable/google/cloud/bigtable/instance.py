@@ -24,7 +24,7 @@ from google.protobuf import field_mask_pb2
 
 from google.cloud.bigtable_admin_v2.types import instance
 
-from google.iam.v1 import options_pb2
+from google.iam.v1 import options_pb2  # type: ignore
 
 from google.api_core.exceptions import NotFound
 

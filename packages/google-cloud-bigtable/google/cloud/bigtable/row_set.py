@@ -15,7 +15,7 @@
 """User-friendly container for Google Cloud Bigtable RowSet """
 
 
-from google.cloud._helpers import _to_bytes
+from google.cloud._helpers import _to_bytes  # type: ignore
 
 
 class RowSet(object):

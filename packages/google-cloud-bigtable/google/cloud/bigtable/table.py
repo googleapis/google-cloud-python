@@ -14,6 +14,7 @@
 
 """User-friendly container for Google Cloud Bigtable Table."""
 
+from typing import Set
 import warnings
 
 from google.api_core import timeout
@@ -25,7 +26,7 @@ from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.gapic_v1.method import DEFAULT
 from google.api_core.retry import if_exception_type
 from google.api_core.retry import Retry
-from google.cloud._helpers import _to_bytes
+from google.cloud._helpers import _to_bytes  # type: ignore
 from google.cloud.bigtable.backup import Backup
 from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
@@ -56,6 +57,12 @@ VIEW_NAME_ONLY = enums.Table.View.NAME_ONLY
 
 RETRYABLE_MUTATION_ERRORS = (Aborted, DeadlineExceeded, ServiceUnavailable)
 """Errors which can be retried during row mutation."""
+
+RETRYABLE_CODES: Set[int] = set()
+
+for retryable in RETRYABLE_MUTATION_ERRORS:
+    if retryable.grpc_status_code is not None:  # pragma: NO COVER
+        RETRYABLE_CODES.add(retryable.grpc_status_code.value[0])
 
 
 class _BigtableRetryableError(Exception):
@@ -1043,10 +1050,6 @@ class _RetryableMutateRowsWorker(object):
     are retryable, any subsequent call on this callable will be a no-op.
     """
 
-    RETRY_CODES = tuple(
-        retryable.grpc_status_code.value[0] for retryable in RETRYABLE_MUTATION_ERRORS
-    )
-
     def __init__(self, client, table_name, rows, app_profile_id=None, timeout=None):
         self.client = client
         self.table_name = table_name
@@ -1083,7 +1086,7 @@ class _RetryableMutateRowsWorker(object):
 
     @staticmethod
     def _is_retryable(status):
-        return status is None or status.code in _RetryableMutateRowsWorker.RETRY_CODES
+        return status is None or status.code in RETRYABLE_CODES
 
     def _do_mutate_retryable_rows(self):
         """Mutate all the rows that are eligible for retry.
@@ -1128,7 +1131,7 @@ class _RetryableMutateRowsWorker(object):
                 **kwargs
             )
         except RETRYABLE_MUTATION_ERRORS:
-            # If an exception, considered retryable by `RETRY_CODES`, is
+            # If an exception, considered retryable by `RETRYABLE_MUTATION_ERRORS`, is
             # returned from the initial call, consider
             # it to be retryable. Wrap as a Bigtable Retryable Error.
             raise _BigtableRetryableError

@@ -38,6 +38,7 @@ nox.options.sessions = [
     "unit",
     "system_emulated",
     "system",
+    "mypy",
     "cover",
     "lint",
     "lint_setup_py",
@@ -70,6 +71,15 @@ def blacken(session):
     session.run(
         "black", *BLACK_PATHS,
     )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy(session):
+    """Verify type hints are mypy compatible."""
+    session.install("-e", ".")
+    session.install("mypy", "types-setuptools")
+    # TODO: also verify types on tests, all of google package
+    session.run("mypy", "-p", "google.cloud.bigtable", "--no-incremental")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
