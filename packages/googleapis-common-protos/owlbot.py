@@ -79,11 +79,6 @@ s.move(templated_files / "setup.cfg")
 s.move(templated_files / "LICENSE")
 s.move(templated_files / ".github")
 
-# Remove the replacement below once https://github.com/googleapis/synthtool/pull/1188 is merged
-
-# Update googleapis/repo-automation-bots repo to main in .kokoro/*.sh files
-s.replace(".kokoro/*.sh", "repo-automation-bots/tree/master", "repo-automation-bots/tree/main")
-
 # Generate _pb2.py files and format them
 s.shell.run(["nox", "-s", "generate_protos"], hide_output=False)
 
