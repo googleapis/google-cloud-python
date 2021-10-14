@@ -269,25 +269,6 @@ class TestQueryJob(_Base):
         job = self._make_one(self.JOB_ID, self.QUERY, client, job_config=config)
         self.assertEqual(job.query_parameters, query_parameters)
 
-    def test_from_api_repr_missing_identity(self):
-        self._setUpConstants()
-        client = _make_client(project=self.PROJECT)
-        RESOURCE = {}
-        klass = self._get_target_class()
-        with self.assertRaises(KeyError):
-            klass.from_api_repr(RESOURCE, client=client)
-
-    def test_from_api_repr_missing_config(self):
-        self._setUpConstants()
-        client = _make_client(project=self.PROJECT)
-        RESOURCE = {
-            "id": "%s:%s" % (self.PROJECT, self.DS_ID),
-            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
-        }
-        klass = self._get_target_class()
-        with self.assertRaises(KeyError):
-            klass.from_api_repr(RESOURCE, client=client)
-
     def test_from_api_repr_bare(self):
         self._setUpConstants()
         client = _make_client(project=self.PROJECT)
@@ -1404,6 +1385,43 @@ class TestQueryJob(_Base):
         # Make sure that timeout errors get rebranded to concurrent futures timeout.
         with call_api_patch, self.assertRaises(concurrent.futures.TimeoutError):
             job.result(timeout=1)
+
+    def test_no_schema(self):
+        client = _make_client(project=self.PROJECT)
+        resource = {}
+        klass = self._get_target_class()
+        job = klass.from_api_repr(resource, client=client)
+        assert job.schema is None
+
+    def test_schema(self):
+        client = _make_client(project=self.PROJECT)
+        resource = {
+            "statistics": {
+                "query": {
+                    "schema": {
+                        "fields": [
+                            {"mode": "NULLABLE", "name": "bool_col", "type": "BOOLEAN"},
+                            {
+                                "mode": "NULLABLE",
+                                "name": "string_col",
+                                "type": "STRING",
+                            },
+                            {
+                                "mode": "NULLABLE",
+                                "name": "timestamp_col",
+                                "type": "TIMESTAMP",
+                            },
+                        ]
+                    },
+                },
+            },
+        }
+        klass = self._get_target_class()
+        job = klass.from_api_repr(resource, client=client)
+        assert len(job.schema) == 3
+        assert job.schema[0].field_type == "BOOLEAN"
+        assert job.schema[1].field_type == "STRING"
+        assert job.schema[2].field_type == "TIMESTAMP"
 
     def test__begin_error(self):
         from google.cloud import exceptions

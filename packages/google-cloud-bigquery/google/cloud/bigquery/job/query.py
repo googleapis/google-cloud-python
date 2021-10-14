@@ -18,7 +18,7 @@ import concurrent.futures
 import copy
 import re
 import typing
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from google.api_core import exceptions
 from google.api_core.future import polling as polling_future
@@ -38,6 +38,7 @@ from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.retry import DEFAULT_RETRY, DEFAULT_JOB_RETRY
 from google.cloud.bigquery.routine import RoutineReference
+from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _EmptyRowIterator
 from google.cloud.bigquery.table import RangePartitioning
 from google.cloud.bigquery.table import _table_arg_to_table_ref
@@ -57,6 +58,7 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
     import pyarrow
     from google.api_core import retry as retries
     from google.cloud import bigquery_storage
+    from google.cloud.bigquery.client import Client
     from google.cloud.bigquery.table import RowIterator
 
 
@@ -853,7 +855,7 @@ class QueryJob(_AsyncJob):
         }
 
     @classmethod
-    def from_api_repr(cls, resource: dict, client) -> "QueryJob":
+    def from_api_repr(cls, resource: dict, client: "Client") -> "QueryJob":
         """Factory:  construct a job given its API representation
 
         Args:
@@ -866,8 +868,10 @@ class QueryJob(_AsyncJob):
         Returns:
             google.cloud.bigquery.job.QueryJob: Job parsed from ``resource``.
         """
-        cls._check_resource_config(resource)
-        job_ref = _JobReference._from_api_repr(resource["jobReference"])
+        job_ref_properties = resource.setdefault(
+            "jobReference", {"projectId": client.project, "jobId": None}
+        )
+        job_ref = _JobReference._from_api_repr(job_ref_properties)
         job = cls(job_ref, None, client=client)
         job._set_properties(resource)
         return job
@@ -886,6 +890,18 @@ class QueryJob(_AsyncJob):
         """
         plan_entries = self._job_statistics().get("queryPlan", ())
         return [QueryPlanEntry.from_api_repr(entry) for entry in plan_entries]
+
+    @property
+    def schema(self) -> Optional[List[SchemaField]]:
+        """The schema of the results.
+
+        Present only for successful dry run of non-legacy SQL queries.
+        """
+        resource = self._job_statistics().get("schema")
+        if resource is None:
+            return None
+        fields = resource.get("fields", [])
+        return [SchemaField.from_api_repr(field) for field in fields]
 
     @property
     def timeline(self):

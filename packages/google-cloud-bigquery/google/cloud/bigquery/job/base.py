@@ -1005,7 +1005,9 @@ class UnknownJob(_AsyncJob):
         Returns:
             UnknownJob: Job corresponding to the resource.
         """
-        job_ref_properties = resource.get("jobReference", {"projectId": client.project})
+        job_ref_properties = resource.get(
+            "jobReference", {"projectId": client.project, "jobId": None}
+        )
         job_ref = _JobReference._from_api_repr(job_ref_properties)
         job = cls(job_ref, client)
         # Populate the job reference with the project, even if it has been
