@@ -11,7 +11,6 @@ API Reference
     iam_logging_v1/services
     iam_logging_v1/types
 
-
 Changelog
 ---------
 
