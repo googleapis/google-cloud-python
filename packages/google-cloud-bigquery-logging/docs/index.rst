@@ -2,6 +2,7 @@
 
 .. include:: multiprocessing.rst
 
+
 API Reference
 -------------
 .. toctree::
@@ -9,7 +10,6 @@ API Reference
 
     bigquery_logging_v1/services
     bigquery_logging_v1/types
-
 
 Changelog
 ---------
