@@ -124,7 +124,7 @@ def showcase_library(
         yield tmp_dir
 
 
-@nox.session(python="3.8")
+@nox.session(python="3.9")
 def showcase(
     session,
     templates="DEFAULT",
@@ -141,7 +141,7 @@ def showcase(
         )
 
 
-@nox.session(python="3.8")
+@nox.session(python="3.9")
 def showcase_mtls(
     session,
     templates="DEFAULT",
@@ -161,7 +161,7 @@ def showcase_mtls(
         )
 
 
-@nox.session(python="3.8")
+@nox.session(python="3.9")
 def showcase_alternative_templates(session):
     templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
     showcase(
@@ -172,7 +172,7 @@ def showcase_alternative_templates(session):
     )
 
 
-@nox.session(python="3.8")
+@nox.session(python="3.9")
 def showcase_mtls_alternative_templates(session):
     templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
     showcase_mtls(
@@ -225,7 +225,7 @@ def showcase_unit(
         # Some code paths require an older version of google-auth.
         # google-auth is a transitive dependency so it isn't in the
         # lower bound constraints file produced above.
-        session.install("google-auth==1.21.1")
+        session.install("google-auth==1.28.0")
         run_showcase_unit_tests(session, fail_under=0)
 
         # 2. Run the tests again with latest version of dependencies
@@ -240,31 +240,24 @@ def showcase_unit_alternative_templates(session):
         run_showcase_unit_tests(session)
 
 
-@nox.session(python=["3.8"])
+@nox.session(python=["3.9"])
 def showcase_unit_add_iam_methods(session):
     with showcase_library(session, other_opts=("add-iam-methods",)) as lib:
         session.chdir(lib)
 
-        # Unit tests are run twice with different dependencies to exercise
-        # all code paths.
-        # TODO(busunkim): remove when default templates require google-auth>=1.25.0
-
-        # 1. Run tests at lower bound of dependencies
+        # Unit tests are run twice with different dependencies.
+        # 1. Run tests at lower bound of dependencies.
         session.install("nox")
         session.run("nox", "-s", "update_lower_bounds")
         session.install(".", "--force-reinstall", "-c", "constraints.txt")
-        # Some code paths require an older version of google-auth.
-        # google-auth is a transitive dependency so it isn't in the
-        # lower bound constraints file produced above.
-        session.install("google-auth==1.21.1")
         run_showcase_unit_tests(session, fail_under=0)
 
-        # 2. Run the tests again with latest version of dependencies
+        # 2. Run the tests again with latest version of dependencies.
         session.install(".", "--upgrade", "--force-reinstall")
         run_showcase_unit_tests(session, fail_under=100)
 
 
-@nox.session(python="3.8")
+@nox.session(python="3.9")
 def showcase_mypy(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
 ):
@@ -280,12 +273,12 @@ def showcase_mypy(
         session.run("mypy", "--explicit-package-bases", "google")
 
 
-@nox.session(python="3.8")
+@nox.session(python="3.9")
 def showcase_mypy_alternative_templates(session):
     showcase_mypy(session, templates=ADS_TEMPLATES, other_opts=("old-naming",))
 
 
-@nox.session(python="3.8")
+@nox.session(python="3.9")
 def snippetgen(session):
     # Clone googleapis/api-common-protos which are referenced by the snippet
     # protos
@@ -313,7 +306,7 @@ def snippetgen(session):
     )
 
 
-@nox.session(python="3.8")
+@nox.session(python="3.9")
 def docs(session):
     """Build the docs."""
 

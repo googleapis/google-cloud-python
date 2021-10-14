@@ -44,11 +44,11 @@ setup(
     include_package_data=True,
     install_requires=(
         "click >= 6.7",
-        "google-api-core >= 1.17.0",
+        "google-api-core >= 2.1.0",
         "googleapis-common-protos >= 1.53.0",
         "grpcio >= 1.24.3",
         "jinja2 >= 2.10",
-        "protobuf >= 3.12.0",
+        "protobuf >= 3.18.0",
         "pypandoc >= 1.4",
         "PyYAML >= 5.1.1",
         "dataclasses < 0.8; python_version < '3.7'"

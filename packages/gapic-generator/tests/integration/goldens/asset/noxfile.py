@@ -55,7 +55,7 @@ def unit(session):
     )
 
 
-@nox.session(python='3.7')
+@nox.session(python='3.9')
 def cover(session):
     """Run the final coverage report.
     This outputs the coverage report aggregating coverage from the unit
@@ -67,7 +67,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python=['3.6', '3.7'])
+@nox.session(python=['3.6', '3.7', '3.8', '3.9'])
 def mypy(session):
     """Run the type checker."""
     session.install('mypy', 'types-pkg_resources')
@@ -110,7 +110,7 @@ def check_lower_bounds(session):
         str(LOWER_BOUND_CONSTRAINTS_FILE),
     )
 
-@nox.session(python='3.6')
+@nox.session(python='3.9')
 def docs(session):
     """Build the docs for this library."""
 
