@@ -34,8 +34,8 @@ from db_dtypes.version import __version__
 from db_dtypes import core
 
 
-date_dtype_name = "date"
-time_dtype_name = "time"
+date_dtype_name = "dbdate"
+time_dtype_name = "dbtime"
 
 pandas_release = packaging.version.parse(pandas.__version__).release
 

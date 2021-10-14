@@ -23,17 +23,17 @@ np = pytest.importorskip("numpy")
 pandas_release = packaging.version.parse(pd.__version__).release
 
 SAMPLE_RAW_VALUES = dict(
-    date=(datetime.date(2021, 2, 2), "2021-2-3", None),
-    time=(datetime.time(1, 2, 2), "1:2:3.5", None),
+    dbdate=(datetime.date(2021, 2, 2), "2021-2-3", None),
+    dbtime=(datetime.time(1, 2, 2), "1:2:3.5", None),
 )
 SAMPLE_VALUES = dict(
-    date=(
+    dbdate=(
         datetime.date(2021, 2, 2),
         datetime.date(2021, 2, 3),
         datetime.date(2021, 2, 4),
         datetime.date(2021, 2, 5),
     ),
-    time=(
+    dbtime=(
         datetime.time(1, 2, 2),
         datetime.time(1, 2, 3, 500000),
         datetime.time(1, 2, 4, 500000),
@@ -41,13 +41,13 @@ SAMPLE_VALUES = dict(
     ),
 )
 SAMPLE_DT_VALUES = dict(
-    date=(
+    dbdate=(
         "2021-02-02T00:00:00.000000",
         "2021-02-03T00:00:00.000000",
         "2021-02-04T00:00:00.000000",
         "2021-02-05T00:00:00.000000",
     ),
-    time=(
+    dbtime=(
         "1970-01-01T01:02:02.000000",
         "1970-01-01T01:02:03.500000",
         "1970-01-01T01:02:04.500000",
@@ -55,7 +55,7 @@ SAMPLE_DT_VALUES = dict(
     ),
 )
 
-for_date_and_time = pytest.mark.parametrize("dtype", ["date", "time"])
+for_date_and_time = pytest.mark.parametrize("dtype", ["dbdate", "dbtime"])
 
 
 def eq_na(a1, a2):
@@ -72,7 +72,7 @@ def register_dtype():
 def _cls(dtype):
     import db_dtypes
 
-    return getattr(db_dtypes, dtype.capitalize() + "Array")
+    return getattr(db_dtypes, dtype[2:].capitalize() + "Array")
 
 
 def _make_one(dtype):
@@ -322,7 +322,7 @@ def test_take(dtype, allow_fill, fill_value):
         if fill_value == 42:
             fill_value = expected_fill = (
                 datetime.date(1971, 4, 2)
-                if dtype == "date"
+                if dtype == "dbdate"
                 else datetime.time(0, 42, 42, 424242)
             )
         else:
@@ -441,7 +441,7 @@ def test_astype_copy(dtype):
     ],
 )
 def test_asdatetime(dtype, same):
-    a = _make_one("date")
+    a = _make_one("dbdate")
     for dt in dtype, np.dtype(dtype) if dtype != "datetime" else dtype:
         if same:
             b = a.astype(dt, copy=False)
@@ -480,7 +480,7 @@ def test_astimedelta(dtype):
         .astype("timedelta64[ns]" if dtype == "timedelta" else dtype)
     )
 
-    a = _cls("time")([t, None])
+    a = _cls("dbtime")([t, None])
     b = a.astype(dtype)
     np.array_equal(b[:1], expect)
     assert pd.isna(b[1]) and str(b[1]) == "NaT"
@@ -526,7 +526,7 @@ def test_min_max_median(dtype):
         if pandas_release >= (1, 2):
             assert (
                 a.median() == datetime.time(1, 2, 4)
-                if dtype == "time"
+                if dtype == "dbtime"
                 else datetime.date(2021, 2, 3)
             )
 
@@ -553,14 +553,14 @@ def test_min_max_median(dtype):
     if pandas_release >= (1, 2):
         assert (
             a.median() == datetime.time(1, 2, 2, 750000)
-            if dtype == "time"
+            if dtype == "dbtime"
             else datetime.date(2021, 2, 2)
         )
 
 
 def test_date_add():
-    dates = _cls("date")(SAMPLE_VALUES["date"])
-    times = _cls("time")(SAMPLE_VALUES["time"])
+    dates = _cls("dbdate")(SAMPLE_VALUES["dbdate"])
+    times = _cls("dbtime")(SAMPLE_VALUES["dbtime"])
     expect = dates.astype("datetime64") + times.astype("timedelta64")
 
     assert np.array_equal(dates + times, expect)
@@ -592,8 +592,8 @@ def test_date_add():
 
 
 def test_date_sub():
-    dates = _cls("date")(SAMPLE_VALUES["date"])
-    dates2 = _cls("date")(
+    dates = _cls("dbdate")(SAMPLE_VALUES["dbdate"])
+    dates2 = _cls("dbdate")(
         (
             datetime.date(2021, 1, 2),
             datetime.date(2021, 1, 3),

@@ -38,7 +38,7 @@ import db_dtypes  # noqa
     ],
 )
 def test_date_parsing(value, expected):
-    assert pandas.Series([value], dtype="date")[0] == expected
+    assert pandas.Series([value], dtype="dbdate")[0] == expected
 
 
 @pytest.mark.parametrize(
@@ -59,4 +59,4 @@ def test_date_parsing(value, expected):
 )
 def test_date_parsing_errors(value, error):
     with pytest.raises(ValueError, match=error):
-        pandas.Series([value], dtype="date")
+        pandas.Series([value], dtype="dbdate")

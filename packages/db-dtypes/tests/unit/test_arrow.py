@@ -25,14 +25,14 @@ import db_dtypes  # noqa
 @pytest.mark.parametrize(
     ("series", "expected"),
     (
-        (pandas.Series([], dtype="date"), pyarrow.array([], type=pyarrow.date32())),
+        (pandas.Series([], dtype="dbdate"), pyarrow.array([], type=pyarrow.date32())),
         (
-            pandas.Series([None, None, None], dtype="date"),
+            pandas.Series([None, None, None], dtype="dbdate"),
             pyarrow.array([None, None, None], type=pyarrow.date32()),
         ),
         (
             pandas.Series(
-                [dt.date(2021, 9, 27), None, dt.date(2011, 9, 27)], dtype="date"
+                [dt.date(2021, 9, 27), None, dt.date(2011, 9, 27)], dtype="dbdate"
             ),
             pyarrow.array(
                 [dt.date(2021, 9, 27), None, dt.date(2011, 9, 27)],
@@ -42,21 +42,25 @@ import db_dtypes  # noqa
         (
             pandas.Series(
                 [dt.date(1677, 9, 22), dt.date(1970, 1, 1), dt.date(2262, 4, 11)],
-                dtype="date",
+                dtype="dbdate",
             ),
             pyarrow.array(
                 [dt.date(1677, 9, 22), dt.date(1970, 1, 1), dt.date(2262, 4, 11)],
                 type=pyarrow.date32(),
             ),
         ),
-        (pandas.Series([], dtype="time"), pyarrow.array([], type=pyarrow.time64("ns"))),
         (
-            pandas.Series([None, None, None], dtype="time"),
+            pandas.Series([], dtype="dbtime"),
+            pyarrow.array([], type=pyarrow.time64("ns")),
+        ),
+        (
+            pandas.Series([None, None, None], dtype="dbtime"),
             pyarrow.array([None, None, None], type=pyarrow.time64("ns")),
         ),
         (
             pandas.Series(
-                [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_999)], dtype="time"
+                [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_999)],
+                dtype="dbtime",
             ),
             pyarrow.array(
                 [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_999)],
@@ -70,7 +74,7 @@ import db_dtypes  # noqa
                     dt.time(12, 30, 15, 125_000),
                     dt.time(23, 59, 59, 999_999),
                 ],
-                dtype="time",
+                dtype="dbtime",
             ),
             pyarrow.array(
                 [
@@ -91,14 +95,14 @@ def test_to_arrow(series, expected):
 @pytest.mark.parametrize(
     ("series", "expected"),
     (
-        (pandas.Series([], dtype="date"), pyarrow.array([], type=pyarrow.date64())),
+        (pandas.Series([], dtype="dbdate"), pyarrow.array([], type=pyarrow.date64())),
         (
-            pandas.Series([None, None, None], dtype="date"),
+            pandas.Series([None, None, None], dtype="dbdate"),
             pyarrow.array([None, None, None], type=pyarrow.date64()),
         ),
         (
             pandas.Series(
-                [dt.date(2021, 9, 27), None, dt.date(2011, 9, 27)], dtype="date"
+                [dt.date(2021, 9, 27), None, dt.date(2011, 9, 27)], dtype="dbdate"
             ),
             pyarrow.array(
                 [dt.date(2021, 9, 27), None, dt.date(2011, 9, 27)],
@@ -108,21 +112,25 @@ def test_to_arrow(series, expected):
         (
             pandas.Series(
                 [dt.date(1677, 9, 22), dt.date(1970, 1, 1), dt.date(2262, 4, 11)],
-                dtype="date",
+                dtype="dbdate",
             ),
             pyarrow.array(
                 [dt.date(1677, 9, 22), dt.date(1970, 1, 1), dt.date(2262, 4, 11)],
                 type=pyarrow.date64(),
             ),
         ),
-        (pandas.Series([], dtype="time"), pyarrow.array([], type=pyarrow.time32("ms"))),
         (
-            pandas.Series([None, None, None], dtype="time"),
+            pandas.Series([], dtype="dbtime"),
+            pyarrow.array([], type=pyarrow.time32("ms")),
+        ),
+        (
+            pandas.Series([None, None, None], dtype="dbtime"),
             pyarrow.array([None, None, None], type=pyarrow.time32("ms")),
         ),
         (
             pandas.Series(
-                [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_000)], dtype="time"
+                [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_000)],
+                dtype="dbtime",
             ),
             pyarrow.array(
                 [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_000)],
@@ -131,7 +139,8 @@ def test_to_arrow(series, expected):
         ),
         (
             pandas.Series(
-                [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_999)], dtype="time"
+                [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_999)],
+                dtype="dbtime",
             ),
             pyarrow.array(
                 [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_999)],
@@ -145,7 +154,7 @@ def test_to_arrow(series, expected):
                     dt.time(12, 30, 15, 125_000),
                     dt.time(23, 59, 59, 999_999),
                 ],
-                dtype="time",
+                dtype="dbtime",
             ),
             pyarrow.array(
                 [

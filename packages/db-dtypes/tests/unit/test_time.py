@@ -61,7 +61,7 @@ import db_dtypes  # noqa
     ],
 )
 def test_time_parsing(value, expected):
-    assert pandas.Series([value], dtype="time")[0] == expected
+    assert pandas.Series([value], dtype="dbtime")[0] == expected
 
 
 @pytest.mark.parametrize(
@@ -81,4 +81,4 @@ def test_time_parsing(value, expected):
 )
 def test_time_parsing_errors(value, error):
     with pytest.raises(ValueError, match=error):
-        pandas.Series([value], dtype="time")
+        pandas.Series([value], dtype="dbtime")
