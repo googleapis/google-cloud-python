@@ -210,7 +210,7 @@ place_before(
     escape="()"
 )
 
-# add system_emulated nox session
+# add system_emulated + mypy nox session
 s.replace("noxfile.py",
     """nox.options.sessions = \[
     "unit",
@@ -218,7 +218,8 @@ s.replace("noxfile.py",
     """nox.options.sessions = [
     "unit",
     "system_emulated",
-    "system",""",
+    "system",
+    "mypy",""",
 )
 
 s.replace(
@@ -295,10 +296,20 @@ def lint_setup_py\(session\):
     '''\
 @nox.session(python="3.7")
 def pytype(session):
-    """Run pytype
-    """
+    """Verify type hints are pytype compatible."""
     session.install(PYTYPE_VERSION)
     session.run("pytype",)
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy(session):
+    """Verify type hints are mypy compatible."""
+    session.install("-e", ".")
+    session.install("mypy", "types-setuptools")
+    # TODO: also verify types on tests, all of google package
+    session.run("mypy", "-p", "google.cloud.firestore", "--no-incremental")
+
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
 ''',

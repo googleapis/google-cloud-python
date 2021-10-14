@@ -19,8 +19,8 @@ a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 
 from google.cloud import firestore_v1
 from google.cloud.firestore_v1.base_query import (

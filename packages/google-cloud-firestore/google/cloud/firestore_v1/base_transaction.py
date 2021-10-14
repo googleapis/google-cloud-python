@@ -14,7 +14,7 @@
 
 """Helpers for applying Google Cloud Firestore changes in a transaction."""
 
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import retry as retries
 
 from google.cloud.firestore_v1 import types
 from typing import Any, Coroutine, NoReturn, Optional, Union

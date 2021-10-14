@@ -18,12 +18,12 @@ import threading
 from enum import Enum
 import functools
 
-from google.api_core.bidi import ResumableBidiRpc  # type: ignore
-from google.api_core.bidi import BackgroundConsumer  # type: ignore
+from google.api_core.bidi import ResumableBidiRpc
+from google.api_core.bidi import BackgroundConsumer
 from google.cloud.firestore_v1.types import firestore
 from google.cloud.firestore_v1 import _helpers
 
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions
 
 import grpc  # type: ignore
 

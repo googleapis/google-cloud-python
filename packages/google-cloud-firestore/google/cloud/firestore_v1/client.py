@@ -24,8 +24,8 @@ In the hierarchy of API concepts
   :class:`~google.cloud.firestore_v1.document.DocumentReference`
 """
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 
 from google.cloud.firestore_v1.base_client import (
     BaseClient,

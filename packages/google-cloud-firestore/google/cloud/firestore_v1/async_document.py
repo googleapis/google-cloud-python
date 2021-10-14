@@ -16,8 +16,8 @@
 import datetime
 import logging
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.cloud._helpers import _datetime_to_pb_timestamp  # type: ignore
 
 from google.cloud.firestore_v1.base_document import (

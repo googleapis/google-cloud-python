@@ -28,10 +28,10 @@ import os
 import grpc  # type: ignore
 
 from google.auth.credentials import AnonymousCredentials
-import google.api_core.client_options  # type: ignore
-import google.api_core.path_template  # type: ignore
-from google.api_core import retry as retries  # type: ignore
-from google.api_core.gapic_v1 import client_info  # type: ignore
+import google.api_core.client_options
+import google.api_core.path_template
+from google.api_core import retry as retries
+from google.api_core.gapic_v1 import client_info
 from google.cloud.client import ClientWithProject  # type: ignore
 
 from google.cloud.firestore_v1 import _helpers
@@ -141,7 +141,7 @@ class BaseClient(ClientWithProject):
         self._client_info = client_info
         if client_options:
             if type(client_options) == dict:
-                client_options = google.api_core.client_options.from_dict(  # type: ignore
+                client_options = google.api_core.client_options.from_dict(
                     client_options
                 )
         self._client_options = client_options
@@ -232,7 +232,7 @@ class BaseClient(ClientWithProject):
             project. (The default database is also in this string.)
         """
         if self._database_string_internal is None:
-            db_str = google.api_core.path_template.expand(  # type: ignore
+            db_str = google.api_core.path_template.expand(
                 "projects/{project}/databases/{database}",
                 project=self.project,
                 database=self._database,

@@ -20,9 +20,9 @@ a more common way to create a query than direct usage of the constructor.
 """
 from google.cloud import firestore_v1
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
-from google.api_core import exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 
 from google.cloud.firestore_v1.base_query import (
     BaseCollectionGroup,

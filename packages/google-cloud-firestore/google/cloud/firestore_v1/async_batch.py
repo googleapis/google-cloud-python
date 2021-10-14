@@ -15,8 +15,8 @@
 """Helpers for batch requests to the Google Cloud Firestore API."""
 
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 
 from google.cloud.firestore_v1.base_batch import BaseWriteBatch
 

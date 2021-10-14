@@ -16,7 +16,7 @@
 import random
 import sys
 
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import retry as retries
 
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.document import DocumentReference

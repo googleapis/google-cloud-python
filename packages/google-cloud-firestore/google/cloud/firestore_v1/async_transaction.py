@@ -18,8 +18,8 @@
 import asyncio
 import random
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 
 from google.cloud.firestore_v1.base_transaction import (
     _BaseTransactional,
@@ -35,7 +35,7 @@ from google.cloud.firestore_v1.base_transaction import (
     _EXCEED_ATTEMPTS_TEMPLATE,
 )
 
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions
 from google.cloud.firestore_v1 import async_batch
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import types

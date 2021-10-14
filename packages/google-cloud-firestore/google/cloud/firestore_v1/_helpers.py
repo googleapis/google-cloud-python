@@ -18,8 +18,8 @@ import datetime
 import json
 
 import google
-from google.api_core.datetime_helpers import DatetimeWithNanoseconds  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.api_core import gapic_v1
 from google.protobuf import struct_pb2
 from google.type import latlng_pb2  # type: ignore
 import grpc  # type: ignore

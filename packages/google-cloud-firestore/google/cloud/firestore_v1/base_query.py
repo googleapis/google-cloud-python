@@ -21,7 +21,7 @@ a more common way to create a query than direct usage of the constructor.
 import copy
 import math
 
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import retry as retries
 from google.protobuf import wrappers_pb2
 
 from google.cloud.firestore_v1 import _helpers
