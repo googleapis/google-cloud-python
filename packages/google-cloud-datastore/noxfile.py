@@ -37,6 +37,7 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 nox.options.sessions = [
     "unit",
     "system",
+    "mypy",
     "cover",
     "lint",
     "lint_setup_py",
@@ -70,6 +71,15 @@ def blacken(session):
     session.run(
         "black", *BLACK_PATHS,
     )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy(session):
+    """Verify type hints are mypy compatible."""
+    session.install("-e", ".")
+    session.install("mypy")
+    # TODO: also verify types on tests, all of google package
+    session.run("mypy", "-p", "google.cloud.datastore", "--no-incremental")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
