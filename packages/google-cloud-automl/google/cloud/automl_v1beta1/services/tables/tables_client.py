@@ -207,8 +207,7 @@ class TablesClient(object):
         else:
             raise ValueError(
                 (
-                    "Multiple {}s match display_name='{}': {}\n\n"
-                    "Please use the `.name` (unique identifier) field instead"
+                    "Multiple {}s match display_name='{}': {}. Please use the `.name` (unique identifier) field instead."
                 ).format(
                     object_type,
                     display_name,
@@ -220,18 +219,14 @@ class TablesClient(object):
         if project is None:
             if self.project is None:
                 raise ValueError(
-                    "Either initialize your client with a value "
-                    "for 'project', or provide 'project' as a "
-                    "parameter for this method."
+                    "Either initialize your client with a value for 'project', or provide 'project' as a parameter for this method."
                 )
             project = self.project
 
         if region is None:
             if self.region is None:
                 raise ValueError(
-                    "Either initialize your client with a value "
-                    "for 'region', or provide 'region' as a "
-                    "parameter for this method."
+                    "Either initialize your client with a value for 'region', or provide 'region' as a parameter for this method."
                 )
             region = self.region
 
@@ -259,8 +254,7 @@ class TablesClient(object):
     ):
         if dataset is None and dataset_display_name is None and dataset_name is None:
             raise ValueError(
-                "One of 'dataset', 'dataset_name' or "
-                "'dataset_display_name' must be set."
+                "One of 'dataset', 'dataset_name' or 'dataset_display_name' must be set."
             )
         # we prefer to make a live call here in the case that the
         # dataset object is out-of-date
@@ -285,7 +279,7 @@ class TablesClient(object):
     ):
         if model is None and model_display_name is None and model_name is None:
             raise ValueError(
-                "One of 'model', 'model_name' or " "'model_display_name' must be set."
+                "One of 'model', 'model_name' or 'model_display_name' must be set."
             )
         # we prefer to make a live call here in the case that the
         # model object is out-of-date
@@ -310,8 +304,7 @@ class TablesClient(object):
     ):
         if dataset is None and dataset_display_name is None and dataset_name is None:
             raise ValueError(
-                "One of 'dataset', 'dataset_name' or "
-                "'dataset_display_name' must be set."
+                "One of 'dataset', 'dataset_name' or 'dataset_display_name' must be set."
             )
 
         if dataset_name is None:
@@ -362,7 +355,7 @@ class TablesClient(object):
     ):
         if model is None and model_display_name is None and model_name is None:
             raise ValueError(
-                "One of 'model', 'model_name' or " "'model_display_name' must be set."
+                "One of 'model', 'model_name' or 'model_display_name' must be set."
             )
 
         if model_name is None:
@@ -391,12 +384,7 @@ class TablesClient(object):
             pass
         _LOGGER.info(
             (
-                "Operation '{}' is running in the background. The returned "
-                "Operation '{}' can be used to query or block on the status "
-                "of this operation. Ending your python session will _not_ "
-                "cancel this operation. Read the documentation here:\n\n"
-                "\thttps://googleapis.dev/python/google-api-core/latest/operation.html\n\n"
-                "for more information on the Operation class."
+                "Operation '{}' is running in the background. The returned Operation '{}' can be used to query or block on the status of this operation. Ending your python session will _not_ cancel this operation. Read the documentation here:\n\n \thttps://googleapis.dev/python/google-api-core/latest/operation.html\n\n for more information on the Operation class."
             ).format(message, name)
         )
         return op
@@ -427,8 +415,7 @@ class TablesClient(object):
             column_specs = {s.display_name: s for s in column_specs}
             if column_specs.get(column_spec_display_name) is None:
                 raise exceptions.NotFound(
-                    "No column with "
-                    + "column_spec_display_name: '{}' found".format(
+                    "No column with column_spec_display_name: '{}' found".format(
                         column_spec_display_name
                     )
                 )
@@ -437,13 +424,13 @@ class TablesClient(object):
             column_specs = {s.name: s for s in column_specs}
             if column_specs.get(column_spec_name) is None:
                 raise exceptions.NotFound(
-                    "No column with "
-                    + "column_spec_name: '{}' found".format(column_spec_name)
+                    "No column with column_spec_name: '{}' found".format(
+                        column_spec_name
+                    )
                 )
         else:
             raise ValueError(
-                "Either supply 'column_spec_name' or "
-                "'column_spec_display_name' for the column to update"
+                "Either supply 'column_spec_name' or 'column_spec_display_name' for the column to update"
             )
 
         return column_spec_name
@@ -471,10 +458,10 @@ class TablesClient(object):
 
         Some kwargs are for the request object and others are for
         the method itself (retry, metdata).
-        
+
         Args:
             request (proto.Message) The request object.
-        
+
         Returns:
             dict: kwargs to be added to the method.
         """
@@ -596,7 +583,7 @@ class TablesClient(object):
         """
         if dataset_name is None and dataset_display_name is None:
             raise ValueError(
-                "One of 'dataset_name' or " "'dataset_display_name' must be set."
+                "One of 'dataset_name' or 'dataset_display_name' must be set."
             )
 
         if dataset_name is not None:
@@ -2326,8 +2313,7 @@ class TablesClient(object):
             or train_budget_milli_node_hours > 72000
         ):
             raise ValueError(
-                "'train_budget_milli_node_hours' must be a "
-                "value between 1,000 and 72,000 inclusive"
+                "'train_budget_milli_node_hours' must be a value between 1,000 and 72,000 inclusive"
             )
 
         if exclude_column_spec_names not in [
@@ -2335,9 +2321,7 @@ class TablesClient(object):
             [],
         ] and include_column_spec_names not in [None, []]:
             raise ValueError(
-                "Cannot set both "
-                "'exclude_column_spec_names' and "
-                "'include_column_spec_names'"
+                "Cannot set both 'exclude_column_spec_names' and 'include_column_spec_names'"
             )
 
         dataset_name = self.__dataset_name_from_args(
@@ -2575,9 +2559,7 @@ class TablesClient(object):
             ValueError: If required parameters are missing.
         """
         if model_name is None and model_display_name is None:
-            raise ValueError(
-                "One of 'model_name' or " "'model_display_name' must be set."
-            )
+            raise ValueError("One of 'model_name' or 'model_display_name' must be set.")
 
         if model_name is not None:
             return self.auto_ml_client.get_model(name=model_name)
@@ -2824,9 +2806,7 @@ class TablesClient(object):
         if len(inputs) != len(column_specs):
             raise ValueError(
                 (
-                    "Dimension mismatch, the number of provided "
-                    "inputs ({}) does not match that of the model "
-                    "({})"
+                    "Dimension mismatch, the number of provided inputs ({}) does not match that of the model ({})"
                 ).format(len(inputs), len(column_specs))
             )
 
@@ -2980,7 +2960,7 @@ class TablesClient(object):
             input_request = {"bigquery_source": {"input_uri": bigquery_input_uri}}
         else:
             raise ValueError(
-                "One of 'gcs_input_uris'/'bigquery_input_uris' must" "be set"
+                "One of 'gcs_input_uris'/'bigquery_input_uris' must be set"
             )
 
         output_request = None
