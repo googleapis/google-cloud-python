@@ -353,6 +353,7 @@ templated_files = gcp.CommonTemplates().py_library(
     microgenerator=True,
     samples=True,
     cov_level=100,
+    unit_test_python_versions=["3.6", "3.7", "3.8", "3.9", "3.10"],
     system_test_external_dependencies=["psutil"],
 )
 s.move(templated_files, excludes=[".coveragerc", ".github/CODEOWNERS"])
