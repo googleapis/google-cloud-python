@@ -33,7 +33,7 @@ s.remove_staging_dirs()
 # Add templated files
 # ----------------------------------------------------------------------------
 
-templated_files = common.py_library(microgenerator=True, cov_level=98)
+templated_files = common.py_library(microgenerator=True)
 python.py_samples(skip_readmes=True)
 
 # the microgenerator has a good coveragerc file
