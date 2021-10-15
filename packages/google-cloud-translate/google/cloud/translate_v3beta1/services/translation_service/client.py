@@ -754,6 +754,11 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         self,
         request: Union[translation_service.BatchTranslateDocumentRequest, dict] = None,
         *,
+        parent: str = None,
+        source_language_code: str = None,
+        target_language_codes: Sequence[str] = None,
+        input_configs: Sequence[translation_service.BatchDocumentInputConfig] = None,
+        output_config: translation_service.BatchDocumentOutputConfig = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -771,6 +776,63 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         Args:
             request (Union[google.cloud.translate_v3beta1.types.BatchTranslateDocumentRequest, dict]):
                 The request object. The BatchTranslateDocument request.
+            parent (str):
+                Required. Location to make a regional call.
+
+                Format:
+                ``projects/{project-number-or-id}/locations/{location-id}``.
+
+                The ``global`` location is not supported for batch
+                translation.
+
+                Only AutoML Translation models or glossaries within the
+                same region (have the same location-id) can be used,
+                otherwise an INVALID_ARGUMENT (400) error is returned.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            source_language_code (str):
+                Required. The BCP-47 language code of
+                the input document if known, for
+                example, "en-US" or "sr-Latn". Supported
+                language codes are listed in Language
+                Support
+                (https://cloud.google.com/translate/docs/languages).
+
+                This corresponds to the ``source_language_code`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_language_codes (Sequence[str]):
+                Required. The BCP-47 language code to
+                use for translation of the input
+                document. Specify up to 10 language
+                codes here.
+
+                This corresponds to the ``target_language_codes`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            input_configs (Sequence[google.cloud.translate_v3beta1.types.BatchDocumentInputConfig]):
+                Required. Input configurations.
+                The total number of files matched should
+                be <= 100. The total content size to
+                translate should be <= 100M Unicode
+                codepoints. The files must use UTF-8
+                encoding.
+
+                This corresponds to the ``input_configs`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            output_config (google.cloud.translate_v3beta1.types.BatchDocumentOutputConfig):
+                Required. Output configuration.
+                If 2 input configs match to the same
+                file (that is, same input path), we
+                don't generate output for duplicate
+                inputs.
+
+                This corresponds to the ``output_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -788,12 +850,41 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                parent,
+                source_language_code,
+                target_language_codes,
+                input_configs,
+                output_config,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # Minor optimization to avoid making a copy if the user passes
         # in a translation_service.BatchTranslateDocumentRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
         if not isinstance(request, translation_service.BatchTranslateDocumentRequest):
             request = translation_service.BatchTranslateDocumentRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if source_language_code is not None:
+                request.source_language_code = source_language_code
+            if target_language_codes is not None:
+                request.target_language_codes = target_language_codes
+            if input_configs is not None:
+                request.input_configs = input_configs
+            if output_config is not None:
+                request.output_config = output_config
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
