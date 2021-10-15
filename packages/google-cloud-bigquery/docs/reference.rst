@@ -47,7 +47,6 @@ Job Classes
     job.CopyJob
     job.LoadJob
     job.ExtractJob
-    job.UnknownJob
 
 Job-Related Types
 -----------------
@@ -68,7 +67,11 @@ Job-Related Types
     job.SourceFormat
     job.WriteDisposition
     job.SchemaUpdateOption
-    job.TransactionInfo
+
+.. toctree::
+  :maxdepth: 2
+
+  job_base
 
 
 Dataset
@@ -134,14 +137,10 @@ Schema
 Query
 =====
 
-.. autosummary::
-    :toctree: generated
+.. toctree::
+  :maxdepth: 2
 
-    query.ArrayQueryParameter
-    query.ScalarQueryParameter
-    query.ScalarQueryParameterType
-    query.StructQueryParameter
-    query.UDFResource
+  query
 
 
 Retries
