@@ -18,13 +18,6 @@ import logging
 import os
 import sys
 
-try:
-    from google.cloud.logging_v2 import _gapic
-except ImportError:  # pragma: NO COVER
-    _HAVE_GRPC = False
-    _gapic = None
-else:
-    _HAVE_GRPC = True
 
 import google.api_core.client_options
 from google.cloud.client import ClientWithProject
@@ -48,6 +41,19 @@ from google.cloud.logging_v2.sink import Sink
 
 
 _DISABLE_GRPC = os.getenv(DISABLE_GRPC, False)
+_HAVE_GRPC = False
+
+try:
+    if not _DISABLE_GRPC:
+        # only import if DISABLE_GRPC is not set
+        from google.cloud.logging_v2 import _gapic
+
+        _HAVE_GRPC = True
+except ImportError:  # pragma: NO COVER
+    # could not import gapic library. Fall back to HTTP mode
+    _HAVE_GRPC = False
+    _gapic = None
+
 _USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
 
 _GAE_RESOURCE_TYPE = "gae_app"
