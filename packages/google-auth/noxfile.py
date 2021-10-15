@@ -20,30 +20,6 @@ import nox
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
-TEST_DEPENDENCIES = [
-    "flask",
-    "freezegun",
-    "mock",
-    "oauth2client",
-    "pyopenssl",
-    "pytest",
-    "pytest-cov",
-    "pytest-localserver",
-    "pyu2f",
-    "requests",
-    "urllib3",
-    "cryptography",
-    "responses",
-    "grpcio",
-]
-
-ASYNC_DEPENDENCIES = [
-    "pytest-asyncio",
-    "aioresponses",
-    "asynctest",
-    "aiohttp!=3.7.4.post0",
-]
-
 BLACK_VERSION = "black==19.3b0"
 BLACK_PATHS = [
     "google",
@@ -91,10 +67,8 @@ def unit(session):
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
-    add_constraints = ["-c", constraints_path]
-    session.install(*(TEST_DEPENDENCIES + add_constraints))
-    session.install(*(ASYNC_DEPENDENCIES + add_constraints))
-    session.install("-e", ".", *add_constraints)
+    session.install("-r", "testing/requirements.txt", "-c", constraints_path)
+    session.install("-e", ".", "-c", constraints_path)
     session.run(
         "pytest",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
@@ -109,8 +83,7 @@ def unit(session):
 
 @nox.session(python="3.7")
 def cover(session):
-    session.install(*TEST_DEPENDENCIES)
-    session.install(*(ASYNC_DEPENDENCIES))
+    session.install("-r", "testing/requirements.txt")
     session.install("-e", ".")
     session.run(
         "pytest",
@@ -128,7 +101,7 @@ def cover(session):
 @nox.session(python="3.7")
 def docgen(session):
     session.env["SPHINX_APIDOC_OPTIONS"] = "members,inherited-members,show-inheritance"
-    session.install(*TEST_DEPENDENCIES)
+    session.install("-r", "testing/requirements.txt")
     session.install("sphinx")
     session.install("-e", ".")
     session.run("rm", "-r", "docs/reference")
@@ -168,8 +141,7 @@ def docs(session):
 
 @nox.session(python="pypy")
 def pypy(session):
-    session.install(*TEST_DEPENDENCIES)
-    session.install(*ASYNC_DEPENDENCIES)
+    session.install("-r", "test/requirements.txt")
     session.install("-e", ".")
     session.run(
         "pytest",
