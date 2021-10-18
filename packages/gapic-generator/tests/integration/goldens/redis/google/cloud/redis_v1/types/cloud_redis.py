@@ -501,10 +501,13 @@ class GcsSource(proto.Message):
 class InputConfig(proto.Message):
     r"""The input content
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_source (google.cloud.redis_v1.types.GcsSource):
             Google Cloud Storage location where input
             content is located.
+            This field is a member of `oneof`_ ``source``.
     """
 
     gcs_source = proto.Field(
@@ -558,10 +561,13 @@ class GcsDestination(proto.Message):
 class OutputConfig(proto.Message):
     r"""The output content
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_destination (google.cloud.redis_v1.types.GcsDestination):
             Google Cloud Storage destination for output
             content.
+            This field is a member of `oneof`_ ``destination``.
     """
 
     gcs_destination = proto.Field(

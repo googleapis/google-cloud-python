@@ -2,10 +2,25 @@ class {{ message.name }}({{ p }}.Message):
     r"""{{ message.meta.doc|rst(indent=4) }}
     {% if message.fields|length %}
 
+    {# Only include note if a oneof has more than one member field. #}
+    {% if message.oneof_fields() %}
+    {% if message.oneof_fields().values() | map('length') | max > 1 %}
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    {% endif %}
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    {% endif %}
     Attributes:
     {% for field in message.fields.values() %}
         {{ field.name }} ({{ field.ident.sphinx }}):
             {{ field.meta.doc|rst(indent=12, nl=False) }}
+            {% if field.oneof %}
+            This field is a member of `oneof`_ ``{{ field.oneof }}``.
+            {% endif %}
     {% endfor %}
     {% endif %}
     """
