@@ -738,6 +738,10 @@ class Client(ClientWithProject):
             kwargs["namespace"] = self.namespace
         return Key(*path_args, **kwargs)
 
+    def entity(self, key=None, exclude_from_indexes=()):
+        """Proxy to :class:`google.cloud.datastore.entity.Entity`."""
+        return Entity(key=key, exclude_from_indexes=exclude_from_indexes)
+
     def batch(self):
         """Proxy to :class:`google.cloud.datastore.batch.Batch`."""
         return Batch(self)

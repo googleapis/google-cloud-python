@@ -1335,6 +1335,30 @@ class TestClient(unittest.TestCase):
                 kind, id_, project=self.PROJECT, namespace=namespace2
             )
 
+    def test_entity_w_defaults(self):
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+
+        patch = mock.patch("google.cloud.datastore.client.Entity", spec=["__call__"])
+        with patch as mock_klass:
+            entity = client.entity()
+            self.assertIs(entity, mock_klass.return_value)
+            mock_klass.assert_called_once_with(key=None, exclude_from_indexes=())
+
+    def test_entity_w_explicit(self):
+        key = mock.Mock(spec=[])
+        exclude_from_indexes = ["foo", "bar"]
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+
+        patch = mock.patch("google.cloud.datastore.client.Entity", spec=["__call__"])
+        with patch as mock_klass:
+            entity = client.entity(key, exclude_from_indexes)
+            self.assertIs(entity, mock_klass.return_value)
+            mock_klass.assert_called_once_with(
+                key=key, exclude_from_indexes=exclude_from_indexes
+            )
+
     def test_batch(self):
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
