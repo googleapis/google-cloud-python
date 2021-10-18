@@ -255,10 +255,11 @@ class GatewayServiceAsyncClient:
                       }
 
                       service ResourceService {
-                         rpc GetResource(GetResourceRequest) returns
-                         (google.api.HttpBody); rpc
-                         UpdateResource(google.api.HttpBody) returns
-                         (google.protobuf.Empty);
+                         rpc GetResource(GetResourceRequest)
+                            returns (google.api.HttpBody);
+
+                         rpc UpdateResource(google.api.HttpBody)
+                            returns (google.protobuf.Empty);
 
                       }
 
@@ -388,10 +389,11 @@ class GatewayServiceAsyncClient:
                       }
 
                       service ResourceService {
-                         rpc GetResource(GetResourceRequest) returns
-                         (google.api.HttpBody); rpc
-                         UpdateResource(google.api.HttpBody) returns
-                         (google.protobuf.Empty);
+                         rpc GetResource(GetResourceRequest)
+                            returns (google.api.HttpBody);
+
+                         rpc UpdateResource(google.api.HttpBody)
+                            returns (google.protobuf.Empty);
 
                       }
 
@@ -521,10 +523,11 @@ class GatewayServiceAsyncClient:
                       }
 
                       service ResourceService {
-                         rpc GetResource(GetResourceRequest) returns
-                         (google.api.HttpBody); rpc
-                         UpdateResource(google.api.HttpBody) returns
-                         (google.protobuf.Empty);
+                         rpc GetResource(GetResourceRequest)
+                            returns (google.api.HttpBody);
+
+                         rpc UpdateResource(google.api.HttpBody)
+                            returns (google.protobuf.Empty);
 
                       }
 
@@ -654,10 +657,11 @@ class GatewayServiceAsyncClient:
                       }
 
                       service ResourceService {
-                         rpc GetResource(GetResourceRequest) returns
-                         (google.api.HttpBody); rpc
-                         UpdateResource(google.api.HttpBody) returns
-                         (google.protobuf.Empty);
+                         rpc GetResource(GetResourceRequest)
+                            returns (google.api.HttpBody);
+
+                         rpc UpdateResource(google.api.HttpBody)
+                            returns (google.protobuf.Empty);
 
                       }
 
@@ -787,10 +791,11 @@ class GatewayServiceAsyncClient:
                       }
 
                       service ResourceService {
-                         rpc GetResource(GetResourceRequest) returns
-                         (google.api.HttpBody); rpc
-                         UpdateResource(google.api.HttpBody) returns
-                         (google.protobuf.Empty);
+                         rpc GetResource(GetResourceRequest)
+                            returns (google.api.HttpBody);
+
+                         rpc UpdateResource(google.api.HttpBody)
+                            returns (google.protobuf.Empty);
 
                       }
 
