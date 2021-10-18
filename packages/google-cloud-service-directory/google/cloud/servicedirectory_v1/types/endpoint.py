@@ -29,7 +29,7 @@ class Endpoint(proto.Message):
     Attributes:
         name (str):
             Immutable. The resource name for the endpoint in the format
-            ``projects/*/locations/*/namespaces/*/services/*/endpoints/*``
+            ``projects/*/locations/*/namespaces/*/services/*/endpoints/*``.
         address (str):
             Optional. An IPv4 or IPv6 address. Service Directory will
             reject bad addresses like: "8.8.8" "8.8.8.8:53"
