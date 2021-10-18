@@ -2,28 +2,25 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of the Memcache
-API. By default, you will get ``v1``, the latest GA version.
+This package includes clients for multiple versions of Cloud Memorystore for Memcached.
+By default, you will get version ``memcache_v1``.
 
-memcache_v1 API Reference
--------------------------
 
+API Reference
+-------------
 .. toctree::
     :maxdepth: 2
 
-    Client (v1) <memcache_v1/services>
-    Types (v1) <memcache_v1/types>
+    memcache_v1/services
+    memcache_v1/types
 
-
-memcache_v1beta2 API Reference
-------------------------------
-
+API Reference
+-------------
 .. toctree::
     :maxdepth: 2
 
-    Client (v1beta2) <memcache_v1beta2/services>
-    Types (v1beta2) <memcache_v1beta2/types>
-
+    memcache_v1beta2/services
+    memcache_v1beta2/types
 
 Changelog
 ---------
@@ -31,6 +28,6 @@ Changelog
 For a list of all ``google-cloud-memcache`` releases:
 
 .. toctree::
-  :maxdepth: 2
+   :maxdepth: 2
 
-  changelog
+   changelog
