@@ -2,9 +2,9 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Network Connectivity Center.
+By default, you will get version ``networkconnectivity_v1``.
 
-This package includes clients for multiple versions of ``google-cloud-network-connectivity``.
-By default, you will get version ``v1``.
 
 API Reference
 -------------
@@ -13,7 +13,6 @@ API Reference
 
     networkconnectivity_v1/services
     networkconnectivity_v1/types
-
 
 API Reference
 -------------
