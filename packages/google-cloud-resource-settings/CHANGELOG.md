@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-resource-settings/compare/v1.1.0...v1.2.0) (2021-10-15)
+
+
+### Features
+
+* add support for python 3.10 ([#53](https://www.github.com/googleapis/python-resource-settings/issues/53)) ([5aaa186](https://www.github.com/googleapis/python-resource-settings/commit/5aaa186d890b6b26db40f9e4390ad76e5c62e3b5))
+
 ## [1.1.0](https://www.github.com/googleapis/python-resource-settings/compare/v1.0.2...v1.1.0) (2021-10-07)
 
 
