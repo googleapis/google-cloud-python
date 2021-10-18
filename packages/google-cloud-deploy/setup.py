@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-deploy"
 description = "Google Cloud Deploy API client library"
-version = "0.2.0"
+version = "0.3.0"
 url = "https://github.com/googleapis/python-deploy"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
