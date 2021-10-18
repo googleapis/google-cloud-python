@@ -301,18 +301,16 @@ class Instance(proto.Message):
                 disks attached to an instance, each disk would
                 have a unique index number.
             interface (str):
-                Indicates the disk interface to use for
-                attaching this disk, which is either SCSI or
-                NVME. The default is SCSI. Persistent disks must
-                always use SCSI and the request will fail if you
-                attempt to attach a persistent disk in any other
-                format than SCSI. Local SSDs can use either NVME
-                or SCSI. For performance characteristics of SCSI
-                over NVMe, see Local SSD performance.
-                Valid values:
+                Indicates the disk interface to use for attaching this disk,
+                which is either SCSI or NVME. The default is SCSI.
+                Persistent disks must always use SCSI and the request will
+                fail if you attempt to attach a persistent disk in any other
+                format than SCSI. Local SSDs can use either NVME or SCSI.
+                For performance characteristics of SCSI over NVMe, see Local
+                SSD performance. Valid values:
 
-                * NVME
-                * SCSI
+                -  NVME
+                -  SCSI
             kind (str):
                 Type of the resource. Always
                 compute#attachedDisk for attached disks.
@@ -324,16 +322,19 @@ class Instance(proto.Message):
             mode (str):
                 The mode in which to attach this disk, either READ_WRITE or
                 READ_ONLY. If not specified, the default is to attach the
-                disk in READ_WRITE mode. Valid values: READ_ONLY READ_WRITE
+                disk in READ_WRITE mode. Valid values:
+
+                -  READ_ONLY
+                -  READ_WRITE
             source (str):
                 Indicates a valid partial or full URL to an
                 existing Persistent Disk resource.
             type_ (str):
-                Indicates the type of the disk, either
-                SCRATCH or PERSISTENT. Valid values:
+                Indicates the type of the disk, either SCRATCH or
+                PERSISTENT. Valid values:
 
-                * PERSISTENT
-                * SCRATCH
+                -  PERSISTENT
+                -  SCRATCH
         """
 
         class GuestOsFeature(proto.Message):
@@ -343,8 +344,14 @@ class Instance(proto.Message):
                 type_ (str):
                     The ID of a supported feature. Read Enabling guest operating
                     system features to see a list of available options. Valid
-                    values: FEATURE_TYPE_UNSPECIFIED MULTI_IP_SUBNET SECURE_BOOT
-                    UEFI_COMPATIBLE VIRTIO_SCSI_MULTIQUEUE WINDOWS
+                    values:
+
+                    -  FEATURE_TYPE_UNSPECIFIED
+                    -  MULTI_IP_SUBNET
+                    -  SECURE_BOOT
+                    -  UEFI_COMPATIBLE
+                    -  VIRTIO_SCSI_MULTIQUEUE
+                    -  WINDOWS
             """
 
             type_ = proto.Field(proto.STRING, number=1,)

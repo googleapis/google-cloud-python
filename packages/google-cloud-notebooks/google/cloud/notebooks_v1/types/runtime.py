@@ -158,7 +158,7 @@ class EncryptionConfig(proto.Message):
 
 
 class LocalDisk(proto.Message):
-    r"""An Local attached disk resource.
+    r"""A Local attached disk resource.
 
     Attributes:
         auto_delete (bool):
@@ -204,18 +204,16 @@ class LocalDisk(proto.Message):
             source property; you can only define one or the
             other, but not both.
         interface (str):
-            Specifies the disk interface to use for
-            attaching this disk, which is either SCSI or
-            NVME. The default is SCSI. Persistent disks must
-            always use SCSI and the request will fail if you
-            attempt to attach a persistent disk in any other
-            format than SCSI. Local SSDs can use either NVME
-            or SCSI. For performance characteristics of SCSI
-            over NVMe, see Local SSD performance. Valid
-            values:
+            Specifies the disk interface to use for attaching this disk,
+            which is either SCSI or NVME. The default is SCSI.
+            Persistent disks must always use SCSI and the request will
+            fail if you attempt to attach a persistent disk in any other
+            format than SCSI. Local SSDs can use either NVME or SCSI.
+            For performance characteristics of SCSI over NVMe, see Local
+            SSD performance. Valid values:
 
-            * NVME
-            * SCSI
+            -  NVME
+            -  SCSI
         kind (str):
             Output only. Type of the resource. Always
             compute#attachedDisk for attached disks.
@@ -225,17 +223,20 @@ class LocalDisk(proto.Message):
         mode (str):
             The mode in which to attach this disk, either READ_WRITE or
             READ_ONLY. If not specified, the default is to attach the
-            disk in READ_WRITE mode. Valid values: READ_ONLY READ_WRITE
+            disk in READ_WRITE mode. Valid values:
+
+            -  READ_ONLY
+            -  READ_WRITE
         source (str):
             Specifies a valid partial or full URL to an
             existing Persistent Disk resource.
         type_ (str):
-            Specifies the type of the disk, either
-            SCRATCH or PERSISTENT. If not specified, the
-            default is PERSISTENT. Valid values:
+            Specifies the type of the disk, either SCRATCH or
+            PERSISTENT. If not specified, the default is PERSISTENT.
+            Valid values:
 
-            * PERSISTENT
-            * SCRATCH
+            -  PERSISTENT
+            -  SCRATCH
     """
 
     class RuntimeGuestOsFeature(proto.Message):
@@ -378,7 +379,7 @@ class RuntimeSoftwareConfig(proto.Message):
             Runtime will automatically shutdown after
             idle_shutdown_time. Default: True
         idle_shutdown_timeout (int):
-            Time in minutes to wait before shuting down
+            Time in minutes to wait before shutting down
             runtime. Default: 180 minutes
         install_gpu_driver (bool):
             Install Nvidia Driver automatically.
