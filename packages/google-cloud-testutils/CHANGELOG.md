@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-test-utils/compare/v1.1.0...v1.2.0) (2021-10-18)
+
+
+### Features
+
+* add support for python 3.10 ([#68](https://www.github.com/googleapis/python-test-utils/issues/68)) ([d93b6a1](https://www.github.com/googleapis/python-test-utils/commit/d93b6a11e3bfade2b29ab90ed3bc2c384beb01cd))
+
 ## [1.1.0](https://www.github.com/googleapis/python-test-utils/compare/v1.0.0...v1.1.0) (2021-08-30)
 
 
