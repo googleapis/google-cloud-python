@@ -45,7 +45,7 @@ pip-log.txt
 
 # Built documentation
 docs/_build
-htmlcov
+bigquery/docs/generated
 docs.metadata
 
 # Virtual environment
