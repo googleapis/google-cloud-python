@@ -1157,7 +1157,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.retail_v2.types.AddFulfillmentPlacesResponse` Response of the RemoveFulfillmentPlacesRequest. Currently empty because
+                The result type for the operation will be :class:`google.cloud.retail_v2.types.AddFulfillmentPlacesResponse` Response of the AddFulfillmentPlacesRequest. Currently empty because
                    there is no meaningful response populated from the
                    [AddFulfillmentPlaces][] method.
 

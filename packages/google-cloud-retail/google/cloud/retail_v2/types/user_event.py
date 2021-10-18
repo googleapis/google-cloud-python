@@ -121,12 +121,12 @@ class UserEvent(proto.Message):
 
             In a ``search`` event, this field represents the products
             returned to the end user on the current page (the end user
-            may have not finished broswing the whole page yet). When a
+            may have not finished browsing the whole page yet). When a
             new page is returned to the end user, after
             pagination/filtering/ordering even for the same query, a new
             ``search`` event with different
             [product_details][google.cloud.retail.v2.UserEvent.product_details]
-            is desired. The end user may have not finished broswing the
+            is desired. The end user may have not finished browsing the
             whole page yet.
         completion_detail (google.cloud.retail_v2.types.CompletionDetail):
             The main completion details related to the event.
@@ -149,7 +149,7 @@ class UserEvent(proto.Message):
             site. Users can arrive at the site by coming to the site
             directly, or coming through Google search, and etc.
         cart_id (str):
-            The id or name of the associated shopping cart. This id is
+            The ID or name of the associated shopping cart. This ID is
             used to associate multiple items added or present in the
             cart before purchase.
 
@@ -254,7 +254,7 @@ class UserEvent(proto.Message):
             JavaScript pixel and Google Tag Manager, this
             value is filled in automatically.
         page_view_id (str):
-            A unique id of a web page view.
+            A unique ID of a web page view.
 
             This should be kept the same for all user events triggered
             from the same pageview. For example, an item detail page
