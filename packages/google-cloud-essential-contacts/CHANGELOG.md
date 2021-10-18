@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-essential-contacts/compare/v0.3.0...v0.4.0) (2021-10-18)
+
+
+### Features
+
+* add support for python 3.10 ([#54](https://www.github.com/googleapis/python-essential-contacts/issues/54)) ([74cb082](https://www.github.com/googleapis/python-essential-contacts/commit/74cb0823f8fd16b198c4de71c5df4105736e2d18))
+
 ## [0.3.0](https://www.github.com/googleapis/python-essential-contacts/compare/v0.2.4...v0.3.0) (2021-10-08)
 
 
