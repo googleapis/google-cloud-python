@@ -24,15 +24,15 @@ __protobuf__ = proto.module(
 
 
 class Distribution(proto.Message):
-    r"""Distribution represents a frequency distribution of double-
-    alued sample points. It contains the size of the population of
-    sample points plus additional optional information:
+    r"""Distribution represents a frequency distribution of double-valued
+    sample points. It contains the size of the population of sample
+    points plus additional optional information:
 
-      - the arithmetic mean of the samples
-      - the minimum and maximum of the samples
-      - the sum-squared-deviation of the samples, used to compute
-        variance
-      - a histogram of the values of the sample points
+    -  the arithmetic mean of the samples
+    -  the minimum and maximum of the samples
+    -  the sum-squared-deviation of the samples, used to compute
+       variance
+    -  a histogram of the values of the sample points
 
     Attributes:
         count (int):
