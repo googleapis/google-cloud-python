@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-storage-transfer/compare/v1.0.2...v1.1.0) (2021-10-15)
+
+
+### Features
+
+* add context manager support in client ([#28](https://www.github.com/googleapis/python-storage-transfer/issues/28)) ([54fcd0f](https://www.github.com/googleapis/python-storage-transfer/commit/54fcd0f6c21f85f140136a3a73e74184bb88c249))
+* add support for python 3.10 ([#32](https://www.github.com/googleapis/python-storage-transfer/issues/32)) ([bd43b0a](https://www.github.com/googleapis/python-storage-transfer/commit/bd43b0a8f16ad532686d8a0fef80d231896b315f))
+
 ### [1.0.2](https://www.github.com/googleapis/python-storage-transfer/compare/v1.0.1...v1.0.2) (2021-09-30)
 
 
