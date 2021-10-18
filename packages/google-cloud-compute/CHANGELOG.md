@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.6.0](https://www.github.com/googleapis/python-compute/compare/v0.5.0...v0.6.0) (2021-10-14)
+
+
+### Features
+
+* add support for python 3.10 ([#131](https://www.github.com/googleapis/python-compute/issues/131)) ([703ac17](https://www.github.com/googleapis/python-compute/commit/703ac1703bc159dcd81e96759606ad896f125996))
+
+
+### Bug Fixes
+
+* **compute:** Updated max_results to 100 to avoid too many API calls ([#108](https://www.github.com/googleapis/python-compute/issues/108)) ([691e38e](https://www.github.com/googleapis/python-compute/commit/691e38e19d2c5dc7223e35b681c17b1194302e1b))
+* correct region tag formatting ([#102](https://www.github.com/googleapis/python-compute/issues/102)) ([8339c00](https://www.github.com/googleapis/python-compute/commit/8339c00db7eb693813511de7e3d7f8b28b709395))
+
+
+### Documentation
+
+* **samples:** Adding pagination sample. ([#78](https://www.github.com/googleapis/python-compute/issues/78)) ([db0404c](https://www.github.com/googleapis/python-compute/commit/db0404c7849147dcc5bafe797e23cdb5364b381b))
+
 ## [0.5.0](https://www.github.com/googleapis/python-compute/compare/v0.4.2...v0.5.0) (2021-08-09)
 
 
