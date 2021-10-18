@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-dataflow-client/compare/v0.2.0...v0.3.0) (2021-10-15)
+
+
+### Features
+
+* add support for python 3.10 ([#44](https://www.github.com/googleapis/python-dataflow-client/issues/44)) ([ff87f99](https://www.github.com/googleapis/python-dataflow-client/commit/ff87f997be1a9f86fe1619107e12fb02aaccd8a7))
+
 ## [0.2.0](https://www.github.com/googleapis/python-dataflow-client/compare/v0.1.5...v0.2.0) (2021-10-08)
 
 
