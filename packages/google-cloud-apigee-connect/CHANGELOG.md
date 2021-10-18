@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-apigee-connect/compare/v1.1.0...v1.2.0) (2021-10-15)
+
+
+### Features
+
+* add support for python 3.10 ([#56](https://www.github.com/googleapis/python-apigee-connect/issues/56)) ([f119149](https://www.github.com/googleapis/python-apigee-connect/commit/f119149b8343b0a8ae84dbe3d228f6b422d13b20))
+
 ## [1.1.0](https://www.github.com/googleapis/python-apigee-connect/compare/v1.0.2...v1.1.0) (2021-10-08)
 
 
