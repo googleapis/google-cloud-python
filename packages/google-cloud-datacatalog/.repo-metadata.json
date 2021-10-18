@@ -1,14 +1,16 @@
 {
-  "name": "datacatalog ",
-  "name_pretty": "Google Cloud Data Catalog",
-  "product_documentation": "https://cloud.google.com/data-catalog",
-  "client_documentation": "https://googleapis.dev/python/datacatalog/latest",
-  "issue_tracker": "",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/python-datacatalog",
-  "distribution_name": "google-cloud-datacatalog",
-  "api_id": "datacatalog.googleapis.com",
-  "requires_billing": true
+    "name": "datacatalog ",
+    "name_pretty": "Google Cloud Data Catalog",
+    "product_documentation": "https://cloud.google.com/data-catalog",
+    "client_documentation": "https://googleapis.dev/python/datacatalog/latest",
+    "issue_tracker": "",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-datacatalog",
+    "distribution_name": "google-cloud-datacatalog",
+    "api_id": "datacatalog.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": ""
 }
