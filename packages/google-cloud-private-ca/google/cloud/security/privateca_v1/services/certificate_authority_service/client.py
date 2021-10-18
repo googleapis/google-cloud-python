@@ -3089,7 +3089,7 @@ class CertificateAuthorityServiceClient(
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-security-private-ca",
+            "google-cloud-private-ca",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
