@@ -911,8 +911,7 @@ class EncryptionConfig(proto.Message):
 
 class MaintenanceWindow(proto.Message):
     r"""The configuration settings for Cloud Composer maintenance
-    window.
-    The following example:
+    window. The following example:
 
     .. code-block:: none
 
