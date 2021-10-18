@@ -2387,7 +2387,7 @@ class KeyManagementServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             digest (:class:`google.cloud.kms_v1.types.Digest`):
-                Required. The digest of the data to sign. The digest
+                Optional. The digest of the data to sign. The digest
                 must be produced with the same digest algorithm as
                 specified by the key version's
                 [algorithm][google.cloud.kms.v1.CryptoKeyVersion.algorithm].

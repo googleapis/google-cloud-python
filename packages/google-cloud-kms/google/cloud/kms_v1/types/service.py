@@ -869,7 +869,7 @@ class AsymmetricSignRequest(proto.Message):
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to
             use for signing.
         digest (google.cloud.kms_v1.types.Digest):
-            Required. The digest of the data to sign. The digest must be
+            Optional. The digest of the data to sign. The digest must be
             produced with the same digest algorithm as specified by the
             key version's
             [algorithm][google.cloud.kms.v1.CryptoKeyVersion.algorithm].
@@ -894,6 +894,32 @@ class AsymmetricSignRequest(proto.Message):
             However, it is a non-negative integer, which will never
             exceed 2^32-1, and can be safely downconverted to uint32 in
             languages that support this type.
+        data (bytes):
+            Optional. This field will only be honored for RAW_PKCS1
+            keys. The data to sign. A digest is computed over the data
+            that will be signed, PKCS #1 padding is applied to the
+            digest directly and then encrypted.
+        data_crc32c (google.protobuf.wrappers_pb2.Int64Value):
+            Optional. An optional CRC32C checksum of the
+            [AsymmetricSignRequest.data][google.cloud.kms.v1.AsymmetricSignRequest.data].
+            If specified,
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will verify the integrity of the received
+            [AsymmetricSignRequest.data][google.cloud.kms.v1.AsymmetricSignRequest.data]
+            using this checksum.
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            will report an error if the checksum verification fails. If
+            you receive a checksum error, your client should verify that
+            CRC32C([AsymmetricSignRequest.data][google.cloud.kms.v1.AsymmetricSignRequest.data])
+            is equal to
+            [AsymmetricSignRequest.data_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.data_crc32c],
+            and if so, perform a limited number of retries. A persistent
+            mismatch may indicate an issue in your computation of the
+            CRC32C checksum. Note: This field is defined as int64 for
+            reasons of compatibility across different languages.
+            However, it is a non-negative integer, which will never
+            exceed 2^32-1, and can be safely downconverted to uint32 in
+            languages that support this type.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -901,6 +927,8 @@ class AsymmetricSignRequest(proto.Message):
     digest_crc32c = proto.Field(
         proto.MESSAGE, number=4, message=wrappers_pb2.Int64Value,
     )
+    data = proto.Field(proto.BYTES, number=6,)
+    data_crc32c = proto.Field(proto.MESSAGE, number=7, message=wrappers_pb2.Int64Value,)
 
 
 class AsymmetricDecryptRequest(proto.Message):
@@ -1250,6 +1278,21 @@ class AsymmetricSignResponse(proto.Message):
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
             used for signing. Check this field to verify that the
             intended resource was used for signing.
+        verified_data_crc32c (bool):
+            Integrity verification field. A flag indicating whether
+            [AsymmetricSignRequest.data_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.data_crc32c]
+            was received by
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
+            and used for the integrity verification of the
+            [data][google.cloud.kms.v1.AsymmetricSignRequest.data]. A
+            false value of this field indicates either that
+            [AsymmetricSignRequest.data_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.data_crc32c]
+            was left unset or that it was not delivered to
+            [KeyManagementService][google.cloud.kms.v1.KeyManagementService].
+            If you've set
+            [AsymmetricSignRequest.data_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.data_crc32c]
+            but this field is still false, discard the response and
+            perform a limited number of retries.
         protection_level (google.cloud.kms_v1.types.ProtectionLevel):
             The [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
             of the
@@ -1263,6 +1306,7 @@ class AsymmetricSignResponse(proto.Message):
     )
     verified_digest_crc32c = proto.Field(proto.BOOL, number=3,)
     name = proto.Field(proto.STRING, number=4,)
+    verified_data_crc32c = proto.Field(proto.BOOL, number=5,)
     protection_level = proto.Field(
         proto.ENUM, number=6, enum=resources.ProtectionLevel,
     )

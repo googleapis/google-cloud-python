@@ -6111,6 +6111,7 @@ def test_asymmetric_sign(
             signature=b"signature_blob",
             verified_digest_crc32c=True,
             name="name_value",
+            verified_data_crc32c=True,
             protection_level=resources.ProtectionLevel.SOFTWARE,
         )
         response = client.asymmetric_sign(request)
@@ -6125,6 +6126,7 @@ def test_asymmetric_sign(
     assert response.signature == b"signature_blob"
     assert response.verified_digest_crc32c is True
     assert response.name == "name_value"
+    assert response.verified_data_crc32c is True
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
 
 
@@ -6167,6 +6169,7 @@ async def test_asymmetric_sign_async(
                 signature=b"signature_blob",
                 verified_digest_crc32c=True,
                 name="name_value",
+                verified_data_crc32c=True,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
             )
         )
@@ -6182,6 +6185,7 @@ async def test_asymmetric_sign_async(
     assert response.signature == b"signature_blob"
     assert response.verified_digest_crc32c is True
     assert response.name == "name_value"
+    assert response.verified_data_crc32c is True
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
 
 

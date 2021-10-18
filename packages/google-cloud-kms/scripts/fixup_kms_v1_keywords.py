@@ -40,7 +40,7 @@ class kmsCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'asymmetric_decrypt': ('name', 'ciphertext', 'ciphertext_crc32c', ),
-        'asymmetric_sign': ('name', 'digest', 'digest_crc32c', ),
+        'asymmetric_sign': ('name', 'digest', 'digest_crc32c', 'data', 'data_crc32c', ),
         'create_crypto_key': ('parent', 'crypto_key_id', 'crypto_key', 'skip_initial_version_creation', ),
         'create_crypto_key_version': ('parent', 'crypto_key_version', ),
         'create_import_job': ('parent', 'import_job_id', 'import_job', ),
