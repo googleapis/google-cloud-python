@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-datastore/compare/v2.2.0...v2.3.0) (2021-10-18)
+
+
+### Features
+
+* add 'Client.entity' helper ([#239](https://www.github.com/googleapis/python-datastore/issues/239)) ([49d48f1](https://www.github.com/googleapis/python-datastore/commit/49d48f17b0c311b859b62a8bd0af8ebf8f7d5717))
+
+
+### Bug Fixes
+
+* improve type hints, mypy check ([#242](https://www.github.com/googleapis/python-datastore/issues/242)) ([6398bbc](https://www.github.com/googleapis/python-datastore/commit/6398bbcaf8a9d845a4b3d06cfc673a633851f48b))
+
 ## [2.2.0](https://www.github.com/googleapis/python-datastore/compare/v2.1.6...v2.2.0) (2021-10-08)
 
 
