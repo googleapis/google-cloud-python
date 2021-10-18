@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-tpu/compare/v1.1.0...v1.2.0) (2021-10-15)
+
+
+### Features
+
+* add support for python 3.10 ([#52](https://www.github.com/googleapis/python-tpu/issues/52)) ([18b9ee0](https://www.github.com/googleapis/python-tpu/commit/18b9ee0cff03b4f97071ef6c7a2bc3e613a01242))
+* add TPU v2alpha1 ([#55](https://www.github.com/googleapis/python-tpu/issues/55)) ([72e3e8b](https://www.github.com/googleapis/python-tpu/commit/72e3e8b955690b5f180af89a0a15a8870fd556a8))
+
 ## [1.1.0](https://www.github.com/googleapis/python-tpu/compare/v1.0.2...v1.1.0) (2021-10-07)
 
 
