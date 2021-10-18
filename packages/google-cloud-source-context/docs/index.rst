@@ -2,6 +2,7 @@
 
 .. include:: multiprocessing.rst
 
+
 API Reference
 -------------
 .. toctree::
@@ -13,7 +14,7 @@ API Reference
 Changelog
 ---------
 
-For a list of all ``google-cloud-SERVICE`` releases:
+For a list of all ``google-cloud-source-context`` releases:
 
 .. toctree::
    :maxdepth: 2
