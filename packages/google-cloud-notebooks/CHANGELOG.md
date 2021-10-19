@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-notebooks/compare/v1.0.0...v1.1.0) (2021-10-19)
+
+
+### Features
+
+* add support for python 3.10 ([#102](https://www.github.com/googleapis/python-notebooks/issues/102)) ([40bd0e8](https://www.github.com/googleapis/python-notebooks/commit/40bd0e8ca07a1be91be1246e6f8b142b635365d2))
+
+
+### Documentation
+
+* fix typos and docstring formatting ([#106](https://www.github.com/googleapis/python-notebooks/issues/106)) ([c094f62](https://www.github.com/googleapis/python-notebooks/commit/c094f62ace6fbf6ffcb205465d262e0a1e68367a))
+
 ## [1.0.0](https://www.github.com/googleapis/python-notebooks/compare/v0.4.3...v1.0.0) (2021-10-08)
 
 
