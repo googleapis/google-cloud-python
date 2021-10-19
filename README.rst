@@ -88,6 +88,9 @@ Libraries
    * - `App Engine Admin API <https://github.com/googleapis/python-appengine-admin>`_
      - |ga|
      - |PyPI-google-cloud-appengine-admin|
+   * - `App Engine Logging Protos <https://github.com/googleapis/python-appengine-logging>`_
+     - |ga|
+     - |PyPI-google-cloud-appengine-logging|
    * - `Asset Inventory <https://github.com/googleapis/python-asset>`_
      - |ga|
      - |PyPI-google-cloud-asset|
@@ -103,6 +106,9 @@ Libraries
    * - `BigQuery Data Transfer Service <https://github.com/googleapis/python-bigquery-datatransfer>`_
      - |ga|
      - |PyPI-google-cloud-bigquery-datatransfer|
+   * - `BigQuery Logging Protos <https://github.com/googleapis/python-bigquery-logging>`_
+     - |ga|
+     - |PyPI-google-cloud-bigquery-logging|
    * - `BigQuery Reservation <https://github.com/googleapis/python-bigquery-reservation>`_
      - |ga|
      - |PyPI-google-cloud-bigquery-reservation|
@@ -337,9 +343,6 @@ Libraries
    * - `Analytics Data API <https://github.com/googleapis/python-analytics-data>`_
      - |beta|
      - |PyPI-google-analytics-data|
-   * - `App Engine Logging Protos <https://github.com/googleapis/python-appengine-logging>`_
-     - |beta|
-     - |PyPI-google-cloud-appengine-logging|
    * - `Artifact Registry <https://github.com/googleapis/python-artifact-registry>`_
      - |beta|
      - |PyPI-google-cloud-artifact-registry|
@@ -349,9 +352,6 @@ Libraries
    * - `Audit Log <https://github.com/googleapis/python-audit-log>`_
      - |beta|
      - |PyPI-google-cloud-audit-log|
-   * - `BigQuery Logging Protos <https://github.com/googleapis/python-bigquery-logging>`_
-     - |beta|
-     - |PyPI-google-cloud-bigquery-logging|
    * - `BigQuery connector for pandas <https://github.com/googleapis/python-bigquery-pandas>`_
      - |beta|
      - |PyPI-pandas-gbq|
@@ -397,6 +397,9 @@ Libraries
    * - `Media Translation <https://github.com/googleapis/python-media-translation>`_
      - |beta|
      - |PyPI-google-cloud-media-translation|
+   * - `Metrics Scopes API <https://github.com/googleapis/python-monitoring-metrics-scopes>`_
+     - |beta|
+     - |PyPI-google-cloud-monitoring-metrics-scopes|
    * - `Network Security API <https://github.com/googleapis/python-network-security>`_
      - |beta|
      - |PyPI-google-cloud-network-security|
@@ -455,6 +458,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-apigee-connect
 .. |PyPI-google-cloud-appengine-admin| image:: https://img.shields.io/pypi/v/google-cloud-appengine-admin.svg
      :target: https://pypi.org/project/google-cloud-appengine-admin
+.. |PyPI-google-cloud-appengine-logging| image:: https://img.shields.io/pypi/v/google-cloud-appengine-logging.svg
+     :target: https://pypi.org/project/google-cloud-appengine-logging
 .. |PyPI-google-cloud-asset| image:: https://img.shields.io/pypi/v/google-cloud-asset.svg
      :target: https://pypi.org/project/google-cloud-asset
 .. |PyPI-google-cloud-automl| image:: https://img.shields.io/pypi/v/google-cloud-automl.svg
@@ -465,6 +470,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-bigquery-connection
 .. |PyPI-google-cloud-bigquery-datatransfer| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-datatransfer.svg
      :target: https://pypi.org/project/google-cloud-bigquery-datatransfer
+.. |PyPI-google-cloud-bigquery-logging| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-logging.svg
+     :target: https://pypi.org/project/google-cloud-bigquery-logging
 .. |PyPI-google-cloud-bigquery-reservation| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-reservation.svg
      :target: https://pypi.org/project/google-cloud-bigquery-reservation
 .. |PyPI-google-cloud-bigquery-storage| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-storage.svg
@@ -621,16 +628,12 @@ Libraries
      :target: https://pypi.org/project/google-cloud-recaptcha-enterprise
 .. |PyPI-google-analytics-data| image:: https://img.shields.io/pypi/v/google-analytics-data.svg
      :target: https://pypi.org/project/google-analytics-data
-.. |PyPI-google-cloud-appengine-logging| image:: https://img.shields.io/pypi/v/google-cloud-appengine-logging.svg
-     :target: https://pypi.org/project/google-cloud-appengine-logging
 .. |PyPI-google-cloud-artifact-registry| image:: https://img.shields.io/pypi/v/google-cloud-artifact-registry.svg
      :target: https://pypi.org/project/google-cloud-artifact-registry
 .. |PyPI-google-cloud-assured-workloads| image:: https://img.shields.io/pypi/v/google-cloud-assured-workloads.svg
      :target: https://pypi.org/project/google-cloud-assured-workloads
 .. |PyPI-google-cloud-audit-log| image:: https://img.shields.io/pypi/v/google-cloud-audit-log.svg
      :target: https://pypi.org/project/google-cloud-audit-log
-.. |PyPI-google-cloud-bigquery-logging| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-logging.svg
-     :target: https://pypi.org/project/google-cloud-bigquery-logging
 .. |PyPI-pandas-gbq| image:: https://img.shields.io/pypi/v/pandas-gbq.svg
      :target: https://pypi.org/project/pandas-gbq
 .. |PyPI-google-cloud-binary-authorization| image:: https://img.shields.io/pypi/v/google-cloud-binary-authorization.svg
@@ -661,6 +664,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-life-sciences
 .. |PyPI-google-cloud-media-translation| image:: https://img.shields.io/pypi/v/google-cloud-media-translation.svg
      :target: https://pypi.org/project/google-cloud-media-translation
+.. |PyPI-google-cloud-monitoring-metrics-scopes| image:: https://img.shields.io/pypi/v/google-cloud-monitoring-metrics-scopes.svg
+     :target: https://pypi.org/project/google-cloud-monitoring-metrics-scopes
 .. |PyPI-google-cloud-network-security| image:: https://img.shields.io/pypi/v/google-cloud-network-security.svg
      :target: https://pypi.org/project/google-cloud-network-security
 .. |PyPI-db-dtypes| image:: https://img.shields.io/pypi/v/db-dtypes.svg
