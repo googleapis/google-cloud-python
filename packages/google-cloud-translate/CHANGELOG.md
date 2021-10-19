@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.6.0](https://www.github.com/googleapis/python-translate/compare/v3.5.0...v3.6.0) (2021-10-18)
+
+
+### Features
+
+* add support for python 3.10 ([#275](https://www.github.com/googleapis/python-translate/issues/275)) ([381fc15](https://www.github.com/googleapis/python-translate/commit/381fc15cd920252edbc280b7623125955ee68347))
+
+
+### Bug Fixes
+
+* add model signature for batch document translation ([#276](https://www.github.com/googleapis/python-translate/issues/276)) ([be0b01b](https://www.github.com/googleapis/python-translate/commit/be0b01bb5b21cec9910967305784fc02c7ce83ff))
+
 ## [3.5.0](https://www.github.com/googleapis/python-translate/compare/v3.4.1...v3.5.0) (2021-10-11)
 
 
