@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.10.0](https://www.github.com/googleapis/python-kms/compare/v2.9.0...v2.10.0) (2021-10-18)
+
+
+### Features
+
+* add support for Raw PKCS[#1](https://www.github.com/googleapis/python-kms/issues/1) signing keys ([#195](https://www.github.com/googleapis/python-kms/issues/195)) ([9c4f997](https://www.github.com/googleapis/python-kms/commit/9c4f997d09e9a83141eda767cd2bb63a0bf58a37))
+
 ## [2.9.0](https://www.github.com/googleapis/python-kms/compare/v2.8.0...v2.9.0) (2021-10-08)
 
 
