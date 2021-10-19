@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-datastream/compare/v0.2.0...v0.3.0) (2021-10-15)
+
+
+### Features
+
+* add support for python 3.10 ([#38](https://www.github.com/googleapis/python-datastream/issues/38)) ([52d43b4](https://www.github.com/googleapis/python-datastream/commit/52d43b486ff7af6b2ad8956b29a59f2b5e3605c8))
+
 ## [0.2.0](https://www.github.com/googleapis/python-datastream/compare/v0.1.3...v0.2.0) (2021-10-08)
 
 
