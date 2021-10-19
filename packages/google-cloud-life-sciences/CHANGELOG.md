@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-life-sciences/compare/v0.3.0...v0.4.0) (2021-10-18)
+
+
+### Features
+
+* add support for python 3.10 ([#47](https://www.github.com/googleapis/python-life-sciences/issues/47)) ([2bc0e01](https://www.github.com/googleapis/python-life-sciences/commit/2bc0e01935e375391756ebcdb766defe53e18f76))
+
 ## [0.3.0](https://www.github.com/googleapis/python-life-sciences/compare/v0.2.3...v0.3.0) (2021-10-07)
 
 
