@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.7.1](https://www.github.com/googleapis/python-analytics-admin/compare/v0.7.0...v0.7.1) (2021-10-19)
+
+
+### Documentation
+
+* **samples:** add samples for Measurement Protocol Secrets management methods ([#152](https://www.github.com/googleapis/python-analytics-admin/issues/152)) ([e264571](https://www.github.com/googleapis/python-analytics-admin/commit/e2645719d6fc518857f64482c48f60e1e0963fc7))
+* **samples:** add samples for Conversion Event management methods ([#153](https://www.github.com/googleapis/python-analytics-admin/issues/153)) ([126f271](https://www.github.com/googleapis/python-analytics-admin/commit/126f2711c9fdedaa7cddfe8b3c7bdaff03d0297e))
+
 ## [0.7.0](https://www.github.com/googleapis/python-analytics-admin/compare/v0.6.0...v0.7.0) (2021-10-12)
 
 
