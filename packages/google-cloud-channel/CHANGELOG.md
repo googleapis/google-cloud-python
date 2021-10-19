@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://www.github.com/googleapis/python-channel/compare/v1.4.0...v1.5.0) (2021-10-18)
+
+
+### Features
+
+* add trove classifier for python 3.9 and python 3.10 ([#105](https://www.github.com/googleapis/python-channel/issues/105)) ([8c4eb48](https://www.github.com/googleapis/python-channel/commit/8c4eb48881d99dbc6a642a7cb771c69b2c6e6242))
+
 ## [1.4.0](https://www.github.com/googleapis/python-channel/compare/v1.3.2...v1.4.0) (2021-10-08)
 
 
