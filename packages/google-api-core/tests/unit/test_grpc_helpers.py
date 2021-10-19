@@ -56,6 +56,9 @@ class RpcErrorImpl(grpc.RpcError, grpc.Call):
     def details(self):
         return None
 
+    def trailing_metadata(self):
+        return None
+
 
 def test_wrap_unary_errors():
     grpc_error = RpcErrorImpl(grpc.StatusCode.INVALID_ARGUMENT)

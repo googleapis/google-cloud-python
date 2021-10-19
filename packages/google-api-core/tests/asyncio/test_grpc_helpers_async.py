@@ -42,6 +42,9 @@ class RpcErrorImpl(grpc.RpcError, grpc.Call):
     def details(self):
         return None
 
+    def trailing_metadata(self):
+        return None
+
 
 @pytest.mark.asyncio
 async def test_wrap_unary_errors():

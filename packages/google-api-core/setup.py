@@ -29,14 +29,14 @@ description = "Google API client core library"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "googleapis-common-protos >= 1.6.0, < 2.0dev",
+    "googleapis-common-protos >= 1.52.0, < 2.0dev",
     "protobuf >= 3.12.0",
     "google-auth >= 1.25.0, < 3.0dev",
     "requests >= 2.18.0, < 3.0.0dev",
     "setuptools >= 40.3.0",
 ]
 extras = {
-    "grpc": "grpcio >= 1.33.2, < 2.0dev",
+    "grpc": ["grpcio >= 1.33.2, < 2.0dev", "grpcio-status >= 1.33.2, < 2.0dev"],
     "grpcgcp": "grpcio-gcp >= 0.2.2",
     "grpcio-gcp": "grpcio-gcp >= 0.2.2",
 }
