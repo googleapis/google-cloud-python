@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-private-catalog/compare/v0.3.0...v0.4.0) (2021-10-18)
+
+
+### Features
+
+* add support for python 3.10 ([#55](https://www.github.com/googleapis/python-private-catalog/issues/55)) ([a2b2bb5](https://www.github.com/googleapis/python-private-catalog/commit/a2b2bb58556b5a555621a97960f38d2dfc5a86ce))
+
 ## [0.3.0](https://www.github.com/googleapis/python-private-catalog/compare/v0.2.4...v0.3.0) (2021-10-08)
 
 
