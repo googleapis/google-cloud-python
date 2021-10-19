@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-eventarc/compare/v1.1.0...v1.2.0) (2021-10-14)
+
+
+### Features
+
+* add support for python 3.10 ([#47](https://www.github.com/googleapis/python-eventarc/issues/47)) ([987360c](https://www.github.com/googleapis/python-eventarc/commit/987360ceded2027693e3ba148453f0ccfd50d2ce))
+
 ## [1.1.0](https://www.github.com/googleapis/python-eventarc/compare/v1.0.2...v1.1.0) (2021-10-08)
 
 
