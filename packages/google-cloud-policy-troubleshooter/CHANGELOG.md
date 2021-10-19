@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/googleapis/python-policy-troubleshooter/compare/v1.2.0...v1.3.0) (2021-10-18)
+
+
+### Features
+
+* add support for python 3.10 ([#71](https://www.github.com/googleapis/python-policy-troubleshooter/issues/71)) ([f3bda41](https://www.github.com/googleapis/python-policy-troubleshooter/commit/f3bda41de6c47ca3f7498a7497b1d8d0fdb9db61))
+
 ## [1.2.0](https://www.github.com/googleapis/python-policy-troubleshooter/compare/v1.1.3...v1.2.0) (2021-10-08)
 
 
