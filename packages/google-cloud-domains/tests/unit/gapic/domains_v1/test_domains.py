@@ -35,14 +35,14 @@ from google.api_core import operations_v1
 from google.api_core import path_template
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.domains_v1beta1.services.domains import DomainsAsyncClient
-from google.cloud.domains_v1beta1.services.domains import DomainsClient
-from google.cloud.domains_v1beta1.services.domains import pagers
-from google.cloud.domains_v1beta1.services.domains import transports
-from google.cloud.domains_v1beta1.services.domains.transports.base import (
+from google.cloud.domains_v1.services.domains import DomainsAsyncClient
+from google.cloud.domains_v1.services.domains import DomainsClient
+from google.cloud.domains_v1.services.domains import pagers
+from google.cloud.domains_v1.services.domains import transports
+from google.cloud.domains_v1.services.domains.transports.base import (
     _GOOGLE_AUTH_VERSION,
 )
-from google.cloud.domains_v1beta1.types import domains
+from google.cloud.domains_v1.types import domains
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -451,7 +451,7 @@ def test_domains_client_client_options_credentials_file(
 
 def test_domains_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.domains_v1beta1.services.domains.transports.DomainsGrpcTransport.__init__"
+        "google.cloud.domains_v1.services.domains.transports.DomainsGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
         client = DomainsClient(client_options={"api_endpoint": "squid.clam.whelk"})
@@ -4026,7 +4026,7 @@ def test_domains_base_transport_error():
 def test_domains_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.domains_v1beta1.services.domains.transports.DomainsTransport.__init__"
+        "google.cloud.domains_v1.services.domains.transports.DomainsTransport.__init__"
     ) as Transport:
         Transport.return_value = None
         transport = transports.DomainsTransport(
@@ -4071,7 +4071,7 @@ def test_domains_base_transport_with_credentials_file():
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.domains_v1beta1.services.domains.transports.DomainsTransport._prep_wrapped_messages"
+        "google.cloud.domains_v1.services.domains.transports.DomainsTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
@@ -4092,7 +4092,7 @@ def test_domains_base_transport_with_credentials_file_old_google_auth():
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.domains_v1beta1.services.domains.transports.DomainsTransport._prep_wrapped_messages"
+        "google.cloud.domains_v1.services.domains.transports.DomainsTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
@@ -4109,7 +4109,7 @@ def test_domains_base_transport_with_credentials_file_old_google_auth():
 def test_domains_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.domains_v1beta1.services.domains.transports.DomainsTransport._prep_wrapped_messages"
+        "google.cloud.domains_v1.services.domains.transports.DomainsTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)

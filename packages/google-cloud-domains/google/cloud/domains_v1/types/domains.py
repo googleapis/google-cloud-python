@@ -22,7 +22,7 @@ from google.type import postal_address_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.domains.v1beta1",
+    package="google.cloud.domains.v1",
     manifest={
         "ContactPrivacy",
         "DomainNotice",
@@ -130,29 +130,29 @@ class Registration(proto.Message):
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The expiration timestamp of the
             ``Registration``.
-        state (google.cloud.domains_v1beta1.types.Registration.State):
+        state (google.cloud.domains_v1.types.Registration.State):
             Output only. The state of the ``Registration``
-        issues (Sequence[google.cloud.domains_v1beta1.types.Registration.Issue]):
+        issues (Sequence[google.cloud.domains_v1.types.Registration.Issue]):
             Output only. The set of issues with the ``Registration``
             that require attention.
-        labels (Sequence[google.cloud.domains_v1beta1.types.Registration.LabelsEntry]):
+        labels (Sequence[google.cloud.domains_v1.types.Registration.LabelsEntry]):
             Set of labels associated with the ``Registration``.
-        management_settings (google.cloud.domains_v1beta1.types.ManagementSettings):
+        management_settings (google.cloud.domains_v1.types.ManagementSettings):
             Settings for management of the ``Registration``, including
             renewal, billing, and transfer. You cannot update these with
             the ``UpdateRegistration`` method. To update these settings,
             use the ``ConfigureManagementSettings`` method.
-        dns_settings (google.cloud.domains_v1beta1.types.DnsSettings):
+        dns_settings (google.cloud.domains_v1.types.DnsSettings):
             Settings controlling the DNS configuration of the
             ``Registration``. You cannot update these with the
             ``UpdateRegistration`` method. To update these settings, use
             the ``ConfigureDnsSettings`` method.
-        contact_settings (google.cloud.domains_v1beta1.types.ContactSettings):
+        contact_settings (google.cloud.domains_v1.types.ContactSettings):
             Required. Settings for contact information linked to the
             ``Registration``. You cannot update these with the
             ``UpdateRegistration`` method. To update these settings, use
             the ``ConfigureContactSettings`` method.
-        pending_contact_settings (google.cloud.domains_v1beta1.types.ContactSettings):
+        pending_contact_settings (google.cloud.domains_v1.types.ContactSettings):
             Output only. Pending contact settings for the
             ``Registration``. Updates to the ``contact_settings`` field
             that change its ``registrant_contact`` or ``privacy`` fields
@@ -162,7 +162,7 @@ class Registration(proto.Message):
             been confirmed. To confirm the changes, the
             ``registrant_contact`` must follow the instructions in the
             email they receive.
-        supported_privacy (Sequence[google.cloud.domains_v1beta1.types.ContactPrivacy]):
+        supported_privacy (Sequence[google.cloud.domains_v1.types.ContactPrivacy]):
             Output only. Set of options for the
             ``contact_settings.privacy`` field that this
             ``Registration`` supports.
@@ -210,9 +210,9 @@ class ManagementSettings(proto.Message):
     ``Registration``.
 
     Attributes:
-        renewal_method (google.cloud.domains_v1beta1.types.ManagementSettings.RenewalMethod):
+        renewal_method (google.cloud.domains_v1.types.ManagementSettings.RenewalMethod):
             Output only. The renewal method for this ``Registration``.
-        transfer_lock_state (google.cloud.domains_v1beta1.types.TransferLockState):
+        transfer_lock_state (google.cloud.domains_v1.types.TransferLockState):
             Controls whether the domain can be
             transferred to another registrar.
     """
@@ -232,13 +232,13 @@ class DnsSettings(proto.Message):
     servers, DNSSEC, and glue records.
 
     Attributes:
-        custom_dns (google.cloud.domains_v1beta1.types.DnsSettings.CustomDns):
+        custom_dns (google.cloud.domains_v1.types.DnsSettings.CustomDns):
             An arbitrary DNS provider identified by its
             name servers.
-        google_domains_dns (google.cloud.domains_v1beta1.types.DnsSettings.GoogleDomainsDns):
+        google_domains_dns (google.cloud.domains_v1.types.DnsSettings.GoogleDomainsDns):
             The free DNS zone provided by `Google
             Domains <https://domains.google/>`__.
-        glue_records (Sequence[google.cloud.domains_v1beta1.types.DnsSettings.GlueRecord]):
+        glue_records (Sequence[google.cloud.domains_v1.types.DnsSettings.GlueRecord]):
             The list of glue records for this ``Registration``. Commonly
             empty.
     """
@@ -258,7 +258,7 @@ class DnsSettings(proto.Message):
                 the DNS zone for this domain. Each name server
                 is a domain name, with Unicode domain names
                 expressed in Punycode format.
-            ds_records (Sequence[google.cloud.domains_v1beta1.types.DnsSettings.DsRecord]):
+            ds_records (Sequence[google.cloud.domains_v1.types.DnsSettings.DsRecord]):
                 The list of DS records for this domain, which
                 are used to enable DNSSEC. The domain's DNS
                 provider can provide the values to set here. If
@@ -284,11 +284,11 @@ class DnsSettings(proto.Message):
                 names expressed in Punycode format. This field
                 is automatically populated with the name servers
                 assigned to the Google Domains DNS zone.
-            ds_state (google.cloud.domains_v1beta1.types.DnsSettings.DsState):
+            ds_state (google.cloud.domains_v1.types.DnsSettings.DsState):
                 Required. The state of DS records for this
                 domain. Used to enable or disable automatic
                 DNSSEC.
-            ds_records (Sequence[google.cloud.domains_v1beta1.types.DnsSettings.DsRecord]):
+            ds_records (Sequence[google.cloud.domains_v1.types.DnsSettings.DsRecord]):
                 Output only. The list of DS records published for this
                 domain. The list is automatically populated when
                 ``ds_state`` is ``DS_RECORDS_PUBLISHED``, otherwise it
@@ -310,10 +310,10 @@ class DnsSettings(proto.Message):
             key_tag (int):
                 The key tag of the record. Must be set in
                 range 0 -- 65535.
-            algorithm (google.cloud.domains_v1beta1.types.DnsSettings.DsRecord.Algorithm):
+            algorithm (google.cloud.domains_v1.types.DnsSettings.DsRecord.Algorithm):
                 The algorithm used to generate the referenced
                 DNSKEY.
-            digest_type (google.cloud.domains_v1beta1.types.DnsSettings.DsRecord.DigestType):
+            digest_type (google.cloud.domains_v1.types.DnsSettings.DsRecord.DigestType):
                 The hash function used to generate the digest
                 of the referenced DNSKEY.
             digest (str):
@@ -407,10 +407,10 @@ class ContactSettings(proto.Message):
     are identical.
 
     Attributes:
-        privacy (google.cloud.domains_v1beta1.types.ContactPrivacy):
+        privacy (google.cloud.domains_v1.types.ContactPrivacy):
             Required. Privacy setting for the contacts associated with
             the ``Registration``.
-        registrant_contact (google.cloud.domains_v1beta1.types.ContactSettings.Contact):
+        registrant_contact (google.cloud.domains_v1.types.ContactSettings.Contact):
             Required. The registrant contact for the ``Registration``.
 
             *Caution: Anyone with access to this email address, phone
@@ -420,10 +420,10 @@ class ContactSettings(proto.Message):
             *Warning: For new ``Registration``\ s, the registrant
             receives an email confirmation that they must complete
             within 15 days to avoid domain suspension.*
-        admin_contact (google.cloud.domains_v1beta1.types.ContactSettings.Contact):
+        admin_contact (google.cloud.domains_v1.types.ContactSettings.Contact):
             Required. The administrative contact for the
             ``Registration``.
-        technical_contact (google.cloud.domains_v1beta1.types.ContactSettings.Contact):
+        technical_contact (google.cloud.domains_v1.types.ContactSettings.Contact):
             Required. The technical contact for the ``Registration``.
     """
 
@@ -476,7 +476,7 @@ class SearchDomainsResponse(proto.Message):
     r"""Response for the ``SearchDomains`` method.
 
     Attributes:
-        register_parameters (Sequence[google.cloud.domains_v1beta1.types.RegisterParameters]):
+        register_parameters (Sequence[google.cloud.domains_v1.types.RegisterParameters]):
             Results of the domain name search.
     """
 
@@ -505,7 +505,7 @@ class RetrieveRegisterParametersResponse(proto.Message):
     r"""Response for the ``RetrieveRegisterParameters`` method.
 
     Attributes:
-        register_parameters (google.cloud.domains_v1beta1.types.RegisterParameters):
+        register_parameters (google.cloud.domains_v1.types.RegisterParameters):
             Parameters to use when calling the ``RegisterDomain``
             method.
     """
@@ -522,14 +522,14 @@ class RegisterDomainRequest(proto.Message):
         parent (str):
             Required. The parent resource of the ``Registration``. Must
             be in the format ``projects/*/locations/*``.
-        registration (google.cloud.domains_v1beta1.types.Registration):
+        registration (google.cloud.domains_v1.types.Registration):
             Required. The complete ``Registration`` resource to be
             created.
-        domain_notices (Sequence[google.cloud.domains_v1beta1.types.DomainNotice]):
+        domain_notices (Sequence[google.cloud.domains_v1.types.DomainNotice]):
             The list of domain notices that you acknowledge. Call
             ``RetrieveRegisterParameters`` to see the notices that need
             acknowledgement.
-        contact_notices (Sequence[google.cloud.domains_v1beta1.types.ContactNotice]):
+        contact_notices (Sequence[google.cloud.domains_v1.types.ContactNotice]):
             The list of contact notices that the caller acknowledges.
             The notices needed here depend on the values specified in
             ``registration.contact_settings``.
@@ -572,7 +572,7 @@ class RetrieveTransferParametersResponse(proto.Message):
     r"""Response for the ``RetrieveTransferParameters`` method.
 
     Attributes:
-        transfer_parameters (google.cloud.domains_v1beta1.types.TransferParameters):
+        transfer_parameters (google.cloud.domains_v1.types.TransferParameters):
             Parameters to use when calling the ``TransferDomain``
             method.
     """
@@ -589,7 +589,7 @@ class TransferDomainRequest(proto.Message):
         parent (str):
             Required. The parent resource of the ``Registration``. Must
             be in the format ``projects/*/locations/*``.
-        registration (google.cloud.domains_v1beta1.types.Registration):
+        registration (google.cloud.domains_v1.types.Registration):
             Required. The complete ``Registration`` resource to be
             created.
 
@@ -599,7 +599,7 @@ class TransferDomainRequest(proto.Message):
             domain's current DNS service does not cease upon transfer,
             as is often the case for DNS services provided for free by
             the registrar.
-        contact_notices (Sequence[google.cloud.domains_v1beta1.types.ContactNotice]):
+        contact_notices (Sequence[google.cloud.domains_v1.types.ContactNotice]):
             The list of contact notices that you acknowledge. The
             notices needed here depend on the values specified in
             ``registration.contact_settings``.
@@ -607,7 +607,7 @@ class TransferDomainRequest(proto.Message):
             Required. Acknowledgement of the price to transfer or renew
             the domain for one year. Call ``RetrieveTransferParameters``
             to obtain the price, which you must acknowledge.
-        authorization_code (google.cloud.domains_v1beta1.types.AuthorizationCode):
+        authorization_code (google.cloud.domains_v1.types.AuthorizationCode):
             The domain's transfer authorization code. You
             can obtain this from the domain's current
             registrar.
@@ -672,7 +672,7 @@ class ListRegistrationsResponse(proto.Message):
     r"""Response for the ``ListRegistrations`` method.
 
     Attributes:
-        registrations (Sequence[google.cloud.domains_v1beta1.types.Registration]):
+        registrations (Sequence[google.cloud.domains_v1.types.Registration]):
             A list of ``Registration``\ s.
         next_page_token (str):
             When present, there are more results to retrieve. Set
@@ -706,7 +706,7 @@ class UpdateRegistrationRequest(proto.Message):
     r"""Request for the ``UpdateRegistration`` method.
 
     Attributes:
-        registration (google.cloud.domains_v1beta1.types.Registration):
+        registration (google.cloud.domains_v1.types.Registration):
             Fields of the ``Registration`` to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The field mask describing which fields to update
@@ -728,7 +728,7 @@ class ConfigureManagementSettingsRequest(proto.Message):
             Required. The name of the ``Registration`` whose management
             settings are being updated, in the format
             ``projects/*/locations/*/registrations/*``.
-        management_settings (google.cloud.domains_v1beta1.types.ManagementSettings):
+        management_settings (google.cloud.domains_v1.types.ManagementSettings):
             Fields of the ``ManagementSettings`` to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The field mask describing which fields to update
@@ -754,7 +754,7 @@ class ConfigureDnsSettingsRequest(proto.Message):
             Required. The name of the ``Registration`` whose DNS
             settings are being updated, in the format
             ``projects/*/locations/*/registrations/*``.
-        dns_settings (google.cloud.domains_v1beta1.types.DnsSettings):
+        dns_settings (google.cloud.domains_v1.types.DnsSettings):
             Fields of the ``DnsSettings`` to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The field mask describing which fields to update
@@ -789,14 +789,14 @@ class ConfigureContactSettingsRequest(proto.Message):
             Required. The name of the ``Registration`` whose contact
             settings are being updated, in the format
             ``projects/*/locations/*/registrations/*``.
-        contact_settings (google.cloud.domains_v1beta1.types.ContactSettings):
+        contact_settings (google.cloud.domains_v1.types.ContactSettings):
             Fields of the ``ContactSettings`` to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The field mask describing which fields to update
             as a comma-separated list. For example, if only the
             registrant contact is being updated, the ``update_mask`` is
             ``"registrant_contact"``.
-        contact_notices (Sequence[google.cloud.domains_v1beta1.types.ContactNotice]):
+        contact_notices (Sequence[google.cloud.domains_v1.types.ContactNotice]):
             The list of contact notices that the caller acknowledges.
             The notices needed here depend on the values specified in
             ``contact_settings``.
@@ -871,15 +871,15 @@ class RegisterParameters(proto.Message):
         domain_name (str):
             The domain name. Unicode domain names are
             expressed in Punycode format.
-        availability (google.cloud.domains_v1beta1.types.RegisterParameters.Availability):
+        availability (google.cloud.domains_v1.types.RegisterParameters.Availability):
             Indicates whether the domain is available for registration.
             This value is accurate when obtained by calling
             ``RetrieveRegisterParameters``, but is approximate when
             obtained by calling ``SearchDomains``.
-        supported_privacy (Sequence[google.cloud.domains_v1beta1.types.ContactPrivacy]):
+        supported_privacy (Sequence[google.cloud.domains_v1.types.ContactPrivacy]):
             Contact privacy options that the domain
             supports.
-        domain_notices (Sequence[google.cloud.domains_v1beta1.types.DomainNotice]):
+        domain_notices (Sequence[google.cloud.domains_v1.types.DomainNotice]):
             Notices about special properties of the
             domain.
         yearly_price (google.type.money_pb2.Money):
@@ -918,12 +918,12 @@ class TransferParameters(proto.Message):
         name_servers (Sequence[str]):
             The name servers that currently store the
             configuration of the domain.
-        transfer_lock_state (google.cloud.domains_v1beta1.types.TransferLockState):
+        transfer_lock_state (google.cloud.domains_v1.types.TransferLockState):
             Indicates whether the domain is protected by a transfer
             lock. For a transfer to succeed, this must show
             ``UNLOCKED``. To unlock a domain, go to its current
             registrar.
-        supported_privacy (Sequence[google.cloud.domains_v1beta1.types.ContactPrivacy]):
+        supported_privacy (Sequence[google.cloud.domains_v1.types.ContactPrivacy]):
             Contact privacy options that the domain
             supports.
         yearly_price (google.type.money_pb2.Money):

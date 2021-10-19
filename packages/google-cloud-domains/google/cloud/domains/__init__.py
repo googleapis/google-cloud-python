@@ -43,8 +43,14 @@ from google.cloud.domains_v1beta1.types.domains import RetrieveRegisterParameter
 from google.cloud.domains_v1beta1.types.domains import (
     RetrieveRegisterParametersResponse,
 )
+from google.cloud.domains_v1beta1.types.domains import RetrieveTransferParametersRequest
+from google.cloud.domains_v1beta1.types.domains import (
+    RetrieveTransferParametersResponse,
+)
 from google.cloud.domains_v1beta1.types.domains import SearchDomainsRequest
 from google.cloud.domains_v1beta1.types.domains import SearchDomainsResponse
+from google.cloud.domains_v1beta1.types.domains import TransferDomainRequest
+from google.cloud.domains_v1beta1.types.domains import TransferParameters
 from google.cloud.domains_v1beta1.types.domains import UpdateRegistrationRequest
 from google.cloud.domains_v1beta1.types.domains import ContactNotice
 from google.cloud.domains_v1beta1.types.domains import ContactPrivacy
@@ -74,8 +80,12 @@ __all__ = (
     "RetrieveAuthorizationCodeRequest",
     "RetrieveRegisterParametersRequest",
     "RetrieveRegisterParametersResponse",
+    "RetrieveTransferParametersRequest",
+    "RetrieveTransferParametersResponse",
     "SearchDomainsRequest",
     "SearchDomainsResponse",
+    "TransferDomainRequest",
+    "TransferParameters",
     "UpdateRegistrationRequest",
     "ContactNotice",
     "ContactPrivacy",

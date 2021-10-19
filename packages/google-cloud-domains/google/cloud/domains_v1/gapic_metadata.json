@@ -1,8 +1,8 @@
  {
   "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
   "language": "python",
-  "libraryPackage": "google.cloud.domains_v1beta1",
-  "protoPackage": "google.cloud.domains.v1beta1",
+  "libraryPackage": "google.cloud.domains_v1",
+  "protoPackage": "google.cloud.domains.v1",
   "schema": "1.0",
   "services": {
     "Domains": {

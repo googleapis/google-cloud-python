@@ -394,6 +394,9 @@ class DomainsAsyncClient:
                 The result type for the operation will be :class:`google.cloud.domains_v1beta1.types.Registration` The Registration resource facilitates managing and configuring domain name
                    registrations.
 
+                   There are several ways to create a new Registration
+                   resource:
+
                    To create a new Registration resource, find a
                    suitable domain name by calling the SearchDomains
                    method with a query to see available domain name
@@ -401,6 +404,15 @@ class DomainsAsyncClient:
                    RetrieveRegisterParameters to ensure availability and
                    obtain information like pricing, which is needed to
                    build a call to RegisterDomain.
+
+                   Another way to create a new Registration is to
+                   transfer an existing domain from another registrar.
+                   First, go to the current registrar to unlock the
+                   domain for transfer and retrieve the domain's
+                   transfer authorization code. Then call
+                   RetrieveTransferParameters to confirm that the domain
+                   is unlocked and to get values needed to build a call
+                   to TransferDomain.
 
         """
         # Create or coerce a protobuf request object.
@@ -428,6 +440,256 @@ class DomainsAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.register_domain,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            domains.Registration,
+            metadata_type=domains.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def retrieve_transfer_parameters(
+        self,
+        request: domains.RetrieveTransferParametersRequest = None,
+        *,
+        location: str = None,
+        domain_name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> domains.RetrieveTransferParametersResponse:
+        r"""Gets parameters needed to transfer a domain name from another
+        registrar to Cloud Domains. For domains managed by Google
+        Domains, transferring to Cloud Domains is not supported.
+
+        Use the returned values to call ``TransferDomain``.
+
+        Args:
+            request (:class:`google.cloud.domains_v1beta1.types.RetrieveTransferParametersRequest`):
+                The request object. Request for the
+                `RetrieveTransferParameters` method.
+            location (:class:`str`):
+                Required. The location. Must be in the format
+                ``projects/*/locations/*``.
+
+                This corresponds to the ``location`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            domain_name (:class:`str`):
+                Required. The domain name. Unicode
+                domain names must be expressed in
+                Punycode format.
+
+                This corresponds to the ``domain_name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.domains_v1beta1.types.RetrieveTransferParametersResponse:
+                Response for the RetrieveTransferParameters method.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([location, domain_name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = domains.RetrieveTransferParametersRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if location is not None:
+            request.location = location
+        if domain_name is not None:
+            request.domain_name = domain_name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.retrieve_transfer_parameters,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("location", request.location),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def transfer_domain(
+        self,
+        request: domains.TransferDomainRequest = None,
+        *,
+        parent: str = None,
+        registration: domains.Registration = None,
+        yearly_price: money_pb2.Money = None,
+        authorization_code: domains.AuthorizationCode = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Transfers a domain name from another registrar to Cloud Domains.
+        For domains managed by Google Domains, transferring to Cloud
+        Domains is not supported.
+
+        Before calling this method, go to the domain's current registrar
+        to unlock the domain for transfer and retrieve the domain's
+        transfer authorization code. Then call
+        ``RetrieveTransferParameters`` to confirm that the domain is
+        unlocked and to get values needed to build a call to this
+        method.
+
+        A successful call creates a ``Registration`` resource in state
+        ``TRANSFER_PENDING``. It can take several days to complete the
+        transfer process. The registrant can often speed up this process
+        by approving the transfer through the current registrar, either
+        by clicking a link in an email from the registrar or by visiting
+        the registrar's website.
+
+        A few minutes after transfer approval, the resource transitions
+        to state ``ACTIVE``, indicating that the transfer was
+        successful. If the transfer is rejected or the request expires
+        without being approved, the resource can end up in state
+        ``TRANSFER_FAILED``. If transfer fails, you can safely delete
+        the resource and retry the transfer.
+
+        Args:
+            request (:class:`google.cloud.domains_v1beta1.types.TransferDomainRequest`):
+                The request object. Request for the `TransferDomain`
+                method.
+            parent (:class:`str`):
+                Required. The parent resource of the ``Registration``.
+                Must be in the format ``projects/*/locations/*``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            registration (:class:`google.cloud.domains_v1beta1.types.Registration`):
+                Required. The complete ``Registration`` resource to be
+                created.
+
+                You can leave ``registration.dns_settings`` unset to
+                import the domain's current DNS configuration from its
+                current registrar. Use this option only if you are sure
+                that the domain's current DNS service does not cease
+                upon transfer, as is often the case for DNS services
+                provided for free by the registrar.
+
+                This corresponds to the ``registration`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            yearly_price (:class:`google.type.money_pb2.Money`):
+                Required. Acknowledgement of the price to transfer or
+                renew the domain for one year. Call
+                ``RetrieveTransferParameters`` to obtain the price,
+                which you must acknowledge.
+
+                This corresponds to the ``yearly_price`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            authorization_code (:class:`google.cloud.domains_v1beta1.types.AuthorizationCode`):
+                The domain's transfer authorization
+                code. You can obtain this from the
+                domain's current registrar.
+
+                This corresponds to the ``authorization_code`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.domains_v1beta1.types.Registration` The Registration resource facilitates managing and configuring domain name
+                   registrations.
+
+                   There are several ways to create a new Registration
+                   resource:
+
+                   To create a new Registration resource, find a
+                   suitable domain name by calling the SearchDomains
+                   method with a query to see available domain name
+                   options. After choosing a name, call
+                   RetrieveRegisterParameters to ensure availability and
+                   obtain information like pricing, which is needed to
+                   build a call to RegisterDomain.
+
+                   Another way to create a new Registration is to
+                   transfer an existing domain from another registrar.
+                   First, go to the current registrar to unlock the
+                   domain for transfer and retrieve the domain's
+                   transfer authorization code. Then call
+                   RetrieveTransferParameters to confirm that the domain
+                   is unlocked and to get values needed to build a call
+                   to TransferDomain.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [parent, registration, yearly_price, authorization_code]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = domains.TransferDomainRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if registration is not None:
+            request.registration = registration
+        if yearly_price is not None:
+            request.yearly_price = yearly_price
+        if authorization_code is not None:
+            request.authorization_code = authorization_code
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.transfer_domain,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -565,6 +827,9 @@ class DomainsAsyncClient:
                 The Registration resource facilitates managing and configuring domain name
                    registrations.
 
+                   There are several ways to create a new Registration
+                   resource:
+
                    To create a new Registration resource, find a
                    suitable domain name by calling the SearchDomains
                    method with a query to see available domain name
@@ -572,6 +837,15 @@ class DomainsAsyncClient:
                    RetrieveRegisterParameters to ensure availability and
                    obtain information like pricing, which is needed to
                    build a call to RegisterDomain.
+
+                   Another way to create a new Registration is to
+                   transfer an existing domain from another registrar.
+                   First, go to the current registrar to unlock the
+                   domain for transfer and retrieve the domain's
+                   transfer authorization code. Then call
+                   RetrieveTransferParameters to confirm that the domain
+                   is unlocked and to get values needed to build a call
+                   to TransferDomain.
 
         """
         # Create or coerce a protobuf request object.
@@ -643,8 +917,8 @@ class DomainsAsyncClient:
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. The field mask describing which fields to
                 update as a comma-separated list. For example, if only
-                the labels are being updated, the ``update_mask`` would
-                be ``"labels"``.
+                the labels are being updated, the ``update_mask`` is
+                ``"labels"``.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -662,6 +936,9 @@ class DomainsAsyncClient:
                 The result type for the operation will be :class:`google.cloud.domains_v1beta1.types.Registration` The Registration resource facilitates managing and configuring domain name
                    registrations.
 
+                   There are several ways to create a new Registration
+                   resource:
+
                    To create a new Registration resource, find a
                    suitable domain name by calling the SearchDomains
                    method with a query to see available domain name
@@ -669,6 +946,15 @@ class DomainsAsyncClient:
                    RetrieveRegisterParameters to ensure availability and
                    obtain information like pricing, which is needed to
                    build a call to RegisterDomain.
+
+                   Another way to create a new Registration is to
+                   transfer an existing domain from another registrar.
+                   First, go to the current registrar to unlock the
+                   domain for transfer and retrieve the domain's
+                   transfer authorization code. Then call
+                   RetrieveTransferParameters to confirm that the domain
+                   is unlocked and to get values needed to build a call
+                   to TransferDomain.
 
         """
         # Create or coerce a protobuf request object.
@@ -754,7 +1040,7 @@ class DomainsAsyncClient:
                 Required. The field mask describing which fields to
                 update as a comma-separated list. For example, if only
                 the transfer lock is being updated, the ``update_mask``
-                would be ``"transfer_lock_state"``.
+                is ``"transfer_lock_state"``.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -772,6 +1058,9 @@ class DomainsAsyncClient:
                 The result type for the operation will be :class:`google.cloud.domains_v1beta1.types.Registration` The Registration resource facilitates managing and configuring domain name
                    registrations.
 
+                   There are several ways to create a new Registration
+                   resource:
+
                    To create a new Registration resource, find a
                    suitable domain name by calling the SearchDomains
                    method with a query to see available domain name
@@ -779,6 +1068,15 @@ class DomainsAsyncClient:
                    RetrieveRegisterParameters to ensure availability and
                    obtain information like pricing, which is needed to
                    build a call to RegisterDomain.
+
+                   Another way to create a new Registration is to
+                   transfer an existing domain from another registrar.
+                   First, go to the current registrar to unlock the
+                   domain for transfer and retrieve the domain's
+                   transfer authorization code. Then call
+                   RetrieveTransferParameters to confirm that the domain
+                   is unlocked and to get values needed to build a call
+                   to TransferDomain.
 
         """
         # Create or coerce a protobuf request object.
@@ -866,14 +1164,14 @@ class DomainsAsyncClient:
                 Required. The field mask describing which fields to
                 update as a comma-separated list. For example, if only
                 the name servers are being updated for an existing
-                Custom DNS configuration, the ``update_mask`` would be
+                Custom DNS configuration, the ``update_mask`` is
                 ``"custom_dns.name_servers"``.
 
                 When changing the DNS provider from one type to another,
                 pass the new provider's field name as part of the field
                 mask. For example, when changing from a Google Domains
                 DNS configuration to a Custom DNS configuration, the
-                ``update_mask`` would be ``"custom_dns"``. //
+                ``update_mask`` is ``"custom_dns"``. //
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -891,6 +1189,9 @@ class DomainsAsyncClient:
                 The result type for the operation will be :class:`google.cloud.domains_v1beta1.types.Registration` The Registration resource facilitates managing and configuring domain name
                    registrations.
 
+                   There are several ways to create a new Registration
+                   resource:
+
                    To create a new Registration resource, find a
                    suitable domain name by calling the SearchDomains
                    method with a query to see available domain name
@@ -898,6 +1199,15 @@ class DomainsAsyncClient:
                    RetrieveRegisterParameters to ensure availability and
                    obtain information like pricing, which is needed to
                    build a call to RegisterDomain.
+
+                   Another way to create a new Registration is to
+                   transfer an existing domain from another registrar.
+                   First, go to the current registrar to unlock the
+                   domain for transfer and retrieve the domain's
+                   transfer authorization code. Then call
+                   RetrieveTransferParameters to confirm that the domain
+                   is unlocked and to get values needed to build a call
+                   to TransferDomain.
 
         """
         # Create or coerce a protobuf request object.
@@ -986,7 +1296,7 @@ class DomainsAsyncClient:
                 Required. The field mask describing which fields to
                 update as a comma-separated list. For example, if only
                 the registrant contact is being updated, the
-                ``update_mask`` would be ``"registrant_contact"``.
+                ``update_mask`` is ``"registrant_contact"``.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1004,6 +1314,9 @@ class DomainsAsyncClient:
                 The result type for the operation will be :class:`google.cloud.domains_v1beta1.types.Registration` The Registration resource facilitates managing and configuring domain name
                    registrations.
 
+                   There are several ways to create a new Registration
+                   resource:
+
                    To create a new Registration resource, find a
                    suitable domain name by calling the SearchDomains
                    method with a query to see available domain name
@@ -1011,6 +1324,15 @@ class DomainsAsyncClient:
                    RetrieveRegisterParameters to ensure availability and
                    obtain information like pricing, which is needed to
                    build a call to RegisterDomain.
+
+                   Another way to create a new Registration is to
+                   transfer an existing domain from another registrar.
+                   First, go to the current registrar to unlock the
+                   domain for transfer and retrieve the domain's
+                   transfer authorization code. Then call
+                   RetrieveTransferParameters to confirm that the domain
+                   is unlocked and to get values needed to build a call
+                   to TransferDomain.
 
         """
         # Create or coerce a protobuf request object.
@@ -1073,20 +1395,16 @@ class DomainsAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Exports a ``Registration`` that you no longer want to use with
-        Cloud Domains. You can continue to use the domain in `Google
-        Domains <https://domains.google/>`__ until it expires.
+        r"""Exports a ``Registration`` resource, such that it is no longer
+        managed by Cloud Domains.
 
-        If the export is successful:
-
-        -  The resource's ``state`` becomes ``EXPORTED``, meaning that
-           it is no longer managed by Cloud Domains
-        -  Because individual users can own domains in Google Domains,
-           the calling user becomes the domain's sole owner. Permissions
-           for the domain are subsequently managed in Google Domains.
-        -  Without further action, the domain does not renew
-           automatically. The new owner can set up billing in Google
-           Domains to renew the domain if needed.
+        When an active domain is successfully exported, you can continue
+        to use the domain in `Google
+        Domains <https://domains.google/>`__ until it expires. The
+        calling user becomes the domain's sole owner in Google Domains,
+        and permissions for the domain are subsequently managed there.
+        The domain does not renew automatically unless the new owner
+        sets up billing in Google Domains.
 
         Args:
             request (:class:`google.cloud.domains_v1beta1.types.ExportRegistrationRequest`):
@@ -1112,6 +1430,9 @@ class DomainsAsyncClient:
                 The result type for the operation will be :class:`google.cloud.domains_v1beta1.types.Registration` The Registration resource facilitates managing and configuring domain name
                    registrations.
 
+                   There are several ways to create a new Registration
+                   resource:
+
                    To create a new Registration resource, find a
                    suitable domain name by calling the SearchDomains
                    method with a query to see available domain name
@@ -1119,6 +1440,15 @@ class DomainsAsyncClient:
                    RetrieveRegisterParameters to ensure availability and
                    obtain information like pricing, which is needed to
                    build a call to RegisterDomain.
+
+                   Another way to create a new Registration is to
+                   transfer an existing domain from another registrar.
+                   First, go to the current registrar to unlock the
+                   domain for transfer and retrieve the domain's
+                   transfer authorization code. Then call
+                   RetrieveTransferParameters to confirm that the domain
+                   is unlocked and to get values needed to build a call
+                   to TransferDomain.
 
         """
         # Create or coerce a protobuf request object.
@@ -1177,11 +1507,26 @@ class DomainsAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a ``Registration`` resource.
 
-        This method only works on resources in one of the following
-        states:
+        This method works on any ``Registration`` resource using
+        `Subscription or Commitment
+        billing </domains/pricing#billing-models>`__, provided that the
+        resource was created at least 1 day in the past.
+
+        For ``Registration`` resources using `Monthly
+        billing </domains/pricing#billing-models>`__, this method works
+        if:
 
         -  ``state`` is ``EXPORTED`` with ``expire_time`` in the past
         -  ``state`` is ``REGISTRATION_FAILED``
+        -  ``state`` is ``TRANSFER_FAILED``
+
+        When an active registration is successfully deleted, you can
+        continue to use the domain in `Google
+        Domains <https://domains.google/>`__ until it expires. The
+        calling user becomes the domain's sole owner in Google Domains,
+        and permissions for the domain are subsequently managed there.
+        The domain does not renew automatically unless the new owner
+        sets up billing in Google Domains.
 
         Args:
             request (:class:`google.cloud.domains_v1beta1.types.DeleteRegistrationRequest`):

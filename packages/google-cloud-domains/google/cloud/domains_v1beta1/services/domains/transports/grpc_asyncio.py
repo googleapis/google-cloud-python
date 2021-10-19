@@ -352,6 +352,88 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
         return self._stubs["register_domain"]
 
     @property
+    def retrieve_transfer_parameters(
+        self,
+    ) -> Callable[
+        [domains.RetrieveTransferParametersRequest],
+        Awaitable[domains.RetrieveTransferParametersResponse],
+    ]:
+        r"""Return a callable for the retrieve transfer parameters method over gRPC.
+
+        Gets parameters needed to transfer a domain name from another
+        registrar to Cloud Domains. For domains managed by Google
+        Domains, transferring to Cloud Domains is not supported.
+
+        Use the returned values to call ``TransferDomain``.
+
+        Returns:
+            Callable[[~.RetrieveTransferParametersRequest],
+                    Awaitable[~.RetrieveTransferParametersResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "retrieve_transfer_parameters" not in self._stubs:
+            self._stubs["retrieve_transfer_parameters"] = self.grpc_channel.unary_unary(
+                "/google.cloud.domains.v1beta1.Domains/RetrieveTransferParameters",
+                request_serializer=domains.RetrieveTransferParametersRequest.serialize,
+                response_deserializer=domains.RetrieveTransferParametersResponse.deserialize,
+            )
+        return self._stubs["retrieve_transfer_parameters"]
+
+    @property
+    def transfer_domain(
+        self,
+    ) -> Callable[[domains.TransferDomainRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the transfer domain method over gRPC.
+
+        Transfers a domain name from another registrar to Cloud Domains.
+        For domains managed by Google Domains, transferring to Cloud
+        Domains is not supported.
+
+        Before calling this method, go to the domain's current registrar
+        to unlock the domain for transfer and retrieve the domain's
+        transfer authorization code. Then call
+        ``RetrieveTransferParameters`` to confirm that the domain is
+        unlocked and to get values needed to build a call to this
+        method.
+
+        A successful call creates a ``Registration`` resource in state
+        ``TRANSFER_PENDING``. It can take several days to complete the
+        transfer process. The registrant can often speed up this process
+        by approving the transfer through the current registrar, either
+        by clicking a link in an email from the registrar or by visiting
+        the registrar's website.
+
+        A few minutes after transfer approval, the resource transitions
+        to state ``ACTIVE``, indicating that the transfer was
+        successful. If the transfer is rejected or the request expires
+        without being approved, the resource can end up in state
+        ``TRANSFER_FAILED``. If transfer fails, you can safely delete
+        the resource and retry the transfer.
+
+        Returns:
+            Callable[[~.TransferDomainRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "transfer_domain" not in self._stubs:
+            self._stubs["transfer_domain"] = self.grpc_channel.unary_unary(
+                "/google.cloud.domains.v1beta1.Domains/TransferDomain",
+                request_serializer=domains.TransferDomainRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["transfer_domain"]
+
+    @property
     def list_registrations(
         self,
     ) -> Callable[
@@ -537,20 +619,16 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
     ]:
         r"""Return a callable for the export registration method over gRPC.
 
-        Exports a ``Registration`` that you no longer want to use with
-        Cloud Domains. You can continue to use the domain in `Google
-        Domains <https://domains.google/>`__ until it expires.
+        Exports a ``Registration`` resource, such that it is no longer
+        managed by Cloud Domains.
 
-        If the export is successful:
-
-        -  The resource's ``state`` becomes ``EXPORTED``, meaning that
-           it is no longer managed by Cloud Domains
-        -  Because individual users can own domains in Google Domains,
-           the calling user becomes the domain's sole owner. Permissions
-           for the domain are subsequently managed in Google Domains.
-        -  Without further action, the domain does not renew
-           automatically. The new owner can set up billing in Google
-           Domains to renew the domain if needed.
+        When an active domain is successfully exported, you can continue
+        to use the domain in `Google
+        Domains <https://domains.google/>`__ until it expires. The
+        calling user becomes the domain's sole owner in Google Domains,
+        and permissions for the domain are subsequently managed there.
+        The domain does not renew automatically unless the new owner
+        sets up billing in Google Domains.
 
         Returns:
             Callable[[~.ExportRegistrationRequest],
@@ -580,11 +658,26 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
 
         Deletes a ``Registration`` resource.
 
-        This method only works on resources in one of the following
-        states:
+        This method works on any ``Registration`` resource using
+        `Subscription or Commitment
+        billing </domains/pricing#billing-models>`__, provided that the
+        resource was created at least 1 day in the past.
+
+        For ``Registration`` resources using `Monthly
+        billing </domains/pricing#billing-models>`__, this method works
+        if:
 
         -  ``state`` is ``EXPORTED`` with ``expire_time`` in the past
         -  ``state`` is ``REGISTRATION_FAILED``
+        -  ``state`` is ``TRANSFER_FAILED``
+
+        When an active registration is successfully deleted, you can
+        continue to use the domain in `Google
+        Domains <https://domains.google/>`__ until it expires. The
+        calling user becomes the domain's sole owner in Google Domains,
+        and permissions for the domain are subsequently managed there.
+        The domain does not renew automatically unless the new owner
+        sets up billing in Google Domains.
 
         Returns:
             Callable[[~.DeleteRegistrationRequest],

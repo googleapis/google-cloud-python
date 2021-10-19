@@ -32,8 +32,8 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.domains_v1beta1.services.domains import pagers
-from google.cloud.domains_v1beta1.types import domains
+from google.cloud.domains_v1.services.domains import pagers
+from google.cloud.domains_v1.types import domains
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -371,7 +371,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         confirm availability.
 
         Args:
-            request (Union[google.cloud.domains_v1beta1.types.SearchDomainsRequest, dict]):
+            request (Union[google.cloud.domains_v1.types.SearchDomainsRequest, dict]):
                 The request object. Request for the `SearchDomains`
                 method.
             location (str):
@@ -395,7 +395,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.domains_v1beta1.types.SearchDomainsResponse:
+            google.cloud.domains_v1.types.SearchDomainsResponse:
                 Response for the SearchDomains method.
         """
         # Create or coerce a protobuf request object.
@@ -452,7 +452,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         call ``RegisterDomain``.
 
         Args:
-            request (Union[google.cloud.domains_v1beta1.types.RetrieveRegisterParametersRequest, dict]):
+            request (Union[google.cloud.domains_v1.types.RetrieveRegisterParametersRequest, dict]):
                 The request object. Request for the
                 `RetrieveRegisterParameters` method.
             location (str):
@@ -477,7 +477,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.domains_v1beta1.types.RetrieveRegisterParametersResponse:
+            google.cloud.domains_v1.types.RetrieveRegisterParametersResponse:
                 Response for the RetrieveRegisterParameters method.
         """
         # Create or coerce a protobuf request object.
@@ -548,7 +548,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         and retry registration.
 
         Args:
-            request (Union[google.cloud.domains_v1beta1.types.RegisterDomainRequest, dict]):
+            request (Union[google.cloud.domains_v1.types.RegisterDomainRequest, dict]):
                 The request object. Request for the `RegisterDomain`
                 method.
             parent (str):
@@ -558,7 +558,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            registration (google.cloud.domains_v1beta1.types.Registration):
+            registration (google.cloud.domains_v1.types.Registration):
                 Required. The complete ``Registration`` resource to be
                 created.
 
@@ -585,7 +585,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.domains_v1beta1.types.Registration` The Registration resource facilitates managing and configuring domain name
+                The result type for the operation will be :class:`google.cloud.domains_v1.types.Registration` The Registration resource facilitates managing and configuring domain name
                    registrations.
 
                    There are several ways to create a new Registration
@@ -675,7 +675,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         Use the returned values to call ``TransferDomain``.
 
         Args:
-            request (Union[google.cloud.domains_v1beta1.types.RetrieveTransferParametersRequest, dict]):
+            request (Union[google.cloud.domains_v1.types.RetrieveTransferParametersRequest, dict]):
                 The request object. Request for the
                 `RetrieveTransferParameters` method.
             location (str):
@@ -700,7 +700,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.domains_v1beta1.types.RetrieveTransferParametersResponse:
+            google.cloud.domains_v1.types.RetrieveTransferParametersResponse:
                 Response for the RetrieveTransferParameters method.
         """
         # Create or coerce a protobuf request object.
@@ -782,7 +782,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         the resource and retry the transfer.
 
         Args:
-            request (Union[google.cloud.domains_v1beta1.types.TransferDomainRequest, dict]):
+            request (Union[google.cloud.domains_v1.types.TransferDomainRequest, dict]):
                 The request object. Request for the `TransferDomain`
                 method.
             parent (str):
@@ -792,7 +792,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            registration (google.cloud.domains_v1beta1.types.Registration):
+            registration (google.cloud.domains_v1.types.Registration):
                 Required. The complete ``Registration`` resource to be
                 created.
 
@@ -815,7 +815,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 This corresponds to the ``yearly_price`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            authorization_code (google.cloud.domains_v1beta1.types.AuthorizationCode):
+            authorization_code (google.cloud.domains_v1.types.AuthorizationCode):
                 The domain's transfer authorization
                 code. You can obtain this from the
                 domain's current registrar.
@@ -833,7 +833,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.domains_v1beta1.types.Registration` The Registration resource facilitates managing and configuring domain name
+                The result type for the operation will be :class:`google.cloud.domains_v1.types.Registration` The Registration resource facilitates managing and configuring domain name
                    registrations.
 
                    There are several ways to create a new Registration
@@ -922,7 +922,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         r"""Lists the ``Registration`` resources in a project.
 
         Args:
-            request (Union[google.cloud.domains_v1beta1.types.ListRegistrationsRequest, dict]):
+            request (Union[google.cloud.domains_v1.types.ListRegistrationsRequest, dict]):
                 The request object. Request for the `ListRegistrations`
                 method.
             parent (str):
@@ -940,7 +940,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.domains_v1beta1.services.domains.pagers.ListRegistrationsPager:
+            google.cloud.domains_v1.services.domains.pagers.ListRegistrationsPager:
                 Response for the ListRegistrations method.
 
                 Iterating over this object will yield results and
@@ -1002,7 +1002,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         r"""Gets the details of a ``Registration`` resource.
 
         Args:
-            request (Union[google.cloud.domains_v1beta1.types.GetRegistrationRequest, dict]):
+            request (Union[google.cloud.domains_v1.types.GetRegistrationRequest, dict]):
                 The request object. Request for the `GetRegistration`
                 method.
             name (str):
@@ -1019,7 +1019,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.domains_v1beta1.types.Registration:
+            google.cloud.domains_v1.types.Registration:
                 The Registration resource facilitates managing and configuring domain name
                    registrations.
 
@@ -1102,10 +1102,10 @@ class DomainsClient(metaclass=DomainsClientMeta):
            ``ConfigureContactSettings``
 
         Args:
-            request (Union[google.cloud.domains_v1beta1.types.UpdateRegistrationRequest, dict]):
+            request (Union[google.cloud.domains_v1.types.UpdateRegistrationRequest, dict]):
                 The request object. Request for the `UpdateRegistration`
                 method.
-            registration (google.cloud.domains_v1beta1.types.Registration):
+            registration (google.cloud.domains_v1.types.Registration):
                 Fields of the ``Registration`` to update.
                 This corresponds to the ``registration`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1129,7 +1129,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.domains_v1beta1.types.Registration` The Registration resource facilitates managing and configuring domain name
+                The result type for the operation will be :class:`google.cloud.domains_v1.types.Registration` The Registration resource facilitates managing and configuring domain name
                    registrations.
 
                    There are several ways to create a new Registration
@@ -1216,7 +1216,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         r"""Updates a ``Registration``'s management settings.
 
         Args:
-            request (Union[google.cloud.domains_v1beta1.types.ConfigureManagementSettingsRequest, dict]):
+            request (Union[google.cloud.domains_v1.types.ConfigureManagementSettingsRequest, dict]):
                 The request object. Request for the
                 `ConfigureManagementSettings` method.
             registration (str):
@@ -1227,7 +1227,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 This corresponds to the ``registration`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            management_settings (google.cloud.domains_v1beta1.types.ManagementSettings):
+            management_settings (google.cloud.domains_v1.types.ManagementSettings):
                 Fields of the ``ManagementSettings`` to update.
                 This corresponds to the ``management_settings`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1251,7 +1251,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.domains_v1beta1.types.Registration` The Registration resource facilitates managing and configuring domain name
+                The result type for the operation will be :class:`google.cloud.domains_v1.types.Registration` The Registration resource facilitates managing and configuring domain name
                    registrations.
 
                    There are several ways to create a new Registration
@@ -1342,7 +1342,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         r"""Updates a ``Registration``'s DNS settings.
 
         Args:
-            request (Union[google.cloud.domains_v1beta1.types.ConfigureDnsSettingsRequest, dict]):
+            request (Union[google.cloud.domains_v1.types.ConfigureDnsSettingsRequest, dict]):
                 The request object. Request for the
                 `ConfigureDnsSettings` method.
             registration (str):
@@ -1353,7 +1353,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 This corresponds to the ``registration`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            dns_settings (google.cloud.domains_v1beta1.types.DnsSettings):
+            dns_settings (google.cloud.domains_v1.types.DnsSettings):
                 Fields of the ``DnsSettings`` to update.
                 This corresponds to the ``dns_settings`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1384,7 +1384,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.domains_v1beta1.types.Registration` The Registration resource facilitates managing and configuring domain name
+                The result type for the operation will be :class:`google.cloud.domains_v1.types.Registration` The Registration resource facilitates managing and configuring domain name
                    registrations.
 
                    There are several ways to create a new Registration
@@ -1474,7 +1474,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         require confirmation by the domain's registrant contact .
 
         Args:
-            request (Union[google.cloud.domains_v1beta1.types.ConfigureContactSettingsRequest, dict]):
+            request (Union[google.cloud.domains_v1.types.ConfigureContactSettingsRequest, dict]):
                 The request object. Request for the
                 `ConfigureContactSettings` method.
             registration (str):
@@ -1485,7 +1485,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 This corresponds to the ``registration`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            contact_settings (google.cloud.domains_v1beta1.types.ContactSettings):
+            contact_settings (google.cloud.domains_v1.types.ContactSettings):
                 Fields of the ``ContactSettings`` to update.
                 This corresponds to the ``contact_settings`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1509,7 +1509,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.domains_v1beta1.types.Registration` The Registration resource facilitates managing and configuring domain name
+                The result type for the operation will be :class:`google.cloud.domains_v1.types.Registration` The Registration resource facilitates managing and configuring domain name
                    registrations.
 
                    There are several ways to create a new Registration
@@ -1607,7 +1607,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         sets up billing in Google Domains.
 
         Args:
-            request (Union[google.cloud.domains_v1beta1.types.ExportRegistrationRequest, dict]):
+            request (Union[google.cloud.domains_v1.types.ExportRegistrationRequest, dict]):
                 The request object. Request for the `ExportRegistration`
                 method.
             name (str):
@@ -1627,7 +1627,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.domains_v1beta1.types.Registration` The Registration resource facilitates managing and configuring domain name
+                The result type for the operation will be :class:`google.cloud.domains_v1.types.Registration` The Registration resource facilitates managing and configuring domain name
                    registrations.
 
                    There are several ways to create a new Registration
@@ -1729,7 +1729,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         sets up billing in Google Domains.
 
         Args:
-            request (Union[google.cloud.domains_v1beta1.types.DeleteRegistrationRequest, dict]):
+            request (Union[google.cloud.domains_v1.types.DeleteRegistrationRequest, dict]):
                 The request object. Request for the `DeleteRegistration`
                 method.
             name (str):
@@ -1825,7 +1825,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         the initial domain registration.
 
         Args:
-            request (Union[google.cloud.domains_v1beta1.types.RetrieveAuthorizationCodeRequest, dict]):
+            request (Union[google.cloud.domains_v1.types.RetrieveAuthorizationCodeRequest, dict]):
                 The request object. Request for the
                 `RetrieveAuthorizationCode` method.
             registration (str):
@@ -1843,7 +1843,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.domains_v1beta1.types.AuthorizationCode:
+            google.cloud.domains_v1.types.AuthorizationCode:
                 Defines an authorization code.
         """
         # Create or coerce a protobuf request object.
@@ -1903,7 +1903,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
         the initial domain registration.
 
         Args:
-            request (Union[google.cloud.domains_v1beta1.types.ResetAuthorizationCodeRequest, dict]):
+            request (Union[google.cloud.domains_v1.types.ResetAuthorizationCodeRequest, dict]):
                 The request object. Request for the
                 `ResetAuthorizationCode` method.
             registration (str):
@@ -1921,7 +1921,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.domains_v1beta1.types.AuthorizationCode:
+            google.cloud.domains_v1.types.AuthorizationCode:
                 Defines an authorization code.
         """
         # Create or coerce a protobuf request object.

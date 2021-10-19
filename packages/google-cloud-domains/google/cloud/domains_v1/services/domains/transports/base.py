@@ -27,7 +27,7 @@ from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.domains_v1beta1.types import domains
+from google.cloud.domains_v1.types import domains
 from google.longrunning import operations_pb2  # type: ignore
 
 try:

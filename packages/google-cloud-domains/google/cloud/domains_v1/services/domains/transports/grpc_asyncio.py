@@ -14,24 +14,26 @@
 # limitations under the License.
 #
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import grpc_helpers  # type: ignore
-from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-import google.auth  # type: ignore
+from google.api_core import grpc_helpers_async  # type: ignore
+from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+import packaging.version
 
 import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
 
-from google.cloud.domains_v1beta1.types import domains
+from google.cloud.domains_v1.types import domains
 from google.longrunning import operations_pb2  # type: ignore
 from .base import DomainsTransport, DEFAULT_CLIENT_INFO
+from .grpc import DomainsGrpcTransport
 
 
-class DomainsGrpcTransport(DomainsTransport):
-    """gRPC backend transport for Domains.
+class DomainsGrpcAsyncIOTransport(DomainsTransport):
+    """gRPC AsyncIO backend transport for Domains.
 
     The Cloud Domains API enables management and configuration of
     domain names.
@@ -44,21 +46,65 @@ class DomainsGrpcTransport(DomainsTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _stubs: Dict[str, Callable]
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "domains.googleapis.com",
+        credentials: ga_credentials.Credentials = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            host (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+
+        return grpc_helpers_async.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            quota_project_id=quota_project_id,
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
+            **kwargs,
+        )
 
     def __init__(
         self,
         *,
         host: str = "domains.googleapis.com",
         credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        channel: grpc.Channel = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: aio.Channel = None,
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
         ssl_channel_credentials: grpc.ChannelCredentials = None,
         client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
-        quota_project_id: Optional[str] = None,
+        quota_project_id=None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
     ) -> None:
@@ -76,9 +122,10 @@ class DomainsGrpcTransport(DomainsTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            channel (Optional[grpc.Channel]): A ``Channel`` instance through
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            channel (Optional[aio.Channel]): A ``Channel`` instance through
                 which to make calls.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
@@ -105,7 +152,7 @@ class DomainsGrpcTransport(DomainsTransport):
                 be used for service account credentials.
 
         Raises:
-          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -126,7 +173,6 @@ class DomainsGrpcTransport(DomainsTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -176,61 +222,18 @@ class DomainsGrpcTransport(DomainsTransport):
         # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "domains.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> grpc.Channel:
-        """Create and return a gRPC channel object.
-        Args:
-            host (Optional[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is mutually exclusive with credentials.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            grpc.Channel: A gRPC channel object.
-
-        Raises:
-            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
-              and ``credentials_file`` are passed.
-        """
-
-        return grpc_helpers.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            quota_project_id=quota_project_id,
-            default_scopes=cls.AUTH_SCOPES,
-            scopes=scopes,
-            default_host=cls.DEFAULT_HOST,
-            **kwargs,
-        )
-
     @property
-    def grpc_channel(self) -> grpc.Channel:
-        """Return the channel designed to connect to this service.
+    def grpc_channel(self) -> aio.Channel:
+        """Create the channel designed to connect to this service.
+
+        This property caches on the instance; repeated calls return
+        the same channel.
         """
+        # Return the channel from cache.
         return self._grpc_channel
 
     @property
-    def operations_client(self) -> operations_v1.OperationsClient:
+    def operations_client(self) -> operations_v1.OperationsAsyncClient:
         """Create the client designed to process long-running operations.
 
         This property caches on the instance; repeated calls return the same
@@ -238,7 +241,9 @@ class DomainsGrpcTransport(DomainsTransport):
         """
         # Sanity check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsAsyncClient(
+                self.grpc_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -246,7 +251,9 @@ class DomainsGrpcTransport(DomainsTransport):
     @property
     def search_domains(
         self,
-    ) -> Callable[[domains.SearchDomainsRequest], domains.SearchDomainsResponse]:
+    ) -> Callable[
+        [domains.SearchDomainsRequest], Awaitable[domains.SearchDomainsResponse]
+    ]:
         r"""Return a callable for the search domains method over gRPC.
 
         Searches for available domain names similar to the provided
@@ -258,7 +265,7 @@ class DomainsGrpcTransport(DomainsTransport):
 
         Returns:
             Callable[[~.SearchDomainsRequest],
-                    ~.SearchDomainsResponse]:
+                    Awaitable[~.SearchDomainsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -268,7 +275,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # to pass in the functions for each.
         if "search_domains" not in self._stubs:
             self._stubs["search_domains"] = self.grpc_channel.unary_unary(
-                "/google.cloud.domains.v1beta1.Domains/SearchDomains",
+                "/google.cloud.domains.v1.Domains/SearchDomains",
                 request_serializer=domains.SearchDomainsRequest.serialize,
                 response_deserializer=domains.SearchDomainsResponse.deserialize,
             )
@@ -279,7 +286,7 @@ class DomainsGrpcTransport(DomainsTransport):
         self,
     ) -> Callable[
         [domains.RetrieveRegisterParametersRequest],
-        domains.RetrieveRegisterParametersResponse,
+        Awaitable[domains.RetrieveRegisterParametersResponse],
     ]:
         r"""Return a callable for the retrieve register parameters method over gRPC.
 
@@ -289,7 +296,7 @@ class DomainsGrpcTransport(DomainsTransport):
 
         Returns:
             Callable[[~.RetrieveRegisterParametersRequest],
-                    ~.RetrieveRegisterParametersResponse]:
+                    Awaitable[~.RetrieveRegisterParametersResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -299,7 +306,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # to pass in the functions for each.
         if "retrieve_register_parameters" not in self._stubs:
             self._stubs["retrieve_register_parameters"] = self.grpc_channel.unary_unary(
-                "/google.cloud.domains.v1beta1.Domains/RetrieveRegisterParameters",
+                "/google.cloud.domains.v1.Domains/RetrieveRegisterParameters",
                 request_serializer=domains.RetrieveRegisterParametersRequest.serialize,
                 response_deserializer=domains.RetrieveRegisterParametersResponse.deserialize,
             )
@@ -308,7 +315,7 @@ class DomainsGrpcTransport(DomainsTransport):
     @property
     def register_domain(
         self,
-    ) -> Callable[[domains.RegisterDomainRequest], operations_pb2.Operation]:
+    ) -> Callable[[domains.RegisterDomainRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the register domain method over gRPC.
 
         Registers a new domain name and creates a corresponding
@@ -328,7 +335,7 @@ class DomainsGrpcTransport(DomainsTransport):
 
         Returns:
             Callable[[~.RegisterDomainRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -338,7 +345,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # to pass in the functions for each.
         if "register_domain" not in self._stubs:
             self._stubs["register_domain"] = self.grpc_channel.unary_unary(
-                "/google.cloud.domains.v1beta1.Domains/RegisterDomain",
+                "/google.cloud.domains.v1.Domains/RegisterDomain",
                 request_serializer=domains.RegisterDomainRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -349,7 +356,7 @@ class DomainsGrpcTransport(DomainsTransport):
         self,
     ) -> Callable[
         [domains.RetrieveTransferParametersRequest],
-        domains.RetrieveTransferParametersResponse,
+        Awaitable[domains.RetrieveTransferParametersResponse],
     ]:
         r"""Return a callable for the retrieve transfer parameters method over gRPC.
 
@@ -361,7 +368,7 @@ class DomainsGrpcTransport(DomainsTransport):
 
         Returns:
             Callable[[~.RetrieveTransferParametersRequest],
-                    ~.RetrieveTransferParametersResponse]:
+                    Awaitable[~.RetrieveTransferParametersResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -371,7 +378,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # to pass in the functions for each.
         if "retrieve_transfer_parameters" not in self._stubs:
             self._stubs["retrieve_transfer_parameters"] = self.grpc_channel.unary_unary(
-                "/google.cloud.domains.v1beta1.Domains/RetrieveTransferParameters",
+                "/google.cloud.domains.v1.Domains/RetrieveTransferParameters",
                 request_serializer=domains.RetrieveTransferParametersRequest.serialize,
                 response_deserializer=domains.RetrieveTransferParametersResponse.deserialize,
             )
@@ -380,7 +387,7 @@ class DomainsGrpcTransport(DomainsTransport):
     @property
     def transfer_domain(
         self,
-    ) -> Callable[[domains.TransferDomainRequest], operations_pb2.Operation]:
+    ) -> Callable[[domains.TransferDomainRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the transfer domain method over gRPC.
 
         Transfers a domain name from another registrar to Cloud Domains.
@@ -410,7 +417,7 @@ class DomainsGrpcTransport(DomainsTransport):
 
         Returns:
             Callable[[~.TransferDomainRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -420,7 +427,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # to pass in the functions for each.
         if "transfer_domain" not in self._stubs:
             self._stubs["transfer_domain"] = self.grpc_channel.unary_unary(
-                "/google.cloud.domains.v1beta1.Domains/TransferDomain",
+                "/google.cloud.domains.v1.Domains/TransferDomain",
                 request_serializer=domains.TransferDomainRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -430,7 +437,7 @@ class DomainsGrpcTransport(DomainsTransport):
     def list_registrations(
         self,
     ) -> Callable[
-        [domains.ListRegistrationsRequest], domains.ListRegistrationsResponse
+        [domains.ListRegistrationsRequest], Awaitable[domains.ListRegistrationsResponse]
     ]:
         r"""Return a callable for the list registrations method over gRPC.
 
@@ -438,7 +445,7 @@ class DomainsGrpcTransport(DomainsTransport):
 
         Returns:
             Callable[[~.ListRegistrationsRequest],
-                    ~.ListRegistrationsResponse]:
+                    Awaitable[~.ListRegistrationsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -448,7 +455,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # to pass in the functions for each.
         if "list_registrations" not in self._stubs:
             self._stubs["list_registrations"] = self.grpc_channel.unary_unary(
-                "/google.cloud.domains.v1beta1.Domains/ListRegistrations",
+                "/google.cloud.domains.v1.Domains/ListRegistrations",
                 request_serializer=domains.ListRegistrationsRequest.serialize,
                 response_deserializer=domains.ListRegistrationsResponse.deserialize,
             )
@@ -457,14 +464,14 @@ class DomainsGrpcTransport(DomainsTransport):
     @property
     def get_registration(
         self,
-    ) -> Callable[[domains.GetRegistrationRequest], domains.Registration]:
+    ) -> Callable[[domains.GetRegistrationRequest], Awaitable[domains.Registration]]:
         r"""Return a callable for the get registration method over gRPC.
 
         Gets the details of a ``Registration`` resource.
 
         Returns:
             Callable[[~.GetRegistrationRequest],
-                    ~.Registration]:
+                    Awaitable[~.Registration]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -474,7 +481,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # to pass in the functions for each.
         if "get_registration" not in self._stubs:
             self._stubs["get_registration"] = self.grpc_channel.unary_unary(
-                "/google.cloud.domains.v1beta1.Domains/GetRegistration",
+                "/google.cloud.domains.v1.Domains/GetRegistration",
                 request_serializer=domains.GetRegistrationRequest.serialize,
                 response_deserializer=domains.Registration.deserialize,
             )
@@ -483,7 +490,9 @@ class DomainsGrpcTransport(DomainsTransport):
     @property
     def update_registration(
         self,
-    ) -> Callable[[domains.UpdateRegistrationRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [domains.UpdateRegistrationRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the update registration method over gRPC.
 
         Updates select fields of a ``Registration`` resource, notably
@@ -498,7 +507,7 @@ class DomainsGrpcTransport(DomainsTransport):
 
         Returns:
             Callable[[~.UpdateRegistrationRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -508,7 +517,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # to pass in the functions for each.
         if "update_registration" not in self._stubs:
             self._stubs["update_registration"] = self.grpc_channel.unary_unary(
-                "/google.cloud.domains.v1beta1.Domains/UpdateRegistration",
+                "/google.cloud.domains.v1.Domains/UpdateRegistration",
                 request_serializer=domains.UpdateRegistrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -518,7 +527,8 @@ class DomainsGrpcTransport(DomainsTransport):
     def configure_management_settings(
         self,
     ) -> Callable[
-        [domains.ConfigureManagementSettingsRequest], operations_pb2.Operation
+        [domains.ConfigureManagementSettingsRequest],
+        Awaitable[operations_pb2.Operation],
     ]:
         r"""Return a callable for the configure management settings method over gRPC.
 
@@ -526,7 +536,7 @@ class DomainsGrpcTransport(DomainsTransport):
 
         Returns:
             Callable[[~.ConfigureManagementSettingsRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -538,7 +548,7 @@ class DomainsGrpcTransport(DomainsTransport):
             self._stubs[
                 "configure_management_settings"
             ] = self.grpc_channel.unary_unary(
-                "/google.cloud.domains.v1beta1.Domains/ConfigureManagementSettings",
+                "/google.cloud.domains.v1.Domains/ConfigureManagementSettings",
                 request_serializer=domains.ConfigureManagementSettingsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -547,14 +557,16 @@ class DomainsGrpcTransport(DomainsTransport):
     @property
     def configure_dns_settings(
         self,
-    ) -> Callable[[domains.ConfigureDnsSettingsRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [domains.ConfigureDnsSettingsRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the configure dns settings method over gRPC.
 
         Updates a ``Registration``'s DNS settings.
 
         Returns:
             Callable[[~.ConfigureDnsSettingsRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -564,7 +576,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # to pass in the functions for each.
         if "configure_dns_settings" not in self._stubs:
             self._stubs["configure_dns_settings"] = self.grpc_channel.unary_unary(
-                "/google.cloud.domains.v1beta1.Domains/ConfigureDnsSettings",
+                "/google.cloud.domains.v1.Domains/ConfigureDnsSettings",
                 request_serializer=domains.ConfigureDnsSettingsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -573,7 +585,9 @@ class DomainsGrpcTransport(DomainsTransport):
     @property
     def configure_contact_settings(
         self,
-    ) -> Callable[[domains.ConfigureContactSettingsRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [domains.ConfigureContactSettingsRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the configure contact settings method over gRPC.
 
         Updates a ``Registration``'s contact settings. Some changes
@@ -581,7 +595,7 @@ class DomainsGrpcTransport(DomainsTransport):
 
         Returns:
             Callable[[~.ConfigureContactSettingsRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -591,7 +605,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # to pass in the functions for each.
         if "configure_contact_settings" not in self._stubs:
             self._stubs["configure_contact_settings"] = self.grpc_channel.unary_unary(
-                "/google.cloud.domains.v1beta1.Domains/ConfigureContactSettings",
+                "/google.cloud.domains.v1.Domains/ConfigureContactSettings",
                 request_serializer=domains.ConfigureContactSettingsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -600,7 +614,9 @@ class DomainsGrpcTransport(DomainsTransport):
     @property
     def export_registration(
         self,
-    ) -> Callable[[domains.ExportRegistrationRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [domains.ExportRegistrationRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the export registration method over gRPC.
 
         Exports a ``Registration`` resource, such that it is no longer
@@ -616,7 +632,7 @@ class DomainsGrpcTransport(DomainsTransport):
 
         Returns:
             Callable[[~.ExportRegistrationRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -626,7 +642,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # to pass in the functions for each.
         if "export_registration" not in self._stubs:
             self._stubs["export_registration"] = self.grpc_channel.unary_unary(
-                "/google.cloud.domains.v1beta1.Domains/ExportRegistration",
+                "/google.cloud.domains.v1.Domains/ExportRegistration",
                 request_serializer=domains.ExportRegistrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -635,7 +651,9 @@ class DomainsGrpcTransport(DomainsTransport):
     @property
     def delete_registration(
         self,
-    ) -> Callable[[domains.DeleteRegistrationRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [domains.DeleteRegistrationRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the delete registration method over gRPC.
 
         Deletes a ``Registration`` resource.
@@ -663,7 +681,7 @@ class DomainsGrpcTransport(DomainsTransport):
 
         Returns:
             Callable[[~.DeleteRegistrationRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -673,7 +691,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # to pass in the functions for each.
         if "delete_registration" not in self._stubs:
             self._stubs["delete_registration"] = self.grpc_channel.unary_unary(
-                "/google.cloud.domains.v1beta1.Domains/DeleteRegistration",
+                "/google.cloud.domains.v1.Domains/DeleteRegistration",
                 request_serializer=domains.DeleteRegistrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -683,7 +701,7 @@ class DomainsGrpcTransport(DomainsTransport):
     def retrieve_authorization_code(
         self,
     ) -> Callable[
-        [domains.RetrieveAuthorizationCodeRequest], domains.AuthorizationCode
+        [domains.RetrieveAuthorizationCodeRequest], Awaitable[domains.AuthorizationCode]
     ]:
         r"""Return a callable for the retrieve authorization code method over gRPC.
 
@@ -695,7 +713,7 @@ class DomainsGrpcTransport(DomainsTransport):
 
         Returns:
             Callable[[~.RetrieveAuthorizationCodeRequest],
-                    ~.AuthorizationCode]:
+                    Awaitable[~.AuthorizationCode]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -705,7 +723,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # to pass in the functions for each.
         if "retrieve_authorization_code" not in self._stubs:
             self._stubs["retrieve_authorization_code"] = self.grpc_channel.unary_unary(
-                "/google.cloud.domains.v1beta1.Domains/RetrieveAuthorizationCode",
+                "/google.cloud.domains.v1.Domains/RetrieveAuthorizationCode",
                 request_serializer=domains.RetrieveAuthorizationCodeRequest.serialize,
                 response_deserializer=domains.AuthorizationCode.deserialize,
             )
@@ -714,7 +732,9 @@ class DomainsGrpcTransport(DomainsTransport):
     @property
     def reset_authorization_code(
         self,
-    ) -> Callable[[domains.ResetAuthorizationCodeRequest], domains.AuthorizationCode]:
+    ) -> Callable[
+        [domains.ResetAuthorizationCodeRequest], Awaitable[domains.AuthorizationCode]
+    ]:
         r"""Return a callable for the reset authorization code method over gRPC.
 
         Resets the authorization code of the ``Registration`` to a new
@@ -725,7 +745,7 @@ class DomainsGrpcTransport(DomainsTransport):
 
         Returns:
             Callable[[~.ResetAuthorizationCodeRequest],
-                    ~.AuthorizationCode]:
+                    Awaitable[~.AuthorizationCode]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -735,14 +755,14 @@ class DomainsGrpcTransport(DomainsTransport):
         # to pass in the functions for each.
         if "reset_authorization_code" not in self._stubs:
             self._stubs["reset_authorization_code"] = self.grpc_channel.unary_unary(
-                "/google.cloud.domains.v1beta1.Domains/ResetAuthorizationCode",
+                "/google.cloud.domains.v1.Domains/ResetAuthorizationCode",
                 request_serializer=domains.ResetAuthorizationCodeRequest.serialize,
                 response_deserializer=domains.AuthorizationCode.deserialize,
             )
         return self._stubs["reset_authorization_code"]
 
     def close(self):
-        self.grpc_channel.close()
+        return self.grpc_channel.close()
 
 
-__all__ = ("DomainsGrpcTransport",)
+__all__ = ("DomainsGrpcAsyncIOTransport",)
