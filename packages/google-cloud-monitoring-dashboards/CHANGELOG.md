@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.3.0...v2.4.0) (2021-10-14)
+
+
+### Features
+
+* add support for python 3.10 ([#124](https://www.github.com/googleapis/python-monitoring-dashboards/issues/124)) ([96e9210](https://www.github.com/googleapis/python-monitoring-dashboards/commit/96e92102df364d90528d95b6d327d0739966842a))
+
 ## [2.3.0](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.4...v2.3.0) (2021-10-08)
 
 
