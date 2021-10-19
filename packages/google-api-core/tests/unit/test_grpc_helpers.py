@@ -12,9 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import grpc
 import mock
 import pytest
+
+try:
+    import grpc
+except ImportError:
+    pytest.skip("No GRPC", allow_module_level=True)
 
 from google.api_core import exceptions
 from google.api_core import grpc_helpers

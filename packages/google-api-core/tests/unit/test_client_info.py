@@ -13,6 +13,11 @@
 # limitations under the License.
 
 
+try:
+    import grpc
+except ImportError:
+    grpc = None
+
 from google.api_core import client_info
 
 
@@ -20,7 +25,12 @@ def test_constructor_defaults():
     info = client_info.ClientInfo()
 
     assert info.python_version is not None
-    assert info.grpc_version is not None
+
+    if grpc is not None:
+        assert info.grpc_version is not None
+    else:
+        assert info.grpc_version is None
+
     assert info.api_core_version is not None
     assert info.gapic_version is None
     assert info.client_library_version is None

@@ -17,9 +17,13 @@ import logging
 import queue
 import threading
 
-import grpc
 import mock
 import pytest
+
+try:
+    import grpc
+except ImportError:
+    pytest.skip("No GRPC", allow_module_level=True)
 
 from google.api_core import bidi
 from google.api_core import exceptions

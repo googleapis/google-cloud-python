@@ -15,9 +15,14 @@
 import http.client
 import json
 
-import grpc
 import mock
+import pytest
 import requests
+
+try:
+    import grpc
+except ImportError:
+    grpc = None
 
 from google.api_core import exceptions
 
@@ -151,6 +156,7 @@ def test_from_http_response_json_unicode_content():
     assert exception.errors == ["1", "2"]
 
 
+@pytest.mark.skipif(grpc is None, reason="No grpc")
 def test_from_grpc_status():
     message = "message"
     exception = exceptions.from_grpc_status(grpc.StatusCode.OUT_OF_RANGE, message)
@@ -162,6 +168,7 @@ def test_from_grpc_status():
     assert exception.errors == []
 
 
+@pytest.mark.skipif(grpc is None, reason="No grpc")
 def test_from_grpc_status_as_int():
     message = "message"
     exception = exceptions.from_grpc_status(11, message)
@@ -173,6 +180,7 @@ def test_from_grpc_status_as_int():
     assert exception.errors == []
 
 
+@pytest.mark.skipif(grpc is None, reason="No grpc")
 def test_from_grpc_status_with_errors_and_response():
     message = "message"
     response = mock.sentinel.response
@@ -187,6 +195,7 @@ def test_from_grpc_status_with_errors_and_response():
     assert exception.response == response
 
 
+@pytest.mark.skipif(grpc is None, reason="No grpc")
 def test_from_grpc_status_unknown_code():
     message = "message"
     exception = exceptions.from_grpc_status(grpc.StatusCode.OK, message)
@@ -194,6 +203,7 @@ def test_from_grpc_status_unknown_code():
     assert exception.message == message
 
 
+@pytest.mark.skipif(grpc is None, reason="No grpc")
 def test_from_grpc_error():
     message = "message"
     error = mock.create_autospec(grpc.Call, instance=True)
@@ -211,6 +221,7 @@ def test_from_grpc_error():
     assert exception.response == error
 
 
+@pytest.mark.skipif(grpc is None, reason="No grpc")
 def test_from_grpc_error_non_call():
     message = "message"
     error = mock.create_autospec(grpc.RpcError, instance=True)

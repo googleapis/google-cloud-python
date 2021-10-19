@@ -14,9 +14,13 @@
 
 import datetime
 
-from grpc import aio
 import mock
 import pytest
+
+try:
+    from grpc import aio
+except ImportError:
+    pytest.skip("No GRPC", allow_module_level=True)
 
 from google.api_core import exceptions
 from google.api_core import gapic_v1

@@ -12,11 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from grpc import aio
 import mock
 import pytest
 
-from google.api_core import grpc_helpers_async, operations_v1, page_iterator_async
+try:
+    from grpc import aio
+except ImportError:
+    pytest.skip("No GRPC", allow_module_level=True)
+
+from google.api_core import grpc_helpers_async
+from google.api_core import operations_v1
+from google.api_core import page_iterator_async
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 

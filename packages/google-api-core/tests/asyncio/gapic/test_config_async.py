@@ -12,6 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+import pytest
+
+try:
+    import grpc  # noqa: F401
+except ImportError:
+    pytest.skip("No GRPC", allow_module_level=True)
+
 from google.api_core import exceptions
 from google.api_core.gapic_v1 import config_async
 
