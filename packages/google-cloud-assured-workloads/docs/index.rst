@@ -22,12 +22,13 @@ API Reference
     assuredworkloads_v1beta1/services
     assuredworkloads_v1beta1/types
 
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-assured-workloads`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
