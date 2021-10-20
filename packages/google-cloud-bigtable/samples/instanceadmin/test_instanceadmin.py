@@ -97,17 +97,23 @@ def test_run_instance_operations(capsys, dispose_of):
 
 
 def test_delete_instance(capsys, dispose_of):
-    dispose_of(INSTANCE)
+    from concurrent.futures import TimeoutError
 
-    # Can't delete it, it doesn't exist
-    instanceadmin.delete_instance(PROJECT, INSTANCE)
-    out = capsys.readouterr().out
-    assert "Deleting instance" in out
-    assert f"Instance {INSTANCE} does not exist" in out
+    @backoff.on_exception(backoff.expo, TimeoutError)
+    def _set_up_instance():
+        dispose_of(INSTANCE)
 
-    # Ok, create it then
-    instanceadmin.run_instance_operations(PROJECT, INSTANCE, CLUSTER1)
-    capsys.readouterr()  # throw away output
+        # Can't delete it, it doesn't exist
+        instanceadmin.delete_instance(PROJECT, INSTANCE)
+        out = capsys.readouterr().out
+        assert "Deleting instance" in out
+        assert f"Instance {INSTANCE} does not exist" in out
+
+        # Ok, create it then
+        instanceadmin.run_instance_operations(PROJECT, INSTANCE, CLUSTER1)
+        capsys.readouterr()  # throw away output
+
+    _set_up_instance()
 
     # Now delete it
     instanceadmin.delete_instance(PROJECT, INSTANCE)
@@ -117,22 +123,29 @@ def test_delete_instance(capsys, dispose_of):
 
 
 def test_add_and_delete_cluster(capsys, dispose_of):
-    dispose_of(INSTANCE)
+    from concurrent.futures import TimeoutError
 
-    # This won't work, because the instance isn't created yet
-    instanceadmin.add_cluster(PROJECT, INSTANCE, CLUSTER2)
-    out = capsys.readouterr().out
-    assert f"Instance {INSTANCE} does not exist" in out
+    @backoff.on_exception(backoff.expo, TimeoutError)
+    def _set_up_instance():
+        dispose_of(INSTANCE)
 
-    # Get the instance created
-    instanceadmin.run_instance_operations(PROJECT, INSTANCE, CLUSTER1)
-    capsys.readouterr()  # throw away output
+        # This won't work, because the instance isn't created yet
+        instanceadmin.add_cluster(PROJECT, INSTANCE, CLUSTER2)
+        out = capsys.readouterr().out
+        assert f"Instance {INSTANCE} does not exist" in out
+
+        # Get the instance created
+        instanceadmin.run_instance_operations(PROJECT, INSTANCE, CLUSTER1)
+        capsys.readouterr()  # throw away output
+
+    _set_up_instance()
 
     # Add a cluster to that instance
     # Avoid failing for "instance is currently being changed" by
     # applying an exponential backoff
-    w_backoff = backoff.on_exception(backoff.expo, exceptions.ServiceUnavailable)
-    w_backoff(instanceadmin.add_cluster)(PROJECT, INSTANCE, CLUSTER2)
+    backoff_503 = backoff.on_exception(backoff.expo, exceptions.ServiceUnavailable)
+
+    backoff_503(instanceadmin.add_cluster)(PROJECT, INSTANCE, CLUSTER2)
     out = capsys.readouterr().out
     assert f"Adding cluster to instance {INSTANCE}" in out
     assert "Listing clusters..." in out
