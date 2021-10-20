@@ -79,7 +79,7 @@ def _modify_app_profile_helper(
     )
 
     operation = app_profile.update(ignore_warnings=ignore_warnings)
-    operation.result(timeout=30)
+    operation.result(timeout=60)
 
     alt_profile = instance.app_profile(app_profile_id)
     alt_profile.reload()
@@ -155,7 +155,7 @@ def test_instance_create_prod(
 
     operation = instance.create(clusters=[cluster])
     instances_to_delete.append(instance)
-    operation.result(timeout=30)  # Ensure the operation completes.
+    operation.result(timeout=60)  # Ensure the operation completes.
     assert instance.type_ is None
 
     # Create a new instance instance and make sure it is the same.
@@ -186,7 +186,7 @@ def test_instance_create_development(
 
     operation = instance.create(clusters=[cluster])
     instances_to_delete.append(instance)
-    operation.result(timeout=30)  # Ensure the operation completes.
+    operation.result(timeout=60)  # Ensure the operation completes.
 
     # Create a new instance instance and make sure it is the same.
     instance_alt = admin_client.instance(alt_instance_id)
@@ -496,7 +496,7 @@ def test_instance_update_display_name_and_labels(
     admin_instance_populated.labels = new_labels
 
     operation = admin_instance_populated.update()
-    operation.result(timeout=30)  # ensure the operation completes.
+    operation.result(timeout=60)  # ensure the operation completes.
 
     # Create a new instance instance and reload it.
     instance_alt = admin_client.instance(admin_instance_id, labels={})
@@ -513,7 +513,7 @@ def test_instance_update_display_name_and_labels(
     admin_instance_populated.display_name = old_display_name
     admin_instance_populated.labels = instance_labels
     operation = admin_instance_populated.update()
-    operation.result(timeout=30)  # ensure the operation completes.
+    operation.result(timeout=60)  # ensure the operation completes.
 
 
 def test_instance_update_w_type(
@@ -536,12 +536,12 @@ def test_instance_update_w_type(
 
     operation = instance.create(clusters=[cluster])
     instances_to_delete.append(instance)
-    operation.result(timeout=30)  # Ensure the operation completes.
+    operation.result(timeout=60)  # Ensure the operation completes.
 
     instance.display_name = None
     instance.type_ = enums.Instance.Type.PRODUCTION
     operation = instance.update()
-    operation.result(timeout=30)  # ensure the operation completes.
+    operation.result(timeout=60)  # ensure the operation completes.
 
     # Create a new instance instance and reload it.
     instance_alt = admin_client.instance(alt_instance_id)
@@ -573,7 +573,7 @@ def test_cluster_create(
         default_storage_type=(enums.StorageType.SSD),
     )
     operation = cluster_2.create()
-    operation.result(timeout=30)  # Ensure the operation completes.
+    operation.result(timeout=60)  # Ensure the operation completes.
 
     # Create a new object instance, reload  and make sure it is the same.
     alt_cluster = admin_instance_populated.cluster(alt_cluster_id)
@@ -603,7 +603,7 @@ def test_cluster_update(
     admin_cluster.serve_nodes = new_serve_nodes
 
     operation = admin_cluster.update()
-    operation.result(timeout=30)  # Ensure the operation completes.
+    operation.result(timeout=60)  # Ensure the operation completes.
 
     # Create a new cluster instance and reload it.
     alt_cluster = admin_instance_populated.cluster(admin_cluster_id)
@@ -613,4 +613,4 @@ def test_cluster_update(
     # Put the cluster back the way it was for the other test cases.
     admin_cluster.serve_nodes = serve_nodes
     operation = admin_cluster.update()
-    operation.result(timeout=30)  # Ensure the operation completes.
+    operation.result(timeout=60)  # Ensure the operation completes.
