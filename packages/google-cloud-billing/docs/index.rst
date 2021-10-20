@@ -11,12 +11,13 @@ API Reference
     billing_v1/services
     billing_v1/types
 
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-billing`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
