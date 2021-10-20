@@ -11,12 +11,13 @@ API Reference
     channel_v1/services
     channel_v1/types
 
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-channel`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
