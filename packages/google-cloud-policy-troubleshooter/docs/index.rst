@@ -11,12 +11,13 @@ API Reference
     policytroubleshooter_v1/services
     policytroubleshooter_v1/types
 
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-policy-troubleshooter`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
