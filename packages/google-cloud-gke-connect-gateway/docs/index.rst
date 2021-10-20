@@ -2,6 +2,7 @@
 
 .. include:: multiprocessing.rst
 
+
 API Reference
 -------------
 .. toctree::
@@ -10,12 +11,13 @@ API Reference
     gateway_v1beta1/services
     gateway_v1beta1/types
 
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-gke-connect-gateway`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
