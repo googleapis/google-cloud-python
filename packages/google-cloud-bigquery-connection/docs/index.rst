@@ -11,12 +11,13 @@ API Reference
     bigquery_connection_v1/services
     bigquery_connection_v1/types
 
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-bigquery-connection`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
