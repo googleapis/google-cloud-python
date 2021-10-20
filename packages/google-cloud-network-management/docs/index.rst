@@ -11,12 +11,13 @@ API Reference
     network_management_v1/services
     network_management_v1/types
 
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-network-management`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
