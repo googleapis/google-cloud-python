@@ -22,12 +22,13 @@ API Reference
     notebooks_v1beta1/services
     notebooks_v1beta1/types
 
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-notebooks`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
