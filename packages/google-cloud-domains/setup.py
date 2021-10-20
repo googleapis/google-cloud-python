@@ -47,7 +47,7 @@ setuptools.setup(
         # Until this issue is closed
         # https://github.com/googleapis/google-cloud-python/issues/10566
         "google-api-core[grpc] >= 1.26.0, <3.0.0dev",
-        "proto-plus >= 1.4.0",
+        "proto-plus >= 1.15.0",
         "packaging >= 14.3",
     ),
     python_requires=">=3.6",
