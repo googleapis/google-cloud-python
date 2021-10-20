@@ -22,12 +22,13 @@ API Reference
     domains_v1/services
     domains_v1/types
 
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-domains`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
