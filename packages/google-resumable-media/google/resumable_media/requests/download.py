@@ -171,7 +171,7 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
 
             return result
 
-        return _helpers.wait_and_retry(
+        return _request_helpers.wait_and_retry(
             retriable_request, self._get_status_code, self._retry_strategy
         )
 
@@ -306,7 +306,7 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
 
             return result
 
-        return _helpers.wait_and_retry(
+        return _request_helpers.wait_and_retry(
             retriable_request, self._get_status_code, self._retry_strategy
         )
 
@@ -381,7 +381,7 @@ class ChunkedDownload(_request_helpers.RequestsMixin, _download.ChunkedDownload)
             self._process_response(result)
             return result
 
-        return _helpers.wait_and_retry(
+        return _request_helpers.wait_and_retry(
             retriable_request, self._get_status_code, self._retry_strategy
         )
 
@@ -457,7 +457,7 @@ class RawChunkedDownload(_request_helpers.RawRequestsMixin, _download.ChunkedDow
             self._process_response(result)
             return result
 
-        return _helpers.wait_and_retry(
+        return _request_helpers.wait_and_retry(
             retriable_request, self._get_status_code, self._retry_strategy
         )
 
