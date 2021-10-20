@@ -11,12 +11,13 @@ API Reference
     apigeeconnect_v1/services
     apigeeconnect_v1/types
 
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-apigee-connect`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
