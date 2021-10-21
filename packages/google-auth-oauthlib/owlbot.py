@@ -32,7 +32,7 @@ s.replace(
 
 s.replace(
     "noxfile.py",
-    '"--cov=google/cloud",',
+    '"--cov=google",',
     '"--cov=google_auth_oauthlib",',
 )
 
