@@ -34,10 +34,10 @@ SKIP_BACKUP_TESTS_ENVVAR = "SKIP_BACKUP_TESTS"
 SKIP_BACKUP_TESTS = os.getenv(SKIP_BACKUP_TESTS_ENVVAR) is not None
 
 INSTANCE_OPERATION_TIMEOUT_IN_SECONDS = int(
-    os.getenv("SPANNER_INSTANCE_OPERATION_TIMEOUT_IN_SECONDS", 240)
+    os.getenv("SPANNER_INSTANCE_OPERATION_TIMEOUT_IN_SECONDS", 560)
 )
 DATABASE_OPERATION_TIMEOUT_IN_SECONDS = int(
-    os.getenv("SPANNER_DATABASE_OPERATION_TIMEOUT_IN_SECONDS", 60)
+    os.getenv("SPANNER_DATABASE_OPERATION_TIMEOUT_IN_SECONDS", 120)
 )
 
 USE_EMULATOR_ENVVAR = "SPANNER_EMULATOR_HOST"
@@ -57,7 +57,7 @@ retry_false = retry.RetryResult(operator.not_)
 
 retry_503 = retry.RetryErrors(exceptions.ServiceUnavailable)
 retry_429_503 = retry.RetryErrors(
-    exceptions.TooManyRequests, exceptions.ServiceUnavailable,
+    exceptions.TooManyRequests, exceptions.ServiceUnavailable, 8
 )
 retry_mabye_aborted_txn = retry.RetryErrors(exceptions.ServerError, exceptions.Aborted)
 retry_mabye_conflict = retry.RetryErrors(exceptions.ServerError, exceptions.Conflict)
@@ -107,7 +107,7 @@ def scrub_instance_ignore_not_found(to_scrub):
 
 
 def cleanup_old_instances(spanner_client):
-    cutoff = int(time.time()) - 1 * 60 * 60  # one hour ago
+    cutoff = int(time.time()) - 2 * 60 * 60  # two hour ago
     instance_filter = "labels.python-spanner-systests:true"
 
     for instance_pb in spanner_client.list_instances(filter_=instance_filter):

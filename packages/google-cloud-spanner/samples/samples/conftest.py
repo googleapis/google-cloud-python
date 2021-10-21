@@ -24,7 +24,7 @@ from google.cloud.spanner_v1 import instance
 import pytest
 from test_utils import retry
 
-INSTANCE_CREATION_TIMEOUT = 240  # seconds
+INSTANCE_CREATION_TIMEOUT = 560  # seconds
 
 retry_429 = retry.RetryErrors(exceptions.ResourceExhausted, delay=15)
 

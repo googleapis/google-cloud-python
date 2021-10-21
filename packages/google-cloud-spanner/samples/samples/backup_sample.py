@@ -38,7 +38,7 @@ def create_backup(instance_id, database_id, backup_id, version_time):
     operation = backup.create()
 
     # Wait for backup operation to complete.
-    operation.result(1200)
+    operation.result(2100)
 
     # Verify that the backup is ready.
     backup.reload()
@@ -74,7 +74,7 @@ def create_backup_with_encryption_key(instance_id, database_id, backup_id, kms_k
     operation = backup.create()
 
     # Wait for backup operation to complete.
-    operation.result(1200)
+    operation.result(2100)
 
     # Verify that the backup is ready.
     backup.reload()
