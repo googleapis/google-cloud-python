@@ -355,7 +355,7 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
                 tc.COLUMN_NAME as column_name,
                 ccu.TABLE_NAME as referenced_table,
                 ccu.COLUMN_NAME as referenced_column
-            from
+            FROM
                 INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS tc
             JOIN
                 INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS as rc
