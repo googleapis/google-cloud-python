@@ -25,14 +25,13 @@ __protobuf__ = proto.module(
 
 
 class DockerImage(proto.Message):
-    r"""DockerImage represents a docker artifact.
-    The following fields are returned as untyped metadata in the
-    Version resource, using camelcase keys (i.e.
-    metadata.imageSizeBytes):
+    r"""DockerImage represents a docker artifact. The following fields are
+    returned as untyped metadata in the Version resource, using
+    camelcase keys (i.e. metadata.imageSizeBytes):
 
-      - imageSizeBytes
-      - mediaType
-      - buildTime
+    -  imageSizeBytes
+    -  mediaType
+    -  buildTime
 
     Attributes:
         name (str):
