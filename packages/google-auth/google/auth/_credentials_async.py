@@ -18,10 +18,13 @@
 import abc
 import inspect
 
+import six
+
 from google.auth import credentials
 
 
-class Credentials(credentials.Credentials, metaclass=abc.ABCMeta):
+@six.add_metaclass(abc.ABCMeta)
+class Credentials(credentials.Credentials):
     """Async inherited credentials class from google.auth.credentials.
     The added functionality is the before_request call which requires
     async/await syntax.
@@ -81,7 +84,8 @@ class AnonymousCredentials(credentials.AnonymousCredentials, Credentials):
     """
 
 
-class ReadOnlyScoped(credentials.ReadOnlyScoped, metaclass=abc.ABCMeta):
+@six.add_metaclass(abc.ABCMeta)
+class ReadOnlyScoped(credentials.ReadOnlyScoped):
     """Interface for credentials whose scopes can be queried.
 
     OAuth 2.0-based credentials allow limiting access using scopes as described
@@ -167,5 +171,6 @@ def with_scopes_if_required(credentials, scopes):
         return credentials
 
 
-class Signing(credentials.Signing, metaclass=abc.ABCMeta):
+@six.add_metaclass(abc.ABCMeta)
+class Signing(credentials.Signing):
     """Interface for credentials that can cryptographically sign messages."""

@@ -28,8 +28,10 @@ service account.
 import base64
 import copy
 from datetime import datetime
-import http.client
 import json
+
+import six
+from six.moves import http_client
 
 from google.auth import _helpers
 from google.auth import credentials
@@ -98,7 +100,7 @@ def _make_iam_token_request(
         else response.data
     )
 
-    if response.status != http.client.OK:
+    if response.status != http_client.OK:
         exceptions.RefreshError(_REFRESH_ERROR, response_body)
 
     try:
@@ -115,7 +117,7 @@ def _make_iam_token_request(
             ),
             response_body,
         )
-        raise new_exc from caught_exc
+        six.raise_from(new_exc, caught_exc)
 
 
 class Credentials(credentials.CredentialsWithQuotaProject, credentials.Signing):

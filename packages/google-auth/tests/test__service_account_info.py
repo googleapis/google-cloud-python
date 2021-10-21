@@ -16,6 +16,7 @@ import json
 import os
 
 import pytest
+import six
 
 from google.auth import _service_account_info
 from google.auth import crypt
@@ -54,7 +55,7 @@ def test_from_dict_bad_format():
 def test_from_filename():
     info, signer = _service_account_info.from_filename(SERVICE_ACCOUNT_JSON_FILE)
 
-    for key, value in SERVICE_ACCOUNT_INFO.items():
+    for key, value in six.iteritems(SERVICE_ACCOUNT_INFO):
         assert info[key] == value
 
     assert isinstance(signer, crypt.RSASigner)

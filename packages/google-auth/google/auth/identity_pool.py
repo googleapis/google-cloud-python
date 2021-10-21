@@ -33,7 +33,11 @@ external_account JSON file to retrieve credentials and exchange them for Google
 access tokens.
 """
 
-from collections.abc import Mapping
+try:
+    from collections.abc import Mapping
+# Python 2.7 compatibility
+except ImportError:  # pragma: NO COVER
+    from collections import Mapping
 import io
 import json
 import os

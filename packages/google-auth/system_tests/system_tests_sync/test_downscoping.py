@@ -28,7 +28,7 @@ import pytest
  # The object prefix used to test access to files beginning with this prefix.
 _OBJECT_PREFIX = "customer-a"
 # The object name of the object inaccessible by the downscoped token.
-_ACCESSIBLE_OBJECT_NAME = f"{_OBJECT_PREFIX}-data.txt"
+_ACCESSIBLE_OBJECT_NAME = "{0}-data.txt".format(_OBJECT_PREFIX)
 # The content of the object accessible by the downscoped token.
 _ACCESSIBLE_CONTENT = "hello world"
 # The content of the object inaccessible by the downscoped token.
@@ -76,13 +76,13 @@ def get_token_from_broker(bucket_name, object_prefix):
         Tuple[str, datetime.datetime]: The downscoped access token and its expiry date.
     """
     # Initialize the Credential Access Boundary rules.
-    available_resource = f"//storage.googleapis.com/projects/_/buckets/{bucket_name}"
+    available_resource = "//storage.googleapis.com/projects/_/buckets/{0}".format(bucket_name)
     # Downscoped credentials will have readonly access to the resource.
     available_permissions = ["inRole:roles/storage.objectViewer"]
     # Only objects starting with the specified prefix string in the object name
     # will be allowed read access.
     availability_expression = (
-        f"resource.name.startsWith('projects/_/buckets/{bucket_name}/objects/{object_prefix}')"
+        "resource.name.startsWith('projects/_/buckets/{0}/objects/{1}')".format(bucket_name, object_prefix)
     )
     availability_condition = downscoped.AvailabilityCondition(availability_expression)
     # Define the single access boundary rule using the above properties.

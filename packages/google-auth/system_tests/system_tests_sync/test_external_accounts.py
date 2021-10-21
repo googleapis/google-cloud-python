@@ -32,21 +32,19 @@
 # original service account key.
 
 
-from http.server import BaseHTTPRequestHandler
-from http.server import HTTPServer
 import json
 import os
 import socket
-import sys
 from tempfile import NamedTemporaryFile
 import threading
 
-import pytest
-from mock import patch
-
+import sys
 import google.auth
 from googleapiclient import discovery
+from six.moves import BaseHTTPServer
 from google.oauth2 import service_account
+import pytest
+from mock import patch
 
 # Populate values from the output of scripts/setup_external_accounts.sh.
 _AUDIENCE_OIDC = "//iam.googleapis.com/projects/79992041559/locations/global/workloadIdentityPools/pool-73wslmxn/providers/oidc-73wslmxn"
@@ -177,7 +175,7 @@ def test_file_based_external_account(
 # This test makes sure that setting up an http server to provide credentials
 # works to allow access to Google resources.
 def test_url_based_external_account(dns_access, oidc_credentials, service_account_info):
-    class TestResponseHandler(BaseHTTPRequestHandler):
+    class TestResponseHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         def do_GET(self):
             if self.headers["my-header"] != "expected-value":
                 self.send_response(400)
@@ -201,7 +199,7 @@ def test_url_based_external_account(dns_access, oidc_credentials, service_accoun
                     json.dumps({"access_token": oidc_credentials.token}).encode("utf-8")
                 )
 
-    class TestHTTPServer(HTTPServer, object):
+    class TestHTTPServer(BaseHTTPServer.HTTPServer, object):
         def __init__(self):
             self.port = self._find_open_port()
             super(TestHTTPServer, self).__init__(("", self.port), TestResponseHandler)

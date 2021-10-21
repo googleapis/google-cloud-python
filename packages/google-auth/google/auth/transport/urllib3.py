@@ -34,11 +34,16 @@ except ImportError:  # pragma: NO COVER
 try:
     import urllib3
 except ImportError as caught_exc:  # pragma: NO COVER
-    new_exc = ImportError(
-        "The urllib3 library is not installed, please install the "
-        "urllib3 package to use the urllib3 transport."
+    import six
+
+    six.raise_from(
+        ImportError(
+            "The urllib3 library is not installed, please install the "
+            "urllib3 package to use the urllib3 transport."
+        ),
+        caught_exc,
     )
-    raise new_exc from caught_exc
+import six
 import urllib3.exceptions  # pylint: disable=ungrouped-imports
 
 from google.auth import environment_vars
@@ -137,7 +142,7 @@ class Request(transport.Request):
             return _Response(response)
         except urllib3.exceptions.HTTPError as caught_exc:
             new_exc = exceptions.TransportError(caught_exc)
-            raise new_exc from caught_exc
+            six.raise_from(new_exc, caught_exc)
 
 
 def _make_default_http():
@@ -329,7 +334,7 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
             import OpenSSL
         except ImportError as caught_exc:
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
-            raise new_exc from caught_exc
+            six.raise_from(new_exc, caught_exc)
 
         try:
             found_cert_key, cert, key = transport._mtls_helper.get_client_cert_and_key(
@@ -346,7 +351,7 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
             OpenSSL.crypto.Error,
         ) as caught_exc:
             new_exc = exceptions.MutualTLSChannelError(caught_exc)
-            raise new_exc from caught_exc
+            six.raise_from(new_exc, caught_exc)
 
         if self._has_user_provided_http:
             self._has_user_provided_http = False

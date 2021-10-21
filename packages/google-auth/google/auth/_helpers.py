@@ -17,7 +17,9 @@
 import base64
 import calendar
 import datetime
-import urllib
+
+import six
+from six.moves import urllib
 
 
 # Token server doesn't provide a new a token when doing refresh unless the
@@ -85,6 +87,9 @@ def datetime_to_secs(value):
 def to_bytes(value, encoding="utf-8"):
     """Converts a string value to bytes, if necessary.
 
+    Unfortunately, ``six.b`` is insufficient for this task since in
+    Python 2 because it does not modify ``unicode`` objects.
+
     Args:
         value (Union[str, bytes]): The value to be converted.
         encoding (str): The encoding to use to convert unicode to bytes.
@@ -97,8 +102,8 @@ def to_bytes(value, encoding="utf-8"):
     Raises:
         ValueError: If the value could not be converted to bytes.
     """
-    result = value.encode(encoding) if isinstance(value, str) else value
-    if isinstance(result, bytes):
+    result = value.encode(encoding) if isinstance(value, six.text_type) else value
+    if isinstance(result, six.binary_type):
         return result
     else:
         raise ValueError("{0!r} could not be converted to bytes".format(value))
@@ -117,8 +122,8 @@ def from_bytes(value):
     Raises:
         ValueError: If the value could not be converted to unicode.
     """
-    result = value.decode("utf-8") if isinstance(value, bytes) else value
-    if isinstance(result, str):
+    result = value.decode("utf-8") if isinstance(value, six.binary_type) else value
+    if isinstance(result, six.text_type):
         return result
     else:
         raise ValueError("{0!r} could not be converted to unicode".format(value))
@@ -160,7 +165,7 @@ def update_query(url, params, remove=None):
     query_params.update(params)
     # Remove any values specified in remove.
     query_params = {
-        key: value for key, value in query_params.items() if key not in remove
+        key: value for key, value in six.iteritems(query_params) if key not in remove
     }
     # Re-encoded the query string.
     new_query = urllib.parse.urlencode(query_params, doseq=True)

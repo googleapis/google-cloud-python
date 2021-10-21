@@ -37,6 +37,8 @@ Note that these two classes are only available if your `cryptography` dependency
 version is at least 1.4.0.
 """
 
+import six
+
 from google.auth.crypt import base
 from google.auth.crypt import rsa
 
@@ -88,7 +90,7 @@ def verify_signature(message, signature, certs, verifier_cls=rsa.RSAVerifier):
     Returns:
         bool: True if the signature is valid, otherwise False.
     """
-    if isinstance(certs, (str, bytes)):
+    if isinstance(certs, (six.text_type, six.binary_type)):
         certs = [certs]
 
     for cert in certs:

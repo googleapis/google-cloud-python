@@ -50,6 +50,8 @@ Cloud services do not support this feature.
 
 import datetime
 
+import six
+
 from google.auth import _helpers
 from google.auth import credentials
 from google.oauth2 import sts
@@ -221,7 +223,7 @@ class AccessBoundaryRule(object):
         Raises:
             TypeError: If the value is not a string.
         """
-        if not isinstance(value, str):
+        if not isinstance(value, six.string_types):
             raise TypeError("The provided available_resource is not a string.")
         self._available_resource = value
 
@@ -247,7 +249,7 @@ class AccessBoundaryRule(object):
             ValueError: If the value is not valid.
         """
         for available_permission in value:
-            if not isinstance(available_permission, str):
+            if not isinstance(available_permission, six.string_types):
                 raise TypeError(
                     "Provided available_permissions are not a list of strings."
                 )
@@ -350,7 +352,7 @@ class AvailabilityCondition(object):
         Raises:
             TypeError: If the value is not of type string.
         """
-        if not isinstance(value, str):
+        if not isinstance(value, six.string_types):
             raise TypeError("The provided expression is not a string.")
         self._expression = value
 
@@ -373,7 +375,7 @@ class AvailabilityCondition(object):
         Raises:
             TypeError: If the value is not of type string or None.
         """
-        if not isinstance(value, str) and value is not None:
+        if not isinstance(value, six.string_types) and value is not None:
             raise TypeError("The provided title is not a string or None.")
         self._title = value
 
@@ -396,7 +398,7 @@ class AvailabilityCondition(object):
         Raises:
             TypeError: If the value is not of type string or None.
         """
-        if not isinstance(value, str) and value is not None:
+        if not isinstance(value, six.string_types) and value is not None:
             raise TypeError("The provided description is not a string or None.")
         self._description = value
 

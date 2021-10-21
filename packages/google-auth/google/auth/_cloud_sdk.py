@@ -18,6 +18,8 @@ import json
 import os
 import subprocess
 
+import six
+
 from google.auth import environment_vars
 from google.auth import exceptions
 
@@ -154,4 +156,4 @@ def get_auth_access_token(account=None):
         new_exc = exceptions.UserAccessTokenError(
             "Failed to obtain access token", caught_exc
         )
-        raise new_exc from caught_exc
+        six.raise_from(new_exc, caught_exc)

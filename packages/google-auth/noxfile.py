@@ -81,6 +81,23 @@ def unit(session):
     )
 
 
+@nox.session(python=["2.7"])
+def unit_prev_versions(session):
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    session.install("-r", "testing/requirements.txt", "-c", constraints_path)
+    session.install("-e", ".", "-c", constraints_path)
+    session.run(
+        "pytest",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=google.auth",
+        "--cov=google.oauth2",
+        "--cov=tests",
+        "tests",
+    )
+
+
 @nox.session(python="3.7")
 def cover(session):
     session.install("-r", "testing/requirements.txt")

@@ -24,9 +24,11 @@ For more information about the token endpoint, see
 """
 
 import datetime
-import http.client
 import json
-import urllib
+
+import six
+from six.moves import http_client
+from six.moves import urllib
 
 from google.auth import _helpers
 from google.auth import exceptions
@@ -118,7 +120,7 @@ def _token_endpoint_request_no_throw(
         )
         response_data = json.loads(response_body)
 
-        if response.status == http.client.OK:
+        if response.status == http_client.OK:
             break
         else:
             error_desc = response_data.get("error_description") or ""
@@ -129,9 +131,9 @@ def _token_endpoint_request_no_throw(
             ):
                 retry += 1
                 continue
-            return response.status == http.client.OK, response_data
+            return response.status == http_client.OK, response_data
 
-    return response.status == http.client.OK, response_data
+    return response.status == http_client.OK, response_data
 
 
 def _token_endpoint_request(
@@ -194,7 +196,7 @@ def jwt_grant(request, token_uri, assertion):
         access_token = response_data["access_token"]
     except KeyError as caught_exc:
         new_exc = exceptions.RefreshError("No access token in response.", response_data)
-        raise new_exc from caught_exc
+        six.raise_from(new_exc, caught_exc)
 
     expiry = _parse_expiry(response_data)
 
@@ -234,7 +236,7 @@ def id_token_jwt_grant(request, token_uri, assertion):
         id_token = response_data["id_token"]
     except KeyError as caught_exc:
         new_exc = exceptions.RefreshError("No ID token in response.", response_data)
-        raise new_exc from caught_exc
+        six.raise_from(new_exc, caught_exc)
 
     payload = jwt.decode(id_token, verify=False)
     expiry = datetime.datetime.utcfromtimestamp(payload["exp"])
@@ -263,7 +265,7 @@ def _handle_refresh_grant_response(response_data, refresh_token):
         access_token = response_data["access_token"]
     except KeyError as caught_exc:
         new_exc = exceptions.RefreshError("No access token in response.", response_data)
-        raise new_exc from caught_exc
+        six.raise_from(new_exc, caught_exc)
 
     refresh_token = response_data.get("refresh_token", refresh_token)
     expiry = _parse_expiry(response_data)

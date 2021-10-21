@@ -58,9 +58,11 @@ library like `CacheControl`_ to create a cache-aware
 .. _CacheControl: https://cachecontrol.readthedocs.io
 """
 
-import http.client
 import json
 import os
+
+import six
+from six.moves import http_client
 
 from google.auth import environment_vars
 from google.auth import exceptions
@@ -86,7 +88,7 @@ async def _fetch_certs(request, certs_url):
     """
     response = await request(certs_url, method="GET")
 
-    if response.status != http.client.OK:
+    if response.status != http_client.OK:
         raise exceptions.TransportError(
             "Could not fetch certificates at {}".format(certs_url)
         )
@@ -241,7 +243,7 @@ async def fetch_id_token(request, audience):
                 "GOOGLE_APPLICATION_CREDENTIALS is not valid service account credentials.",
                 caught_exc,
             )
-            raise new_exc from caught_exc
+            six.raise_from(new_exc, caught_exc)
 
     # 2. Try to fetch ID token from metada server if it exists. The code works
     # for GAE and Cloud Run metadata server as well.

@@ -18,12 +18,15 @@ import abc
 import io
 import json
 
+import six
+
 
 _JSON_FILE_PRIVATE_KEY = "private_key"
 _JSON_FILE_PRIVATE_KEY_ID = "private_key_id"
 
 
-class Verifier(object, metaclass=abc.ABCMeta):
+@six.add_metaclass(abc.ABCMeta)
+class Verifier(object):
     """Abstract base class for crytographic signature verifiers."""
 
     @abc.abstractmethod
@@ -43,7 +46,8 @@ class Verifier(object, metaclass=abc.ABCMeta):
         raise NotImplementedError("Verify must be implemented")
 
 
-class Signer(object, metaclass=abc.ABCMeta):
+@six.add_metaclass(abc.ABCMeta)
+class Signer(object):
     """Abstract base class for cryptographic signers."""
 
     @abc.abstractproperty
@@ -66,7 +70,8 @@ class Signer(object, metaclass=abc.ABCMeta):
         raise NotImplementedError("Sign must be implemented")
 
 
-class FromServiceAccountMixin(object, metaclass=abc.ABCMeta):
+@six.add_metaclass(abc.ABCMeta)
+class FromServiceAccountMixin(object):
     """Mix-in to enable factory constructors for a Signer."""
 
     @abc.abstractmethod

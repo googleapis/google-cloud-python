@@ -39,13 +39,20 @@ via the GCP STS endpoint.
 
 import hashlib
 import hmac
-import http.client
 import io
 import json
 import os
+import posixpath
 import re
-import urllib
-from urllib.parse import urljoin
+
+try:
+    from urllib.parse import urljoin
+# Python 2.7 compatibility
+except ImportError:  # pragma: NO COVER
+    from urlparse import urljoin
+
+from six.moves import http_client
+from six.moves import urllib
 
 from google.auth import _helpers
 from google.auth import environment_vars
@@ -116,7 +123,9 @@ class RequestSigner(object):
         # Normalize the URL path. This is needed for the canonical_uri.
         # os.path.normpath can't be used since it normalizes "/" paths
         # to "\\" in Windows OS.
-        normalized_uri = urllib.parse.urlparse(urljoin(url, uri.path))
+        normalized_uri = urllib.parse.urlparse(
+            urljoin(url, posixpath.normpath(uri.path))
+        )
         # Validate provided URL.
         if not uri.hostname or uri.scheme != "https":
             raise ValueError("Invalid AWS service URL")
@@ -631,7 +640,7 @@ class Credentials(external_account.Credentials):
             else response.data
         )
 
-        if response.status != http.client.OK:
+        if response.status != http_client.OK:
             raise exceptions.RefreshError(
                 "Unable to retrieve AWS security credentials", response_body
             )
@@ -670,7 +679,7 @@ class Credentials(external_account.Credentials):
             else response.data
         )
 
-        if response.status != http.client.OK:
+        if response.status != http_client.OK:
             raise exceptions.RefreshError(
                 "Unable to retrieve AWS role name", response_body
             )

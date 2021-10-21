@@ -31,9 +31,10 @@ spec JSON response.
 .. _rfc8693 section 2.2.1: https://tools.ietf.org/html/rfc8693#section-2.2.1
 """
 
-import http.client
 import json
-import urllib
+
+from six.moves import http_client
+from six.moves import urllib
 
 from google.oauth2 import utils
 
@@ -145,7 +146,7 @@ class Client(utils.OAuthClientAuthHandler):
         )
 
         # If non-200 response received, translate to OAuthError exception.
-        if response.status != http.client.OK:
+        if response.status != http_client.OK:
             utils.handle_error_response(response_body)
 
         response_data = json.loads(response_body)
