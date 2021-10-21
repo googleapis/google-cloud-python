@@ -223,7 +223,7 @@ place_before(
 s.replace(
     "noxfile.py",
     """f"--junitxml=unit_{session.python}_sponge_log.xml",
-        "--cov=google/cloud",
+        "--cov=google",
         "--cov=tests/unit",""",
     """\"--cov=google.cloud.spanner",
         "--cov=google.cloud",
