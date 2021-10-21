@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+### [2.5.1](https://www.github.com/googleapis/python-automl/compare/v2.5.0...v2.5.1) (2021-10-20)
+
+
+### Bug Fixes
+
+* remove unnecessary double quotes in strings ([#262](https://www.github.com/googleapis/python-automl/issues/262)) ([fb73bd7](https://www.github.com/googleapis/python-automl/commit/fb73bd7d5ab024aaec3bb0d892c587082911970b))
+
 ## [2.5.0](https://www.github.com/googleapis/python-automl/compare/v2.4.2...v2.5.0) (2021-10-08)
 
 
