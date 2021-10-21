@@ -10,6 +10,6 @@
     "repo": "googleapis/python-domains",
     "distribution_name": "google-cloud-domains",
     "api_id": "domains.googleapis.com",
-    "default_version": "v1beta1",
+    "default_version": "v1",
     "codeowner_team": ""
 }
