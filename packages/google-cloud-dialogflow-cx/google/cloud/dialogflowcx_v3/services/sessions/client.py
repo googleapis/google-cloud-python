@@ -614,23 +614,37 @@ class SessionsClient(metaclass=SessionsClientMeta):
         Returns:
             Iterable[google.cloud.dialogflowcx_v3.types.StreamingDetectIntentResponse]:
                 The top-level message returned from the
-                StreamingDetectIntent method.
+                   [StreamingDetectIntent][google.cloud.dialogflow.cx.v3.Sessions.StreamingDetectIntent]
+                   method.
 
-                   Multiple response messages can be returned in order:
+                   Multiple response messages (N) can be returned in
+                   order.
 
-                   1. If the input was set to streaming audio, the first
-                      one or more messages contain recognition_result.
-                      Each recognition_result represents a more complete
-                      transcript of what the user said. The last
-                      recognition_result has is_final set to true.
-                   2. If enable_partial_response is true, the following
-                      N messages (currently 1 <= N <= 4) contain
-                      detect_intent_response. The first (N-1)
-                      detect_intent_responses will have response_type
-                      set to PARTIAL. The last detect_intent_response
-                      has response_type set to FINAL. If response_type
-                      is false, response stream only contains the final
-                      detect_intent_response.
+                   The first (N-1) responses set either the
+                   recognition_result or detect_intent_response field,
+                   depending on the request:
+
+                   -  If the
+                      StreamingDetectIntentRequest.query_input.audio
+                      field was set, and the
+                      StreamingDetectIntentRequest.enable_partial_response
+                      field was false, the recognition_result field is
+                      populated for each of the (N-1) responses. See the
+                      [StreamingRecognitionResult][google.cloud.dialogflow.cx.v3.StreamingRecognitionResult]
+                      message for details about the result message
+                      sequence.
+                   -  If the
+                      StreamingDetectIntentRequest.enable_partial_response
+                      field was true, the detect_intent_response field
+                      is populated for each of the (N-1) responses,
+                      where 1 <= N <= 4. These responses set the
+                      [DetectIntentResponse.response_type][google.cloud.dialogflow.cx.v3.DetectIntentResponse.response_type]
+                      field to PARTIAL.
+
+                   For the final Nth response message, the
+                   detect_intent_response is fully populated, and
+                   [DetectIntentResponse.response_type][google.cloud.dialogflow.cx.v3.DetectIntentResponse.response_type]
+                   is set to FINAL.
 
         """
 

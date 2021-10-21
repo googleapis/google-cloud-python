@@ -16,6 +16,8 @@
 
 from .services.agents import AgentsClient
 from .services.agents import AgentsAsyncClient
+from .services.changelogs import ChangelogsClient
+from .services.changelogs import ChangelogsAsyncClient
 from .services.deployments import DeploymentsClient
 from .services.deployments import DeploymentsAsyncClient
 from .services.entity_types import EntityTypesClient
@@ -69,6 +71,10 @@ from .types.audio_config import AudioEncoding
 from .types.audio_config import OutputAudioEncoding
 from .types.audio_config import SpeechModelVariant
 from .types.audio_config import SsmlVoiceGender
+from .types.changelog import Changelog
+from .types.changelog import GetChangelogRequest
+from .types.changelog import ListChangelogsRequest
+from .types.changelog import ListChangelogsResponse
 from .types.deployment import Deployment
 from .types.deployment import GetDeploymentRequest
 from .types.deployment import ListDeploymentsRequest
@@ -246,6 +252,7 @@ from .types.webhook import WebhookResponse
 
 __all__ = (
     "AgentsAsyncClient",
+    "ChangelogsAsyncClient",
     "DeploymentsAsyncClient",
     "EntityTypesAsyncClient",
     "EnvironmentsAsyncClient",
@@ -272,6 +279,8 @@ __all__ = (
     "BatchRunTestCasesResponse",
     "CalculateCoverageRequest",
     "CalculateCoverageResponse",
+    "Changelog",
+    "ChangelogsClient",
     "ContinuousTestResult",
     "ConversationTurn",
     "CreateAgentRequest",
@@ -332,6 +341,7 @@ __all__ = (
     "Fulfillment",
     "GetAgentRequest",
     "GetAgentValidationResultRequest",
+    "GetChangelogRequest",
     "GetDeploymentRequest",
     "GetEntityTypeRequest",
     "GetEnvironmentRequest",
@@ -360,6 +370,8 @@ __all__ = (
     "IntentsClient",
     "ListAgentsRequest",
     "ListAgentsResponse",
+    "ListChangelogsRequest",
+    "ListChangelogsResponse",
     "ListContinuousTestResultsRequest",
     "ListContinuousTestResultsResponse",
     "ListDeploymentsRequest",

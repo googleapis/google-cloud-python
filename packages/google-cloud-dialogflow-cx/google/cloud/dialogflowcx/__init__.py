@@ -16,6 +16,10 @@
 
 from google.cloud.dialogflowcx_v3.services.agents.client import AgentsClient
 from google.cloud.dialogflowcx_v3.services.agents.async_client import AgentsAsyncClient
+from google.cloud.dialogflowcx_v3.services.changelogs.client import ChangelogsClient
+from google.cloud.dialogflowcx_v3.services.changelogs.async_client import (
+    ChangelogsAsyncClient,
+)
 from google.cloud.dialogflowcx_v3.services.deployments.client import DeploymentsClient
 from google.cloud.dialogflowcx_v3.services.deployments.async_client import (
     DeploymentsAsyncClient,
@@ -99,6 +103,10 @@ from google.cloud.dialogflowcx_v3.types.audio_config import AudioEncoding
 from google.cloud.dialogflowcx_v3.types.audio_config import OutputAudioEncoding
 from google.cloud.dialogflowcx_v3.types.audio_config import SpeechModelVariant
 from google.cloud.dialogflowcx_v3.types.audio_config import SsmlVoiceGender
+from google.cloud.dialogflowcx_v3.types.changelog import Changelog
+from google.cloud.dialogflowcx_v3.types.changelog import GetChangelogRequest
+from google.cloud.dialogflowcx_v3.types.changelog import ListChangelogsRequest
+from google.cloud.dialogflowcx_v3.types.changelog import ListChangelogsResponse
 from google.cloud.dialogflowcx_v3.types.deployment import Deployment
 from google.cloud.dialogflowcx_v3.types.deployment import GetDeploymentRequest
 from google.cloud.dialogflowcx_v3.types.deployment import ListDeploymentsRequest
@@ -323,6 +331,8 @@ from google.cloud.dialogflowcx_v3.types.webhook import WebhookResponse
 __all__ = (
     "AgentsClient",
     "AgentsAsyncClient",
+    "ChangelogsClient",
+    "ChangelogsAsyncClient",
     "DeploymentsClient",
     "DeploymentsAsyncClient",
     "EntityTypesClient",
@@ -375,6 +385,10 @@ __all__ = (
     "OutputAudioEncoding",
     "SpeechModelVariant",
     "SsmlVoiceGender",
+    "Changelog",
+    "GetChangelogRequest",
+    "ListChangelogsRequest",
+    "ListChangelogsResponse",
     "Deployment",
     "GetDeploymentRequest",
     "ListDeploymentsRequest",

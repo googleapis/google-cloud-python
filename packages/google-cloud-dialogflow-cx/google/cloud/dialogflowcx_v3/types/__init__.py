@@ -41,6 +41,12 @@ from .audio_config import (
     SpeechModelVariant,
     SsmlVoiceGender,
 )
+from .changelog import (
+    Changelog,
+    GetChangelogRequest,
+    ListChangelogsRequest,
+    ListChangelogsResponse,
+)
 from .deployment import (
     Deployment,
     GetDeploymentRequest,
@@ -271,6 +277,10 @@ __all__ = (
     "OutputAudioEncoding",
     "SpeechModelVariant",
     "SsmlVoiceGender",
+    "Changelog",
+    "GetChangelogRequest",
+    "ListChangelogsRequest",
+    "ListChangelogsResponse",
     "Deployment",
     "GetDeploymentRequest",
     "ListDeploymentsRequest",

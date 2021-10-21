@@ -109,6 +109,40 @@
         }
       }
     },
+    "Changelogs": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ChangelogsClient",
+          "rpcs": {
+            "GetChangelog": {
+              "methods": [
+                "get_changelog"
+              ]
+            },
+            "ListChangelogs": {
+              "methods": [
+                "list_changelogs"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ChangelogsAsyncClient",
+          "rpcs": {
+            "GetChangelog": {
+              "methods": [
+                "get_changelog"
+              ]
+            },
+            "ListChangelogs": {
+              "methods": [
+                "list_changelogs"
+              ]
+            }
+          }
+        }
+      }
+    },
     "Deployments": {
       "clients": {
         "grpc": {
