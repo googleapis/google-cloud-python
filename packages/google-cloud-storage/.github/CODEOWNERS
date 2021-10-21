@@ -8,3 +8,7 @@
 # The cloud-storage-dpe team is the default owner for anything not
 # explicitly taken by someone else.
 *                               @googleapis/cloud-storage-dpe @googleapis/yoshi-python
+
+# Additionally, the python-samples-owners team is also among 
+# the default owners for samples changes.
+/samples/   @googleapis/cloud-storage-dpe @googleapis/yoshi-python @googleapis/python-samples-owners
