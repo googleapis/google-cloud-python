@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.2.0...v1.3.0) (2021-10-14)
+
+
+### Features
+
+* add support for python 3.10 ([#137](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/137)) ([fda16a4](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/fda16a44a84b173a8866090021e03eef0cb82025))
+
+
+### Documentation
+
+* **samples:** add reCAPTCHA Enterprise code samples  ([#112](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/112)) ([879acf1](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/879acf12d24b5148e372f0f76a243ea0fc66286e))
+
 ## [1.2.0](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.1.2...v1.2.0) (2021-10-08)
 
 
