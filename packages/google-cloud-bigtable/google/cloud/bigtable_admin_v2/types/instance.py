@@ -16,6 +16,7 @@
 import proto  # type: ignore
 
 from google.cloud.bigtable_admin_v2.types import common
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -57,6 +58,11 @@ class Instance(proto.Message):
             -  No more than 64 labels can be associated with a given
                resource.
             -  Keys and values must both be under 128 bytes.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. A server-assigned timestamp representing when
+            this Instance was created. For instances created before this
+            field was added (August 2021), this value is
+            ``seconds: 0, nanos: 1``.
     """
 
     class State(proto.Enum):
@@ -76,6 +82,7 @@ class Instance(proto.Message):
     state = proto.Field(proto.ENUM, number=3, enum=State,)
     type_ = proto.Field(proto.ENUM, number=4, enum=Type,)
     labels = proto.MapField(proto.STRING, proto.STRING, number=5,)
+    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
 
 
 class Cluster(proto.Message):
