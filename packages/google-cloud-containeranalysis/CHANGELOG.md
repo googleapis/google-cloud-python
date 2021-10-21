@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://www.github.com/googleapis/python-containeranalysis/compare/v2.5.0...v2.6.0) (2021-10-20)
+
+
+### Features
+
+* add support for python 3.10 ([#197](https://www.github.com/googleapis/python-containeranalysis/issues/197)) ([26f516c](https://www.github.com/googleapis/python-containeranalysis/commit/26f516ce4c78a3189b436dd8292dba66d2e3baa7))
+
 ## [2.5.0](https://www.github.com/googleapis/python-containeranalysis/compare/v2.4.2...v2.5.0) (2021-10-11)
 
 
