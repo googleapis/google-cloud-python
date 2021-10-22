@@ -910,19 +910,19 @@ class EncryptionConfig(proto.Message):
 
 
 class MaintenanceWindow(proto.Message):
-    r"""The configuration settings for Cloud Composer maintenance
-    window. The following example:
+    r"""The configuration settings for Cloud Composer maintenance window.
+    The following example:
 
-    .. code-block:: none
+    ::
 
-       {
-         "startTime":"2019-08-01T01:00:00Z"
-         "endTime":"2019-08-01T07:00:00Z"
-         "recurrence":"FREQ=WEEKLY;BYDAY=TU,WE"
-       }
+          {
+            "startTime":"2019-08-01T01:00:00Z"
+            "endTime":"2019-08-01T07:00:00Z"
+            "recurrence":"FREQ=WEEKLY;BYDAY=TU,WE"
+          }
 
-    would define a maintenance window between 01 and 07 hours UTC
-    during each Tuesday and Wednesday.
+    would define a maintenance window between 01 and 07 hours UTC during
+    each Tuesday and Wednesday.
 
     Attributes:
         start_time (google.protobuf.timestamp_pb2.Timestamp):
