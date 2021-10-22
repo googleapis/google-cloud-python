@@ -1,7 +1,7 @@
 Python Client for Binary Authorization API
 ====================================================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Binary Authorization API`_: The management interface for Binary Authorization, a system providing
 policy control for images deployed to Kubernetes Engine clusters.
@@ -9,8 +9,8 @@ policy control for images deployed to Kubernetes Engine clusters.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-binary-authorization.svg
    :target: https://pypi.org/project/google-cloud-binary-authorization/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-binary-authorization.svg
