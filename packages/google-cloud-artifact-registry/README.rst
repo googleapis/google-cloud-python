@@ -1,7 +1,7 @@
 Python Client for Artifact Registry
 =================================================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Artifact Registry`_: is a single place for your organization
 to manage container images and language packages (such as Maven and npm). It is
@@ -12,8 +12,8 @@ CI/CD tooling to set up automated pipelines.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-artifact-registry.svg
    :target: https://pypi.org/project/google-cloud-artifact-registry/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-artifact-registry.svg
