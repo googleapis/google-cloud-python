@@ -7,5 +7,5 @@
 
 # The api-spanner-python team is the default owner for anything not
 # explicitly taken by someone else.
-*                               @googleapis/api-spanner-python
+*                               @googleapis/api-spanner-python @googleapis/yoshi-python
 /samples/                       @googleapis/api-spanner-python @googleapis/python-samples-owners
