@@ -12,214 +12,222 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+import pytest
 
 _PROJECT = "PROJECT"
 _KIND = "KIND"
 _ID = 1234
 
 
-class TestEntity(unittest.TestCase):
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.datastore.entity import Entity
+def _make_entity(key=None, exclude_from_indexes=()):
+    from google.cloud.datastore.entity import Entity
 
-        return Entity
+    return Entity(key=key, exclude_from_indexes=exclude_from_indexes)
 
-    def _make_one(self, key=None, exclude_from_indexes=()):
-        klass = self._get_target_class()
-        return klass(key=key, exclude_from_indexes=exclude_from_indexes)
 
-    def test_ctor_defaults(self):
-        klass = self._get_target_class()
-        entity = klass()
-        self.assertIsNone(entity.key)
-        self.assertIsNone(entity.kind)
-        self.assertEqual(sorted(entity.exclude_from_indexes), [])
+def test_entity_ctor_defaults():
+    from google.cloud.datastore.entity import Entity
 
-    def test_ctor_explicit(self):
-        _EXCLUDE_FROM_INDEXES = ["foo", "bar"]
-        key = _Key()
-        entity = self._make_one(key=key, exclude_from_indexes=_EXCLUDE_FROM_INDEXES)
-        self.assertEqual(
-            sorted(entity.exclude_from_indexes), sorted(_EXCLUDE_FROM_INDEXES)
-        )
+    entity = Entity()
+    assert entity.key is None
+    assert entity.kind is None
+    assert sorted(entity.exclude_from_indexes) == []
 
-    def test_ctor_bad_exclude_from_indexes(self):
-        BAD_EXCLUDE_FROM_INDEXES = object()
-        key = _Key()
-        self.assertRaises(
-            TypeError,
-            self._make_one,
-            key=key,
-            exclude_from_indexes=BAD_EXCLUDE_FROM_INDEXES,
-        )
 
-    def test___eq_____ne___w_non_entity(self):
-        from google.cloud.datastore.key import Key
+def test_entity_ctor_explicit():
+    _EXCLUDE_FROM_INDEXES = ["foo", "bar"]
+    key = _Key()
+    entity = _make_entity(key=key, exclude_from_indexes=_EXCLUDE_FROM_INDEXES)
+    assert sorted(entity.exclude_from_indexes) == sorted(_EXCLUDE_FROM_INDEXES)
 
-        key = Key(_KIND, _ID, project=_PROJECT)
-        entity = self._make_one(key=key)
-        self.assertFalse(entity == object())
-        self.assertTrue(entity != object())
 
-    def test___eq_____ne___w_different_keys(self):
-        from google.cloud.datastore.key import Key
+def test_entity_ctor_bad_exclude_from_indexes():
+    BAD_EXCLUDE_FROM_INDEXES = object()
+    key = _Key()
+    with pytest.raises(TypeError):
+        _make_entity(key=key, exclude_from_indexes=BAD_EXCLUDE_FROM_INDEXES)
 
-        _ID1 = 1234
-        _ID2 = 2345
-        key1 = Key(_KIND, _ID1, project=_PROJECT)
-        entity1 = self._make_one(key=key1)
-        key2 = Key(_KIND, _ID2, project=_PROJECT)
-        entity2 = self._make_one(key=key2)
-        self.assertFalse(entity1 == entity2)
-        self.assertTrue(entity1 != entity2)
 
-    def test___eq_____ne___w_same_keys(self):
-        from google.cloud.datastore.key import Key
+def test_entity___eq_____ne___w_non_entity():
+    from google.cloud.datastore.key import Key
 
-        name = "foo"
-        value = 42
-        meaning = 9
+    key = Key(_KIND, _ID, project=_PROJECT)
+    entity = _make_entity(key=key)
+    assert not entity == object()
+    assert entity != object()
 
-        key1 = Key(_KIND, _ID, project=_PROJECT)
-        entity1 = self._make_one(key=key1, exclude_from_indexes=(name,))
-        entity1[name] = value
-        entity1._meanings[name] = (meaning, value)
 
-        key2 = Key(_KIND, _ID, project=_PROJECT)
-        entity2 = self._make_one(key=key2, exclude_from_indexes=(name,))
-        entity2[name] = value
-        entity2._meanings[name] = (meaning, value)
+def test_entity___eq_____ne___w_different_keys():
+    from google.cloud.datastore.key import Key
 
-        self.assertTrue(entity1 == entity2)
-        self.assertFalse(entity1 != entity2)
+    _ID1 = 1234
+    _ID2 = 2345
+    key1 = Key(_KIND, _ID1, project=_PROJECT)
+    entity1 = _make_entity(key=key1)
+    key2 = Key(_KIND, _ID2, project=_PROJECT)
+    entity2 = _make_entity(key=key2)
+    assert not entity1 == entity2
+    assert entity1 != entity2
 
-    def test___eq_____ne___w_same_keys_different_props(self):
-        from google.cloud.datastore.key import Key
 
-        key1 = Key(_KIND, _ID, project=_PROJECT)
-        entity1 = self._make_one(key=key1)
-        entity1["foo"] = "Foo"
-        key2 = Key(_KIND, _ID, project=_PROJECT)
-        entity2 = self._make_one(key=key2)
-        entity1["bar"] = "Bar"
-        self.assertFalse(entity1 == entity2)
-        self.assertTrue(entity1 != entity2)
+def test_entity___eq_____ne___w_same_keys():
+    from google.cloud.datastore.key import Key
 
-    def test___eq_____ne___w_same_keys_props_w_equiv_keys_as_value(self):
-        from google.cloud.datastore.key import Key
+    name = "foo"
+    value = 42
+    meaning = 9
 
-        key1 = Key(_KIND, _ID, project=_PROJECT)
-        key2 = Key(_KIND, _ID, project=_PROJECT)
-        entity1 = self._make_one(key=key1)
-        entity1["some_key"] = key1
-        entity2 = self._make_one(key=key1)
-        entity2["some_key"] = key2
-        self.assertTrue(entity1 == entity2)
-        self.assertFalse(entity1 != entity2)
+    key1 = Key(_KIND, _ID, project=_PROJECT)
+    entity1 = _make_entity(key=key1, exclude_from_indexes=(name,))
+    entity1[name] = value
+    entity1._meanings[name] = (meaning, value)
 
-    def test___eq_____ne___w_same_keys_props_w_diff_keys_as_value(self):
-        from google.cloud.datastore.key import Key
+    key2 = Key(_KIND, _ID, project=_PROJECT)
+    entity2 = _make_entity(key=key2, exclude_from_indexes=(name,))
+    entity2[name] = value
+    entity2._meanings[name] = (meaning, value)
 
-        _ID1 = 1234
-        _ID2 = 2345
-        key1 = Key(_KIND, _ID1, project=_PROJECT)
-        key2 = Key(_KIND, _ID2, project=_PROJECT)
-        entity1 = self._make_one(key=key1)
-        entity1["some_key"] = key1
-        entity2 = self._make_one(key=key1)
-        entity2["some_key"] = key2
-        self.assertFalse(entity1 == entity2)
-        self.assertTrue(entity1 != entity2)
+    assert entity1 == entity2
+    assert not entity1 != entity2
 
-    def test___eq_____ne___w_same_keys_props_w_equiv_entities_as_value(self):
-        from google.cloud.datastore.key import Key
 
-        key = Key(_KIND, _ID, project=_PROJECT)
-        entity1 = self._make_one(key=key)
-        sub1 = self._make_one()
-        sub1.update({"foo": "Foo"})
-        entity1["some_entity"] = sub1
-        entity2 = self._make_one(key=key)
-        sub2 = self._make_one()
-        sub2.update({"foo": "Foo"})
-        entity2["some_entity"] = sub2
-        self.assertTrue(entity1 == entity2)
-        self.assertFalse(entity1 != entity2)
+def test_entity___eq_____ne___w_same_keys_different_props():
+    from google.cloud.datastore.key import Key
 
-    def test___eq_____ne___w_same_keys_props_w_diff_entities_as_value(self):
-        from google.cloud.datastore.key import Key
+    key1 = Key(_KIND, _ID, project=_PROJECT)
+    entity1 = _make_entity(key=key1)
+    entity1["foo"] = "Foo"
+    key2 = Key(_KIND, _ID, project=_PROJECT)
+    entity2 = _make_entity(key=key2)
+    entity1["bar"] = "Bar"
+    assert not entity1 == entity2
+    assert entity1 != entity2
 
-        key = Key(_KIND, _ID, project=_PROJECT)
-        entity1 = self._make_one(key=key)
-        sub1 = self._make_one()
-        sub1.update({"foo": "Foo"})
-        entity1["some_entity"] = sub1
-        entity2 = self._make_one(key=key)
-        sub2 = self._make_one()
-        sub2.update({"foo": "Bar"})
-        entity2["some_entity"] = sub2
-        self.assertFalse(entity1 == entity2)
-        self.assertTrue(entity1 != entity2)
 
-    def test__eq__same_value_different_exclude(self):
-        from google.cloud.datastore.key import Key
+def test_entity___eq_____ne___w_same_keys_props_w_equiv_keys_as_value():
+    from google.cloud.datastore.key import Key
 
-        name = "foo"
-        value = 42
-        key = Key(_KIND, _ID, project=_PROJECT)
+    key1 = Key(_KIND, _ID, project=_PROJECT)
+    key2 = Key(_KIND, _ID, project=_PROJECT)
+    entity1 = _make_entity(key=key1)
+    entity1["some_key"] = key1
+    entity2 = _make_entity(key=key1)
+    entity2["some_key"] = key2
+    assert entity1 == entity2
+    assert not entity1 != entity2
 
-        entity1 = self._make_one(key=key, exclude_from_indexes=(name,))
-        entity1[name] = value
 
-        entity2 = self._make_one(key=key, exclude_from_indexes=())
-        entity2[name] = value
+def test_entity___eq_____ne___w_same_keys_props_w_diff_keys_as_value():
+    from google.cloud.datastore.key import Key
 
-        self.assertFalse(entity1 == entity2)
+    _ID1 = 1234
+    _ID2 = 2345
+    key1 = Key(_KIND, _ID1, project=_PROJECT)
+    key2 = Key(_KIND, _ID2, project=_PROJECT)
+    entity1 = _make_entity(key=key1)
+    entity1["some_key"] = key1
+    entity2 = _make_entity(key=key1)
+    entity2["some_key"] = key2
+    assert not entity1 == entity2
+    assert entity1 != entity2
 
-    def test__eq__same_value_different_meanings(self):
-        from google.cloud.datastore.key import Key
 
-        name = "foo"
-        value = 42
-        meaning = 9
-        key = Key(_KIND, _ID, project=_PROJECT)
+def test_entity___eq_____ne___w_same_keys_props_w_equiv_entities_as_value():
+    from google.cloud.datastore.key import Key
 
-        entity1 = self._make_one(key=key, exclude_from_indexes=(name,))
-        entity1[name] = value
+    key = Key(_KIND, _ID, project=_PROJECT)
+    entity1 = _make_entity(key=key)
+    sub1 = _make_entity()
+    sub1.update({"foo": "Foo"})
+    entity1["some_entity"] = sub1
+    entity2 = _make_entity(key=key)
+    sub2 = _make_entity()
+    sub2.update({"foo": "Foo"})
+    entity2["some_entity"] = sub2
+    assert entity1 == entity2
+    assert not entity1 != entity2
 
-        entity2 = self._make_one(key=key, exclude_from_indexes=(name,))
-        entity2[name] = value
-        entity2._meanings[name] = (meaning, value)
 
-        self.assertFalse(entity1 == entity2)
+def test_entity___eq_____ne___w_same_keys_props_w_diff_entities_as_value():
+    from google.cloud.datastore.key import Key
 
-    def test_id(self):
-        from google.cloud.datastore.key import Key
+    key = Key(_KIND, _ID, project=_PROJECT)
+    entity1 = _make_entity(key=key)
+    sub1 = _make_entity()
+    sub1.update({"foo": "Foo"})
+    entity1["some_entity"] = sub1
+    entity2 = _make_entity(key=key)
+    sub2 = _make_entity()
+    sub2.update({"foo": "Bar"})
+    entity2["some_entity"] = sub2
+    assert not entity1 == entity2
+    assert entity1 != entity2
 
-        key = Key(_KIND, _ID, project=_PROJECT)
-        entity = self._make_one(key=key)
-        self.assertEqual(entity.id, _ID)
 
-    def test_id_none(self):
+def test__eq__same_value_different_exclude():
+    from google.cloud.datastore.key import Key
 
-        entity = self._make_one(key=None)
-        self.assertEqual(entity.id, None)
+    name = "foo"
+    value = 42
+    key = Key(_KIND, _ID, project=_PROJECT)
 
-    def test___repr___no_key_empty(self):
-        entity = self._make_one()
-        self.assertEqual(repr(entity), "<Entity {}>")
+    entity1 = _make_entity(key=key, exclude_from_indexes=(name,))
+    entity1[name] = value
 
-    def test___repr___w_key_non_empty(self):
-        key = _Key()
-        flat_path = ("bar", 12, "baz", "himom")
-        key._flat_path = flat_path
-        entity = self._make_one(key=key)
-        entity_vals = {"foo": "Foo"}
-        entity.update(entity_vals)
-        expected = "<Entity%s %s>" % (flat_path, entity_vals)
-        self.assertEqual(repr(entity), expected)
+    entity2 = _make_entity(key=key, exclude_from_indexes=())
+    entity2[name] = value
+
+    assert not entity1 == entity2
+    assert entity1 != entity2
+
+
+def test_entity___eq__same_value_different_meanings():
+    from google.cloud.datastore.key import Key
+
+    name = "foo"
+    value = 42
+    meaning = 9
+    key = Key(_KIND, _ID, project=_PROJECT)
+
+    entity1 = _make_entity(key=key, exclude_from_indexes=(name,))
+    entity1[name] = value
+
+    entity2 = _make_entity(key=key, exclude_from_indexes=(name,))
+    entity2[name] = value
+    entity2._meanings[name] = (meaning, value)
+
+    assert not entity1 == entity2
+    assert entity1 != entity2
+
+
+def test_id():
+    from google.cloud.datastore.key import Key
+
+    key = Key(_KIND, _ID, project=_PROJECT)
+    entity = _make_entity(key=key)
+    assert entity.id == _ID
+
+
+def test_id_none():
+
+    entity = _make_entity(key=None)
+    assert entity.id is None
+
+
+def test___repr___no_key_empty():
+    entity = _make_entity()
+    assert repr(entity) == "<Entity {}>"
+
+
+def test___repr___w_key_non_empty():
+    key = _Key()
+    flat_path = ("bar", 12, "baz", "himom")
+    key._flat_path = flat_path
+    entity = _make_entity(key=key)
+    entity_vals = {"foo": "Foo"}
+    entity.update(entity_vals)
+    expected = "<Entity%s %s>" % (flat_path, entity_vals)
+    assert repr(entity) == expected
 
 
 class _Key(object):

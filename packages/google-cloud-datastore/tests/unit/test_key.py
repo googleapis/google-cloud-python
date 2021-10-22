@@ -12,735 +12,772 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+import pytest
 
 
-class TestKey(unittest.TestCase):
+_DEFAULT_PROJECT = "PROJECT"
+PROJECT = "my-prahjekt"
+# NOTE: This comes directly from a running (in the dev appserver)
+#       App Engine app. Created via:
+#
+#           from google.appengine.ext import ndb
+#           key = ndb.Key(
+#               'Parent', 59, 'Child', 'Feather',
+#               namespace='space', app='s~sample-app')
+#           urlsafe = key.urlsafe()
+_URLSAFE_EXAMPLE1 = (
+    b"agxzfnNhbXBsZS1hcHByHgsSBlBhcmVudBg7DAsSBUNoaWxkIgdGZ" b"WF0aGVyDKIBBXNwYWNl"
+)
+_URLSAFE_APP1 = "s~sample-app"
+_URLSAFE_NAMESPACE1 = "space"
+_URLSAFE_FLAT_PATH1 = ("Parent", 59, "Child", "Feather")
+_URLSAFE_EXAMPLE2 = b"agZzfmZpcmVyDwsSBEtpbmQiBVRoaW5nDA"
+_URLSAFE_APP2 = "s~fire"
+_URLSAFE_FLAT_PATH2 = ("Kind", "Thing")
+_URLSAFE_EXAMPLE3 = b"ahhzfnNhbXBsZS1hcHAtbm8tbG9jYXRpb25yCgsSBFpvcnAYWAw"
+_URLSAFE_APP3 = "sample-app-no-location"
+_URLSAFE_FLAT_PATH3 = ("Zorp", 88)
 
-    _DEFAULT_PROJECT = "PROJECT"
-    # NOTE: This comes directly from a running (in the dev appserver)
-    #       App Engine app. Created via:
-    #
-    #           from google.appengine.ext import ndb
-    #           key = ndb.Key(
-    #               'Parent', 59, 'Child', 'Feather',
-    #               namespace='space', app='s~sample-app')
-    #           urlsafe = key.urlsafe()
-    _URLSAFE_EXAMPLE1 = (
-        b"agxzfnNhbXBsZS1hcHByHgsSBlBhcmVudBg7DAsSBUNoaWxkIgdGZ" b"WF0aGVyDKIBBXNwYWNl"
+
+def _make_key(*args, **kwargs):
+    from google.cloud.datastore.key import Key
+
+    return Key(*args, **kwargs)
+
+
+def test_key_ctor_empty():
+    with pytest.raises(ValueError):
+        _make_key()
+
+
+def test_key_ctor_no_project():
+    with pytest.raises(ValueError):
+        _make_key("KIND")
+
+
+def test_key_ctor_w_explicit_project_empty_path():
+    with pytest.raises(ValueError):
+        _make_key(project=PROJECT)
+
+
+def test_key_ctor_parent():
+    _PARENT_KIND = "KIND1"
+    _PARENT_ID = 1234
+    _PARENT_PROJECT = "PROJECT-ALT"
+    _PARENT_NAMESPACE = "NAMESPACE"
+    _CHILD_KIND = "KIND2"
+    _CHILD_ID = 2345
+    _PATH = [
+        {"kind": _PARENT_KIND, "id": _PARENT_ID},
+        {"kind": _CHILD_KIND, "id": _CHILD_ID},
+    ]
+    parent_key = _make_key(
+        _PARENT_KIND, _PARENT_ID, project=_PARENT_PROJECT, namespace=_PARENT_NAMESPACE,
     )
-    _URLSAFE_APP1 = "s~sample-app"
-    _URLSAFE_NAMESPACE1 = "space"
-    _URLSAFE_FLAT_PATH1 = ("Parent", 59, "Child", "Feather")
-    _URLSAFE_EXAMPLE2 = b"agZzfmZpcmVyDwsSBEtpbmQiBVRoaW5nDA"
-    _URLSAFE_APP2 = "s~fire"
-    _URLSAFE_FLAT_PATH2 = ("Kind", "Thing")
-    _URLSAFE_EXAMPLE3 = b"ahhzfnNhbXBsZS1hcHAtbm8tbG9jYXRpb25yCgsSBFpvcnAYWAw"
-    _URLSAFE_APP3 = "sample-app-no-location"
-    _URLSAFE_FLAT_PATH3 = ("Zorp", 88)
+    key = _make_key(_CHILD_KIND, _CHILD_ID, parent=parent_key)
+    assert key.project == parent_key.project
+    assert key.namespace == parent_key.namespace
+    assert key.kind == _CHILD_KIND
+    assert key.path == _PATH
+    assert key.parent is parent_key
 
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.datastore.key import Key
 
-        return Key
+def test_key_ctor_partial_parent():
+    parent_key = _make_key("KIND", project=_DEFAULT_PROJECT)
+    with pytest.raises(ValueError):
+        _make_key("KIND2", 1234, parent=parent_key)
 
-    def _make_one(self, *args, **kwargs):
-        return self._get_target_class()(*args, **kwargs)
 
-    def test_ctor_empty(self):
-        self.assertRaises(ValueError, self._make_one)
+def test_key_ctor_parent_bad_type():
+    with pytest.raises(AttributeError):
+        _make_key("KIND2", 1234, parent=("KIND1", 1234), project=_DEFAULT_PROJECT)
 
-    def test_ctor_no_project(self):
-        klass = self._get_target_class()
-        self.assertRaises(ValueError, klass, "KIND")
 
-    def test_ctor_w_explicit_project_empty_path(self):
-        _PROJECT = "PROJECT"
-        self.assertRaises(ValueError, self._make_one, project=_PROJECT)
-
-    def test_ctor_parent(self):
-        _PARENT_KIND = "KIND1"
-        _PARENT_ID = 1234
-        _PARENT_PROJECT = "PROJECT-ALT"
-        _PARENT_NAMESPACE = "NAMESPACE"
-        _CHILD_KIND = "KIND2"
-        _CHILD_ID = 2345
-        _PATH = [
-            {"kind": _PARENT_KIND, "id": _PARENT_ID},
-            {"kind": _CHILD_KIND, "id": _CHILD_ID},
-        ]
-        parent_key = self._make_one(
-            _PARENT_KIND,
-            _PARENT_ID,
-            project=_PARENT_PROJECT,
-            namespace=_PARENT_NAMESPACE,
-        )
-        key = self._make_one(_CHILD_KIND, _CHILD_ID, parent=parent_key)
-        self.assertEqual(key.project, parent_key.project)
-        self.assertEqual(key.namespace, parent_key.namespace)
-        self.assertEqual(key.kind, _CHILD_KIND)
-        self.assertEqual(key.path, _PATH)
-        self.assertIs(key.parent, parent_key)
-
-    def test_ctor_partial_parent(self):
-        parent_key = self._make_one("KIND", project=self._DEFAULT_PROJECT)
-        with self.assertRaises(ValueError):
-            self._make_one("KIND2", 1234, parent=parent_key)
-
-    def test_ctor_parent_bad_type(self):
-        with self.assertRaises(AttributeError):
-            self._make_one(
-                "KIND2", 1234, parent=("KIND1", 1234), project=self._DEFAULT_PROJECT
-            )
-
-    def test_ctor_parent_bad_namespace(self):
-        parent_key = self._make_one(
-            "KIND", 1234, namespace="FOO", project=self._DEFAULT_PROJECT
-        )
-        with self.assertRaises(ValueError):
-            self._make_one(
-                "KIND2",
-                1234,
-                namespace="BAR",
-                parent=parent_key,
-                PROJECT=self._DEFAULT_PROJECT,
-            )
-
-    def test_ctor_parent_bad_project(self):
-        parent_key = self._make_one("KIND", 1234, project="FOO")
-        with self.assertRaises(ValueError):
-            self._make_one("KIND2", 1234, parent=parent_key, project="BAR")
-
-    def test_ctor_parent_empty_path(self):
-        parent_key = self._make_one("KIND", 1234, project=self._DEFAULT_PROJECT)
-        with self.assertRaises(ValueError):
-            self._make_one(parent=parent_key)
-
-    def test_ctor_explicit(self):
-        _PROJECT = "PROJECT-ALT"
-        _NAMESPACE = "NAMESPACE"
-        _KIND = "KIND"
-        _ID = 1234
-        _PATH = [{"kind": _KIND, "id": _ID}]
-        key = self._make_one(_KIND, _ID, namespace=_NAMESPACE, project=_PROJECT)
-        self.assertEqual(key.project, _PROJECT)
-        self.assertEqual(key.namespace, _NAMESPACE)
-        self.assertEqual(key.kind, _KIND)
-        self.assertEqual(key.path, _PATH)
-
-    def test_ctor_bad_kind(self):
-        self.assertRaises(
-            ValueError, self._make_one, object(), project=self._DEFAULT_PROJECT
+def test_key_ctor_parent_bad_namespace():
+    parent_key = _make_key("KIND", 1234, namespace="FOO", project=_DEFAULT_PROJECT)
+    with pytest.raises(ValueError):
+        _make_key(
+            "KIND2", 1234, namespace="BAR", parent=parent_key, PROJECT=_DEFAULT_PROJECT,
         )
 
-    def test_ctor_bad_id_or_name(self):
-        self.assertRaises(
-            ValueError, self._make_one, "KIND", object(), project=self._DEFAULT_PROJECT
-        )
-        self.assertRaises(
-            ValueError, self._make_one, "KIND", None, project=self._DEFAULT_PROJECT
-        )
-        self.assertRaises(
-            ValueError,
-            self._make_one,
-            "KIND",
-            10,
-            "KIND2",
-            None,
-            project=self._DEFAULT_PROJECT,
-        )
-
-    def test__clone(self):
-        _PROJECT = "PROJECT-ALT"
-        _NAMESPACE = "NAMESPACE"
-        _KIND = "KIND"
-        _ID = 1234
-        _PATH = [{"kind": _KIND, "id": _ID}]
-        key = self._make_one(_KIND, _ID, namespace=_NAMESPACE, project=_PROJECT)
-        clone = key._clone()
-        self.assertEqual(clone.project, _PROJECT)
-        self.assertEqual(clone.namespace, _NAMESPACE)
-        self.assertEqual(clone.kind, _KIND)
-        self.assertEqual(clone.path, _PATH)
-
-    def test__clone_with_parent(self):
-        _PROJECT = "PROJECT-ALT"
-        _NAMESPACE = "NAMESPACE"
-        _KIND1 = "PARENT"
-        _KIND2 = "KIND"
-        _ID1 = 1234
-        _ID2 = 2345
-        _PATH = [{"kind": _KIND1, "id": _ID1}, {"kind": _KIND2, "id": _ID2}]
-
-        parent = self._make_one(_KIND1, _ID1, namespace=_NAMESPACE, project=_PROJECT)
-        key = self._make_one(_KIND2, _ID2, parent=parent)
-        self.assertIs(key.parent, parent)
-        clone = key._clone()
-        self.assertIs(clone.parent, key.parent)
-        self.assertEqual(clone.project, _PROJECT)
-        self.assertEqual(clone.namespace, _NAMESPACE)
-        self.assertEqual(clone.path, _PATH)
-
-    def test___eq_____ne___w_non_key(self):
-        _PROJECT = "PROJECT"
-        _KIND = "KIND"
-        _NAME = "one"
-        key = self._make_one(_KIND, _NAME, project=_PROJECT)
-        self.assertFalse(key == object())
-        self.assertTrue(key != object())
-
-    def test___eq_____ne___two_incomplete_keys_same_kind(self):
-        _PROJECT = "PROJECT"
-        _KIND = "KIND"
-        key1 = self._make_one(_KIND, project=_PROJECT)
-        key2 = self._make_one(_KIND, project=_PROJECT)
-        self.assertFalse(key1 == key2)
-        self.assertTrue(key1 != key2)
-
-    def test___eq_____ne___incomplete_key_w_complete_key_same_kind(self):
-        _PROJECT = "PROJECT"
-        _KIND = "KIND"
-        _ID = 1234
-        key1 = self._make_one(_KIND, project=_PROJECT)
-        key2 = self._make_one(_KIND, _ID, project=_PROJECT)
-        self.assertFalse(key1 == key2)
-        self.assertTrue(key1 != key2)
-
-    def test___eq_____ne___complete_key_w_incomplete_key_same_kind(self):
-        _PROJECT = "PROJECT"
-        _KIND = "KIND"
-        _ID = 1234
-        key1 = self._make_one(_KIND, _ID, project=_PROJECT)
-        key2 = self._make_one(_KIND, project=_PROJECT)
-        self.assertFalse(key1 == key2)
-        self.assertTrue(key1 != key2)
-
-    def test___eq_____ne___same_kind_different_ids(self):
-        _PROJECT = "PROJECT"
-        _KIND = "KIND"
-        _ID1 = 1234
-        _ID2 = 2345
-        key1 = self._make_one(_KIND, _ID1, project=_PROJECT)
-        key2 = self._make_one(_KIND, _ID2, project=_PROJECT)
-        self.assertFalse(key1 == key2)
-        self.assertTrue(key1 != key2)
-
-    def test___eq_____ne___same_kind_and_id(self):
-        _PROJECT = "PROJECT"
-        _KIND = "KIND"
-        _ID = 1234
-        key1 = self._make_one(_KIND, _ID, project=_PROJECT)
-        key2 = self._make_one(_KIND, _ID, project=_PROJECT)
-        self.assertTrue(key1 == key2)
-        self.assertFalse(key1 != key2)
-
-    def test___eq_____ne___same_kind_and_id_different_project(self):
-        _PROJECT1 = "PROJECT1"
-        _PROJECT2 = "PROJECT2"
-        _KIND = "KIND"
-        _ID = 1234
-        key1 = self._make_one(_KIND, _ID, project=_PROJECT1)
-        key2 = self._make_one(_KIND, _ID, project=_PROJECT2)
-        self.assertFalse(key1 == key2)
-        self.assertTrue(key1 != key2)
-
-    def test___eq_____ne___same_kind_and_id_different_namespace(self):
-        _PROJECT = "PROJECT"
-        _NAMESPACE1 = "NAMESPACE1"
-        _NAMESPACE2 = "NAMESPACE2"
-        _KIND = "KIND"
-        _ID = 1234
-        key1 = self._make_one(_KIND, _ID, project=_PROJECT, namespace=_NAMESPACE1)
-        key2 = self._make_one(_KIND, _ID, project=_PROJECT, namespace=_NAMESPACE2)
-        self.assertFalse(key1 == key2)
-        self.assertTrue(key1 != key2)
-
-    def test___eq_____ne___same_kind_different_names(self):
-        _PROJECT = "PROJECT"
-        _KIND = "KIND"
-        _NAME1 = "one"
-        _NAME2 = "two"
-        key1 = self._make_one(_KIND, _NAME1, project=_PROJECT)
-        key2 = self._make_one(_KIND, _NAME2, project=_PROJECT)
-        self.assertFalse(key1 == key2)
-        self.assertTrue(key1 != key2)
-
-    def test___eq_____ne___same_kind_and_name(self):
-        _PROJECT = "PROJECT"
-        _KIND = "KIND"
-        _NAME = "one"
-        key1 = self._make_one(_KIND, _NAME, project=_PROJECT)
-        key2 = self._make_one(_KIND, _NAME, project=_PROJECT)
-        self.assertTrue(key1 == key2)
-        self.assertFalse(key1 != key2)
-
-    def test___eq_____ne___same_kind_and_name_different_project(self):
-        _PROJECT1 = "PROJECT1"
-        _PROJECT2 = "PROJECT2"
-        _KIND = "KIND"
-        _NAME = "one"
-        key1 = self._make_one(_KIND, _NAME, project=_PROJECT1)
-        key2 = self._make_one(_KIND, _NAME, project=_PROJECT2)
-        self.assertFalse(key1 == key2)
-        self.assertTrue(key1 != key2)
-
-    def test___eq_____ne___same_kind_and_name_different_namespace(self):
-        _PROJECT = "PROJECT"
-        _NAMESPACE1 = "NAMESPACE1"
-        _NAMESPACE2 = "NAMESPACE2"
-        _KIND = "KIND"
-        _NAME = "one"
-        key1 = self._make_one(_KIND, _NAME, project=_PROJECT, namespace=_NAMESPACE1)
-        key2 = self._make_one(_KIND, _NAME, project=_PROJECT, namespace=_NAMESPACE2)
-        self.assertFalse(key1 == key2)
-        self.assertTrue(key1 != key2)
-
-    def test___hash___incomplete(self):
-        _PROJECT = "PROJECT"
-        _KIND = "KIND"
-        key = self._make_one(_KIND, project=_PROJECT)
-        self.assertNotEqual(hash(key), hash(_KIND) + hash(_PROJECT) + hash(None))
-
-    def test___hash___completed_w_id(self):
-        _PROJECT = "PROJECT"
-        _KIND = "KIND"
-        _ID = 1234
-        key = self._make_one(_KIND, _ID, project=_PROJECT)
-        self.assertNotEqual(
-            hash(key), hash(_KIND) + hash(_ID) + hash(_PROJECT) + hash(None)
-        )
-
-    def test___hash___completed_w_name(self):
-        _PROJECT = "PROJECT"
-        _KIND = "KIND"
-        _NAME = "NAME"
-        key = self._make_one(_KIND, _NAME, project=_PROJECT)
-        self.assertNotEqual(
-            hash(key), hash(_KIND) + hash(_NAME) + hash(_PROJECT) + hash(None)
-        )
-
-    def test_completed_key_on_partial_w_id(self):
-        key = self._make_one("KIND", project=self._DEFAULT_PROJECT)
-        _ID = 1234
-        new_key = key.completed_key(_ID)
-        self.assertIsNot(key, new_key)
-        self.assertEqual(new_key.id, _ID)
-        self.assertIsNone(new_key.name)
-
-    def test_completed_key_on_partial_w_name(self):
-        key = self._make_one("KIND", project=self._DEFAULT_PROJECT)
-        _NAME = "NAME"
-        new_key = key.completed_key(_NAME)
-        self.assertIsNot(key, new_key)
-        self.assertIsNone(new_key.id)
-        self.assertEqual(new_key.name, _NAME)
-
-    def test_completed_key_on_partial_w_invalid(self):
-        key = self._make_one("KIND", project=self._DEFAULT_PROJECT)
-        self.assertRaises(ValueError, key.completed_key, object())
-
-    def test_completed_key_on_complete(self):
-        key = self._make_one("KIND", 1234, project=self._DEFAULT_PROJECT)
-        self.assertRaises(ValueError, key.completed_key, 5678)
-
-    def test_to_protobuf_defaults(self):
-        from google.cloud.datastore_v1.types import entity as entity_pb2
-
-        _KIND = "KIND"
-        key = self._make_one(_KIND, project=self._DEFAULT_PROJECT)
-        pb = key.to_protobuf()
-        self.assertIsInstance(pb, entity_pb2.Key)
-
-        # Check partition ID.
-        self.assertEqual(pb.partition_id.project_id, self._DEFAULT_PROJECT)
-        # Unset values are False-y.
-        self.assertEqual(pb.partition_id.namespace_id, "")
-
-        # Check the element PB matches the partial key and kind.
-        (elem,) = list(pb.path)
-        self.assertEqual(elem.kind, _KIND)
-        # Unset values are False-y.
-        self.assertEqual(elem.name, "")
-        # Unset values are False-y.
-        self.assertEqual(elem.id, 0)
-
-    def test_to_protobuf_w_explicit_project(self):
-        _PROJECT = "PROJECT-ALT"
-        key = self._make_one("KIND", project=_PROJECT)
-        pb = key.to_protobuf()
-        self.assertEqual(pb.partition_id.project_id, _PROJECT)
-
-    def test_to_protobuf_w_explicit_namespace(self):
-        _NAMESPACE = "NAMESPACE"
-        key = self._make_one(
-            "KIND", namespace=_NAMESPACE, project=self._DEFAULT_PROJECT
-        )
-        pb = key.to_protobuf()
-        self.assertEqual(pb.partition_id.namespace_id, _NAMESPACE)
-
-    def test_to_protobuf_w_explicit_path(self):
-        _PARENT = "PARENT"
-        _CHILD = "CHILD"
-        _ID = 1234
-        _NAME = "NAME"
-        key = self._make_one(_PARENT, _NAME, _CHILD, _ID, project=self._DEFAULT_PROJECT)
-        pb = key.to_protobuf()
-        elems = list(pb.path)
-        self.assertEqual(len(elems), 2)
-        self.assertEqual(elems[0].kind, _PARENT)
-        self.assertEqual(elems[0].name, _NAME)
-        self.assertEqual(elems[1].kind, _CHILD)
-        self.assertEqual(elems[1].id, _ID)
-
-    def test_to_protobuf_w_no_kind(self):
-        key = self._make_one("KIND", project=self._DEFAULT_PROJECT)
-        # Force the 'kind' to be unset. Maybe `to_protobuf` should fail
-        # on this? The backend certainly will.
-        key._path[-1].pop("kind")
-        pb = key.to_protobuf()
-        # Unset values are False-y.
-        self.assertEqual(pb.path[0].kind, "")
-
-    def test_to_legacy_urlsafe(self):
-        key = self._make_one(
-            *self._URLSAFE_FLAT_PATH1,
-            project=self._URLSAFE_APP1,
-            namespace=self._URLSAFE_NAMESPACE1
-        )
-        # NOTE: ``key.project`` is somewhat "invalid" but that is OK.
-        urlsafe = key.to_legacy_urlsafe()
-        self.assertEqual(urlsafe, self._URLSAFE_EXAMPLE1)
-
-    def test_to_legacy_urlsafe_strip_padding(self):
-        key = self._make_one(*self._URLSAFE_FLAT_PATH2, project=self._URLSAFE_APP2)
-        # NOTE: ``key.project`` is somewhat "invalid" but that is OK.
-        urlsafe = key.to_legacy_urlsafe()
-        self.assertEqual(urlsafe, self._URLSAFE_EXAMPLE2)
-        # Make sure it started with base64 padding.
-        self.assertNotEqual(len(self._URLSAFE_EXAMPLE2) % 4, 0)
-
-    def test_to_legacy_urlsafe_with_location_prefix(self):
-        key = self._make_one(*self._URLSAFE_FLAT_PATH3, project=self._URLSAFE_APP3)
-        urlsafe = key.to_legacy_urlsafe(location_prefix="s~")
-        self.assertEqual(urlsafe, self._URLSAFE_EXAMPLE3)
-
-    def test_from_legacy_urlsafe(self):
-        klass = self._get_target_class()
-        key = klass.from_legacy_urlsafe(self._URLSAFE_EXAMPLE1)
-
-        self.assertEqual("s~" + key.project, self._URLSAFE_APP1)
-        self.assertEqual(key.namespace, self._URLSAFE_NAMESPACE1)
-        self.assertEqual(key.flat_path, self._URLSAFE_FLAT_PATH1)
-        # Also make sure we didn't accidentally set the parent.
-        self.assertIsNone(key._parent)
-        self.assertIsNotNone(key.parent)
-        self.assertIs(key._parent, key.parent)
-
-    def test_from_legacy_urlsafe_needs_padding(self):
-        klass = self._get_target_class()
-        # Make sure it will have base64 padding added.
-        self.assertNotEqual(len(self._URLSAFE_EXAMPLE2) % 4, 0)
-        key = klass.from_legacy_urlsafe(self._URLSAFE_EXAMPLE2)
-
-        self.assertEqual("s~" + key.project, self._URLSAFE_APP2)
-        self.assertIsNone(key.namespace)
-        self.assertEqual(key.flat_path, self._URLSAFE_FLAT_PATH2)
-
-    def test_from_legacy_urlsafe_with_location_prefix(self):
-        klass = self._get_target_class()
-        # Make sure it will have base64 padding added.
-        key = klass.from_legacy_urlsafe(self._URLSAFE_EXAMPLE3)
-
-        self.assertEqual(key.project, self._URLSAFE_APP3)
-        self.assertIsNone(key.namespace)
-        self.assertEqual(key.flat_path, self._URLSAFE_FLAT_PATH3)
-
-    def test_is_partial_no_name_or_id(self):
-        key = self._make_one("KIND", project=self._DEFAULT_PROJECT)
-        self.assertTrue(key.is_partial)
-
-    def test_is_partial_w_id(self):
-        _ID = 1234
-        key = self._make_one("KIND", _ID, project=self._DEFAULT_PROJECT)
-        self.assertFalse(key.is_partial)
-
-    def test_is_partial_w_name(self):
-        _NAME = "NAME"
-        key = self._make_one("KIND", _NAME, project=self._DEFAULT_PROJECT)
-        self.assertFalse(key.is_partial)
-
-    def test_id_or_name_no_name_or_id(self):
-        key = self._make_one("KIND", project=self._DEFAULT_PROJECT)
-        self.assertIsNone(key.id_or_name)
-
-    def test_id_or_name_no_name_or_id_child(self):
-        key = self._make_one("KIND1", 1234, "KIND2", project=self._DEFAULT_PROJECT)
-        self.assertIsNone(key.id_or_name)
-
-    def test_id_or_name_w_id_only(self):
-        _ID = 1234
-        key = self._make_one("KIND", _ID, project=self._DEFAULT_PROJECT)
-        self.assertEqual(key.id_or_name, _ID)
-
-    def test_id_or_name_w_name_only(self):
-        _NAME = "NAME"
-        key = self._make_one("KIND", _NAME, project=self._DEFAULT_PROJECT)
-        self.assertEqual(key.id_or_name, _NAME)
-
-    def test_id_or_name_w_id_zero(self):
-        _ID = 0
-        key = self._make_one("KIND", _ID, project=self._DEFAULT_PROJECT)
-        self.assertEqual(key.id_or_name, _ID)
-
-    def test_parent_default(self):
-        key = self._make_one("KIND", project=self._DEFAULT_PROJECT)
-        self.assertIsNone(key.parent)
-
-    def test_parent_explicit_top_level(self):
-        key = self._make_one("KIND", 1234, project=self._DEFAULT_PROJECT)
-        self.assertIsNone(key.parent)
-
-    def test_parent_explicit_nested(self):
-        _PARENT_KIND = "KIND1"
-        _PARENT_ID = 1234
-        _PARENT_PATH = [{"kind": _PARENT_KIND, "id": _PARENT_ID}]
-        key = self._make_one(
-            _PARENT_KIND, _PARENT_ID, "KIND2", project=self._DEFAULT_PROJECT
-        )
-        self.assertEqual(key.parent.path, _PARENT_PATH)
-
-    def test_parent_multiple_calls(self):
-        _PARENT_KIND = "KIND1"
-        _PARENT_ID = 1234
-        _PARENT_PATH = [{"kind": _PARENT_KIND, "id": _PARENT_ID}]
-        key = self._make_one(
-            _PARENT_KIND, _PARENT_ID, "KIND2", project=self._DEFAULT_PROJECT
-        )
-        parent = key.parent
-        self.assertEqual(parent.path, _PARENT_PATH)
-        new_parent = key.parent
-        self.assertIs(parent, new_parent)
-
-
-class Test__clean_app(unittest.TestCase):
-
-    PROJECT = "my-prahjekt"
-
-    @staticmethod
-    def _call_fut(app_str):
-        from google.cloud.datastore.key import _clean_app
-
-        return _clean_app(app_str)
-
-    def test_already_clean(self):
-        app_str = self.PROJECT
-        self.assertEqual(self._call_fut(app_str), self.PROJECT)
-
-    def test_standard(self):
-        app_str = "s~" + self.PROJECT
-        self.assertEqual(self._call_fut(app_str), self.PROJECT)
-
-    def test_european(self):
-        app_str = "e~" + self.PROJECT
-        self.assertEqual(self._call_fut(app_str), self.PROJECT)
-
-    def test_dev_server(self):
-        app_str = "dev~" + self.PROJECT
-        self.assertEqual(self._call_fut(app_str), self.PROJECT)
-
-
-class Test__get_empty(unittest.TestCase):
-    @staticmethod
-    def _call_fut(value, empty_value):
-        from google.cloud.datastore.key import _get_empty
-
-        return _get_empty(value, empty_value)
-
-    def test_unset(self):
-        for empty_value in (u"", 0, 0.0, []):
-            ret_val = self._call_fut(empty_value, empty_value)
-            self.assertIsNone(ret_val)
-
-    def test_actually_set(self):
-        value_pairs = ((u"hello", u""), (10, 0), (3.14, 0.0), (["stuff", "here"], []))
-        for value, empty_value in value_pairs:
-            ret_val = self._call_fut(value, empty_value)
-            self.assertIs(ret_val, value)
-
-
-class Test__check_database_id(unittest.TestCase):
-    @staticmethod
-    def _call_fut(database_id):
-        from google.cloud.datastore.key import _check_database_id
-
-        return _check_database_id(database_id)
-
-    def test_empty_value(self):
-        ret_val = self._call_fut(u"")
-        # Really we are just happy there was no exception.
-        self.assertIsNone(ret_val)
-
-    def test_failure(self):
-        with self.assertRaises(ValueError):
-            self._call_fut(u"some-database-id")
-
-
-class Test__add_id_or_name(unittest.TestCase):
-    @staticmethod
-    def _call_fut(flat_path, element_pb, empty_allowed):
-        from google.cloud.datastore.key import _add_id_or_name
-
-        return _add_id_or_name(flat_path, element_pb, empty_allowed)
-
-    def test_add_id(self):
-        flat_path = []
-        id_ = 123
-        element_pb = _make_element_pb(id=id_)
-
-        ret_val = self._call_fut(flat_path, element_pb, False)
-        self.assertIsNone(ret_val)
-        self.assertEqual(flat_path, [id_])
-        ret_val = self._call_fut(flat_path, element_pb, True)
-        self.assertIsNone(ret_val)
-        self.assertEqual(flat_path, [id_, id_])
-
-    def test_add_name(self):
-        flat_path = []
-        name = "moon-shadow"
-        element_pb = _make_element_pb(name=name)
-
-        ret_val = self._call_fut(flat_path, element_pb, False)
-        self.assertIsNone(ret_val)
-        self.assertEqual(flat_path, [name])
-        ret_val = self._call_fut(flat_path, element_pb, True)
-        self.assertIsNone(ret_val)
-        self.assertEqual(flat_path, [name, name])
-
-    def test_both_present(self):
-        element_pb = _make_element_pb(id=17, name="seventeen")
-        flat_path = []
-        with self.assertRaises(ValueError):
-            self._call_fut(flat_path, element_pb, False)
-        with self.assertRaises(ValueError):
-            self._call_fut(flat_path, element_pb, True)
-
-        self.assertEqual(flat_path, [])
-
-    def test_both_empty_failure(self):
-        element_pb = _make_element_pb()
-        flat_path = []
-        with self.assertRaises(ValueError):
-            self._call_fut(flat_path, element_pb, False)
-
-        self.assertEqual(flat_path, [])
-
-    def test_both_empty_allowed(self):
-        element_pb = _make_element_pb()
-        flat_path = []
-        ret_val = self._call_fut(flat_path, element_pb, True)
-        self.assertIsNone(ret_val)
-        self.assertEqual(flat_path, [])
-
-
-class Test__get_flat_path(unittest.TestCase):
-    @staticmethod
-    def _call_fut(path_pb):
-        from google.cloud.datastore.key import _get_flat_path
-
-        return _get_flat_path(path_pb)
-
-    def test_one_pair(self):
-        kind = "Widget"
-        name = "Scooter"
-        element_pb = _make_element_pb(type=kind, name=name)
-        path_pb = _make_path_pb(element_pb)
-        flat_path = self._call_fut(path_pb)
-        self.assertEqual(flat_path, (kind, name))
-
-    def test_two_pairs(self):
-        kind1 = "parent"
-        id1 = 59
-        element_pb1 = _make_element_pb(type=kind1, id=id1)
-
-        kind2 = "child"
-        name2 = "naem"
-        element_pb2 = _make_element_pb(type=kind2, name=name2)
-
-        path_pb = _make_path_pb(element_pb1, element_pb2)
-        flat_path = self._call_fut(path_pb)
-        self.assertEqual(flat_path, (kind1, id1, kind2, name2))
-
-    def test_partial_key(self):
-        kind1 = "grandparent"
-        name1 = "cats"
-        element_pb1 = _make_element_pb(type=kind1, name=name1)
-
-        kind2 = "parent"
-        id2 = 1337
-        element_pb2 = _make_element_pb(type=kind2, id=id2)
-
-        kind3 = "child"
-        element_pb3 = _make_element_pb(type=kind3)
-
-        path_pb = _make_path_pb(element_pb1, element_pb2, element_pb3)
-        flat_path = self._call_fut(path_pb)
-        self.assertEqual(flat_path, (kind1, name1, kind2, id2, kind3))
-
-
-class Test__to_legacy_path(unittest.TestCase):
-    @staticmethod
-    def _call_fut(dict_path):
-        from google.cloud.datastore.key import _to_legacy_path
-
-        return _to_legacy_path(dict_path)
-
-    def test_one_pair(self):
-        kind = "Widget"
-        name = "Scooter"
-        dict_path = [{"kind": kind, "name": name}]
-        path_pb = self._call_fut(dict_path)
-
-        element_pb = _make_element_pb(type=kind, name=name)
-        expected_pb = _make_path_pb(element_pb)
-        self.assertEqual(path_pb, expected_pb)
-
-    def test_two_pairs(self):
-        kind1 = "parent"
-        id1 = 59
-
-        kind2 = "child"
-        name2 = "naem"
-
-        dict_path = [{"kind": kind1, "id": id1}, {"kind": kind2, "name": name2}]
-        path_pb = self._call_fut(dict_path)
-
-        element_pb1 = _make_element_pb(type=kind1, id=id1)
-        element_pb2 = _make_element_pb(type=kind2, name=name2)
-        expected_pb = _make_path_pb(element_pb1, element_pb2)
-        self.assertEqual(path_pb, expected_pb)
-
-    def test_partial_key(self):
-        kind1 = "grandparent"
-        name1 = "cats"
-
-        kind2 = "parent"
-        id2 = 1337
-
-        kind3 = "child"
-
-        dict_path = [
-            {"kind": kind1, "name": name1},
-            {"kind": kind2, "id": id2},
-            {"kind": kind3},
-        ]
-        path_pb = self._call_fut(dict_path)
-
-        element_pb1 = _make_element_pb(type=kind1, name=name1)
-        element_pb2 = _make_element_pb(type=kind2, id=id2)
-        element_pb3 = _make_element_pb(type=kind3)
-        expected_pb = _make_path_pb(element_pb1, element_pb2, element_pb3)
-        self.assertEqual(path_pb, expected_pb)
+
+def test_key_ctor_parent_bad_project():
+    parent_key = _make_key("KIND", 1234, project="FOO")
+    with pytest.raises(ValueError):
+        _make_key("KIND2", 1234, parent=parent_key, project="BAR")
+
+
+def test_key_ctor_parent_empty_path():
+    parent_key = _make_key("KIND", 1234, project=_DEFAULT_PROJECT)
+    with pytest.raises(ValueError):
+        _make_key(parent=parent_key)
+
+
+def test_key_ctor_explicit():
+    _PROJECT = "PROJECT-ALT"
+    _NAMESPACE = "NAMESPACE"
+    _KIND = "KIND"
+    _ID = 1234
+    _PATH = [{"kind": _KIND, "id": _ID}]
+    key = _make_key(_KIND, _ID, namespace=_NAMESPACE, project=_PROJECT)
+    assert key.project == _PROJECT
+    assert key.namespace == _NAMESPACE
+    assert key.kind == _KIND
+    assert key.path == _PATH
+
+
+def test_key_ctor_bad_kind():
+    with pytest.raises(ValueError):
+        _make_key(object(), project=_DEFAULT_PROJECT)
+
+
+def test_key_ctor_bad_id_or_name():
+    with pytest.raises(ValueError):
+        _make_key("KIND", object(), project=_DEFAULT_PROJECT)
+
+    with pytest.raises(ValueError):
+        _make_key("KIND", None, project=_DEFAULT_PROJECT)
+
+    with pytest.raises(ValueError):
+        _make_key("KIND", 10, "KIND2", None, project=_DEFAULT_PROJECT)
+
+
+def test_key__clone():
+    _PROJECT = "PROJECT-ALT"
+    _NAMESPACE = "NAMESPACE"
+    _KIND = "KIND"
+    _ID = 1234
+    _PATH = [{"kind": _KIND, "id": _ID}]
+    key = _make_key(_KIND, _ID, namespace=_NAMESPACE, project=_PROJECT)
+
+    clone = key._clone()
+
+    assert clone.project == _PROJECT
+    assert clone.namespace == _NAMESPACE
+    assert clone.kind == _KIND
+    assert clone.path == _PATH
+
+
+def test_key__clone_with_parent():
+    _PROJECT = "PROJECT-ALT"
+    _NAMESPACE = "NAMESPACE"
+    _KIND1 = "PARENT"
+    _KIND2 = "KIND"
+    _ID1 = 1234
+    _ID2 = 2345
+    _PATH = [{"kind": _KIND1, "id": _ID1}, {"kind": _KIND2, "id": _ID2}]
+
+    parent = _make_key(_KIND1, _ID1, namespace=_NAMESPACE, project=_PROJECT)
+    key = _make_key(_KIND2, _ID2, parent=parent)
+    assert key.parent is parent
+
+    clone = key._clone()
+
+    assert clone.parent is key.parent
+    assert clone.project == _PROJECT
+    assert clone.namespace == _NAMESPACE
+    assert clone.path == _PATH
+
+
+def test_key___eq_____ne___w_non_key():
+    _PROJECT = "PROJECT"
+    _KIND = "KIND"
+    _NAME = "one"
+    key = _make_key(_KIND, _NAME, project=_PROJECT)
+    assert not key == object()
+    assert key != object()
+
+
+def test_key___eq_____ne___two_incomplete_keys_same_kind():
+    _PROJECT = "PROJECT"
+    _KIND = "KIND"
+    key1 = _make_key(_KIND, project=_PROJECT)
+    key2 = _make_key(_KIND, project=_PROJECT)
+    assert not key1 == key2
+    assert key1 != key2
+
+
+def test_key___eq_____ne___incomplete_key_w_complete_key_same_kind():
+    _PROJECT = "PROJECT"
+    _KIND = "KIND"
+    _ID = 1234
+    key1 = _make_key(_KIND, project=_PROJECT)
+    key2 = _make_key(_KIND, _ID, project=_PROJECT)
+    assert not key1 == key2
+    assert key1 != key2
+
+
+def test_key___eq_____ne___complete_key_w_incomplete_key_same_kind():
+    _PROJECT = "PROJECT"
+    _KIND = "KIND"
+    _ID = 1234
+    key1 = _make_key(_KIND, _ID, project=_PROJECT)
+    key2 = _make_key(_KIND, project=_PROJECT)
+    assert not key1 == key2
+    assert key1 != key2
+
+
+def test_key___eq_____ne___same_kind_different_ids():
+    _PROJECT = "PROJECT"
+    _KIND = "KIND"
+    _ID1 = 1234
+    _ID2 = 2345
+    key1 = _make_key(_KIND, _ID1, project=_PROJECT)
+    key2 = _make_key(_KIND, _ID2, project=_PROJECT)
+    assert not key1 == key2
+    assert key1 != key2
+
+
+def test_key___eq_____ne___same_kind_and_id():
+    _PROJECT = "PROJECT"
+    _KIND = "KIND"
+    _ID = 1234
+    key1 = _make_key(_KIND, _ID, project=_PROJECT)
+    key2 = _make_key(_KIND, _ID, project=_PROJECT)
+    assert key1 == key2
+    assert not key1 != key2
+
+
+def test_key___eq_____ne___same_kind_and_id_different_project():
+    _PROJECT1 = "PROJECT1"
+    _PROJECT2 = "PROJECT2"
+    _KIND = "KIND"
+    _ID = 1234
+    key1 = _make_key(_KIND, _ID, project=_PROJECT1)
+    key2 = _make_key(_KIND, _ID, project=_PROJECT2)
+    assert not key1 == key2
+    assert key1 != key2
+
+
+def test_key___eq_____ne___same_kind_and_id_different_namespace():
+    _PROJECT = "PROJECT"
+    _NAMESPACE1 = "NAMESPACE1"
+    _NAMESPACE2 = "NAMESPACE2"
+    _KIND = "KIND"
+    _ID = 1234
+    key1 = _make_key(_KIND, _ID, project=_PROJECT, namespace=_NAMESPACE1)
+    key2 = _make_key(_KIND, _ID, project=_PROJECT, namespace=_NAMESPACE2)
+    assert not key1 == key2
+    assert key1 != key2
+
+
+def test_key___eq_____ne___same_kind_different_names():
+    _PROJECT = "PROJECT"
+    _KIND = "KIND"
+    _NAME1 = "one"
+    _NAME2 = "two"
+    key1 = _make_key(_KIND, _NAME1, project=_PROJECT)
+    key2 = _make_key(_KIND, _NAME2, project=_PROJECT)
+    assert not key1 == key2
+    assert key1 != key2
+
+
+def test_key___eq_____ne___same_kind_and_name():
+    _PROJECT = "PROJECT"
+    _KIND = "KIND"
+    _NAME = "one"
+    key1 = _make_key(_KIND, _NAME, project=_PROJECT)
+    key2 = _make_key(_KIND, _NAME, project=_PROJECT)
+    assert key1 == key2
+    assert not key1 != key2
+
+
+def test_key___eq_____ne___same_kind_and_name_different_project():
+    _PROJECT1 = "PROJECT1"
+    _PROJECT2 = "PROJECT2"
+    _KIND = "KIND"
+    _NAME = "one"
+    key1 = _make_key(_KIND, _NAME, project=_PROJECT1)
+    key2 = _make_key(_KIND, _NAME, project=_PROJECT2)
+    assert not key1 == key2
+    assert key1 != key2
+
+
+def test_key___eq_____ne___same_kind_and_name_different_namespace():
+    _PROJECT = "PROJECT"
+    _NAMESPACE1 = "NAMESPACE1"
+    _NAMESPACE2 = "NAMESPACE2"
+    _KIND = "KIND"
+    _NAME = "one"
+    key1 = _make_key(_KIND, _NAME, project=_PROJECT, namespace=_NAMESPACE1)
+    key2 = _make_key(_KIND, _NAME, project=_PROJECT, namespace=_NAMESPACE2)
+    assert not key1 == key2
+    assert key1 != key2
+
+
+def test_key___hash___incomplete():
+    _PROJECT = "PROJECT"
+    _KIND = "KIND"
+    key = _make_key(_KIND, project=_PROJECT)
+    assert hash(key) != hash(_KIND) + hash(_PROJECT) + hash(None)
+
+
+def test_key___hash___completed_w_id():
+    _PROJECT = "PROJECT"
+    _KIND = "KIND"
+    _ID = 1234
+    key = _make_key(_KIND, _ID, project=_PROJECT)
+    assert hash(key) != hash(_KIND) + hash(_ID) + hash(_PROJECT) + hash(None)
+
+
+def test_key___hash___completed_w_name():
+    _PROJECT = "PROJECT"
+    _KIND = "KIND"
+    _NAME = "NAME"
+    key = _make_key(_KIND, _NAME, project=_PROJECT)
+    assert hash(key) != hash(_KIND) + hash(_NAME) + hash(_PROJECT) + hash(None)
+
+
+def test_key_completed_key_on_partial_w_id():
+    key = _make_key("KIND", project=_DEFAULT_PROJECT)
+    _ID = 1234
+    new_key = key.completed_key(_ID)
+    assert key is not new_key
+    assert new_key.id == _ID
+    assert new_key.name is None
+
+
+def test_key_completed_key_on_partial_w_name():
+    key = _make_key("KIND", project=_DEFAULT_PROJECT)
+    _NAME = "NAME"
+    new_key = key.completed_key(_NAME)
+    assert key is not new_key
+    assert new_key.id is None
+    assert new_key.name == _NAME
+
+
+def test_key_completed_key_on_partial_w_invalid():
+    key = _make_key("KIND", project=_DEFAULT_PROJECT)
+    with pytest.raises(ValueError):
+        key.completed_key(object())
+
+
+def test_key_completed_key_on_complete():
+    key = _make_key("KIND", 1234, project=_DEFAULT_PROJECT)
+    with pytest.raises(ValueError):
+        key.completed_key(5678)
+
+
+def test_key_to_protobuf_defaults():
+    from google.cloud.datastore_v1.types import entity as entity_pb2
+
+    _KIND = "KIND"
+    key = _make_key(_KIND, project=_DEFAULT_PROJECT)
+    pb = key.to_protobuf()
+    assert isinstance(pb, entity_pb2.Key)
+
+    # Check partition ID.
+    assert pb.partition_id.project_id == _DEFAULT_PROJECT
+    # Unset values are False-y.
+    assert pb.partition_id.namespace_id == ""
+
+    # Check the element PB matches the partial key and kind.
+    (elem,) = list(pb.path)
+    assert elem.kind == _KIND
+    # Unset values are False-y.
+    assert elem.name == ""
+    # Unset values are False-y.
+    assert elem.id == 0
+
+
+def test_key_to_protobuf_w_explicit_project():
+    _PROJECT = "PROJECT-ALT"
+    key = _make_key("KIND", project=_PROJECT)
+    pb = key.to_protobuf()
+    assert pb.partition_id.project_id == _PROJECT
+
+
+def test_key_to_protobuf_w_explicit_namespace():
+    _NAMESPACE = "NAMESPACE"
+    key = _make_key("KIND", namespace=_NAMESPACE, project=_DEFAULT_PROJECT)
+    pb = key.to_protobuf()
+    assert pb.partition_id.namespace_id == _NAMESPACE
+
+
+def test_key_to_protobuf_w_explicit_path():
+    _PARENT = "PARENT"
+    _CHILD = "CHILD"
+    _ID = 1234
+    _NAME = "NAME"
+    key = _make_key(_PARENT, _NAME, _CHILD, _ID, project=_DEFAULT_PROJECT)
+    pb = key.to_protobuf()
+    elems = list(pb.path)
+    assert len(elems) == 2
+    assert elems[0].kind == _PARENT
+    assert elems[0].name == _NAME
+    assert elems[1].kind == _CHILD
+    assert elems[1].id == _ID
+
+
+def test_key_to_protobuf_w_no_kind():
+    key = _make_key("KIND", project=_DEFAULT_PROJECT)
+    # Force the 'kind' to be unset. Maybe `to_protobuf` should fail
+    # on this? The backend certainly will.
+    key._path[-1].pop("kind")
+    pb = key.to_protobuf()
+    # Unset values are False-y.
+    assert pb.path[0].kind == ""
+
+
+def test_key_to_legacy_urlsafe():
+    key = _make_key(
+        *_URLSAFE_FLAT_PATH1, project=_URLSAFE_APP1, namespace=_URLSAFE_NAMESPACE1
+    )
+    # NOTE: ``key.project`` is somewhat "invalid" but that is OK.
+    urlsafe = key.to_legacy_urlsafe()
+    assert urlsafe == _URLSAFE_EXAMPLE1
+
+
+def test_key_to_legacy_urlsafe_strip_padding():
+    key = _make_key(*_URLSAFE_FLAT_PATH2, project=_URLSAFE_APP2)
+    # NOTE: ``key.project`` is somewhat "invalid" but that is OK.
+    urlsafe = key.to_legacy_urlsafe()
+    assert urlsafe == _URLSAFE_EXAMPLE2
+    # Make sure it started with base64 padding.
+    assert len(_URLSAFE_EXAMPLE2) % 4 != 0
+
+
+def test_key_to_legacy_urlsafe_with_location_prefix():
+    key = _make_key(*_URLSAFE_FLAT_PATH3, project=_URLSAFE_APP3)
+    urlsafe = key.to_legacy_urlsafe(location_prefix="s~")
+    assert urlsafe == _URLSAFE_EXAMPLE3
+
+
+def test_key_from_legacy_urlsafe():
+    from google.cloud.datastore.key import Key
+
+    key = Key.from_legacy_urlsafe(_URLSAFE_EXAMPLE1)
+
+    assert "s~" + key.project == _URLSAFE_APP1
+    assert key.namespace == _URLSAFE_NAMESPACE1
+    assert key.flat_path == _URLSAFE_FLAT_PATH1
+    # Also make sure we didn't accidentally set the parent.
+    assert key._parent is None
+    assert key.parent is not None
+    assert key._parent is key.parent
+
+
+def test_key_from_legacy_urlsafe_needs_padding():
+    from google.cloud.datastore.key import Key
+
+    # Make sure it will have base64 padding added.
+    len(_URLSAFE_EXAMPLE2) % 4 != 0
+    key = Key.from_legacy_urlsafe(_URLSAFE_EXAMPLE2)
+
+    assert "s~" + key.project == _URLSAFE_APP2
+    assert key.namespace is None
+    assert key.flat_path == _URLSAFE_FLAT_PATH2
+
+
+def test_key_from_legacy_urlsafe_with_location_prefix():
+    from google.cloud.datastore.key import Key
+
+    # Make sure it will have base64 padding added.
+    key = Key.from_legacy_urlsafe(_URLSAFE_EXAMPLE3)
+
+    assert key.project == _URLSAFE_APP3
+    assert key.namespace is None
+    assert key.flat_path == _URLSAFE_FLAT_PATH3
+
+
+def test_key_is_partial_no_name_or_id():
+    key = _make_key("KIND", project=_DEFAULT_PROJECT)
+    assert key.is_partial
+
+
+def test_key_is_partial_w_id():
+    _ID = 1234
+    key = _make_key("KIND", _ID, project=_DEFAULT_PROJECT)
+    assert not key.is_partial
+
+
+def test_key_is_partial_w_name():
+    _NAME = "NAME"
+    key = _make_key("KIND", _NAME, project=_DEFAULT_PROJECT)
+    assert not key.is_partial
+
+
+def test_key_id_or_name_no_name_or_id():
+    key = _make_key("KIND", project=_DEFAULT_PROJECT)
+    assert key.id_or_name is None
+
+
+def test_key_id_or_name_no_name_or_id_child():
+    key = _make_key("KIND1", 1234, "KIND2", project=_DEFAULT_PROJECT)
+    assert key.id_or_name is None
+
+
+def test_key_id_or_name_w_id_only():
+    _ID = 1234
+    key = _make_key("KIND", _ID, project=_DEFAULT_PROJECT)
+    assert key.id_or_name == _ID
+
+
+def test_key_id_or_name_w_name_only():
+    _NAME = "NAME"
+    key = _make_key("KIND", _NAME, project=_DEFAULT_PROJECT)
+    assert key.id_or_name == _NAME
+
+
+def test_key_id_or_name_w_id_zero():
+    _ID = 0
+    key = _make_key("KIND", _ID, project=_DEFAULT_PROJECT)
+    assert key.id_or_name == _ID
+
+
+def test_key_parent_default():
+    key = _make_key("KIND", project=_DEFAULT_PROJECT)
+    assert key.parent is None
+
+
+def test_key_parent_explicit_top_level():
+    key = _make_key("KIND", 1234, project=_DEFAULT_PROJECT)
+    assert key.parent is None
+
+
+def test_key_parent_explicit_nested():
+    _PARENT_KIND = "KIND1"
+    _PARENT_ID = 1234
+    _PARENT_PATH = [{"kind": _PARENT_KIND, "id": _PARENT_ID}]
+    key = _make_key(_PARENT_KIND, _PARENT_ID, "KIND2", project=_DEFAULT_PROJECT)
+    assert key.parent.path == _PARENT_PATH
+
+
+def test_key_parent_multiple_calls():
+    _PARENT_KIND = "KIND1"
+    _PARENT_ID = 1234
+    _PARENT_PATH = [{"kind": _PARENT_KIND, "id": _PARENT_ID}]
+    key = _make_key(_PARENT_KIND, _PARENT_ID, "KIND2", project=_DEFAULT_PROJECT)
+    parent = key.parent
+    assert parent.path == _PARENT_PATH
+    new_parent = key.parent
+    assert parent is new_parent
+
+
+def test__cliean_app_w_already_clean():
+    from google.cloud.datastore.key import _clean_app
+
+    app_str = PROJECT
+    assert _clean_app(app_str) == PROJECT
+
+
+def test__cliean_app_w_standard():
+    from google.cloud.datastore.key import _clean_app
+
+    app_str = "s~" + PROJECT
+    assert _clean_app(app_str) == PROJECT
+
+
+def test__cliean_app_w_european():
+    from google.cloud.datastore.key import _clean_app
+
+    app_str = "e~" + PROJECT
+    assert _clean_app(app_str) == PROJECT
+
+
+def test__cliean_app_w_dev_server():
+    from google.cloud.datastore.key import _clean_app
+
+    app_str = "dev~" + PROJECT
+    assert _clean_app(app_str) == PROJECT
+
+
+def test__get_empty_w_unset():
+    from google.cloud.datastore.key import _get_empty
+
+    for empty_value in (u"", 0, 0.0, []):
+        ret_val = _get_empty(empty_value, empty_value)
+        assert ret_val is None
+
+
+def test__get_empty_w_actually_set():
+    from google.cloud.datastore.key import _get_empty
+
+    value_pairs = ((u"hello", u""), (10, 0), (3.14, 0.0), (["stuff", "here"], []))
+    for value, empty_value in value_pairs:
+        ret_val = _get_empty(value, empty_value)
+        assert ret_val is value
+
+
+def test__check_database_id_w_empty_value():
+    from google.cloud.datastore.key import _check_database_id
+
+    ret_val = _check_database_id(u"")
+    # Really we are just happy there was no exception.
+    assert ret_val is None
+
+
+def test__check_database_id_w_failure():
+    from google.cloud.datastore.key import _check_database_id
+
+    with pytest.raises(ValueError):
+        _check_database_id(u"some-database-id")
+
+
+def test__add_id_or_name_add_id():
+    from google.cloud.datastore.key import _add_id_or_name
+
+    flat_path = []
+    id_ = 123
+    element_pb = _make_element_pb(id=id_)
+
+    ret_val = _add_id_or_name(flat_path, element_pb, False)
+    assert ret_val is None
+    assert flat_path == [id_]
+    ret_val = _add_id_or_name(flat_path, element_pb, True)
+    assert ret_val is None
+    assert flat_path == [id_, id_]
+
+
+def test__add_id_or_name_add_name():
+    from google.cloud.datastore.key import _add_id_or_name
+
+    flat_path = []
+    name = "moon-shadow"
+    element_pb = _make_element_pb(name=name)
+
+    ret_val = _add_id_or_name(flat_path, element_pb, False)
+    assert ret_val is None
+    assert flat_path == [name]
+    ret_val = _add_id_or_name(flat_path, element_pb, True)
+    assert ret_val is None
+    assert flat_path == [name, name]
+
+
+def test__add_id_or_name_both_present():
+    from google.cloud.datastore.key import _add_id_or_name
+
+    element_pb = _make_element_pb(id=17, name="seventeen")
+    flat_path = []
+    with pytest.raises(ValueError):
+        _add_id_or_name(flat_path, element_pb, False)
+    with pytest.raises(ValueError):
+        _add_id_or_name(flat_path, element_pb, True)
+
+    assert flat_path == []
+
+
+def test__add_id_or_name_both_empty_failure():
+    from google.cloud.datastore.key import _add_id_or_name
+
+    element_pb = _make_element_pb()
+    flat_path = []
+    with pytest.raises(ValueError):
+        _add_id_or_name(flat_path, element_pb, False)
+
+    assert flat_path == []
+
+
+def test__add_id_or_name_both_empty_allowed():
+    from google.cloud.datastore.key import _add_id_or_name
+
+    element_pb = _make_element_pb()
+    flat_path = []
+    ret_val = _add_id_or_name(flat_path, element_pb, True)
+    assert ret_val is None
+    assert flat_path == []
+
+
+def test__get_flat_path_one_pair():
+    from google.cloud.datastore.key import _get_flat_path
+
+    kind = "Widget"
+    name = "Scooter"
+    element_pb = _make_element_pb(type=kind, name=name)
+    path_pb = _make_path_pb(element_pb)
+    flat_path = _get_flat_path(path_pb)
+    assert flat_path == (kind, name)
+
+
+def test__get_flat_path_two_pairs():
+    from google.cloud.datastore.key import _get_flat_path
+
+    kind1 = "parent"
+    id1 = 59
+    element_pb1 = _make_element_pb(type=kind1, id=id1)
+
+    kind2 = "child"
+    name2 = "naem"
+    element_pb2 = _make_element_pb(type=kind2, name=name2)
+
+    path_pb = _make_path_pb(element_pb1, element_pb2)
+    flat_path = _get_flat_path(path_pb)
+    assert flat_path == (kind1, id1, kind2, name2)
+
+
+def test__get_flat_path_partial_key():
+    from google.cloud.datastore.key import _get_flat_path
+
+    kind1 = "grandparent"
+    name1 = "cats"
+    element_pb1 = _make_element_pb(type=kind1, name=name1)
+
+    kind2 = "parent"
+    id2 = 1337
+    element_pb2 = _make_element_pb(type=kind2, id=id2)
+
+    kind3 = "child"
+    element_pb3 = _make_element_pb(type=kind3)
+
+    path_pb = _make_path_pb(element_pb1, element_pb2, element_pb3)
+    flat_path = _get_flat_path(path_pb)
+    assert flat_path == (kind1, name1, kind2, id2, kind3)
+
+
+def test__to_legacy_path_w_one_pair():
+    from google.cloud.datastore.key import _to_legacy_path
+
+    kind = "Widget"
+    name = "Scooter"
+    dict_path = [{"kind": kind, "name": name}]
+    path_pb = _to_legacy_path(dict_path)
+
+    element_pb = _make_element_pb(type=kind, name=name)
+    expected_pb = _make_path_pb(element_pb)
+    assert path_pb == expected_pb
+
+
+def test__to_legacy_path_w_two_pairs():
+    from google.cloud.datastore.key import _to_legacy_path
+
+    kind1 = "parent"
+    id1 = 59
+
+    kind2 = "child"
+    name2 = "naem"
+
+    dict_path = [{"kind": kind1, "id": id1}, {"kind": kind2, "name": name2}]
+    path_pb = _to_legacy_path(dict_path)
+
+    element_pb1 = _make_element_pb(type=kind1, id=id1)
+    element_pb2 = _make_element_pb(type=kind2, name=name2)
+    expected_pb = _make_path_pb(element_pb1, element_pb2)
+    assert path_pb == expected_pb
+
+
+def test__to_legacy_path_w_partial_key():
+    from google.cloud.datastore.key import _to_legacy_path
+
+    kind1 = "grandparent"
+    name1 = "cats"
+
+    kind2 = "parent"
+    id2 = 1337
+
+    kind3 = "child"
+
+    dict_path = [
+        {"kind": kind1, "name": name1},
+        {"kind": kind2, "id": id2},
+        {"kind": kind3},
+    ]
+    path_pb = _to_legacy_path(dict_path)
+
+    element_pb1 = _make_element_pb(type=kind1, name=name1)
+    element_pb2 = _make_element_pb(type=kind2, id=id2)
+    element_pb3 = _make_element_pb(type=kind3)
+    expected_pb = _make_path_pb(element_pb1, element_pb2, element_pb3)
+    assert path_pb == expected_pb
 
 
 def _make_element_pb(**kwargs):

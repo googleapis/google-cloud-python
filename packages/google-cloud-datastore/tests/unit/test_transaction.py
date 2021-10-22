@@ -12,360 +12,349 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
-
 import mock
+import pytest
 
 
-class TestTransaction(unittest.TestCase):
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.datastore.transaction import Transaction
+def test_transaction_ctor_defaults():
+    from google.cloud.datastore.transaction import Transaction
 
-        return Transaction
+    project = "PROJECT"
+    client = _Client(project)
 
-    def _make_one(self, client, **kw):
-        return self._get_target_class()(client, **kw)
+    xact = _make_transaction(client)
 
-    def _make_options(self, read_only=False, previous_transaction=None):
-        from google.cloud.datastore_v1.types import TransactionOptions
+    assert xact.project == project
+    assert xact._client is client
+    assert xact.id is None
+    assert xact._status == Transaction._INITIAL
+    assert xact._mutations == []
+    assert len(xact._partial_key_entities) == 0
 
-        kw = {}
 
-        if read_only:
-            kw["read_only"] = TransactionOptions.ReadOnly()
+def test_transaction_constructor_read_only():
+    project = "PROJECT"
+    id_ = 850302
+    ds_api = _make_datastore_api(xact=id_)
+    client = _Client(project, datastore_api=ds_api)
+    options = _make_options(read_only=True)
 
-        return TransactionOptions(**kw)
+    xact = _make_transaction(client, read_only=True)
 
-    def test_ctor_defaults(self):
-        project = "PROJECT"
-        client = _Client(project)
+    assert xact._options == options
 
-        xact = self._make_one(client)
 
-        self.assertEqual(xact.project, project)
-        self.assertIs(xact._client, client)
-        self.assertIsNone(xact.id)
-        self.assertEqual(xact._status, self._get_target_class()._INITIAL)
-        self.assertEqual(xact._mutations, [])
-        self.assertEqual(len(xact._partial_key_entities), 0)
+def test_transaction_current():
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
-    def test_constructor_read_only(self):
-        project = "PROJECT"
-        id_ = 850302
-        ds_api = _make_datastore_api(xact=id_)
-        client = _Client(project, datastore_api=ds_api)
-        options = self._make_options(read_only=True)
+    project = "PROJECT"
+    id_ = 678
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api)
+    xact1 = _make_transaction(client)
+    xact2 = _make_transaction(client)
+    assert xact1.current() is None
+    assert xact2.current() is None
 
-        xact = self._make_one(client, read_only=True)
+    with xact1:
+        assert xact1.current() is xact1
+        assert xact2.current() is xact1
 
-        self.assertEqual(xact._options, options)
+        with _NoCommitBatch(client):
+            assert xact1.current() is None
+            assert xact2.current() is None
 
-    def _make_begin_request(self, project, read_only=False):
-        expected_options = self._make_options(read_only=read_only)
-        return {
-            "project_id": project,
-            "transaction_options": expected_options,
-        }
-
-    def test_current(self):
-        from google.cloud.datastore_v1.types import datastore as datastore_pb2
-
-        project = "PROJECT"
-        id_ = 678
-        ds_api = _make_datastore_api(xact_id=id_)
-        client = _Client(project, datastore_api=ds_api)
-        xact1 = self._make_one(client)
-        xact2 = self._make_one(client)
-        self.assertIsNone(xact1.current())
-        self.assertIsNone(xact2.current())
-
-        with xact1:
-            self.assertIs(xact1.current(), xact1)
-            self.assertIs(xact2.current(), xact1)
+        with xact2:
+            assert xact1.current() is xact2
+            assert xact2.current() is xact2
 
             with _NoCommitBatch(client):
-                self.assertIsNone(xact1.current())
-                self.assertIsNone(xact2.current())
+                assert xact1.current() is None
+                assert xact2.current() is None
 
-            with xact2:
-                self.assertIs(xact1.current(), xact2)
-                self.assertIs(xact2.current(), xact2)
+        assert xact1.current() is xact1
+        assert xact2.current() is xact1
 
-                with _NoCommitBatch(client):
-                    self.assertIsNone(xact1.current())
-                    self.assertIsNone(xact2.current())
+    assert xact1.current() is None
+    assert xact2.current() is None
 
-            self.assertIs(xact1.current(), xact1)
-            self.assertIs(xact2.current(), xact1)
+    begin_txn = ds_api.begin_transaction
+    assert begin_txn.call_count == 2
+    expected_request = _make_begin_request(project)
+    begin_txn.assert_called_with(request=expected_request)
 
-        self.assertIsNone(xact1.current())
-        self.assertIsNone(xact2.current())
+    commit_method = ds_api.commit
+    assert commit_method.call_count == 2
+    mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
+    commit_method.assert_called_with(
+        request={
+            "project_id": project,
+            "mode": mode,
+            "mutations": [],
+            "transaction": id_,
+        }
+    )
 
-        begin_txn = ds_api.begin_transaction
-        self.assertEqual(begin_txn.call_count, 2)
-        expected_request = self._make_begin_request(project)
-        begin_txn.assert_called_with(request=expected_request)
+    ds_api.rollback.assert_not_called()
 
-        commit_method = ds_api.commit
-        self.assertEqual(commit_method.call_count, 2)
-        mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
-        commit_method.assert_called_with(
-            request={
-                "project_id": project,
-                "mode": mode,
-                "mutations": [],
-                "transaction": id_,
-            }
-        )
 
-        ds_api.rollback.assert_not_called()
+def test_transaction_begin():
+    project = "PROJECT"
+    id_ = 889
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api)
+    xact = _make_transaction(client)
 
-    def test_begin(self):
-        project = "PROJECT"
-        id_ = 889
-        ds_api = _make_datastore_api(xact_id=id_)
-        client = _Client(project, datastore_api=ds_api)
-        xact = self._make_one(client)
+    xact.begin()
 
+    assert xact.id == id_
+
+    expected_request = _make_begin_request(project)
+    ds_api.begin_transaction.assert_called_once_with(request=expected_request)
+
+
+def test_transaction_begin_w_readonly():
+    project = "PROJECT"
+    id_ = 889
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api)
+    xact = _make_transaction(client, read_only=True)
+
+    xact.begin()
+
+    assert xact.id == id_
+
+    expected_request = _make_begin_request(project, read_only=True)
+    ds_api.begin_transaction.assert_called_once_with(request=expected_request)
+
+
+def test_transaction_begin_w_retry_w_timeout():
+    project = "PROJECT"
+    id_ = 889
+    retry = mock.Mock()
+    timeout = 100000
+
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api)
+    xact = _make_transaction(client)
+
+    xact.begin(retry=retry, timeout=timeout)
+
+    assert xact.id == id_
+
+    expected_request = _make_begin_request(project)
+    ds_api.begin_transaction.assert_called_once_with(
+        request=expected_request, retry=retry, timeout=timeout,
+    )
+
+
+def test_transaction_begin_tombstoned():
+    project = "PROJECT"
+    id_ = 1094
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api)
+    xact = _make_transaction(client)
+
+    xact.begin()
+
+    assert xact.id == id_
+
+    expected_request = _make_begin_request(project)
+    ds_api.begin_transaction.assert_called_once_with(request=expected_request)
+
+    xact.rollback()
+
+    client._datastore_api.rollback.assert_called_once_with(
+        request={"project_id": project, "transaction": id_}
+    )
+    assert xact.id is None
+
+    with pytest.raises(ValueError):
         xact.begin()
 
-        self.assertEqual(xact.id, id_)
 
-        expected_request = self._make_begin_request(project)
-        ds_api.begin_transaction.assert_called_once_with(request=expected_request)
+def test_transaction_begin_w_begin_transaction_failure():
+    project = "PROJECT"
+    id_ = 712
+    ds_api = _make_datastore_api(xact_id=id_)
+    ds_api.begin_transaction = mock.Mock(side_effect=RuntimeError, spec=[])
+    client = _Client(project, datastore_api=ds_api)
+    xact = _make_transaction(client)
 
-    def test_begin_w_readonly(self):
-        project = "PROJECT"
-        id_ = 889
-        ds_api = _make_datastore_api(xact_id=id_)
-        client = _Client(project, datastore_api=ds_api)
-        xact = self._make_one(client, read_only=True)
-
+    with pytest.raises(RuntimeError):
         xact.begin()
 
-        self.assertEqual(xact.id, id_)
+    assert xact.id is None
 
-        expected_request = self._make_begin_request(project, read_only=True)
-        ds_api.begin_transaction.assert_called_once_with(request=expected_request)
+    expected_request = _make_begin_request(project)
+    ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
-    def test_begin_w_retry_w_timeout(self):
-        project = "PROJECT"
-        id_ = 889
-        retry = mock.Mock()
-        timeout = 100000
 
-        ds_api = _make_datastore_api(xact_id=id_)
-        client = _Client(project, datastore_api=ds_api)
-        xact = self._make_one(client)
+def test_transaction_rollback():
+    project = "PROJECT"
+    id_ = 239
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api)
+    xact = _make_transaction(client)
+    xact.begin()
 
-        xact.begin(retry=retry, timeout=timeout)
+    xact.rollback()
 
-        self.assertEqual(xact.id, id_)
+    assert xact.id is None
+    ds_api.rollback.assert_called_once_with(
+        request={"project_id": project, "transaction": id_}
+    )
 
-        expected_request = self._make_begin_request(project)
-        ds_api.begin_transaction.assert_called_once_with(
-            request=expected_request, retry=retry, timeout=timeout,
-        )
 
-    def test_begin_tombstoned(self):
-        project = "PROJECT"
-        id_ = 1094
-        ds_api = _make_datastore_api(xact_id=id_)
-        client = _Client(project, datastore_api=ds_api)
-        xact = self._make_one(client)
+def test_transaction_rollback_w_retry_w_timeout():
+    project = "PROJECT"
+    id_ = 239
+    retry = mock.Mock()
+    timeout = 100000
 
-        xact.begin()
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api)
+    xact = _make_transaction(client)
+    xact.begin()
 
-        self.assertEqual(xact.id, id_)
+    xact.rollback(retry=retry, timeout=timeout)
 
-        expected_request = self._make_begin_request(project)
-        ds_api.begin_transaction.assert_called_once_with(request=expected_request)
+    assert xact.id is None
+    ds_api.rollback.assert_called_once_with(
+        request={"project_id": project, "transaction": id_},
+        retry=retry,
+        timeout=timeout,
+    )
 
-        xact.rollback()
 
-        client._datastore_api.rollback.assert_called_once_with(
-            request={"project_id": project, "transaction": id_}
-        )
-        self.assertIsNone(xact.id)
+def test_transaction_commit_no_partial_keys():
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
-        with self.assertRaises(ValueError):
-            xact.begin()
+    project = "PROJECT"
+    id_ = 1002930
+    mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
 
-    def test_begin_w_begin_transaction_failure(self):
-        project = "PROJECT"
-        id_ = 712
-        ds_api = _make_datastore_api(xact_id=id_)
-        ds_api.begin_transaction = mock.Mock(side_effect=RuntimeError, spec=[])
-        client = _Client(project, datastore_api=ds_api)
-        xact = self._make_one(client)
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api)
+    xact = _make_transaction(client)
+    xact.begin()
+    xact.commit()
 
-        with self.assertRaises(RuntimeError):
-            xact.begin()
+    ds_api.commit.assert_called_once_with(
+        request={
+            "project_id": project,
+            "mode": mode,
+            "mutations": [],
+            "transaction": id_,
+        }
+    )
+    assert xact.id is None
 
-        self.assertIsNone(xact.id)
 
-        expected_request = self._make_begin_request(project)
-        ds_api.begin_transaction.assert_called_once_with(request=expected_request)
+def test_transaction_commit_w_partial_keys_w_retry_w_timeout():
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
-    def test_rollback(self):
-        project = "PROJECT"
-        id_ = 239
-        ds_api = _make_datastore_api(xact_id=id_)
-        client = _Client(project, datastore_api=ds_api)
-        xact = self._make_one(client)
-        xact.begin()
+    project = "PROJECT"
+    kind = "KIND"
+    id1 = 123
+    mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
+    key = _make_key(kind, id1, project)
+    id2 = 234
+    retry = mock.Mock()
+    timeout = 100000
 
-        xact.rollback()
+    ds_api = _make_datastore_api(key, xact_id=id2)
+    client = _Client(project, datastore_api=ds_api)
+    xact = _make_transaction(client)
+    xact.begin()
+    entity = _Entity()
 
-        self.assertIsNone(xact.id)
-        ds_api.rollback.assert_called_once_with(
-            request={"project_id": project, "transaction": id_}
-        )
+    xact.put(entity)
+    xact.commit(retry=retry, timeout=timeout)
 
-    def test_rollback_w_retry_w_timeout(self):
-        project = "PROJECT"
-        id_ = 239
-        retry = mock.Mock()
-        timeout = 100000
+    ds_api.commit.assert_called_once_with(
+        request={
+            "project_id": project,
+            "mode": mode,
+            "mutations": xact.mutations,
+            "transaction": id2,
+        },
+        retry=retry,
+        timeout=timeout,
+    )
+    assert xact.id is None
+    assert entity.key.path == [{"kind": kind, "id": id1}]
 
-        ds_api = _make_datastore_api(xact_id=id_)
-        client = _Client(project, datastore_api=ds_api)
-        xact = self._make_one(client)
-        xact.begin()
 
-        xact.rollback(retry=retry, timeout=timeout)
+def test_transaction_context_manager_no_raise():
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
-        self.assertIsNone(xact.id)
-        ds_api.rollback.assert_called_once_with(
-            request={"project_id": project, "transaction": id_},
-            retry=retry,
-            timeout=timeout,
-        )
+    project = "PROJECT"
+    id_ = 912830
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api)
+    xact = _make_transaction(client)
 
-    def test_commit_no_partial_keys(self):
-        from google.cloud.datastore_v1.types import datastore as datastore_pb2
+    with xact:
+        # only set between begin / commit
+        assert xact.id == id_
 
-        project = "PROJECT"
-        id_ = 1002930
-        mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
+    assert xact.id is None
 
-        ds_api = _make_datastore_api(xact_id=id_)
-        client = _Client(project, datastore_api=ds_api)
-        xact = self._make_one(client)
-        xact.begin()
-        xact.commit()
+    expected_request = _make_begin_request(project)
+    ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
-        ds_api.commit.assert_called_once_with(
-            request={
-                "project_id": project,
-                "mode": mode,
-                "mutations": [],
-                "transaction": id_,
-            }
-        )
-        self.assertIsNone(xact.id)
+    mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
+    client._datastore_api.commit.assert_called_once_with(
+        request={
+            "project_id": project,
+            "mode": mode,
+            "mutations": [],
+            "transaction": id_,
+        },
+    )
 
-    def test_commit_w_partial_keys_w_retry_w_timeout(self):
-        from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
-        project = "PROJECT"
-        kind = "KIND"
-        id1 = 123
-        mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
-        key = _make_key(kind, id1, project)
-        id2 = 234
-        retry = mock.Mock()
-        timeout = 100000
+def test_transaction_context_manager_w_raise():
+    class Foo(Exception):
+        pass
 
-        ds_api = _make_datastore_api(key, xact_id=id2)
-        client = _Client(project, datastore_api=ds_api)
-        xact = self._make_one(client)
-        xact.begin()
-        entity = _Entity()
-
-        xact.put(entity)
-        xact.commit(retry=retry, timeout=timeout)
-
-        ds_api.commit.assert_called_once_with(
-            request={
-                "project_id": project,
-                "mode": mode,
-                "mutations": xact.mutations,
-                "transaction": id2,
-            },
-            retry=retry,
-            timeout=timeout,
-        )
-        self.assertIsNone(xact.id)
-        self.assertEqual(entity.key.path, [{"kind": kind, "id": id1}])
-
-    def test_context_manager_no_raise(self):
-        from google.cloud.datastore_v1.types import datastore as datastore_pb2
-
-        project = "PROJECT"
-        id_ = 912830
-        ds_api = _make_datastore_api(xact_id=id_)
-        client = _Client(project, datastore_api=ds_api)
-        xact = self._make_one(client)
-
+    project = "PROJECT"
+    id_ = 614416
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api)
+    xact = _make_transaction(client)
+    xact._mutation = object()
+    try:
         with xact:
-            self.assertEqual(xact.id, id_)  # only set between begin / commit
+            assert xact.id == id_
+            raise Foo()
+    except Foo:
+        pass
 
-        self.assertIsNone(xact.id)
+    assert xact.id is None
 
-        expected_request = self._make_begin_request(project)
-        ds_api.begin_transaction.assert_called_once_with(request=expected_request)
+    expected_request = _make_begin_request(project)
+    ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
-        mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
-        client._datastore_api.commit.assert_called_once_with(
-            request={
-                "project_id": project,
-                "mode": mode,
-                "mutations": [],
-                "transaction": id_,
-            },
-        )
+    client._datastore_api.commit.assert_not_called()
 
-    def test_context_manager_w_raise(self):
-        class Foo(Exception):
-            pass
+    client._datastore_api.rollback.assert_called_once_with(
+        request={"project_id": project, "transaction": id_}
+    )
 
-        project = "PROJECT"
-        id_ = 614416
-        ds_api = _make_datastore_api(xact_id=id_)
-        client = _Client(project, datastore_api=ds_api)
-        xact = self._make_one(client)
-        xact._mutation = object()
-        try:
-            with xact:
-                self.assertEqual(xact.id, id_)
-                raise Foo()
-        except Foo:
-            pass
 
-        self.assertIsNone(xact.id)
+def test_transaction_put_read_only():
+    project = "PROJECT"
+    id_ = 943243
+    ds_api = _make_datastore_api(xact_id=id_)
+    client = _Client(project, datastore_api=ds_api)
+    entity = _Entity()
+    xact = _make_transaction(client, read_only=True)
+    xact.begin()
 
-        expected_request = self._make_begin_request(project)
-        ds_api.begin_transaction.assert_called_once_with(request=expected_request)
-
-        client._datastore_api.commit.assert_not_called()
-
-        client._datastore_api.rollback.assert_called_once_with(
-            request={"project_id": project, "transaction": id_}
-        )
-
-    def test_put_read_only(self):
-        project = "PROJECT"
-        id_ = 943243
-        ds_api = _make_datastore_api(xact_id=id_)
-        client = _Client(project, datastore_api=ds_api)
-        entity = _Entity()
-        xact = self._make_one(client, read_only=True)
-        xact.begin()
-
-        with self.assertRaises(RuntimeError):
-            xact.put(entity)
+    with pytest.raises(RuntimeError):
+        xact.put(entity)
 
 
 def _make_key(kind, id_, project):
@@ -420,6 +409,31 @@ class _NoCommitBatch(object):
 
     def __exit__(self, *args):
         self._client._pop_batch()
+
+
+def _make_options(read_only=False, previous_transaction=None):
+    from google.cloud.datastore_v1.types import TransactionOptions
+
+    kw = {}
+
+    if read_only:
+        kw["read_only"] = TransactionOptions.ReadOnly()
+
+    return TransactionOptions(**kw)
+
+
+def _make_transaction(client, **kw):
+    from google.cloud.datastore.transaction import Transaction
+
+    return Transaction(client, **kw)
+
+
+def _make_begin_request(project, read_only=False):
+    expected_options = _make_options(read_only=read_only)
+    return {
+        "project_id": project,
+        "transaction_options": expected_options,
+    }
 
 
 def _make_commit_response(*keys):
