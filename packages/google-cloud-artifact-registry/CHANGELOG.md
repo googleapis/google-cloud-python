@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-artifact-registry/compare/v0.5.0...v1.0.0) (2021-10-22)
+
+
+### Features
+
+* bump release level to production/stable ([#82](https://www.github.com/googleapis/python-artifact-registry/issues/82)) ([d3705c1](https://www.github.com/googleapis/python-artifact-registry/commit/d3705c13605af3e4167c2e86eeb55683a271a3d4))
+
+
+### Documentation
+
+* fix docstring formatting ([#93](https://www.github.com/googleapis/python-artifact-registry/issues/93)) ([e6c2084](https://www.github.com/googleapis/python-artifact-registry/commit/e6c208427336e8c9d5a5d607c02406c856af6a94))
+
 ## [0.5.0](https://www.github.com/googleapis/python-artifact-registry/compare/v0.4.1...v0.5.0) (2021-10-11)
 
 
