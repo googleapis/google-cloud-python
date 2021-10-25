@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-service-directory/compare/v1.1.0...v1.2.0) (2021-10-20)
+
+
+### Features
+
+* add support for python 3.10 ([#126](https://www.github.com/googleapis/python-service-directory/issues/126)) ([3d3847c](https://www.github.com/googleapis/python-service-directory/commit/3d3847cd14542934a4b992ab789bbc5f1bffe2ef))
+
+
+### Documentation
+
+* fix docstring formatting ([#130](https://www.github.com/googleapis/python-service-directory/issues/130)) ([a440a30](https://www.github.com/googleapis/python-service-directory/commit/a440a307044cb58c301111df7491ce59778abaac))
+
 ## [1.1.0](https://www.github.com/googleapis/python-service-directory/compare/v1.0.4...v1.1.0) (2021-10-08)
 
 
