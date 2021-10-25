@@ -1106,7 +1106,14 @@ def test_{{ method.name|snake_case }}_rest(transport: str = 'rest', request_type
     )
 
     # send a request that will satisfy transcoding
-    request = request_type({{ method.http_options[0].sample_request}})
+    request_init = {{ method.http_options[0].sample_request}}
+    {% for field in method.body_fields.values() %}
+    {% if not field.oneof or field.proto3_optional %}
+    {# ignore oneof fields that might conflict with sample_request #}
+    request_init["{{ field.name }}"] = {{ field.mock_value }}
+    {% endif %}
+    {% endfor %}
+    request = request_type(request_init)
     {% if method.client_streaming %}
     requests = [request]
     {% endif %}
@@ -2419,6 +2426,7 @@ async def test_test_iam_permissions_from_dict_async():
 
 {% endif %}
 
+{% if 'grpc' in opts.transport %}
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = {{ service.async_client_name }}(
@@ -2429,6 +2437,7 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+{% endif %}
 
 def test_transport_close():
     transports = {

@@ -306,9 +306,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
-                {% if "grpc" in opts.transport %}
                 always_use_jwt_access=True,
-                {% endif %}
             )
 
 

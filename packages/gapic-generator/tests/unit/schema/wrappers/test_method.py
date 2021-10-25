@@ -330,6 +330,35 @@ def test_method_path_params_no_http_rule():
     assert method.path_params == []
 
 
+def test_body_fields():
+    http_rule = http_pb2.HttpRule(
+        post='/v1/{arms_shape=arms/*}/squids',
+        body='mantle'
+    )
+
+    mantle_stuff = make_field(name='mantle_stuff', type=9)
+    message = make_message('Mantle', fields=(mantle_stuff,))
+    mantle = make_field('mantle', type=11, type_name='Mantle', message=message)
+    arms_shape = make_field('arms_shape', type=9)
+    input_message = make_message('Squid', fields=(mantle, arms_shape))
+    method = make_method(
+        'PutSquid', input_message=input_message, http_rule=http_rule)
+    assert set(method.body_fields) == {'mantle'}
+    mock_value = method.body_fields['mantle'].mock_value
+    assert mock_value == "baz.Mantle(mantle_stuff='mantle_stuff_value')"
+
+
+def test_body_fields_no_body():
+    http_rule = http_pb2.HttpRule(
+        post='/v1/{arms_shape=arms/*}/squids',
+    )
+
+    method = make_method(
+        'PutSquid', http_rule=http_rule)
+
+    assert not method.body_fields
+
+
 def test_method_http_options():
     verbs = [
         'get',
@@ -363,7 +392,7 @@ def test_method_http_options_no_http_rule():
     assert method.path_params == []
 
 
-def test_method_http_options_body():
+def test_method_http_options_body_star():
     http_rule = http_pb2.HttpRule(
         post='/v1/{parent=projects/*}/topics',
         body='*'
@@ -373,6 +402,19 @@ def test_method_http_options_body():
         'method': 'post',
         'uri': '/v1/{parent=projects/*}/topics',
         'body': '*'
+    }]
+
+
+def test_method_http_options_body_field():
+    http_rule = http_pb2.HttpRule(
+        post='/v1/{parent=projects/*}/topics',
+        body='body_field'
+    )
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert [dataclasses.asdict(http) for http in method.http_options] == [{
+        'method': 'post',
+        'uri': '/v1/{parent=projects/*}/topics',
+        'body': 'body_field'
     }]
 
 
