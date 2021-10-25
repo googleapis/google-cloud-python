@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-service-control/compare/v1.1.0...v1.2.0) (2021-10-20)
+
+
+### Features
+
+* add support for python 3.10 ([#77](https://www.github.com/googleapis/python-service-control/issues/77)) ([ee227b9](https://www.github.com/googleapis/python-service-control/commit/ee227b960920c6be4c8186b8095bc81d3bf8e45c))
+
+
+### Documentation
+
+* fix docstring formatting ([#80](https://www.github.com/googleapis/python-service-control/issues/80)) ([4e2df1f](https://www.github.com/googleapis/python-service-control/commit/4e2df1fbc8342a8e94aea10cc0cc2985a02411e8))
+
 ## [1.1.0](https://www.github.com/googleapis/python-service-control/compare/v1.0.3...v1.1.0) (2021-10-08)
 
 
