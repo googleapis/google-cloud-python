@@ -112,7 +112,9 @@ def test_load_chunks_omits_policy_tags(
         "my-project.my_dataset.my_table"
     )
     schema = {
-        "fields": [{"name": "col1", "type": "INT64", "policyTags": ["tag1", "tag2"]}]
+        "fields": [
+            {"name": "col1", "type": "INT64", "policyTags": {"names": ["tag1", "tag2"]}}
+        ]
     }
 
     _ = list(load.load_chunks(mock_bigquery_client, df, destination, schema=schema))
