@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://www.github.com/googleapis/python-workflows/compare/v1.3.0...v1.4.0) (2021-10-19)
+
+
+### Features
+
+* add support for python 3.10 ([#106](https://www.github.com/googleapis/python-workflows/issues/106)) ([7eac117](https://www.github.com/googleapis/python-workflows/commit/7eac117640b08704291d561370630aad388efb0c))
+
 ## [1.3.0](https://www.github.com/googleapis/python-workflows/compare/v1.2.3...v1.3.0) (2021-10-08)
 
 
