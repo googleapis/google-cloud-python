@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-iam-logging/compare/v0.2.0...v1.0.0) (2021-10-25)
+
+
+### Features
+
+* bump release level to production/stable ([#43](https://www.github.com/googleapis/python-iam-logging/issues/43)) ([dd95b8d](https://www.github.com/googleapis/python-iam-logging/commit/dd95b8dc8f70955697e2424a548f21b7902b0a46))
+
 ## [0.2.0](https://www.github.com/googleapis/python-iam-logging/compare/v0.1.3...v0.2.0) (2021-10-13)
 
 
