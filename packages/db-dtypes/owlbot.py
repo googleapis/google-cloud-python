@@ -50,7 +50,7 @@ s.replace(
 )
 
 s.replace(
-    ["noxfile.py"], "google/cloud", "db_dtypes",
+    ["noxfile.py"], "--cov=google", "--cov=db_dtypes",
 )
 
 # There are no system tests for this package.
