@@ -17,7 +17,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = "1.19.5"
+version = "1.19.6"
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 

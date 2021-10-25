@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.19.6](https://www.github.com/googleapis/proto-plus-python/compare/v1.19.5...v1.19.6) (2021-10-25)
+
+
+### Bug Fixes
+
+* setting 64bit fields from strings supported ([#267](https://www.github.com/googleapis/proto-plus-python/issues/267)) ([ea7b911](https://www.github.com/googleapis/proto-plus-python/commit/ea7b91100114f5c3d40d41320b045568ac9a68f9))
+
 ### [1.19.5](https://www.github.com/googleapis/proto-plus-python/compare/v1.19.4...v1.19.5) (2021-10-11)
 
 
