@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-gke-connect-gateway/compare/v0.3.0...v0.4.0) (2021-10-20)
+
+
+### Features
+
+* add support for python 3.10 ([#43](https://www.github.com/googleapis/python-gke-connect-gateway/issues/43)) ([f210d2c](https://www.github.com/googleapis/python-gke-connect-gateway/commit/f210d2c6ae2cec7db5e7e7ae6efac357f2f1da93))
+
+
+### Documentation
+
+* fix docstring formatting ([#47](https://www.github.com/googleapis/python-gke-connect-gateway/issues/47)) ([9d51edc](https://www.github.com/googleapis/python-gke-connect-gateway/commit/9d51edc55dbb3576fe55db5bb7e526e0536fc0e4))
+
 ## [0.3.0](https://www.github.com/googleapis/python-gke-connect-gateway/compare/v0.2.3...v0.3.0) (2021-10-09)
 
 
