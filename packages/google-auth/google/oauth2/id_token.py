@@ -105,7 +105,13 @@ def _fetch_certs(request, certs_url):
     return json.loads(response.data.decode("utf-8"))
 
 
-def verify_token(id_token, request, audience=None, certs_url=_GOOGLE_OAUTH2_CERTS_URL):
+def verify_token(
+    id_token,
+    request,
+    audience=None,
+    certs_url=_GOOGLE_OAUTH2_CERTS_URL,
+    clock_skew_in_seconds=0,
+):
     """Verifies an ID token and returns the decoded token.
 
     Args:
@@ -117,16 +123,23 @@ def verify_token(id_token, request, audience=None, certs_url=_GOOGLE_OAUTH2_CERT
         certs_url (str): The URL that specifies the certificates to use to
             verify the token. This URL should return JSON in the format of
             ``{'key id': 'x509 certificate'}``.
+        clock_skew_in_seconds (int): The clock skew used for `iat` and `exp`
+            validation.
 
     Returns:
         Mapping[str, Any]: The decoded token.
     """
     certs = _fetch_certs(request, certs_url)
 
-    return jwt.decode(id_token, certs=certs, audience=audience)
+    return jwt.decode(
+        id_token,
+        certs=certs,
+        audience=audience,
+        clock_skew_in_seconds=clock_skew_in_seconds,
+    )
 
 
-def verify_oauth2_token(id_token, request, audience=None):
+def verify_oauth2_token(id_token, request, audience=None, clock_skew_in_seconds=0):
     """Verifies an ID Token issued by Google's OAuth 2.0 authorization server.
 
     Args:
@@ -136,6 +149,8 @@ def verify_oauth2_token(id_token, request, audience=None):
         audience (str): The audience that this token is intended for. This is
             typically your application's OAuth 2.0 client ID. If None then the
             audience is not verified.
+        clock_skew_in_seconds (int): The clock skew used for `iat` and `exp`
+            validation.
 
     Returns:
         Mapping[str, Any]: The decoded token.
@@ -144,7 +159,11 @@ def verify_oauth2_token(id_token, request, audience=None):
         exceptions.GoogleAuthError: If the issuer is invalid.
     """
     idinfo = verify_token(
-        id_token, request, audience=audience, certs_url=_GOOGLE_OAUTH2_CERTS_URL
+        id_token,
+        request,
+        audience=audience,
+        certs_url=_GOOGLE_OAUTH2_CERTS_URL,
+        clock_skew_in_seconds=clock_skew_in_seconds,
     )
 
     if idinfo["iss"] not in _GOOGLE_ISSUERS:
@@ -157,7 +176,7 @@ def verify_oauth2_token(id_token, request, audience=None):
     return idinfo
 
 
-def verify_firebase_token(id_token, request, audience=None):
+def verify_firebase_token(id_token, request, audience=None, clock_skew_in_seconds=0):
     """Verifies an ID Token issued by Firebase Authentication.
 
     Args:
@@ -167,12 +186,18 @@ def verify_firebase_token(id_token, request, audience=None):
         audience (str): The audience that this token is intended for. This is
             typically your Firebase application ID. If None then the audience
             is not verified.
+        clock_skew_in_seconds (int): The clock skew used for `iat` and `exp`
+            validation.
 
     Returns:
         Mapping[str, Any]: The decoded token.
     """
     return verify_token(
-        id_token, request, audience=audience, certs_url=_GOOGLE_APIS_CERTS_URL
+        id_token,
+        request,
+        audience=audience,
+        certs_url=_GOOGLE_APIS_CERTS_URL,
+        clock_skew_in_seconds=clock_skew_in_seconds,
     )
 
 

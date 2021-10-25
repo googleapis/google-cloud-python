@@ -71,7 +71,10 @@ def test_verify_token(_fetch_certs, decode):
         mock.sentinel.request, id_token._GOOGLE_OAUTH2_CERTS_URL
     )
     decode.assert_called_once_with(
-        mock.sentinel.token, certs=_fetch_certs.return_value, audience=None
+        mock.sentinel.token,
+        certs=_fetch_certs.return_value,
+        audience=None,
+        clock_skew_in_seconds=0,
     )
 
 
@@ -91,6 +94,28 @@ def test_verify_token_args(_fetch_certs, decode):
         mock.sentinel.token,
         certs=_fetch_certs.return_value,
         audience=mock.sentinel.audience,
+        clock_skew_in_seconds=0,
+    )
+
+
+@mock.patch("google.auth.jwt.decode", autospec=True)
+@mock.patch("google.oauth2.id_token._fetch_certs", autospec=True)
+def test_verify_token_clock_skew(_fetch_certs, decode):
+    result = id_token.verify_token(
+        mock.sentinel.token,
+        mock.sentinel.request,
+        audience=mock.sentinel.audience,
+        certs_url=mock.sentinel.certs_url,
+        clock_skew_in_seconds=10,
+    )
+
+    assert result == decode.return_value
+    _fetch_certs.assert_called_once_with(mock.sentinel.request, mock.sentinel.certs_url)
+    decode.assert_called_once_with(
+        mock.sentinel.token,
+        certs=_fetch_certs.return_value,
+        audience=mock.sentinel.audience,
+        clock_skew_in_seconds=10,
     )
 
 
@@ -107,6 +132,27 @@ def test_verify_oauth2_token(verify_token):
         mock.sentinel.request,
         audience=mock.sentinel.audience,
         certs_url=id_token._GOOGLE_OAUTH2_CERTS_URL,
+        clock_skew_in_seconds=0,
+    )
+
+
+@mock.patch("google.oauth2.id_token.verify_token", autospec=True)
+def test_verify_oauth2_token_clock_skew(verify_token):
+    verify_token.return_value = {"iss": "accounts.google.com"}
+    result = id_token.verify_oauth2_token(
+        mock.sentinel.token,
+        mock.sentinel.request,
+        audience=mock.sentinel.audience,
+        clock_skew_in_seconds=10,
+    )
+
+    assert result == verify_token.return_value
+    verify_token.assert_called_once_with(
+        mock.sentinel.token,
+        mock.sentinel.request,
+        audience=mock.sentinel.audience,
+        certs_url=id_token._GOOGLE_OAUTH2_CERTS_URL,
+        clock_skew_in_seconds=10,
     )
 
 
@@ -132,6 +178,26 @@ def test_verify_firebase_token(verify_token):
         mock.sentinel.request,
         audience=mock.sentinel.audience,
         certs_url=id_token._GOOGLE_APIS_CERTS_URL,
+        clock_skew_in_seconds=0,
+    )
+
+
+@mock.patch("google.oauth2.id_token.verify_token", autospec=True)
+def test_verify_firebase_token_clock_skew(verify_token):
+    result = id_token.verify_firebase_token(
+        mock.sentinel.token,
+        mock.sentinel.request,
+        audience=mock.sentinel.audience,
+        clock_skew_in_seconds=10,
+    )
+
+    assert result == verify_token.return_value
+    verify_token.assert_called_once_with(
+        mock.sentinel.token,
+        mock.sentinel.request,
+        audience=mock.sentinel.audience,
+        certs_url=id_token._GOOGLE_APIS_CERTS_URL,
+        clock_skew_in_seconds=10,
     )
 
 
