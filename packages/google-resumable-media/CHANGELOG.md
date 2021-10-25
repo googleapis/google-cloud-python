@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [2.1.0](https://www.github.com/googleapis/google-resumable-media-python/compare/v2.0.3...v2.1.0) (2021-10-20)
+
+
+### Features
+
+* add support for Python 3.10 ([#279](https://www.github.com/googleapis/google-resumable-media-python/issues/279)) ([4dbd14a](https://www.github.com/googleapis/google-resumable-media-python/commit/4dbd14aed14b87d4d288584a59e8ea11beccaf97))
+
+
+### Bug Fixes
+
+* Include ConnectionError and urllib3 exception as retriable ([#282](https://www.github.com/googleapis/google-resumable-media-python/issues/282)) ([d33465f](https://www.github.com/googleapis/google-resumable-media-python/commit/d33465fc047f4188dd967871ea93255aefd4ac2e))
+
 ### [2.0.3](https://www.github.com/googleapis/google-resumable-media-python/compare/v2.0.2...v2.0.3) (2021-09-20)
 
 
