@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-documentai/compare/v1.1.0...v1.2.0) (2021-10-14)
+
+
+### Features
+
+* add support for python 3.10 ([#228](https://www.github.com/googleapis/python-documentai/issues/228)) ([86d7cd6](https://www.github.com/googleapis/python-documentai/commit/86d7cd6062d282770b0ba2252e72d5e0f90dfd95))
+
 ## [1.1.0](https://www.github.com/googleapis/python-documentai/compare/v1.0.0...v1.1.0) (2021-10-08)
 
 
