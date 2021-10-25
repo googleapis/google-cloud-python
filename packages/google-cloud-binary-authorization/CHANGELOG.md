@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-binary-authorization/compare/v0.6.0...v1.0.0) (2021-10-22)
+
+
+### Features
+
+* bump release level to production/stable ([#77](https://www.github.com/googleapis/python-binary-authorization/issues/77)) ([f893ce0](https://www.github.com/googleapis/python-binary-authorization/commit/f893ce0fac64aa9ab153cfff1c9323f235cb4a27))
+
 ## [0.6.0](https://www.github.com/googleapis/python-binary-authorization/compare/v0.5.0...v0.6.0) (2021-10-13)
 
 
