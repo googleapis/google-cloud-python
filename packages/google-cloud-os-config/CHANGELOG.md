@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.0](https://www.github.com/googleapis/python-os-config/compare/v1.6.0...v1.7.0) (2021-10-18)
+
+
+### Features
+
+* add support for python 3.10 ([#133](https://www.github.com/googleapis/python-os-config/issues/133)) ([44e23f4](https://www.github.com/googleapis/python-os-config/commit/44e23f4b82fad2079b79366670b8a14002a37d68))
+* Update RecurringSchedule.Frequency with DAILY frequency ([#137](https://www.github.com/googleapis/python-os-config/issues/137)) ([75b232e](https://www.github.com/googleapis/python-os-config/commit/75b232e9ca86beeb6a9d2a9f45629e2ffa458c6d))
+
 ## [1.6.0](https://www.github.com/googleapis/python-os-config/compare/v1.5.2...v1.6.0) (2021-10-08)
 
 
