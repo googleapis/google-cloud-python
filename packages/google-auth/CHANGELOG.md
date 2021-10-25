@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [2.3.1](https://www.github.com/googleapis/google-auth-library-python/compare/v2.3.0...v2.3.1) (2021-10-21)
+
+
+### Bug Fixes
+
+* add back python 2.7 for gcloud usage only ([#892](https://www.github.com/googleapis/google-auth-library-python/issues/892)) ([5bd5ccf](https://www.github.com/googleapis/google-auth-library-python/commit/5bd5ccf7cf229f033c7152ce0b650a40feb25f81))
+
+
+### Documentation
+
+* Fix formatting of `GCE_METADATA_HOST` ([#890](https://www.github.com/googleapis/google-auth-library-python/issues/890)) ([e2b3c98](https://www.github.com/googleapis/google-auth-library-python/commit/e2b3c98cd8c67b702be1b711c06ee7b9bbedb8ba))
+
 ## [2.3.0](https://www.github.com/googleapis/google-auth-library-python/compare/v2.2.1...v2.3.0) (2021-10-07)
 
 
