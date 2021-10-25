@@ -71,8 +71,8 @@ Protocol buffer type                Python type             Nullable
   msg_two = MyMessage(msg_dict)
 
   assert msg == msg_pb == msg_two
-
-
+      
+  
 Wrapper types
 -------------
 

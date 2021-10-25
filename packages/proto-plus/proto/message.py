@@ -394,7 +394,7 @@ class MessageMeta(type):
                 determines whether field name representations preserve
                 proto case (snake_case) or use lowerCamelCase. Default is True.
             including_default_value_fields (Optional(bool)): An option that
-                determines whether the default field values should be included in the results. 
+                determines whether the default field values should be included in the results.
                 Default is True.
 
         Returns:
@@ -453,7 +453,9 @@ class Message(metaclass=MessageMeta):
             message.
     """
 
-    def __init__(self, mapping=None, *, ignore_unknown_fields=False, **kwargs):
+    def __init__(
+        self, mapping=None, *, ignore_unknown_fields=False, **kwargs,
+    ):
         # We accept several things for `mapping`:
         #   * An instance of this class.
         #   * An instance of the underlying protobuf descriptor class.

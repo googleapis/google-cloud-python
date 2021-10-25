@@ -26,6 +26,7 @@ from proto.marshal.collections import MapComposite
 from proto.marshal.collections import Repeated
 from proto.marshal.collections import RepeatedComposite
 from proto.marshal.rules import bytes as pb_bytes
+from proto.marshal.rules import stringy_numbers
 from proto.marshal.rules import dates
 from proto.marshal.rules import struct
 from proto.marshal.rules import wrappers
@@ -146,6 +147,11 @@ class BaseMarshal:
 
         # Special case for bytes to allow base64 encode/decode
         self.register(ProtoType.BYTES, pb_bytes.BytesRule())
+
+        # Special case for int64 from strings because of dict round trip.
+        # See https://github.com/protocolbuffers/protobuf/issues/2679
+        for rule_class in stringy_numbers.STRINGY_NUMBER_RULES:
+            self.register(rule_class._proto_type, rule_class())
 
     def to_python(self, proto_type, value, *, absent: bool = None):
         # Internal protobuf has its own special type for lists of values.
