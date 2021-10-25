@@ -8,3 +8,6 @@
 google-api-core==1.27.0
 proto-plus==1.15.0
 packaging==14.3
+# TODO: remove when google-auth>=1.25.0 is required transitively through
+# google-api-core >= 1.28.0
+google-auth==1.24.0

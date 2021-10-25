@@ -28,7 +28,12 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 setuptools.setup(
     name="google-cloud-monitoring-metrics-scopes",
     version=version,
+    description="Google Cloud Monitoring Metrics Scopes Client Library",
     long_description=readme,
+    author="Google LLC",
+    author_email="googleapis-packages@google.com",
+    license="Apache 2.0",
+    url="https://github.com/googleapis/python-monitoring-metrics-scopes",
     packages=setuptools.PEP420PackageFinder.find(),
     namespace_packages=("google", "google.cloud"),
     platforms="Posix; MacOS X; Windows",
