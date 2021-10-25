@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-retail/compare/v1.1.0...v1.2.0) (2021-10-18)
+
+
+### Features
+
+* add search mode to search request ([#108](https://www.github.com/googleapis/python-retail/issues/108)) ([326576f](https://www.github.com/googleapis/python-retail/commit/326576f696e5890ff240d362e81efba94b835f7e))
+* add support for python 3.10 ([#105](https://www.github.com/googleapis/python-retail/issues/105)) ([221e21a](https://www.github.com/googleapis/python-retail/commit/221e21a48a375d7f4b31d6bcf79d77898cb33190))
+* update grpc service config settings to reflect correct API deadlines ([326576f](https://www.github.com/googleapis/python-retail/commit/326576f696e5890ff240d362e81efba94b835f7e))
+
+
+### Documentation
+
+* fix docstring formatting ([#107](https://www.github.com/googleapis/python-retail/issues/107)) ([3777919](https://www.github.com/googleapis/python-retail/commit/37779197eb52c45a347d52a7c3916608d62ec5e1))
+* Keep the API doc up-to-date ([326576f](https://www.github.com/googleapis/python-retail/commit/326576f696e5890ff240d362e81efba94b835f7e))
+
 ## [1.1.0](https://www.github.com/googleapis/python-retail/compare/v1.0.2...v1.1.0) (2021-10-07)
 
 
