@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.4.0...v0.5.0) (2021-10-18)
+
+
+### Features
+
+* add support for python 3.10 ([#97](https://www.github.com/googleapis/python-recommendations-ai/issues/97)) ([a2ee110](https://www.github.com/googleapis/python-recommendations-ai/commit/a2ee11019a0a25d7664b083555208baa78c826e8))
+
+
+### Documentation
+
+* fix docstring formatting ([#99](https://www.github.com/googleapis/python-recommendations-ai/issues/99)) ([29a6a76](https://www.github.com/googleapis/python-recommendations-ai/commit/29a6a76df66c4e2fd1fc2aa9ac8e7f98de5745e8))
+
 ## [0.4.0](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.3.3...v0.4.0) (2021-10-07)
 
 
