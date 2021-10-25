@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://www.github.com/googleapis/python-media-translation/compare/v0.6.0...v0.7.0) (2021-10-25)
+
+
+### Features
+
+* add support for python 3.10 ([#122](https://www.github.com/googleapis/python-media-translation/issues/122)) ([9ab2f2f](https://www.github.com/googleapis/python-media-translation/commit/9ab2f2ff28d878dbdd5f2f4f9cefc7e4afaa0ebe))
+
 ## [0.6.0](https://www.github.com/googleapis/python-media-translation/compare/v0.5.4...v0.6.0) (2021-10-07)
 
 
