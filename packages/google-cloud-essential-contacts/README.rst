@@ -1,7 +1,7 @@
 Python Client for Essential Contacts API
 ========================================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Essential Contacts API`_: allows you to customize who receives notifications from Google Cloud 
 services, such as Cloud Billing, by providing your own list of contacts.
@@ -9,8 +9,8 @@ services, such as Cloud Billing, by providing your own list of contacts.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-essential-contacts.svg
    :target: https://pypi.org/project/google-cloud-essential-contacts/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-essential-contacts.svg
