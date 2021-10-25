@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-essential-contacts/compare/v0.4.0...v1.0.0) (2021-10-25)
+
+
+### Features
+
+* bump release level to production/stable ([#60](https://www.github.com/googleapis/python-essential-contacts/issues/60)) ([0729bc5](https://www.github.com/googleapis/python-essential-contacts/commit/0729bc5c97019d980ce55db73919b76542844576))
+
 ## [0.4.0](https://www.github.com/googleapis/python-essential-contacts/compare/v0.3.0...v0.4.0) (2021-10-18)
 
 
