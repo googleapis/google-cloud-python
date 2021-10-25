@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-gke-hub/compare/v1.1.0...v1.2.0) (2021-10-14)
+
+
+### Features
+
+* add support for python 3.10 ([#90](https://www.github.com/googleapis/python-gke-hub/issues/90)) ([5b929d6](https://www.github.com/googleapis/python-gke-hub/commit/5b929d6845b30719e16c71705e861431e83fed3e))
+
 ## [1.1.0](https://www.github.com/googleapis/python-gke-hub/compare/v1.0.0...v1.1.0) (2021-10-08)
 
 
