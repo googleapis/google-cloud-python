@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.5.0](https://www.github.com/googleapis/python-scheduler/compare/v2.4.0...v2.5.0) (2021-10-25)
+
+
+### Features
+
+* add support for python 3.10 ([#149](https://www.github.com/googleapis/python-scheduler/issues/149)) ([8c671d9](https://www.github.com/googleapis/python-scheduler/commit/8c671d928f9a39dc7c15cd1e700363e028eb61e7))
+
 ## [2.4.0](https://www.github.com/googleapis/python-scheduler/compare/v2.3.4...v2.4.0) (2021-10-08)
 
 
