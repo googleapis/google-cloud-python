@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [2.3.2](https://www.github.com/googleapis/google-auth-library-python/compare/v2.3.1...v2.3.2) (2021-10-26)
+
+
+### Bug Fixes
+
+* add clock_skew_in_seconds to verify_token functions ([#894](https://www.github.com/googleapis/google-auth-library-python/issues/894)) ([8e95c1e](https://www.github.com/googleapis/google-auth-library-python/commit/8e95c1e458793593972b6b05a355aaeaecd31670))
+
 ### [2.3.1](https://www.github.com/googleapis/google-auth-library-python/compare/v2.3.0...v2.3.1) (2021-10-21)
 
 
