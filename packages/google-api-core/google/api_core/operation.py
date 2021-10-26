@@ -140,11 +140,11 @@ class Operation(polling.PollingFuture):
                 )
                 self.set_exception(exception)
             else:
-                # Some APIs set `done: true`, with an empty response.
-                # Set the result to an empty message of the expected
-                # result type.
-                # https://google.aip.dev/151
-                self.set_result(self._result_type())
+                exception = exceptions.GoogleAPICallError(
+                    "Unexpected state: Long-running operation had neither "
+                    "response nor error set."
+                )
+                self.set_exception(exception)
 
     def _refresh_and_update(self, retry=polling.DEFAULT_RETRY):
         """Refresh the operation and update the result if needed.

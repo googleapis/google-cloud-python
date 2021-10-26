@@ -169,7 +169,7 @@ def test_exception_with_error_code():
     assert isinstance(exception, exceptions.NotFound)
 
 
-def test_done_with_no_error_or_response():
+def test_unexpected_result():
     responses = [
         make_operation_proto(),
         # Second operation response is done, but has not error or response.
@@ -177,7 +177,9 @@ def test_done_with_no_error_or_response():
     ]
     future, _, _ = make_operation_future(responses)
 
-    assert isinstance(future.result(), struct_pb2.Struct)
+    exception = future.exception()
+
+    assert "Unexpected state" in "{!r}".format(exception)
 
 
 def test__refresh_http():

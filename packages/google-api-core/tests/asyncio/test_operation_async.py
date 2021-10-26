@@ -158,7 +158,7 @@ async def test_exception():
 
 @mock.patch("asyncio.sleep", autospec=True)
 @pytest.mark.asyncio
-async def test_done_with_no_error_or_response(unused_sleep):
+async def test_unexpected_result(unused_sleep):
     responses = [
         make_operation_proto(),
         # Second operation response is done, but has not error or response.
@@ -166,9 +166,9 @@ async def test_done_with_no_error_or_response(unused_sleep):
     ]
     future, _, _ = make_operation_future(responses)
 
-    result = await future.result()
+    exception = await future.exception()
 
-    assert isinstance(result, struct_pb2.Struct)
+    assert "Unexpected state" in "{!r}".format(exception)
 
 
 def test_from_gapic():
