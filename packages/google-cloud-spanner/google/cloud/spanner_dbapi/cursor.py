@@ -14,6 +14,9 @@
 
 """Database cursor for Google Cloud Spanner DB-API."""
 
+import warnings
+from collections import namedtuple
+
 import sqlparse
 
 from google.api_core.exceptions import Aborted
@@ -22,8 +25,6 @@ from google.api_core.exceptions import FailedPrecondition
 from google.api_core.exceptions import InternalServerError
 from google.api_core.exceptions import InvalidArgument
 from google.api_core.exceptions import OutOfRange
-
-from collections import namedtuple
 
 from google.cloud import spanner_v1 as spanner
 from google.cloud.spanner_dbapi.checksum import ResultsChecksum
@@ -120,10 +121,12 @@ class Cursor(object):
 
         :raises: :class:`NotImplemented`.
         """
-        raise NotImplementedError(
+        warnings.warn(
             "The `rowcount` property is non-operational. Request "
             "resulting rows are streamed by the `fetch*()` methods "
-            "and can't be counted before they are all streamed."
+            "and can't be counted before they are all streamed.",
+            UserWarning,
+            stacklevel=2,
         )
 
     def _raise_if_closed(self):
