@@ -46,6 +46,7 @@ def unit(session):
     # Install all dependencies.
     session.install("pytest", "pytest-cov")
     session.install("mock")
+    session.install("google-cloud-testutils", "-c", constraints_path)
     session.install("-e", ".", "-c", constraints_path)
     # This variable is used to skip coverage by Python version
     session.env["PY_VERSION"] = session.python[0]

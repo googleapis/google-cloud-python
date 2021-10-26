@@ -21,7 +21,10 @@ from google.cloud.ndb import _cache
 from google.cloud.ndb import global_cache as global_cache_module
 from google.cloud.ndb import tasklets
 
-from . import orchestrate
+try:
+    from test_utils import orchestrate
+except ImportError:  # pragma: NO COVER
+    orchestrate = None
 
 log = logging.getLogger(__name__)
 
@@ -42,8 +45,14 @@ def cache_factories():  # pragma: NO COVER
         yield global_cache_module.MemcacheCache.from_environment
 
 
+@pytest.mark.skipif(
+    orchestrate is None, reason="Cannot import 'orchestrate' from 'test_utils'"
+)
 @pytest.mark.parametrize("cache_factory", cache_factories())
-def test_global_cache_concurrent_write_692(cache_factory, context_factory):
+def test_global_cache_concurrent_write_692(
+    cache_factory,
+    context_factory,
+):  # pragma: NO COVER
     """Regression test for #692
 
     https://github.com/googleapis/python-ndb/issues/692
