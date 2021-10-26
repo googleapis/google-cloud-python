@@ -23,8 +23,10 @@ from typing import List
 import pytest
 import sqlalchemy
 
+from google.api_core import exceptions
 from google.cloud import bigquery
 import test_utils.prefixer
+import test_utils.retry
 
 from sqlalchemy_bigquery import BigQueryDialect
 
@@ -128,7 +130,10 @@ def bigquery_regional_dataset(bigquery_client, bigquery_schema):
 @pytest.fixture(autouse=True)
 def cleanup_extra_tables(bigquery_client, bigquery_dataset):
     common = "sample", "sample_one_row", "sample_view", "sample_dml_empty"
-    for table in bigquery_client.list_tables(bigquery_dataset):
+    # Back-end may raise 403 for a dataset not ready yet.
+    retry_403 = test_utils.retry.RetryErrors(exceptions.Forbidden)
+    tables = retry_403(bigquery_client.list_tables)(bigquery_dataset)
+    for table in tables:
         if table.table_id not in common:
             bigquery_client.delete_table(table)
 
