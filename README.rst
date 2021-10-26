@@ -91,6 +91,9 @@ Libraries
    * - `App Engine Logging Protos <https://github.com/googleapis/python-appengine-logging>`_
      - |ga|
      - |PyPI-google-cloud-appengine-logging|
+   * - `Artifact Registry <https://github.com/googleapis/python-artifact-registry>`_
+     - |ga|
+     - |PyPI-google-cloud-artifact-registry|
    * - `Asset Inventory <https://github.com/googleapis/python-asset>`_
      - |ga|
      - |PyPI-google-cloud-asset|
@@ -124,6 +127,9 @@ Libraries
    * - `Billing Budget <https://github.com/googleapis/python-billingbudgets>`_
      - |ga|
      - |PyPI-google-cloud-billing-budgets|
+   * - `Binary Authorization <https://github.com/googleapis/python-binary-authorization>`_
+     - |ga|
+     - |PyPI-google-cloud-binary-authorization|
    * - `Build <https://github.com/googleapis/python-cloudbuild>`_
      - |ga|
      - |PyPI-google-cloud-build|
@@ -169,6 +175,9 @@ Libraries
    * - `Document Understanding API <https://github.com/googleapis/python-documentai>`_
      - |ga|
      - |PyPI-google-cloud-documentai|
+   * - `Essential Contacts API <https://github.com/googleapis/python-essential-contacts>`_
+     - |ga|
+     - |PyPI-google-cloud-essential-contacts|
    * - `Eventarc <https://github.com/googleapis/python-eventarc>`_
      - |ga|
      - |PyPI-google-cloud-eventarc|
@@ -187,6 +196,9 @@ Libraries
    * - `Grafeas <https://github.com/googleapis/python-grafeas>`_
      - |ga|
      - |PyPI-grafeas|
+   * - `IAM Logging Protos <https://github.com/googleapis/python-iam-logging>`_
+     - |ga|
+     - |PyPI-google-cloud-iam-logging|
    * - `IAM Policy Troubleshooter API <https://github.com/googleapis/python-policy-troubleshooter>`_
      - |ga|
      - |PyPI-google-cloud-policy-troubleshooter|
@@ -343,9 +355,6 @@ Libraries
    * - `Analytics Data API <https://github.com/googleapis/python-analytics-data>`_
      - |beta|
      - |PyPI-google-analytics-data|
-   * - `Artifact Registry <https://github.com/googleapis/python-artifact-registry>`_
-     - |beta|
-     - |PyPI-google-cloud-artifact-registry|
    * - `Assured Workloads for Government <https://github.com/googleapis/python-assured-workloads>`_
      - |beta|
      - |PyPI-google-cloud-assured-workloads|
@@ -355,9 +364,6 @@ Libraries
    * - `BigQuery connector for pandas <https://github.com/googleapis/python-bigquery-pandas>`_
      - |beta|
      - |PyPI-pandas-gbq|
-   * - `Binary Authorization <https://github.com/googleapis/python-binary-authorization>`_
-     - |beta|
-     - |PyPI-google-cloud-binary-authorization|
    * - `Common <https://github.com/googleapis/python-cloud-common>`_
      - |beta|
      - |PyPI-google-cloud-common|
@@ -379,18 +385,12 @@ Libraries
    * - `Error Reporting <https://github.com/googleapis/python-error-reporting>`_
      - |beta|
      - |PyPI-google-cloud-error-reporting|
-   * - `Essential Contacts API <https://github.com/googleapis/python-essential-contacts>`_
-     - |beta|
-     - |PyPI-google-cloud-essential-contacts|
    * - `Filestore <https://github.com/googleapis/python-filestore>`_
      - |beta|
      - |PyPI-google-cloud-filestore|
    * - `GKE Connect Gateway API <https://github.com/googleapis/python-gke-connect-gateway>`_
      - |beta|
      - |PyPI-google-cloud-gke-connect-gateway|
-   * - `IAM Logging Protos <https://github.com/googleapis/python-iam-logging>`_
-     - |beta|
-     - |PyPI-google-cloud-iam-logging|
    * - `Life Sciences <https://github.com/googleapis/python-life-sciences>`_
      - |beta|
      - |PyPI-google-cloud-life-sciences|
@@ -460,6 +460,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-appengine-admin
 .. |PyPI-google-cloud-appengine-logging| image:: https://img.shields.io/pypi/v/google-cloud-appengine-logging.svg
      :target: https://pypi.org/project/google-cloud-appengine-logging
+.. |PyPI-google-cloud-artifact-registry| image:: https://img.shields.io/pypi/v/google-cloud-artifact-registry.svg
+     :target: https://pypi.org/project/google-cloud-artifact-registry
 .. |PyPI-google-cloud-asset| image:: https://img.shields.io/pypi/v/google-cloud-asset.svg
      :target: https://pypi.org/project/google-cloud-asset
 .. |PyPI-google-cloud-automl| image:: https://img.shields.io/pypi/v/google-cloud-automl.svg
@@ -482,6 +484,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-billing
 .. |PyPI-google-cloud-billing-budgets| image:: https://img.shields.io/pypi/v/google-cloud-billing-budgets.svg
      :target: https://pypi.org/project/google-cloud-billing-budgets
+.. |PyPI-google-cloud-binary-authorization| image:: https://img.shields.io/pypi/v/google-cloud-binary-authorization.svg
+     :target: https://pypi.org/project/google-cloud-binary-authorization
 .. |PyPI-google-cloud-build| image:: https://img.shields.io/pypi/v/google-cloud-build.svg
      :target: https://pypi.org/project/google-cloud-build
 .. |PyPI-google-cloud-channel| image:: https://img.shields.io/pypi/v/google-cloud-channel.svg
@@ -512,6 +516,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-dialogflow-cx
 .. |PyPI-google-cloud-documentai| image:: https://img.shields.io/pypi/v/google-cloud-documentai.svg
      :target: https://pypi.org/project/google-cloud-documentai
+.. |PyPI-google-cloud-essential-contacts| image:: https://img.shields.io/pypi/v/google-cloud-essential-contacts.svg
+     :target: https://pypi.org/project/google-cloud-essential-contacts
 .. |PyPI-google-cloud-eventarc| image:: https://img.shields.io/pypi/v/google-cloud-eventarc.svg
      :target: https://pypi.org/project/google-cloud-eventarc
 .. |PyPI-google-cloud-firestore| image:: https://img.shields.io/pypi/v/google-cloud-firestore.svg
@@ -524,6 +530,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-game-servers
 .. |PyPI-grafeas| image:: https://img.shields.io/pypi/v/grafeas.svg
      :target: https://pypi.org/project/grafeas
+.. |PyPI-google-cloud-iam-logging| image:: https://img.shields.io/pypi/v/google-cloud-iam-logging.svg
+     :target: https://pypi.org/project/google-cloud-iam-logging
 .. |PyPI-google-cloud-policy-troubleshooter| image:: https://img.shields.io/pypi/v/google-cloud-policy-troubleshooter.svg
      :target: https://pypi.org/project/google-cloud-policy-troubleshooter
 .. |PyPI-google-cloud-iam| image:: https://img.shields.io/pypi/v/google-cloud-iam.svg
@@ -628,16 +636,12 @@ Libraries
      :target: https://pypi.org/project/google-cloud-recaptcha-enterprise
 .. |PyPI-google-analytics-data| image:: https://img.shields.io/pypi/v/google-analytics-data.svg
      :target: https://pypi.org/project/google-analytics-data
-.. |PyPI-google-cloud-artifact-registry| image:: https://img.shields.io/pypi/v/google-cloud-artifact-registry.svg
-     :target: https://pypi.org/project/google-cloud-artifact-registry
 .. |PyPI-google-cloud-assured-workloads| image:: https://img.shields.io/pypi/v/google-cloud-assured-workloads.svg
      :target: https://pypi.org/project/google-cloud-assured-workloads
 .. |PyPI-google-cloud-audit-log| image:: https://img.shields.io/pypi/v/google-cloud-audit-log.svg
      :target: https://pypi.org/project/google-cloud-audit-log
 .. |PyPI-pandas-gbq| image:: https://img.shields.io/pypi/v/pandas-gbq.svg
      :target: https://pypi.org/project/pandas-gbq
-.. |PyPI-google-cloud-binary-authorization| image:: https://img.shields.io/pypi/v/google-cloud-binary-authorization.svg
-     :target: https://pypi.org/project/google-cloud-binary-authorization
 .. |PyPI-google-cloud-common| image:: https://img.shields.io/pypi/v/google-cloud-common.svg
      :target: https://pypi.org/project/google-cloud-common
 .. |PyPI-google-cloud-contact-center-insights| image:: https://img.shields.io/pypi/v/google-cloud-contact-center-insights.svg
@@ -652,14 +656,10 @@ Libraries
      :target: https://pypi.org/project/google-cloud-domains
 .. |PyPI-google-cloud-error-reporting| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
      :target: https://pypi.org/project/google-cloud-error-reporting
-.. |PyPI-google-cloud-essential-contacts| image:: https://img.shields.io/pypi/v/google-cloud-essential-contacts.svg
-     :target: https://pypi.org/project/google-cloud-essential-contacts
 .. |PyPI-google-cloud-filestore| image:: https://img.shields.io/pypi/v/google-cloud-filestore.svg
      :target: https://pypi.org/project/google-cloud-filestore
 .. |PyPI-google-cloud-gke-connect-gateway| image:: https://img.shields.io/pypi/v/google-cloud-gke-connect-gateway.svg
      :target: https://pypi.org/project/google-cloud-gke-connect-gateway
-.. |PyPI-google-cloud-iam-logging| image:: https://img.shields.io/pypi/v/google-cloud-iam-logging.svg
-     :target: https://pypi.org/project/google-cloud-iam-logging
 .. |PyPI-google-cloud-life-sciences| image:: https://img.shields.io/pypi/v/google-cloud-life-sciences.svg
      :target: https://pypi.org/project/google-cloud-life-sciences
 .. |PyPI-google-cloud-media-translation| image:: https://img.shields.io/pypi/v/google-cloud-media-translation.svg
