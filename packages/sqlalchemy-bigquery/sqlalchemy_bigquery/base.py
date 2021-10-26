@@ -471,8 +471,14 @@ class BigQueryCompiler(_struct.SQLCompiler, SQLCompiler):
             # The NullType/known-type check has to do with some extreme
             # edge cases having to do with empty in-lists that get special
             # hijinks from SQLAlchemy that we don't want to disturb. :)
+            #
+            # Note that we do *not* want to overwrite the "real" bindparam
+            # here, because then we can't do a recompile later (e.g., first
+            # print the statment, then execute it).  See issue #357.
+            #
             if getattr(bindparam, "expand_op", None) is not None:
                 assert bindparam.expand_op.__name__.endswith("in_op")  # in in
+                bindparam = bindparam._clone(maintain_key=True)
                 bindparam.expanding = False
                 unnest = True
 
