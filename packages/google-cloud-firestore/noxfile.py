@@ -76,8 +76,7 @@ def blacken(session):
 
 @nox.session(python="3.7")
 def pytype(session):
-    """Run pytype
-    """
+    """Verify type hints are pytype compatible."""
     session.install(PYTYPE_VERSION)
     session.run("pytype",)
 
@@ -122,7 +121,7 @@ def default(session):
         "py.test",
         "--quiet",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
-        "--cov=google/cloud",
+        "--cov=google",
         "--cov=tests/unit",
         "--cov-append",
         "--cov-config=.coveragerc",

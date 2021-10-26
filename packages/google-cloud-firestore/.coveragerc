@@ -18,6 +18,7 @@
 [run]
 branch = True
 omit =
+  google/__init__.py
   google/cloud/__init__.py
 
 [report]
