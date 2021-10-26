@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [3.1.0](https://www.github.com/googleapis/python-dataproc/compare/v3.0.0...v3.1.0) (2021-10-26)
+
+
+### Features
+
+* add context manager support in client ([#285](https://www.github.com/googleapis/python-dataproc/issues/285)) ([b54fb76](https://www.github.com/googleapis/python-dataproc/commit/b54fb7647deaea64fe6ad553514c9d0ad62a0cbc))
+* add Dataproc Serverless for Spark Batches API ([#290](https://www.github.com/googleapis/python-dataproc/issues/290)) ([f0ed26c](https://www.github.com/googleapis/python-dataproc/commit/f0ed26c6ccd2e9f438d1d5f31c5512761b0e20b9))
+* Add support for dataproc BatchController service ([#291](https://www.github.com/googleapis/python-dataproc/issues/291)) ([24a6f7d](https://www.github.com/googleapis/python-dataproc/commit/24a6f7defee1e0fd2d195f934c004769d8f1a2b7))
+* add support for python 3.10 ([#289](https://www.github.com/googleapis/python-dataproc/issues/289)) ([229f919](https://www.github.com/googleapis/python-dataproc/commit/229f919e31c39bc028cd2e6062437b0a8d061556))
+
 ## [3.0.0](https://www.github.com/googleapis/python-dataproc/compare/v2.6.0...v3.0.0) (2021-10-04)
 
 
