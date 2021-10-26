@@ -2,7 +2,8 @@
 
 .. include:: multiprocessing.rst
 
-Api Reference
+
+API Reference
 -------------
 .. toctree::
     :maxdepth: 2
@@ -10,21 +11,22 @@ Api Reference
     phishingprotection_v1beta1/services
     phishingprotection_v1beta1/types
 
+
 Migration Guide
 ---------------
 
-See the guide below for instructions on migrating to the 1.x release of this library.
+See the guide below for instructions on migrating to the latest version.
 
 .. toctree::
     :maxdepth: 2
 
-    UPGRADING
+    UPGRADING
 
 
 Changelog
-----------
+---------
 
-For all previous ``google-cloud-phishingprotection`` releases:
+For a list of all ``google-cloud-phishing-protection`` releases:
 
 .. toctree::
     :maxdepth: 2
