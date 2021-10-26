@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-api-core/compare/v2.1.1...v2.2.0) (2021-10-25)
+
+
+### Features
+
+* add 'GoogleAPICallError.error_details' property ([#286](https://www.github.com/googleapis/python-api-core/issues/286)) ([ef6f0fc](https://www.github.com/googleapis/python-api-core/commit/ef6f0fcfdfe771172056e35e3c990998b3b00416))
+
 ### [2.1.1](https://www.github.com/googleapis/python-api-core/compare/v2.1.0...v2.1.1) (2021-10-13)
 
 
