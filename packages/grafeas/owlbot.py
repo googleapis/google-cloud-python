@@ -208,7 +208,7 @@ s.move(
 s.replace("noxfile.py", """['"]google['"]""", '''"grafeas"''')
 s.replace(
     "noxfile.py",
-    "--cov=google/cloud",
+    "--cov=google",
     "--cov=grafeas",
 )
 
