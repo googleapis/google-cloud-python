@@ -63,7 +63,7 @@ s.replace(
 )
 
 s.replace(
-    ["noxfile.py"], "google/cloud", "sqlalchemy_bigquery",
+    ["noxfile.py"], "--cov=google", "--cov=sqlalchemy_bigquery",
 )
 
 def place_before(path, text, *before_text, escape=None):
