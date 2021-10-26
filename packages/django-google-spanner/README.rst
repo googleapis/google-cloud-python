@@ -80,14 +80,13 @@ Windows
 Supported versions
 ~~~~~~~~~~~~~~~~~~
 
-At the moment, this library only supports `Django 2.2
-<https://docs.djangoproject.com/en/2.2/>`__. It also requires Python version
-3.6 or later.
+The library supports `Django 2.2
+<https://docs.djangoproject.com/en/2.2/>`_, and `Django 3.2
+<https://docs.djangoproject.com/en/3.2/>`_.
+Both versions are long-term support (LTS) releases for the
+`Django project<https://www.djangoproject.com/download/#supported-versions>_`.
+The minimum required Python version is 3.6.
 
-This package follows a common versioning convention for Django plugins: the
-major and minor version components of this package should match the installed
-version of Django. That is, ``django-google-spanner~=2.2`` works with
-``Django~=2.2``.
 
 Installing the package
 ~~~~~~~~~~~~~~~~~~~~~~

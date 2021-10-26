@@ -158,8 +158,9 @@ Example:
 
 More details about this issue can be tracked `here <https://code.djangoproject.com/ticket/33052>`_. 
 
-Support for Json field is currently not there
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Support for query inside JSONfield is currently not there
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This library currently does not support json. For more info on json support support follow this `github issue <https://github.com/googleapis/python-spanner-django/issues/707>`_.
-
+We have also added support for JSON object storage and retrieval with Django 3.2.x support in v2.2.1b4 release,
+but querying inside the JSONfield is not supported in the current `django-google-spanner` release.
+This feature is being worked on and can be tracked `here <https://github.com/googleapis/python-spanner-django/issues/716>`_.
