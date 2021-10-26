@@ -18,6 +18,7 @@ pandas==0.24.2
 proto-plus==1.10.0
 protobuf==3.12.0
 pyarrow==3.0.0
+python-dateutil==2.7.2
 requests==2.18.0
 Shapely==1.6.0
 six==1.13.0

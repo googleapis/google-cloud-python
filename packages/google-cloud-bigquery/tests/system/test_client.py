@@ -38,11 +38,6 @@ except ImportError:  # pragma: NO COVER
     bigquery_storage = None
 
 try:
-    import fastavro  # to parse BQ storage client results
-except ImportError:  # pragma: NO COVER
-    fastavro = None
-
-try:
     import pyarrow
     import pyarrow.types
 except ImportError:  # pragma: NO COVER

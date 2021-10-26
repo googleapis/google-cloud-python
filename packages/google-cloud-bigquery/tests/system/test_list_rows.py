@@ -15,6 +15,8 @@
 import datetime
 import decimal
 
+from dateutil import relativedelta
+
 from google.cloud import bigquery
 from google.cloud.bigquery import enums
 
@@ -64,6 +66,9 @@ def test_list_rows_scalars(bigquery_client: bigquery.Client, scalars_table: str)
     assert row["datetime_col"] == datetime.datetime(2021, 7, 21, 11, 39, 45)
     assert row["geography_col"] == "POINT(-122.0838511 37.3860517)"
     assert row["int64_col"] == 123456789
+    assert row["interval_col"] == relativedelta.relativedelta(
+        years=7, months=11, days=9, hours=4, minutes=15, seconds=37, microseconds=123456
+    )
     assert row["numeric_col"] == decimal.Decimal("1.23456789")
     assert row["bignumeric_col"] == decimal.Decimal("10.111213141516171819")
     assert row["float64_col"] == 1.25
@@ -95,6 +100,9 @@ def test_list_rows_scalars_extreme(
     assert row["datetime_col"] == datetime.datetime(9999, 12, 31, 23, 59, 59, 999999)
     assert row["geography_col"] == "POINT(-135 90)"
     assert row["int64_col"] == 9223372036854775807
+    assert row["interval_col"] == relativedelta.relativedelta(
+        years=-10000, days=-3660000, hours=-87840000
+    )
     assert row["numeric_col"] == decimal.Decimal(f"9.{'9' * 37}E+28")
     assert row["bignumeric_col"] == decimal.Decimal(f"9.{'9' * 75}E+37")
     assert row["float64_col"] == float("Inf")

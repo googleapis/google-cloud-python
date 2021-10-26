@@ -42,6 +42,7 @@ dependencies = [
     "google-resumable-media >= 0.6.0, < 3.0dev",
     "packaging >= 14.3",
     "protobuf >= 3.12.0",
+    "python-dateutil >= 2.7.2, <3.0dev",
     "requests >= 2.18.0, < 3.0.0dev",
 ]
 extras = {
