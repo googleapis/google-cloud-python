@@ -351,12 +351,12 @@ class CertificateAuthority(proto.Message):
                 allowed_dns_names (Sequence[str]):
                     Optional. Contains valid, fully-qualified host names. Glob
                     patterns are also supported. To allow an explicit wildcard
-                    certificate, escape with backlash (i.e. "*"). E.g. for
-                    globbed entries: '*bar.com' will allow foo.bar.com, but not
-                    *.bar.com, unless the
+                    certificate, escape with backlash (i.e. ``\*``). E.g. for
+                    globbed entries: ``*bar.com`` will allow ``foo.bar.com``,
+                    but not ``*.bar.com``, unless the
                     [allow_globbing_dns_wildcards][google.cloud.security.privateca.v1beta1.CertificateAuthority.CertificateAuthorityPolicy.AllowedSubjectAltNames.allow_globbing_dns_wildcards]
-                    field is set. E.g. for wildcard entries: '*.bar.com' will
-                    allow '*.bar.com', but not 'foo.bar.com'.
+                    field is set. E.g. for wildcard entries: ``\*.bar.com`` will
+                    allow ``*.bar.com``, but not ``foo.bar.com``.
                 allowed_uris (Sequence[str]):
                     Optional. Contains valid RFC 3986 URIs. Glob patterns are
                     also supported. To match across path seperators (i.e. '/')
