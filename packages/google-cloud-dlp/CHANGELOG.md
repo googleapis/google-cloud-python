@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.3.0](https://www.github.com/googleapis/python-dlp/compare/v3.2.4...v3.3.0) (2021-10-26)
+
+
+### Features
+
+* add context manager support in client ([#272](https://www.github.com/googleapis/python-dlp/issues/272)) ([c0ba4eb](https://www.github.com/googleapis/python-dlp/commit/c0ba4eb27304c4e216864f6707693b27dc22c214))
+
 ### [3.2.4](https://www.github.com/googleapis/python-dlp/compare/v3.2.3...v3.2.4) (2021-10-05)
 
 
