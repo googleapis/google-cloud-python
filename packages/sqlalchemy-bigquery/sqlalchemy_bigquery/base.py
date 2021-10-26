@@ -50,6 +50,7 @@ from sqlalchemy.sql.sqltypes import Integer, String, NullType, Numeric
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.sql.schema import Column
+from sqlalchemy.sql.schema import Table
 from sqlalchemy.sql import elements, selectable
 import re
 
@@ -289,12 +290,18 @@ class BigQueryCompiler(_struct.SQLCompiler, SQLCompiler):
             if isinstance(tablename, elements._truncated_label):
                 tablename = self._truncated_identifier("alias", tablename)
             elif TABLE_VALUED_ALIAS_ALIASES in kwargs:
-                aliases = kwargs[TABLE_VALUED_ALIAS_ALIASES]
-                if tablename not in aliases:
-                    aliases[tablename] = self.anon_map[
-                        f"{TABLE_VALUED_ALIAS_ALIASES} {tablename}"
-                    ]
-                tablename = aliases[tablename]
+                known_tables = set(
+                    from_.name
+                    for from_ in self.compile_state.froms
+                    if isinstance(from_, Table)
+                )
+                if tablename not in known_tables:
+                    aliases = kwargs[TABLE_VALUED_ALIAS_ALIASES]
+                    if tablename not in aliases:
+                        aliases[tablename] = self.anon_map[
+                            f"{TABLE_VALUED_ALIAS_ALIASES} {tablename}"
+                        ]
+                    tablename = aliases[tablename]
 
             return self.preparer.quote(tablename) + "." + name
 

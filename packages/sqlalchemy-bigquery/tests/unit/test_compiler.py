@@ -21,6 +21,7 @@ import pytest
 import sqlalchemy.exc
 
 from conftest import setup_table
+from conftest import sqlalchemy_1_4_or_higher
 
 
 def test_constraints_are_ignored(faux_conn, metadata):
@@ -53,3 +54,25 @@ def test_cant_compile_unnamed_column(faux_conn, metadata):
         match="Cannot compile Column object until its 'name' is assigned.",
     ):
         sqlalchemy.Column(sqlalchemy.Integer).compile(faux_conn)
+
+
+@sqlalchemy_1_4_or_higher
+def test_no_alias_for_known_tables(faux_conn, metadata):
+    # See: https://github.com/googleapis/python-bigquery-sqlalchemy/issues/353
+    table = setup_table(
+        faux_conn,
+        "table1",
+        metadata,
+        sqlalchemy.Column("foo", sqlalchemy.Integer),
+        sqlalchemy.Column("bar", sqlalchemy.ARRAY(sqlalchemy.Integer)),
+    )
+    F = sqlalchemy.func
+    q = sqlalchemy.select(table.c.foo).where(F.unnest(table.c.bar).column_valued() == 1)
+
+    expected_sql = (
+        "SELECT `table1`.`foo` \n"
+        "FROM `table1`, unnest(`table1`.`bar`) AS `anon_1` \n"
+        "WHERE `anon_1` = %(param_1:INT64)s"
+    )
+    found_sql = q.compile(faux_conn).string
+    assert found_sql == expected_sql
