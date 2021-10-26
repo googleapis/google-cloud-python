@@ -2,6 +2,7 @@
 
 .. include:: multiprocessing.rst
 
+
 API Reference
 -------------
 .. toctree::
@@ -10,12 +11,13 @@ API Reference
     servicemanagement_v1/services
     servicemanagement_v1/types
 
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-service-management`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
