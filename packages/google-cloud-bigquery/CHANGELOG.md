@@ -5,6 +5,27 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [2.29.0](https://www.github.com/googleapis/python-bigquery/compare/v2.28.1...v2.29.0) (2021-10-27)
+
+
+### Features
+
+* add `QueryJob.schema` property for dry run queries ([#1014](https://www.github.com/googleapis/python-bigquery/issues/1014)) ([2937fa1](https://www.github.com/googleapis/python-bigquery/commit/2937fa1386898766c561579fd39d42958182d260))
+* add session and connection properties to QueryJobConfig ([#1024](https://www.github.com/googleapis/python-bigquery/issues/1024)) ([e4c94f4](https://www.github.com/googleapis/python-bigquery/commit/e4c94f446c27eb474f30b033c1b62d11bd0acd98))
+* add support for INTERVAL data type to `list_rows` ([#840](https://www.github.com/googleapis/python-bigquery/issues/840)) ([e37380a](https://www.github.com/googleapis/python-bigquery/commit/e37380a959cbd5bb9cbbf6807f0a8ea147e0a713))
+* allow queryJob.result() to be called on a dryRun ([#1015](https://www.github.com/googleapis/python-bigquery/issues/1015)) ([685f06a](https://www.github.com/googleapis/python-bigquery/commit/685f06a5e7b5df17a53e9eb340ff04ecd1e51d1d))
+
+
+### Documentation
+
+* document ScriptStatistics and other missing resource classes ([#1023](https://www.github.com/googleapis/python-bigquery/issues/1023)) ([6679109](https://www.github.com/googleapis/python-bigquery/commit/66791093c61f262ea063d2a7950fc643915ee693))
+* fix formatting of generated client docstrings ([#1009](https://www.github.com/googleapis/python-bigquery/issues/1009)) ([f7b0ee4](https://www.github.com/googleapis/python-bigquery/commit/f7b0ee45a664295ccc9f209eeeac122af8de3c80))
+
+
+### Dependencies
+
+* allow pyarrow 6.x ([#1031](https://www.github.com/googleapis/python-bigquery/issues/1031)) ([1c2de74](https://www.github.com/googleapis/python-bigquery/commit/1c2de74a55046a343bcf9474f67100a82fb05401))
+
 ### [2.28.1](https://www.github.com/googleapis/python-bigquery/compare/v2.28.0...v2.28.1) (2021-10-07)
 
 
