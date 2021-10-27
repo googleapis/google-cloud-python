@@ -148,3 +148,17 @@ def test_json_snake_case():
     assert s.mass_kg == 20
 
     assert Squid.to_json(s, preserving_proto_field_name=True) == json_str
+
+
+def test_json_name():
+    class Squid(proto.Message):
+        massKg = proto.Field(proto.INT32, number=1, json_name="mass_in_kilograms")
+
+    s = Squid(massKg=20)
+    j = Squid.to_json(s)
+
+    assert "mass_in_kilograms" in j
+
+    s_two = Squid.from_json(j)
+
+    assert s == s_two

@@ -22,7 +22,16 @@ import nox
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 
-@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
+PYTHON_VERSIONS = [
+    "3.6",
+    "3.7",
+    "3.8",
+    "3.9",
+    "3.10",
+]
+
+
+@nox.session(python=PYTHON_VERSIONS)
 def unit(session, proto="python"):
     """Run the unit test suite."""
 
@@ -54,12 +63,13 @@ def unit(session, proto="python"):
 # Check if protobuf has released wheels for new python versions
 # https://pypi.org/project/protobuf/#files
 # This list will generally be shorter than 'unit'
-@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
+@nox.session(python=PYTHON_VERSIONS)
 def unitcpp(session):
     return unit(session, proto="cpp")
 
 
-@nox.session(python="3.9")
+# Just use the most recent version for docs
+@nox.session(python=PYTHON_VERSIONS[-1])
 def docs(session):
     """Build the docs."""
 
