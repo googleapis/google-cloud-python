@@ -31,7 +31,10 @@ class StringyNumberRule:
         return value
 
     def to_proto(self, value):
-        return self._python_type(value)
+        if value is not None:
+            return self._python_type(value)
+
+        return None
 
 
 class Int64Rule(StringyNumberRule):
