@@ -203,6 +203,19 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         return ScriptStatistics(resource)
 
     @property
+    def session_info(self) -> Optional["SessionInfo"]:
+        """[Preview] Information of the session if this job is part of one.
+
+        .. versionadded:: 2.29.0
+        """
+        resource = _helpers._get_sub_prop(
+            self._properties, ["statistics", "sessionInfo"]
+        )
+        if resource is None:
+            return None
+        return SessionInfo(resource)
+
+    @property
     def num_child_jobs(self):
         """The number of child jobs executed.
 
@@ -988,6 +1001,24 @@ class ScriptStatistics(object):
         Possible values include ``STATEMENT`` and ``EXPRESSION``.
         """
         return self._properties.get("evaluationKind")
+
+
+class SessionInfo:
+    """[Preview] Information of the session if this job is part of one.
+
+    .. versionadded:: 2.29.0
+
+    Args:
+        resource (Map[str, Any]): JSON representation of object.
+    """
+
+    def __init__(self, resource):
+        self._properties = resource
+
+    @property
+    def session_id(self) -> Optional[str]:
+        """The ID of the session."""
+        return self._properties.get("sessionId")
 
 
 class UnknownJob(_AsyncJob):

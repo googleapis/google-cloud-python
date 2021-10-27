@@ -18,7 +18,7 @@ from collections import OrderedDict
 import copy
 import datetime
 import decimal
-from typing import Optional, Union
+from typing import Any, Optional, Dict, Union
 
 from google.cloud.bigquery.table import _parse_schema_resource
 from google.cloud.bigquery._helpers import _rows_from_json
@@ -29,6 +29,65 @@ from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_PARAM
 _SCALAR_VALUE_TYPE = Optional[
     Union[str, int, float, decimal.Decimal, bool, datetime.datetime, datetime.date]
 ]
+
+
+class ConnectionProperty:
+    """A connection-level property to customize query behavior.
+
+    See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/ConnectionProperty
+
+    Args:
+        key:
+            The key of the property to set, for example, ``'time_zone'`` or
+            ``'session_id'``.
+        value: The value of the property to set.
+    """
+
+    def __init__(self, key: str = "", value: str = ""):
+        self._properties = {
+            "key": key,
+            "value": value,
+        }
+
+    @property
+    def key(self) -> str:
+        """Name of the property.
+
+        For example:
+
+        * ``time_zone``
+        * ``session_id``
+        """
+        return self._properties["key"]
+
+    @property
+    def value(self) -> str:
+        """Value of the property."""
+        return self._properties["value"]
+
+    @classmethod
+    def from_api_repr(cls, resource) -> "ConnectionProperty":
+        """Construct :class:`~google.cloud.bigquery.query.ConnectionProperty`
+        from JSON resource.
+
+        Args:
+            resource: JSON representation.
+
+        Returns:
+            A connection property.
+        """
+        value = cls()
+        value._properties = resource
+        return value
+
+    def to_api_repr(self) -> Dict[str, Any]:
+        """Construct JSON API representation for the connection property.
+
+        Returns:
+            JSON mapping
+        """
+        return self._properties
 
 
 class UDFResource(object):

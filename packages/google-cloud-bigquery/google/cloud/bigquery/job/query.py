@@ -18,7 +18,7 @@ import concurrent.futures
 import copy
 import re
 import typing
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Iterable, List, Optional, Union
 
 from google.api_core import exceptions
 from google.api_core.future import polling as polling_future
@@ -31,11 +31,14 @@ from google.cloud.bigquery.encryption_configuration import EncryptionConfigurati
 from google.cloud.bigquery.enums import KeyResultStatementKind
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery import _helpers
-from google.cloud.bigquery.query import _query_param_from_api_repr
-from google.cloud.bigquery.query import ArrayQueryParameter
-from google.cloud.bigquery.query import ScalarQueryParameter
-from google.cloud.bigquery.query import StructQueryParameter
-from google.cloud.bigquery.query import UDFResource
+from google.cloud.bigquery.query import (
+    _query_param_from_api_repr,
+    ArrayQueryParameter,
+    ConnectionProperty,
+    ScalarQueryParameter,
+    StructQueryParameter,
+    UDFResource,
+)
 from google.cloud.bigquery.retry import DEFAULT_RETRY, DEFAULT_JOB_RETRY
 from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.schema import SchemaField
@@ -270,6 +273,24 @@ class QueryJobConfig(_JobConfig):
         self._set_sub_prop("allowLargeResults", value)
 
     @property
+    def connection_properties(self) -> List[ConnectionProperty]:
+        """Connection properties.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.connection_properties
+
+        .. versionadded:: 2.29.0
+        """
+        resource = self._get_sub_prop("connectionProperties", [])
+        return [ConnectionProperty.from_api_repr(prop) for prop in resource]
+
+    @connection_properties.setter
+    def connection_properties(self, value: Iterable[ConnectionProperty]):
+        self._set_sub_prop(
+            "connectionProperties", [prop.to_api_repr() for prop in value],
+        )
+
+    @property
     def create_disposition(self):
         """google.cloud.bigquery.job.CreateDisposition: Specifies behavior
         for creating tables.
@@ -282,6 +303,27 @@ class QueryJobConfig(_JobConfig):
     @create_disposition.setter
     def create_disposition(self, value):
         self._set_sub_prop("createDisposition", value)
+
+    @property
+    def create_session(self) -> Optional[bool]:
+        """[Preview] If :data:`True`, creates a new session, where
+        :attr:`~google.cloud.bigquery.job.QueryJob.session_info` will contain a
+        random server generated session id.
+
+        If :data:`False`, runs query with an existing ``session_id`` passed in
+        :attr:`~google.cloud.bigquery.job.QueryJobConfig.connection_properties`,
+        otherwise runs query in non-session mode.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationQuery.FIELDS.create_session
+
+        .. versionadded:: 2.29.0
+        """
+        return self._get_sub_prop("createSession")
+
+    @create_session.setter
+    def create_session(self, value: Optional[bool]):
+        self._set_sub_prop("createSession", value)
 
     @property
     def default_dataset(self):
@@ -613,7 +655,7 @@ class QueryJobConfig(_JobConfig):
 
     @property
     def script_options(self) -> ScriptOptions:
-        """Connection properties which can modify the query behavior.
+        """Options controlling the execution of scripts.
 
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#scriptoptions
         """
@@ -695,11 +737,29 @@ class QueryJob(_AsyncJob):
         return self._configuration.allow_large_results
 
     @property
+    def connection_properties(self) -> List[ConnectionProperty]:
+        """See
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.connection_properties`.
+
+        .. versionadded:: 2.29.0
+        """
+        return self._configuration.connection_properties
+
+    @property
     def create_disposition(self):
         """See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.create_disposition`.
         """
         return self._configuration.create_disposition
+
+    @property
+    def create_session(self) -> Optional[bool]:
+        """See
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.create_session`.
+
+        .. versionadded:: 2.29.0
+        """
+        return self._configuration.create_session
 
     @property
     def default_dataset(self):

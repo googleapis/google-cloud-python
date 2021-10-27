@@ -52,6 +52,7 @@ from google.cloud.bigquery.external_config import GoogleSheetsOptions
 from google.cloud.bigquery.external_config import ExternalSourceFormat
 from google.cloud.bigquery.format_options import AvroOptions
 from google.cloud.bigquery.format_options import ParquetOptions
+from google.cloud.bigquery.job.base import SessionInfo
 from google.cloud.bigquery.job import Compression
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import CopyJobConfig
@@ -77,6 +78,7 @@ from google.cloud.bigquery.model import Model
 from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ArrayQueryParameterType
+from google.cloud.bigquery.query import ConnectionProperty
 from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameterType
 from google.cloud.bigquery.query import StructQueryParameter
@@ -104,6 +106,7 @@ __all__ = [
     "__version__",
     "Client",
     # Queries
+    "ConnectionProperty",
     "QueryJob",
     "QueryJobConfig",
     "ArrayQueryParameter",
@@ -132,6 +135,7 @@ __all__ = [
     "ExtractJobConfig",
     "LoadJob",
     "LoadJobConfig",
+    "SessionInfo",
     "UnknownJob",
     # Models
     "Model",

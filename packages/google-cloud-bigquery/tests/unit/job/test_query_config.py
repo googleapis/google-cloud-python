@@ -152,6 +152,27 @@ class TestQueryJobConfig(_Base):
         config.clustering_fields = None
         self.assertIsNone(config.clustering_fields)
 
+    def test_connection_properties(self):
+        from google.cloud.bigquery.job.query import ConnectionProperty
+
+        config = self._get_target_class()()
+        self.assertEqual(len(config.connection_properties), 0)
+
+        session_id = ConnectionProperty("session_id", "abcd")
+        time_zone = ConnectionProperty("time_zone", "America/Chicago")
+        config.connection_properties = [session_id, time_zone]
+        self.assertEqual(len(config.connection_properties), 2)
+        self.assertEqual(config.connection_properties[0].key, "session_id")
+        self.assertEqual(config.connection_properties[0].value, "abcd")
+        self.assertEqual(config.connection_properties[1].key, "time_zone")
+        self.assertEqual(config.connection_properties[1].value, "America/Chicago")
+
+    def test_create_session(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.create_session)
+        config.create_session = True
+        self.assertTrue(config.create_session)
+
     def test_from_api_repr_empty(self):
         klass = self._get_target_class()
         config = klass.from_api_repr({})

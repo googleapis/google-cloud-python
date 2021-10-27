@@ -228,6 +228,15 @@ class Test_AsyncJob(unittest.TestCase):
         self.assertEqual(stack_frame.end_column, 14)
         self.assertEqual(stack_frame.text, "QUERY TEXT")
 
+    def test_session_info(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+
+        self.assertIsNone(job.session_info)
+        job._properties["statistics"] = {"sessionInfo": {"sessionId": "abcdefg"}}
+        self.assertIsNotNone(job.session_info)
+        self.assertEqual(job.session_info.session_id, "abcdefg")
+
     def test_transaction_info(self):
         from google.cloud.bigquery.job.base import TransactionInfo
 
