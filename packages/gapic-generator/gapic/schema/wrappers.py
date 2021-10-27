@@ -743,6 +743,7 @@ class HttpRule:
         uri = getattr(http_rule, method)
         if not uri:
             return None
+        uri = utils.convert_uri_fieldnames(uri)
 
         body = http_rule.body or None
         return cls(method, uri, body)

@@ -34,7 +34,7 @@ def unit(session):
     """Run the unit test suite."""
 
     session.install(
-        "coverage", "pytest-cov", "pytest", "pytest-xdist", "pyfakefs",
+        "coverage", "pytest-cov", "pytest", "pytest-xdist", "pyfakefs", "grpcio-status",
     )
     session.install("-e", ".")
 

@@ -452,6 +452,19 @@ def test_method_http_options_additional_bindings():
             }]
 
 
+def test_method_http_options_reserved_name_in_url():
+    http_rule = http_pb2.HttpRule(
+        post='/v1/license/{license=lic/*}',
+        body='*'
+    )
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert [dataclasses.asdict(http) for http in method.http_options] == [{
+        'method': 'post',
+        'uri': '/v1/license/{license_=lic/*}',
+        'body': '*'
+    }]
+
+
 def test_method_http_options_generate_sample():
     http_rule = http_pb2.HttpRule(
         get='/v1/{resource.id=projects/*/regions/*/id/**}/stuff',
