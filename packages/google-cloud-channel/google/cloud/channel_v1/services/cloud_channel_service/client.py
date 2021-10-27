@@ -193,6 +193,22 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def channel_partner_link_path(account: str, channel_partner_link: str,) -> str:
+        """Returns a fully-qualified channel_partner_link string."""
+        return "accounts/{account}/channelPartnerLinks/{channel_partner_link}".format(
+            account=account, channel_partner_link=channel_partner_link,
+        )
+
+    @staticmethod
+    def parse_channel_partner_link_path(path: str) -> Dict[str, str]:
+        """Parses a channel_partner_link path into its component segments."""
+        m = re.match(
+            r"^accounts/(?P<account>.+?)/channelPartnerLinks/(?P<channel_partner_link>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def customer_path(account: str, customer: str,) -> str:
         """Returns a fully-qualified customer string."""
         return "accounts/{account}/customers/{customer}".format(

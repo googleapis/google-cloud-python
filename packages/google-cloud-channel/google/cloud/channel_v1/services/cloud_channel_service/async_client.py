@@ -76,6 +76,12 @@ class CloudChannelServiceAsyncClient:
     DEFAULT_ENDPOINT = CloudChannelServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = CloudChannelServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    channel_partner_link_path = staticmethod(
+        CloudChannelServiceClient.channel_partner_link_path
+    )
+    parse_channel_partner_link_path = staticmethod(
+        CloudChannelServiceClient.parse_channel_partner_link_path
+    )
     customer_path = staticmethod(CloudChannelServiceClient.customer_path)
     parse_customer_path = staticmethod(CloudChannelServiceClient.parse_customer_path)
     entitlement_path = staticmethod(CloudChannelServiceClient.entitlement_path)
