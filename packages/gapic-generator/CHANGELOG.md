@@ -1,5 +1,14 @@
 # Changelog
 
+### [0.53.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.53.1...v0.53.2) (2021-10-27)
+
+
+### Bug Fixes
+
+* Adjust Field Names in URI Templates ([#1041](https://www.github.com/googleapis/gapic-generator-python/issues/1041)) ([06cd7b6](https://www.github.com/googleapis/gapic-generator-python/commit/06cd7b66f0f303b066f7f1f510332ae19aa9de8e))
+* Fix rest transport logic ([#1039](https://www.github.com/googleapis/gapic-generator-python/issues/1039)) ([50d61af](https://www.github.com/googleapis/gapic-generator-python/commit/50d61afd30b021835fe898e41b783f4d04acff09))
+* list oneofs in docstring ([#1030](https://www.github.com/googleapis/gapic-generator-python/issues/1030)) ([a0e25c8](https://www.github.com/googleapis/gapic-generator-python/commit/a0e25c8c00391b99a351e667eddc8b4fecad30d8))
+
 ### [0.53.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.53.0...v0.53.1) (2021-10-13)
 
 
