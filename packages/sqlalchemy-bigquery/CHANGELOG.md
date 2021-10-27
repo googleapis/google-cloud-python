@@ -14,6 +14,15 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+### [1.2.1](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.2.0...v1.2.1) (2021-10-27)
+
+
+### Bug Fixes
+
+* avoid creating aliases for already-known tables ([#361](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/361)) ([1ce4e14](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/1ce4e14c81a4b378dfcfba808507e6c545f34841))
+* avoid scribbling on (reused) bind param ([#365](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/365)) ([d28cac5](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/d28cac5864f183c0ca503854973d837b17783d52))
+* include external tables in 'get_table_names' ([#363](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/363)) ([5e158fe](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/5e158fe8bb2394369c020337092b5cfdb01880e0))
+
 ## [1.2.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.1.0...v1.2.0) (2021-09-09)
 
 
