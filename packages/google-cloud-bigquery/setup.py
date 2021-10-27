@@ -28,6 +28,7 @@ description = "Google BigQuery API client library"
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
+pyarrow_dep = ["pyarrow >= 3.0.0, < 7.0dev"]
 dependencies = [
     "grpcio >= 1.38.1, < 2.0dev",  # https://github.com/googleapis/python-bigquery/issues/695
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
@@ -55,11 +56,11 @@ extras = {
         # grpc.Channel.close() method isn't added until 1.32.0.
         # https://github.com/grpc/grpc/pull/15254
         "grpcio >= 1.38.1, < 2.0dev",
-        "pyarrow >= 3.0.0, < 6.0dev",
-    ],
+    ]
+    + pyarrow_dep,
     "geopandas": ["geopandas>=0.9.0, <1.0dev", "Shapely>=1.6.0, <2.0dev"],
-    "pandas": ["pandas>=0.23.0", "pyarrow >= 3.0.0, < 6.0dev"],
-    "bignumeric_type": ["pyarrow >= 3.0.0, < 6.0dev"],
+    "pandas": ["pandas>=0.23.0"] + pyarrow_dep,
+    "bignumeric_type": pyarrow_dep,
     "tqdm": ["tqdm >= 4.7.4, <5.0.0dev"],
     "opentelemetry": [
         "opentelemetry-api >= 0.11b0",
