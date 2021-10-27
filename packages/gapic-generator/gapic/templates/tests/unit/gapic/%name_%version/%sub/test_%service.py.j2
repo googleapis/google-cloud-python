@@ -1337,6 +1337,13 @@ def test_{{ method.name|snake_case }}_rest_pager():
             req.side_effect = return_values
 
             sample_request = {{ method.http_options[0].sample_request }}
+            {% for field in method.body_fields.values() %}
+            {% if not field.oneof or field.proto3_optional %}
+            {# ignore oneof fields that might conflict with sample_request #}
+            sample_request["{{ field.name }}"] = {{ field.mock_value }}
+            {% endif %}
+            {% endfor %}
+
             pager = client.{{ method.name|snake_case }}(request=sample_request)
 
             {% if method.paged_result_field.map %}

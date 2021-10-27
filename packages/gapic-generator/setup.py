@@ -44,7 +44,7 @@ setup(
     include_package_data=True,
     install_requires=(
         "click >= 6.7",
-        "google-api-core >= 2.1.0",
+        "google-api-core >= 2.2.0",
         "googleapis-common-protos >= 1.53.0",
         "grpcio >= 1.24.3",
         "jinja2 >= 2.10",

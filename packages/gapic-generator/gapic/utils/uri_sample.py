@@ -71,6 +71,8 @@ def sample_from_path_fields(paths: List[Tuple[str, str]]) -> Dict[Any, Any]:
 
     for path, template in paths:
         sample_value = re.sub(
-            r"(\*\*|\*)", lambda n: next(sample_names), template)
+            r"(\*\*|\*)",
+            lambda n: next(sample_names), template if template else '*'
+        )
         add_field(request, path, sample_value)
     return request
