@@ -802,7 +802,7 @@ class BigQueryDialect(DefaultDialect):
         )
         return ([client], {})
 
-    def _get_table_or_view_names(self, connection, table_type, schema=None):
+    def _get_table_or_view_names(self, connection, item_types, schema=None):
         current_schema = schema or self.dataset_id
         get_table_name = (
             self._build_formatted_table_id
@@ -823,7 +823,7 @@ class BigQueryDialect(DefaultDialect):
                     dataset.reference, page_size=self.list_tables_page_size
                 )
                 for table in tables:
-                    if table_type == table.table_type:
+                    if table.table_type in item_types:
                         result.append(get_table_name(table))
             except google.api_core.exceptions.NotFound:
                 # It's possible that the dataset was deleted between when we
@@ -976,13 +976,15 @@ class BigQueryDialect(DefaultDialect):
         if isinstance(connection, Engine):
             connection = connection.connect()
 
-        return self._get_table_or_view_names(connection, "TABLE", schema)
+        item_types = ["TABLE", "EXTERNAL"]
+        return self._get_table_or_view_names(connection, item_types, schema)
 
     def get_view_names(self, connection, schema=None, **kw):
         if isinstance(connection, Engine):
             connection = connection.connect()
 
-        return self._get_table_or_view_names(connection, "VIEW", schema)
+        item_types = ["VIEW", "MATERIALIZED_VIEW"]
+        return self._get_table_or_view_names(connection, item_types, schema)
 
     def do_rollback(self, dbapi_connection):
         # BigQuery has no support for transactions.

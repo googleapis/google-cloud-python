@@ -77,9 +77,11 @@ def table_item(dataset_id, table_id, type_="TABLE"):
                 [
                     table_item("dataset_2", "d2t1"),
                     table_item("dataset_2", "d2view", type_="VIEW"),
+                    table_item("dataset_2", "d2ext", type_="EXTERNAL"),
+                    table_item("dataset_2", "d2mv", type_="MATERIALIZED_VIEW"),
                 ],
             ],
-            ["dataset_1.d1t1", "dataset_1.d1t2", "dataset_2.d2t1"],
+            ["dataset_1.d1t1", "dataset_1.d1t2", "dataset_2.d2t1", "dataset_2.d2ext"],
         ),
         (
             [dataset_item("dataset_1"), dataset_item("dataset_deleted")],
@@ -117,9 +119,11 @@ def test_get_table_names(
                 [
                     table_item("dataset_2", "d2t1"),
                     table_item("dataset_2", "d2view", type_="VIEW"),
+                    table_item("dataset_2", "d2ext", type_="EXTERNAL"),
+                    table_item("dataset_2", "d2mv", type_="MATERIALIZED_VIEW"),
                 ],
             ],
-            ["dataset_1.d1view", "dataset_2.d2view"],
+            ["dataset_1.d1view", "dataset_2.d2view", "dataset_2.d2mv"],
         ),
         (
             [dataset_item("dataset_1"), dataset_item("dataset_deleted")],
