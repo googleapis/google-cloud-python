@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.19.7](https://www.github.com/googleapis/proto-plus-python/compare/v1.19.6...v1.19.7) (2021-10-27)
+
+
+### Bug Fixes
+
+* restore allowing None as value for stringy ints ([#272](https://www.github.com/googleapis/proto-plus-python/issues/272)) ([a8991d7](https://www.github.com/googleapis/proto-plus-python/commit/a8991d71ff455093fbfef142f9140d3f2928195f))
+
 ### [1.19.6](https://www.github.com/googleapis/proto-plus-python/compare/v1.19.5...v1.19.6) (2021-10-25)
 
 
