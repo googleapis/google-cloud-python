@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.53.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.53.2...v0.53.3) (2021-10-27)
+
+
+### Bug Fixes
+
+* more fixes for rest transport ([#1042](https://www.github.com/googleapis/gapic-generator-python/issues/1042)) ([13d5f77](https://www.github.com/googleapis/gapic-generator-python/commit/13d5f77f8b6d4ce1181b29f2335d7584783be753))
+
 ### [0.53.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.53.1...v0.53.2) (2021-10-27)
 
 
