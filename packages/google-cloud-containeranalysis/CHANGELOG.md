@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.6.1](https://www.github.com/googleapis/python-containeranalysis/compare/v2.6.0...v2.6.1) (2021-10-28)
+
+
+### Bug Fixes
+
+* fix extra_require typo ([#202](https://www.github.com/googleapis/python-containeranalysis/issues/202)) ([2948965](https://www.github.com/googleapis/python-containeranalysis/commit/2948965ecf269e97244c5388c389cf351d6abd1a))
+
 ## [2.6.0](https://www.github.com/googleapis/python-containeranalysis/compare/v2.5.0...v2.6.0) (2021-10-20)
 
 
