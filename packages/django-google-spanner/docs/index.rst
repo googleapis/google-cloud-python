@@ -27,7 +27,7 @@ For a list of all ``google-cloud-spanner-django`` releases:
   changelog
 
 Limitations
----------
+-----------
 
 .. toctree::
   :maxdepth: 1
