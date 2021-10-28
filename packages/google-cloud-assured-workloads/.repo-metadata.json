@@ -4,7 +4,7 @@
     "product_documentation": "https://cloud.google.com/assured-workloads/",
     "client_documentation": "https://googleapis.dev/python/assuredworkloads/latest",
     "issue_tracker": "",
-    "release_level": "beta",
+    "release_level": "ga",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-assured-workloads",

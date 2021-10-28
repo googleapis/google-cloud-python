@@ -1,7 +1,7 @@
 Python Client for Assured Workloads
 =================================================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Assured Workloads API`_: Secure your government workloads and accelerate
 your path to running compliant workloads on Google Cloud with Assured Workloads for
@@ -10,8 +10,8 @@ Government.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-assured-workloads.svg
    :target: https://pypi.org/project/google-cloud-assured-workloads/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-assured-workloads.svg
