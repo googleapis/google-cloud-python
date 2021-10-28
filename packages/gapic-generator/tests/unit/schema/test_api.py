@@ -944,18 +944,68 @@ def test_lro():
     assert len(lro_proto.messages) == 1
 
 
-def test_lro_missing_annotation():
+def test_lro_operation_no_annotation():
+    # A method that returns google.longrunning.Operation,
+    # but has no operation_info option, is treated as not lro.
+
     # Set up a prior proto that mimics google/protobuf/empty.proto
     lro_proto = api.Proto.build(make_file_pb2(
         name='operations.proto', package='google.longrunning',
         messages=(make_message_pb2(name='Operation'),),
     ), file_to_generate=False, naming=make_naming())
 
-    # Set up a method with an LRO but no annotation.
+    # Set up a method that returns an Operation, but has no annotation.
+    method_pb2 = descriptor_pb2.MethodDescriptorProto(
+        name='GetOperation',
+        input_type='google.example.v3.GetOperationRequest',
+        output_type='google.longrunning.Operation',
+    )
+
+    # Set up the service with an RPC.
+    service_pb = descriptor_pb2.ServiceDescriptorProto(
+        name='OperationService',
+        method=(method_pb2,),
+    )
+
+    # Set up the messages, including the annotated ones.
+    messages = (
+        make_message_pb2(name='GetOperationRequest', fields=()),
+    )
+
+    # Finally, set up the file that encompasses these.
+    fdp = make_file_pb2(
+        package='google.example.v3',
+        messages=messages,
+        services=(service_pb,),
+    )
+
+    # Make the proto object.
+    proto = api.Proto.build(fdp, file_to_generate=True, prior_protos={
+        'google/longrunning/operations.proto': lro_proto,
+    }, naming=make_naming())
+
+    service = proto.services['google.example.v3.OperationService']
+    method = service.methods['GetOperation']
+    assert method.lro is None
+
+
+def test_lro_bad_annotation():
+    # Set up a prior proto that mimics google/protobuf/empty.proto
+    lro_proto = api.Proto.build(make_file_pb2(
+        name='operations.proto', package='google.longrunning',
+        messages=(make_message_pb2(name='Operation'),),
+    ), file_to_generate=False, naming=make_naming())
+
+    # Set up a method with an LRO and incomplete annotation.
     method_pb2 = descriptor_pb2.MethodDescriptorProto(
         name='AsyncDoThing',
         input_type='google.example.v3.AsyncDoThingRequest',
         output_type='google.longrunning.Operation',
+    )
+    method_pb2.options.Extensions[operations_pb2.operation_info].MergeFrom(
+        operations_pb2.OperationInfo(
+            response_type='google.example.v3.AsyncDoThingResponse',
+        ),
     )
 
     # Set up the service with an RPC.
