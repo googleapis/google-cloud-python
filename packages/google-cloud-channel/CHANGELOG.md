@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://www.github.com/googleapis/python-channel/compare/v1.5.0...v1.6.0) (2021-10-27)
+
+
+### Features
+
+* add resource type to ChannelPartnerLink ([#112](https://www.github.com/googleapis/python-channel/issues/112)) ([76433c4](https://www.github.com/googleapis/python-channel/commit/76433c4869cdbaec4c43f2a85632a9e2a272f207))
+
 ## [1.5.0](https://www.github.com/googleapis/python-channel/compare/v1.4.0...v1.5.0) (2021-10-18)
 
 
