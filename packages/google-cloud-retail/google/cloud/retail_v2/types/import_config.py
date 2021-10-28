@@ -205,8 +205,8 @@ class ImportProductsRequest(proto.Message):
             Unique identifier provided by client, within the ancestor
             dataset scope. Ensures idempotency and used for request
             deduplication. Server-generated if unspecified. Up to 128
-            characters long and must match the pattern: "[a-zA-Z0-9\_]+".
-            This is returned as [Operation.name][] in
+            characters long and must match the pattern:
+            ``[a-zA-Z0-9\_]+``. This is returned as [Operation.name][] in
             [ImportMetadata][google.cloud.retail.v2.ImportMetadata].
 
             Only supported when

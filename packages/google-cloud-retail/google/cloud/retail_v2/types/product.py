@@ -261,8 +261,8 @@ class Product(proto.Message):
             -  The key must be a UTF-8 encoded string with a length
                limit of 128 characters.
             -  For indexable attribute, the key must match the pattern:
-               [a-zA-Z0-9][a-zA-Z0-9\_]*. For example, key0LikeThis or
-               KEY_1_LIKE_THIS.
+               ``[a-zA-Z0-9][a-zA-Z0-9\_]*``. For example, key0LikeThis
+               or KEY_1_LIKE_THIS.
         tags (Sequence[str]):
             Custom tags associated with the product.
 

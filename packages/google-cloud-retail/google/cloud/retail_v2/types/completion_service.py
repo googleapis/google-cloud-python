@@ -58,19 +58,19 @@ class CompleteQueryRequest(proto.Message):
         device_type (str):
             The device type context for completion suggestions. It is
             useful to apply different suggestions on different device
-            types, e.g. DESKTOP, MOBILE. If it is empty, the suggestions
-            are across all device types.
+            types, e.g. ``DESKTOP``, ``MOBILE``. If it is empty, the
+            suggestions are across all device types.
 
             Supported formats:
 
-            -  UNKNOWN_DEVICE_TYPE
+            -  ``UNKNOWN_DEVICE_TYPE``
 
-            -  DESKTOP
+            -  ``DESKTOP``
 
-            -  MOBILE
+            -  ``MOBILE``
 
-            -  A customized string starts with OTHER\_, e.g.
-               OTHER_IPHONE.
+            -  A customized string starts with ``OTHER_``, e.g.
+               ``OTHER_IPHONE``.
         dataset (str):
             Determines which dataset to use for fetching completion.
             "user-data" will use the imported dataset through
