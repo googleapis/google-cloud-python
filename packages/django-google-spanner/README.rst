@@ -1,6 +1,8 @@
 Cloud Spanner support for Django
 ================================
 
+|GA| |pypi| |versions|
+
 `Cloud Spanner`_ is the world's first fully managed relational database service
 to offer both strong consistency and horizontal scalability for
 mission-critical online transaction processing (OLTP) applications. With Cloud
@@ -13,6 +15,12 @@ workloads.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |pypi| image:: https://img.shields.io/pypi/v/django-google-spanner.svg
+   :target: https://pypi.org/project/django-google-spanner/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/django-google-spanner.svg
+   :target: https://pypi.org/project/django-google-spanner/
 .. _Cloud Spanner: https://cloud.google.com/spanner/
 .. _Client Library Documentation: https://googleapis.dev/python/django-google-spanner/latest/index.html
 .. _Product Documentation:  https://cloud.google.com/spanner/docs

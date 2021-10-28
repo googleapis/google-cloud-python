@@ -16,7 +16,7 @@ description = "Bridge to enable using Django with Spanner."
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
-release_status = "Development Status :: 4 - Beta"
+release_status = "Development Status :: 5 - Production/Stable"
 dependencies = ["sqlparse >= 0.3.0", "google-cloud-spanner >= 3.11.1"]
 extras = {
     "tracing": [
