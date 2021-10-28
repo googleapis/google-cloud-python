@@ -2,6 +2,10 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Transcoder.
+By default, you will get version ``transcoder_v1``.
+
+
 API Reference
 -------------
 .. toctree::
@@ -18,12 +22,13 @@ API Reference
     transcoder_v1beta1/services
     transcoder_v1beta1/types
 
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-video-transcoder`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
