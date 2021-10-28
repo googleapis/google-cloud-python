@@ -98,7 +98,7 @@ def test_set_topic_policy(
     iam.set_topic_policy(PROJECT_ID, TOPIC_ID)
     policy = publisher_client.get_iam_policy(request={"resource": topic_path})
     assert "roles/pubsub.publisher" in str(policy)
-    assert "allUsers" in str(policy)
+    assert "domain:google.com" in str(policy)
 
 
 def test_set_subscription_policy(
@@ -107,7 +107,7 @@ def test_set_subscription_policy(
     iam.set_subscription_policy(PROJECT_ID, SUBSCRIPTION_ID)
     policy = subscriber_client.get_iam_policy(request={"resource": subscription_path})
     assert "roles/pubsub.viewer" in str(policy)
-    assert "allUsers" in str(policy)
+    assert "domain:google.com" in str(policy)
 
 
 def test_check_topic_permissions(topic_path: str, capsys: CaptureFixture) -> None:

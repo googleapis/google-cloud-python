@@ -81,7 +81,7 @@ def set_topic_policy(project_id: str, topic_id: str) -> None:
     policy = client.get_iam_policy(request={"resource": topic_path})
 
     # Add all users as viewers.
-    policy.bindings.add(role="roles/pubsub.viewer", members=["allUsers"])
+    policy.bindings.add(role="roles/pubsub.viewer", members=["domain:google.com"])
 
     # Add a group as a publisher.
     policy.bindings.add(
@@ -110,7 +110,7 @@ def set_subscription_policy(project_id: str, subscription_id: str) -> None:
     policy = client.get_iam_policy(request={"resource": subscription_path})
 
     # Add all users as viewers.
-    policy.bindings.add(role="roles/pubsub.viewer", members=["allUsers"])
+    policy.bindings.add(role="roles/pubsub.viewer", members=["domain:google.com"])
 
     # Add a group as an editor.
     policy.bindings.add(role="roles/editor", members=["group:cloud-logs@google.com"])
