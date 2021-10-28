@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [1.11.0](https://www.github.com/googleapis/python-ndb/compare/v1.10.5...v1.11.0) (2021-10-28)
+
+
+### Features
+
+* add support for python 3.10 ([#735](https://www.github.com/googleapis/python-ndb/issues/735)) ([58620c1](https://www.github.com/googleapis/python-ndb/commit/58620c1b17e3a4b3608614bea620e93f39e1bd3a))
+
 ### [1.10.5](https://www.github.com/googleapis/python-ndb/compare/v1.10.4...v1.10.5) (2021-10-08)
 
 
