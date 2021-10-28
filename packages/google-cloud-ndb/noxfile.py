@@ -26,8 +26,8 @@ import nox
 LOCAL_DEPS = ("google-api-core", "google-cloud-core")
 NOX_DIR = os.path.abspath(os.path.dirname(__file__))
 DEFAULT_INTERPRETER = "3.8"
-ALL_INTERPRETERS = ("2.7", "3.6", "3.7", "3.8", "3.9")
-PY3_INTERPRETERS = ("3.6", "3.7", "3.8", "3.9")
+ALL_INTERPRETERS = ("2.7", "3.6", "3.7", "3.8", "3.9", "3.10")
+PY3_INTERPRETERS = ("3.6", "3.7", "3.8", "3.9", "3.10")
 MAJOR_INTERPRETERS = ("2.7", "3.8")
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
@@ -59,6 +59,7 @@ def unit(session):
             [
                 "--cov=google.cloud.ndb",
                 "--cov=unit",
+                "--cov-append",
                 "--cov-config",
                 get_path(".coveragerc"),
                 "--cov-report=term-missing",
@@ -76,8 +77,6 @@ def unit(session):
 def cover(session):
     # Install all dependencies.
     session.install("coverage")
-    # THis variable is used to skip coverage by Python version
-    session.env["PY_VERSION"] = session.python[0]
     # Run coverage report.
     session.run("coverage", "report", "--fail-under=100", "--show-missing")
     # Erase cached coverage data.
