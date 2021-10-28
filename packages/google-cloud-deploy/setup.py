@@ -24,7 +24,7 @@ name = "google-cloud-deploy"
 description = "Google Cloud Deploy API client library"
 version = "0.3.0"
 url = "https://github.com/googleapis/python-deploy"
-release_status = "Development Status :: 4 - Beta"
+release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
     # Until this issue is closed
