@@ -158,7 +158,7 @@ def test_cloud_redis_client_client_options(client_class, transport_class, transp
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -175,7 +175,7 @@ def test_cloud_redis_client_client_options(client_class, transport_class, transp
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -192,7 +192,7 @@ def test_cloud_redis_client_client_options(client_class, transport_class, transp
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -219,7 +219,7 @@ def test_cloud_redis_client_client_options(client_class, transport_class, transp
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -250,7 +250,7 @@ def test_cloud_redis_client_mtls_env_auto(client_class, transport_class, transpo
         options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class(client_options=options)
+            client = client_class(transport=transport_name, client_options=options)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -284,7 +284,7 @@ def test_cloud_redis_client_mtls_env_auto(client_class, transport_class, transpo
                         expected_client_cert_source = client_cert_source_callback
 
                     patched.return_value = None
-                    client = client_class()
+                    client = client_class(transport=transport_name)
                     patched.assert_called_once_with(
                         credentials=None,
                         credentials_file=None,
@@ -301,7 +301,7 @@ def test_cloud_redis_client_mtls_env_auto(client_class, transport_class, transpo
         with mock.patch.object(transport_class, '__init__') as patched:
             with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
-                client = client_class()
+                client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
@@ -325,7 +325,7 @@ def test_cloud_redis_client_client_options_scopes(client_class, transport_class,
     )
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -348,7 +348,7 @@ def test_cloud_redis_client_client_options_credentials_file(client_class, transp
     )
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
