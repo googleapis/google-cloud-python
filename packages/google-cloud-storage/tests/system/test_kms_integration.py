@@ -148,6 +148,7 @@ def test_bucket_w_default_kms_key_name(
     blobs_to_delete.append(defaulted_blob)
 
     assert defaulted_blob.download_as_bytes() == payload
+    _helpers.retry_429_harder(_helpers.retry_has_kms_key_name(defaulted_blob.reload))()
     # We don't know the current version of the key.
     assert defaulted_blob.kms_key_name.startswith(kms_key_name)
 
