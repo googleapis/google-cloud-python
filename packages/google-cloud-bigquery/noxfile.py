@@ -186,8 +186,9 @@ def snippets(session):
     session.run(
         "py.test",
         "samples",
-        "--ignore=samples/snippets",
+        "--ignore=samples/magics",
         "--ignore=samples/geography",
+        "--ignore=samples/snippets",
         *session.posargs,
     )
 

@@ -14,15 +14,6 @@
 
 """IPython Magics
 
-To use these magics, you must first register them. Run the ``%load_ext`` magic
-in a Jupyter notebook cell.
-
-.. code::
-
-    %load_ext google.cloud.bigquery
-
-This makes the ``%%bigquery`` magic available.
-
 .. function:: %%bigquery
 
     IPython cell magic to run a query and display the result as a DataFrame
@@ -85,63 +76,6 @@ This makes the ``%%bigquery`` magic available.
     .. note::
         All queries run using this magic will run using the context
         :attr:`~google.cloud.bigquery.magics.Context.credentials`.
-
-    Examples:
-        The following examples can be run in an IPython notebook after loading
-        the bigquery IPython extension (see ``In[1]``) and setting up
-        Application Default Credentials.
-
-    .. code-block:: none
-
-        In [1]: %load_ext google.cloud.bigquery
-
-        In [2]: %%bigquery
-           ...: SELECT name, SUM(number) as count
-           ...: FROM `bigquery-public-data.usa_names.usa_1910_current`
-           ...: GROUP BY name
-           ...: ORDER BY count DESC
-           ...: LIMIT 3
-
-        Out[2]:       name    count
-           ...: -------------------
-           ...: 0    James  4987296
-           ...: 1     John  4866302
-           ...: 2   Robert  4738204
-
-        In [3]: %%bigquery df --project my-alternate-project --verbose
-           ...: SELECT name, SUM(number) as count
-           ...: FROM `bigquery-public-data.usa_names.usa_1910_current`
-           ...: WHERE gender = 'F'
-           ...: GROUP BY name
-           ...: ORDER BY count DESC
-           ...: LIMIT 3
-        Executing query with job ID: bf633912-af2c-4780-b568-5d868058632b
-        Query executing: 2.61s
-        Query complete after 2.92s
-
-        In [4]: df
-
-        Out[4]:          name    count
-           ...: ----------------------
-           ...: 0        Mary  3736239
-           ...: 1    Patricia  1568495
-           ...: 2   Elizabeth  1519946
-
-        In [5]: %%bigquery --params {"num": 17}
-           ...: SELECT @num AS num
-
-        Out[5]:     num
-           ...: -------
-           ...: 0    17
-
-        In [6]: params = {"num": 17}
-
-        In [7]: %%bigquery --params $params
-           ...: SELECT @num AS num
-
-        Out[7]:     num
-           ...: -------
-           ...: 0    17
 """
 
 from __future__ import print_function
