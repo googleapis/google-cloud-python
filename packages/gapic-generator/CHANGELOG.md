@@ -1,5 +1,14 @@
 # Changelog
 
+### [0.53.4](https://www.github.com/googleapis/gapic-generator-python/compare/v0.53.3...v0.53.4) (2021-10-29)
+
+
+### Bug Fixes
+
+* add 'dict' type annotation to 'request' for async_client ([#1051](https://www.github.com/googleapis/gapic-generator-python/issues/1051)) ([08cc2c4](https://www.github.com/googleapis/gapic-generator-python/commit/08cc2c4c85297759892782e307bcaa63dff41212))
+* fix tests generation logic ([#1049](https://www.github.com/googleapis/gapic-generator-python/issues/1049)) ([8f213ad](https://www.github.com/googleapis/gapic-generator-python/commit/8f213add4cb02366bb370ef46a686c6f0c37a575))
+* methods returning Operation w/o operation_info are now allowed. ([#1047](https://www.github.com/googleapis/gapic-generator-python/issues/1047)) ([6b640af](https://www.github.com/googleapis/gapic-generator-python/commit/6b640afbd93ea8c861b902211dc34e188234d072))
+
 ### [0.53.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.53.2...v0.53.3) (2021-10-27)
 
 
