@@ -1,5 +1,5 @@
-Services for Google Devtools Cloudbuild v1 API
-==============================================
+Services for Google Cloud Devtools Cloudbuild v1 API
+====================================================
 .. toctree::
     :maxdepth: 2
 
