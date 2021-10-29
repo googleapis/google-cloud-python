@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.0.0](https://www.github.com/googleapis/python-spanner-django/compare/v2.2.1-b4...v3.0.0) (2021-10-29)
+
+
+### Documentation
+
+* typo fixes in readme ([#732](https://www.github.com/googleapis/python-spanner-django/issues/732)) ([bb60a16](https://www.github.com/googleapis/python-spanner-django/commit/bb60a1621be50a12286b939e99e6390b0c4f1bab))
+* update limitations about json query support and django version support. ([#729](https://www.github.com/googleapis/python-spanner-django/issues/729)) ([c3b111f](https://www.github.com/googleapis/python-spanner-django/commit/c3b111ff19d58f6ff67eb381a9efef042c70ec54))
+
+
+### Miscellaneous Chores
+
+* release 3.0.0 ([#734](https://www.github.com/googleapis/python-spanner-django/issues/734)) ([a285571](https://www.github.com/googleapis/python-spanner-django/commit/a285571ce2339a16acc922d82c013817659931f4))
+
 ## [2.2.1b4](https://www.github.com/googleapis/python-spanner-django/compare/v2.2.1-b3...v2.2.1b4) (2021-10-25)
 
 
