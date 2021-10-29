@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.54.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.53.4...v0.54.0) (2021-10-29)
+
+
+### Features
+
+* generate code snippets by default ([#1044](https://www.github.com/googleapis/gapic-generator-python/issues/1044)) ([e46f443](https://www.github.com/googleapis/gapic-generator-python/commit/e46f443dbeffe16b63f97668801b06189769e972))
+
 ### [0.53.4](https://www.github.com/googleapis/gapic-generator-python/compare/v0.53.3...v0.53.4) (2021-10-29)
 
 
