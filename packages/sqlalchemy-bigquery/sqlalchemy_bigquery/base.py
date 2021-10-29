@@ -51,6 +51,7 @@ from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql.schema import Table
+from sqlalchemy.sql.selectable import CTE
 from sqlalchemy.sql import elements, selectable
 import re
 
@@ -254,6 +255,20 @@ class BigQueryCompiler(_struct.SQLCompiler, SQLCompiler):
             ret = f"{aliases}, {ret}"
         return ret
 
+    def _known_tables(self):
+        known_tables = set()
+
+        for from_ in self.compile_state.froms:
+            if isinstance(from_, Table):
+                known_tables.add(from_.name)
+            elif isinstance(from_, CTE):
+                for column in from_.original.selected_columns:
+                    table = getattr(column, "table", None)
+                    if table is not None:
+                        known_tables.add(table.name)
+
+        return known_tables
+
     def visit_column(
         self,
         column,
@@ -290,12 +305,7 @@ class BigQueryCompiler(_struct.SQLCompiler, SQLCompiler):
             if isinstance(tablename, elements._truncated_label):
                 tablename = self._truncated_identifier("alias", tablename)
             elif TABLE_VALUED_ALIAS_ALIASES in kwargs:
-                known_tables = set(
-                    from_.name
-                    for from_ in self.compile_state.froms
-                    if isinstance(from_, Table)
-                )
-                if tablename not in known_tables:
+                if tablename not in self._known_tables():
                     aliases = kwargs[TABLE_VALUED_ALIAS_ALIASES]
                     if tablename not in aliases:
                         aliases[tablename] = self.anon_map[

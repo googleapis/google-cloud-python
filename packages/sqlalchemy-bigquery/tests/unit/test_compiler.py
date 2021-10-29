@@ -76,3 +76,39 @@ def test_no_alias_for_known_tables(faux_conn, metadata):
     )
     found_sql = q.compile(faux_conn).string
     assert found_sql == expected_sql
+
+
+@sqlalchemy_1_4_or_higher
+def test_no_alias_for_known_tables_cte(faux_conn, metadata):
+    # See: https://github.com/googleapis/python-bigquery-sqlalchemy/issues/368
+    table = setup_table(
+        faux_conn,
+        "table1",
+        metadata,
+        sqlalchemy.Column("foo", sqlalchemy.Integer),
+        sqlalchemy.Column("bars", sqlalchemy.ARRAY(sqlalchemy.Integer)),
+    )
+    F = sqlalchemy.func
+
+    # Set up initiali query
+    q = sqlalchemy.select(table.c.foo, F.unnest(table.c.bars).column_valued("bar"))
+
+    expected_initial_sql = (
+        "SELECT `table1`.`foo`, `bar` \n"
+        "FROM `table1`, unnest(`table1`.`bars`) AS `bar`"
+    )
+    found_initial_sql = q.compile(faux_conn).string
+    assert found_initial_sql == expected_initial_sql
+
+    q = q.cte("cte")
+    q = sqlalchemy.select(*q.columns)
+
+    expected_cte_sql = (
+        "WITH `cte` AS \n"
+        "(SELECT `table1`.`foo` AS `foo`, `bar` \n"
+        "FROM `table1`, unnest(`table1`.`bars`) AS `bar`)\n"
+        " SELECT `cte`.`foo`, `cte`.`bar` \n"
+        "FROM `cte`"
+    )
+    found_cte_sql = q.compile(faux_conn).string
+    assert found_cte_sql == expected_cte_sql
