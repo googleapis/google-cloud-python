@@ -282,6 +282,9 @@ class Test_retry_read_rows_exception(unittest.TestCase):
             def details(self):
                 return "Testing"
 
+            def trailing_metadata(self):
+                return None
+
         return TestingException(exception)
 
     def test_w_miss(self):
