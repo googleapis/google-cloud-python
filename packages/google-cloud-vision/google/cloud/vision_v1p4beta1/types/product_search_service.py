@@ -713,11 +713,14 @@ class ImportProductSetsGcsSource(proto.Message):
 class ImportProductSetsInputConfig(proto.Message):
     r"""The input content for the ``ImportProductSets`` method.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_source (google.cloud.vision_v1p4beta1.types.ImportProductSetsGcsSource):
             The Google Cloud Storage location for a csv
             file which preserves a list of
             ImportProductSetRequests in each line.
+            This field is a member of `oneof`_ ``source``.
     """
 
     gcs_source = proto.Field(
@@ -824,13 +827,22 @@ class ProductSetPurgeConfig(proto.Message):
 class PurgeProductsRequest(proto.Message):
     r"""Request message for the ``PurgeProducts`` method.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         product_set_purge_config (google.cloud.vision_v1p4beta1.types.ProductSetPurgeConfig):
             Specify which ProductSet contains the
             Products to be deleted.
+            This field is a member of `oneof`_ ``target``.
         delete_orphan_products (bool):
             If delete_orphan_products is true, all Products that are not
             in any ProductSet will be deleted.
+            This field is a member of `oneof`_ ``target``.
         parent (str):
             Required. The project and location in which the Products
             should be deleted.

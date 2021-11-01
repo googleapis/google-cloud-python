@@ -692,11 +692,14 @@ class ImportProductSetsGcsSource(proto.Message):
 class ImportProductSetsInputConfig(proto.Message):
     r"""The input content for the ``ImportProductSets`` method.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_source (google.cloud.vision_v1p3beta1.types.ImportProductSetsGcsSource):
             The Google Cloud Storage location for a csv
             file which preserves a list of
             ImportProductSetRequests in each line.
+            This field is a member of `oneof`_ ``source``.
     """
 
     gcs_source = proto.Field(

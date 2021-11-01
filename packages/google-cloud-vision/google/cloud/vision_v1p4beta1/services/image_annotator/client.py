@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.vision_v1p4beta1.types import image_annotator
@@ -373,7 +375,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         request: Union[image_annotator.BatchAnnotateImagesRequest, dict] = None,
         *,
         requests: Sequence[image_annotator.AnnotateImageRequest] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> image_annotator.BatchAnnotateImagesResponse:
@@ -442,7 +444,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         request: Union[image_annotator.BatchAnnotateFilesRequest, dict] = None,
         *,
         requests: Sequence[image_annotator.AnnotateFileRequest] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> image_annotator.BatchAnnotateFilesResponse:
@@ -518,7 +520,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         *,
         requests: Sequence[image_annotator.AnnotateImageRequest] = None,
         output_config: image_annotator.OutputConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -619,7 +621,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         request: Union[image_annotator.AsyncBatchAnnotateFilesRequest, dict] = None,
         *,
         requests: Sequence[image_annotator.AsyncAnnotateFileRequest] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
