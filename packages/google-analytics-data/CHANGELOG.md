@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.10.0](https://www.github.com/googleapis/python-analytics-data/compare/v0.9.0...v0.10.0) (2021-11-01)
+
+
+### Features
+
+* add the `blocked_reasons` field to the `MetricMetadata` type that contains reasons why access was blocked ([583920a](https://www.github.com/googleapis/python-analytics-data/commit/583920a4d0efd8c4c08e9f40379732052773c1d0))
+* add the `currency_code`, `time_zone` fields to the `ResponseMetaData` type ([583920a](https://www.github.com/googleapis/python-analytics-data/commit/583920a4d0efd8c4c08e9f40379732052773c1d0))
+* add the `empty_reason` field to the `ResponseMetaData` type that contains an empty report reason ([583920a](https://www.github.com/googleapis/python-analytics-data/commit/583920a4d0efd8c4c08e9f40379732052773c1d0))
+* add the `schema_restriction_response` field to the `ResponseMetaData` type ([#157](https://www.github.com/googleapis/python-analytics-data/issues/157)) ([583920a](https://www.github.com/googleapis/python-analytics-data/commit/583920a4d0efd8c4c08e9f40379732052773c1d0))
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 1.28.0 ([1f81d4e](https://www.github.com/googleapis/python-analytics-data/commit/1f81d4eacc5f00bd6666fb4437aed9b78b3cd761))
+
+
+### Documentation
+
+* list oneofs in docstring ([1f81d4e](https://www.github.com/googleapis/python-analytics-data/commit/1f81d4eacc5f00bd6666fb4437aed9b78b3cd761))
+
 ## [0.9.0](https://www.github.com/googleapis/python-analytics-data/compare/v0.8.1...v0.9.0) (2021-10-11)
 
 
