@@ -28,6 +28,9 @@ class CatalogItem(proto.Message):
     r"""CatalogItem captures all metadata information of items to be
     recommended.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             Required. Catalog item identifier. UTF-8
@@ -88,6 +91,7 @@ class CatalogItem(proto.Message):
         product_metadata (google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem):
             Optional. Metadata specific to retail
             products.
+            This field is a member of `oneof`_ ``recommendation_type``.
     """
 
     class CategoryHierarchy(proto.Message):
@@ -126,11 +130,20 @@ class ProductCatalogItem(proto.Message):
     r"""ProductCatalogItem captures item metadata specific to retail
     products.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         exact_price (google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem.ExactPrice):
             Optional. The exact product price.
+            This field is a member of `oneof`_ ``price``.
         price_range (google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem.PriceRange):
             Optional. The product price range.
+            This field is a member of `oneof`_ ``price``.
         costs (Sequence[google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem.CostsEntry]):
             Optional. A map to pass the costs associated with the
             product.

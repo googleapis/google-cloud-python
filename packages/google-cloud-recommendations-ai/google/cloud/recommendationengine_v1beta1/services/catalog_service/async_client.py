@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -172,18 +174,18 @@ class CatalogServiceAsyncClient:
 
     async def create_catalog_item(
         self,
-        request: catalog_service.CreateCatalogItemRequest = None,
+        request: Union[catalog_service.CreateCatalogItemRequest, dict] = None,
         *,
         parent: str = None,
         catalog_item: catalog.CatalogItem = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.CatalogItem:
         r"""Creates a catalog item.
 
         Args:
-            request (:class:`google.cloud.recommendationengine_v1beta1.types.CreateCatalogItemRequest`):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.CreateCatalogItemRequest, dict]):
                 The request object. Request message for
                 CreateCatalogItem method.
             parent (:class:`str`):
@@ -261,17 +263,17 @@ class CatalogServiceAsyncClient:
 
     async def get_catalog_item(
         self,
-        request: catalog_service.GetCatalogItemRequest = None,
+        request: Union[catalog_service.GetCatalogItemRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.CatalogItem:
         r"""Gets a specific catalog item.
 
         Args:
-            request (:class:`google.cloud.recommendationengine_v1beta1.types.GetCatalogItemRequest`):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.GetCatalogItemRequest, dict]):
                 The request object. Request message for GetCatalogItem
                 method.
             name (:class:`str`):
@@ -342,18 +344,18 @@ class CatalogServiceAsyncClient:
 
     async def list_catalog_items(
         self,
-        request: catalog_service.ListCatalogItemsRequest = None,
+        request: Union[catalog_service.ListCatalogItemsRequest, dict] = None,
         *,
         parent: str = None,
         filter: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCatalogItemsAsyncPager:
         r"""Gets a list of catalog items.
 
         Args:
-            request (:class:`google.cloud.recommendationengine_v1beta1.types.ListCatalogItemsRequest`):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.ListCatalogItemsRequest, dict]):
                 The request object. Request message for ListCatalogItems
                 method.
             parent (:class:`str`):
@@ -442,12 +444,12 @@ class CatalogServiceAsyncClient:
 
     async def update_catalog_item(
         self,
-        request: catalog_service.UpdateCatalogItemRequest = None,
+        request: Union[catalog_service.UpdateCatalogItemRequest, dict] = None,
         *,
         name: str = None,
         catalog_item: catalog.CatalogItem = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.CatalogItem:
@@ -455,7 +457,7 @@ class CatalogServiceAsyncClient:
         supported. Non-existing items will be created.
 
         Args:
-            request (:class:`google.cloud.recommendationengine_v1beta1.types.UpdateCatalogItemRequest`):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.UpdateCatalogItemRequest, dict]):
                 The request object. Request message for
                 UpdateCatalogItem method.
             name (:class:`str`):
@@ -545,17 +547,17 @@ class CatalogServiceAsyncClient:
 
     async def delete_catalog_item(
         self,
-        request: catalog_service.DeleteCatalogItemRequest = None,
+        request: Union[catalog_service.DeleteCatalogItemRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a catalog item.
 
         Args:
-            request (:class:`google.cloud.recommendationengine_v1beta1.types.DeleteCatalogItemRequest`):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.DeleteCatalogItemRequest, dict]):
                 The request object. Request message for
                 DeleteCatalogItem method.
             name (:class:`str`):
@@ -619,13 +621,13 @@ class CatalogServiceAsyncClient:
 
     async def import_catalog_items(
         self,
-        request: import_.ImportCatalogItemsRequest = None,
+        request: Union[import_.ImportCatalogItemsRequest, dict] = None,
         *,
         parent: str = None,
         request_id: str = None,
         input_config: import_.InputConfig = None,
         errors_config: import_.ImportErrorsConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -638,7 +640,7 @@ class CatalogServiceAsyncClient:
         successfully updated.
 
         Args:
-            request (:class:`google.cloud.recommendationengine_v1beta1.types.ImportCatalogItemsRequest`):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.ImportCatalogItemsRequest, dict]):
                 The request object. Request message for Import methods.
             parent (:class:`str`):
                 Required.

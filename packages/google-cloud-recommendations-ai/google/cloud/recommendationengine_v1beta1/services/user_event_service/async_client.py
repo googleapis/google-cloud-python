@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api import httpbody_pb2  # type: ignore
 from google.api_core import operation  # type: ignore
@@ -173,18 +175,18 @@ class UserEventServiceAsyncClient:
 
     async def write_user_event(
         self,
-        request: user_event_service.WriteUserEventRequest = None,
+        request: Union[user_event_service.WriteUserEventRequest, dict] = None,
         *,
         parent: str = None,
         user_event: gcr_user_event.UserEvent = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_user_event.UserEvent:
         r"""Writes a single user event.
 
         Args:
-            request (:class:`google.cloud.recommendationengine_v1beta1.types.WriteUserEventRequest`):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.WriteUserEventRequest, dict]):
                 The request object. Request message for WriteUserEvent
                 method.
             parent (:class:`str`):
@@ -264,13 +266,13 @@ class UserEventServiceAsyncClient:
 
     async def collect_user_event(
         self,
-        request: user_event_service.CollectUserEventRequest = None,
+        request: Union[user_event_service.CollectUserEventRequest, dict] = None,
         *,
         parent: str = None,
         user_event: str = None,
         uri: str = None,
         ets: int = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
@@ -282,7 +284,7 @@ class UserEventServiceAsyncClient:
         directly.
 
         Args:
-            request (:class:`google.cloud.recommendationengine_v1beta1.types.CollectUserEventRequest`):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.CollectUserEventRequest, dict]):
                 The request object. Request message for CollectUserEvent
                 method.
             parent (:class:`str`):
@@ -433,11 +435,11 @@ class UserEventServiceAsyncClient:
 
     async def list_user_events(
         self,
-        request: user_event_service.ListUserEventsRequest = None,
+        request: Union[user_event_service.ListUserEventsRequest, dict] = None,
         *,
         parent: str = None,
         filter: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListUserEventsAsyncPager:
@@ -445,7 +447,7 @@ class UserEventServiceAsyncClient:
         potential filtering.
 
         Args:
-            request (:class:`google.cloud.recommendationengine_v1beta1.types.ListUserEventsRequest`):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.ListUserEventsRequest, dict]):
                 The request object. Request message for ListUserEvents
                 method.
             parent (:class:`str`):
@@ -568,12 +570,12 @@ class UserEventServiceAsyncClient:
 
     async def purge_user_events(
         self,
-        request: user_event_service.PurgeUserEventsRequest = None,
+        request: Union[user_event_service.PurgeUserEventsRequest, dict] = None,
         *,
         parent: str = None,
         filter: str = None,
         force: bool = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -584,7 +586,7 @@ class UserEventServiceAsyncClient:
         command first.
 
         Args:
-            request (:class:`google.cloud.recommendationengine_v1beta1.types.PurgeUserEventsRequest`):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.PurgeUserEventsRequest, dict]):
                 The request object. Request message for PurgeUserEvents
                 method.
             parent (:class:`str`):
@@ -705,13 +707,13 @@ class UserEventServiceAsyncClient:
 
     async def import_user_events(
         self,
-        request: import_.ImportUserEventsRequest = None,
+        request: Union[import_.ImportUserEventsRequest, dict] = None,
         *,
         parent: str = None,
         request_id: str = None,
         input_config: import_.InputConfig = None,
         errors_config: import_.ImportErrorsConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -724,7 +726,7 @@ class UserEventServiceAsyncClient:
         ImportMetadata.
 
         Args:
-            request (:class:`google.cloud.recommendationengine_v1beta1.types.ImportUserEventsRequest`):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.ImportUserEventsRequest, dict]):
                 The request object. Request message for the
                 ImportUserEvents request.
             parent (:class:`str`):

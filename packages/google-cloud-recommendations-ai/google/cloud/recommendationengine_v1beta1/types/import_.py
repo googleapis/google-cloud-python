@@ -92,12 +92,15 @@ class UserEventInlineSource(proto.Message):
 class ImportErrorsConfig(proto.Message):
     r"""Configuration of destination for Import related errors.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_prefix (str):
             Google Cloud Storage path for import errors. This must be an
             empty, existing Cloud Storage bucket. Import errors will be
             written to a file in this bucket, one per line, as a
             JSON-encoded ``google.rpc.Status`` message.
+            This field is a member of `oneof`_ ``destination``.
     """
 
     gcs_prefix = proto.Field(proto.STRING, number=1, oneof="destination",)
@@ -164,16 +167,26 @@ class ImportUserEventsRequest(proto.Message):
 class InputConfig(proto.Message):
     r"""The input config source.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         catalog_inline_source (google.cloud.recommendationengine_v1beta1.types.CatalogInlineSource):
             The Inline source for the input content for
             Catalog items.
+            This field is a member of `oneof`_ ``source``.
         gcs_source (google.cloud.recommendationengine_v1beta1.types.GcsSource):
             Google Cloud Storage location for the input
             content.
+            This field is a member of `oneof`_ ``source``.
         user_event_inline_source (google.cloud.recommendationengine_v1beta1.types.UserEventInlineSource):
             The Inline source for the input content for
             UserEvents.
+            This field is a member of `oneof`_ ``source``.
     """
 
     catalog_inline_source = proto.Field(

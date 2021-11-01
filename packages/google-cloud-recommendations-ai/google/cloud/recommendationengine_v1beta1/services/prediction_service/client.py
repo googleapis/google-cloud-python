@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.recommendationengine_v1beta1.services.prediction_service import pagers
 from google.cloud.recommendationengine_v1beta1.types import prediction_service
 from google.cloud.recommendationengine_v1beta1.types import user_event as gcr_user_event
@@ -362,7 +364,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         *,
         name: str = None,
         user_event: gcr_user_event.UserEvent = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.PredictPager:

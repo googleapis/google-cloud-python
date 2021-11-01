@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.recommendationengine_v1beta1.services.prediction_service import pagers
 from google.cloud.recommendationengine_v1beta1.types import prediction_service
@@ -164,11 +166,11 @@ class PredictionServiceAsyncClient:
 
     async def predict(
         self,
-        request: prediction_service.PredictRequest = None,
+        request: Union[prediction_service.PredictRequest, dict] = None,
         *,
         name: str = None,
         user_event: gcr_user_event.UserEvent = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.PredictAsyncPager:
@@ -179,7 +181,7 @@ class PredictionServiceAsyncClient:
         more </recommendations-ai/docs/setting-up#register-key>`__.
 
         Args:
-            request (:class:`google.cloud.recommendationengine_v1beta1.types.PredictRequest`):
+            request (Union[google.cloud.recommendationengine_v1beta1.types.PredictRequest, dict]):
                 The request object. Request message for Predict method.
             name (:class:`str`):
                 Required. Full resource name of the format:

@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.recommendationengine_v1beta1.services.catalog_service import pagers
@@ -361,7 +363,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         *,
         parent: str = None,
         catalog_item: catalog.CatalogItem = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.CatalogItem:
@@ -439,7 +441,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         request: Union[catalog_service.GetCatalogItemRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.CatalogItem:
@@ -511,7 +513,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         *,
         parent: str = None,
         filter: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCatalogItemsPager:
@@ -602,7 +604,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         name: str = None,
         catalog_item: catalog.CatalogItem = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog.CatalogItem:
@@ -693,7 +695,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         request: Union[catalog_service.DeleteCatalogItemRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -760,7 +762,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         request_id: str = None,
         input_config: import_.InputConfig = None,
         errors_config: import_.ImportErrorsConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
