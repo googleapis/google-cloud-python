@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.trace_v2.types import trace
 from google.cloud.trace_v2.types import tracing
@@ -168,11 +170,11 @@ class TraceServiceAsyncClient:
 
     async def batch_write_spans(
         self,
-        request: tracing.BatchWriteSpansRequest = None,
+        request: Union[tracing.BatchWriteSpansRequest, dict] = None,
         *,
         name: str = None,
         spans: Sequence[trace.Span] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -180,7 +182,7 @@ class TraceServiceAsyncClient:
         update existing spans.
 
         Args:
-            request (:class:`google.cloud.trace_v2.types.BatchWriteSpansRequest`):
+            request (Union[google.cloud.trace_v2.types.BatchWriteSpansRequest, dict]):
                 The request object. The request message for the
                 `BatchWriteSpans` method.
             name (:class:`str`):
@@ -244,16 +246,16 @@ class TraceServiceAsyncClient:
 
     async def create_span(
         self,
-        request: trace.Span = None,
+        request: Union[trace.Span, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> trace.Span:
         r"""Creates a new span.
 
         Args:
-            request (:class:`google.cloud.trace_v2.types.Span`):
+            request (Union[google.cloud.trace_v2.types.Span, dict]):
                 The request object. A span represents a single operation
                 within a trace. Spans can be nested to form a trace
                 tree. Often, a trace contains a root span that describes

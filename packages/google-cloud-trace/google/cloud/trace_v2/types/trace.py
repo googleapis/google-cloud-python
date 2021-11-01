@@ -154,15 +154,24 @@ class Span(proto.Message):
     class TimeEvent(proto.Message):
         r"""A time-stamped annotation or message event in the Span.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             time (google.protobuf.timestamp_pb2.Timestamp):
                 The timestamp indicating the time the event
                 occurred.
             annotation (google.cloud.trace_v2.types.Span.TimeEvent.Annotation):
                 Text annotation with a set of attributes.
+                This field is a member of `oneof`_ ``value``.
             message_event (google.cloud.trace_v2.types.Span.TimeEvent.MessageEvent):
                 An event describing a message sent/received
                 between Spans.
+                This field is a member of `oneof`_ ``value``.
         """
 
         class Annotation(proto.Message):
@@ -326,13 +335,23 @@ class Span(proto.Message):
 class AttributeValue(proto.Message):
     r"""The allowed types for [VALUE] in a ``[KEY]:[VALUE]`` attribute.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         string_value (google.cloud.trace_v2.types.TruncatableString):
             A string up to 256 bytes long.
+            This field is a member of `oneof`_ ``value``.
         int_value (int):
             A 64-bit signed integer.
+            This field is a member of `oneof`_ ``value``.
         bool_value (bool):
             A Boolean value represented by ``true`` or ``false``.
+            This field is a member of `oneof`_ ``value``.
     """
 
     string_value = proto.Field(

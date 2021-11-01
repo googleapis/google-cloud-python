@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.trace_v1.services.trace_service import pagers
 from google.cloud.trace_v1.types import trace
 from .transports.base import TraceServiceTransport, DEFAULT_CLIENT_INFO
@@ -340,7 +342,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         request: Union[trace.ListTracesRequest, dict] = None,
         *,
         project_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTracesPager:
@@ -416,7 +418,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         *,
         project_id: str = None,
         trace_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> trace.Trace:
@@ -492,7 +494,7 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         *,
         project_id: str = None,
         traces: trace.Traces = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
