@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.iam_credentials_v1.types import common
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -366,7 +368,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         delegates: Sequence[str] = None,
         scope: Sequence[str] = None,
         lifetime: duration_pb2.Duration = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.GenerateAccessTokenResponse:
@@ -488,7 +490,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         delegates: Sequence[str] = None,
         audience: str = None,
         include_email: bool = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.GenerateIdTokenResponse:
@@ -603,7 +605,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         name: str = None,
         delegates: Sequence[str] = None,
         payload: bytes = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.SignBlobResponse:
@@ -705,7 +707,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         name: str = None,
         delegates: Sequence[str] = None,
         payload: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.SignJwtResponse:

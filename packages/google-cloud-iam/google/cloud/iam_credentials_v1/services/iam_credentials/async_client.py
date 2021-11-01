@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.iam_credentials_v1.types import common
 from google.protobuf import duration_pb2  # type: ignore
@@ -176,13 +178,13 @@ class IAMCredentialsAsyncClient:
 
     async def generate_access_token(
         self,
-        request: common.GenerateAccessTokenRequest = None,
+        request: Union[common.GenerateAccessTokenRequest, dict] = None,
         *,
         name: str = None,
         delegates: Sequence[str] = None,
         scope: Sequence[str] = None,
         lifetime: duration_pb2.Duration = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.GenerateAccessTokenResponse:
@@ -190,7 +192,7 @@ class IAMCredentialsAsyncClient:
         account.
 
         Args:
-            request (:class:`google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest`):
+            request (Union[google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest, dict]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -308,13 +310,13 @@ class IAMCredentialsAsyncClient:
 
     async def generate_id_token(
         self,
-        request: common.GenerateIdTokenRequest = None,
+        request: Union[common.GenerateIdTokenRequest, dict] = None,
         *,
         name: str = None,
         delegates: Sequence[str] = None,
         audience: str = None,
         include_email: bool = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.GenerateIdTokenResponse:
@@ -322,7 +324,7 @@ class IAMCredentialsAsyncClient:
         account.
 
         Args:
-            request (:class:`google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest`):
+            request (Union[google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest, dict]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -434,12 +436,12 @@ class IAMCredentialsAsyncClient:
 
     async def sign_blob(
         self,
-        request: common.SignBlobRequest = None,
+        request: Union[common.SignBlobRequest, dict] = None,
         *,
         name: str = None,
         delegates: Sequence[str] = None,
         payload: bytes = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.SignBlobResponse:
@@ -447,7 +449,7 @@ class IAMCredentialsAsyncClient:
         private key.
 
         Args:
-            request (:class:`google.cloud.iam_credentials_v1.types.SignBlobRequest`):
+            request (Union[google.cloud.iam_credentials_v1.types.SignBlobRequest, dict]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -546,12 +548,12 @@ class IAMCredentialsAsyncClient:
 
     async def sign_jwt(
         self,
-        request: common.SignJwtRequest = None,
+        request: Union[common.SignJwtRequest, dict] = None,
         *,
         name: str = None,
         delegates: Sequence[str] = None,
         payload: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.SignJwtResponse:
@@ -559,7 +561,7 @@ class IAMCredentialsAsyncClient:
         private key.
 
         Args:
-            request (:class:`google.cloud.iam_credentials_v1.types.SignJwtRequest`):
+            request (Union[google.cloud.iam_credentials_v1.types.SignJwtRequest, dict]):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
