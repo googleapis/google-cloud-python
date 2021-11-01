@@ -29,12 +29,14 @@ from typing import (
 import warnings
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -179,13 +181,13 @@ class SubscriberAsyncClient:
 
     async def create_subscription(
         self,
-        request: pubsub.Subscription = None,
+        request: Union[pubsub.Subscription, dict] = None,
         *,
         name: str = None,
         topic: str = None,
         push_config: pubsub.PushConfig = None,
         ack_deadline_seconds: int = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.Subscription:
@@ -204,7 +206,7 @@ class SubscriberAsyncClient:
         request.
 
         Args:
-            request (:class:`google.pubsub_v1.types.Subscription`):
+            request (Union[google.pubsub_v1.types.Subscription, dict]):
                 The request object. A subscription resource.
             name (:class:`str`):
                 Required. The name of the subscription. It must have the
@@ -334,17 +336,17 @@ class SubscriberAsyncClient:
 
     async def get_subscription(
         self,
-        request: pubsub.GetSubscriptionRequest = None,
+        request: Union[pubsub.GetSubscriptionRequest, dict] = None,
         *,
         subscription: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.Subscription:
         r"""Gets the configuration details of a subscription.
 
         Args:
-            request (:class:`google.pubsub_v1.types.GetSubscriptionRequest`):
+            request (Union[google.pubsub_v1.types.GetSubscriptionRequest, dict]):
                 The request object. Request for the GetSubscription
                 method.
             subscription (:class:`str`):
@@ -416,9 +418,9 @@ class SubscriberAsyncClient:
 
     async def update_subscription(
         self,
-        request: pubsub.UpdateSubscriptionRequest = None,
+        request: Union[pubsub.UpdateSubscriptionRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.Subscription:
@@ -427,7 +429,7 @@ class SubscriberAsyncClient:
         modifiable.
 
         Args:
-            request (:class:`google.pubsub_v1.types.UpdateSubscriptionRequest`):
+            request (Union[google.pubsub_v1.types.UpdateSubscriptionRequest, dict]):
                 The request object. Request for the UpdateSubscription
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -476,17 +478,17 @@ class SubscriberAsyncClient:
 
     async def list_subscriptions(
         self,
-        request: pubsub.ListSubscriptionsRequest = None,
+        request: Union[pubsub.ListSubscriptionsRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSubscriptionsAsyncPager:
         r"""Lists matching subscriptions.
 
         Args:
-            request (:class:`google.pubsub_v1.types.ListSubscriptionsRequest`):
+            request (Union[google.pubsub_v1.types.ListSubscriptionsRequest, dict]):
                 The request object. Request for the `ListSubscriptions`
                 method.
             project (:class:`str`):
@@ -566,10 +568,10 @@ class SubscriberAsyncClient:
 
     async def delete_subscription(
         self,
-        request: pubsub.DeleteSubscriptionRequest = None,
+        request: Union[pubsub.DeleteSubscriptionRequest, dict] = None,
         *,
         subscription: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -581,7 +583,7 @@ class SubscriberAsyncClient:
         topic unless the same topic is specified.
 
         Args:
-            request (:class:`google.pubsub_v1.types.DeleteSubscriptionRequest`):
+            request (Union[google.pubsub_v1.types.DeleteSubscriptionRequest, dict]):
                 The request object. Request for the DeleteSubscription
                 method.
             subscription (:class:`str`):
@@ -646,12 +648,12 @@ class SubscriberAsyncClient:
 
     async def modify_ack_deadline(
         self,
-        request: pubsub.ModifyAckDeadlineRequest = None,
+        request: Union[pubsub.ModifyAckDeadlineRequest, dict] = None,
         *,
         subscription: str = None,
         ack_ids: Sequence[str] = None,
         ack_deadline_seconds: int = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -663,7 +665,7 @@ class SubscriberAsyncClient:
         used for subsequent messages.
 
         Args:
-            request (:class:`google.pubsub_v1.types.ModifyAckDeadlineRequest`):
+            request (Union[google.pubsub_v1.types.ModifyAckDeadlineRequest, dict]):
                 The request object. Request for the ModifyAckDeadline
                 method.
             subscription (:class:`str`):
@@ -753,11 +755,11 @@ class SubscriberAsyncClient:
 
     async def acknowledge(
         self,
-        request: pubsub.AcknowledgeRequest = None,
+        request: Union[pubsub.AcknowledgeRequest, dict] = None,
         *,
         subscription: str = None,
         ack_ids: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -771,7 +773,7 @@ class SubscriberAsyncClient:
         error.
 
         Args:
-            request (:class:`google.pubsub_v1.types.AcknowledgeRequest`):
+            request (Union[google.pubsub_v1.types.AcknowledgeRequest, dict]):
                 The request object. Request for the Acknowledge method.
             subscription (:class:`str`):
                 Required. The subscription whose message is being
@@ -846,12 +848,12 @@ class SubscriberAsyncClient:
 
     async def pull(
         self,
-        request: pubsub.PullRequest = None,
+        request: Union[pubsub.PullRequest, dict] = None,
         *,
         subscription: str = None,
         return_immediately: bool = None,
         max_messages: int = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.PullResponse:
@@ -860,7 +862,7 @@ class SubscriberAsyncClient:
         pending for the given subscription.
 
         Args:
-            request (:class:`google.pubsub_v1.types.PullRequest`):
+            request (Union[google.pubsub_v1.types.PullRequest, dict]):
                 The request object. Request for the `Pull` method.
             subscription (:class:`str`):
                 Required. The subscription from which messages should be
@@ -968,7 +970,7 @@ class SubscriberAsyncClient:
         self,
         requests: AsyncIterator[pubsub.StreamingPullRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[pubsub.StreamingPullResponse]]:
@@ -1030,11 +1032,11 @@ class SubscriberAsyncClient:
 
     async def modify_push_config(
         self,
-        request: pubsub.ModifyPushConfigRequest = None,
+        request: Union[pubsub.ModifyPushConfigRequest, dict] = None,
         *,
         subscription: str = None,
         push_config: pubsub.PushConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -1047,7 +1049,7 @@ class SubscriberAsyncClient:
         call regardless of changes to the ``PushConfig``.
 
         Args:
-            request (:class:`google.pubsub_v1.types.ModifyPushConfigRequest`):
+            request (Union[google.pubsub_v1.types.ModifyPushConfigRequest, dict]):
                 The request object. Request for the ModifyPushConfig
                 method.
             subscription (:class:`str`):
@@ -1126,10 +1128,10 @@ class SubscriberAsyncClient:
 
     async def get_snapshot(
         self,
-        request: pubsub.GetSnapshotRequest = None,
+        request: Union[pubsub.GetSnapshotRequest, dict] = None,
         *,
         snapshot: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.Snapshot:
@@ -1142,7 +1144,7 @@ class SubscriberAsyncClient:
         subscription to the state captured by a snapshot.
 
         Args:
-            request (:class:`google.pubsub_v1.types.GetSnapshotRequest`):
+            request (Union[google.pubsub_v1.types.GetSnapshotRequest, dict]):
                 The request object. Request for the GetSnapshot method.
             snapshot (:class:`str`):
                 Required. The name of the snapshot to get. Format is
@@ -1217,10 +1219,10 @@ class SubscriberAsyncClient:
 
     async def list_snapshots(
         self,
-        request: pubsub.ListSnapshotsRequest = None,
+        request: Union[pubsub.ListSnapshotsRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSnapshotsAsyncPager:
@@ -1231,7 +1233,7 @@ class SubscriberAsyncClient:
         in an existing subscription to the state captured by a snapshot.
 
         Args:
-            request (:class:`google.pubsub_v1.types.ListSnapshotsRequest`):
+            request (Union[google.pubsub_v1.types.ListSnapshotsRequest, dict]):
                 The request object. Request for the `ListSnapshots`
                 method.
             project (:class:`str`):
@@ -1311,11 +1313,11 @@ class SubscriberAsyncClient:
 
     async def create_snapshot(
         self,
-        request: pubsub.CreateSnapshotRequest = None,
+        request: Union[pubsub.CreateSnapshotRequest, dict] = None,
         *,
         name: str = None,
         subscription: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.Snapshot:
@@ -1340,7 +1342,7 @@ class SubscriberAsyncClient:
         request.
 
         Args:
-            request (:class:`google.pubsub_v1.types.CreateSnapshotRequest`):
+            request (Union[google.pubsub_v1.types.CreateSnapshotRequest, dict]):
                 The request object. Request for the `CreateSnapshot`
                 method.
             name (:class:`str`):
@@ -1436,9 +1438,9 @@ class SubscriberAsyncClient:
 
     async def update_snapshot(
         self,
-        request: pubsub.UpdateSnapshotRequest = None,
+        request: Union[pubsub.UpdateSnapshotRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.Snapshot:
@@ -1451,7 +1453,7 @@ class SubscriberAsyncClient:
         snapshot.
 
         Args:
-            request (:class:`google.pubsub_v1.types.UpdateSnapshotRequest`):
+            request (Union[google.pubsub_v1.types.UpdateSnapshotRequest, dict]):
                 The request object. Request for the UpdateSnapshot
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1506,10 +1508,10 @@ class SubscriberAsyncClient:
 
     async def delete_snapshot(
         self,
-        request: pubsub.DeleteSnapshotRequest = None,
+        request: Union[pubsub.DeleteSnapshotRequest, dict] = None,
         *,
         snapshot: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -1525,7 +1527,7 @@ class SubscriberAsyncClient:
         the same subscription is specified.
 
         Args:
-            request (:class:`google.pubsub_v1.types.DeleteSnapshotRequest`):
+            request (Union[google.pubsub_v1.types.DeleteSnapshotRequest, dict]):
                 The request object. Request for the `DeleteSnapshot`
                 method.
             snapshot (:class:`str`):
@@ -1588,9 +1590,9 @@ class SubscriberAsyncClient:
 
     async def seek(
         self,
-        request: pubsub.SeekRequest = None,
+        request: Union[pubsub.SeekRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.SeekResponse:
@@ -1605,7 +1607,7 @@ class SubscriberAsyncClient:
         same topic.
 
         Args:
-            request (:class:`google.pubsub_v1.types.SeekRequest`):
+            request (Union[google.pubsub_v1.types.SeekRequest, dict]):
                 The request object. Request for the `Seek` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1657,7 +1659,7 @@ class SubscriberAsyncClient:
         self,
         request: iam_policy_pb2.SetIamPolicyRequest = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -1765,7 +1767,7 @@ class SubscriberAsyncClient:
         self,
         request: iam_policy_pb2.GetIamPolicyRequest = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -1874,7 +1876,7 @@ class SubscriberAsyncClient:
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:

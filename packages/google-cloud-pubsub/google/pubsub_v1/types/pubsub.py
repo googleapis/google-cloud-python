@@ -692,6 +692,8 @@ class ExpirationPolicy(proto.Message):
 class PushConfig(proto.Message):
     r"""Configuration for a push delivery endpoint.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         push_endpoint (str):
             A URL locating the endpoint to which messages should be
@@ -731,6 +733,7 @@ class PushConfig(proto.Message):
             If specified, Pub/Sub will generate and attach an OIDC JWT
             token as an ``Authorization`` header in the HTTP request for
             every pushed message.
+            This field is a member of `oneof`_ ``authentication_method``.
     """
 
     class OidcToken(proto.Message):
@@ -1282,6 +1285,13 @@ class DeleteSnapshotRequest(proto.Message):
 class SeekRequest(proto.Message):
     r"""Request for the ``Seek`` method.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         subscription (str):
             Required. The subscription to affect.
@@ -1299,10 +1309,12 @@ class SeekRequest(proto.Message):
             subscription creation time), only retained messages will be
             marked as unacknowledged, and already-expunged messages will
             not be restored.
+            This field is a member of `oneof`_ ``target``.
         snapshot (str):
             The snapshot to seek to. The snapshot's topic must be the
             same as that of the provided subscription. Format is
             ``projects/{project}/snapshots/{snap}``.
+            This field is a member of `oneof`_ ``target``.
     """
 
     subscription = proto.Field(proto.STRING, number=1,)

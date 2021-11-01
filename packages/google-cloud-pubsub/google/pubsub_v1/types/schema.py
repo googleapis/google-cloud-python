@@ -202,6 +202,13 @@ class ValidateSchemaResponse(proto.Message):
 class ValidateMessageRequest(proto.Message):
     r"""Request for the ``ValidateMessage`` method.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. The name of the project in which to validate
@@ -210,8 +217,10 @@ class ValidateMessageRequest(proto.Message):
             Name of the schema against which to validate.
 
             Format is ``projects/{project}/schemas/{schema}``.
+            This field is a member of `oneof`_ ``schema_spec``.
         schema (google.pubsub_v1.types.Schema):
             Ad-hoc schema against which to validate
+            This field is a member of `oneof`_ ``schema_spec``.
         message (bytes):
             Message to validate against the provided ``schema_spec``.
         encoding (google.pubsub_v1.types.Encoding):
