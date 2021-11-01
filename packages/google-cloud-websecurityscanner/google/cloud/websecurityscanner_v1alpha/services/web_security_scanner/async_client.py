@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.websecurityscanner_v1alpha.services.web_security_scanner import pagers
 from google.cloud.websecurityscanner_v1alpha.types import crawled_url
@@ -183,18 +185,18 @@ class WebSecurityScannerAsyncClient:
 
     async def create_scan_config(
         self,
-        request: web_security_scanner.CreateScanConfigRequest = None,
+        request: Union[web_security_scanner.CreateScanConfigRequest, dict] = None,
         *,
         parent: str = None,
         scan_config: gcw_scan_config.ScanConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcw_scan_config.ScanConfig:
         r"""Creates a new ScanConfig.
 
         Args:
-            request (:class:`google.cloud.websecurityscanner_v1alpha.types.CreateScanConfigRequest`):
+            request (Union[google.cloud.websecurityscanner_v1alpha.types.CreateScanConfigRequest, dict]):
                 The request object. Request for the `CreateScanConfig`
                 method.
             parent (:class:`str`):
@@ -267,10 +269,10 @@ class WebSecurityScannerAsyncClient:
 
     async def delete_scan_config(
         self,
-        request: web_security_scanner.DeleteScanConfigRequest = None,
+        request: Union[web_security_scanner.DeleteScanConfigRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -278,7 +280,7 @@ class WebSecurityScannerAsyncClient:
         resources.
 
         Args:
-            request (:class:`google.cloud.websecurityscanner_v1alpha.types.DeleteScanConfigRequest`):
+            request (Union[google.cloud.websecurityscanner_v1alpha.types.DeleteScanConfigRequest, dict]):
                 The request object. Request for the `DeleteScanConfig`
                 method.
             name (:class:`str`):
@@ -344,17 +346,17 @@ class WebSecurityScannerAsyncClient:
 
     async def get_scan_config(
         self,
-        request: web_security_scanner.GetScanConfigRequest = None,
+        request: Union[web_security_scanner.GetScanConfigRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> scan_config.ScanConfig:
         r"""Gets a ScanConfig.
 
         Args:
-            request (:class:`google.cloud.websecurityscanner_v1alpha.types.GetScanConfigRequest`):
+            request (Union[google.cloud.websecurityscanner_v1alpha.types.GetScanConfigRequest, dict]):
                 The request object. Request for the `GetScanConfig`
                 method.
             name (:class:`str`):
@@ -428,17 +430,17 @@ class WebSecurityScannerAsyncClient:
 
     async def list_scan_configs(
         self,
-        request: web_security_scanner.ListScanConfigsRequest = None,
+        request: Union[web_security_scanner.ListScanConfigsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListScanConfigsAsyncPager:
         r"""Lists ScanConfigs under a given project.
 
         Args:
-            request (:class:`google.cloud.websecurityscanner_v1alpha.types.ListScanConfigsRequest`):
+            request (Union[google.cloud.websecurityscanner_v1alpha.types.ListScanConfigsRequest, dict]):
                 The request object. Request for the `ListScanConfigs`
                 method.
             parent (:class:`str`):
@@ -518,11 +520,11 @@ class WebSecurityScannerAsyncClient:
 
     async def update_scan_config(
         self,
-        request: web_security_scanner.UpdateScanConfigRequest = None,
+        request: Union[web_security_scanner.UpdateScanConfigRequest, dict] = None,
         *,
         scan_config: gcw_scan_config.ScanConfig = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcw_scan_config.ScanConfig:
@@ -530,7 +532,7 @@ class WebSecurityScannerAsyncClient:
         update of a ScanConfig.
 
         Args:
-            request (:class:`google.cloud.websecurityscanner_v1alpha.types.UpdateScanConfigRequest`):
+            request (Union[google.cloud.websecurityscanner_v1alpha.types.UpdateScanConfigRequest, dict]):
                 The request object. Request for the
                 `UpdateScanConfigRequest` method.
             scan_config (:class:`google.cloud.websecurityscanner_v1alpha.types.ScanConfig`):
@@ -607,17 +609,17 @@ class WebSecurityScannerAsyncClient:
 
     async def start_scan_run(
         self,
-        request: web_security_scanner.StartScanRunRequest = None,
+        request: Union[web_security_scanner.StartScanRunRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> scan_run.ScanRun:
         r"""Start a ScanRun according to the given ScanConfig.
 
         Args:
-            request (:class:`google.cloud.websecurityscanner_v1alpha.types.StartScanRunRequest`):
+            request (Union[google.cloud.websecurityscanner_v1alpha.types.StartScanRunRequest, dict]):
                 The request object. Request for the `StartScanRun`
                 method.
             name (:class:`str`):
@@ -680,17 +682,17 @@ class WebSecurityScannerAsyncClient:
 
     async def get_scan_run(
         self,
-        request: web_security_scanner.GetScanRunRequest = None,
+        request: Union[web_security_scanner.GetScanRunRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> scan_run.ScanRun:
         r"""Gets a ScanRun.
 
         Args:
-            request (:class:`google.cloud.websecurityscanner_v1alpha.types.GetScanRunRequest`):
+            request (Union[google.cloud.websecurityscanner_v1alpha.types.GetScanRunRequest, dict]):
                 The request object. Request for the `GetScanRun` method.
             name (:class:`str`):
                 Required. The resource name of the
@@ -762,10 +764,10 @@ class WebSecurityScannerAsyncClient:
 
     async def list_scan_runs(
         self,
-        request: web_security_scanner.ListScanRunsRequest = None,
+        request: Union[web_security_scanner.ListScanRunsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListScanRunsAsyncPager:
@@ -773,7 +775,7 @@ class WebSecurityScannerAsyncClient:
         descending order of ScanRun stop time.
 
         Args:
-            request (:class:`google.cloud.websecurityscanner_v1alpha.types.ListScanRunsRequest`):
+            request (Union[google.cloud.websecurityscanner_v1alpha.types.ListScanRunsRequest, dict]):
                 The request object. Request for the `ListScanRuns`
                 method.
             parent (:class:`str`):
@@ -854,17 +856,17 @@ class WebSecurityScannerAsyncClient:
 
     async def stop_scan_run(
         self,
-        request: web_security_scanner.StopScanRunRequest = None,
+        request: Union[web_security_scanner.StopScanRunRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> scan_run.ScanRun:
         r"""Stops a ScanRun. The stopped ScanRun is returned.
 
         Args:
-            request (:class:`google.cloud.websecurityscanner_v1alpha.types.StopScanRunRequest`):
+            request (Union[google.cloud.websecurityscanner_v1alpha.types.StopScanRunRequest, dict]):
                 The request object. Request for the `StopScanRun`
                 method.
             name (:class:`str`):
@@ -927,17 +929,17 @@ class WebSecurityScannerAsyncClient:
 
     async def list_crawled_urls(
         self,
-        request: web_security_scanner.ListCrawledUrlsRequest = None,
+        request: Union[web_security_scanner.ListCrawledUrlsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCrawledUrlsAsyncPager:
         r"""List CrawledUrls under a given ScanRun.
 
         Args:
-            request (:class:`google.cloud.websecurityscanner_v1alpha.types.ListCrawledUrlsRequest`):
+            request (Union[google.cloud.websecurityscanner_v1alpha.types.ListCrawledUrlsRequest, dict]):
                 The request object. Request for the `ListCrawledUrls`
                 method.
             parent (:class:`str`):
@@ -1018,17 +1020,17 @@ class WebSecurityScannerAsyncClient:
 
     async def get_finding(
         self,
-        request: web_security_scanner.GetFindingRequest = None,
+        request: Union[web_security_scanner.GetFindingRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> finding.Finding:
         r"""Gets a Finding.
 
         Args:
-            request (:class:`google.cloud.websecurityscanner_v1alpha.types.GetFindingRequest`):
+            request (Union[google.cloud.websecurityscanner_v1alpha.types.GetFindingRequest, dict]):
                 The request object. Request for the `GetFinding` method.
             name (:class:`str`):
                 Required. The resource name of the
@@ -1101,18 +1103,18 @@ class WebSecurityScannerAsyncClient:
 
     async def list_findings(
         self,
-        request: web_security_scanner.ListFindingsRequest = None,
+        request: Union[web_security_scanner.ListFindingsRequest, dict] = None,
         *,
         parent: str = None,
         filter: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFindingsAsyncPager:
         r"""List Findings under a given ScanRun.
 
         Args:
-            request (:class:`google.cloud.websecurityscanner_v1alpha.types.ListFindingsRequest`):
+            request (Union[google.cloud.websecurityscanner_v1alpha.types.ListFindingsRequest, dict]):
                 The request object. Request for the `ListFindings`
                 method.
             parent (:class:`str`):
@@ -1203,17 +1205,17 @@ class WebSecurityScannerAsyncClient:
 
     async def list_finding_type_stats(
         self,
-        request: web_security_scanner.ListFindingTypeStatsRequest = None,
+        request: Union[web_security_scanner.ListFindingTypeStatsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> web_security_scanner.ListFindingTypeStatsResponse:
         r"""List all FindingTypeStats under a given ScanRun.
 
         Args:
-            request (:class:`google.cloud.websecurityscanner_v1alpha.types.ListFindingTypeStatsRequest`):
+            request (Union[google.cloud.websecurityscanner_v1alpha.types.ListFindingTypeStatsRequest, dict]):
                 The request object. Request for the
                 `ListFindingTypeStats` method.
             parent (:class:`str`):

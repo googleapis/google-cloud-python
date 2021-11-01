@@ -98,14 +98,24 @@ class ScanConfig(proto.Message):
     class Authentication(proto.Message):
         r"""Scan authentication configuration.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             google_account (google.cloud.websecurityscanner_v1.types.ScanConfig.Authentication.GoogleAccount):
                 Authentication using a Google account.
+                This field is a member of `oneof`_ ``authentication``.
             custom_account (google.cloud.websecurityscanner_v1.types.ScanConfig.Authentication.CustomAccount):
                 Authentication using a custom account.
+                This field is a member of `oneof`_ ``authentication``.
             iap_credential (google.cloud.websecurityscanner_v1.types.ScanConfig.Authentication.IapCredential):
                 Authentication using Identity-Aware-Proxy
                 (IAP).
+                This field is a member of `oneof`_ ``authentication``.
         """
 
         class GoogleAccount(proto.Message):
@@ -151,11 +161,15 @@ class ScanConfig(proto.Message):
             r"""Describes authentication configuration for Identity-Aware-
             roxy (IAP).
 
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
             Attributes:
                 iap_test_service_account_info (google.cloud.websecurityscanner_v1.types.ScanConfig.Authentication.IapCredential.IapTestServiceAccountInfo):
                     Authentication configuration when Web-
                     ecurity-Scanner service account is added in
                     Identity-Aware-Proxy (IAP) access policies.
+                    This field is a member of `oneof`_ ``iap_credentials``.
             """
 
             class IapTestServiceAccountInfo(proto.Message):
