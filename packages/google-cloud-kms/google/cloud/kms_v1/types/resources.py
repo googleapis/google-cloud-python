@@ -74,6 +74,9 @@ class CryptoKey(proto.Message):
     more [versions][google.cloud.kms.v1.CryptoKeyVersion], which
     represent the actual key material used in cryptographic operations.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. The resource name for this
@@ -138,6 +141,7 @@ class CryptoKey(proto.Message):
             [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT]
             support automatic rotation. For other keys, this field must
             be omitted.
+            This field is a member of `oneof`_ ``rotation_schedule``.
         version_template (google.cloud.kms_v1.types.CryptoKeyVersionTemplate):
             A template describing settings for new
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]

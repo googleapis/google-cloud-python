@@ -496,6 +496,9 @@ class ImportCryptoKeyVersionRequest(proto.Message):
     r"""Request message for
     [KeyManagementService.ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. The [name][google.cloud.kms.v1.CryptoKey.name] of
@@ -573,6 +576,7 @@ class ImportCryptoKeyVersionRequest(proto.Message):
 
             This format is the same as the format produced by PKCS#11
             mechanism CKM_RSA_AES_KEY_WRAP.
+            This field is a member of `oneof`_ ``wrapped_key_material``.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
@@ -1533,16 +1537,26 @@ class Digest(proto.Message):
     r"""A [Digest][google.cloud.kms.v1.Digest] holds a cryptographic message
     digest.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         sha256 (bytes):
             A message digest produced with the SHA-256
             algorithm.
+            This field is a member of `oneof`_ ``digest``.
         sha384 (bytes):
             A message digest produced with the SHA-384
             algorithm.
+            This field is a member of `oneof`_ ``digest``.
         sha512 (bytes):
             A message digest produced with the SHA-512
             algorithm.
+            This field is a member of `oneof`_ ``digest``.
     """
 
     sha256 = proto.Field(proto.BYTES, number=1, oneof="digest",)
