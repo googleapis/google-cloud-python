@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-compute.git",
-        "sha": "8e6293777e9197ed0ff795b3f74744c556777d07"
+        "sha": "b4bea0b0761bf28d4eaf2643ec1f3e97d8142352"
       }
     },
     {
@@ -56,6 +56,11 @@
     ".kokoro/samples/lint/continuous.cfg",
     ".kokoro/samples/lint/periodic.cfg",
     ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.10/common.cfg",
+    ".kokoro/samples/python3.10/continuous.cfg",
+    ".kokoro/samples/python3.10/periodic-head.cfg",
+    ".kokoro/samples/python3.10/periodic.cfg",
+    ".kokoro/samples/python3.10/presubmit.cfg",
     ".kokoro/samples/python3.6/common.cfg",
     ".kokoro/samples/python3.6/continuous.cfg",
     ".kokoro/samples/python3.6/periodic-head.cfg",
