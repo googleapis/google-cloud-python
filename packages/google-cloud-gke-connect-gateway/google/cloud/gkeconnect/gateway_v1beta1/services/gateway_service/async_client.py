@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api import httpbody_pb2  # type: ignore
 from google.protobuf import any_pb2  # type: ignore
@@ -167,9 +169,9 @@ class GatewayServiceAsyncClient:
 
     async def get_resource(
         self,
-        request: httpbody_pb2.HttpBody = None,
+        request: Union[httpbody_pb2.HttpBody, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
@@ -177,7 +179,7 @@ class GatewayServiceAsyncClient:
         Kubernetes API Server.
 
         Args:
-            request (:class:`google.api.httpbody_pb2.HttpBody`):
+            request (Union[google.api.httpbody_pb2.HttpBody, dict]):
                 The request object. Message that represents an arbitrary
                 HTTP body. It should only be used for payload formats
                 that can't be represented as JSON, such as raw binary or
@@ -301,9 +303,9 @@ class GatewayServiceAsyncClient:
 
     async def post_resource(
         self,
-        request: httpbody_pb2.HttpBody = None,
+        request: Union[httpbody_pb2.HttpBody, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
@@ -311,7 +313,7 @@ class GatewayServiceAsyncClient:
         API Server.
 
         Args:
-            request (:class:`google.api.httpbody_pb2.HttpBody`):
+            request (Union[google.api.httpbody_pb2.HttpBody, dict]):
                 The request object. Message that represents an arbitrary
                 HTTP body. It should only be used for payload formats
                 that can't be represented as JSON, such as raw binary or
@@ -435,9 +437,9 @@ class GatewayServiceAsyncClient:
 
     async def delete_resource(
         self,
-        request: httpbody_pb2.HttpBody = None,
+        request: Union[httpbody_pb2.HttpBody, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
@@ -445,7 +447,7 @@ class GatewayServiceAsyncClient:
         Kubernetes API Server.
 
         Args:
-            request (:class:`google.api.httpbody_pb2.HttpBody`):
+            request (Union[google.api.httpbody_pb2.HttpBody, dict]):
                 The request object. Message that represents an arbitrary
                 HTTP body. It should only be used for payload formats
                 that can't be represented as JSON, such as raw binary or
@@ -569,9 +571,9 @@ class GatewayServiceAsyncClient:
 
     async def put_resource(
         self,
-        request: httpbody_pb2.HttpBody = None,
+        request: Union[httpbody_pb2.HttpBody, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
@@ -579,7 +581,7 @@ class GatewayServiceAsyncClient:
         API Server.
 
         Args:
-            request (:class:`google.api.httpbody_pb2.HttpBody`):
+            request (Union[google.api.httpbody_pb2.HttpBody, dict]):
                 The request object. Message that represents an arbitrary
                 HTTP body. It should only be used for payload formats
                 that can't be represented as JSON, such as raw binary or
@@ -703,9 +705,9 @@ class GatewayServiceAsyncClient:
 
     async def patch_resource(
         self,
-        request: httpbody_pb2.HttpBody = None,
+        request: Union[httpbody_pb2.HttpBody, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> httpbody_pb2.HttpBody:
@@ -713,7 +715,7 @@ class GatewayServiceAsyncClient:
         Kubernetes API Server.
 
         Args:
-            request (:class:`google.api.httpbody_pb2.HttpBody`):
+            request (Union[google.api.httpbody_pb2.HttpBody, dict]):
                 The request object. Message that represents an arbitrary
                 HTTP body. It should only be used for payload formats
                 that can't be represented as JSON, such as raw binary or
