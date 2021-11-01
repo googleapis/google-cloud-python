@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -209,19 +211,21 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def create_microsoft_ad_domain(
         self,
-        request: managed_identities_service.CreateMicrosoftAdDomainRequest = None,
+        request: Union[
+            managed_identities_service.CreateMicrosoftAdDomainRequest, dict
+        ] = None,
         *,
         parent: str = None,
         domain_name: str = None,
         domain: resource.Domain = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a Microsoft AD domain.
 
         Args:
-            request (:class:`google.cloud.managedidentities_v1.types.CreateMicrosoftAdDomainRequest`):
+            request (Union[google.cloud.managedidentities_v1.types.CreateMicrosoftAdDomainRequest, dict]):
                 The request object. Request message for
                 [CreateMicrosoftAdDomain][google.cloud.managedidentities.v1.CreateMicrosoftAdDomain]
             parent (:class:`str`):
@@ -323,17 +327,19 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def reset_admin_password(
         self,
-        request: managed_identities_service.ResetAdminPasswordRequest = None,
+        request: Union[
+            managed_identities_service.ResetAdminPasswordRequest, dict
+        ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> managed_identities_service.ResetAdminPasswordResponse:
         r"""Resets a domain's administrator password.
 
         Args:
-            request (:class:`google.cloud.managedidentities_v1.types.ResetAdminPasswordRequest`):
+            request (Union[google.cloud.managedidentities_v1.types.ResetAdminPasswordRequest, dict]):
                 The request object. Request message for
                 [ResetAdminPassword][google.cloud.managedidentities.v1.ResetAdminPassword]
             name (:class:`str`):
@@ -394,17 +400,17 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def list_domains(
         self,
-        request: managed_identities_service.ListDomainsRequest = None,
+        request: Union[managed_identities_service.ListDomainsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDomainsAsyncPager:
         r"""Lists domains in a project.
 
         Args:
-            request (:class:`google.cloud.managedidentities_v1.types.ListDomainsRequest`):
+            request (Union[google.cloud.managedidentities_v1.types.ListDomainsRequest, dict]):
                 The request object. Request message for
                 [ListDomains][google.cloud.managedidentities.v1.ListDomains]
             parent (:class:`str`):
@@ -474,17 +480,17 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def get_domain(
         self,
-        request: managed_identities_service.GetDomainRequest = None,
+        request: Union[managed_identities_service.GetDomainRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.Domain:
         r"""Gets information about a domain.
 
         Args:
-            request (:class:`google.cloud.managedidentities_v1.types.GetDomainRequest`):
+            request (Union[google.cloud.managedidentities_v1.types.GetDomainRequest, dict]):
                 The request object. Request message for
                 [GetDomain][google.cloud.managedidentities.v1.GetDomain]
             name (:class:`str`):
@@ -545,18 +551,18 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def update_domain(
         self,
-        request: managed_identities_service.UpdateDomainRequest = None,
+        request: Union[managed_identities_service.UpdateDomainRequest, dict] = None,
         *,
         domain: resource.Domain = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the metadata and configuration of a domain.
 
         Args:
-            request (:class:`google.cloud.managedidentities_v1.types.UpdateDomainRequest`):
+            request (Union[google.cloud.managedidentities_v1.types.UpdateDomainRequest, dict]):
                 The request object. Request message for
                 [UpdateDomain][google.cloud.managedidentities.v1.UpdateDomain]
             domain (:class:`google.cloud.managedidentities_v1.types.Domain`):
@@ -645,17 +651,17 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def delete_domain(
         self,
-        request: managed_identities_service.DeleteDomainRequest = None,
+        request: Union[managed_identities_service.DeleteDomainRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a domain.
 
         Args:
-            request (:class:`google.cloud.managedidentities_v1.types.DeleteDomainRequest`):
+            request (Union[google.cloud.managedidentities_v1.types.DeleteDomainRequest, dict]):
                 The request object. Request message for
                 [DeleteDomain][google.cloud.managedidentities.v1.DeleteDomain]
             name (:class:`str`):
@@ -737,18 +743,18 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def attach_trust(
         self,
-        request: managed_identities_service.AttachTrustRequest = None,
+        request: Union[managed_identities_service.AttachTrustRequest, dict] = None,
         *,
         name: str = None,
         trust: resource.Trust = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Adds an AD trust to a domain.
 
         Args:
-            request (:class:`google.cloud.managedidentities_v1.types.AttachTrustRequest`):
+            request (Union[google.cloud.managedidentities_v1.types.AttachTrustRequest, dict]):
                 The request object. Request message for
                 [AttachTrust][google.cloud.managedidentities.v1.AttachTrust]
             name (:class:`str`):
@@ -828,19 +834,19 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def reconfigure_trust(
         self,
-        request: managed_identities_service.ReconfigureTrustRequest = None,
+        request: Union[managed_identities_service.ReconfigureTrustRequest, dict] = None,
         *,
         name: str = None,
         target_domain_name: str = None,
         target_dns_ip_addresses: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the DNS conditional forwarder.
 
         Args:
-            request (:class:`google.cloud.managedidentities_v1.types.ReconfigureTrustRequest`):
+            request (Union[google.cloud.managedidentities_v1.types.ReconfigureTrustRequest, dict]):
                 The request object. Request message for
                 [ReconfigureTrust][google.cloud.managedidentities.v1.ReconfigureTrust]
             name (:class:`str`):
@@ -933,18 +939,18 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def detach_trust(
         self,
-        request: managed_identities_service.DetachTrustRequest = None,
+        request: Union[managed_identities_service.DetachTrustRequest, dict] = None,
         *,
         name: str = None,
         trust: resource.Trust = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Removes an AD trust.
 
         Args:
-            request (:class:`google.cloud.managedidentities_v1.types.DetachTrustRequest`):
+            request (Union[google.cloud.managedidentities_v1.types.DetachTrustRequest, dict]):
                 The request object. Request message for
                 [DetachTrust][google.cloud.managedidentities.v1.DetachTrust]
             name (:class:`str`):
@@ -1026,11 +1032,11 @@ class ManagedIdentitiesServiceAsyncClient:
 
     async def validate_trust(
         self,
-        request: managed_identities_service.ValidateTrustRequest = None,
+        request: Union[managed_identities_service.ValidateTrustRequest, dict] = None,
         *,
         name: str = None,
         trust: resource.Trust = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -1039,7 +1045,7 @@ class ManagedIdentitiesServiceAsyncClient:
         incoming trust requests.
 
         Args:
-            request (:class:`google.cloud.managedidentities_v1.types.ValidateTrustRequest`):
+            request (Union[google.cloud.managedidentities_v1.types.ValidateTrustRequest, dict]):
                 The request object. Request message for
                 [ValidateTrust][google.cloud.managedidentities.v1.ValidateTrust]
             name (:class:`str`):
