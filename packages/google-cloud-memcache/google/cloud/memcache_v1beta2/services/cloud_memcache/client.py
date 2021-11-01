@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.memcache_v1beta2.services.cloud_memcache import pagers
@@ -374,7 +376,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         request: Union[cloud_memcache.ListInstancesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesPager:
@@ -456,7 +458,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         request: Union[cloud_memcache.GetInstanceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_memcache.Instance:
@@ -529,7 +531,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         parent: str = None,
         instance_id: str = None,
         resource: cloud_memcache.Instance = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -640,7 +642,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         *,
         update_mask: field_mask_pb2.FieldMask = None,
         resource: cloud_memcache.Instance = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -737,7 +739,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         name: str = None,
         update_mask: field_mask_pb2.FieldMask = None,
         parameters: cloud_memcache.MemcacheParameters = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -839,7 +841,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         request: Union[cloud_memcache.DeleteInstanceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -935,7 +937,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         name: str = None,
         node_ids: Sequence[str] = None,
         apply_all: bool = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1042,7 +1044,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
         instance: str = None,
         node_ids: Sequence[str] = None,
         apply_all: bool = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
