@@ -141,15 +141,26 @@ class SettingMetadata(proto.Message):
 class Value(proto.Message):
     r"""The data in a setting value.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         boolean_value (bool):
             Defines this value as being a boolean value.
+            This field is a member of `oneof`_ ``value``.
         string_value (str):
             Defines this value as being a string value.
+            This field is a member of `oneof`_ ``value``.
         string_set_value (google.cloud.resourcesettings_v1.types.Value.StringSet):
             Defines this value as being a StringSet.
+            This field is a member of `oneof`_ ``value``.
         enum_value (google.cloud.resourcesettings_v1.types.Value.EnumValue):
             Defines this value as being a Enum.
+            This field is a member of `oneof`_ ``value``.
     """
 
     class StringSet(proto.Message):

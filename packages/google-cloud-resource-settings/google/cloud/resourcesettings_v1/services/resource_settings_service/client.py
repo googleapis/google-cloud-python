@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.resourcesettings_v1.services.resource_settings_service import pagers
 from google.cloud.resourcesettings_v1.types import resource_settings
 from .transports.base import ResourceSettingsServiceTransport, DEFAULT_CLIENT_INFO
@@ -366,7 +368,7 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
         request: Union[resource_settings.ListSettingsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSettingsPager:
@@ -450,7 +452,7 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
         request: Union[resource_settings.GetSettingRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource_settings.Setting:
@@ -521,7 +523,7 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
         self,
         request: Union[resource_settings.UpdateSettingRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource_settings.Setting:

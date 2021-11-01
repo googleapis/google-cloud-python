@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.resourcesettings_v1.services.resource_settings_service import pagers
 from google.cloud.resourcesettings_v1.types import resource_settings
@@ -181,10 +183,10 @@ class ResourceSettingsServiceAsyncClient:
 
     async def list_settings(
         self,
-        request: resource_settings.ListSettingsRequest = None,
+        request: Union[resource_settings.ListSettingsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSettingsAsyncPager:
@@ -192,7 +194,7 @@ class ResourceSettingsServiceAsyncClient:
         ``parent``.
 
         Args:
-            request (:class:`google.cloud.resourcesettings_v1.types.ListSettingsRequest`):
+            request (Union[google.cloud.resourcesettings_v1.types.ListSettingsRequest, dict]):
                 The request object. The request for ListSettings.
             parent (:class:`str`):
                 Required. The Cloud resource that parents the setting.
@@ -275,10 +277,10 @@ class ResourceSettingsServiceAsyncClient:
 
     async def get_setting(
         self,
-        request: resource_settings.GetSettingRequest = None,
+        request: Union[resource_settings.GetSettingRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource_settings.Setting:
@@ -288,7 +290,7 @@ class ResourceSettingsServiceAsyncClient:
         ``google.rpc.Code.NOT_FOUND`` if the setting does not exist.
 
         Args:
-            request (:class:`google.cloud.resourcesettings_v1.types.GetSettingRequest`):
+            request (Union[google.cloud.resourcesettings_v1.types.GetSettingRequest, dict]):
                 The request object. The request for GetSetting.
             name (:class:`str`):
                 Required. The name of the setting to get. See
@@ -357,9 +359,9 @@ class ResourceSettingsServiceAsyncClient:
 
     async def update_setting(
         self,
-        request: resource_settings.UpdateSettingRequest = None,
+        request: Union[resource_settings.UpdateSettingRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource_settings.Setting:
@@ -381,7 +383,7 @@ class ResourceSettingsServiceAsyncClient:
         ``local_value`` field.
 
         Args:
-            request (:class:`google.cloud.resourcesettings_v1.types.UpdateSettingRequest`):
+            request (Union[google.cloud.resourcesettings_v1.types.UpdateSettingRequest, dict]):
                 The request object. The request for UpdateSetting.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
