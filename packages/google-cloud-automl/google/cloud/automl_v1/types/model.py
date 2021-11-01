@@ -27,19 +27,32 @@ __protobuf__ = proto.module(package="google.cloud.automl.v1", manifest={"Model",
 class Model(proto.Message):
     r"""API proto representing a trained machine learning model.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         translation_model_metadata (google.cloud.automl_v1.types.TranslationModelMetadata):
             Metadata for translation models.
+            This field is a member of `oneof`_ ``model_metadata``.
         image_classification_model_metadata (google.cloud.automl_v1.types.ImageClassificationModelMetadata):
             Metadata for image classification models.
+            This field is a member of `oneof`_ ``model_metadata``.
         text_classification_model_metadata (google.cloud.automl_v1.types.TextClassificationModelMetadata):
             Metadata for text classification models.
+            This field is a member of `oneof`_ ``model_metadata``.
         image_object_detection_model_metadata (google.cloud.automl_v1.types.ImageObjectDetectionModelMetadata):
             Metadata for image object detection models.
+            This field is a member of `oneof`_ ``model_metadata``.
         text_extraction_model_metadata (google.cloud.automl_v1.types.TextExtractionModelMetadata):
             Metadata for text extraction models.
+            This field is a member of `oneof`_ ``model_metadata``.
         text_sentiment_model_metadata (google.cloud.automl_v1.types.TextSentimentModelMetadata):
             Metadata for text sentiment models.
+            This field is a member of `oneof`_ ``model_metadata``.
         name (str):
             Output only. Resource name of the model. Format:
             ``projects/{project_id}/locations/{location_id}/models/{model_id}``

@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.automl_v1.types import annotation_payload
@@ -365,7 +367,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         name: str = None,
         payload: data_items.ExamplePayload = None,
         params: Sequence[prediction_service.PredictRequest.ParamsEntry] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> prediction_service.PredictResponse:
@@ -523,7 +525,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         input_config: io.BatchPredictInputConfig = None,
         output_config: io.BatchPredictOutputConfig = None,
         params: Sequence[prediction_service.BatchPredictRequest.ParamsEntry] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:

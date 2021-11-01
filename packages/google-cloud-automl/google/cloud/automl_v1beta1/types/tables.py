@@ -117,15 +117,24 @@ class TablesDatasetMetadata(proto.Message):
 class TablesModelMetadata(proto.Message):
     r"""Model metadata specific to AutoML Tables.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         optimization_objective_recall_value (float):
             Required when optimization_objective is
             "MAXIMIZE_PRECISION_AT_RECALL". Must be between 0 and 1,
             inclusive.
+            This field is a member of `oneof`_ ``additional_optimization_objective_config``.
         optimization_objective_precision_value (float):
             Required when optimization_objective is
             "MAXIMIZE_RECALL_AT_PRECISION". Must be between 0 and 1,
             inclusive.
+            This field is a member of `oneof`_ ``additional_optimization_objective_config``.
         target_column_spec (google.cloud.automl_v1beta1.types.ColumnSpec):
             Column spec of the dataset's primary table's column the
             model is predicting. Snapshotted when model creation

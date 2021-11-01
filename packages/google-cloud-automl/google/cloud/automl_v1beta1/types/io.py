@@ -335,13 +335,22 @@ class InputConfig(proto.Message):
     success or failure the per-row failures, up to a certain count cap,
     is listed in Operation.metadata.partial_failures.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_source (google.cloud.automl_v1beta1.types.GcsSource):
             The Google Cloud Storage location for the input content. In
             ImportData, the gcs_source points to a csv with structure
             described in the comment.
+            This field is a member of `oneof`_ ``source``.
         bigquery_source (google.cloud.automl_v1beta1.types.BigQuerySource):
             The BigQuery location for the input content.
+            This field is a member of `oneof`_ ``source``.
         params (Sequence[google.cloud.automl_v1beta1.types.InputConfig.ParamsEntry]):
             Additional domain-specific parameters describing the
             semantic of the imported data, any string must be up to
@@ -516,12 +525,21 @@ class BatchPredictInputConfig(proto.Message):
     overall success or failure the per-row failures, up to a certain
     count cap, will be listed in Operation.metadata.partial_failures.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_source (google.cloud.automl_v1beta1.types.GcsSource):
             The Google Cloud Storage location for the
             input content.
+            This field is a member of `oneof`_ ``source``.
         bigquery_source (google.cloud.automl_v1beta1.types.BigQuerySource):
             The BigQuery location for the input content.
+            This field is a member of `oneof`_ ``source``.
     """
 
     gcs_source = proto.Field(
@@ -574,6 +592,13 @@ class OutputConfig(proto.Message):
     dataset a new table called ``primary_table`` will be created, and
     filled with precisely the same data as this obtained on import.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_destination (google.cloud.automl_v1beta1.types.GcsDestination):
             The Google Cloud Storage location where the output is to be
@@ -582,9 +607,11 @@ class OutputConfig(proto.Message):
             new directory will be created with name: export_data-- where
             timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format.
             All export output will be written into that directory.
+            This field is a member of `oneof`_ ``destination``.
         bigquery_destination (google.cloud.automl_v1beta1.types.BigQueryDestination):
             The BigQuery location where the output is to
             be written to.
+            This field is a member of `oneof`_ ``destination``.
     """
 
     gcs_destination = proto.Field(
@@ -883,13 +910,22 @@ class BatchPredictOutputConfig(proto.Message):
     represented as a STRUCT, and containing only ``code`` and
     ``message``.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_destination (google.cloud.automl_v1beta1.types.GcsDestination):
             The Google Cloud Storage location of the
             directory where the output is to be written to.
+            This field is a member of `oneof`_ ``destination``.
         bigquery_destination (google.cloud.automl_v1beta1.types.BigQueryDestination):
             The BigQuery location where the output is to
             be written to.
+            This field is a member of `oneof`_ ``destination``.
     """
 
     gcs_destination = proto.Field(
@@ -903,6 +939,13 @@ class BatchPredictOutputConfig(proto.Message):
 class ModelExportOutputConfig(proto.Message):
     r"""Output configuration for ModelExport Action.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_destination (google.cloud.automl_v1beta1.types.GcsDestination):
             The Google Cloud Storage location where the model is to be
@@ -915,6 +958,7 @@ class ModelExportOutputConfig(proto.Message):
             YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format, will be created.
             Inside the model and any of its supporting files will be
             written.
+            This field is a member of `oneof`_ ``destination``.
         gcr_destination (google.cloud.automl_v1beta1.types.GcrDestination):
             The GCR location where model image is to be
             pushed to. This location may only be set for the
@@ -922,6 +966,7 @@ class ModelExportOutputConfig(proto.Message):
 
             The model image will be created under the given
             URI.
+            This field is a member of `oneof`_ ``destination``.
         model_format (str):
             The format in which the model must be exported. The
             available, and default, formats depend on the problem and
@@ -1029,10 +1074,14 @@ class ExportEvaluatedExamplesOutputConfig(proto.Message):
     represented as STRUCT-s, containing
     [TablesAnnotation][google.cloud.automl.v1beta1.TablesAnnotation].
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         bigquery_destination (google.cloud.automl_v1beta1.types.BigQueryDestination):
             The BigQuery location where the output is to
             be written to.
+            This field is a member of `oneof`_ ``destination``.
     """
 
     bigquery_destination = proto.Field(

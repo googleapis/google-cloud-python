@@ -711,6 +711,9 @@ class InputConfig(proto.Message):
     failure the per-row failures, up to a certain count cap, is listed
     in Operation.metadata.partial_failures.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_source (google.cloud.automl_v1.types.GcsSource):
             The Google Cloud Storage location for the input content. For
@@ -718,6 +721,7 @@ class InputConfig(proto.Message):
             ``gcs_source`` points to a CSV file with a structure
             described in
             [InputConfig][google.cloud.automl.v1.InputConfig].
+            This field is a member of `oneof`_ ``source``.
         params (Sequence[google.cloud.automl_v1.types.InputConfig.ParamsEntry]):
             Additional domain-specific parameters describing the
             semantic of the imported data, any string must be up to
@@ -1071,10 +1075,14 @@ class BatchPredictInputConfig(proto.Message):
     or failure the per-row failures, up to a certain count cap, will be
     listed in Operation.metadata.partial_failures.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_source (google.cloud.automl_v1.types.GcsSource):
             Required. The Google Cloud Storage location
             for the input content.
+            This field is a member of `oneof`_ ``source``.
     """
 
     gcs_source = proto.Field(
@@ -1127,6 +1135,9 @@ class OutputConfig(proto.Message):
     dataset a new table called ``primary_table`` will be created, and
     filled with precisely the same data as this obtained on import.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_destination (google.cloud.automl_v1.types.GcsDestination):
             Required. The Google Cloud Storage location where the output
@@ -1136,6 +1147,7 @@ class OutputConfig(proto.Message):
             export_data-- where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ
             ISO-8601 format. All export output will be written into that
             directory.
+            This field is a member of `oneof`_ ``destination``.
     """
 
     gcs_destination = proto.Field(
@@ -1432,11 +1444,15 @@ class BatchPredictOutputConfig(proto.Message):
     represented as a STRUCT, and containing only ``code`` and
     ``message``.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_destination (google.cloud.automl_v1.types.GcsDestination):
             Required. The Google Cloud Storage location
             of the directory where the output is to be
             written to.
+            This field is a member of `oneof`_ ``destination``.
     """
 
     gcs_destination = proto.Field(
@@ -1446,6 +1462,8 @@ class BatchPredictOutputConfig(proto.Message):
 
 class ModelExportOutputConfig(proto.Message):
     r"""Output configuration for ModelExport Action.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         gcs_destination (google.cloud.automl_v1.types.GcsDestination):
@@ -1459,6 +1477,7 @@ class ModelExportOutputConfig(proto.Message):
             YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format, will be created.
             Inside the model and any of its supporting files will be
             written.
+            This field is a member of `oneof`_ ``destination``.
         model_format (str):
             The format in which the model must be exported. The
             available, and default, formats depend on the problem and

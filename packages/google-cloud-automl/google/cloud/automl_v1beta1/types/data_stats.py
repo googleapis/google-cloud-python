@@ -35,19 +35,32 @@ class DataStats(proto.Message):
     r"""The data statistics of a series of values that share the same
     DataType.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         float64_stats (google.cloud.automl_v1beta1.types.Float64Stats):
             The statistics for FLOAT64 DataType.
+            This field is a member of `oneof`_ ``stats``.
         string_stats (google.cloud.automl_v1beta1.types.StringStats):
             The statistics for STRING DataType.
+            This field is a member of `oneof`_ ``stats``.
         timestamp_stats (google.cloud.automl_v1beta1.types.TimestampStats):
             The statistics for TIMESTAMP DataType.
+            This field is a member of `oneof`_ ``stats``.
         array_stats (google.cloud.automl_v1beta1.types.ArrayStats):
             The statistics for ARRAY DataType.
+            This field is a member of `oneof`_ ``stats``.
         struct_stats (google.cloud.automl_v1beta1.types.StructStats):
             The statistics for STRUCT DataType.
+            This field is a member of `oneof`_ ``stats``.
         category_stats (google.cloud.automl_v1beta1.types.CategoryStats):
             The statistics for CATEGORY DataType.
+            This field is a member of `oneof`_ ``stats``.
         distinct_value_count (int):
             The number of distinct values.
         null_value_count (int):

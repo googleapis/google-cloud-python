@@ -30,19 +30,31 @@ __protobuf__ = proto.module(
 class AnnotationPayload(proto.Message):
     r"""Contains annotation information that is relevant to AutoML.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         translation (google.cloud.automl_v1.types.TranslationAnnotation):
             Annotation details for translation.
+            This field is a member of `oneof`_ ``detail``.
         classification (google.cloud.automl_v1.types.ClassificationAnnotation):
             Annotation details for content or image
             classification.
+            This field is a member of `oneof`_ ``detail``.
         image_object_detection (google.cloud.automl_v1.types.ImageObjectDetectionAnnotation):
             Annotation details for image object
             detection.
+            This field is a member of `oneof`_ ``detail``.
         text_extraction (google.cloud.automl_v1.types.TextExtractionAnnotation):
             Annotation details for text extraction.
+            This field is a member of `oneof`_ ``detail``.
         text_sentiment (google.cloud.automl_v1.types.TextSentimentAnnotation):
             Annotation details for text sentiment.
+            This field is a member of `oneof`_ ``detail``.
         annotation_spec_id (str):
             Output only . The resource ID of the
             annotation spec that this annotation pertains

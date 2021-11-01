@@ -27,11 +27,14 @@ __protobuf__ = proto.module(
 class TextExtractionAnnotation(proto.Message):
     r"""Annotation for identifying spans of text.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         text_segment (google.cloud.automl_v1beta1.types.TextSegment):
             An entity annotation will set this, which is
             the part of the original text to which the
             annotation pertains.
+            This field is a member of `oneof`_ ``annotation``.
         score (float):
             Output only. A confidence estimate between
             0.0 and 1.0. A higher value means greater

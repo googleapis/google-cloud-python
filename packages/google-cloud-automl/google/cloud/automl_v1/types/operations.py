@@ -41,25 +41,41 @@ class OperationMetadata(proto.Message):
     r"""Metadata used across all long running operations returned by
     AutoML API.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         delete_details (google.cloud.automl_v1.types.DeleteOperationMetadata):
             Details of a Delete operation.
+            This field is a member of `oneof`_ ``details``.
         deploy_model_details (google.cloud.automl_v1.types.DeployModelOperationMetadata):
             Details of a DeployModel operation.
+            This field is a member of `oneof`_ ``details``.
         undeploy_model_details (google.cloud.automl_v1.types.UndeployModelOperationMetadata):
             Details of an UndeployModel operation.
+            This field is a member of `oneof`_ ``details``.
         create_model_details (google.cloud.automl_v1.types.CreateModelOperationMetadata):
             Details of CreateModel operation.
+            This field is a member of `oneof`_ ``details``.
         create_dataset_details (google.cloud.automl_v1.types.CreateDatasetOperationMetadata):
             Details of CreateDataset operation.
+            This field is a member of `oneof`_ ``details``.
         import_data_details (google.cloud.automl_v1.types.ImportDataOperationMetadata):
             Details of ImportData operation.
+            This field is a member of `oneof`_ ``details``.
         batch_predict_details (google.cloud.automl_v1.types.BatchPredictOperationMetadata):
             Details of BatchPredict operation.
+            This field is a member of `oneof`_ ``details``.
         export_data_details (google.cloud.automl_v1.types.ExportDataOperationMetadata):
             Details of ExportData operation.
+            This field is a member of `oneof`_ ``details``.
         export_model_details (google.cloud.automl_v1.types.ExportModelOperationMetadata):
             Details of ExportModel operation.
+            This field is a member of `oneof`_ ``details``.
         progress_percent (int):
             Output only. Progress of operation. Range: [0, 100]. Not
             used currently.
@@ -179,11 +195,15 @@ class ExportDataOperationMetadata(proto.Message):
         r"""Further describes this export data's output. Supplements
         [OutputConfig][google.cloud.automl.v1.OutputConfig].
 
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             gcs_output_directory (str):
                 The full path of the Google Cloud Storage
                 directory created, into which the exported data
                 is written.
+                This field is a member of `oneof`_ ``output_location``.
         """
 
         gcs_output_directory = proto.Field(
@@ -210,11 +230,15 @@ class BatchPredictOperationMetadata(proto.Message):
 
         [BatchPredictOutputConfig][google.cloud.automl.v1.BatchPredictOutputConfig].
 
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             gcs_output_directory (str):
                 The full path of the Google Cloud Storage
                 directory created, into which the prediction
                 output is written.
+                This field is a member of `oneof`_ ``output_location``.
         """
 
         gcs_output_directory = proto.Field(

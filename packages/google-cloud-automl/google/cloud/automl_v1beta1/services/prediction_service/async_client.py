@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -172,12 +174,12 @@ class PredictionServiceAsyncClient:
 
     async def predict(
         self,
-        request: prediction_service.PredictRequest = None,
+        request: Union[prediction_service.PredictRequest, dict] = None,
         *,
         name: str = None,
         payload: data_items.ExamplePayload = None,
         params: Sequence[prediction_service.PredictRequest.ParamsEntry] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> prediction_service.PredictResponse:
@@ -204,7 +206,7 @@ class PredictionServiceAsyncClient:
            UTF-8 encoded.
 
         Args:
-            request (:class:`google.cloud.automl_v1beta1.types.PredictRequest`):
+            request (Union[google.cloud.automl_v1beta1.types.PredictRequest, dict]):
                 The request object. Request message for
                 [PredictionService.Predict][google.cloud.automl.v1beta1.PredictionService.Predict].
             name (:class:`str`):
@@ -306,13 +308,13 @@ class PredictionServiceAsyncClient:
 
     async def batch_predict(
         self,
-        request: prediction_service.BatchPredictRequest = None,
+        request: Union[prediction_service.BatchPredictRequest, dict] = None,
         *,
         name: str = None,
         input_config: io.BatchPredictInputConfig = None,
         output_config: io.BatchPredictOutputConfig = None,
         params: Sequence[prediction_service.BatchPredictRequest.ParamsEntry] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -335,7 +337,7 @@ class PredictionServiceAsyncClient:
         -  Tables
 
         Args:
-            request (:class:`google.cloud.automl_v1beta1.types.BatchPredictRequest`):
+            request (Union[google.cloud.automl_v1beta1.types.BatchPredictRequest, dict]):
                 The request object. Request message for
                 [PredictionService.BatchPredict][google.cloud.automl.v1beta1.PredictionService.BatchPredict].
             name (:class:`str`):

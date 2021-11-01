@@ -341,13 +341,22 @@ class DeployModelRequest(proto.Message):
     r"""Request message for
     [AutoMl.DeployModel][google.cloud.automl.v1.AutoMl.DeployModel].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         image_object_detection_model_deployment_metadata (google.cloud.automl_v1.types.ImageObjectDetectionModelDeploymentMetadata):
             Model deployment metadata specific to Image
             Object Detection.
+            This field is a member of `oneof`_ ``model_deployment_metadata``.
         image_classification_model_deployment_metadata (google.cloud.automl_v1.types.ImageClassificationModelDeploymentMetadata):
             Model deployment metadata specific to Image
             Classification.
+            This field is a member of `oneof`_ ``model_deployment_metadata``.
         name (str):
             Required. Resource name of the model to
             deploy.

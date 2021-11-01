@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.automl_v1.services.auto_ml import pagers
@@ -444,7 +446,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         *,
         parent: str = None,
         dataset: gca_dataset.Dataset = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -532,7 +534,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         request: Union[service.GetDatasetRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dataset.Dataset:
@@ -605,7 +607,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         request: Union[service.ListDatasetsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDatasetsPager:
@@ -686,7 +688,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         *,
         dataset: gca_dataset.Dataset = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gca_dataset.Dataset:
@@ -770,7 +772,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         request: Union[service.DeleteDatasetRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -867,7 +869,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         *,
         name: str = None,
         input_config: io.InputConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -980,7 +982,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         *,
         name: str = None,
         output_config: io.OutputConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1084,7 +1086,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         request: Union[service.GetAnnotationSpecRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> annotation_spec.AnnotationSpec:
@@ -1154,7 +1156,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         *,
         parent: str = None,
         model: gca_model.Model = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1248,7 +1250,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         request: Union[service.GetModelRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> model.Model:
@@ -1317,7 +1319,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         request: Union[service.ListModelsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListModelsPager:
@@ -1397,7 +1399,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         request: Union[service.DeleteModelRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1493,7 +1495,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         *,
         model: gca_model.Model = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gca_model.Model:
@@ -1575,7 +1577,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         request: Union[service.DeployModelRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1681,7 +1683,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         request: Union[service.UndeployModelRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1782,7 +1784,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         *,
         name: str = None,
         output_config: io.ModelExportOutputConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1892,7 +1894,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         request: Union[service.GetModelEvaluationRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> model_evaluation.ModelEvaluation:
@@ -1962,7 +1964,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         *,
         parent: str = None,
         filter: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListModelEvaluationsPager:

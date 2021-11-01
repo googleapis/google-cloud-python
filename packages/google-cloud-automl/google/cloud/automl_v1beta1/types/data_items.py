@@ -38,14 +38,23 @@ class Image(proto.Message):
     r"""A representation of an image.
     Only images up to 30MB in size are supported.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         image_bytes (bytes):
             Image content represented as a stream of bytes. Note: As
             with all ``bytes`` fields, protobuffers use a pure binary
             representation, whereas JSON representations use base64.
+            This field is a member of `oneof`_ ``data``.
         input_config (google.cloud.automl_v1beta1.types.InputConfig):
             An input config specifying the content of the
             image.
+            This field is a member of `oneof`_ ``data``.
         thumbnail_uri (str):
             Output only. HTTP URI to the thumbnail image.
     """
@@ -219,15 +228,26 @@ class Row(proto.Message):
 class ExamplePayload(proto.Message):
     r"""Example data used for training or prediction.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         image (google.cloud.automl_v1beta1.types.Image):
             Example image.
+            This field is a member of `oneof`_ ``payload``.
         text_snippet (google.cloud.automl_v1beta1.types.TextSnippet):
             Example text.
+            This field is a member of `oneof`_ ``payload``.
         document (google.cloud.automl_v1beta1.types.Document):
             Example document.
+            This field is a member of `oneof`_ ``payload``.
         row (google.cloud.automl_v1beta1.types.Row):
             Example relational table row.
+            This field is a member of `oneof`_ ``payload``.
     """
 
     image = proto.Field(proto.MESSAGE, number=1, oneof="payload", message="Image",)

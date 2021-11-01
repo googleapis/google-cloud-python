@@ -31,22 +31,34 @@ __protobuf__ = proto.module(
 class ModelEvaluation(proto.Message):
     r"""Evaluation results of a model.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         classification_evaluation_metrics (google.cloud.automl_v1.types.ClassificationEvaluationMetrics):
             Model evaluation metrics for image, text,
             video and tables classification.
             Tables problem is considered a classification
             when the target column is CATEGORY DataType.
+            This field is a member of `oneof`_ ``metrics``.
         translation_evaluation_metrics (google.cloud.automl_v1.types.TranslationEvaluationMetrics):
             Model evaluation metrics for translation.
+            This field is a member of `oneof`_ ``metrics``.
         image_object_detection_evaluation_metrics (google.cloud.automl_v1.types.ImageObjectDetectionEvaluationMetrics):
             Model evaluation metrics for image object
             detection.
+            This field is a member of `oneof`_ ``metrics``.
         text_sentiment_evaluation_metrics (google.cloud.automl_v1.types.TextSentimentEvaluationMetrics):
             Evaluation metrics for text sentiment models.
+            This field is a member of `oneof`_ ``metrics``.
         text_extraction_evaluation_metrics (google.cloud.automl_v1.types.TextExtractionEvaluationMetrics):
             Evaluation metrics for text extraction
             models.
+            This field is a member of `oneof`_ ``metrics``.
         name (str):
             Output only. Resource name of the model evaluation. Format:
 
