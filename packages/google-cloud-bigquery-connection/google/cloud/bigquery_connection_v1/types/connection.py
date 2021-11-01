@@ -148,6 +148,13 @@ class Connection(proto.Message):
     r"""Configuration parameters to establish connection with an
     external data source, except the credential attributes.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The resource name of the connection in the form of:
@@ -159,10 +166,13 @@ class Connection(proto.Message):
             User provided description.
         cloud_sql (google.cloud.bigquery_connection_v1.types.CloudSqlProperties):
             Cloud SQL properties.
+            This field is a member of `oneof`_ ``properties``.
         aws (google.cloud.bigquery_connection_v1.types.AwsProperties):
             Amazon Web Services (AWS) properties.
+            This field is a member of `oneof`_ ``properties``.
         cloud_spanner (google.cloud.bigquery_connection_v1.types.CloudSpannerProperties):
             Cloud Spanner properties.
+            This field is a member of `oneof`_ ``properties``.
         creation_time (int):
             Output only. The creation timestamp of the
             connection.
@@ -251,14 +261,23 @@ class CloudSpannerProperties(proto.Message):
 class AwsProperties(proto.Message):
     r"""Connection properties specific to Amazon Web Services (AWS).
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         cross_account_role (google.cloud.bigquery_connection_v1.types.AwsCrossAccountRole):
             Authentication using Google owned AWS IAM
             user's access key to assume into customer's AWS
             IAM Role.
+            This field is a member of `oneof`_ ``authentication_method``.
         access_role (google.cloud.bigquery_connection_v1.types.AwsAccessRole):
             Authentication using Google owned service
             account to assume into customer's AWS IAM Role.
+            This field is a member of `oneof`_ ``authentication_method``.
     """
 
     cross_account_role = proto.Field(

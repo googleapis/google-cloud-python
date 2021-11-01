@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.bigquery_connection_v1.services.connection_service import pagers
 from google.cloud.bigquery_connection_v1.types import connection
@@ -167,19 +169,19 @@ class ConnectionServiceAsyncClient:
 
     async def create_connection(
         self,
-        request: gcbc_connection.CreateConnectionRequest = None,
+        request: Union[gcbc_connection.CreateConnectionRequest, dict] = None,
         *,
         parent: str = None,
         connection: gcbc_connection.Connection = None,
         connection_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcbc_connection.Connection:
         r"""Creates a new connection.
 
         Args:
-            request (:class:`google.cloud.bigquery_connection_v1.types.CreateConnectionRequest`):
+            request (Union[google.cloud.bigquery_connection_v1.types.CreateConnectionRequest, dict]):
                 The request object. The request for
                 [ConnectionService.CreateConnection][google.cloud.bigquery.connection.v1.ConnectionService.CreateConnection].
             parent (:class:`str`):
@@ -257,17 +259,17 @@ class ConnectionServiceAsyncClient:
 
     async def get_connection(
         self,
-        request: connection.GetConnectionRequest = None,
+        request: Union[connection.GetConnectionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> connection.Connection:
         r"""Returns specified connection.
 
         Args:
-            request (:class:`google.cloud.bigquery_connection_v1.types.GetConnectionRequest`):
+            request (Union[google.cloud.bigquery_connection_v1.types.GetConnectionRequest, dict]):
                 The request object. The request for
                 [ConnectionService.GetConnection][google.cloud.bigquery.connection.v1.ConnectionService.GetConnection].
             name (:class:`str`):
@@ -339,17 +341,17 @@ class ConnectionServiceAsyncClient:
 
     async def list_connections(
         self,
-        request: connection.ListConnectionsRequest = None,
+        request: Union[connection.ListConnectionsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectionsAsyncPager:
         r"""Returns a list of connections in the given project.
 
         Args:
-            request (:class:`google.cloud.bigquery_connection_v1.types.ListConnectionsRequest`):
+            request (Union[google.cloud.bigquery_connection_v1.types.ListConnectionsRequest, dict]):
                 The request object. The request for
                 [ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections].
             parent (:class:`str`):
@@ -429,12 +431,12 @@ class ConnectionServiceAsyncClient:
 
     async def update_connection(
         self,
-        request: gcbc_connection.UpdateConnectionRequest = None,
+        request: Union[gcbc_connection.UpdateConnectionRequest, dict] = None,
         *,
         name: str = None,
         connection: gcbc_connection.Connection = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcbc_connection.Connection:
@@ -443,7 +445,7 @@ class ConnectionServiceAsyncClient:
         are in the update field mask.
 
         Args:
-            request (:class:`google.cloud.bigquery_connection_v1.types.UpdateConnectionRequest`):
+            request (Union[google.cloud.bigquery_connection_v1.types.UpdateConnectionRequest, dict]):
                 The request object. The request for
                 [ConnectionService.UpdateConnection][google.cloud.bigquery.connection.v1.ConnectionService.UpdateConnection].
             name (:class:`str`):
@@ -523,17 +525,17 @@ class ConnectionServiceAsyncClient:
 
     async def delete_connection(
         self,
-        request: connection.DeleteConnectionRequest = None,
+        request: Union[connection.DeleteConnectionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes connection and associated credential.
 
         Args:
-            request (:class:`google.cloud.bigquery_connection_v1.types.DeleteConnectionRequest`):
+            request (Union[google.cloud.bigquery_connection_v1.types.DeleteConnectionRequest, dict]):
                 The request object. The request for
                 [ConnectionService.DeleteConnectionRequest][].
             name (:class:`str`):
@@ -597,10 +599,10 @@ class ConnectionServiceAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -609,7 +611,7 @@ class ConnectionServiceAsyncClient:
         not have a policy set.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.GetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -725,10 +727,10 @@ class ConnectionServiceAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -739,7 +741,7 @@ class ConnectionServiceAsyncClient:
         ``PERMISSION_DENIED`` errors.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.SetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -855,11 +857,11 @@ class ConnectionServiceAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
@@ -873,7 +875,7 @@ class ConnectionServiceAsyncClient:
         warning.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):

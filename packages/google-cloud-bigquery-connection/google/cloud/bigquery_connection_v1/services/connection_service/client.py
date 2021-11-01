@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.bigquery_connection_v1.services.connection_service import pagers
 from google.cloud.bigquery_connection_v1.types import connection
 from google.cloud.bigquery_connection_v1.types import connection as gcbc_connection
@@ -360,7 +362,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         parent: str = None,
         connection: gcbc_connection.Connection = None,
         connection_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcbc_connection.Connection:
@@ -448,7 +450,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         request: Union[connection.GetConnectionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> connection.Connection:
@@ -520,7 +522,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         request: Union[connection.ListConnectionsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectionsPager:
@@ -602,7 +604,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         name: str = None,
         connection: gcbc_connection.Connection = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcbc_connection.Connection:
@@ -694,7 +696,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         request: Union[connection.DeleteConnectionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -758,7 +760,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -885,7 +887,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -1015,7 +1017,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
