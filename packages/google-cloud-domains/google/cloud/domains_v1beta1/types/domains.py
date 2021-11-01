@@ -231,13 +231,22 @@ class DnsSettings(proto.Message):
     r"""Defines the DNS configuration of a ``Registration``, including name
     servers, DNSSEC, and glue records.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         custom_dns (google.cloud.domains_v1beta1.types.DnsSettings.CustomDns):
             An arbitrary DNS provider identified by its
             name servers.
+            This field is a member of `oneof`_ ``dns_provider``.
         google_domains_dns (google.cloud.domains_v1beta1.types.DnsSettings.GoogleDomainsDns):
             The free DNS zone provided by `Google
             Domains <https://domains.google/>`__.
+            This field is a member of `oneof`_ ``dns_provider``.
         glue_records (Sequence[google.cloud.domains_v1beta1.types.DnsSettings.GlueRecord]):
             The list of glue records for this ``Registration``. Commonly
             empty.
