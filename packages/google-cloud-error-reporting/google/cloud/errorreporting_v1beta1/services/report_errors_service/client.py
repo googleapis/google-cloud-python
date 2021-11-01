@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.errorreporting_v1beta1.types import report_errors_service
 from .transports.base import ReportErrorsServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import ReportErrorsServiceGrpcTransport
@@ -338,7 +340,7 @@ class ReportErrorsServiceClient(metaclass=ReportErrorsServiceClientMeta):
         *,
         project_name: str = None,
         event: report_errors_service.ReportedErrorEvent = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> report_errors_service.ReportErrorEventResponse:

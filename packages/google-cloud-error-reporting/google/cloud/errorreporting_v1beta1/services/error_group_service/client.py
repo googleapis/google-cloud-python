@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.errorreporting_v1beta1.types import common
 from google.cloud.errorreporting_v1beta1.types import error_group_service
 from .transports.base import ErrorGroupServiceTransport, DEFAULT_CLIENT_INFO
@@ -349,7 +351,7 @@ class ErrorGroupServiceClient(metaclass=ErrorGroupServiceClientMeta):
         request: Union[error_group_service.GetGroupRequest, dict] = None,
         *,
         group_name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.ErrorGroup:
@@ -426,7 +428,7 @@ class ErrorGroupServiceClient(metaclass=ErrorGroupServiceClientMeta):
         request: Union[error_group_service.UpdateGroupRequest, dict] = None,
         *,
         group: common.ErrorGroup = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.ErrorGroup:

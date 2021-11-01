@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.errorreporting_v1beta1.services.error_stats_service import pagers
 from google.cloud.errorreporting_v1beta1.types import common
 from google.cloud.errorreporting_v1beta1.types import error_stats_service
@@ -353,7 +355,7 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
         *,
         project_name: str = None,
         time_range: error_stats_service.QueryTimeRange = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGroupStatsPager:
@@ -457,7 +459,7 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
         *,
         project_name: str = None,
         group_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEventsPager:
@@ -552,7 +554,7 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
         request: Union[error_stats_service.DeleteEventsRequest, dict] = None,
         *,
         project_name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> error_stats_service.DeleteEventsResponse:
