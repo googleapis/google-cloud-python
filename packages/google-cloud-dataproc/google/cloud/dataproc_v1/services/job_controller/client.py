@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.dataproc_v1.services.job_controller import pagers
@@ -338,7 +340,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         project_id: str = None,
         region: str = None,
         job: jobs.Job = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
@@ -419,7 +421,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         project_id: str = None,
         region: str = None,
         job: jobs.Job = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -513,7 +515,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         project_id: str = None,
         region: str = None,
         job_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
@@ -596,7 +598,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         project_id: str = None,
         region: str = None,
         filter: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsPager:
@@ -701,7 +703,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         self,
         request: Union[jobs.UpdateJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
@@ -745,7 +747,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         project_id: str = None,
         region: str = None,
         job_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
@@ -830,7 +832,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         project_id: str = None,
         region: str = None,
         job_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:

@@ -39,6 +39,9 @@ class AutoscalingPolicy(proto.Message):
     r"""Describes an autoscaling policy for Dataproc cluster
     autoscaler.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         id (str):
             Required. The policy id.
@@ -61,6 +64,7 @@ class AutoscalingPolicy(proto.Message):
                ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
         basic_algorithm (google.cloud.dataproc_v1.types.BasicAutoscalingAlgorithm):
 
+            This field is a member of `oneof`_ ``algorithm``.
         worker_config (google.cloud.dataproc_v1.types.InstanceGroupAutoscalingPolicyConfig):
             Required. Describes how the autoscaler will
             operate for primary workers.

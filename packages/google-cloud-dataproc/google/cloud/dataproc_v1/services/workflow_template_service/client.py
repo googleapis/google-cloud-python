@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.dataproc_v1.services.workflow_template_service import pagers
@@ -396,7 +398,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
         *,
         parent: str = None,
         template: workflow_templates.WorkflowTemplate = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> workflow_templates.WorkflowTemplate:
@@ -486,7 +488,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
         request: Union[workflow_templates.GetWorkflowTemplateRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> workflow_templates.WorkflowTemplate:
@@ -575,7 +577,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
         parameters: Sequence[
             workflow_templates.InstantiateWorkflowTemplateRequest.ParametersEntry
         ] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -718,7 +720,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
         *,
         parent: str = None,
         template: workflow_templates.WorkflowTemplate = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -862,7 +864,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
         request: Union[workflow_templates.UpdateWorkflowTemplateRequest, dict] = None,
         *,
         template: workflow_templates.WorkflowTemplate = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> workflow_templates.WorkflowTemplate:
@@ -939,7 +941,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
         request: Union[workflow_templates.ListWorkflowTemplatesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkflowTemplatesPager:
@@ -1030,7 +1032,7 @@ class WorkflowTemplateServiceClient(metaclass=WorkflowTemplateServiceClientMeta)
         request: Union[workflow_templates.DeleteWorkflowTemplateRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:

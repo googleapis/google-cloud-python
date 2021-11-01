@@ -143,6 +143,13 @@ class DeleteBatchRequest(proto.Message):
 class Batch(proto.Message):
     r"""A representation of a batch workload in the service.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. The resource name of the batch.
@@ -155,12 +162,16 @@ class Batch(proto.Message):
             created.
         pyspark_batch (google.cloud.dataproc_v1.types.PySparkBatch):
             Optional. PySpark batch config.
+            This field is a member of `oneof`_ ``batch_config``.
         spark_batch (google.cloud.dataproc_v1.types.SparkBatch):
             Optional. Spark batch config.
+            This field is a member of `oneof`_ ``batch_config``.
         spark_r_batch (google.cloud.dataproc_v1.types.SparkRBatch):
             Optional. SparkR batch config.
+            This field is a member of `oneof`_ ``batch_config``.
         spark_sql_batch (google.cloud.dataproc_v1.types.SparkSqlBatch):
             Optional. SparkSql batch config.
+            This field is a member of `oneof`_ ``batch_config``.
         runtime_info (google.cloud.dataproc_v1.types.RuntimeInfo):
             Output only. Runtime information about batch
             execution.
@@ -302,14 +313,23 @@ class SparkBatch(proto.Message):
     r"""A configuration for running an `Apache
     Spark <http://spark.apache.org/>`__ batch workload.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         main_jar_file_uri (str):
             Optional. The HCFS URI of the jar file that
             contains the main class.
+            This field is a member of `oneof`_ ``driver``.
         main_class (str):
             Optional. The name of the driver main class. The jar file
             that contains the class must be in the classpath or
             specified in ``jar_file_uris``.
+            This field is a member of `oneof`_ ``driver``.
         args (Sequence[str]):
             Optional. The arguments to pass to the driver. Do not
             include arguments that can be set as batch properties, such

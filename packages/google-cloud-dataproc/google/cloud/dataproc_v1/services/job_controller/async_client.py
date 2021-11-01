@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -163,19 +165,19 @@ class JobControllerAsyncClient:
 
     async def submit_job(
         self,
-        request: jobs.SubmitJobRequest = None,
+        request: Union[jobs.SubmitJobRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
         job: jobs.Job = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
         r"""Submits a job to a cluster.
 
         Args:
-            request (:class:`google.cloud.dataproc_v1.types.SubmitJobRequest`):
+            request (Union[google.cloud.dataproc_v1.types.SubmitJobRequest, dict]):
                 The request object. A request to submit a job.
             project_id (:class:`str`):
                 Required. The ID of the Google Cloud
@@ -253,19 +255,19 @@ class JobControllerAsyncClient:
 
     async def submit_job_as_operation(
         self,
-        request: jobs.SubmitJobRequest = None,
+        request: Union[jobs.SubmitJobRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
         job: jobs.Job = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Submits job to a cluster.
 
         Args:
-            request (:class:`google.cloud.dataproc_v1.types.SubmitJobRequest`):
+            request (Union[google.cloud.dataproc_v1.types.SubmitJobRequest, dict]):
                 The request object. A request to submit a job.
             project_id (:class:`str`):
                 Required. The ID of the Google Cloud
@@ -356,12 +358,12 @@ class JobControllerAsyncClient:
 
     async def get_job(
         self,
-        request: jobs.GetJobRequest = None,
+        request: Union[jobs.GetJobRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
         job_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
@@ -369,7 +371,7 @@ class JobControllerAsyncClient:
         project.
 
         Args:
-            request (:class:`google.cloud.dataproc_v1.types.GetJobRequest`):
+            request (Union[google.cloud.dataproc_v1.types.GetJobRequest, dict]):
                 The request object. A request to get the resource
                 representation for a job in a project.
             project_id (:class:`str`):
@@ -450,19 +452,19 @@ class JobControllerAsyncClient:
 
     async def list_jobs(
         self,
-        request: jobs.ListJobsRequest = None,
+        request: Union[jobs.ListJobsRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
         filter: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsAsyncPager:
         r"""Lists regions/{region}/jobs in a project.
 
         Args:
-            request (:class:`google.cloud.dataproc_v1.types.ListJobsRequest`):
+            request (Union[google.cloud.dataproc_v1.types.ListJobsRequest, dict]):
                 The request object. A request to list jobs in a project.
             project_id (:class:`str`):
                 Required. The ID of the Google Cloud
@@ -569,16 +571,16 @@ class JobControllerAsyncClient:
 
     async def update_job(
         self,
-        request: jobs.UpdateJobRequest = None,
+        request: Union[jobs.UpdateJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
         r"""Updates a job in a project.
 
         Args:
-            request (:class:`google.cloud.dataproc_v1.types.UpdateJobRequest`):
+            request (Union[google.cloud.dataproc_v1.types.UpdateJobRequest, dict]):
                 The request object. A request to update a job.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -618,12 +620,12 @@ class JobControllerAsyncClient:
 
     async def cancel_job(
         self,
-        request: jobs.CancelJobRequest = None,
+        request: Union[jobs.CancelJobRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
         job_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
@@ -634,7 +636,7 @@ class JobControllerAsyncClient:
         `regions/{region}/jobs.get <https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/get>`__.
 
         Args:
-            request (:class:`google.cloud.dataproc_v1.types.CancelJobRequest`):
+            request (Union[google.cloud.dataproc_v1.types.CancelJobRequest, dict]):
                 The request object. A request to cancel a job.
             project_id (:class:`str`):
                 Required. The ID of the Google Cloud
@@ -714,12 +716,12 @@ class JobControllerAsyncClient:
 
     async def delete_job(
         self,
-        request: jobs.DeleteJobRequest = None,
+        request: Union[jobs.DeleteJobRequest, dict] = None,
         *,
         project_id: str = None,
         region: str = None,
         job_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -727,7 +729,7 @@ class JobControllerAsyncClient:
         delete fails, and the response returns ``FAILED_PRECONDITION``.
 
         Args:
-            request (:class:`google.cloud.dataproc_v1.types.DeleteJobRequest`):
+            request (Union[google.cloud.dataproc_v1.types.DeleteJobRequest, dict]):
                 The request object. A request to delete a job.
             project_id (:class:`str`):
                 Required. The ID of the Google Cloud

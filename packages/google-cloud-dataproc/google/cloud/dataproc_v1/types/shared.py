@@ -91,15 +91,24 @@ class EnvironmentConfig(proto.Message):
 class ExecutionConfig(proto.Message):
     r"""Execution configuration for a workload.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         service_account (str):
             Optional. Service account that used to
             execute workload.
         network_uri (str):
             Optional. Network URI to connect workload to.
+            This field is a member of `oneof`_ ``network``.
         subnetwork_uri (str):
             Optional. Subnetwork URI to connect workload
             to.
+            This field is a member of `oneof`_ ``network``.
         network_tags (Sequence[str]):
             Optional. Tags used for network traffic
             control.

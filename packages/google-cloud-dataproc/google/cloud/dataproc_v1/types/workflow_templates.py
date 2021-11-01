@@ -144,15 +144,24 @@ class WorkflowTemplatePlacement(proto.Message):
 
     Either ``managed_cluster`` or ``cluster_selector`` is required.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         managed_cluster (google.cloud.dataproc_v1.types.ManagedCluster):
             A cluster that is managed by the workflow.
+            This field is a member of `oneof`_ ``placement``.
         cluster_selector (google.cloud.dataproc_v1.types.ClusterSelector):
             Optional. A selector that chooses target
             cluster for jobs based on metadata.
 
             The selector is evaluated at the time each job
             is submitted.
+            This field is a member of `oneof`_ ``placement``.
     """
 
     managed_cluster = proto.Field(
@@ -221,6 +230,13 @@ class ClusterSelector(proto.Message):
 class OrderedJob(proto.Message):
     r"""A job executed by the workflow.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         step_id (str):
             Required. The step id. The id must be unique among all jobs
@@ -237,20 +253,28 @@ class OrderedJob(proto.Message):
             characters.
         hadoop_job (google.cloud.dataproc_v1.types.HadoopJob):
             Optional. Job is a Hadoop job.
+            This field is a member of `oneof`_ ``job_type``.
         spark_job (google.cloud.dataproc_v1.types.SparkJob):
             Optional. Job is a Spark job.
+            This field is a member of `oneof`_ ``job_type``.
         pyspark_job (google.cloud.dataproc_v1.types.PySparkJob):
             Optional. Job is a PySpark job.
+            This field is a member of `oneof`_ ``job_type``.
         hive_job (google.cloud.dataproc_v1.types.HiveJob):
             Optional. Job is a Hive job.
+            This field is a member of `oneof`_ ``job_type``.
         pig_job (google.cloud.dataproc_v1.types.PigJob):
             Optional. Job is a Pig job.
+            This field is a member of `oneof`_ ``job_type``.
         spark_r_job (google.cloud.dataproc_v1.types.SparkRJob):
             Optional. Job is a SparkR job.
+            This field is a member of `oneof`_ ``job_type``.
         spark_sql_job (google.cloud.dataproc_v1.types.SparkSqlJob):
             Optional. Job is a SparkSql job.
+            This field is a member of `oneof`_ ``job_type``.
         presto_job (google.cloud.dataproc_v1.types.PrestoJob):
             Optional. Job is a Presto job.
+            This field is a member of `oneof`_ ``job_type``.
         labels (Sequence[google.cloud.dataproc_v1.types.OrderedJob.LabelsEntry]):
             Optional. The labels to associate with this job.
 
@@ -389,11 +413,20 @@ class TemplateParameter(proto.Message):
 class ParameterValidation(proto.Message):
     r"""Configuration for parameter validation.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         regex (google.cloud.dataproc_v1.types.RegexValidation):
             Validation based on regular expressions.
+            This field is a member of `oneof`_ ``validation_type``.
         values (google.cloud.dataproc_v1.types.ValueValidation):
             Validation based on a list of allowed values.
+            This field is a member of `oneof`_ ``validation_type``.
     """
 
     regex = proto.Field(

@@ -927,6 +927,13 @@ class SoftwareConfig(proto.Message):
 class LifecycleConfig(proto.Message):
     r"""Specifies the cluster auto-delete schedule configuration.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         idle_delete_ttl (google.protobuf.duration_pb2.Duration):
             Optional. The duration to keep the cluster alive while
@@ -939,12 +946,14 @@ class LifecycleConfig(proto.Message):
             Optional. The time when cluster will be auto-deleted (see
             JSON representation of
             `Timestamp <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
+            This field is a member of `oneof`_ ``ttl``.
         auto_delete_ttl (google.protobuf.duration_pb2.Duration):
             Optional. The lifetime duration of cluster. The cluster will
             be auto-deleted at the end of this period. Minimum value is
             10 minutes; maximum value is 14 days (see JSON
             representation of
             `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
+            This field is a member of `oneof`_ ``ttl``.
         idle_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when cluster became idle (most recent
             job finished) and became eligible for deletion due to

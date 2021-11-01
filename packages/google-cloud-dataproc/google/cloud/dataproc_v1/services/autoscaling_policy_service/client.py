@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dataproc_v1.services.autoscaling_policy_service import pagers
 from google.cloud.dataproc_v1.types import autoscaling_policies
 from .transports.base import AutoscalingPolicyServiceTransport, DEFAULT_CLIENT_INFO
@@ -361,7 +363,7 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
         *,
         parent: str = None,
         policy: autoscaling_policies.AutoscalingPolicy = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> autoscaling_policies.AutoscalingPolicy:
@@ -456,7 +458,7 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
         ] = None,
         *,
         policy: autoscaling_policies.AutoscalingPolicy = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> autoscaling_policies.AutoscalingPolicy:
@@ -534,7 +536,7 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
         request: Union[autoscaling_policies.GetAutoscalingPolicyRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> autoscaling_policies.AutoscalingPolicy:
@@ -617,7 +619,7 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
         ] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAutoscalingPoliciesPager:
@@ -711,7 +713,7 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
         ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:

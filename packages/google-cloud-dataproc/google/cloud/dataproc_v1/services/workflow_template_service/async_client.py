@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -183,18 +185,18 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def create_workflow_template(
         self,
-        request: workflow_templates.CreateWorkflowTemplateRequest = None,
+        request: Union[workflow_templates.CreateWorkflowTemplateRequest, dict] = None,
         *,
         parent: str = None,
         template: workflow_templates.WorkflowTemplate = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> workflow_templates.WorkflowTemplate:
         r"""Creates new workflow template.
 
         Args:
-            request (:class:`google.cloud.dataproc_v1.types.CreateWorkflowTemplateRequest`):
+            request (Union[google.cloud.dataproc_v1.types.CreateWorkflowTemplateRequest, dict]):
                 The request object. A request to create a workflow
                 template.
             parent (:class:`str`):
@@ -283,10 +285,10 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def get_workflow_template(
         self,
-        request: workflow_templates.GetWorkflowTemplateRequest = None,
+        request: Union[workflow_templates.GetWorkflowTemplateRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> workflow_templates.WorkflowTemplate:
@@ -295,7 +297,7 @@ class WorkflowTemplateServiceAsyncClient:
         specifying optional version parameter.
 
         Args:
-            request (:class:`google.cloud.dataproc_v1.types.GetWorkflowTemplateRequest`):
+            request (Union[google.cloud.dataproc_v1.types.GetWorkflowTemplateRequest, dict]):
                 The request object. A request to fetch a workflow
                 template.
             name (:class:`str`):
@@ -378,13 +380,15 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def instantiate_workflow_template(
         self,
-        request: workflow_templates.InstantiateWorkflowTemplateRequest = None,
+        request: Union[
+            workflow_templates.InstantiateWorkflowTemplateRequest, dict
+        ] = None,
         *,
         name: str = None,
         parameters: Sequence[
             workflow_templates.InstantiateWorkflowTemplateRequest.ParametersEntry
         ] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -411,7 +415,7 @@ class WorkflowTemplateServiceAsyncClient:
         be [Empty][google.protobuf.Empty].
 
         Args:
-            request (:class:`google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest`):
+            request (Union[google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest, dict]):
                 The request object. A request to instantiate a workflow
                 template.
             name (:class:`str`):
@@ -527,11 +531,13 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def instantiate_inline_workflow_template(
         self,
-        request: workflow_templates.InstantiateInlineWorkflowTemplateRequest = None,
+        request: Union[
+            workflow_templates.InstantiateInlineWorkflowTemplateRequest, dict
+        ] = None,
         *,
         parent: str = None,
         template: workflow_templates.WorkflowTemplate = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -563,7 +569,7 @@ class WorkflowTemplateServiceAsyncClient:
         be [Empty][google.protobuf.Empty].
 
         Args:
-            request (:class:`google.cloud.dataproc_v1.types.InstantiateInlineWorkflowTemplateRequest`):
+            request (Union[google.cloud.dataproc_v1.types.InstantiateInlineWorkflowTemplateRequest, dict]):
                 The request object. A request to instantiate an inline
                 workflow template.
             parent (:class:`str`):
@@ -675,10 +681,10 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def update_workflow_template(
         self,
-        request: workflow_templates.UpdateWorkflowTemplateRequest = None,
+        request: Union[workflow_templates.UpdateWorkflowTemplateRequest, dict] = None,
         *,
         template: workflow_templates.WorkflowTemplate = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> workflow_templates.WorkflowTemplate:
@@ -687,7 +693,7 @@ class WorkflowTemplateServiceAsyncClient:
         server version.
 
         Args:
-            request (:class:`google.cloud.dataproc_v1.types.UpdateWorkflowTemplateRequest`):
+            request (Union[google.cloud.dataproc_v1.types.UpdateWorkflowTemplateRequest, dict]):
                 The request object. A request to update a workflow
                 template.
             template (:class:`google.cloud.dataproc_v1.types.WorkflowTemplate`):
@@ -761,10 +767,10 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def list_workflow_templates(
         self,
-        request: workflow_templates.ListWorkflowTemplatesRequest = None,
+        request: Union[workflow_templates.ListWorkflowTemplatesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkflowTemplatesAsyncPager:
@@ -772,7 +778,7 @@ class WorkflowTemplateServiceAsyncClient:
         the request.
 
         Args:
-            request (:class:`google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest`):
+            request (Union[google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest, dict]):
                 The request object. A request to list workflow templates
                 in a project.
             parent (:class:`str`):
@@ -863,10 +869,10 @@ class WorkflowTemplateServiceAsyncClient:
 
     async def delete_workflow_template(
         self,
-        request: workflow_templates.DeleteWorkflowTemplateRequest = None,
+        request: Union[workflow_templates.DeleteWorkflowTemplateRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -874,7 +880,7 @@ class WorkflowTemplateServiceAsyncClient:
         rogress workflows.
 
         Args:
-            request (:class:`google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest`):
+            request (Union[google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest, dict]):
                 The request object. A request to delete a workflow
                 template.
                 Currently started workflows will remain running.
