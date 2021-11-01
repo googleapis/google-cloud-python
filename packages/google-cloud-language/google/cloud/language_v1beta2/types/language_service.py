@@ -62,6 +62,13 @@ class EncodingType(proto.Enum):
 class Document(proto.Message):
     r"""Represents the input to API methods.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         type_ (google.cloud.language_v1beta2.types.Document.Type):
             Required. If the type is not set or is ``TYPE_UNSPECIFIED``,
@@ -70,12 +77,14 @@ class Document(proto.Message):
             The content of the input in string format.
             Cloud audit logging exempt since it is based on
             user data.
+            This field is a member of `oneof`_ ``source``.
         gcs_content_uri (str):
             The Google Cloud Storage URI where the file content is
             located. This URI must be of the form:
             gs://bucket_name/object_name. For more details, see
             https://cloud.google.com/storage/docs/reference-uris. NOTE:
             Cloud Storage object versioning is not supported.
+            This field is a member of `oneof`_ ``source``.
         language (str):
             The language of the document (if not specified, the language
             is automatically detected). Both ISO and BCP-47 language

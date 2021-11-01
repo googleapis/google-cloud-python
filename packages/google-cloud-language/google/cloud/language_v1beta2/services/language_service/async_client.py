@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.language_v1beta2.types import language_service
 from .transports.base import LanguageServiceTransport, DEFAULT_CLIENT_INFO
@@ -162,18 +164,18 @@ class LanguageServiceAsyncClient:
 
     async def analyze_sentiment(
         self,
-        request: language_service.AnalyzeSentimentRequest = None,
+        request: Union[language_service.AnalyzeSentimentRequest, dict] = None,
         *,
         document: language_service.Document = None,
         encoding_type: language_service.EncodingType = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> language_service.AnalyzeSentimentResponse:
         r"""Analyzes the sentiment of the provided text.
 
         Args:
-            request (:class:`google.cloud.language_v1beta2.types.AnalyzeSentimentRequest`):
+            request (Union[google.cloud.language_v1beta2.types.AnalyzeSentimentRequest, dict]):
                 The request object. The sentiment analysis request
                 message.
             document (:class:`google.cloud.language_v1beta2.types.Document`):
@@ -246,11 +248,11 @@ class LanguageServiceAsyncClient:
 
     async def analyze_entities(
         self,
-        request: language_service.AnalyzeEntitiesRequest = None,
+        request: Union[language_service.AnalyzeEntitiesRequest, dict] = None,
         *,
         document: language_service.Document = None,
         encoding_type: language_service.EncodingType = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> language_service.AnalyzeEntitiesResponse:
@@ -260,7 +262,7 @@ class LanguageServiceAsyncClient:
         properties.
 
         Args:
-            request (:class:`google.cloud.language_v1beta2.types.AnalyzeEntitiesRequest`):
+            request (Union[google.cloud.language_v1beta2.types.AnalyzeEntitiesRequest, dict]):
                 The request object. The entity analysis request message.
             document (:class:`google.cloud.language_v1beta2.types.Document`):
                 Required. Input document.
@@ -329,11 +331,11 @@ class LanguageServiceAsyncClient:
 
     async def analyze_entity_sentiment(
         self,
-        request: language_service.AnalyzeEntitySentimentRequest = None,
+        request: Union[language_service.AnalyzeEntitySentimentRequest, dict] = None,
         *,
         document: language_service.Document = None,
         encoding_type: language_service.EncodingType = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> language_service.AnalyzeEntitySentimentResponse:
@@ -343,7 +345,7 @@ class LanguageServiceAsyncClient:
         and its mentions.
 
         Args:
-            request (:class:`google.cloud.language_v1beta2.types.AnalyzeEntitySentimentRequest`):
+            request (Union[google.cloud.language_v1beta2.types.AnalyzeEntitySentimentRequest, dict]):
                 The request object. The entity-level sentiment analysis
                 request message.
             document (:class:`google.cloud.language_v1beta2.types.Document`):
@@ -415,11 +417,11 @@ class LanguageServiceAsyncClient:
 
     async def analyze_syntax(
         self,
-        request: language_service.AnalyzeSyntaxRequest = None,
+        request: Union[language_service.AnalyzeSyntaxRequest, dict] = None,
         *,
         document: language_service.Document = None,
         encoding_type: language_service.EncodingType = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> language_service.AnalyzeSyntaxResponse:
@@ -428,7 +430,7 @@ class LanguageServiceAsyncClient:
         tags, dependency trees, and other properties.
 
         Args:
-            request (:class:`google.cloud.language_v1beta2.types.AnalyzeSyntaxRequest`):
+            request (Union[google.cloud.language_v1beta2.types.AnalyzeSyntaxRequest, dict]):
                 The request object. The syntax analysis request message.
             document (:class:`google.cloud.language_v1beta2.types.Document`):
                 Required. Input document.
@@ -497,17 +499,17 @@ class LanguageServiceAsyncClient:
 
     async def classify_text(
         self,
-        request: language_service.ClassifyTextRequest = None,
+        request: Union[language_service.ClassifyTextRequest, dict] = None,
         *,
         document: language_service.Document = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> language_service.ClassifyTextResponse:
         r"""Classifies a document into categories.
 
         Args:
-            request (:class:`google.cloud.language_v1beta2.types.ClassifyTextRequest`):
+            request (Union[google.cloud.language_v1beta2.types.ClassifyTextRequest, dict]):
                 The request object. The document classification request
                 message.
             document (:class:`google.cloud.language_v1beta2.types.Document`):
@@ -570,12 +572,12 @@ class LanguageServiceAsyncClient:
 
     async def annotate_text(
         self,
-        request: language_service.AnnotateTextRequest = None,
+        request: Union[language_service.AnnotateTextRequest, dict] = None,
         *,
         document: language_service.Document = None,
         features: language_service.AnnotateTextRequest.Features = None,
         encoding_type: language_service.EncodingType = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> language_service.AnnotateTextResponse:
@@ -584,7 +586,7 @@ class LanguageServiceAsyncClient:
         call.
 
         Args:
-            request (:class:`google.cloud.language_v1beta2.types.AnnotateTextRequest`):
+            request (Union[google.cloud.language_v1beta2.types.AnnotateTextRequest, dict]):
                 The request object. The request message for the text
                 annotation API, which can perform multiple analysis
                 types (sentiment, entities, and syntax) in one call.
