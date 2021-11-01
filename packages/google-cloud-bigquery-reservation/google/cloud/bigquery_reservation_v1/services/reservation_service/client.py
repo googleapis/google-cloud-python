@@ -31,6 +31,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.bigquery_reservation_v1.services.reservation_service import pagers
 from google.cloud.bigquery_reservation_v1.types import reservation
 from google.cloud.bigquery_reservation_v1.types import reservation as gcbr_reservation
@@ -433,7 +435,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         parent: str = None,
         reservation: gcbr_reservation.Reservation = None,
         reservation_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcbr_reservation.Reservation:
@@ -524,7 +526,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         request: Union[reservation.ListReservationsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReservationsPager:
@@ -605,7 +607,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         request: Union[reservation.GetReservationRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Reservation:
@@ -677,7 +679,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         request: Union[reservation.DeleteReservationRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -745,7 +747,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         *,
         reservation: gcbr_reservation.Reservation = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcbr_reservation.Reservation:
@@ -826,7 +828,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         *,
         parent: str = None,
         capacity_commitment: reservation.CapacityCommitment = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
@@ -920,7 +922,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         request: Union[reservation.ListCapacityCommitmentsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCapacityCommitmentsPager:
@@ -1003,7 +1005,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         request: Union[reservation.GetCapacityCommitmentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
@@ -1087,7 +1089,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         request: Union[reservation.DeleteCapacityCommitmentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -1157,7 +1159,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         *,
         capacity_commitment: reservation.CapacityCommitment = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
@@ -1261,7 +1263,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         *,
         name: str = None,
         slot_count: int = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.SplitCapacityCommitmentResponse:
@@ -1352,7 +1354,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         *,
         parent: str = None,
         capacity_commitment_ids: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.CapacityCommitment:
@@ -1461,7 +1463,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         *,
         parent: str = None,
         assignment: reservation.Assignment = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Assignment:
@@ -1580,7 +1582,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         request: Union[reservation.ListAssignmentsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAssignmentsPager:
@@ -1686,7 +1688,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         request: Union[reservation.DeleteAssignmentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -1768,7 +1770,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         *,
         parent: str = None,
         query: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAssignmentsPager:
@@ -1896,7 +1898,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         *,
         parent: str = None,
         query: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllAssignmentsPager:
@@ -2017,7 +2019,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         *,
         name: str = None,
         destination_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Assignment:
@@ -2108,7 +2110,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         request: Union[reservation.GetBiReservationRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.BiReservation:
@@ -2179,7 +2181,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         *,
         bi_reservation: reservation.BiReservation = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.BiReservation:
