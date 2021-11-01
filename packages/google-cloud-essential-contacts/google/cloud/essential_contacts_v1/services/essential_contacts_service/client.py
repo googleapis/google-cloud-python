@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.essential_contacts_v1.services.essential_contacts_service import (
     pagers,
 )
@@ -357,7 +359,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         *,
         parent: str = None,
         contact: service.Contact = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Contact:
@@ -440,7 +442,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         *,
         contact: service.Contact = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Contact:
@@ -526,7 +528,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         request: Union[service.ListContactsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListContactsPager:
@@ -607,7 +609,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         request: Union[service.GetContactRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Contact:
@@ -680,7 +682,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         request: Union[service.DeleteContactRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -745,7 +747,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         self,
         request: Union[service.ComputeContactsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ComputeContactsPager:
@@ -806,7 +808,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         self,
         request: Union[service.SendTestMessageRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
