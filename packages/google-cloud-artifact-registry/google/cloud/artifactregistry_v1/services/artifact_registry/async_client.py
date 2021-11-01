@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.artifactregistry_v1.services.artifact_registry import pagers
 from google.cloud.artifactregistry_v1.types import artifact
@@ -182,17 +184,17 @@ class ArtifactRegistryAsyncClient:
 
     async def list_docker_images(
         self,
-        request: artifact.ListDockerImagesRequest = None,
+        request: Union[artifact.ListDockerImagesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDockerImagesAsyncPager:
         r"""Lists docker images.
 
         Args:
-            request (:class:`google.cloud.artifactregistry_v1.types.ListDockerImagesRequest`):
+            request (Union[google.cloud.artifactregistry_v1.types.ListDockerImagesRequest, dict]):
                 The request object. The request to list docker images.
             parent (:class:`str`):
                 Required. The name of the parent
@@ -262,17 +264,17 @@ class ArtifactRegistryAsyncClient:
 
     async def list_repositories(
         self,
-        request: repository.ListRepositoriesRequest = None,
+        request: Union[repository.ListRepositoriesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRepositoriesAsyncPager:
         r"""Lists repositories.
 
         Args:
-            request (:class:`google.cloud.artifactregistry_v1.types.ListRepositoriesRequest`):
+            request (Union[google.cloud.artifactregistry_v1.types.ListRepositoriesRequest, dict]):
                 The request object. The request to list repositories.
             parent (:class:`str`):
                 Required. The name of the parent
@@ -342,17 +344,17 @@ class ArtifactRegistryAsyncClient:
 
     async def get_repository(
         self,
-        request: repository.GetRepositoryRequest = None,
+        request: Union[repository.GetRepositoryRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> repository.Repository:
         r"""Gets a repository.
 
         Args:
-            request (:class:`google.cloud.artifactregistry_v1.types.GetRepositoryRequest`):
+            request (Union[google.cloud.artifactregistry_v1.types.GetRepositoryRequest, dict]):
                 The request object. The request to retrieve a
                 repository.
             name (:class:`str`):
