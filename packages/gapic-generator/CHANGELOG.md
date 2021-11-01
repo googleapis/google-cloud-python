@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.55.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.54.0...v0.55.0) (2021-11-01)
+
+
+### Features
+
+* add fragment tests ([#1056](https://www.github.com/googleapis/gapic-generator-python/issues/1056)) ([9d9b33d](https://www.github.com/googleapis/gapic-generator-python/commit/9d9b33dadf587a6d0b09031edeea597d6d2eae62))
+
 ## [0.54.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.53.4...v0.54.0) (2021-10-29)
 
 
