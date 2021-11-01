@@ -27,9 +27,8 @@ dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
     # Until this issue is closed
     # https://github.com/googleapis/google-cloud-python/issues/10566
-    "google-api-core[grpc] >= 1.26.0, <3.0.0dev",
+    "google-api-core[grpc] >= 1.28.0, <3.0.0dev",
     "proto-plus >= 0.4.0",
-    "packaging >= 14.3",
     "pytz >= 2021.1",
 ]
 
@@ -76,7 +75,7 @@ setuptools.setup(
     packages=packages,
     namespace_packages=namespaces,
     install_requires=dependencies,
-    extras_requires=extras,
+    extras_require=extras,
     python_requires=">=3.6",
     scripts=["scripts/fixup_dlp_v2_keywords.py"],
     include_package_data=True,

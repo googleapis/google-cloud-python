@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dlp_v2.services.dlp_service import pagers
 from google.cloud.dlp_v2.types import dlp
@@ -186,9 +188,9 @@ class DlpServiceAsyncClient:
 
     async def inspect_content(
         self,
-        request: dlp.InspectContentRequest = None,
+        request: Union[dlp.InspectContentRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.InspectContentResponse:
@@ -204,7 +206,7 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/inspecting-text,
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.InspectContentRequest`):
+            request (Union[google.cloud.dlp_v2.types.InspectContentRequest, dict]):
                 The request object. Request to search for potentially
                 sensitive info in a ContentItem.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -252,9 +254,9 @@ class DlpServiceAsyncClient:
 
     async def redact_image(
         self,
-        request: dlp.RedactImageRequest = None,
+        request: Union[dlp.RedactImageRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.RedactImageResponse:
@@ -270,7 +272,7 @@ class DlpServiceAsyncClient:
         may change over time as detectors are updated.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.RedactImageRequest`):
+            request (Union[google.cloud.dlp_v2.types.RedactImageRequest, dict]):
                 The request object. Request to search for potentially
                 sensitive info in an image and redact it by covering it
                 with a colored rectangle.
@@ -319,9 +321,9 @@ class DlpServiceAsyncClient:
 
     async def deidentify_content(
         self,
-        request: dlp.DeidentifyContentRequest = None,
+        request: Union[dlp.DeidentifyContentRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DeidentifyContentResponse:
@@ -337,7 +339,7 @@ class DlpServiceAsyncClient:
         may change over time as detectors are updated.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.DeidentifyContentRequest`):
+            request (Union[google.cloud.dlp_v2.types.DeidentifyContentRequest, dict]):
                 The request object. Request to de-identify a list of
                 items.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -387,9 +389,9 @@ class DlpServiceAsyncClient:
 
     async def reidentify_content(
         self,
-        request: dlp.ReidentifyContentRequest = None,
+        request: Union[dlp.ReidentifyContentRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.ReidentifyContentResponse:
@@ -398,7 +400,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.ReidentifyContentRequest`):
+            request (Union[google.cloud.dlp_v2.types.ReidentifyContentRequest, dict]):
                 The request object. Request to re-identify an item.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -445,10 +447,10 @@ class DlpServiceAsyncClient:
 
     async def list_info_types(
         self,
-        request: dlp.ListInfoTypesRequest = None,
+        request: Union[dlp.ListInfoTypesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.ListInfoTypesResponse:
@@ -458,7 +460,7 @@ class DlpServiceAsyncClient:
         learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.ListInfoTypesRequest`):
+            request (Union[google.cloud.dlp_v2.types.ListInfoTypesRequest, dict]):
                 The request object. Request for the list of infoTypes.
             parent (:class:`str`):
                 The parent resource name.
@@ -527,11 +529,11 @@ class DlpServiceAsyncClient:
 
     async def create_inspect_template(
         self,
-        request: dlp.CreateInspectTemplateRequest = None,
+        request: Union[dlp.CreateInspectTemplateRequest, dict] = None,
         *,
         parent: str = None,
         inspect_template: dlp.InspectTemplate = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.InspectTemplate:
@@ -541,7 +543,7 @@ class DlpServiceAsyncClient:
         templates to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.CreateInspectTemplateRequest`):
+            request (Union[google.cloud.dlp_v2.types.CreateInspectTemplateRequest, dict]):
                 The request object. Request message for
                 CreateInspectTemplate.
             parent (:class:`str`):
@@ -638,12 +640,12 @@ class DlpServiceAsyncClient:
 
     async def update_inspect_template(
         self,
-        request: dlp.UpdateInspectTemplateRequest = None,
+        request: Union[dlp.UpdateInspectTemplateRequest, dict] = None,
         *,
         name: str = None,
         inspect_template: dlp.InspectTemplate = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.InspectTemplate:
@@ -652,7 +654,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.UpdateInspectTemplateRequest`):
+            request (Union[google.cloud.dlp_v2.types.UpdateInspectTemplateRequest, dict]):
                 The request object. Request message for
                 UpdateInspectTemplate.
             name (:class:`str`):
@@ -736,10 +738,10 @@ class DlpServiceAsyncClient:
 
     async def get_inspect_template(
         self,
-        request: dlp.GetInspectTemplateRequest = None,
+        request: Union[dlp.GetInspectTemplateRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.InspectTemplate:
@@ -748,7 +750,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.GetInspectTemplateRequest`):
+            request (Union[google.cloud.dlp_v2.types.GetInspectTemplateRequest, dict]):
                 The request object. Request message for
                 GetInspectTemplate.
             name (:class:`str`):
@@ -826,10 +828,10 @@ class DlpServiceAsyncClient:
 
     async def list_inspect_templates(
         self,
-        request: dlp.ListInspectTemplatesRequest = None,
+        request: Union[dlp.ListInspectTemplatesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInspectTemplatesAsyncPager:
@@ -838,7 +840,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.ListInspectTemplatesRequest`):
+            request (Union[google.cloud.dlp_v2.types.ListInspectTemplatesRequest, dict]):
                 The request object. Request message for
                 ListInspectTemplates.
             parent (:class:`str`):
@@ -940,10 +942,10 @@ class DlpServiceAsyncClient:
 
     async def delete_inspect_template(
         self,
-        request: dlp.DeleteInspectTemplateRequest = None,
+        request: Union[dlp.DeleteInspectTemplateRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -952,7 +954,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.DeleteInspectTemplateRequest`):
+            request (Union[google.cloud.dlp_v2.types.DeleteInspectTemplateRequest, dict]):
                 The request object. Request message for
                 DeleteInspectTemplate.
             name (:class:`str`):
@@ -1018,11 +1020,11 @@ class DlpServiceAsyncClient:
 
     async def create_deidentify_template(
         self,
-        request: dlp.CreateDeidentifyTemplateRequest = None,
+        request: Union[dlp.CreateDeidentifyTemplateRequest, dict] = None,
         *,
         parent: str = None,
         deidentify_template: dlp.DeidentifyTemplate = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DeidentifyTemplate:
@@ -1033,7 +1035,7 @@ class DlpServiceAsyncClient:
         deid to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.CreateDeidentifyTemplateRequest`):
+            request (Union[google.cloud.dlp_v2.types.CreateDeidentifyTemplateRequest, dict]):
                 The request object. Request message for
                 CreateDeidentifyTemplate.
             parent (:class:`str`):
@@ -1128,12 +1130,12 @@ class DlpServiceAsyncClient:
 
     async def update_deidentify_template(
         self,
-        request: dlp.UpdateDeidentifyTemplateRequest = None,
+        request: Union[dlp.UpdateDeidentifyTemplateRequest, dict] = None,
         *,
         name: str = None,
         deidentify_template: dlp.DeidentifyTemplate = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DeidentifyTemplate:
@@ -1142,7 +1144,7 @@ class DlpServiceAsyncClient:
         templates-deid to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.UpdateDeidentifyTemplateRequest`):
+            request (Union[google.cloud.dlp_v2.types.UpdateDeidentifyTemplateRequest, dict]):
                 The request object. Request message for
                 UpdateDeidentifyTemplate.
             name (:class:`str`):
@@ -1224,10 +1226,10 @@ class DlpServiceAsyncClient:
 
     async def get_deidentify_template(
         self,
-        request: dlp.GetDeidentifyTemplateRequest = None,
+        request: Union[dlp.GetDeidentifyTemplateRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DeidentifyTemplate:
@@ -1236,7 +1238,7 @@ class DlpServiceAsyncClient:
         templates-deid to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.GetDeidentifyTemplateRequest`):
+            request (Union[google.cloud.dlp_v2.types.GetDeidentifyTemplateRequest, dict]):
                 The request object. Request message for
                 GetDeidentifyTemplate.
             name (:class:`str`):
@@ -1312,10 +1314,10 @@ class DlpServiceAsyncClient:
 
     async def list_deidentify_templates(
         self,
-        request: dlp.ListDeidentifyTemplatesRequest = None,
+        request: Union[dlp.ListDeidentifyTemplatesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDeidentifyTemplatesAsyncPager:
@@ -1324,7 +1326,7 @@ class DlpServiceAsyncClient:
         templates-deid to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.ListDeidentifyTemplatesRequest`):
+            request (Union[google.cloud.dlp_v2.types.ListDeidentifyTemplatesRequest, dict]):
                 The request object. Request message for
                 ListDeidentifyTemplates.
             parent (:class:`str`):
@@ -1426,10 +1428,10 @@ class DlpServiceAsyncClient:
 
     async def delete_deidentify_template(
         self,
-        request: dlp.DeleteDeidentifyTemplateRequest = None,
+        request: Union[dlp.DeleteDeidentifyTemplateRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -1438,7 +1440,7 @@ class DlpServiceAsyncClient:
         templates-deid to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.DeleteDeidentifyTemplateRequest`):
+            request (Union[google.cloud.dlp_v2.types.DeleteDeidentifyTemplateRequest, dict]):
                 The request object. Request message for
                 DeleteDeidentifyTemplate.
             name (:class:`str`):
@@ -1504,11 +1506,11 @@ class DlpServiceAsyncClient:
 
     async def create_job_trigger(
         self,
-        request: dlp.CreateJobTriggerRequest = None,
+        request: Union[dlp.CreateJobTriggerRequest, dict] = None,
         *,
         parent: str = None,
         job_trigger: dlp.JobTrigger = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.JobTrigger:
@@ -1519,7 +1521,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.CreateJobTriggerRequest`):
+            request (Union[google.cloud.dlp_v2.types.CreateJobTriggerRequest, dict]):
                 The request object. Request message for
                 CreateJobTrigger.
             parent (:class:`str`):
@@ -1606,12 +1608,12 @@ class DlpServiceAsyncClient:
 
     async def update_job_trigger(
         self,
-        request: dlp.UpdateJobTriggerRequest = None,
+        request: Union[dlp.UpdateJobTriggerRequest, dict] = None,
         *,
         name: str = None,
         job_trigger: dlp.JobTrigger = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.JobTrigger:
@@ -1620,7 +1622,7 @@ class DlpServiceAsyncClient:
         triggers to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.UpdateJobTriggerRequest`):
+            request (Union[google.cloud.dlp_v2.types.UpdateJobTriggerRequest, dict]):
                 The request object. Request message for
                 UpdateJobTrigger.
             name (:class:`str`):
@@ -1700,10 +1702,10 @@ class DlpServiceAsyncClient:
 
     async def hybrid_inspect_job_trigger(
         self,
-        request: dlp.HybridInspectJobTriggerRequest = None,
+        request: Union[dlp.HybridInspectJobTriggerRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.HybridInspectResponse:
@@ -1717,7 +1719,7 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/products#product-launch-stages.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.HybridInspectJobTriggerRequest`):
+            request (Union[google.cloud.dlp_v2.types.HybridInspectJobTriggerRequest, dict]):
                 The request object. Request to search for potentially
                 sensitive info in a custom location.
             name (:class:`str`):
@@ -1779,10 +1781,10 @@ class DlpServiceAsyncClient:
 
     async def get_job_trigger(
         self,
-        request: dlp.GetJobTriggerRequest = None,
+        request: Union[dlp.GetJobTriggerRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.JobTrigger:
@@ -1791,7 +1793,7 @@ class DlpServiceAsyncClient:
         triggers to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.GetJobTriggerRequest`):
+            request (Union[google.cloud.dlp_v2.types.GetJobTriggerRequest, dict]):
                 The request object. Request message for GetJobTrigger.
             name (:class:`str`):
                 Required. Resource name of the project and the
@@ -1864,10 +1866,10 @@ class DlpServiceAsyncClient:
 
     async def list_job_triggers(
         self,
-        request: dlp.ListJobTriggersRequest = None,
+        request: Union[dlp.ListJobTriggersRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobTriggersAsyncPager:
@@ -1876,7 +1878,7 @@ class DlpServiceAsyncClient:
         triggers to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.ListJobTriggersRequest`):
+            request (Union[google.cloud.dlp_v2.types.ListJobTriggersRequest, dict]):
                 The request object. Request message for ListJobTriggers.
             parent (:class:`str`):
                 Required. Parent resource name.
@@ -1971,10 +1973,10 @@ class DlpServiceAsyncClient:
 
     async def delete_job_trigger(
         self,
-        request: dlp.DeleteJobTriggerRequest = None,
+        request: Union[dlp.DeleteJobTriggerRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -1983,7 +1985,7 @@ class DlpServiceAsyncClient:
         triggers to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.DeleteJobTriggerRequest`):
+            request (Union[google.cloud.dlp_v2.types.DeleteJobTriggerRequest, dict]):
                 The request object. Request message for
                 DeleteJobTrigger.
             name (:class:`str`):
@@ -2048,9 +2050,9 @@ class DlpServiceAsyncClient:
 
     async def activate_job_trigger(
         self,
-        request: dlp.ActivateJobTriggerRequest = None,
+        request: Union[dlp.ActivateJobTriggerRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DlpJob:
@@ -2059,7 +2061,7 @@ class DlpServiceAsyncClient:
         occur.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.ActivateJobTriggerRequest`):
+            request (Union[google.cloud.dlp_v2.types.ActivateJobTriggerRequest, dict]):
                 The request object. Request message for
                 ActivateJobTrigger.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2099,12 +2101,12 @@ class DlpServiceAsyncClient:
 
     async def create_dlp_job(
         self,
-        request: dlp.CreateDlpJobRequest = None,
+        request: Union[dlp.CreateDlpJobRequest, dict] = None,
         *,
         parent: str = None,
         inspect_job: dlp.InspectJobConfig = None,
         risk_job: dlp.RiskAnalysisJobConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DlpJob:
@@ -2119,7 +2121,7 @@ class DlpServiceAsyncClient:
         may change over time as detectors are updated.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.CreateDlpJobRequest`):
+            request (Union[google.cloud.dlp_v2.types.CreateDlpJobRequest, dict]):
                 The request object. Request message for
                 CreateDlpJobRequest. Used to initiate long running jobs
                 such as calculating risk metrics or inspecting Google
@@ -2217,10 +2219,10 @@ class DlpServiceAsyncClient:
 
     async def list_dlp_jobs(
         self,
-        request: dlp.ListDlpJobsRequest = None,
+        request: Union[dlp.ListDlpJobsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDlpJobsAsyncPager:
@@ -2231,7 +2233,7 @@ class DlpServiceAsyncClient:
         to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.ListDlpJobsRequest`):
+            request (Union[google.cloud.dlp_v2.types.ListDlpJobsRequest, dict]):
                 The request object. The request message for listing DLP
                 jobs.
             parent (:class:`str`):
@@ -2328,10 +2330,10 @@ class DlpServiceAsyncClient:
 
     async def get_dlp_job(
         self,
-        request: dlp.GetDlpJobRequest = None,
+        request: Union[dlp.GetDlpJobRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DlpJob:
@@ -2341,7 +2343,7 @@ class DlpServiceAsyncClient:
         analysis to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.GetDlpJobRequest`):
+            request (Union[google.cloud.dlp_v2.types.GetDlpJobRequest, dict]):
                 The request object. The request message for
                 [DlpJobs.GetDlpJob][].
             name (:class:`str`):
@@ -2412,10 +2414,10 @@ class DlpServiceAsyncClient:
 
     async def delete_dlp_job(
         self,
-        request: dlp.DeleteDlpJobRequest = None,
+        request: Union[dlp.DeleteDlpJobRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -2427,7 +2429,7 @@ class DlpServiceAsyncClient:
         analysis to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.DeleteDlpJobRequest`):
+            request (Union[google.cloud.dlp_v2.types.DeleteDlpJobRequest, dict]):
                 The request object. The request message for deleting a
                 DLP job.
             name (:class:`str`):
@@ -2491,9 +2493,9 @@ class DlpServiceAsyncClient:
 
     async def cancel_dlp_job(
         self,
-        request: dlp.CancelDlpJobRequest = None,
+        request: Union[dlp.CancelDlpJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -2505,7 +2507,7 @@ class DlpServiceAsyncClient:
         analysis to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.CancelDlpJobRequest`):
+            request (Union[google.cloud.dlp_v2.types.CancelDlpJobRequest, dict]):
                 The request object. The request message for canceling a
                 DLP job.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -2538,11 +2540,11 @@ class DlpServiceAsyncClient:
 
     async def create_stored_info_type(
         self,
-        request: dlp.CreateStoredInfoTypeRequest = None,
+        request: Union[dlp.CreateStoredInfoTypeRequest, dict] = None,
         *,
         parent: str = None,
         config: dlp.StoredInfoTypeConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.StoredInfoType:
@@ -2552,7 +2554,7 @@ class DlpServiceAsyncClient:
         infotypes to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.CreateStoredInfoTypeRequest`):
+            request (Union[google.cloud.dlp_v2.types.CreateStoredInfoTypeRequest, dict]):
                 The request object. Request message for
                 CreateStoredInfoType.
             parent (:class:`str`):
@@ -2645,12 +2647,12 @@ class DlpServiceAsyncClient:
 
     async def update_stored_info_type(
         self,
-        request: dlp.UpdateStoredInfoTypeRequest = None,
+        request: Union[dlp.UpdateStoredInfoTypeRequest, dict] = None,
         *,
         name: str = None,
         config: dlp.StoredInfoTypeConfig = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.StoredInfoType:
@@ -2661,7 +2663,7 @@ class DlpServiceAsyncClient:
         infotypes to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.UpdateStoredInfoTypeRequest`):
+            request (Union[google.cloud.dlp_v2.types.UpdateStoredInfoTypeRequest, dict]):
                 The request object. Request message for
                 UpdateStoredInfoType.
             name (:class:`str`):
@@ -2745,10 +2747,10 @@ class DlpServiceAsyncClient:
 
     async def get_stored_info_type(
         self,
-        request: dlp.GetStoredInfoTypeRequest = None,
+        request: Union[dlp.GetStoredInfoTypeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.StoredInfoType:
@@ -2757,7 +2759,7 @@ class DlpServiceAsyncClient:
         infotypes to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.GetStoredInfoTypeRequest`):
+            request (Union[google.cloud.dlp_v2.types.GetStoredInfoTypeRequest, dict]):
                 The request object. Request message for
                 GetStoredInfoType.
             name (:class:`str`):
@@ -2831,10 +2833,10 @@ class DlpServiceAsyncClient:
 
     async def list_stored_info_types(
         self,
-        request: dlp.ListStoredInfoTypesRequest = None,
+        request: Union[dlp.ListStoredInfoTypesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListStoredInfoTypesAsyncPager:
@@ -2843,7 +2845,7 @@ class DlpServiceAsyncClient:
         infotypes to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.ListStoredInfoTypesRequest`):
+            request (Union[google.cloud.dlp_v2.types.ListStoredInfoTypesRequest, dict]):
                 The request object. Request message for
                 ListStoredInfoTypes.
             parent (:class:`str`):
@@ -2945,10 +2947,10 @@ class DlpServiceAsyncClient:
 
     async def delete_stored_info_type(
         self,
-        request: dlp.DeleteStoredInfoTypeRequest = None,
+        request: Union[dlp.DeleteStoredInfoTypeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -2957,7 +2959,7 @@ class DlpServiceAsyncClient:
         infotypes to learn more.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.DeleteStoredInfoTypeRequest`):
+            request (Union[google.cloud.dlp_v2.types.DeleteStoredInfoTypeRequest, dict]):
                 The request object. Request message for
                 DeleteStoredInfoType.
             name (:class:`str`):
@@ -3023,10 +3025,10 @@ class DlpServiceAsyncClient:
 
     async def hybrid_inspect_dlp_job(
         self,
-        request: dlp.HybridInspectDlpJobRequest = None,
+        request: Union[dlp.HybridInspectDlpJobRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.HybridInspectResponse:
@@ -3039,7 +3041,7 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/products#product-launch-stages.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.HybridInspectDlpJobRequest`):
+            request (Union[google.cloud.dlp_v2.types.HybridInspectDlpJobRequest, dict]):
                 The request object. Request to search for potentially
                 sensitive info in a custom location.
             name (:class:`str`):
@@ -3101,9 +3103,9 @@ class DlpServiceAsyncClient:
 
     async def finish_dlp_job(
         self,
-        request: dlp.FinishDlpJobRequest = None,
+        request: Union[dlp.FinishDlpJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -3115,7 +3117,7 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/products#product-launch-stages.
 
         Args:
-            request (:class:`google.cloud.dlp_v2.types.FinishDlpJobRequest`):
+            request (Union[google.cloud.dlp_v2.types.FinishDlpJobRequest, dict]):
                 The request object. The request message for finishing a
                 DLP hybrid job.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

@@ -117,6 +117,13 @@ class CustomInfoType(proto.Message):
     domain-specific sensitive information configurable to the data
     in question.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         info_type (google.cloud.dlp_v2.types.InfoType):
             CustomInfoType can either be a new infoType, or an extension
@@ -134,16 +141,20 @@ class CustomInfoType(proto.Message):
         dictionary (google.cloud.dlp_v2.types.CustomInfoType.Dictionary):
             A list of phrases to detect as a
             CustomInfoType.
+            This field is a member of `oneof`_ ``type``.
         regex (google.cloud.dlp_v2.types.CustomInfoType.Regex):
             Regular expression based CustomInfoType.
+            This field is a member of `oneof`_ ``type``.
         surrogate_type (google.cloud.dlp_v2.types.CustomInfoType.SurrogateType):
             Message for detecting output from
             deidentification transformations that support
             reversing.
+            This field is a member of `oneof`_ ``type``.
         stored_type (google.cloud.dlp_v2.types.StoredType):
             Load an existing ``StoredInfoType`` resource for use in
             ``InspectDataSource``. Not currently supported in
             ``InspectContent``.
+            This field is a member of `oneof`_ ``type``.
         detection_rules (Sequence[google.cloud.dlp_v2.types.CustomInfoType.DetectionRule]):
             Set of detection rules to apply to all findings of this
             CustomInfoType. Rules are applied in order that they are
@@ -185,12 +196,21 @@ class CustomInfoType(proto.Message):
         do not fit within these constraints, consider using
         ``LargeCustomDictionaryConfig`` in the ``StoredInfoType`` API.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             word_list (google.cloud.dlp_v2.types.CustomInfoType.Dictionary.WordList):
                 List of words or phrases to search for.
+                This field is a member of `oneof`_ ``source``.
             cloud_storage_path (google.cloud.dlp_v2.types.CloudStoragePath):
                 Newline-delimited file of words in Cloud
                 Storage. Only a single file is accepted.
+                This field is a member of `oneof`_ ``source``.
         """
 
         class WordList(proto.Message):
@@ -254,9 +274,13 @@ class CustomInfoType(proto.Message):
         depending on the specific details of the rule. Not supported for the
         ``surrogate_type`` custom infoType.
 
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             hotword_rule (google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.HotwordRule):
                 Hotword-based detection rule.
+                This field is a member of `oneof`_ ``type``.
         """
 
         class Proximity(proto.Message):
@@ -279,10 +303,18 @@ class CustomInfoType(proto.Message):
             r"""Message for specifying an adjustment to the likelihood of a
             finding as part of a detection rule.
 
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
             Attributes:
                 fixed_likelihood (google.cloud.dlp_v2.types.Likelihood):
                     Set the likelihood of a finding to a fixed
                     value.
+                    This field is a member of `oneof`_ ``adjustment``.
                 relative_likelihood (int):
                     Increase or decrease the likelihood by the specified number
                     of levels. For example, if a finding would be ``POSSIBLE``
@@ -293,6 +325,7 @@ class CustomInfoType(proto.Message):
                     applying an adjustment of 1 followed by an adjustment of -1
                     when base likelihood is ``VERY_LIKELY`` will result in a
                     final likelihood of ``LIKELY``.
+                    This field is a member of `oneof`_ ``adjustment``.
             """
 
             fixed_likelihood = proto.Field(
@@ -653,13 +686,23 @@ class BigQueryOptions(proto.Message):
 class StorageConfig(proto.Message):
     r"""Shared message indicating Cloud storage type.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         datastore_options (google.cloud.dlp_v2.types.DatastoreOptions):
             Google Cloud Datastore options.
+            This field is a member of `oneof`_ ``type``.
         cloud_storage_options (google.cloud.dlp_v2.types.CloudStorageOptions):
             Google Cloud Storage options.
+            This field is a member of `oneof`_ ``type``.
         big_query_options (google.cloud.dlp_v2.types.BigQueryOptions):
             BigQuery options.
+            This field is a member of `oneof`_ ``type``.
         hybrid_options (google.cloud.dlp_v2.types.HybridOptions):
             Hybrid inspection options.
             Early access feature is in a pre-release state
@@ -667,6 +710,7 @@ class StorageConfig(proto.Message):
             more information, see
             https://cloud.google.com/products#product-
             launch-stages.
+            This field is a member of `oneof`_ ``type``.
         timespan_config (google.cloud.dlp_v2.types.StorageConfig.TimespanConfig):
 
     """
@@ -849,6 +893,13 @@ class Key(proto.Message):
         If either name or ID is set, the element is complete. If neither
         is set, the element is incomplete.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             kind (str):
                 The kind of the entity. A kind matching regex ``__.*__`` is
@@ -859,10 +910,12 @@ class Key(proto.Message):
                 Never equal to zero. Values less than zero are
                 discouraged and may not be supported in the
                 future.
+                This field is a member of `oneof`_ ``id_type``.
             name (str):
                 The name of the entity. A name matching regex ``__.*__`` is
                 reserved/read-only. A name must not be more than 1500 bytes
                 when UTF-8 encoded. Cannot be ``""``.
+                This field is a member of `oneof`_ ``id_type``.
         """
 
         kind = proto.Field(proto.STRING, number=1,)
@@ -877,11 +930,20 @@ class RecordKey(proto.Message):
     r"""Message for a unique key indicating a record that contains a
     finding.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         datastore_key (google.cloud.dlp_v2.types.DatastoreKey):
 
+            This field is a member of `oneof`_ ``type``.
         big_query_key (google.cloud.dlp_v2.types.BigQueryKey):
 
+            This field is a member of `oneof`_ ``type``.
         id_values (Sequence[str]):
             Values of identifying columns in the given row. Order of
             values matches the order of ``identifying_fields`` specified
