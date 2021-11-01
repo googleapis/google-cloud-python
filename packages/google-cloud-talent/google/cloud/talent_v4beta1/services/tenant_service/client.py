@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.talent_v4beta1.services.tenant_service import pagers
 from google.cloud.talent_v4beta1.types import tenant
 from google.cloud.talent_v4beta1.types import tenant as gct_tenant
@@ -352,7 +354,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
         *,
         parent: str = None,
         tenant: gct_tenant.Tenant = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_tenant.Tenant:
@@ -438,7 +440,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
         request: Union[tenant_service.GetTenantRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tenant.Tenant:
@@ -518,7 +520,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
         request: Union[tenant_service.UpdateTenantRequest, dict] = None,
         *,
         tenant: gct_tenant.Tenant = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_tenant.Tenant:
@@ -597,7 +599,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
         request: Union[tenant_service.DeleteTenantRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -663,7 +665,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
         request: Union[tenant_service.ListTenantsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTenantsPager:

@@ -424,14 +424,23 @@ class Resume(proto.Message):
 class PersonName(proto.Message):
     r"""Resource that represents the name of a person.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         formatted_name (str):
             A string represents a person's full name. For
             example, "Dr. John Smith".
             Number of characters allowed is 100.
+            This field is a member of `oneof`_ ``person_name``.
         structured_name (google.cloud.talent_v4beta1.types.PersonName.PersonStructuredName):
             A person's name in a structured way (last
             name, first name, suffix, and so on.)
+            This field is a member of `oneof`_ ``person_name``.
         preferred_name (str):
             Preferred name for the person. This field is ignored if
             [structured_name][google.cloud.talent.v4beta1.PersonName.structured_name]
@@ -496,6 +505,13 @@ class PersonName(proto.Message):
 class Address(proto.Message):
     r"""Resource that represents a address.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         usage (google.cloud.talent_v4beta1.types.ContactInfoUsage):
             The usage of the address. For example,
@@ -506,9 +522,11 @@ class Address(proto.Message):
             View, CA 94043", "Sunnyvale, California".
 
             Number of characters allowed is 100.
+            This field is a member of `oneof`_ ``address``.
         structured_address (google.type.postal_address_pb2.PostalAddress):
             Structured address that contains street
             address, city, state, country, and so on.
+            This field is a member of `oneof`_ ``address``.
         current (google.protobuf.wrappers_pb2.BoolValue):
             Indicates if it's the person's current
             address.
@@ -696,6 +714,13 @@ class EmploymentRecord(proto.Message):
 class EducationRecord(proto.Message):
     r"""Resource that represents an education record of a candidate.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         start_date (google.type.date_pb2.Date):
             The start date of the education.
@@ -717,8 +742,10 @@ class EducationRecord(proto.Message):
             For example, "Master of Science in Computer
             Science", "B.S in Math".
             Number of characters allowed is 100.
+            This field is a member of `oneof`_ ``degree``.
         structured_degree (google.cloud.talent_v4beta1.types.Degree):
             The structured notation of the degree.
+            This field is a member of `oneof`_ ``degree``.
         description (str):
             The description of the education.
             Number of characters allowed is 100,000.

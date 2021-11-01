@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.talent_v4.services.company_service import pagers
 from google.cloud.talent_v4.types import common
@@ -171,18 +173,18 @@ class CompanyServiceAsyncClient:
 
     async def create_company(
         self,
-        request: company_service.CreateCompanyRequest = None,
+        request: Union[company_service.CreateCompanyRequest, dict] = None,
         *,
         parent: str = None,
         company: gct_company.Company = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_company.Company:
         r"""Creates a new company entity.
 
         Args:
-            request (:class:`google.cloud.talent_v4.types.CreateCompanyRequest`):
+            request (Union[google.cloud.talent_v4.types.CreateCompanyRequest, dict]):
                 The request object. The Request of the CreateCompany
                 method.
             parent (:class:`str`):
@@ -258,17 +260,17 @@ class CompanyServiceAsyncClient:
 
     async def get_company(
         self,
-        request: company_service.GetCompanyRequest = None,
+        request: Union[company_service.GetCompanyRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> company.Company:
         r"""Retrieves specified company.
 
         Args:
-            request (:class:`google.cloud.talent_v4.types.GetCompanyRequest`):
+            request (Union[google.cloud.talent_v4.types.GetCompanyRequest, dict]):
                 The request object. Request for getting a company by
                 name.
             name (:class:`str`):
@@ -348,18 +350,18 @@ class CompanyServiceAsyncClient:
 
     async def update_company(
         self,
-        request: company_service.UpdateCompanyRequest = None,
+        request: Union[company_service.UpdateCompanyRequest, dict] = None,
         *,
         company: gct_company.Company = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_company.Company:
         r"""Updates specified company.
 
         Args:
-            request (:class:`google.cloud.talent_v4.types.UpdateCompanyRequest`):
+            request (Union[google.cloud.talent_v4.types.UpdateCompanyRequest, dict]):
                 The request object. Request for updating a specified
                 company.
             company (:class:`google.cloud.talent_v4.types.Company`):
@@ -445,10 +447,10 @@ class CompanyServiceAsyncClient:
 
     async def delete_company(
         self,
-        request: company_service.DeleteCompanyRequest = None,
+        request: Union[company_service.DeleteCompanyRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -457,7 +459,7 @@ class CompanyServiceAsyncClient:
         it.
 
         Args:
-            request (:class:`google.cloud.talent_v4.types.DeleteCompanyRequest`):
+            request (Union[google.cloud.talent_v4.types.DeleteCompanyRequest, dict]):
                 The request object. Request to delete a company.
             name (:class:`str`):
                 Required. The resource name of the company to be
@@ -524,17 +526,17 @@ class CompanyServiceAsyncClient:
 
     async def list_companies(
         self,
-        request: company_service.ListCompaniesRequest = None,
+        request: Union[company_service.ListCompaniesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCompaniesAsyncPager:
         r"""Lists all companies associated with the project.
 
         Args:
-            request (:class:`google.cloud.talent_v4.types.ListCompaniesRequest`):
+            request (Union[google.cloud.talent_v4.types.ListCompaniesRequest, dict]):
                 The request object. List companies for which the client
                 has ACL visibility.
             parent (:class:`str`):

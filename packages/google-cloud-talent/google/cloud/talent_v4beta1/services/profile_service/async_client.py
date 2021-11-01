@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.talent_v4beta1.services.profile_service import pagers
 from google.cloud.talent_v4beta1.types import common
@@ -173,17 +175,17 @@ class ProfileServiceAsyncClient:
 
     async def list_profiles(
         self,
-        request: profile_service.ListProfilesRequest = None,
+        request: Union[profile_service.ListProfilesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProfilesAsyncPager:
         r"""Lists profiles by filter. The order is unspecified.
 
         Args:
-            request (:class:`google.cloud.talent_v4beta1.types.ListProfilesRequest`):
+            request (Union[google.cloud.talent_v4beta1.types.ListProfilesRequest, dict]):
                 The request object. List profiles request.
             parent (:class:`str`):
                 Required. The resource name of the tenant under which
@@ -265,18 +267,18 @@ class ProfileServiceAsyncClient:
 
     async def create_profile(
         self,
-        request: profile_service.CreateProfileRequest = None,
+        request: Union[profile_service.CreateProfileRequest, dict] = None,
         *,
         parent: str = None,
         profile: gct_profile.Profile = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_profile.Profile:
         r"""Creates and returns a new profile.
 
         Args:
-            request (:class:`google.cloud.talent_v4beta1.types.CreateProfileRequest`):
+            request (Union[google.cloud.talent_v4beta1.types.CreateProfileRequest, dict]):
                 The request object. Create profile request.
             parent (:class:`str`):
                 Required. The name of the tenant this profile belongs
@@ -349,17 +351,17 @@ class ProfileServiceAsyncClient:
 
     async def get_profile(
         self,
-        request: profile_service.GetProfileRequest = None,
+        request: Union[profile_service.GetProfileRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> profile.Profile:
         r"""Gets the specified profile.
 
         Args:
-            request (:class:`google.cloud.talent_v4beta1.types.GetProfileRequest`):
+            request (Union[google.cloud.talent_v4beta1.types.GetProfileRequest, dict]):
                 The request object. Get profile request.
             name (:class:`str`):
                 Required. Resource name of the profile to get.
@@ -434,10 +436,10 @@ class ProfileServiceAsyncClient:
 
     async def update_profile(
         self,
-        request: profile_service.UpdateProfileRequest = None,
+        request: Union[profile_service.UpdateProfileRequest, dict] = None,
         *,
         profile: gct_profile.Profile = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_profile.Profile:
@@ -445,7 +447,7 @@ class ProfileServiceAsyncClient:
         result.
 
         Args:
-            request (:class:`google.cloud.talent_v4beta1.types.UpdateProfileRequest`):
+            request (Union[google.cloud.talent_v4beta1.types.UpdateProfileRequest, dict]):
                 The request object. Update profile request
             profile (:class:`google.cloud.talent_v4beta1.types.Profile`):
                 Required. Profile to be updated.
@@ -507,10 +509,10 @@ class ProfileServiceAsyncClient:
 
     async def delete_profile(
         self,
-        request: profile_service.DeleteProfileRequest = None,
+        request: Union[profile_service.DeleteProfileRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -519,7 +521,7 @@ class ProfileServiceAsyncClient:
         or assignments associated.
 
         Args:
-            request (:class:`google.cloud.talent_v4beta1.types.DeleteProfileRequest`):
+            request (Union[google.cloud.talent_v4beta1.types.DeleteProfileRequest, dict]):
                 The request object. Delete profile request.
             name (:class:`str`):
                 Required. Resource name of the profile to be deleted.
@@ -585,9 +587,9 @@ class ProfileServiceAsyncClient:
 
     async def search_profiles(
         self,
-        request: profile_service.SearchProfilesRequest = None,
+        request: Union[profile_service.SearchProfilesRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchProfilesAsyncPager:
@@ -602,7 +604,7 @@ class ProfileServiceAsyncClient:
         for more information.
 
         Args:
-            request (:class:`google.cloud.talent_v4beta1.types.SearchProfilesRequest`):
+            request (Union[google.cloud.talent_v4beta1.types.SearchProfilesRequest, dict]):
                 The request object. The request body of the
                 `SearchProfiles` call.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

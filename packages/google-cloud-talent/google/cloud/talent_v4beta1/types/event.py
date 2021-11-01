@@ -32,6 +32,13 @@ class ClientEvent(proto.Message):
     of events sent must be consistent with other calls, such as job
     searches, issued to the service by the client.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         request_id (str):
             Strongly recommended for the best service experience.
@@ -48,10 +55,12 @@ class ClientEvent(proto.Message):
             An event issued when a job seeker interacts
             with the application that implements Cloud
             Talent Solution.
+            This field is a member of `oneof`_ ``event``.
         profile_event (google.cloud.talent_v4beta1.types.ProfileEvent):
             An event issued when a profile searcher
             interacts with the application that implements
             Cloud Talent Solution.
+            This field is a member of `oneof`_ ``event``.
         event_notes (str):
             Notes about the event provided by recruiters
             or other users, for example, feedback on why a

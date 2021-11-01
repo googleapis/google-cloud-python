@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.talent_v4beta1.services.application_service import pagers
 from google.cloud.talent_v4beta1.types import application
@@ -180,18 +182,18 @@ class ApplicationServiceAsyncClient:
 
     async def create_application(
         self,
-        request: application_service.CreateApplicationRequest = None,
+        request: Union[application_service.CreateApplicationRequest, dict] = None,
         *,
         parent: str = None,
         application: gct_application.Application = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_application.Application:
         r"""Creates a new application entity.
 
         Args:
-            request (:class:`google.cloud.talent_v4beta1.types.CreateApplicationRequest`):
+            request (Union[google.cloud.talent_v4beta1.types.CreateApplicationRequest, dict]):
                 The request object. The Request of the CreateApplication
                 method.
             parent (:class:`str`):
@@ -265,17 +267,17 @@ class ApplicationServiceAsyncClient:
 
     async def get_application(
         self,
-        request: application_service.GetApplicationRequest = None,
+        request: Union[application_service.GetApplicationRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> application.Application:
         r"""Retrieves specified application.
 
         Args:
-            request (:class:`google.cloud.talent_v4beta1.types.GetApplicationRequest`):
+            request (Union[google.cloud.talent_v4beta1.types.GetApplicationRequest, dict]):
                 The request object. Request for getting a application by
                 name.
             name (:class:`str`):
@@ -351,17 +353,17 @@ class ApplicationServiceAsyncClient:
 
     async def update_application(
         self,
-        request: application_service.UpdateApplicationRequest = None,
+        request: Union[application_service.UpdateApplicationRequest, dict] = None,
         *,
         application: gct_application.Application = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_application.Application:
         r"""Updates specified application.
 
         Args:
-            request (:class:`google.cloud.talent_v4beta1.types.UpdateApplicationRequest`):
+            request (Union[google.cloud.talent_v4beta1.types.UpdateApplicationRequest, dict]):
                 The request object. Request for updating a specified
                 application.
             application (:class:`google.cloud.talent_v4beta1.types.Application`):
@@ -425,17 +427,17 @@ class ApplicationServiceAsyncClient:
 
     async def delete_application(
         self,
-        request: application_service.DeleteApplicationRequest = None,
+        request: Union[application_service.DeleteApplicationRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes specified application.
 
         Args:
-            request (:class:`google.cloud.talent_v4beta1.types.DeleteApplicationRequest`):
+            request (Union[google.cloud.talent_v4beta1.types.DeleteApplicationRequest, dict]):
                 The request object. Request to delete a application.
             name (:class:`str`):
                 Required. The resource name of the application to be
@@ -503,17 +505,17 @@ class ApplicationServiceAsyncClient:
 
     async def list_applications(
         self,
-        request: application_service.ListApplicationsRequest = None,
+        request: Union[application_service.ListApplicationsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApplicationsAsyncPager:
         r"""Lists all applications associated with the profile.
 
         Args:
-            request (:class:`google.cloud.talent_v4beta1.types.ListApplicationsRequest`):
+            request (Union[google.cloud.talent_v4beta1.types.ListApplicationsRequest, dict]):
                 The request object. List applications for which the
                 client has ACL visibility.
             parent (:class:`str`):

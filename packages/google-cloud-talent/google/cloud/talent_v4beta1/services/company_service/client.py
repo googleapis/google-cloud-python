@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.talent_v4beta1.services.company_service import pagers
 from google.cloud.talent_v4beta1.types import common
 from google.cloud.talent_v4beta1.types import company
@@ -358,7 +360,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         *,
         parent: str = None,
         company: gct_company.Company = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_company.Company:
@@ -446,7 +448,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         request: Union[company_service.GetCompanyRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> company.Company:
@@ -529,7 +531,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         request: Union[company_service.UpdateCompanyRequest, dict] = None,
         *,
         company: gct_company.Company = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_company.Company:
@@ -607,7 +609,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         request: Union[company_service.DeleteCompanyRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -679,7 +681,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         request: Union[company_service.ListCompaniesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCompaniesPager:

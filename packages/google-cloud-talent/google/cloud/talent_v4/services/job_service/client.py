@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.talent_v4.services.job_service import pagers
@@ -390,7 +392,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         *,
         parent: str = None,
         job: gct_job.Job = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_job.Job:
@@ -476,7 +478,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         *,
         parent: str = None,
         jobs: Sequence[job.Job] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -572,7 +574,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         request: Union[job_service.GetJobRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job.Job:
@@ -649,7 +651,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         *,
         job: gct_job.Job = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_job.Job:
@@ -741,7 +743,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         *,
         parent: str = None,
         jobs: Sequence[job.Job] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -837,7 +839,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         request: Union[job_service.DeleteJobRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -906,7 +908,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         *,
         parent: str = None,
         names: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1010,7 +1012,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         *,
         parent: str = None,
         filter: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsPager:
@@ -1125,7 +1127,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         self,
         request: Union[job_service.SearchJobsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job_service.SearchJobsResponse:
@@ -1179,7 +1181,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         self,
         request: Union[job_service.SearchJobsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job_service.SearchJobsResponse:

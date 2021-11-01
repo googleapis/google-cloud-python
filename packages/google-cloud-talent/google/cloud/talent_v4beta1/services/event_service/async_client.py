@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.talent_v4beta1.types import event
 from google.cloud.talent_v4beta1.types import event_service
@@ -160,11 +162,11 @@ class EventServiceAsyncClient:
 
     async def create_client_event(
         self,
-        request: event_service.CreateClientEventRequest = None,
+        request: Union[event_service.CreateClientEventRequest, dict] = None,
         *,
         parent: str = None,
         client_event: event.ClientEvent = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> event.ClientEvent:
@@ -177,7 +179,7 @@ class EventServiceAsyncClient:
         about self service tools.
 
         Args:
-            request (:class:`google.cloud.talent_v4beta1.types.CreateClientEventRequest`):
+            request (Union[google.cloud.talent_v4beta1.types.CreateClientEventRequest, dict]):
                 The request object. The report event request.
             parent (:class:`str`):
                 Required. Resource name of the tenant under which the

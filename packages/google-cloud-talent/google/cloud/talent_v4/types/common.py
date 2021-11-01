@@ -582,6 +582,13 @@ class CompensationInfo(proto.Message):
            times
            [expected_units_per_year][google.cloud.talent.v4.CompensationInfo.CompensationEntry.expected_units_per_year].
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             type_ (google.cloud.talent_v4.types.CompensationInfo.CompensationType):
                 Compensation type.
@@ -595,8 +602,10 @@ class CompensationInfo(proto.Message):
                 [CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED][google.cloud.talent.v4.CompensationInfo.CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED].
             amount (google.type.money_pb2.Money):
                 Compensation amount.
+                This field is a member of `oneof`_ ``compensation_amount``.
             range_ (google.cloud.talent_v4.types.CompensationInfo.CompensationRange):
                 Compensation range.
+                This field is a member of `oneof`_ ``compensation_amount``.
             description (str):
                 Compensation description.  For example, could
                 indicate equity terms or provide additional

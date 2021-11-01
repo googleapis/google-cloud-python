@@ -326,6 +326,13 @@ class CompensationFilter(proto.Message):
 class CommuteFilter(proto.Message):
     r"""Parameters needed for commute search.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         commute_method (google.cloud.talent_v4.types.CommuteMethod):
             Required. The method of transportation to
@@ -346,6 +353,7 @@ class CommuteFilter(proto.Message):
         road_traffic (google.cloud.talent_v4.types.CommuteFilter.RoadTraffic):
             Specifies the traffic density to use when
             calculating commute time.
+            This field is a member of `oneof`_ ``traffic_option``.
         departure_time (google.type.timeofday_pb2.TimeOfDay):
             The departure time used to calculate traffic impact,
             represented as
@@ -354,6 +362,7 @@ class CommuteFilter(proto.Message):
 
             Currently traffic model is restricted to hour level
             resolution.
+            This field is a member of `oneof`_ ``traffic_option``.
     """
 
     class RoadTraffic(proto.Enum):
