@@ -1182,11 +1182,19 @@ class ObjectTrackingFrame(proto.Message):
 class ObjectTrackingAnnotation(proto.Message):
     r"""Annotations corresponding to one tracked object.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         segment (google.cloud.videointelligence_v1.types.VideoSegment):
             Non-streaming batch mode ONLY.
             Each object track corresponds to one video
             segment where it appears.
+            This field is a member of `oneof`_ ``track_info``.
         track_id (int):
             Streaming mode ONLY. In streaming mode, we do not know the
             end time of a tracked object before it is completed. Hence,
@@ -1194,6 +1202,7 @@ class ObjectTrackingAnnotation(proto.Message):
             a unique identifiable integer track_id so that the customers
             can correlate the results of the ongoing
             ObjectTrackAnnotation of the same track_id over time.
+            This field is a member of `oneof`_ ``track_info``.
         entity (google.cloud.videointelligence_v1.types.Entity):
             Entity to specify the object category that
             this track is labeled as.

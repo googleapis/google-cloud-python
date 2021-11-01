@@ -1210,11 +1210,19 @@ class ObjectTrackingFrame(proto.Message):
 class ObjectTrackingAnnotation(proto.Message):
     r"""Annotations corresponding to one tracked object.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         segment (google.cloud.videointelligence_v1p3beta1.types.VideoSegment):
             Non-streaming batch mode ONLY.
             Each object track corresponds to one video
             segment where it appears.
+            This field is a member of `oneof`_ ``track_info``.
         track_id (int):
             Streaming mode ONLY. In streaming mode, we do not know the
             end time of a tracked object before it is completed. Hence,
@@ -1222,6 +1230,7 @@ class ObjectTrackingAnnotation(proto.Message):
             a unique identifiable integer track_id so that the customers
             can correlate the results of the ongoing
             ObjectTrackAnnotation of the same track_id over time.
+            This field is a member of `oneof`_ ``track_info``.
         entity (google.cloud.videointelligence_v1p3beta1.types.Entity):
             Entity to specify the object category that
             this track is labeled as.
@@ -1280,12 +1289,20 @@ class StreamingAnnotateVideoRequest(proto.Message):
     message must only contain a ``StreamingVideoConfig`` message. All
     subsequent messages must only contain ``input_content`` data.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         video_config (google.cloud.videointelligence_v1p3beta1.types.StreamingVideoConfig):
             Provides information to the annotator, specifing how to
             process the request. The first
             ``AnnotateStreamingVideoRequest`` message must only contain
             a ``video_config`` message.
+            This field is a member of `oneof`_ ``streaming_request``.
         input_content (bytes):
             The video data to be annotated. Chunks of video data are
             sequentially sent in ``StreamingAnnotateVideoRequest``
@@ -1295,6 +1312,7 @@ class StreamingAnnotateVideoRequest(proto.Message):
             ``AnnotateStreamingVideoRequest`` messages must only contain
             ``input_content`` field. Note: as with all bytes fields,
             protobuffers use a pure binary representation (not base64).
+            This field is a member of `oneof`_ ``streaming_request``.
     """
 
     video_config = proto.Field(
@@ -1310,21 +1328,35 @@ class StreamingVideoConfig(proto.Message):
     r"""Provides information to the annotator that specifies how to
     process the request.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         shot_change_detection_config (google.cloud.videointelligence_v1p3beta1.types.StreamingShotChangeDetectionConfig):
             Config for STREAMING_SHOT_CHANGE_DETECTION.
+            This field is a member of `oneof`_ ``streaming_config``.
         label_detection_config (google.cloud.videointelligence_v1p3beta1.types.StreamingLabelDetectionConfig):
             Config for STREAMING_LABEL_DETECTION.
+            This field is a member of `oneof`_ ``streaming_config``.
         explicit_content_detection_config (google.cloud.videointelligence_v1p3beta1.types.StreamingExplicitContentDetectionConfig):
             Config for STREAMING_EXPLICIT_CONTENT_DETECTION.
+            This field is a member of `oneof`_ ``streaming_config``.
         object_tracking_config (google.cloud.videointelligence_v1p3beta1.types.StreamingObjectTrackingConfig):
             Config for STREAMING_OBJECT_TRACKING.
+            This field is a member of `oneof`_ ``streaming_config``.
         automl_action_recognition_config (google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlActionRecognitionConfig):
             Config for STREAMING_AUTOML_ACTION_RECOGNITION.
+            This field is a member of `oneof`_ ``streaming_config``.
         automl_classification_config (google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlClassificationConfig):
             Config for STREAMING_AUTOML_CLASSIFICATION.
+            This field is a member of `oneof`_ ``streaming_config``.
         automl_object_tracking_config (google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlObjectTrackingConfig):
             Config for STREAMING_AUTOML_OBJECT_TRACKING.
+            This field is a member of `oneof`_ ``streaming_config``.
         feature (google.cloud.videointelligence_v1p3beta1.types.StreamingFeature):
             Requested annotation feature.
         storage_config (google.cloud.videointelligence_v1p3beta1.types.StreamingStorageConfig):

@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.videointelligence_v1p3beta1.types import video_intelligence
 from google.rpc import status_pb2  # type: ignore
 from .transports.base import (
@@ -346,7 +348,7 @@ class StreamingVideoIntelligenceServiceClient(
         self,
         requests: Iterator[video_intelligence.StreamingAnnotateVideoRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[video_intelligence.StreamingAnnotateVideoResponse]:
