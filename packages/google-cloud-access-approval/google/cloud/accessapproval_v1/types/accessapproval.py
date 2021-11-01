@@ -163,6 +163,13 @@ class ResourceProperties(proto.Message):
 class ApprovalRequest(proto.Message):
     r"""A request for the customer to approve access to a resource.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The resource name of the request. Format is
@@ -194,8 +201,10 @@ class ApprovalRequest(proto.Message):
             time.
         approve (google.cloud.accessapproval_v1.types.ApproveDecision):
             Access was approved.
+            This field is a member of `oneof`_ ``decision``.
         dismiss (google.cloud.accessapproval_v1.types.DismissDecision):
             The request was dismissed.
+            This field is a member of `oneof`_ ``decision``.
     """
 
     name = proto.Field(proto.STRING, number=1,)

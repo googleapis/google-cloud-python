@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.accessapproval_v1.services.access_approval import pagers
 from google.cloud.accessapproval_v1.types import accessapproval
@@ -198,10 +200,10 @@ class AccessApprovalAsyncClient:
 
     async def list_approval_requests(
         self,
-        request: accessapproval.ListApprovalRequestsMessage = None,
+        request: Union[accessapproval.ListApprovalRequestsMessage, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApprovalRequestsAsyncPager:
@@ -211,7 +213,7 @@ class AccessApprovalAsyncClient:
         order is reverse chronological.
 
         Args:
-            request (:class:`google.cloud.accessapproval_v1.types.ListApprovalRequestsMessage`):
+            request (Union[google.cloud.accessapproval_v1.types.ListApprovalRequestsMessage, dict]):
                 The request object. Request to list approval requests.
             parent (:class:`str`):
                 The parent resource. This may be
@@ -290,10 +292,10 @@ class AccessApprovalAsyncClient:
 
     async def get_approval_request(
         self,
-        request: accessapproval.GetApprovalRequestMessage = None,
+        request: Union[accessapproval.GetApprovalRequestMessage, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.ApprovalRequest:
@@ -301,7 +303,7 @@ class AccessApprovalAsyncClient:
         not exist.
 
         Args:
-            request (:class:`google.cloud.accessapproval_v1.types.GetApprovalRequestMessage`):
+            request (Union[google.cloud.accessapproval_v1.types.GetApprovalRequestMessage, dict]):
                 The request object. Request to get an approval request.
             name (:class:`str`):
                 Name of the approval request to
@@ -370,9 +372,9 @@ class AccessApprovalAsyncClient:
 
     async def approve_approval_request(
         self,
-        request: accessapproval.ApproveApprovalRequestMessage = None,
+        request: Union[accessapproval.ApproveApprovalRequestMessage, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.ApprovalRequest:
@@ -383,7 +385,7 @@ class AccessApprovalAsyncClient:
         pending state.
 
         Args:
-            request (:class:`google.cloud.accessapproval_v1.types.ApproveApprovalRequestMessage`):
+            request (Union[google.cloud.accessapproval_v1.types.ApproveApprovalRequestMessage, dict]):
                 The request object. Request to approve an
                 ApprovalRequest.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -423,9 +425,9 @@ class AccessApprovalAsyncClient:
 
     async def dismiss_approval_request(
         self,
-        request: accessapproval.DismissApprovalRequestMessage = None,
+        request: Union[accessapproval.DismissApprovalRequestMessage, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.ApprovalRequest:
@@ -441,7 +443,7 @@ class AccessApprovalAsyncClient:
         a pending state.
 
         Args:
-            request (:class:`google.cloud.accessapproval_v1.types.DismissApprovalRequestMessage`):
+            request (Union[google.cloud.accessapproval_v1.types.DismissApprovalRequestMessage, dict]):
                 The request object. Request to dismiss an approval
                 request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -481,10 +483,10 @@ class AccessApprovalAsyncClient:
 
     async def get_access_approval_settings(
         self,
-        request: accessapproval.GetAccessApprovalSettingsMessage = None,
+        request: Union[accessapproval.GetAccessApprovalSettingsMessage, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.AccessApprovalSettings:
@@ -492,7 +494,7 @@ class AccessApprovalAsyncClient:
         or organization.
 
         Args:
-            request (:class:`google.cloud.accessapproval_v1.types.GetAccessApprovalSettingsMessage`):
+            request (Union[google.cloud.accessapproval_v1.types.GetAccessApprovalSettingsMessage, dict]):
                 The request object. Request to get access approval
                 settings.
             name (:class:`str`):
@@ -563,11 +565,11 @@ class AccessApprovalAsyncClient:
 
     async def update_access_approval_settings(
         self,
-        request: accessapproval.UpdateAccessApprovalSettingsMessage = None,
+        request: Union[accessapproval.UpdateAccessApprovalSettingsMessage, dict] = None,
         *,
         settings: accessapproval.AccessApprovalSettings = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> accessapproval.AccessApprovalSettings:
@@ -576,7 +578,7 @@ class AccessApprovalAsyncClient:
         field_mask.
 
         Args:
-            request (:class:`google.cloud.accessapproval_v1.types.UpdateAccessApprovalSettingsMessage`):
+            request (Union[google.cloud.accessapproval_v1.types.UpdateAccessApprovalSettingsMessage, dict]):
                 The request object. Request to update access approval
                 settings.
             settings (:class:`google.cloud.accessapproval_v1.types.AccessApprovalSettings`):
@@ -656,10 +658,10 @@ class AccessApprovalAsyncClient:
 
     async def delete_access_approval_settings(
         self,
-        request: accessapproval.DeleteAccessApprovalSettingsMessage = None,
+        request: Union[accessapproval.DeleteAccessApprovalSettingsMessage, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -673,7 +675,7 @@ class AccessApprovalAsyncClient:
         inherited.
 
         Args:
-            request (:class:`google.cloud.accessapproval_v1.types.DeleteAccessApprovalSettingsMessage`):
+            request (Union[google.cloud.accessapproval_v1.types.DeleteAccessApprovalSettingsMessage, dict]):
                 The request object. Request to delete access approval
                 settings.
             name (:class:`str`):
