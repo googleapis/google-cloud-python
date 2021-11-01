@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.recommender_v1beta1.services.recommender import pagers
 from google.cloud.recommender_v1beta1.types import insight
 from google.cloud.recommender_v1beta1.types import recommendation
@@ -418,7 +420,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         request: Union[recommender_service.ListInsightsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInsightsPager:
@@ -508,7 +510,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         request: Union[recommender_service.GetInsightRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> insight.Insight:
@@ -583,7 +585,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
             recommender_service.MarkInsightAcceptedRequest.StateMetadataEntry
         ] = None,
         etag: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> insight.Insight:
@@ -680,7 +682,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         *,
         parent: str = None,
         filter: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRecommendationsPager:
@@ -780,7 +782,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         request: Union[recommender_service.GetRecommendationRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recommendation.Recommendation:
@@ -858,7 +860,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
             recommender_service.MarkRecommendationClaimedRequest.StateMetadataEntry
         ] = None,
         etag: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recommendation.Recommendation:
@@ -970,7 +972,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
             recommender_service.MarkRecommendationSucceededRequest.StateMetadataEntry
         ] = None,
         etag: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recommendation.Recommendation:
@@ -1082,7 +1084,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
             recommender_service.MarkRecommendationFailedRequest.StateMetadataEntry
         ] = None,
         etag: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recommendation.Recommendation:

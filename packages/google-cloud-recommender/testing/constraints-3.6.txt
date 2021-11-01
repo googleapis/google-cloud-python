@@ -2,9 +2,7 @@
 # are correct in setup.py
 # List all library dependencies and extras in this file.
 # Pin the version to the lower bound.
-
 # e.g., if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0dev",
 # Then this file should have google-cloud-foo==1.14.0
-google-api-core==1.26.0
+google-api-core==1.28.0
 proto-plus==1.15.0
-packaging==14.3

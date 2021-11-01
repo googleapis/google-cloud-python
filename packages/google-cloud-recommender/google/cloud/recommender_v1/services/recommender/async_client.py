@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.recommender_v1.services.recommender import pagers
 from google.cloud.recommender_v1.types import insight
@@ -177,10 +179,10 @@ class RecommenderAsyncClient:
 
     async def list_insights(
         self,
-        request: recommender_service.ListInsightsRequest = None,
+        request: Union[recommender_service.ListInsightsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInsightsAsyncPager:
@@ -189,7 +191,7 @@ class RecommenderAsyncClient:
         type.
 
         Args:
-            request (:class:`google.cloud.recommender_v1.types.ListInsightsRequest`):
+            request (Union[google.cloud.recommender_v1.types.ListInsightsRequest, dict]):
                 The request object. Request for the `ListInsights`
                 method.
             parent (:class:`str`):
@@ -277,10 +279,10 @@ class RecommenderAsyncClient:
 
     async def get_insight(
         self,
-        request: recommender_service.GetInsightRequest = None,
+        request: Union[recommender_service.GetInsightRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> insight.Insight:
@@ -288,7 +290,7 @@ class RecommenderAsyncClient:
         permission for the specified insight type.
 
         Args:
-            request (:class:`google.cloud.recommender_v1.types.GetInsightRequest`):
+            request (Union[google.cloud.recommender_v1.types.GetInsightRequest, dict]):
                 The request object. Request to the `GetInsight` method.
             name (:class:`str`):
                 Required. Name of the insight.
@@ -358,14 +360,14 @@ class RecommenderAsyncClient:
 
     async def mark_insight_accepted(
         self,
-        request: recommender_service.MarkInsightAcceptedRequest = None,
+        request: Union[recommender_service.MarkInsightAcceptedRequest, dict] = None,
         *,
         name: str = None,
         state_metadata: Sequence[
             recommender_service.MarkInsightAcceptedRequest.StateMetadataEntry
         ] = None,
         etag: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> insight.Insight:
@@ -379,7 +381,7 @@ class RecommenderAsyncClient:
         specified insight.
 
         Args:
-            request (:class:`google.cloud.recommender_v1.types.MarkInsightAcceptedRequest`):
+            request (Union[google.cloud.recommender_v1.types.MarkInsightAcceptedRequest, dict]):
                 The request object. Request for the
                 `MarkInsightAccepted` method.
             name (:class:`str`):
@@ -459,11 +461,11 @@ class RecommenderAsyncClient:
 
     async def list_recommendations(
         self,
-        request: recommender_service.ListRecommendationsRequest = None,
+        request: Union[recommender_service.ListRecommendationsRequest, dict] = None,
         *,
         parent: str = None,
         filter: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRecommendationsAsyncPager:
@@ -471,7 +473,7 @@ class RecommenderAsyncClient:
         recommender.*.list IAM permission for the specified recommender.
 
         Args:
-            request (:class:`google.cloud.recommender_v1.types.ListRecommendationsRequest`):
+            request (Union[google.cloud.recommender_v1.types.ListRecommendationsRequest, dict]):
                 The request object. Request for the
                 `ListRecommendations` method.
             parent (:class:`str`):
@@ -570,10 +572,10 @@ class RecommenderAsyncClient:
 
     async def get_recommendation(
         self,
-        request: recommender_service.GetRecommendationRequest = None,
+        request: Union[recommender_service.GetRecommendationRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recommendation.Recommendation:
@@ -581,7 +583,7 @@ class RecommenderAsyncClient:
         recommender.*.get IAM permission for the specified recommender.
 
         Args:
-            request (:class:`google.cloud.recommender_v1.types.GetRecommendationRequest`):
+            request (Union[google.cloud.recommender_v1.types.GetRecommendationRequest, dict]):
                 The request object. Request to the `GetRecommendation`
                 method.
             name (:class:`str`):
@@ -652,14 +654,16 @@ class RecommenderAsyncClient:
 
     async def mark_recommendation_claimed(
         self,
-        request: recommender_service.MarkRecommendationClaimedRequest = None,
+        request: Union[
+            recommender_service.MarkRecommendationClaimedRequest, dict
+        ] = None,
         *,
         name: str = None,
         state_metadata: Sequence[
             recommender_service.MarkRecommendationClaimedRequest.StateMetadataEntry
         ] = None,
         etag: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recommendation.Recommendation:
@@ -676,7 +680,7 @@ class RecommenderAsyncClient:
         specified recommender.
 
         Args:
-            request (:class:`google.cloud.recommender_v1.types.MarkRecommendationClaimedRequest`):
+            request (Union[google.cloud.recommender_v1.types.MarkRecommendationClaimedRequest, dict]):
                 The request object. Request for the
                 `MarkRecommendationClaimed` Method.
             name (:class:`str`):
@@ -759,14 +763,16 @@ class RecommenderAsyncClient:
 
     async def mark_recommendation_succeeded(
         self,
-        request: recommender_service.MarkRecommendationSucceededRequest = None,
+        request: Union[
+            recommender_service.MarkRecommendationSucceededRequest, dict
+        ] = None,
         *,
         name: str = None,
         state_metadata: Sequence[
             recommender_service.MarkRecommendationSucceededRequest.StateMetadataEntry
         ] = None,
         etag: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recommendation.Recommendation:
@@ -783,7 +789,7 @@ class RecommenderAsyncClient:
         specified recommender.
 
         Args:
-            request (:class:`google.cloud.recommender_v1.types.MarkRecommendationSucceededRequest`):
+            request (Union[google.cloud.recommender_v1.types.MarkRecommendationSucceededRequest, dict]):
                 The request object. Request for the
                 `MarkRecommendationSucceeded` Method.
             name (:class:`str`):
@@ -866,14 +872,16 @@ class RecommenderAsyncClient:
 
     async def mark_recommendation_failed(
         self,
-        request: recommender_service.MarkRecommendationFailedRequest = None,
+        request: Union[
+            recommender_service.MarkRecommendationFailedRequest, dict
+        ] = None,
         *,
         name: str = None,
         state_metadata: Sequence[
             recommender_service.MarkRecommendationFailedRequest.StateMetadataEntry
         ] = None,
         etag: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recommendation.Recommendation:
@@ -890,7 +898,7 @@ class RecommenderAsyncClient:
         specified recommender.
 
         Args:
-            request (:class:`google.cloud.recommender_v1.types.MarkRecommendationFailedRequest`):
+            request (Union[google.cloud.recommender_v1.types.MarkRecommendationFailedRequest, dict]):
                 The request object. Request for the
                 `MarkRecommendationFailed` Method.
             name (:class:`str`):

@@ -157,6 +157,13 @@ class Operation(proto.Message):
        RFC6902. See https://tools.ietf.org/html/rfc6902 for details on
        the original RFC.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         action (str):
             Type of this operation. Contains one of
@@ -192,10 +199,12 @@ class Operation(proto.Message):
             actions:'add'/'replace'. Maybe set for action: 'test'.
             Either this or ``value_matcher`` will be set for 'test'
             operation. An exact match must be performed.
+            This field is a member of `oneof`_ ``path_value``.
         value_matcher (google.cloud.recommender_v1.types.ValueMatcher):
             Can be set for action 'test' for advanced matching for the
             value of 'path' field. Either this or ``value`` will be set
             for 'test' operation.
+            This field is a member of `oneof`_ ``path_value``.
         path_filters (Sequence[google.cloud.recommender_v1.types.Operation.PathFiltersEntry]):
             Set of filters to apply if ``path`` refers to array elements
             or nested array elements in order to narrow down to a single
@@ -245,6 +254,9 @@ class ValueMatcher(proto.Message):
     r"""Contains various matching options for values for a GCP
     resource field.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         matches_pattern (str):
             To be used for full regex matching. The
@@ -252,6 +264,7 @@ class ValueMatcher(proto.Message):
             syntax
             (https://github.com/google/re2/wiki/Syntax), so
             to be used with RE2::FullMatch
+            This field is a member of `oneof`_ ``match_variant``.
     """
 
     matches_pattern = proto.Field(proto.STRING, number=1, oneof="match_variant",)
@@ -280,11 +293,15 @@ class Impact(proto.Message):
     r"""Contains the impact a recommendation can have for a given
     category.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         category (google.cloud.recommender_v1.types.Impact.Category):
             Category that is being targeted.
         cost_projection (google.cloud.recommender_v1.types.CostProjection):
             Use with CategoryType.COST
+            This field is a member of `oneof`_ ``projection``.
     """
 
     class Category(proto.Enum):
