@@ -62,6 +62,7 @@ from .data import (
     Compatibility,
     MetricAggregation,
     MetricType,
+    RestrictedMetricType,
 )
 
 __all__ = (
@@ -111,4 +112,5 @@ __all__ = (
     "Compatibility",
     "MetricAggregation",
     "MetricType",
+    "RestrictedMetricType",
 )

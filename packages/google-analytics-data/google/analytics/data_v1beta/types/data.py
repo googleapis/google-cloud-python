@@ -21,6 +21,7 @@ __protobuf__ = proto.module(
     manifest={
         "MetricAggregation",
         "MetricType",
+        "RestrictedMetricType",
         "Compatibility",
         "DateRange",
         "MinuteRange",
@@ -79,6 +80,15 @@ class MetricType(proto.Enum):
     TYPE_MILES = 11
     TYPE_METERS = 12
     TYPE_KILOMETERS = 13
+
+
+class RestrictedMetricType(proto.Enum):
+    r"""Categories of data that you may be restricted from viewing on
+    certain GA4 properties.
+    """
+    RESTRICTED_METRIC_TYPE_UNSPECIFIED = 0
+    COST_DATA = 1
+    REVENUE_DATA = 2
 
 
 class Compatibility(proto.Enum):
@@ -821,9 +831,82 @@ class ResponseMetaData(proto.Message):
             If true, indicates some buckets of dimension
             combinations are rolled into "(other)" row. This
             can happen for high cardinality reports.
+        schema_restriction_response (google.analytics.data_v1beta.types.ResponseMetaData.SchemaRestrictionResponse):
+            Describes the schema restrictions actively enforced in
+            creating this report. To learn more, see `Access and
+            data-restriction
+            management <https://support.google.com/analytics/answer/10851388>`__.
+            This field is a member of `oneof`_ ``_schema_restriction_response``.
+        currency_code (str):
+            The currency code used in this report. Intended to be used
+            in formatting currency metrics like ``purchaseRevenue`` for
+            visualization. If currency_code was specified in the
+            request, this response parameter will echo the request
+            parameter; otherwise, this response parameter is the
+            property's current currency_code.
+
+            Currency codes are string encodings of currency types from
+            the ISO 4217 standard
+            (https://en.wikipedia.org/wiki/ISO_4217); for example "USD",
+            "EUR", "JPY". To learn more, see
+            https://support.google.com/analytics/answer/9796179.
+            This field is a member of `oneof`_ ``_currency_code``.
+        time_zone (str):
+            The property's current timezone. Intended to be used to
+            interpret time-based dimensions like ``hour`` and
+            ``minute``. Formatted as strings from the IANA Time Zone
+            database (https://www.iana.org/time-zones); for example
+            "America/New_York" or "Asia/Tokyo".
+            This field is a member of `oneof`_ ``_time_zone``.
+        empty_reason (str):
+            If empty reason is specified, the report is
+            empty for this reason.
+            This field is a member of `oneof`_ ``_empty_reason``.
     """
 
+    class SchemaRestrictionResponse(proto.Message):
+        r"""The schema restrictions actively enforced in creating this report.
+        To learn more, see `Access and data-restriction
+        management <https://support.google.com/analytics/answer/10851388>`__.
+
+        Attributes:
+            active_metric_restrictions (Sequence[google.analytics.data_v1beta.types.ResponseMetaData.SchemaRestrictionResponse.ActiveMetricRestriction]):
+                All restrictions actively enforced in creating the report.
+                For example, ``purchaseRevenue`` always has the restriction
+                type ``REVENUE_DATA``. However, this active response
+                restriction is only populated if the user's custom role
+                disallows access to ``REVENUE_DATA``.
+        """
+
+        class ActiveMetricRestriction(proto.Message):
+            r"""A metric actively restricted in creating the report.
+
+            Attributes:
+                metric_name (str):
+                    The name of the restricted metric.
+                    This field is a member of `oneof`_ ``_metric_name``.
+                restricted_metric_types (Sequence[google.analytics.data_v1beta.types.RestrictedMetricType]):
+                    The reason for this metric's restriction.
+            """
+
+            metric_name = proto.Field(proto.STRING, number=1, optional=True,)
+            restricted_metric_types = proto.RepeatedField(
+                proto.ENUM, number=2, enum="RestrictedMetricType",
+            )
+
+        active_metric_restrictions = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ResponseMetaData.SchemaRestrictionResponse.ActiveMetricRestriction",
+        )
+
     data_loss_from_other_row = proto.Field(proto.BOOL, number=3,)
+    schema_restriction_response = proto.Field(
+        proto.MESSAGE, number=4, optional=True, message=SchemaRestrictionResponse,
+    )
+    currency_code = proto.Field(proto.STRING, number=5, optional=True,)
+    time_zone = proto.Field(proto.STRING, number=6, optional=True,)
+    empty_reason = proto.Field(proto.STRING, number=7, optional=True,)
 
 
 class DimensionHeader(proto.Message):
@@ -1124,11 +1207,27 @@ class MetricMetadata(proto.Message):
         custom_definition (bool):
             True if the metric is a custom metric for
             this property.
+        blocked_reasons (Sequence[google.analytics.data_v1beta.types.MetricMetadata.BlockedReason]):
+            If reasons are specified, your access is blocked to this
+            metric for this property. API requests from you to this
+            property for this metric will succeed; however, the report
+            will contain only zeros for this metric. API requests with
+            metric filters on blocked metrics will fail. If reasons are
+            empty, you have access to this metric.
+
+            To learn more, see `Access and data-restriction
+            management <https://support.google.com/analytics/answer/10851388>`__.
         category (str):
             The display name of the category that this
             metrics belongs to. Similar dimensions and
             metrics are categorized together.
     """
+
+    class BlockedReason(proto.Enum):
+        r"""Justifications for why this metric is blocked."""
+        BLOCKED_REASON_UNSPECIFIED = 0
+        NO_REVENUE_METRICS = 1
+        NO_COST_METRICS = 2
 
     api_name = proto.Field(proto.STRING, number=1,)
     ui_name = proto.Field(proto.STRING, number=2,)
@@ -1137,6 +1236,7 @@ class MetricMetadata(proto.Message):
     type_ = proto.Field(proto.ENUM, number=5, enum="MetricType",)
     expression = proto.Field(proto.STRING, number=6,)
     custom_definition = proto.Field(proto.BOOL, number=7,)
+    blocked_reasons = proto.RepeatedField(proto.ENUM, number=8, enum=BlockedReason,)
     category = proto.Field(proto.STRING, number=10,)
 
 

@@ -63,6 +63,7 @@ from .types.data import Row
 from .types.data import Compatibility
 from .types.data import MetricAggregation
 from .types.data import MetricType
+from .types.data import RestrictedMetricType
 
 __all__ = (
     "BetaAnalyticsDataAsyncClient",
@@ -106,6 +107,7 @@ __all__ = (
     "PropertyQuota",
     "QuotaStatus",
     "ResponseMetaData",
+    "RestrictedMetricType",
     "Row",
     "RunPivotReportRequest",
     "RunPivotReportResponse",
