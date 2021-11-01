@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.policytroubleshooter_v1.types import checker
 from google.cloud.policytroubleshooter_v1.types import explanations
 from .transports.base import IamCheckerTransport, DEFAULT_CLIENT_INFO
@@ -336,7 +338,7 @@ class IamCheckerClient(metaclass=IamCheckerClientMeta):
         self,
         request: Union[checker.TroubleshootIamPolicyRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> checker.TroubleshootIamPolicyResponse:
