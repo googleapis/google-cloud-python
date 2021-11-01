@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -199,17 +201,17 @@ class DataprocMetastoreAsyncClient:
 
     async def list_services(
         self,
-        request: metastore.ListServicesRequest = None,
+        request: Union[metastore.ListServicesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesAsyncPager:
         r"""Lists services in a project and location.
 
         Args:
-            request (:class:`google.cloud.metastore_v1beta.types.ListServicesRequest`):
+            request (Union[google.cloud.metastore_v1beta.types.ListServicesRequest, dict]):
                 The request object. Request message for
                 [DataprocMetastore.ListServices][google.cloud.metastore.v1beta.DataprocMetastore.ListServices].
             parent (:class:`str`):
@@ -281,17 +283,17 @@ class DataprocMetastoreAsyncClient:
 
     async def get_service(
         self,
-        request: metastore.GetServiceRequest = None,
+        request: Union[metastore.GetServiceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metastore.Service:
         r"""Gets the details of a single service.
 
         Args:
-            request (:class:`google.cloud.metastore_v1beta.types.GetServiceRequest`):
+            request (Union[google.cloud.metastore_v1beta.types.GetServiceRequest, dict]):
                 The request object. Request message for
                 [DataprocMetastore.GetService][google.cloud.metastore.v1beta.DataprocMetastore.GetService].
             name (:class:`str`):
@@ -354,12 +356,12 @@ class DataprocMetastoreAsyncClient:
 
     async def create_service(
         self,
-        request: metastore.CreateServiceRequest = None,
+        request: Union[metastore.CreateServiceRequest, dict] = None,
         *,
         parent: str = None,
         service: metastore.Service = None,
         service_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -367,7 +369,7 @@ class DataprocMetastoreAsyncClient:
         location.
 
         Args:
-            request (:class:`google.cloud.metastore_v1beta.types.CreateServiceRequest`):
+            request (Union[google.cloud.metastore_v1beta.types.CreateServiceRequest, dict]):
                 The request object. Request message for
                 [DataprocMetastore.CreateService][google.cloud.metastore.v1beta.DataprocMetastore.CreateService].
             parent (:class:`str`):
@@ -469,18 +471,18 @@ class DataprocMetastoreAsyncClient:
 
     async def update_service(
         self,
-        request: metastore.UpdateServiceRequest = None,
+        request: Union[metastore.UpdateServiceRequest, dict] = None,
         *,
         service: metastore.Service = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single service.
 
         Args:
-            request (:class:`google.cloud.metastore_v1beta.types.UpdateServiceRequest`):
+            request (Union[google.cloud.metastore_v1beta.types.UpdateServiceRequest, dict]):
                 The request object. Request message for
                 [DataprocMetastore.UpdateService][google.cloud.metastore.v1beta.DataprocMetastore.UpdateService].
             service (:class:`google.cloud.metastore_v1beta.types.Service`):
@@ -570,17 +572,17 @@ class DataprocMetastoreAsyncClient:
 
     async def delete_service(
         self,
-        request: metastore.DeleteServiceRequest = None,
+        request: Union[metastore.DeleteServiceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single service.
 
         Args:
-            request (:class:`google.cloud.metastore_v1beta.types.DeleteServiceRequest`):
+            request (Union[google.cloud.metastore_v1beta.types.DeleteServiceRequest, dict]):
                 The request object. Request message for
                 [DataprocMetastore.DeleteService][google.cloud.metastore.v1beta.DataprocMetastore.DeleteService].
             name (:class:`str`):
@@ -664,17 +666,17 @@ class DataprocMetastoreAsyncClient:
 
     async def list_metadata_imports(
         self,
-        request: metastore.ListMetadataImportsRequest = None,
+        request: Union[metastore.ListMetadataImportsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMetadataImportsAsyncPager:
         r"""Lists imports in a service.
 
         Args:
-            request (:class:`google.cloud.metastore_v1beta.types.ListMetadataImportsRequest`):
+            request (Union[google.cloud.metastore_v1beta.types.ListMetadataImportsRequest, dict]):
                 The request object. Request message for
                 [DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1beta.DataprocMetastore.ListMetadataImports].
             parent (:class:`str`):
@@ -746,17 +748,17 @@ class DataprocMetastoreAsyncClient:
 
     async def get_metadata_import(
         self,
-        request: metastore.GetMetadataImportRequest = None,
+        request: Union[metastore.GetMetadataImportRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metastore.MetadataImport:
         r"""Gets details of a single import.
 
         Args:
-            request (:class:`google.cloud.metastore_v1beta.types.GetMetadataImportRequest`):
+            request (Union[google.cloud.metastore_v1beta.types.GetMetadataImportRequest, dict]):
                 The request object. Request message for
                 [DataprocMetastore.GetMetadataImport][google.cloud.metastore.v1beta.DataprocMetastore.GetMetadataImport].
             name (:class:`str`):
@@ -819,12 +821,12 @@ class DataprocMetastoreAsyncClient:
 
     async def create_metadata_import(
         self,
-        request: metastore.CreateMetadataImportRequest = None,
+        request: Union[metastore.CreateMetadataImportRequest, dict] = None,
         *,
         parent: str = None,
         metadata_import: metastore.MetadataImport = None,
         metadata_import_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -832,7 +834,7 @@ class DataprocMetastoreAsyncClient:
         location.
 
         Args:
-            request (:class:`google.cloud.metastore_v1beta.types.CreateMetadataImportRequest`):
+            request (Union[google.cloud.metastore_v1beta.types.CreateMetadataImportRequest, dict]):
                 The request object. Request message for
                 [DataprocMetastore.CreateMetadataImport][google.cloud.metastore.v1beta.DataprocMetastore.CreateMetadataImport].
             parent (:class:`str`):
@@ -933,11 +935,11 @@ class DataprocMetastoreAsyncClient:
 
     async def update_metadata_import(
         self,
-        request: metastore.UpdateMetadataImportRequest = None,
+        request: Union[metastore.UpdateMetadataImportRequest, dict] = None,
         *,
         metadata_import: metastore.MetadataImport = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -946,7 +948,7 @@ class DataprocMetastoreAsyncClient:
         supported to be updated.
 
         Args:
-            request (:class:`google.cloud.metastore_v1beta.types.UpdateMetadataImportRequest`):
+            request (Union[google.cloud.metastore_v1beta.types.UpdateMetadataImportRequest, dict]):
                 The request object. Request message for
                 [DataprocMetastore.UpdateMetadataImport][google.cloud.metastore.v1beta.DataprocMetastore.UpdateMetadataImport].
             metadata_import (:class:`google.cloud.metastore_v1beta.types.MetadataImport`):
@@ -1036,16 +1038,16 @@ class DataprocMetastoreAsyncClient:
 
     async def export_metadata(
         self,
-        request: metastore.ExportMetadataRequest = None,
+        request: Union[metastore.ExportMetadataRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Exports metadata from a service.
 
         Args:
-            request (:class:`google.cloud.metastore_v1beta.types.ExportMetadataRequest`):
+            request (Union[google.cloud.metastore_v1beta.types.ExportMetadataRequest, dict]):
                 The request object. Request message for
                 [DataprocMetastore.ExportMetadata][google.cloud.metastore.v1beta.DataprocMetastore.ExportMetadata].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1096,18 +1098,18 @@ class DataprocMetastoreAsyncClient:
 
     async def restore_service(
         self,
-        request: metastore.RestoreServiceRequest = None,
+        request: Union[metastore.RestoreServiceRequest, dict] = None,
         *,
         service: str = None,
         backup: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Restores a service from a backup.
 
         Args:
-            request (:class:`google.cloud.metastore_v1beta.types.RestoreServiceRequest`):
+            request (Union[google.cloud.metastore_v1beta.types.RestoreServiceRequest, dict]):
                 The request object. Request message for
                 [DataprocMetastore.Restore][].
             service (:class:`str`):
@@ -1192,17 +1194,17 @@ class DataprocMetastoreAsyncClient:
 
     async def list_backups(
         self,
-        request: metastore.ListBackupsRequest = None,
+        request: Union[metastore.ListBackupsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBackupsAsyncPager:
         r"""Lists backups in a service.
 
         Args:
-            request (:class:`google.cloud.metastore_v1beta.types.ListBackupsRequest`):
+            request (Union[google.cloud.metastore_v1beta.types.ListBackupsRequest, dict]):
                 The request object. Request message for
                 [DataprocMetastore.ListBackups][google.cloud.metastore.v1beta.DataprocMetastore.ListBackups].
             parent (:class:`str`):
@@ -1274,17 +1276,17 @@ class DataprocMetastoreAsyncClient:
 
     async def get_backup(
         self,
-        request: metastore.GetBackupRequest = None,
+        request: Union[metastore.GetBackupRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metastore.Backup:
         r"""Gets details of a single backup.
 
         Args:
-            request (:class:`google.cloud.metastore_v1beta.types.GetBackupRequest`):
+            request (Union[google.cloud.metastore_v1beta.types.GetBackupRequest, dict]):
                 The request object. Request message for
                 [DataprocMetastore.GetBackup][google.cloud.metastore.v1beta.DataprocMetastore.GetBackup].
             name (:class:`str`):
@@ -1345,19 +1347,19 @@ class DataprocMetastoreAsyncClient:
 
     async def create_backup(
         self,
-        request: metastore.CreateBackupRequest = None,
+        request: Union[metastore.CreateBackupRequest, dict] = None,
         *,
         parent: str = None,
         backup: metastore.Backup = None,
         backup_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Backup in a given project and location.
 
         Args:
-            request (:class:`google.cloud.metastore_v1beta.types.CreateBackupRequest`):
+            request (Union[google.cloud.metastore_v1beta.types.CreateBackupRequest, dict]):
                 The request object. Request message for
                 [DataprocMetastore.CreateBackup][google.cloud.metastore.v1beta.DataprocMetastore.CreateBackup].
             parent (:class:`str`):
@@ -1456,17 +1458,17 @@ class DataprocMetastoreAsyncClient:
 
     async def delete_backup(
         self,
-        request: metastore.DeleteBackupRequest = None,
+        request: Union[metastore.DeleteBackupRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single backup.
 
         Args:
-            request (:class:`google.cloud.metastore_v1beta.types.DeleteBackupRequest`):
+            request (Union[google.cloud.metastore_v1beta.types.DeleteBackupRequest, dict]):
                 The request object. Request message for
                 [DataprocMetastore.DeleteBackup][google.cloud.metastore.v1beta.DataprocMetastore.DeleteBackup].
             name (:class:`str`):

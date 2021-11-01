@@ -19,7 +19,5 @@
 #
 # e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
 # Then this file should have foo==1.14.0
-google-api-core==1.26.0
+google-api-core==1.28.0
 proto-plus==1.4.0
-packaging==14.3
-google-auth==1.24.0  # TODO: remove when google-auth>=1.25.0 is required through google-api-core

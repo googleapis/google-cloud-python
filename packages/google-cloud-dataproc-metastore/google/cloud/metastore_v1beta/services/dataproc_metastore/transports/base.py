@@ -15,7 +15,6 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import packaging.version
 import pkg_resources
 
 import google.auth  # type: ignore
@@ -38,15 +37,6 @@ try:
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
-
-try:
-    # google.auth.__version__ was added in 1.26.0
-    _GOOGLE_AUTH_VERSION = google.auth.__version__
-except AttributeError:
-    try:  # try pkg_resources if it is available
-        _GOOGLE_AUTH_VERSION = pkg_resources.get_distribution("google-auth").version
-    except pkg_resources.DistributionNotFound:  # pragma: NO COVER
-        _GOOGLE_AUTH_VERSION = None
 
 
 class DataprocMetastoreTransport(abc.ABC):
@@ -97,7 +87,7 @@ class DataprocMetastoreTransport(abc.ABC):
             host += ":443"
         self._host = host
 
-        scopes_kwargs = self._get_scopes_kwargs(self._host, scopes)
+        scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
 
         # Save the scopes.
         self._scopes = scopes
@@ -129,29 +119,6 @@ class DataprocMetastoreTransport(abc.ABC):
 
         # Save the credentials.
         self._credentials = credentials
-
-    # TODO(busunkim): This method is in the base transport
-    # to avoid duplicating code across the transport classes. These functions
-    # should be deleted once the minimum required versions of google-auth is increased.
-
-    # TODO: Remove this function once google-auth >= 1.25.0 is required
-    @classmethod
-    def _get_scopes_kwargs(
-        cls, host: str, scopes: Optional[Sequence[str]]
-    ) -> Dict[str, Optional[Sequence[str]]]:
-        """Returns scopes kwargs to pass to google-auth methods depending on the google-auth version"""
-
-        scopes_kwargs = {}
-
-        if _GOOGLE_AUTH_VERSION and (
-            packaging.version.parse(_GOOGLE_AUTH_VERSION)
-            >= packaging.version.parse("1.25.0")
-        ):
-            scopes_kwargs = {"scopes": scopes, "default_scopes": cls.AUTH_SCOPES}
-        else:
-            scopes_kwargs = {"scopes": scopes or cls.AUTH_SCOPES}
-
-        return scopes_kwargs
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
@@ -219,7 +186,7 @@ class DataprocMetastoreTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def operations_client(self) -> operations_v1.OperationsClient:
+    def operations_client(self):
         """Return the client designed to process long-running operations."""
         raise NotImplementedError()
 

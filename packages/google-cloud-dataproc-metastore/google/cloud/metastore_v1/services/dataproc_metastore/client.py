@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.metastore_v1.services.dataproc_metastore import pagers
@@ -433,7 +435,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         request: Union[metastore.ListServicesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesPager:
@@ -515,7 +517,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         request: Union[metastore.GetServiceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metastore.Service:
@@ -590,7 +592,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         parent: str = None,
         service: metastore.Service = None,
         service_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -704,7 +706,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         *,
         service: metastore.Service = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -804,7 +806,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         request: Union[metastore.DeleteServiceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -898,7 +900,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         request: Union[metastore.ListMetadataImportsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMetadataImportsPager:
@@ -980,7 +982,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         request: Union[metastore.GetMetadataImportRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metastore.MetadataImport:
@@ -1055,7 +1057,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         parent: str = None,
         metadata_import: metastore.MetadataImport = None,
         metadata_import_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1168,7 +1170,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         *,
         metadata_import: metastore.MetadataImport = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1269,7 +1271,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         self,
         request: Union[metastore.ExportMetadataRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1332,7 +1334,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         *,
         service: str = None,
         backup: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1427,7 +1429,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         request: Union[metastore.ListBackupsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBackupsPager:
@@ -1509,7 +1511,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         request: Union[metastore.GetBackupRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metastore.Backup:
@@ -1582,7 +1584,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         parent: str = None,
         backup: metastore.Backup = None,
         backup_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1691,7 +1693,7 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         request: Union[metastore.DeleteBackupRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:

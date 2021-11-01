@@ -64,11 +64,14 @@ __protobuf__ = proto.module(
 class Service(proto.Message):
     r"""A managed metastore service that serves metadata queries.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         hive_metastore_config (google.cloud.metastore_v1alpha.types.HiveMetastoreConfig):
             Configuration information specific to running
             Hive metastore software as the metastore
             service.
+            This field is a member of `oneof`_ ``metastore_config``.
         name (str):
             Immutable. The relative resource name of the metastore
             service, of the form:
@@ -284,12 +287,15 @@ class KerberosConfig(proto.Message):
 class Secret(proto.Message):
     r"""A securely stored value.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         cloud_secret (str):
             The relative resource name of a Secret Manager secret
             version, in the following form:
 
             ``projects/{project_number}/secrets/{secret_id}/versions/{version_id}``.
+            This field is a member of `oneof`_ ``value``.
     """
 
     cloud_secret = proto.Field(proto.STRING, number=2, oneof="value",)
@@ -316,10 +322,13 @@ class MetadataManagementActivity(proto.Message):
 class MetadataImport(proto.Message):
     r"""A metastore resource that imports metadata.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         database_dump (google.cloud.metastore_v1alpha.types.MetadataImport.DatabaseDump):
             Immutable. A database dump from a pre-
             xisting metastore's database.
+            This field is a member of `oneof`_ ``metadata``.
         name (str):
             Immutable. The relative resource name of the metadata
             import, of the form:
@@ -389,12 +398,15 @@ class MetadataImport(proto.Message):
 class MetadataExport(proto.Message):
     r"""The details of a metadata export operation.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         destination_gcs_uri (str):
             Output only. A Cloud Storage URI of a folder that metadata
             are exported to, in the form of
             ``gs://<bucket_name>/<path_inside_bucket>/<export_folder>``,
             where ``<export_folder>`` is automatically generated.
+            This field is a member of `oneof`_ ``destination``.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the export
             started.
@@ -1053,12 +1065,16 @@ class ExportMetadataRequest(proto.Message):
     r"""Request message for
     [DataprocMetastore.ExportMetadata][google.cloud.metastore.v1alpha.DataprocMetastore.ExportMetadata].
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         destination_gcs_folder (str):
             A Cloud Storage URI of a folder, in the format
             ``gs://<bucket_name>/<path_inside_bucket>``. A sub-folder
             ``<export_folder>`` containing exported files will be
             created below it.
+            This field is a member of `oneof`_ ``destination``.
         service (str):
             Required. The relative resource name of the metastore
             service to run export, in the following form:
