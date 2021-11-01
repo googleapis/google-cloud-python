@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -198,10 +200,10 @@ class CloudFilestoreManagerAsyncClient:
 
     async def list_instances(
         self,
-        request: cloud_filestore_service.ListInstancesRequest = None,
+        request: Union[cloud_filestore_service.ListInstancesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesAsyncPager:
@@ -209,7 +211,7 @@ class CloudFilestoreManagerAsyncClient:
         specified location or for all locations.
 
         Args:
-            request (:class:`google.cloud.filestore_v1.types.ListInstancesRequest`):
+            request (Union[google.cloud.filestore_v1.types.ListInstancesRequest, dict]):
                 The request object. ListInstancesRequest lists
                 instances.
             parent (:class:`str`):
@@ -292,17 +294,17 @@ class CloudFilestoreManagerAsyncClient:
 
     async def get_instance(
         self,
-        request: cloud_filestore_service.GetInstanceRequest = None,
+        request: Union[cloud_filestore_service.GetInstanceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_filestore_service.Instance:
         r"""Gets the details of a specific instance.
 
         Args:
-            request (:class:`google.cloud.filestore_v1.types.GetInstanceRequest`):
+            request (Union[google.cloud.filestore_v1.types.GetInstanceRequest, dict]):
                 The request object. GetInstanceRequest gets the state of
                 an instance.
             name (:class:`str`):
@@ -370,12 +372,12 @@ class CloudFilestoreManagerAsyncClient:
 
     async def create_instance(
         self,
-        request: cloud_filestore_service.CreateInstanceRequest = None,
+        request: Union[cloud_filestore_service.CreateInstanceRequest, dict] = None,
         *,
         parent: str = None,
         instance: cloud_filestore_service.Instance = None,
         instance_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -386,7 +388,7 @@ class CloudFilestoreManagerAsyncClient:
         the minimum capacity of the tier).
 
         Args:
-            request (:class:`google.cloud.filestore_v1.types.CreateInstanceRequest`):
+            request (Union[google.cloud.filestore_v1.types.CreateInstanceRequest, dict]):
                 The request object. CreateInstanceRequest creates an
                 instance.
             parent (:class:`str`):
@@ -479,18 +481,18 @@ class CloudFilestoreManagerAsyncClient:
 
     async def update_instance(
         self,
-        request: cloud_filestore_service.UpdateInstanceRequest = None,
+        request: Union[cloud_filestore_service.UpdateInstanceRequest, dict] = None,
         *,
         instance: cloud_filestore_service.Instance = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the settings of a specific instance.
 
         Args:
-            request (:class:`google.cloud.filestore_v1.types.UpdateInstanceRequest`):
+            request (Union[google.cloud.filestore_v1.types.UpdateInstanceRequest, dict]):
                 The request object. UpdateInstanceRequest updates the
                 settings of an instance.
             instance (:class:`google.cloud.filestore_v1.types.Instance`):
@@ -576,9 +578,9 @@ class CloudFilestoreManagerAsyncClient:
 
     async def restore_instance(
         self,
-        request: cloud_filestore_service.RestoreInstanceRequest = None,
+        request: Union[cloud_filestore_service.RestoreInstanceRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -589,7 +591,7 @@ class CloudFilestoreManagerAsyncClient:
         to or larger than the minimum capacity of the tier).
 
         Args:
-            request (:class:`google.cloud.filestore_v1.types.RestoreInstanceRequest`):
+            request (Union[google.cloud.filestore_v1.types.RestoreInstanceRequest, dict]):
                 The request object. RestoreInstanceRequest restores an
                 existing instances's file share from a backup.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -640,17 +642,17 @@ class CloudFilestoreManagerAsyncClient:
 
     async def delete_instance(
         self,
-        request: cloud_filestore_service.DeleteInstanceRequest = None,
+        request: Union[cloud_filestore_service.DeleteInstanceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes an instance.
 
         Args:
-            request (:class:`google.cloud.filestore_v1.types.DeleteInstanceRequest`):
+            request (Union[google.cloud.filestore_v1.types.DeleteInstanceRequest, dict]):
                 The request object. DeleteInstanceRequest deletes an
                 instance.
             name (:class:`str`):
@@ -732,10 +734,10 @@ class CloudFilestoreManagerAsyncClient:
 
     async def list_backups(
         self,
-        request: cloud_filestore_service.ListBackupsRequest = None,
+        request: Union[cloud_filestore_service.ListBackupsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBackupsAsyncPager:
@@ -743,7 +745,7 @@ class CloudFilestoreManagerAsyncClient:
         location or for all locations.
 
         Args:
-            request (:class:`google.cloud.filestore_v1.types.ListBackupsRequest`):
+            request (Union[google.cloud.filestore_v1.types.ListBackupsRequest, dict]):
                 The request object. ListBackupsRequest lists backups.
             parent (:class:`str`):
                 Required. The project and location for which to retrieve
@@ -825,17 +827,17 @@ class CloudFilestoreManagerAsyncClient:
 
     async def get_backup(
         self,
-        request: cloud_filestore_service.GetBackupRequest = None,
+        request: Union[cloud_filestore_service.GetBackupRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_filestore_service.Backup:
         r"""Gets the details of a specific backup.
 
         Args:
-            request (:class:`google.cloud.filestore_v1.types.GetBackupRequest`):
+            request (Union[google.cloud.filestore_v1.types.GetBackupRequest, dict]):
                 The request object. GetBackupRequest gets the state of a
                 backup.
             name (:class:`str`):
@@ -903,19 +905,19 @@ class CloudFilestoreManagerAsyncClient:
 
     async def create_backup(
         self,
-        request: cloud_filestore_service.CreateBackupRequest = None,
+        request: Union[cloud_filestore_service.CreateBackupRequest, dict] = None,
         *,
         parent: str = None,
         backup: cloud_filestore_service.Backup = None,
         backup_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a backup.
 
         Args:
-            request (:class:`google.cloud.filestore_v1.types.CreateBackupRequest`):
+            request (Union[google.cloud.filestore_v1.types.CreateBackupRequest, dict]):
                 The request object. CreateBackupRequest creates a
                 backup.
             parent (:class:`str`):
@@ -1013,17 +1015,17 @@ class CloudFilestoreManagerAsyncClient:
 
     async def delete_backup(
         self,
-        request: cloud_filestore_service.DeleteBackupRequest = None,
+        request: Union[cloud_filestore_service.DeleteBackupRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a backup.
 
         Args:
-            request (:class:`google.cloud.filestore_v1.types.DeleteBackupRequest`):
+            request (Union[google.cloud.filestore_v1.types.DeleteBackupRequest, dict]):
                 The request object. DeleteBackupRequest deletes a
                 backup.
             name (:class:`str`):
@@ -1105,18 +1107,18 @@ class CloudFilestoreManagerAsyncClient:
 
     async def update_backup(
         self,
-        request: cloud_filestore_service.UpdateBackupRequest = None,
+        request: Union[cloud_filestore_service.UpdateBackupRequest, dict] = None,
         *,
         backup: cloud_filestore_service.Backup = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the settings of a specific backup.
 
         Args:
-            request (:class:`google.cloud.filestore_v1.types.UpdateBackupRequest`):
+            request (Union[google.cloud.filestore_v1.types.UpdateBackupRequest, dict]):
                 The request object. UpdateBackupRequest updates
                 description and/or labels for a backup.
             backup (:class:`google.cloud.filestore_v1.types.Backup`):

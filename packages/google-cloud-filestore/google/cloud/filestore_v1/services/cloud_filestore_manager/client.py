@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.common.types import operation_metadata as operation_metadata_pb2  # type: ignore
@@ -400,7 +402,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         request: Union[cloud_filestore_service.ListInstancesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesPager:
@@ -485,7 +487,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         request: Union[cloud_filestore_service.GetInstanceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_filestore_service.Instance:
@@ -556,7 +558,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         parent: str = None,
         instance: cloud_filestore_service.Instance = None,
         instance_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -664,7 +666,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         *,
         instance: cloud_filestore_service.Instance = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -759,7 +761,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         self,
         request: Union[cloud_filestore_service.RestoreInstanceRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -825,7 +827,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         request: Union[cloud_filestore_service.DeleteInstanceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -917,7 +919,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         request: Union[cloud_filestore_service.ListBackupsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBackupsPager:
@@ -1001,7 +1003,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         request: Union[cloud_filestore_service.GetBackupRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_filestore_service.Backup:
@@ -1072,7 +1074,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         parent: str = None,
         backup: cloud_filestore_service.Backup = None,
         backup_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1180,7 +1182,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         request: Union[cloud_filestore_service.DeleteBackupRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1273,7 +1275,7 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         *,
         backup: cloud_filestore_service.Backup = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
