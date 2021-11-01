@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.phishingprotection_v1beta1.types import phishingprotection
 from .transports.base import (
     PhishingProtectionServiceV1Beta1Transport,
@@ -347,7 +349,7 @@ class PhishingProtectionServiceV1Beta1Client(
         *,
         parent: str = None,
         uri: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> phishingprotection.ReportPhishingResponse:
