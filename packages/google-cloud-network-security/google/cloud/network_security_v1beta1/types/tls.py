@@ -45,15 +45,24 @@ class ValidationCA(proto.Message):
     obtain the Certificate Authority certificate to validate the
     peer certificate.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         grpc_endpoint (google.cloud.network_security_v1beta1.types.GrpcEndpoint):
             gRPC specific configuration to access the
             gRPC server to obtain the CA certificate.
+            This field is a member of `oneof`_ ``type``.
         certificate_provider_instance (google.cloud.network_security_v1beta1.types.CertificateProviderInstance):
             The certificate provider instance
             specification that will be passed to the data
             plane, which will be used to load necessary
             credential information.
+            This field is a member of `oneof`_ ``type``.
     """
 
     grpc_endpoint = proto.Field(
@@ -88,15 +97,24 @@ class CertificateProvider(proto.Message):
     to obtain the certificate and private key for peer to peer
     authentication.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         grpc_endpoint (google.cloud.network_security_v1beta1.types.GrpcEndpoint):
             gRPC specific configuration to access the
             gRPC server to obtain the cert and private key.
+            This field is a member of `oneof`_ ``type``.
         certificate_provider_instance (google.cloud.network_security_v1beta1.types.CertificateProviderInstance):
             The certificate provider instance
             specification that will be passed to the data
             plane, which will be used to load necessary
             credential information.
+            This field is a member of `oneof`_ ``type``.
     """
 
     grpc_endpoint = proto.Field(

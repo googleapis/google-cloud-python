@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.network_security_v1beta1.services.network_security import pagers
@@ -412,7 +414,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         ] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAuthorizationPoliciesPager:
@@ -498,7 +500,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         request: Union[authorization_policy.GetAuthorizationPolicyRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> authorization_policy.AuthorizationPolicy:
@@ -579,7 +581,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         parent: str = None,
         authorization_policy: gcn_authorization_policy.AuthorizationPolicy = None,
         authorization_policy_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -695,7 +697,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         *,
         authorization_policy: gcn_authorization_policy.AuthorizationPolicy = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -802,7 +804,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -899,7 +901,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         request: Union[server_tls_policy.ListServerTlsPoliciesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServerTlsPoliciesPager:
@@ -981,7 +983,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         request: Union[server_tls_policy.GetServerTlsPolicyRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> server_tls_policy.ServerTlsPolicy:
@@ -1060,7 +1062,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         parent: str = None,
         server_tls_policy: gcn_server_tls_policy.ServerTlsPolicy = None,
         server_tls_policy_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1168,7 +1170,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         *,
         server_tls_policy: gcn_server_tls_policy.ServerTlsPolicy = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1268,7 +1270,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         request: Union[server_tls_policy.DeleteServerTlsPolicyRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1361,7 +1363,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         request: Union[client_tls_policy.ListClientTlsPoliciesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListClientTlsPoliciesPager:
@@ -1443,7 +1445,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         request: Union[client_tls_policy.GetClientTlsPolicyRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> client_tls_policy.ClientTlsPolicy:
@@ -1521,7 +1523,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         parent: str = None,
         client_tls_policy: gcn_client_tls_policy.ClientTlsPolicy = None,
         client_tls_policy_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1628,7 +1630,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         *,
         client_tls_policy: gcn_client_tls_policy.ClientTlsPolicy = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1727,7 +1729,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         request: Union[client_tls_policy.DeleteClientTlsPolicyRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:

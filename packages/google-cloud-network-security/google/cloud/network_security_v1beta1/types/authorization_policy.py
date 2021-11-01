@@ -142,6 +142,8 @@ class AuthorizationPolicy(proto.Message):
             class HttpHeaderMatch(proto.Message):
                 r"""Specification of HTTP header match atrributes.
 
+                .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
                 Attributes:
                     regex_match (str):
                         Required. The value of the header must match
@@ -152,6 +154,7 @@ class AuthorizationPolicy(proto.Message):
                         request, use a headerMatch with headerName set
                         to Host and a regular expression that satisfies
                         the RFC2616 Host header's port specifier.
+                        This field is a member of `oneof`_ ``type``.
                     header_name (str):
                         Required. The name of the HTTP header to
                         match. For matching against the HTTP request's
