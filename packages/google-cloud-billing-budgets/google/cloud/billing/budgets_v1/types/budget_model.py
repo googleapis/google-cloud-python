@@ -102,6 +102,13 @@ class Budget(proto.Message):
 class BudgetAmount(proto.Message):
     r"""The budgeted amount for each usage period.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         specified_amount (google.type.money_pb2.Money):
             A specified amount to use as the budget. ``currency_code``
@@ -110,6 +117,7 @@ class BudgetAmount(proto.Message):
             updating a budget, it must match the currency_code of the
             existing budget. The ``currency_code`` is provided on
             output.
+            This field is a member of `oneof`_ ``budget_amount``.
         last_period_amount (google.cloud.billing.budgets_v1.types.LastPeriodAmount):
             Use the last period's actual spend as the budget for the
             present period. LastPeriodAmount can only be set when the
@@ -117,6 +125,7 @@ class BudgetAmount(proto.Message):
             [Filter.calendar_period][google.cloud.billing.budgets.v1.Filter.calendar_period].
             It cannot be set in combination with
             [Filter.custom_period][google.cloud.billing.budgets.v1.Filter.custom_period].
+            This field is a member of `oneof`_ ``budget_amount``.
     """
 
     specified_amount = proto.Field(
@@ -226,6 +235,13 @@ class Filter(proto.Message):
     r"""A filter for a budget, limiting the scope of the cost to
     calculate.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         projects (Sequence[str]):
             Optional. A set of projects of the form
@@ -282,11 +298,13 @@ class Filter(proto.Message):
             After that, it will track usage from July 1 to
             September 30 when the current calendar month is
             July, August, September, so on.
+            This field is a member of `oneof`_ ``usage_period``.
         custom_period (google.cloud.billing.budgets_v1.types.CustomPeriod):
             Optional. Specifies to track usage from any
             start date (required) to any end date
             (optional). This time period is static, it does
             not recur.
+            This field is a member of `oneof`_ ``usage_period``.
     """
 
     class CreditTypesTreatment(proto.Enum):

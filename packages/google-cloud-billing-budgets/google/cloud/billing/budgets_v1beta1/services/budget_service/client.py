@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.billing.budgets_v1beta1.services.budget_service import pagers
 from google.cloud.billing.budgets_v1beta1.types import budget_model
 from google.cloud.billing.budgets_v1beta1.types import budget_service
@@ -352,7 +354,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         self,
         request: Union[budget_service.CreateBudgetRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> budget_model.Budget:
@@ -411,7 +413,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         self,
         request: Union[budget_service.UpdateBudgetRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> budget_model.Budget:
@@ -473,7 +475,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         self,
         request: Union[budget_service.GetBudgetRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> budget_model.Budget:
@@ -534,7 +536,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         self,
         request: Union[budget_service.ListBudgetsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBudgetsPager:
@@ -596,7 +598,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         self,
         request: Union[budget_service.DeleteBudgetRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:

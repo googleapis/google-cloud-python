@@ -28,9 +28,8 @@ dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
     # Until this issue is closed
     # https://github.com/googleapis/google-cloud-python/issues/10566
-    "google-api-core[grpc] >= 1.26.0, <3.0.0dev",
+    "google-api-core[grpc] >= 1.28.0, <3.0.0dev",
     "proto-plus >= 1.10.0",
-    "packaging >= 14.3",
 ]
 
 extras = {"libcst": "libcst >= 0.2.5"}
@@ -81,7 +80,7 @@ setuptools.setup(
     scripts=["scripts/fixup_budgets_v1beta1_keywords.py"],
     namespace_packages=namespaces,
     install_requires=dependencies,
-    extras_requires=extras,
+    extras_require=extras,
     include_package_data=True,
     zip_safe=False,
 )
