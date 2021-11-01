@@ -150,23 +150,34 @@ class PolicySpec(proto.Message):
     class PolicyRule(proto.Message):
         r"""A rule used to express this policy.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             values (google.cloud.orgpolicy_v2.types.PolicySpec.PolicyRule.StringValues):
                 List of values to be used for this
                 PolicyRule. This field can be set only in
                 Policies for list constraints.
+                This field is a member of `oneof`_ ``kind``.
             allow_all (bool):
                 Setting this to true means that all values
                 are allowed. This field can be set only in
                 Policies for list constraints.
+                This field is a member of `oneof`_ ``kind``.
             deny_all (bool):
                 Setting this to true means that all values
                 are denied. This field can be set only in
                 Policies for list constraints.
+                This field is a member of `oneof`_ ``kind``.
             enforce (bool):
                 If ``true``, then the ``Policy`` is enforced. If ``false``,
                 then any configuration is acceptable. This field can be set
                 only in Policies for boolean constraints.
+                This field is a member of `oneof`_ ``kind``.
             condition (google.type.expr_pb2.Expr):
                 A condition which determines whether this rule is used in
                 the evaluation of the policy. When set, the ``expression``

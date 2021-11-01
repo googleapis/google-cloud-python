@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.orgpolicy_v2.services.org_policy import pagers
 from google.cloud.orgpolicy_v2.types import constraint
 from google.cloud.orgpolicy_v2.types import orgpolicy
@@ -385,7 +387,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         request: Union[orgpolicy.ListConstraintsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConstraintsPager:
@@ -474,7 +476,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         request: Union[orgpolicy.ListPoliciesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPoliciesPager:
@@ -565,7 +567,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         request: Union[orgpolicy.GetPolicyRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> orgpolicy.Policy:
@@ -640,7 +642,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         request: Union[orgpolicy.GetEffectivePolicyRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> orgpolicy.Policy:
@@ -719,7 +721,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         *,
         parent: str = None,
         policy: orgpolicy.Policy = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> orgpolicy.Policy:
@@ -810,7 +812,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         request: Union[orgpolicy.UpdatePolicyRequest, dict] = None,
         *,
         policy: orgpolicy.Policy = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> orgpolicy.Policy:
@@ -892,7 +894,7 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         request: Union[orgpolicy.DeletePolicyRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:

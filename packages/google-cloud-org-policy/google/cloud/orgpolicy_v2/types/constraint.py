@@ -40,6 +40,13 @@ class Constraint(proto.Message):
     is used in the absence of a ``policy`` being defined or inherited
     for the resource in question.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Immutable. The resource name of the Constraint. Must be in
@@ -65,9 +72,11 @@ class Constraint(proto.Message):
         list_constraint (google.cloud.orgpolicy_v2.types.Constraint.ListConstraint):
             Defines this constraint as being a
             ListConstraint.
+            This field is a member of `oneof`_ ``constraint_type``.
         boolean_constraint (google.cloud.orgpolicy_v2.types.Constraint.BooleanConstraint):
             Defines this constraint as being a
             BooleanConstraint.
+            This field is a member of `oneof`_ ``constraint_type``.
     """
 
     class ConstraintDefault(proto.Enum):
