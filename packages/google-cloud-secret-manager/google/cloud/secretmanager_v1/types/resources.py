@@ -44,6 +44,13 @@ class Secret(proto.Message):
     [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] that
     represent the secret data.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. The resource name of the
@@ -83,9 +90,11 @@ class Secret(proto.Message):
             [Secret][google.cloud.secretmanager.v1.Secret] is scheduled
             to expire. This is always provided on output, regardless of
             what was sent on input.
+            This field is a member of `oneof`_ ``expiration``.
         ttl (google.protobuf.duration_pb2.Duration):
             Input only. The TTL for the
             [Secret][google.cloud.secretmanager.v1.Secret].
+            This field is a member of `oneof`_ ``expiration``.
         etag (str):
             Optional. Etag of the currently stored
             [Secret][google.cloud.secretmanager.v1.Secret].
@@ -171,13 +180,22 @@ class Replication(proto.Message):
     r"""A policy that defines the replication and encryption
     configuration of data.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         automatic (google.cloud.secretmanager_v1.types.Replication.Automatic):
             The [Secret][google.cloud.secretmanager.v1.Secret] will
             automatically be replicated without any restrictions.
+            This field is a member of `oneof`_ ``replication``.
         user_managed (google.cloud.secretmanager_v1.types.Replication.UserManaged):
             The [Secret][google.cloud.secretmanager.v1.Secret] will only
             be replicated into the locations specified.
+            This field is a member of `oneof`_ ``replication``.
     """
 
     class Automatic(proto.Message):
@@ -289,6 +307,13 @@ class ReplicationStatus(proto.Message):
     r"""The replication status of a
     [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         automatic (google.cloud.secretmanager_v1.types.ReplicationStatus.AutomaticStatus):
             Describes the replication status of a
@@ -298,6 +323,7 @@ class ReplicationStatus(proto.Message):
             Only populated if the parent
             [Secret][google.cloud.secretmanager.v1.Secret] has an
             automatic replication policy.
+            This field is a member of `oneof`_ ``replication_status``.
         user_managed (google.cloud.secretmanager_v1.types.ReplicationStatus.UserManagedStatus):
             Describes the replication status of a
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
@@ -306,6 +332,7 @@ class ReplicationStatus(proto.Message):
             Only populated if the parent
             [Secret][google.cloud.secretmanager.v1.Secret] has a
             user-managed replication policy.
+            This field is a member of `oneof`_ ``replication_status``.
     """
 
     class AutomaticStatus(proto.Message):
