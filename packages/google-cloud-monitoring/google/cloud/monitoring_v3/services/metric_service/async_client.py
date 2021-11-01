@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api import label_pb2  # type: ignore
 from google.api import launch_stage_pb2  # type: ignore
@@ -179,10 +181,12 @@ class MetricServiceAsyncClient:
 
     async def list_monitored_resource_descriptors(
         self,
-        request: metric_service.ListMonitoredResourceDescriptorsRequest = None,
+        request: Union[
+            metric_service.ListMonitoredResourceDescriptorsRequest, dict
+        ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMonitoredResourceDescriptorsAsyncPager:
@@ -190,7 +194,7 @@ class MetricServiceAsyncClient:
         filter. This method does not require a Workspace.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest`):
+            request (Union[google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest, dict]):
                 The request object. The
                 `ListMonitoredResourceDescriptors` request.
             name (:class:`str`):
@@ -273,10 +277,12 @@ class MetricServiceAsyncClient:
 
     async def get_monitored_resource_descriptor(
         self,
-        request: metric_service.GetMonitoredResourceDescriptorRequest = None,
+        request: Union[
+            metric_service.GetMonitoredResourceDescriptorRequest, dict
+        ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> monitored_resource_pb2.MonitoredResourceDescriptor:
@@ -284,7 +290,7 @@ class MetricServiceAsyncClient:
         method does not require a Workspace.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.GetMonitoredResourceDescriptorRequest`):
+            request (Union[google.cloud.monitoring_v3.types.GetMonitoredResourceDescriptorRequest, dict]):
                 The request object. The `GetMonitoredResourceDescriptor`
                 request.
             name (:class:`str`):
@@ -370,10 +376,10 @@ class MetricServiceAsyncClient:
 
     async def list_metric_descriptors(
         self,
-        request: metric_service.ListMetricDescriptorsRequest = None,
+        request: Union[metric_service.ListMetricDescriptorsRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMetricDescriptorsAsyncPager:
@@ -381,7 +387,7 @@ class MetricServiceAsyncClient:
         method does not require a Workspace.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest`):
+            request (Union[google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest, dict]):
                 The request object. The `ListMetricDescriptors` request.
             name (:class:`str`):
                 Required. The
@@ -463,10 +469,10 @@ class MetricServiceAsyncClient:
 
     async def get_metric_descriptor(
         self,
-        request: metric_service.GetMetricDescriptorRequest = None,
+        request: Union[metric_service.GetMetricDescriptorRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metric_pb2.MetricDescriptor:
@@ -474,7 +480,7 @@ class MetricServiceAsyncClient:
         require a Workspace.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.GetMetricDescriptorRequest`):
+            request (Union[google.cloud.monitoring_v3.types.GetMetricDescriptorRequest, dict]):
                 The request object. The `GetMetricDescriptor` request.
             name (:class:`str`):
                 Required. The metric descriptor on which to execute the
@@ -553,11 +559,11 @@ class MetricServiceAsyncClient:
 
     async def create_metric_descriptor(
         self,
-        request: metric_service.CreateMetricDescriptorRequest = None,
+        request: Union[metric_service.CreateMetricDescriptorRequest, dict] = None,
         *,
         name: str = None,
         metric_descriptor: metric_pb2.MetricDescriptor = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metric_pb2.MetricDescriptor:
@@ -568,7 +574,7 @@ class MetricServiceAsyncClient:
         metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.CreateMetricDescriptorRequest`):
+            request (Union[google.cloud.monitoring_v3.types.CreateMetricDescriptorRequest, dict]):
                 The request object. The `CreateMetricDescriptor`
                 request.
             name (:class:`str`):
@@ -644,10 +650,10 @@ class MetricServiceAsyncClient:
 
     async def delete_metric_descriptor(
         self,
-        request: metric_service.DeleteMetricDescriptorRequest = None,
+        request: Union[metric_service.DeleteMetricDescriptorRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -656,7 +662,7 @@ class MetricServiceAsyncClient:
         can be deleted.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.DeleteMetricDescriptorRequest`):
+            request (Union[google.cloud.monitoring_v3.types.DeleteMetricDescriptorRequest, dict]):
                 The request object. The `DeleteMetricDescriptor`
                 request.
             name (:class:`str`):
@@ -726,13 +732,13 @@ class MetricServiceAsyncClient:
 
     async def list_time_series(
         self,
-        request: metric_service.ListTimeSeriesRequest = None,
+        request: Union[metric_service.ListTimeSeriesRequest, dict] = None,
         *,
         name: str = None,
         filter: str = None,
         interval: common.TimeInterval = None,
         view: metric_service.ListTimeSeriesRequest.TimeSeriesView = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTimeSeriesAsyncPager:
@@ -740,7 +746,7 @@ class MetricServiceAsyncClient:
         does not require a Workspace.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.ListTimeSeriesRequest`):
+            request (Union[google.cloud.monitoring_v3.types.ListTimeSeriesRequest, dict]):
                 The request object. The `ListTimeSeries` request.
             name (:class:`str`):
                 Required. The
@@ -864,11 +870,11 @@ class MetricServiceAsyncClient:
 
     async def create_time_series(
         self,
-        request: metric_service.CreateTimeSeriesRequest = None,
+        request: Union[metric_service.CreateTimeSeriesRequest, dict] = None,
         *,
         name: str = None,
         time_series: Sequence[gm_metric.TimeSeries] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -879,7 +885,7 @@ class MetricServiceAsyncClient:
         response.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.CreateTimeSeriesRequest`):
+            request (Union[google.cloud.monitoring_v3.types.CreateTimeSeriesRequest, dict]):
                 The request object. The `CreateTimeSeries` request.
             name (:class:`str`):
                 Required. The
@@ -954,11 +960,11 @@ class MetricServiceAsyncClient:
 
     async def create_service_time_series(
         self,
-        request: metric_service.CreateTimeSeriesRequest = None,
+        request: Union[metric_service.CreateTimeSeriesRequest, dict] = None,
         *,
         name: str = None,
         time_series: Sequence[gm_metric.TimeSeries] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -973,7 +979,7 @@ class MetricServiceAsyncClient:
         instead.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.CreateTimeSeriesRequest`):
+            request (Union[google.cloud.monitoring_v3.types.CreateTimeSeriesRequest, dict]):
                 The request object. The `CreateTimeSeries` request.
             name (:class:`str`):
                 Required. The

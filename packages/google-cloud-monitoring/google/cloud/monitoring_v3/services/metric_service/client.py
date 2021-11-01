@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api import label_pb2  # type: ignore
 from google.api import launch_stage_pb2  # type: ignore
 from google.api import metric_pb2  # type: ignore
@@ -389,7 +391,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMonitoredResourceDescriptorsPager:
@@ -480,7 +482,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> monitored_resource_pb2.MonitoredResourceDescriptor:
@@ -572,7 +574,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         request: Union[metric_service.ListMetricDescriptorsRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMetricDescriptorsPager:
@@ -656,7 +658,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         request: Union[metric_service.GetMetricDescriptorRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metric_pb2.MetricDescriptor:
@@ -738,7 +740,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         *,
         name: str = None,
         metric_descriptor: metric_pb2.MetricDescriptor = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metric_pb2.MetricDescriptor:
@@ -828,7 +830,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         request: Union[metric_service.DeleteMetricDescriptorRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -904,7 +906,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         filter: str = None,
         interval: common.TimeInterval = None,
         view: metric_service.ListTimeSeriesRequest.TimeSeriesView = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTimeSeriesPager:
@@ -1031,7 +1033,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         *,
         name: str = None,
         time_series: Sequence[gm_metric.TimeSeries] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -1121,7 +1123,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         *,
         name: str = None,
         time_series: Sequence[gm_metric.TimeSeries] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:

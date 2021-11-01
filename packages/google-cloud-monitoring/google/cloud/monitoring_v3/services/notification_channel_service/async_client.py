@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api import label_pb2  # type: ignore
 from google.api import launch_stage_pb2  # type: ignore
@@ -190,10 +192,12 @@ class NotificationChannelServiceAsyncClient:
 
     async def list_notification_channel_descriptors(
         self,
-        request: notification_service.ListNotificationChannelDescriptorsRequest = None,
+        request: Union[
+            notification_service.ListNotificationChannelDescriptorsRequest, dict
+        ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNotificationChannelDescriptorsAsyncPager:
@@ -202,7 +206,7 @@ class NotificationChannelServiceAsyncClient:
         types to be dynamically added.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsRequest`):
+            request (Union[google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsRequest, dict]):
                 The request object. The
                 `ListNotificationChannelDescriptors` request.
             name (:class:`str`):
@@ -295,10 +299,12 @@ class NotificationChannelServiceAsyncClient:
 
     async def get_notification_channel_descriptor(
         self,
-        request: notification_service.GetNotificationChannelDescriptorRequest = None,
+        request: Union[
+            notification_service.GetNotificationChannelDescriptorRequest, dict
+        ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification.NotificationChannelDescriptor:
@@ -307,7 +313,7 @@ class NotificationChannelServiceAsyncClient:
         notification channel of the given type.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.GetNotificationChannelDescriptorRequest`):
+            request (Union[google.cloud.monitoring_v3.types.GetNotificationChannelDescriptorRequest, dict]):
                 The request object. The
                 `GetNotificationChannelDescriptor` response.
             name (:class:`str`):
@@ -384,10 +390,12 @@ class NotificationChannelServiceAsyncClient:
 
     async def list_notification_channels(
         self,
-        request: notification_service.ListNotificationChannelsRequest = None,
+        request: Union[
+            notification_service.ListNotificationChannelsRequest, dict
+        ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNotificationChannelsAsyncPager:
@@ -395,7 +403,7 @@ class NotificationChannelServiceAsyncClient:
         created for the project.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.ListNotificationChannelsRequest`):
+            request (Union[google.cloud.monitoring_v3.types.ListNotificationChannelsRequest, dict]):
                 The request object. The `ListNotificationChannels`
                 request.
             name (:class:`str`):
@@ -485,10 +493,10 @@ class NotificationChannelServiceAsyncClient:
 
     async def get_notification_channel(
         self,
-        request: notification_service.GetNotificationChannelRequest = None,
+        request: Union[notification_service.GetNotificationChannelRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification.NotificationChannel:
@@ -501,7 +509,7 @@ class NotificationChannelServiceAsyncClient:
         call to the create method.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.GetNotificationChannelRequest`):
+            request (Union[google.cloud.monitoring_v3.types.GetNotificationChannelRequest, dict]):
                 The request object. The `GetNotificationChannel`
                 request.
             name (:class:`str`):
@@ -580,11 +588,13 @@ class NotificationChannelServiceAsyncClient:
 
     async def create_notification_channel(
         self,
-        request: notification_service.CreateNotificationChannelRequest = None,
+        request: Union[
+            notification_service.CreateNotificationChannelRequest, dict
+        ] = None,
         *,
         name: str = None,
         notification_channel: notification.NotificationChannel = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification.NotificationChannel:
@@ -593,7 +603,7 @@ class NotificationChannelServiceAsyncClient:
         SMS number, or PagerDuty service.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.CreateNotificationChannelRequest`):
+            request (Union[google.cloud.monitoring_v3.types.CreateNotificationChannelRequest, dict]):
                 The request object. The `CreateNotificationChannel`
                 request.
             name (:class:`str`):
@@ -680,11 +690,13 @@ class NotificationChannelServiceAsyncClient:
 
     async def update_notification_channel(
         self,
-        request: notification_service.UpdateNotificationChannelRequest = None,
+        request: Union[
+            notification_service.UpdateNotificationChannelRequest, dict
+        ] = None,
         *,
         update_mask: field_mask_pb2.FieldMask = None,
         notification_channel: notification.NotificationChannel = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification.NotificationChannel:
@@ -692,7 +704,7 @@ class NotificationChannelServiceAsyncClient:
         in the field mask remain unchanged.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.UpdateNotificationChannelRequest`):
+            request (Union[google.cloud.monitoring_v3.types.UpdateNotificationChannelRequest, dict]):
                 The request object. The `UpdateNotificationChannel`
                 request.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
@@ -770,18 +782,20 @@ class NotificationChannelServiceAsyncClient:
 
     async def delete_notification_channel(
         self,
-        request: notification_service.DeleteNotificationChannelRequest = None,
+        request: Union[
+            notification_service.DeleteNotificationChannelRequest, dict
+        ] = None,
         *,
         name: str = None,
         force: bool = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a notification channel.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.DeleteNotificationChannelRequest`):
+            request (Union[google.cloud.monitoring_v3.types.DeleteNotificationChannelRequest, dict]):
                 The request object. The `DeleteNotificationChannel`
                 request.
             name (:class:`str`):
@@ -863,10 +877,12 @@ class NotificationChannelServiceAsyncClient:
 
     async def send_notification_channel_verification_code(
         self,
-        request: notification_service.SendNotificationChannelVerificationCodeRequest = None,
+        request: Union[
+            notification_service.SendNotificationChannelVerificationCodeRequest, dict
+        ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -875,7 +891,7 @@ class NotificationChannelServiceAsyncClient:
         verify the channel.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.SendNotificationChannelVerificationCodeRequest`):
+            request (Union[google.cloud.monitoring_v3.types.SendNotificationChannelVerificationCodeRequest, dict]):
                 The request object. The
                 `SendNotificationChannelVerificationCode` request.
             name (:class:`str`):
@@ -931,10 +947,12 @@ class NotificationChannelServiceAsyncClient:
 
     async def get_notification_channel_verification_code(
         self,
-        request: notification_service.GetNotificationChannelVerificationCodeRequest = None,
+        request: Union[
+            notification_service.GetNotificationChannelVerificationCodeRequest, dict
+        ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification_service.GetNotificationChannelVerificationCodeResponse:
@@ -968,7 +986,7 @@ class NotificationChannelServiceAsyncClient:
         string that has a longer expiration time.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeRequest`):
+            request (Union[google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeRequest, dict]):
                 The request object. The
                 `GetNotificationChannelVerificationCode` request.
             name (:class:`str`):
@@ -1042,11 +1060,13 @@ class NotificationChannelServiceAsyncClient:
 
     async def verify_notification_channel(
         self,
-        request: notification_service.VerifyNotificationChannelRequest = None,
+        request: Union[
+            notification_service.VerifyNotificationChannelRequest, dict
+        ] = None,
         *,
         name: str = None,
         code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification.NotificationChannel:
@@ -1055,7 +1075,7 @@ class NotificationChannelServiceAsyncClient:
         ``SendNotificationChannelVerificationCode``.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.VerifyNotificationChannelRequest`):
+            request (Union[google.cloud.monitoring_v3.types.VerifyNotificationChannelRequest, dict]):
                 The request object. The `VerifyNotificationChannel`
                 request.
             name (:class:`str`):

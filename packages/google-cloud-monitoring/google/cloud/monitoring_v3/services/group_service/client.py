@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.monitoring_v3.services.group_service import pagers
 from google.cloud.monitoring_v3.types import group
@@ -360,7 +362,7 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
         request: Union[group_service.ListGroupsRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGroupsPager:
@@ -443,7 +445,7 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
         request: Union[group_service.GetGroupRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> group.Group:
@@ -548,7 +550,7 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
         *,
         name: str = None,
         group: gm_group.Group = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gm_group.Group:
@@ -663,7 +665,7 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
         request: Union[group_service.UpdateGroupRequest, dict] = None,
         *,
         group: gm_group.Group = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gm_group.Group:
@@ -768,7 +770,7 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
         request: Union[group_service.DeleteGroupRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -836,7 +838,7 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
         request: Union[group_service.ListGroupMembersRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGroupMembersPager:

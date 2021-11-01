@@ -109,6 +109,13 @@ class UptimeCheckConfig(proto.Message):
     r"""This message configures which resources and services to
     monitor for availability.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             A unique resource name for this Uptime check configuration.
@@ -137,15 +144,19 @@ class UptimeCheckConfig(proto.Message):
             resource types are valid for this field: ``uptime_url``,
             ``gce_instance``, ``gae_app``, ``aws_ec2_instance``,
             ``aws_elb_load_balancer`` ``k8s_service``
+            This field is a member of `oneof`_ ``resource``.
         resource_group (google.cloud.monitoring_v3.types.UptimeCheckConfig.ResourceGroup):
             The group resource associated with the
             configuration.
+            This field is a member of `oneof`_ ``resource``.
         http_check (google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck):
             Contains information needed to make an HTTP
             or HTTPS check.
+            This field is a member of `oneof`_ ``check_request_type``.
         tcp_check (google.cloud.monitoring_v3.types.UptimeCheckConfig.TcpCheck):
             Contains information needed to make a TCP
             check.
+            This field is a member of `oneof`_ ``check_request_type``.
         period (google.protobuf.duration_pb2.Duration):
             How often, in seconds, the Uptime check is performed.
             Currently, the only supported values are ``60s`` (1 minute),

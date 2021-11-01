@@ -38,6 +38,13 @@ __protobuf__ = proto.module(
 class ListGroupsRequest(proto.Message):
     r"""The ``ListGroup`` request.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Required. The
@@ -57,6 +64,7 @@ class ListGroupsRequest(proto.Message):
             Returns groups whose ``parent_name`` field contains the
             group name. If no groups have this parent, the results are
             empty.
+            This field is a member of `oneof`_ ``filter``.
         ancestors_of_group (str):
             A group name. The format is:
 
@@ -69,6 +77,7 @@ class ListGroupsRequest(proto.Message):
             immediate parent and ending with the most distant ancestor.
             If the specified group has no immediate parent, the results
             are empty.
+            This field is a member of `oneof`_ ``filter``.
         descendants_of_group (str):
             A group name. The format is:
 
@@ -80,6 +89,7 @@ class ListGroupsRequest(proto.Message):
             superset of the results returned by the
             ``children_of_group`` filter, and includes
             children-of-children, and so forth.
+            This field is a member of `oneof`_ ``filter``.
         page_size (int):
             A positive number that is the maximum number
             of results to return.

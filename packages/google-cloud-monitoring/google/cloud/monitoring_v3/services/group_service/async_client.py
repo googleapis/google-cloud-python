@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.monitoring_v3.services.group_service import pagers
@@ -174,17 +176,17 @@ class GroupServiceAsyncClient:
 
     async def list_groups(
         self,
-        request: group_service.ListGroupsRequest = None,
+        request: Union[group_service.ListGroupsRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGroupsAsyncPager:
         r"""Lists the existing groups.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.ListGroupsRequest`):
+            request (Union[google.cloud.monitoring_v3.types.ListGroupsRequest, dict]):
                 The request object. The `ListGroup` request.
             name (:class:`str`):
                 Required. The
@@ -266,17 +268,17 @@ class GroupServiceAsyncClient:
 
     async def get_group(
         self,
-        request: group_service.GetGroupRequest = None,
+        request: Union[group_service.GetGroupRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> group.Group:
         r"""Gets a single group.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.GetGroupRequest`):
+            request (Union[google.cloud.monitoring_v3.types.GetGroupRequest, dict]):
                 The request object. The `GetGroup` request.
             name (:class:`str`):
                 Required. The group to retrieve. The format is:
@@ -379,18 +381,18 @@ class GroupServiceAsyncClient:
 
     async def create_group(
         self,
-        request: group_service.CreateGroupRequest = None,
+        request: Union[group_service.CreateGroupRequest, dict] = None,
         *,
         name: str = None,
         group: gm_group.Group = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gm_group.Group:
         r"""Creates a new group.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.CreateGroupRequest`):
+            request (Union[google.cloud.monitoring_v3.types.CreateGroupRequest, dict]):
                 The request object. The `CreateGroup` request.
             name (:class:`str`):
                 Required. The
@@ -495,10 +497,10 @@ class GroupServiceAsyncClient:
 
     async def update_group(
         self,
-        request: group_service.UpdateGroupRequest = None,
+        request: Union[group_service.UpdateGroupRequest, dict] = None,
         *,
         group: gm_group.Group = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gm_group.Group:
@@ -506,7 +508,7 @@ class GroupServiceAsyncClient:
         except ``name``.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.UpdateGroupRequest`):
+            request (Union[google.cloud.monitoring_v3.types.UpdateGroupRequest, dict]):
                 The request object. The `UpdateGroup` request.
             group (:class:`google.cloud.monitoring_v3.types.Group`):
                 Required. The new definition of the group. All fields of
@@ -609,17 +611,17 @@ class GroupServiceAsyncClient:
 
     async def delete_group(
         self,
-        request: group_service.DeleteGroupRequest = None,
+        request: Union[group_service.DeleteGroupRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an existing group.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.DeleteGroupRequest`):
+            request (Union[google.cloud.monitoring_v3.types.DeleteGroupRequest, dict]):
                 The request object. The `DeleteGroup` request. The
                 default behavior is to be able to delete a single group
                 without any descendants.
@@ -686,10 +688,10 @@ class GroupServiceAsyncClient:
 
     async def list_group_members(
         self,
-        request: group_service.ListGroupMembersRequest = None,
+        request: Union[group_service.ListGroupMembersRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGroupMembersAsyncPager:
@@ -697,7 +699,7 @@ class GroupServiceAsyncClient:
         group.
 
         Args:
-            request (:class:`google.cloud.monitoring_v3.types.ListGroupMembersRequest`):
+            request (Union[google.cloud.monitoring_v3.types.ListGroupMembersRequest, dict]):
                 The request object. The `ListGroupMembers` request.
             name (:class:`str`):
                 Required. The group whose members are listed. The format

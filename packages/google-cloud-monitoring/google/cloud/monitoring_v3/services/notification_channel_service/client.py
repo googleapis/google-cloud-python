@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api import label_pb2  # type: ignore
 from google.api import launch_stage_pb2  # type: ignore
 from google.cloud.monitoring_v3.services.notification_channel_service import pagers
@@ -384,7 +386,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNotificationChannelDescriptorsPager:
@@ -486,7 +488,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification.NotificationChannelDescriptor:
@@ -574,7 +576,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNotificationChannelsPager:
@@ -670,7 +672,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         request: Union[notification_service.GetNotificationChannelRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification.NotificationChannel:
@@ -759,7 +761,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         *,
         name: str = None,
         notification_channel: notification.NotificationChannel = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification.NotificationChannel:
@@ -865,7 +867,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         *,
         update_mask: field_mask_pb2.FieldMask = None,
         notification_channel: notification.NotificationChannel = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification.NotificationChannel:
@@ -961,7 +963,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         *,
         name: str = None,
         force: bool = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -1050,7 +1052,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -1124,7 +1126,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification_service.GetNotificationChannelVerificationCodeResponse:
@@ -1233,7 +1235,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         *,
         name: str = None,
         code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification.NotificationChannel:

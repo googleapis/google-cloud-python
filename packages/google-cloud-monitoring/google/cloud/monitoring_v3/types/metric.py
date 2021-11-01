@@ -225,13 +225,23 @@ class TimeSeriesData(proto.Message):
 class LabelValue(proto.Message):
     r"""A label value.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         bool_value (bool):
             A bool label value.
+            This field is a member of `oneof`_ ``value``.
         int64_value (int):
             An int64 label value.
+            This field is a member of `oneof`_ ``value``.
         string_value (str):
             A string label value.
+            This field is a member of `oneof`_ ``value``.
     """
 
     bool_value = proto.Field(proto.BOOL, number=1, oneof="value",)
