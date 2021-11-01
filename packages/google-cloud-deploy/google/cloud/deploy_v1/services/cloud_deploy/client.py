@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.deploy_v1.services.cloud_deploy import pagers
@@ -482,7 +484,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         request: Union[cloud_deploy.ListDeliveryPipelinesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDeliveryPipelinesPager:
@@ -563,7 +565,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         request: Union[cloud_deploy.GetDeliveryPipelineRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_deploy.DeliveryPipeline:
@@ -640,7 +642,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         parent: str = None,
         delivery_pipeline: cloud_deploy.DeliveryPipeline = None,
         delivery_pipeline_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -743,7 +745,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         *,
         delivery_pipeline: cloud_deploy.DeliveryPipeline = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -843,7 +845,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         request: Union[cloud_deploy.DeleteDeliveryPipelineRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -936,7 +938,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         request: Union[cloud_deploy.ListTargetsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTargetsPager:
@@ -1016,7 +1018,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         request: Union[cloud_deploy.GetTargetRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_deploy.Target:
@@ -1090,7 +1092,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         parent: str = None,
         target: cloud_deploy.Target = None,
         target_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1191,7 +1193,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         *,
         target: cloud_deploy.Target = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1289,7 +1291,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         request: Union[cloud_deploy.DeleteTargetRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1382,7 +1384,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         request: Union[cloud_deploy.ListReleasesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReleasesPager:
@@ -1461,7 +1463,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         request: Union[cloud_deploy.GetReleaseRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_deploy.Release:
@@ -1535,7 +1537,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         parent: str = None,
         release: cloud_deploy.Release = None,
         release_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1636,7 +1638,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         request: Union[cloud_deploy.ApproveRolloutRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_deploy.ApproveRolloutResponse:
@@ -1707,7 +1709,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         request: Union[cloud_deploy.ListRolloutsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRolloutsPager:
@@ -1787,7 +1789,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         request: Union[cloud_deploy.GetRolloutRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_deploy.Rollout:
@@ -1862,7 +1864,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         parent: str = None,
         rollout: cloud_deploy.Rollout = None,
         rollout_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1963,7 +1965,7 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         request: Union[cloud_deploy.GetConfigRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_deploy.Config:

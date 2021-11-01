@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -183,10 +185,10 @@ class CloudDeployAsyncClient:
 
     async def list_delivery_pipelines(
         self,
-        request: cloud_deploy.ListDeliveryPipelinesRequest = None,
+        request: Union[cloud_deploy.ListDeliveryPipelinesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDeliveryPipelinesAsyncPager:
@@ -194,7 +196,7 @@ class CloudDeployAsyncClient:
         location.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.ListDeliveryPipelinesRequest`):
+            request (Union[google.cloud.deploy_v1.types.ListDeliveryPipelinesRequest, dict]):
                 The request object. The request object for
                 `ListDeliveryPipelines`.
             parent (:class:`str`):
@@ -273,17 +275,17 @@ class CloudDeployAsyncClient:
 
     async def get_delivery_pipeline(
         self,
-        request: cloud_deploy.GetDeliveryPipelineRequest = None,
+        request: Union[cloud_deploy.GetDeliveryPipelineRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_deploy.DeliveryPipeline:
         r"""Gets details of a single DeliveryPipeline.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.GetDeliveryPipelineRequest`):
+            request (Union[google.cloud.deploy_v1.types.GetDeliveryPipelineRequest, dict]):
                 The request object. The request object for
                 `GetDeliveryPipeline`
             name (:class:`str`):
@@ -357,12 +359,12 @@ class CloudDeployAsyncClient:
 
     async def create_delivery_pipeline(
         self,
-        request: cloud_deploy.CreateDeliveryPipelineRequest = None,
+        request: Union[cloud_deploy.CreateDeliveryPipelineRequest, dict] = None,
         *,
         parent: str = None,
         delivery_pipeline: cloud_deploy.DeliveryPipeline = None,
         delivery_pipeline_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -370,7 +372,7 @@ class CloudDeployAsyncClient:
         location.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.CreateDeliveryPipelineRequest`):
+            request (Union[google.cloud.deploy_v1.types.CreateDeliveryPipelineRequest, dict]):
                 The request object. The request object for
                 `CreateDeliveryPipeline`.
             parent (:class:`str`):
@@ -461,18 +463,18 @@ class CloudDeployAsyncClient:
 
     async def update_delivery_pipeline(
         self,
-        request: cloud_deploy.UpdateDeliveryPipelineRequest = None,
+        request: Union[cloud_deploy.UpdateDeliveryPipelineRequest, dict] = None,
         *,
         delivery_pipeline: cloud_deploy.DeliveryPipeline = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single DeliveryPipeline.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.UpdateDeliveryPipelineRequest`):
+            request (Union[google.cloud.deploy_v1.types.UpdateDeliveryPipelineRequest, dict]):
                 The request object. The request object for
                 `UpdateDeliveryPipeline`.
             delivery_pipeline (:class:`google.cloud.deploy_v1.types.DeliveryPipeline`):
@@ -562,17 +564,17 @@ class CloudDeployAsyncClient:
 
     async def delete_delivery_pipeline(
         self,
-        request: cloud_deploy.DeleteDeliveryPipelineRequest = None,
+        request: Union[cloud_deploy.DeleteDeliveryPipelineRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single DeliveryPipeline.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.DeleteDeliveryPipelineRequest`):
+            request (Union[google.cloud.deploy_v1.types.DeleteDeliveryPipelineRequest, dict]):
                 The request object. The request object for
                 `DeleteDeliveryPipeline`.
             name (:class:`str`):
@@ -655,17 +657,17 @@ class CloudDeployAsyncClient:
 
     async def list_targets(
         self,
-        request: cloud_deploy.ListTargetsRequest = None,
+        request: Union[cloud_deploy.ListTargetsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTargetsAsyncPager:
         r"""Lists Targets in a given project and location.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.ListTargetsRequest`):
+            request (Union[google.cloud.deploy_v1.types.ListTargetsRequest, dict]):
                 The request object. The request object for
                 `ListTargets`.
             parent (:class:`str`):
@@ -744,17 +746,17 @@ class CloudDeployAsyncClient:
 
     async def get_target(
         self,
-        request: cloud_deploy.GetTargetRequest = None,
+        request: Union[cloud_deploy.GetTargetRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_deploy.Target:
         r"""Gets details of a single Target.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.GetTargetRequest`):
+            request (Union[google.cloud.deploy_v1.types.GetTargetRequest, dict]):
                 The request object. The request object for `GetTarget`.
             name (:class:`str`):
                 Required. Name of the ``Target``. Format must be
@@ -825,19 +827,19 @@ class CloudDeployAsyncClient:
 
     async def create_target(
         self,
-        request: cloud_deploy.CreateTargetRequest = None,
+        request: Union[cloud_deploy.CreateTargetRequest, dict] = None,
         *,
         parent: str = None,
         target: cloud_deploy.Target = None,
         target_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Target in a given project and location.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.CreateTargetRequest`):
+            request (Union[google.cloud.deploy_v1.types.CreateTargetRequest, dict]):
                 The request object. The request object for
                 `CreateTarget`.
             parent (:class:`str`):
@@ -927,18 +929,18 @@ class CloudDeployAsyncClient:
 
     async def update_target(
         self,
-        request: cloud_deploy.UpdateTargetRequest = None,
+        request: Union[cloud_deploy.UpdateTargetRequest, dict] = None,
         *,
         target: cloud_deploy.Target = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single Target.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.UpdateTargetRequest`):
+            request (Union[google.cloud.deploy_v1.types.UpdateTargetRequest, dict]):
                 The request object. The request object for
                 `UpdateTarget`.
             target (:class:`google.cloud.deploy_v1.types.Target`):
@@ -1026,17 +1028,17 @@ class CloudDeployAsyncClient:
 
     async def delete_target(
         self,
-        request: cloud_deploy.DeleteTargetRequest = None,
+        request: Union[cloud_deploy.DeleteTargetRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Target.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.DeleteTargetRequest`):
+            request (Union[google.cloud.deploy_v1.types.DeleteTargetRequest, dict]):
                 The request object. The request object for
                 `DeleteTarget`.
             name (:class:`str`):
@@ -1119,17 +1121,17 @@ class CloudDeployAsyncClient:
 
     async def list_releases(
         self,
-        request: cloud_deploy.ListReleasesRequest = None,
+        request: Union[cloud_deploy.ListReleasesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReleasesAsyncPager:
         r"""Lists Releases in a given project and location.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.ListReleasesRequest`):
+            request (Union[google.cloud.deploy_v1.types.ListReleasesRequest, dict]):
                 The request object. The request object for
                 `ListReleases`.
             parent (:class:`str`):
@@ -1207,17 +1209,17 @@ class CloudDeployAsyncClient:
 
     async def get_release(
         self,
-        request: cloud_deploy.GetReleaseRequest = None,
+        request: Union[cloud_deploy.GetReleaseRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_deploy.Release:
         r"""Gets details of a single Release.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.GetReleaseRequest`):
+            request (Union[google.cloud.deploy_v1.types.GetReleaseRequest, dict]):
                 The request object. The request object for `GetRelease`.
             name (:class:`str`):
                 Required. Name of the ``Release``. Format must be
@@ -1288,12 +1290,12 @@ class CloudDeployAsyncClient:
 
     async def create_release(
         self,
-        request: cloud_deploy.CreateReleaseRequest = None,
+        request: Union[cloud_deploy.CreateReleaseRequest, dict] = None,
         *,
         parent: str = None,
         release: cloud_deploy.Release = None,
         release_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -1301,7 +1303,7 @@ class CloudDeployAsyncClient:
         location.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.CreateReleaseRequest`):
+            request (Union[google.cloud.deploy_v1.types.CreateReleaseRequest, dict]):
                 The request object. The request object for
                 `CreateRelease`,
             parent (:class:`str`):
@@ -1391,17 +1393,17 @@ class CloudDeployAsyncClient:
 
     async def approve_rollout(
         self,
-        request: cloud_deploy.ApproveRolloutRequest = None,
+        request: Union[cloud_deploy.ApproveRolloutRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_deploy.ApproveRolloutResponse:
         r"""Approves a Rollout.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.ApproveRolloutRequest`):
+            request (Union[google.cloud.deploy_v1.types.ApproveRolloutRequest, dict]):
                 The request object. The request object used by
                 `ApproveRollout`.
             name (:class:`str`):
@@ -1462,17 +1464,17 @@ class CloudDeployAsyncClient:
 
     async def list_rollouts(
         self,
-        request: cloud_deploy.ListRolloutsRequest = None,
+        request: Union[cloud_deploy.ListRolloutsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRolloutsAsyncPager:
         r"""Lists Rollouts in a given project and location.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.ListRolloutsRequest`):
+            request (Union[google.cloud.deploy_v1.types.ListRolloutsRequest, dict]):
                 The request object. ListRolloutsRequest is the request
                 object used by `ListRollouts`.
             parent (:class:`str`):
@@ -1551,17 +1553,17 @@ class CloudDeployAsyncClient:
 
     async def get_rollout(
         self,
-        request: cloud_deploy.GetRolloutRequest = None,
+        request: Union[cloud_deploy.GetRolloutRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_deploy.Rollout:
         r"""Gets details of a single Rollout.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.GetRolloutRequest`):
+            request (Union[google.cloud.deploy_v1.types.GetRolloutRequest, dict]):
                 The request object. GetRolloutRequest is the request
                 object used by `GetRollout`.
             name (:class:`str`):
@@ -1633,12 +1635,12 @@ class CloudDeployAsyncClient:
 
     async def create_rollout(
         self,
-        request: cloud_deploy.CreateRolloutRequest = None,
+        request: Union[cloud_deploy.CreateRolloutRequest, dict] = None,
         *,
         parent: str = None,
         rollout: cloud_deploy.Rollout = None,
         rollout_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -1646,7 +1648,7 @@ class CloudDeployAsyncClient:
         location.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.CreateRolloutRequest`):
+            request (Union[google.cloud.deploy_v1.types.CreateRolloutRequest, dict]):
                 The request object. CreateRolloutRequest is the request
                 object used by `CreateRollout`.
             parent (:class:`str`):
@@ -1736,17 +1738,17 @@ class CloudDeployAsyncClient:
 
     async def get_config(
         self,
-        request: cloud_deploy.GetConfigRequest = None,
+        request: Union[cloud_deploy.GetConfigRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_deploy.Config:
         r"""Gets the configuration for a location.
 
         Args:
-            request (:class:`google.cloud.deploy_v1.types.GetConfigRequest`):
+            request (Union[google.cloud.deploy_v1.types.GetConfigRequest, dict]):
                 The request object. Request to get a configuration.
             name (:class:`str`):
                 Required. Name of requested
