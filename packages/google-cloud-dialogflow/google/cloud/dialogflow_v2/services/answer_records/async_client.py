@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dialogflow_v2.services.answer_records import pagers
 from google.cloud.dialogflow_v2.types import answer_record
@@ -169,10 +171,10 @@ class AnswerRecordsAsyncClient:
 
     async def list_answer_records(
         self,
-        request: answer_record.ListAnswerRecordsRequest = None,
+        request: Union[answer_record.ListAnswerRecordsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAnswerRecordsAsyncPager:
@@ -180,7 +182,7 @@ class AnswerRecordsAsyncClient:
         specified project in reverse chronological order.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2.types.ListAnswerRecordsRequest`):
+            request (Union[google.cloud.dialogflow_v2.types.ListAnswerRecordsRequest, dict]):
                 The request object. Request message for
                 [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2.AnswerRecords.ListAnswerRecords].
             parent (:class:`str`):
@@ -251,18 +253,18 @@ class AnswerRecordsAsyncClient:
 
     async def update_answer_record(
         self,
-        request: gcd_answer_record.UpdateAnswerRecordRequest = None,
+        request: Union[gcd_answer_record.UpdateAnswerRecordRequest, dict] = None,
         *,
         answer_record: gcd_answer_record.AnswerRecord = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_answer_record.AnswerRecord:
         r"""Updates the specified answer record.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2.types.UpdateAnswerRecordRequest`):
+            request (Union[google.cloud.dialogflow_v2.types.UpdateAnswerRecordRequest, dict]):
                 The request object. Request message for
                 [AnswerRecords.UpdateAnswerRecord][google.cloud.dialogflow.v2.AnswerRecords.UpdateAnswerRecord].
             answer_record (:class:`google.cloud.dialogflow_v2.types.AnswerRecord`):

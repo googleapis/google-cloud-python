@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dialogflow_v2.services.participants import pagers
 from google.cloud.dialogflow_v2.types import participant
 from google.cloud.dialogflow_v2.types import participant as gcd_participant
@@ -417,7 +419,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         *,
         parent: str = None,
         participant: gcd_participant.Participant = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_participant.Participant:
@@ -496,7 +498,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         request: Union[participant.GetParticipantRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> participant.Participant:
@@ -567,7 +569,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         request: Union[participant.ListParticipantsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListParticipantsPager:
@@ -650,7 +652,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         *,
         participant: gcd_participant.Participant = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_participant.Participant:
@@ -732,7 +734,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         participant: str = None,
         text_input: session.TextInput = None,
         event_input: session.EventInput = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_participant.AnalyzeContentResponse:
@@ -827,7 +829,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         request: Union[participant.SuggestArticlesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> participant.SuggestArticlesResponse:
@@ -900,7 +902,7 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         request: Union[participant.SuggestFaqAnswersRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> participant.SuggestFaqAnswersResponse:

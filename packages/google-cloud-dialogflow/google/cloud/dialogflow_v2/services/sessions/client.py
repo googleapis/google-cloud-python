@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dialogflow_v2.types import audio_config
 from google.cloud.dialogflow_v2.types import session
 from google.cloud.dialogflow_v2.types import session as gcd_session
@@ -401,7 +403,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
         *,
         session: str = None,
         query_input: gcd_session.QueryInput = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_session.DetectIntentResponse:
@@ -520,7 +522,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
         self,
         requests: Iterator[session.StreamingDetectIntentRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[session.StreamingDetectIntentResponse]:

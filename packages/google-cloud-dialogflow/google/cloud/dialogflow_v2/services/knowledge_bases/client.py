@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dialogflow_v2.services.knowledge_bases import pagers
 from google.cloud.dialogflow_v2.types import knowledge_base
 from google.cloud.dialogflow_v2.types import knowledge_base as gcd_knowledge_base
@@ -355,7 +357,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         request: Union[knowledge_base.ListKnowledgeBasesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListKnowledgeBasesPager:
@@ -437,7 +439,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         request: Union[knowledge_base.GetKnowledgeBaseRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> knowledge_base.KnowledgeBase:
@@ -520,7 +522,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         *,
         parent: str = None,
         knowledge_base: gcd_knowledge_base.KnowledgeBase = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_knowledge_base.KnowledgeBase:
@@ -611,7 +613,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         request: Union[knowledge_base.DeleteKnowledgeBaseRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -677,7 +679,7 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         *,
         knowledge_base: gcd_knowledge_base.KnowledgeBase = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_knowledge_base.KnowledgeBase:

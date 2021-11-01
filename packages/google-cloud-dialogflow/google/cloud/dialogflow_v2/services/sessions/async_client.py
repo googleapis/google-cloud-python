@@ -28,12 +28,14 @@ from typing import (
 )
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dialogflow_v2.types import audio_config
 from google.cloud.dialogflow_v2.types import session
@@ -178,11 +180,11 @@ class SessionsAsyncClient:
 
     async def detect_intent(
         self,
-        request: gcd_session.DetectIntentRequest = None,
+        request: Union[gcd_session.DetectIntentRequest, dict] = None,
         *,
         session: str = None,
         query_input: gcd_session.QueryInput = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_session.DetectIntentResponse:
@@ -203,7 +205,7 @@ class SessionsAsyncClient:
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2.types.DetectIntentRequest`):
+            request (Union[google.cloud.dialogflow_v2.types.DetectIntentRequest, dict]):
                 The request object. The request to detect user's intent.
             session (:class:`str`):
                 Required. The name of the session this query is sent to.
@@ -310,7 +312,7 @@ class SessionsAsyncClient:
         self,
         requests: AsyncIterator[session.StreamingDetectIntentRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[session.StreamingDetectIntentResponse]]:

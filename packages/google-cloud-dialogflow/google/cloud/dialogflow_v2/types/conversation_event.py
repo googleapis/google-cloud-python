@@ -28,6 +28,9 @@ class ConversationEvent(proto.Message):
     r"""Represents a notification sent to Pub/Sub subscribers for
     conversation lifecycle events.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         conversation (str):
             The unique identifier of the conversation this notification
@@ -41,6 +44,7 @@ class ConversationEvent(proto.Message):
             UNRECOVERABLE_ERROR_IN_PHONE_CALL.
         new_message_payload (google.cloud.dialogflow_v2.types.Message):
             Payload of NEW_MESSAGE event.
+            This field is a member of `oneof`_ ``payload``.
     """
 
     class Type(proto.Enum):

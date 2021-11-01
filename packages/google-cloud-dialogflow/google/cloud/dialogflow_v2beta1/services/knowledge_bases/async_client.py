@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dialogflow_v2beta1.services.knowledge_bases import pagers
 from google.cloud.dialogflow_v2beta1.types import knowledge_base
@@ -169,10 +171,10 @@ class KnowledgeBasesAsyncClient:
 
     async def list_knowledge_bases(
         self,
-        request: knowledge_base.ListKnowledgeBasesRequest = None,
+        request: Union[knowledge_base.ListKnowledgeBasesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListKnowledgeBasesAsyncPager:
@@ -182,7 +184,7 @@ class KnowledgeBasesAsyncClient:
         deprecated; only use ``projects.knowledgeBases``.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2beta1.types.ListKnowledgeBasesRequest`):
+            request (Union[google.cloud.dialogflow_v2beta1.types.ListKnowledgeBasesRequest, dict]):
                 The request object. Request message for
                 [KnowledgeBases.ListKnowledgeBases][google.cloud.dialogflow.v2beta1.KnowledgeBases.ListKnowledgeBases].
             parent (:class:`str`):
@@ -253,10 +255,10 @@ class KnowledgeBasesAsyncClient:
 
     async def get_knowledge_base(
         self,
-        request: knowledge_base.GetKnowledgeBaseRequest = None,
+        request: Union[knowledge_base.GetKnowledgeBaseRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> knowledge_base.KnowledgeBase:
@@ -266,7 +268,7 @@ class KnowledgeBasesAsyncClient:
         deprecated; only use ``projects.knowledgeBases``.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2beta1.types.GetKnowledgeBaseRequest`):
+            request (Union[google.cloud.dialogflow_v2beta1.types.GetKnowledgeBaseRequest, dict]):
                 The request object. Request message for
                 [KnowledgeBases.GetKnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBases.GetKnowledgeBase].
             name (:class:`str`):
@@ -338,11 +340,11 @@ class KnowledgeBasesAsyncClient:
 
     async def create_knowledge_base(
         self,
-        request: gcd_knowledge_base.CreateKnowledgeBaseRequest = None,
+        request: Union[gcd_knowledge_base.CreateKnowledgeBaseRequest, dict] = None,
         *,
         parent: str = None,
         knowledge_base: gcd_knowledge_base.KnowledgeBase = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_knowledge_base.KnowledgeBase:
@@ -352,7 +354,7 @@ class KnowledgeBasesAsyncClient:
         deprecated; only use ``projects.knowledgeBases``.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2beta1.types.CreateKnowledgeBaseRequest`):
+            request (Union[google.cloud.dialogflow_v2beta1.types.CreateKnowledgeBaseRequest, dict]):
                 The request object. Request message for
                 [KnowledgeBases.CreateKnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBases.CreateKnowledgeBase].
             parent (:class:`str`):
@@ -433,10 +435,10 @@ class KnowledgeBasesAsyncClient:
 
     async def delete_knowledge_base(
         self,
-        request: knowledge_base.DeleteKnowledgeBaseRequest = None,
+        request: Union[knowledge_base.DeleteKnowledgeBaseRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -446,7 +448,7 @@ class KnowledgeBasesAsyncClient:
         deprecated; only use ``projects.knowledgeBases``.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2beta1.types.DeleteKnowledgeBaseRequest`):
+            request (Union[google.cloud.dialogflow_v2beta1.types.DeleteKnowledgeBaseRequest, dict]):
                 The request object. Request message for
                 [KnowledgeBases.DeleteKnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBases.DeleteKnowledgeBase].
             name (:class:`str`):
@@ -501,11 +503,11 @@ class KnowledgeBasesAsyncClient:
 
     async def update_knowledge_base(
         self,
-        request: gcd_knowledge_base.UpdateKnowledgeBaseRequest = None,
+        request: Union[gcd_knowledge_base.UpdateKnowledgeBaseRequest, dict] = None,
         *,
         knowledge_base: gcd_knowledge_base.KnowledgeBase = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_knowledge_base.KnowledgeBase:
@@ -515,7 +517,7 @@ class KnowledgeBasesAsyncClient:
         deprecated; only use ``projects.knowledgeBases``.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2beta1.types.UpdateKnowledgeBaseRequest`):
+            request (Union[google.cloud.dialogflow_v2beta1.types.UpdateKnowledgeBaseRequest, dict]):
                 The request object. Request message for
                 [KnowledgeBases.UpdateKnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBases.UpdateKnowledgeBase].
             knowledge_base (:class:`google.cloud.dialogflow_v2beta1.types.KnowledgeBase`):

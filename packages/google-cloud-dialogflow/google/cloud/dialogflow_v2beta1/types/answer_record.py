@@ -65,6 +65,9 @@ class AnswerRecord(proto.Message):
        to call the [UpdateAnswerRecord][] method to send feedback about
        a specific answer that they believe is wrong.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The unique identifier of this answer record. Required for
@@ -79,6 +82,7 @@ class AnswerRecord(proto.Message):
         agent_assistant_record (google.cloud.dialogflow_v2beta1.types.AgentAssistantRecord):
             Output only. The record for human agent
             assistant.
+            This field is a member of `oneof`_ ``record``.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -91,11 +95,20 @@ class AnswerRecord(proto.Message):
 class AgentAssistantRecord(proto.Message):
     r"""Represents a record of a human agent assistant answer.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         article_suggestion_answer (google.cloud.dialogflow_v2beta1.types.ArticleAnswer):
             Output only. The article suggestion answer.
+            This field is a member of `oneof`_ ``answer``.
         faq_answer (google.cloud.dialogflow_v2beta1.types.FaqAnswer):
             Output only. The FAQ answer.
+            This field is a member of `oneof`_ ``answer``.
     """
 
     article_suggestion_answer = proto.Field(
@@ -110,12 +123,16 @@ class AnswerFeedback(proto.Message):
     r"""Represents feedback the customer has about the quality &
     correctness of a certain answer in a conversation.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         correctness_level (google.cloud.dialogflow_v2beta1.types.AnswerFeedback.CorrectnessLevel):
             The correctness level of the specific answer.
         agent_assistant_detail_feedback (google.cloud.dialogflow_v2beta1.types.AgentAssistantFeedback):
             Optional. Detail feedback of agent assistant
             suggestions.
+            This field is a member of `oneof`_ ``detail_feedback``.
         clicked (bool):
             Indicates whether the answer/item was clicked
             by the human agent or not. Default to false.

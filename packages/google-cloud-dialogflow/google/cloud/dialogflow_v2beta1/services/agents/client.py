@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.dialogflow_v2beta1.services.agents import pagers
@@ -353,7 +355,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         request: Union[agent.GetAgentRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> agent.Agent:
@@ -434,7 +436,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         request: Union[gcd_agent.SetAgentRequest, dict] = None,
         *,
         agent: gcd_agent.Agent = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_agent.Agent:
@@ -518,7 +520,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         request: Union[agent.DeleteAgentRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -583,7 +585,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         request: Union[agent.SearchAgentsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAgentsPager:
@@ -669,7 +671,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         request: Union[agent.TrainAgentRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -776,7 +778,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         request: Union[agent.ExportAgentRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -869,7 +871,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         self,
         request: Union[agent.ImportAgentRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -969,7 +971,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         self,
         request: Union[agent.RestoreAgentRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1067,7 +1069,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
         self,
         request: Union[agent.GetValidationResultRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> validation_result.ValidationResult:

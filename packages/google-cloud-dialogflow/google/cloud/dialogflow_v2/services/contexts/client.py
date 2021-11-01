@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dialogflow_v2.services.contexts import pagers
 from google.cloud.dialogflow_v2.types import context
 from google.cloud.dialogflow_v2.types import context as gcd_context
@@ -353,7 +355,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
         request: Union[context.ListContextsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListContextsPager:
@@ -438,7 +440,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
         request: Union[context.GetContextRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> context.Context:
@@ -532,7 +534,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
         *,
         parent: str = None,
         context: gcd_context.Context = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_context.Context:
@@ -634,7 +636,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
         *,
         context: gcd_context.Context = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_context.Context:
@@ -731,7 +733,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
         request: Union[context.DeleteContextRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -800,7 +802,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
         request: Union[context.DeleteAllContextsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:

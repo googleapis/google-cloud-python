@@ -310,39 +310,60 @@ class Intent(proto.Message):
         response
         messages <https://cloud.google.com/dialogflow/docs/intents-rich-messages>`__.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             text (google.cloud.dialogflow_v2.types.Intent.Message.Text):
                 The text response.
+                This field is a member of `oneof`_ ``message``.
             image (google.cloud.dialogflow_v2.types.Intent.Message.Image):
                 The image response.
+                This field is a member of `oneof`_ ``message``.
             quick_replies (google.cloud.dialogflow_v2.types.Intent.Message.QuickReplies):
                 The quick replies response.
+                This field is a member of `oneof`_ ``message``.
             card (google.cloud.dialogflow_v2.types.Intent.Message.Card):
                 The card response.
+                This field is a member of `oneof`_ ``message``.
             payload (google.protobuf.struct_pb2.Struct):
                 A custom platform-specific response.
+                This field is a member of `oneof`_ ``message``.
             simple_responses (google.cloud.dialogflow_v2.types.Intent.Message.SimpleResponses):
                 The voice and text-only responses for Actions
                 on Google.
+                This field is a member of `oneof`_ ``message``.
             basic_card (google.cloud.dialogflow_v2.types.Intent.Message.BasicCard):
                 The basic card response for Actions on
                 Google.
+                This field is a member of `oneof`_ ``message``.
             suggestions (google.cloud.dialogflow_v2.types.Intent.Message.Suggestions):
                 The suggestion chips for Actions on Google.
+                This field is a member of `oneof`_ ``message``.
             link_out_suggestion (google.cloud.dialogflow_v2.types.Intent.Message.LinkOutSuggestion):
                 The link out suggestion chip for Actions on
                 Google.
+                This field is a member of `oneof`_ ``message``.
             list_select (google.cloud.dialogflow_v2.types.Intent.Message.ListSelect):
                 The list card response for Actions on Google.
+                This field is a member of `oneof`_ ``message``.
             carousel_select (google.cloud.dialogflow_v2.types.Intent.Message.CarouselSelect):
                 The carousel card response for Actions on
                 Google.
+                This field is a member of `oneof`_ ``message``.
             browse_carousel_card (google.cloud.dialogflow_v2.types.Intent.Message.BrowseCarouselCard):
                 Browse carousel card for Actions on Google.
+                This field is a member of `oneof`_ ``message``.
             table_card (google.cloud.dialogflow_v2.types.Intent.Message.TableCard):
                 Table card for Actions on Google.
+                This field is a member of `oneof`_ ``message``.
             media_content (google.cloud.dialogflow_v2.types.Intent.Message.MediaContent):
                 The media content card for Actions on Google.
+                This field is a member of `oneof`_ ``message``.
             platform (google.cloud.dialogflow_v2.types.Intent.Message.Platform):
                 Optional. The platform that this message is
                 intended for.
@@ -680,6 +701,13 @@ class Intent(proto.Message):
             class ResponseMediaObject(proto.Message):
                 r"""Response media object for media content card.
 
+                This message has `oneof`_ fields (mutually exclusive fields).
+                For each oneof, at most one member field can be set at the same time.
+                Setting any member of the oneof automatically clears all other
+                members.
+
+                .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
                 Attributes:
                     name (str):
                         Required. Name of media card.
@@ -688,9 +716,11 @@ class Intent(proto.Message):
                     large_image (google.cloud.dialogflow_v2.types.Intent.Message.Image):
                         Optional. Image to display above media
                         content.
+                        This field is a member of `oneof`_ ``image``.
                     icon (google.cloud.dialogflow_v2.types.Intent.Message.Image):
                         Optional. Icon to display above media
                         content.
+                        This field is a member of `oneof`_ ``image``.
                     content_url (str):
                         Required. Url where the media is stored.
                 """
@@ -1187,6 +1217,13 @@ class DeleteIntentRequest(proto.Message):
 class BatchUpdateIntentsRequest(proto.Message):
     r"""
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. The name of the agent to update or create intents
@@ -1197,9 +1234,11 @@ class BatchUpdateIntentsRequest(proto.Message):
             format can either be a serialized proto (of
             IntentBatch type) or JSON object. Note: The URI
             must start with "gs://".
+            This field is a member of `oneof`_ ``intent_batch``.
         intent_batch_inline (google.cloud.dialogflow_v2.types.IntentBatch):
             The collection of intents to update or
             create.
+            This field is a member of `oneof`_ ``intent_batch``.
         language_code (str):
             Optional. The language used to access language-specific
             data. If not specified, the agent's default language is

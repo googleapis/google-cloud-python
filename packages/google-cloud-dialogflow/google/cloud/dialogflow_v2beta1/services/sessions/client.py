@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dialogflow_v2beta1.types import audio_config
 from google.cloud.dialogflow_v2beta1.types import session
 from google.cloud.dialogflow_v2beta1.types import session as gcd_session
@@ -417,7 +419,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
         *,
         session: str = None,
         query_input: gcd_session.QueryInput = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_session.DetectIntentResponse:
@@ -540,7 +542,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
         self,
         requests: Iterator[session.StreamingDetectIntentRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[session.StreamingDetectIntentResponse]:
@@ -612,11 +614,12 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
                    Multiple response messages can be returned in order:
 
-                   1. If the input was set to streaming audio, the first
-                      one or more messages contain recognition_result.
-                      Each recognition_result represents a more complete
-                      transcript of what the user said. The last
-                      recognition_result has is_final set to true.
+                   1. If the StreamingDetectIntentRequest.input_audio
+                      field was set, the recognition_result field is
+                      populated for one or more messages. See the
+                      [StreamingRecognitionResult][google.cloud.dialogflow.v2beta1.StreamingRecognitionResult]
+                      message for details about the result message
+                      sequence.
                    2. The next message contains response_id,
                       query_result, alternative_query_results and
                       optionally webhook_status if a WebHook was called.

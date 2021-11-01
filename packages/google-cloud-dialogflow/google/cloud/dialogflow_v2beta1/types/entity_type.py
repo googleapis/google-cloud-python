@@ -282,6 +282,13 @@ class BatchUpdateEntityTypesRequest(proto.Message):
     r"""The request message for
     [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2beta1.EntityTypes.BatchUpdateEntityTypes].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. The name of the agent to update or create entity
@@ -295,9 +302,11 @@ class BatchUpdateEntityTypesRequest(proto.Message):
             file format can either be a serialized proto (of
             EntityBatch type) or a JSON object. Note: The
             URI must start with "gs://".
+            This field is a member of `oneof`_ ``entity_type_batch``.
         entity_type_batch_inline (google.cloud.dialogflow_v2beta1.types.EntityTypeBatch):
             The collection of entity types to update or
             create.
+            This field is a member of `oneof`_ ``entity_type_batch``.
         language_code (str):
             Optional. The language used to access language-specific
             data. If not specified, the agent's default language is

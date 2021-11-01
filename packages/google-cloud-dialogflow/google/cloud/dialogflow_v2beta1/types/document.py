@@ -50,6 +50,13 @@ class Document(proto.Message):
     Note: The ``projects.agent.knowledgeBases.documents`` resource is
     deprecated; only use ``projects.knowledgeBases.documents``.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Optional. The document resource name. The name must be empty
@@ -75,14 +82,17 @@ class Document(proto.Message):
             URLs for showing documents in Google Cloud Storage (i.e. the
             URL in your browser) are not supported. Instead use the
             ``gs://`` format URI described above.
+            This field is a member of `oneof`_ ``source``.
         content (str):
             The raw content of the document. This field is only
             permitted for EXTRACTIVE_QA and FAQ knowledge types. Note:
             This field is in the process of being deprecated, please use
             raw_content instead.
+            This field is a member of `oneof`_ ``source``.
         raw_content (bytes):
             The raw content of the document. This field is only
             permitted for EXTRACTIVE_QA and FAQ knowledge types.
+            This field is a member of `oneof`_ ``source``.
         enable_auto_reload (bool):
             Optional. If true, we try to automatically reload the
             document every day (at a time picked by the system). If
@@ -259,6 +269,9 @@ class ImportDocumentsRequest(proto.Message):
     r"""Request message for
     [Documents.ImportDocuments][google.cloud.dialogflow.v2beta1.Documents.ImportDocuments].
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. The knowledge base to import documents into.
@@ -271,6 +284,7 @@ class ImportDocumentsRequest(proto.Message):
             These URIs may have the forms
             ``gs://<bucket-name>/<object-name>``.
             ``gs://<bucket-name>/<object-path>/*.<extension>``.
+            This field is a member of `oneof`_ ``source``.
         document_template (google.cloud.dialogflow_v2beta1.types.ImportDocumentTemplate):
             Required. Document template used for
             importing all the documents.
@@ -383,6 +397,9 @@ class ReloadDocumentRequest(proto.Message):
     r"""Request message for
     [Documents.ReloadDocument][google.cloud.dialogflow.v2beta1.Documents.ReloadDocument].
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Required. The name of the document to reload. Format:
@@ -391,6 +408,7 @@ class ReloadDocumentRequest(proto.Message):
             The path for a Cloud Storage source file for
             reloading document content. If not provided, the
             Document's existing source will be reloaded.
+            This field is a member of `oneof`_ ``source``.
         import_gcs_custom_metadata (bool):
             Whether to import custom metadata from Google
             Cloud Storage. Only valid when the document

@@ -269,13 +269,22 @@ class ExportAgentResponse(proto.Message):
     r"""The response message for
     [Agents.ExportAgent][google.cloud.dialogflow.v2.Agents.ExportAgent].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         agent_uri (str):
             The URI to a file containing the exported agent. This field
             is populated only if ``agent_uri`` is specified in
             ``ExportAgentRequest``.
+            This field is a member of `oneof`_ ``agent``.
         agent_content (bytes):
             Zip compressed raw byte content for agent.
+            This field is a member of `oneof`_ ``agent``.
     """
 
     agent_uri = proto.Field(proto.STRING, number=1, oneof="agent",)
@@ -286,6 +295,13 @@ class ImportAgentRequest(proto.Message):
     r"""The request message for
     [Agents.ImportAgent][google.cloud.dialogflow.v2.Agents.ImportAgent].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. The project that the agent to import is associated
@@ -294,8 +310,10 @@ class ImportAgentRequest(proto.Message):
             The URI to a Google Cloud Storage file
             containing the agent to import. Note: The URI
             must start with "gs://".
+            This field is a member of `oneof`_ ``agent``.
         agent_content (bytes):
             Zip compressed raw byte content for agent.
+            This field is a member of `oneof`_ ``agent``.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
@@ -307,6 +325,13 @@ class RestoreAgentRequest(proto.Message):
     r"""The request message for
     [Agents.RestoreAgent][google.cloud.dialogflow.v2.Agents.RestoreAgent].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. The project that the agent to restore is
@@ -315,8 +340,10 @@ class RestoreAgentRequest(proto.Message):
             The URI to a Google Cloud Storage file
             containing the agent to restore. Note: The URI
             must start with "gs://".
+            This field is a member of `oneof`_ ``agent``.
         agent_content (bytes):
             Zip compressed raw byte content for agent.
+            This field is a member of `oneof`_ ``agent``.
     """
 
     parent = proto.Field(proto.STRING, number=1,)

@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.dialogflow_v2.services.intents import pagers
@@ -371,7 +373,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         *,
         parent: str = None,
         language_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListIntentsPager:
@@ -474,7 +476,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         *,
         name: str = None,
         language_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> intent.Intent:
@@ -568,7 +570,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         parent: str = None,
         intent: gcd_intent.Intent = None,
         language_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_intent.Intent:
@@ -673,7 +675,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         intent: gcd_intent.Intent = None,
         language_code: str = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_intent.Intent:
@@ -778,7 +780,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         request: Union[intent.DeleteIntentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -851,7 +853,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         parent: str = None,
         intent_batch_uri: str = None,
         intent_batch_inline: intent.IntentBatch = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -970,7 +972,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         *,
         parent: str = None,
         intents: Sequence[intent.Intent] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:

@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dialogflow_v2beta1.services.versions import pagers
 from google.cloud.dialogflow_v2beta1.types import version
 from google.cloud.dialogflow_v2beta1.types import version as gcd_version
@@ -354,7 +356,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         request: Union[version.ListVersionsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVersionsPager:
@@ -438,7 +440,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         request: Union[version.GetVersionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> version.Version:
@@ -531,7 +533,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         *,
         parent: str = None,
         version: gcd_version.Version = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_version.Version:
@@ -634,7 +636,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         *,
         version: gcd_version.Version = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_version.Version:
@@ -741,7 +743,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         request: Union[version.DeleteVersionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:

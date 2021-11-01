@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dialogflow_v2beta1.services.environments import pagers
 from google.cloud.dialogflow_v2beta1.types import environment
@@ -167,10 +169,10 @@ class EnvironmentsAsyncClient:
 
     async def list_environments(
         self,
-        request: environment.ListEnvironmentsRequest = None,
+        request: Union[environment.ListEnvironmentsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEnvironmentsAsyncPager:
@@ -178,7 +180,7 @@ class EnvironmentsAsyncClient:
         specified agent.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2beta1.types.ListEnvironmentsRequest`):
+            request (Union[google.cloud.dialogflow_v2beta1.types.ListEnvironmentsRequest, dict]):
                 The request object. The request message for
                 [Environments.ListEnvironments][google.cloud.dialogflow.v2beta1.Environments.ListEnvironments].
             parent (:class:`str`):
@@ -251,16 +253,16 @@ class EnvironmentsAsyncClient:
 
     async def get_environment(
         self,
-        request: environment.GetEnvironmentRequest = None,
+        request: Union[environment.GetEnvironmentRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> environment.Environment:
         r"""Retrieves the specified agent environment.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2beta1.types.GetEnvironmentRequest`):
+            request (Union[google.cloud.dialogflow_v2beta1.types.GetEnvironmentRequest, dict]):
                 The request object. The request message for
                 [Environments.GetEnvironment][google.cloud.dialogflow.v2beta1.Environments.GetEnvironment].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -319,16 +321,16 @@ class EnvironmentsAsyncClient:
 
     async def create_environment(
         self,
-        request: environment.CreateEnvironmentRequest = None,
+        request: Union[environment.CreateEnvironmentRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> environment.Environment:
         r"""Creates an agent environment.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2beta1.types.CreateEnvironmentRequest`):
+            request (Union[google.cloud.dialogflow_v2beta1.types.CreateEnvironmentRequest, dict]):
                 The request object. The request message for
                 [Environments.CreateEnvironment][google.cloud.dialogflow.v2beta1.Environments.CreateEnvironment].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -387,9 +389,9 @@ class EnvironmentsAsyncClient:
 
     async def update_environment(
         self,
-        request: environment.UpdateEnvironmentRequest = None,
+        request: Union[environment.UpdateEnvironmentRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> environment.Environment:
@@ -408,7 +410,7 @@ class EnvironmentsAsyncClient:
         draft to a version before calling this function.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2beta1.types.UpdateEnvironmentRequest`):
+            request (Union[google.cloud.dialogflow_v2beta1.types.UpdateEnvironmentRequest, dict]):
                 The request object. The request message for
                 [Environments.UpdateEnvironment][google.cloud.dialogflow.v2beta1.Environments.UpdateEnvironment].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -469,16 +471,16 @@ class EnvironmentsAsyncClient:
 
     async def delete_environment(
         self,
-        request: environment.DeleteEnvironmentRequest = None,
+        request: Union[environment.DeleteEnvironmentRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified agent environment.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2beta1.types.DeleteEnvironmentRequest`):
+            request (Union[google.cloud.dialogflow_v2beta1.types.DeleteEnvironmentRequest, dict]):
                 The request object. The request message for
                 [Environments.DeleteEnvironment][google.cloud.dialogflow.v2beta1.Environments.DeleteEnvironment].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -511,16 +513,16 @@ class EnvironmentsAsyncClient:
 
     async def get_environment_history(
         self,
-        request: environment.GetEnvironmentHistoryRequest = None,
+        request: Union[environment.GetEnvironmentHistoryRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.GetEnvironmentHistoryAsyncPager:
         r"""Gets the history of the specified environment.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2beta1.types.GetEnvironmentHistoryRequest`):
+            request (Union[google.cloud.dialogflow_v2beta1.types.GetEnvironmentHistoryRequest, dict]):
                 The request object. The request message for
                 [Environments.GetEnvironmentHistory][google.cloud.dialogflow.v2beta1.Environments.GetEnvironmentHistory].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

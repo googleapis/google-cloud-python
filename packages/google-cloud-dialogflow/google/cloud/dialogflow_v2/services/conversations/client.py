@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dialogflow_v2.services.conversations import pagers
 from google.cloud.dialogflow_v2.types import conversation
 from google.cloud.dialogflow_v2.types import conversation as gcd_conversation
@@ -387,7 +389,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         *,
         parent: str = None,
         conversation: gcd_conversation.Conversation = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_conversation.Conversation:
@@ -491,7 +493,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         request: Union[conversation.ListConversationsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConversationsPager:
@@ -573,7 +575,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         request: Union[conversation.GetConversationRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> conversation.Conversation:
@@ -649,7 +651,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         request: Union[conversation.CompleteConversationRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> conversation.Conversation:
@@ -728,7 +730,7 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         request: Union[conversation.ListMessagesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMessagesPager:

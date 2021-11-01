@@ -31,6 +31,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dialogflow_v2beta1.services.answer_records import pagers
 from google.cloud.dialogflow_v2beta1.types import answer_record
 from google.cloud.dialogflow_v2beta1.types import answer_record as gcd_answer_record
@@ -353,7 +355,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
         self,
         request: Union[answer_record.GetAnswerRecordRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> answer_record.AnswerRecord:
@@ -440,7 +442,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
         request: Union[answer_record.ListAnswerRecordsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAnswerRecordsPager:
@@ -523,7 +525,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
         *,
         answer_record: gcd_answer_record.AnswerRecord = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_answer_record.AnswerRecord:

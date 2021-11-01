@@ -263,17 +263,28 @@ class QueryInput(proto.Message):
 
     3.  An event that specifies which intent to trigger.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         audio_config (google.cloud.dialogflow_v2beta1.types.InputAudioConfig):
             Instructs the speech recognizer how to
             process the speech audio.
+            This field is a member of `oneof`_ ``input``.
         text (google.cloud.dialogflow_v2beta1.types.TextInput):
             The natural language text to be processed.
+            This field is a member of `oneof`_ ``input``.
         event (google.cloud.dialogflow_v2beta1.types.EventInput):
             The event to be processed.
+            This field is a member of `oneof`_ ``input``.
         dtmf (google.cloud.dialogflow_v2beta1.types.TelephonyDtmfEvents):
             The DTMF digits used to invoke intent and
             fill in parameter value.
+            This field is a member of `oneof`_ ``input``.
     """
 
     audio_config = proto.Field(
@@ -632,11 +643,11 @@ class StreamingDetectIntentResponse(proto.Message):
 
     Multiple response messages can be returned in order:
 
-    1. If the input was set to streaming audio, the first one or more
-       messages contain ``recognition_result``. Each
-       ``recognition_result`` represents a more complete transcript of
-       what the user said. The last ``recognition_result`` has
-       ``is_final`` set to ``true``.
+    1. If the ``StreamingDetectIntentRequest.input_audio`` field was
+       set, the ``recognition_result`` field is populated for one or
+       more messages. See the
+       [StreamingRecognitionResult][google.cloud.dialogflow.v2beta1.StreamingRecognitionResult]
+       message for details about the result message sequence.
 
     2. The next message contains ``response_id``, ``query_result``,
        ``alternative_query_results`` and optionally ``webhook_status``
@@ -706,33 +717,42 @@ class StreamingRecognitionResult(proto.Message):
     the audio that is currently being processed or an indication that
     this is the end of the single requested utterance.
 
-    Example:
+    While end-user audio is being processed, Dialogflow sends a series
+    of results. Each result may contain a ``transcript`` value. A
+    transcript represents a portion of the utterance. While the
+    recognizer is processing audio, transcript values may be interim
+    values or finalized values. Once a transcript is finalized, the
+    ``is_final`` value is set to true and processing continues for the
+    next transcript.
 
-    1. transcript: "tube"
+    If
+    ``StreamingDetectIntentRequest.query_input.audio_config.single_utterance``
+    was true, and the recognizer has completed processing audio, the
+    ``message_type`` value is set to \`END_OF_SINGLE_UTTERANCE and the
+    following (last) result contains the last finalized transcript.
 
-    2. transcript: "to be a"
+    The complete end-user utterance is determined by concatenating the
+    finalized transcript values received for the series of results.
 
-    3. transcript: "to be"
+    In the following example, single utterance is enabled. In the case
+    where single utterance is not enabled, result 7 would not occur.
 
-    4. transcript: "to be or not to be" is_final: true
+    ::
 
-    5. transcript: " that's"
+       Num | transcript              | message_type            | is_final
+       --- | ----------------------- | ----------------------- | --------
+       1   | "tube"                  | TRANSCRIPT              | false
+       2   | "to be a"               | TRANSCRIPT              | false
+       3   | "to be"                 | TRANSCRIPT              | false
+       4   | "to be or not to be"    | TRANSCRIPT              | true
+       5   | "that's"                | TRANSCRIPT              | false
+       6   | "that is                | TRANSCRIPT              | false
+       7   | unset                   | END_OF_SINGLE_UTTERANCE | unset
+       8   | " that is the question" | TRANSCRIPT              | true
 
-    6. transcript: " that is"
-
-    7. message_type: ``END_OF_SINGLE_UTTERANCE``
-
-    8. transcript: " that is the question" is_final: true
-
-    Only two of the responses contain final results (#4 and #8 indicated
-    by ``is_final: true``). Concatenating these generates the full
-    transcript: "to be or not to be that is the question".
-
-    In each response we populate:
-
-    -  for ``TRANSCRIPT``: ``transcript`` and possibly ``is_final``.
-
-    -  for ``END_OF_SINGLE_UTTERANCE``: only ``message_type``.
+    Concatenating the finalized transcripts with ``is_final`` set to
+    true, the complete utterance becomes "to be or not to be that is the
+    question".
 
     Attributes:
         message_type (google.cloud.dialogflow_v2beta1.types.StreamingRecognitionResult.MessageType):

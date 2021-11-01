@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dialogflow_v2.types import fulfillment
 from google.cloud.dialogflow_v2.types import fulfillment as gcd_fulfillment
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -348,7 +350,7 @@ class FulfillmentsClient(metaclass=FulfillmentsClientMeta):
         request: Union[fulfillment.GetFulfillmentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> fulfillment.Fulfillment:
@@ -430,7 +432,7 @@ class FulfillmentsClient(metaclass=FulfillmentsClientMeta):
         *,
         fulfillment: gcd_fulfillment.Fulfillment = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_fulfillment.Fulfillment:

@@ -217,6 +217,13 @@ class AnalyzeContentRequest(proto.Message):
     r"""The request message for
     [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         participant (str):
             Required. The name of the participant this text comes from.
@@ -224,8 +231,10 @@ class AnalyzeContentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/participants/<Participant ID>``.
         text_input (google.cloud.dialogflow_v2.types.TextInput):
             The natural language text to be processed.
+            This field is a member of `oneof`_ ``input``.
         event_input (google.cloud.dialogflow_v2.types.EventInput):
             An input event to send to Dialogflow.
+            This field is a member of `oneof`_ ``input``.
         reply_audio_config (google.cloud.dialogflow_v2.types.OutputAudioConfig):
             Speech synthesis configuration.
             The speech synthesis settings for a virtual
@@ -573,14 +582,24 @@ class SuggestionResult(proto.Message):
     as well as
     [HumanAgentAssistantEvent][google.cloud.dialogflow.v2.HumanAgentAssistantEvent].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         error (google.rpc.status_pb2.Status):
             Error status if the request failed.
+            This field is a member of `oneof`_ ``suggestion_response``.
         suggest_articles_response (google.cloud.dialogflow_v2.types.SuggestArticlesResponse):
             SuggestArticlesResponse if request is for
             ARTICLE_SUGGESTION.
+            This field is a member of `oneof`_ ``suggestion_response``.
         suggest_faq_answers_response (google.cloud.dialogflow_v2.types.SuggestFaqAnswersResponse):
             SuggestFaqAnswersResponse if request is for FAQ_ANSWER.
+            This field is a member of `oneof`_ ``suggestion_response``.
     """
 
     error = proto.Field(

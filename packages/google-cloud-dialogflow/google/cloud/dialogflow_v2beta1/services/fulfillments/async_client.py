@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dialogflow_v2beta1.types import fulfillment
 from google.cloud.dialogflow_v2beta1.types import fulfillment as gcd_fulfillment
@@ -162,17 +164,17 @@ class FulfillmentsAsyncClient:
 
     async def get_fulfillment(
         self,
-        request: fulfillment.GetFulfillmentRequest = None,
+        request: Union[fulfillment.GetFulfillmentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> fulfillment.Fulfillment:
         r"""Retrieves the fulfillment.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2beta1.types.GetFulfillmentRequest`):
+            request (Union[google.cloud.dialogflow_v2beta1.types.GetFulfillmentRequest, dict]):
                 The request object. The request message for
                 [Fulfillments.GetFulfillment][google.cloud.dialogflow.v2beta1.Fulfillments.GetFulfillment].
             name (:class:`str`):
@@ -246,18 +248,18 @@ class FulfillmentsAsyncClient:
 
     async def update_fulfillment(
         self,
-        request: gcd_fulfillment.UpdateFulfillmentRequest = None,
+        request: Union[gcd_fulfillment.UpdateFulfillmentRequest, dict] = None,
         *,
         fulfillment: gcd_fulfillment.Fulfillment = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_fulfillment.Fulfillment:
         r"""Updates the fulfillment.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2beta1.types.UpdateFulfillmentRequest`):
+            request (Union[google.cloud.dialogflow_v2beta1.types.UpdateFulfillmentRequest, dict]):
                 The request object. The request message for
                 [Fulfillments.UpdateFulfillment][google.cloud.dialogflow.v2beta1.Fulfillments.UpdateFulfillment].
             fulfillment (:class:`google.cloud.dialogflow_v2beta1.types.Fulfillment`):

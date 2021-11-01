@@ -267,16 +267,26 @@ class HumanAgentAssistantConfig(proto.Message):
     class SuggestionQueryConfig(proto.Message):
         r"""Config for suggestion query.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             knowledge_base_query_source (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionQueryConfig.KnowledgeBaseQuerySource):
                 Query from knowledgebase. It is used by: ARTICLE_SUGGESTION,
                 FAQ.
+                This field is a member of `oneof`_ ``query_source``.
             document_query_source (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionQueryConfig.DocumentQuerySource):
                 Query from knowledge base document. It is used by:
                 SMART_REPLY, SMART_COMPOSE.
+                This field is a member of `oneof`_ ``query_source``.
             dialogflow_query_source (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionQueryConfig.DialogflowQuerySource):
                 Query from Dialogflow agent. It is used by
                 DIALOGFLOW_ASSIST.
+                This field is a member of `oneof`_ ``query_source``.
             max_results (int):
                 Maximum number of results to return.
                 Currently, if unset, defaults to 10. And the max
@@ -474,11 +484,20 @@ class HumanAgentHandoffConfig(proto.Message):
     Currently, this feature is not general available, please contact
     Google to get access.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         live_person_config (google.cloud.dialogflow_v2beta1.types.HumanAgentHandoffConfig.LivePersonConfig):
             Uses LivePerson (https://www.liveperson.com).
+            This field is a member of `oneof`_ ``agent_service``.
         salesforce_live_agent_config (google.cloud.dialogflow_v2beta1.types.HumanAgentHandoffConfig.SalesforceLiveAgentConfig):
             Uses Salesforce Live Agent.
+            This field is a member of `oneof`_ ``agent_service``.
     """
 
     class LivePersonConfig(proto.Message):

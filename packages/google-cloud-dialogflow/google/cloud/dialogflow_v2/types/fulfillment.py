@@ -36,6 +36,9 @@ class Fulfillment(proto.Message):
     For more information, see the `fulfillment
     guide <https://cloud.google.com/dialogflow/docs/fulfillment-overview>`__.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Required. The unique identifier of the fulfillment.
@@ -52,6 +55,7 @@ class Fulfillment(proto.Message):
             Environment.
         generic_web_service (google.cloud.dialogflow_v2.types.Fulfillment.GenericWebService):
             Configuration for a generic web service.
+            This field is a member of `oneof`_ ``fulfillment``.
         enabled (bool):
             Optional. Whether fulfillment is enabled.
         features (Sequence[google.cloud.dialogflow_v2.types.Fulfillment.Feature]):

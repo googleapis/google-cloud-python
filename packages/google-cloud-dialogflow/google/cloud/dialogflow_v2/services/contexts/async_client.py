@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dialogflow_v2.services.contexts import pagers
 from google.cloud.dialogflow_v2.types import context
@@ -158,10 +160,10 @@ class ContextsAsyncClient:
 
     async def list_contexts(
         self,
-        request: context.ListContextsRequest = None,
+        request: Union[context.ListContextsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListContextsAsyncPager:
@@ -169,7 +171,7 @@ class ContextsAsyncClient:
         session.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2.types.ListContextsRequest`):
+            request (Union[google.cloud.dialogflow_v2.types.ListContextsRequest, dict]):
                 The request object. The request message for
                 [Contexts.ListContexts][google.cloud.dialogflow.v2.Contexts.ListContexts].
             parent (:class:`str`):
@@ -243,17 +245,17 @@ class ContextsAsyncClient:
 
     async def get_context(
         self,
-        request: context.GetContextRequest = None,
+        request: Union[context.GetContextRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> context.Context:
         r"""Retrieves the specified context.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2.types.GetContextRequest`):
+            request (Union[google.cloud.dialogflow_v2.types.GetContextRequest, dict]):
                 The request object. The request message for
                 [Contexts.GetContext][google.cloud.dialogflow.v2.Contexts.GetContext].
             name (:class:`str`):
@@ -336,11 +338,11 @@ class ContextsAsyncClient:
 
     async def create_context(
         self,
-        request: gcd_context.CreateContextRequest = None,
+        request: Union[gcd_context.CreateContextRequest, dict] = None,
         *,
         parent: str = None,
         context: gcd_context.Context = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_context.Context:
@@ -349,7 +351,7 @@ class ContextsAsyncClient:
         context.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2.types.CreateContextRequest`):
+            request (Union[google.cloud.dialogflow_v2.types.CreateContextRequest, dict]):
                 The request object. The request message for
                 [Contexts.CreateContext][google.cloud.dialogflow.v2.Contexts.CreateContext].
             parent (:class:`str`):
@@ -438,18 +440,18 @@ class ContextsAsyncClient:
 
     async def update_context(
         self,
-        request: gcd_context.UpdateContextRequest = None,
+        request: Union[gcd_context.UpdateContextRequest, dict] = None,
         *,
         context: gcd_context.Context = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_context.Context:
         r"""Updates the specified context.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2.types.UpdateContextRequest`):
+            request (Union[google.cloud.dialogflow_v2.types.UpdateContextRequest, dict]):
                 The request object. The request message for
                 [Contexts.UpdateContext][google.cloud.dialogflow.v2.Contexts.UpdateContext].
             context (:class:`google.cloud.dialogflow_v2.types.Context`):
@@ -536,17 +538,17 @@ class ContextsAsyncClient:
 
     async def delete_context(
         self,
-        request: context.DeleteContextRequest = None,
+        request: Union[context.DeleteContextRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified context.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2.types.DeleteContextRequest`):
+            request (Union[google.cloud.dialogflow_v2.types.DeleteContextRequest, dict]):
                 The request object. The request message for
                 [Contexts.DeleteContext][google.cloud.dialogflow.v2.Contexts.DeleteContext].
             name (:class:`str`):
@@ -605,17 +607,17 @@ class ContextsAsyncClient:
 
     async def delete_all_contexts(
         self,
-        request: context.DeleteAllContextsRequest = None,
+        request: Union[context.DeleteAllContextsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes all active contexts in the specified session.
 
         Args:
-            request (:class:`google.cloud.dialogflow_v2.types.DeleteAllContextsRequest`):
+            request (Union[google.cloud.dialogflow_v2.types.DeleteAllContextsRequest, dict]):
                 The request object. The request message for
                 [Contexts.DeleteAllContexts][google.cloud.dialogflow.v2.Contexts.DeleteAllContexts].
             parent (:class:`str`):

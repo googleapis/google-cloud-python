@@ -46,6 +46,13 @@ class Document(proto.Message):
     Note: The ``projects.agent.knowledgeBases.documents`` resource is
     deprecated; only use ``projects.knowledgeBases.documents``.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Optional. The document resource name. The name must be empty
@@ -71,9 +78,11 @@ class Document(proto.Message):
             URLs for showing documents in Google Cloud Storage (i.e. the
             URL in your browser) are not supported. Instead use the
             ``gs://`` format URI described above.
+            This field is a member of `oneof`_ ``source``.
         raw_content (bytes):
             The raw content of the document. This field is only
             permitted for EXTRACTIVE_QA and FAQ knowledge types.
+            This field is a member of `oneof`_ ``source``.
         enable_auto_reload (bool):
             Optional. If true, we try to automatically reload the
             document every day (at a time picked by the system). If
@@ -250,6 +259,9 @@ class ReloadDocumentRequest(proto.Message):
     r"""Request message for
     [Documents.ReloadDocument][google.cloud.dialogflow.v2.Documents.ReloadDocument].
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Required. The name of the document to reload. Format:
@@ -260,6 +272,7 @@ class ReloadDocumentRequest(proto.Message):
 
             For documents stored in Google Cloud Storage, these URIs
             must have the form ``gs://<bucket-name>/<object-name>``.
+            This field is a member of `oneof`_ ``source``.
     """
 
     name = proto.Field(proto.STRING, number=1,)

@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.dialogflow_v2beta1.services.entity_types import pagers
@@ -358,7 +360,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         *,
         parent: str = None,
         language_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEntityTypesPager:
@@ -455,7 +457,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         *,
         name: str = None,
         language_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> entity_type.EntityType:
@@ -556,7 +558,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         parent: str = None,
         entity_type: gcd_entity_type.EntityType = None,
         language_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_entity_type.EntityType:
@@ -668,7 +670,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         entity_type: gcd_entity_type.EntityType = None,
         language_code: str = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_entity_type.EntityType:
@@ -777,7 +779,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         request: Union[entity_type.DeleteEntityTypeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -847,7 +849,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         self,
         request: Union[entity_type.BatchUpdateEntityTypesRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -927,7 +929,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         *,
         parent: str = None,
         entity_type_names: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1049,7 +1051,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         parent: str = None,
         entities: Sequence[entity_type.EntityType.Entity] = None,
         language_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1179,7 +1181,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         parent: str = None,
         entities: Sequence[entity_type.EntityType.Entity] = None,
         language_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1313,7 +1315,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         parent: str = None,
         entity_values: Sequence[str] = None,
         language_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
