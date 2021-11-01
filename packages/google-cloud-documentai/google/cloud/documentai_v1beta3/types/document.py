@@ -37,6 +37,13 @@ class Document(proto.Message):
     documents and allows for collaboration between users and
     Document Understanding AI to iterate and optimize for quality.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         uri (str):
             Optional. Currently supports Google Cloud Storage URI of the
@@ -44,11 +51,13 @@ class Document(proto.Message):
             not supported. See `Google Cloud Storage Request
             URIs <https://cloud.google.com/storage/docs/reference-uris>`__
             for more info.
+            This field is a member of `oneof`_ ``source``.
         content (bytes):
             Optional. Inline document content, represented as a stream
             of bytes. Note: As with all ``bytes`` fields, protobuffers
             use a pure binary representation, whereas JSON
             representations use base64.
+            This field is a member of `oneof`_ ``source``.
         mime_type (str):
             An IANA published MIME type (also referred to
             as media type). For more information, see
@@ -687,24 +696,36 @@ class Document(proto.Message):
         class NormalizedValue(proto.Message):
             r"""Parsed and normalized entity value.
 
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
             Attributes:
                 money_value (google.type.money_pb2.Money):
                     Money value. See also:
                     https://github.com/googleapis/googleapis/blob/master/google/type/money.proto
+                    This field is a member of `oneof`_ ``structured_value``.
                 date_value (google.type.date_pb2.Date):
                     Date value. Includes year, month, day. See
                     also:
                     https://github.com/googleapis/googleapis/blob/master/google/type/date.proto
+                    This field is a member of `oneof`_ ``structured_value``.
                 datetime_value (google.type.datetime_pb2.DateTime):
                     DateTime value. Includes date, time, and
                     timezone. See also:
                     https://github.com/googleapis/googleapis/blob/master/google/type/datetime.proto
+                    This field is a member of `oneof`_ ``structured_value``.
                 address_value (google.type.postal_address_pb2.PostalAddress):
                     Postal address. See also:
                     https://github.com/googleapis/googleapis/blob/master/google/type/postal_address.proto
+                    This field is a member of `oneof`_ ``structured_value``.
                 boolean_value (bool):
                     Boolean value. Can be used for entities with
                     binary values, or for checkboxes.
+                    This field is a member of `oneof`_ ``structured_value``.
                 text (str):
                     Required. Normalized entity value stored as a string. This
                     field is populated for supported document type (e.g.
@@ -951,13 +972,22 @@ class Document(proto.Message):
     class Revision(proto.Message):
         r"""Contains past or forward revisions of this document.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             agent (str):
                 If the change was made by a person specify
                 the name or id of that person.
+                This field is a member of `oneof`_ ``source``.
             processor (str):
                 If the annotation was made by processor
                 identify the processor by its resource name.
+                This field is a member of `oneof`_ ``source``.
             id (str):
                 Id of the revision.  Unique within the
                 context of the document.

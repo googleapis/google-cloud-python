@@ -41,11 +41,20 @@ __protobuf__ = proto.module(
 class ProcessRequest(proto.Message):
     r"""Request message for the process document method.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         inline_document (google.cloud.documentai_v1.types.Document):
             An inline document proto.
+            This field is a member of `oneof`_ ``source``.
         raw_document (google.cloud.documentai_v1.types.RawDocument):
             A raw document content (bytes).
+            This field is a member of `oneof`_ ``source``.
         name (str):
             Required. The processor resource name.
         skip_human_review (bool):
@@ -212,9 +221,12 @@ class BatchProcessMetadata(proto.Message):
 class ReviewDocumentRequest(proto.Message):
     r"""Request message for review document method.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         inline_document (google.cloud.documentai_v1.types.Document):
             An inline document proto.
+            This field is a member of `oneof`_ ``source``.
         human_review_config (str):
             Required. The resource name of the
             HumanReviewConfig that the document will be

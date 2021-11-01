@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -174,10 +176,12 @@ class DocumentUnderstandingServiceAsyncClient:
 
     async def batch_process_documents(
         self,
-        request: document_understanding.BatchProcessDocumentsRequest = None,
+        request: Union[
+            document_understanding.BatchProcessDocumentsRequest, dict
+        ] = None,
         *,
         requests: Sequence[document_understanding.ProcessDocumentRequest] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -185,7 +189,7 @@ class DocumentUnderstandingServiceAsyncClient:
         written to Cloud Storage as JSON in the [Document] format.
 
         Args:
-            request (:class:`google.cloud.documentai_v1beta2.types.BatchProcessDocumentsRequest`):
+            request (Union[google.cloud.documentai_v1beta2.types.BatchProcessDocumentsRequest, dict]):
                 The request object. Request to batch process documents
                 as an asynchronous operation. The output is written to
                 Cloud Storage as JSON in the [Document] format.
@@ -267,16 +271,16 @@ class DocumentUnderstandingServiceAsyncClient:
 
     async def process_document(
         self,
-        request: document_understanding.ProcessDocumentRequest = None,
+        request: Union[document_understanding.ProcessDocumentRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Processes a single document.
 
         Args:
-            request (:class:`google.cloud.documentai_v1beta2.types.ProcessDocumentRequest`):
+            request (Union[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest, dict]):
                 The request object. Request to process one document.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

@@ -85,13 +85,22 @@ class BatchDocumentsInputConfig(proto.Message):
     r"""The common config to specify a set of documents used as
     input.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_prefix (google.cloud.documentai_v1.types.GcsPrefix):
             The set of documents that match the specified Cloud Storage
             [gcs_prefix].
+            This field is a member of `oneof`_ ``source``.
         gcs_documents (google.cloud.documentai_v1.types.GcsDocuments):
             The set of documents individually specified
             on Cloud Storage.
+            This field is a member of `oneof`_ ``source``.
     """
 
     gcs_prefix = proto.Field(
@@ -106,10 +115,14 @@ class DocumentOutputConfig(proto.Message):
     r"""Config that controls the output of documents. All documents
     will be written as a JSON file.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_output_config (google.cloud.documentai_v1.types.DocumentOutputConfig.GcsOutputConfig):
             Output config to write the results to Cloud
             Storage.
+            This field is a member of `oneof`_ ``destination``.
     """
 
     class GcsOutputConfig(proto.Message):

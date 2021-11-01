@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -195,17 +197,17 @@ class DocumentProcessorServiceAsyncClient:
 
     async def process_document(
         self,
-        request: document_processor_service.ProcessRequest = None,
+        request: Union[document_processor_service.ProcessRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_processor_service.ProcessResponse:
         r"""Processes a single document.
 
         Args:
-            request (:class:`google.cloud.documentai_v1beta3.types.ProcessRequest`):
+            request (Union[google.cloud.documentai_v1beta3.types.ProcessRequest, dict]):
                 The request object. Request message for the process
                 document method.
             name (:class:`str`):
@@ -276,10 +278,10 @@ class DocumentProcessorServiceAsyncClient:
 
     async def batch_process_documents(
         self,
-        request: document_processor_service.BatchProcessRequest = None,
+        request: Union[document_processor_service.BatchProcessRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -287,7 +289,7 @@ class DocumentProcessorServiceAsyncClient:
         written to Cloud Storage as JSON in the [Document] format.
 
         Args:
-            request (:class:`google.cloud.documentai_v1beta3.types.BatchProcessRequest`):
+            request (Union[google.cloud.documentai_v1beta3.types.BatchProcessRequest, dict]):
                 The request object. Request message for batch process
                 document method.
             name (:class:`str`):
@@ -369,17 +371,19 @@ class DocumentProcessorServiceAsyncClient:
 
     async def fetch_processor_types(
         self,
-        request: document_processor_service.FetchProcessorTypesRequest = None,
+        request: Union[
+            document_processor_service.FetchProcessorTypesRequest, dict
+        ] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_processor_service.FetchProcessorTypesResponse:
         r"""Fetches processor types.
 
         Args:
-            request (:class:`google.cloud.documentai_v1beta3.types.FetchProcessorTypesRequest`):
+            request (Union[google.cloud.documentai_v1beta3.types.FetchProcessorTypesRequest, dict]):
                 The request object. Request message for fetch processor
                 types.
             parent (:class:`str`):
@@ -441,17 +445,17 @@ class DocumentProcessorServiceAsyncClient:
 
     async def list_processors(
         self,
-        request: document_processor_service.ListProcessorsRequest = None,
+        request: Union[document_processor_service.ListProcessorsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProcessorsAsyncPager:
         r"""Lists all processors which belong to this project.
 
         Args:
-            request (:class:`google.cloud.documentai_v1beta3.types.ListProcessorsRequest`):
+            request (Union[google.cloud.documentai_v1beta3.types.ListProcessorsRequest, dict]):
                 The request object. Request message for list all
                 processors belongs to a project.
             parent (:class:`str`):
@@ -522,11 +526,11 @@ class DocumentProcessorServiceAsyncClient:
 
     async def create_processor(
         self,
-        request: document_processor_service.CreateProcessorRequest = None,
+        request: Union[document_processor_service.CreateProcessorRequest, dict] = None,
         *,
         parent: str = None,
         processor: gcd_processor.Processor = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_processor.Processor:
@@ -535,7 +539,7 @@ class DocumentProcessorServiceAsyncClient:
         default after its creation.
 
         Args:
-            request (:class:`google.cloud.documentai_v1beta3.types.CreateProcessorRequest`):
+            request (Union[google.cloud.documentai_v1beta3.types.CreateProcessorRequest, dict]):
                 The request object. Request message for create a
                 processor. Notice this request is sent to a regionalized
                 backend service, and if the processor type is not
@@ -612,10 +616,10 @@ class DocumentProcessorServiceAsyncClient:
 
     async def delete_processor(
         self,
-        request: document_processor_service.DeleteProcessorRequest = None,
+        request: Union[document_processor_service.DeleteProcessorRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -624,7 +628,7 @@ class DocumentProcessorServiceAsyncClient:
         artifacts associated with this processor.
 
         Args:
-            request (:class:`google.cloud.documentai_v1beta3.types.DeleteProcessorRequest`):
+            request (Union[google.cloud.documentai_v1beta3.types.DeleteProcessorRequest, dict]):
                 The request object. Request message for the delete
                 processor method.
             name (:class:`str`):
@@ -706,16 +710,16 @@ class DocumentProcessorServiceAsyncClient:
 
     async def enable_processor(
         self,
-        request: document_processor_service.EnableProcessorRequest = None,
+        request: Union[document_processor_service.EnableProcessorRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Enables a processor
 
         Args:
-            request (:class:`google.cloud.documentai_v1beta3.types.EnableProcessorRequest`):
+            request (Union[google.cloud.documentai_v1beta3.types.EnableProcessorRequest, dict]):
                 The request object. Request message for the enable
                 processor method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -766,16 +770,16 @@ class DocumentProcessorServiceAsyncClient:
 
     async def disable_processor(
         self,
-        request: document_processor_service.DisableProcessorRequest = None,
+        request: Union[document_processor_service.DisableProcessorRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Disables a processor
 
         Args:
-            request (:class:`google.cloud.documentai_v1beta3.types.DisableProcessorRequest`):
+            request (Union[google.cloud.documentai_v1beta3.types.DisableProcessorRequest, dict]):
                 The request object. Request message for the disable
                 processor method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -826,10 +830,10 @@ class DocumentProcessorServiceAsyncClient:
 
     async def review_document(
         self,
-        request: document_processor_service.ReviewDocumentRequest = None,
+        request: Union[document_processor_service.ReviewDocumentRequest, dict] = None,
         *,
         human_review_config: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -837,7 +841,7 @@ class DocumentProcessorServiceAsyncClient:
         should be processed by the specified processor.
 
         Args:
-            request (:class:`google.cloud.documentai_v1beta3.types.ReviewDocumentRequest`):
+            request (Union[google.cloud.documentai_v1beta3.types.ReviewDocumentRequest, dict]):
                 The request object. Request message for review document
                 method. Next Id: 6.
             human_review_config (:class:`str`):
