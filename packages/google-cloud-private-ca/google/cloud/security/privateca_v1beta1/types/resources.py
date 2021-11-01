@@ -252,6 +252,13 @@ class CertificateAuthority(proto.Message):
         [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
         if they violate the policy.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             allowed_config_list (google.cloud.security.privateca_v1beta1.types.CertificateAuthority.CertificateAuthorityPolicy.AllowedConfigList):
                 Optional. All
@@ -261,6 +268,7 @@ class CertificateAuthority(proto.Message):
                 must match at least one listed
                 [ReusableConfigWrapper][google.cloud.security.privateca.v1beta1.ReusableConfigWrapper]
                 in the list.
+                This field is a member of `oneof`_ ``config_policy``.
             overwrite_config_values (google.cloud.security.privateca_v1beta1.types.ReusableConfigWrapper):
                 Optional. All
                 [Certificates][google.cloud.security.privateca.v1beta1.Certificate]
@@ -268,6 +276,7 @@ class CertificateAuthority(proto.Message):
                 [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
                 will use the provided configuration values, overwriting any
                 requested configuration values.
+                This field is a member of `oneof`_ ``config_policy``.
             allowed_locations_and_organizations (Sequence[google.cloud.security.privateca_v1beta1.types.Subject]):
                 Optional. If any
                 [Subject][google.cloud.security.privateca.v1beta1.Subject]
@@ -466,6 +475,13 @@ class CertificateAuthority(proto.Message):
         [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
         will use.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             cloud_kms_key_version (str):
                 Required. The resource name for an existing Cloud KMS
@@ -473,12 +489,14 @@ class CertificateAuthority(proto.Message):
                 ``projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*``.
                 This option enables full flexibility in the key's
                 capabilities and properties.
+                This field is a member of `oneof`_ ``KeyVersion``.
             algorithm (google.cloud.security.privateca_v1beta1.types.CertificateAuthority.SignHashAlgorithm):
                 Required. The algorithm to use for creating a managed Cloud
                 KMS key for a for a simplified experience. All managed keys
                 will be have their
                 [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] as
                 ``HSM``.
+                This field is a member of `oneof`_ ``KeyVersion``.
         """
 
         cloud_kms_key_version = proto.Field(proto.STRING, number=1, oneof="KeyVersion",)
@@ -611,6 +629,13 @@ class Certificate(proto.Message):
     corresponds to a signed X.509 certificate issued by a
     [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. The resource path for this
@@ -620,9 +645,11 @@ class Certificate(proto.Message):
         pem_csr (str):
             Immutable. A pem-encoded X.509 certificate
             signing request (CSR).
+            This field is a member of `oneof`_ ``certificate_config``.
         config (google.cloud.security.privateca_v1beta1.types.CertificateConfig):
             Immutable. A description of the certificate
             and key that does not require X.509 or ASN.1.
+            This field is a member of `oneof`_ ``certificate_config``.
         lifetime (google.protobuf.duration_pb2.Duration):
             Required. Immutable. The desired lifetime of a certificate.
             Used to create the "not_before_time" and "not_after_time"
@@ -808,14 +835,23 @@ class ReusableConfigWrapper(proto.Message):
     describes values that may assist in creating an X.509 certificate,
     or a reference to a pre-defined set of values.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         reusable_config (str):
             Required. A resource path to a
             [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
             in the format ``projects/*/locations/*/reusableConfigs/*``.
+            This field is a member of `oneof`_ ``config_values``.
         reusable_config_values (google.cloud.security.privateca_v1beta1.types.ReusableConfigValues):
             Required. A user-specified inline
             [ReusableConfigValues][google.cloud.security.privateca.v1beta1.ReusableConfigValues].
+            This field is a member of `oneof`_ ``config_values``.
     """
 
     reusable_config = proto.Field(proto.STRING, number=1, oneof="config_values",)
@@ -830,6 +866,13 @@ class SubordinateConfig(proto.Message):
     [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority],
     or a PEM issuer certificate chain.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         certificate_authority (str):
             Required. This can refer to a
@@ -839,11 +882,13 @@ class SubordinateConfig(proto.Message):
             This field is used for information and usability purposes
             only. The resource name is in the format
             ``projects/*/locations/*/certificateAuthorities/*``.
+            This field is a member of `oneof`_ ``subordinate_config``.
         pem_issuer_chain (google.cloud.security.privateca_v1beta1.types.SubordinateConfig.SubordinateConfigChain):
             Required. Contains the PEM certificate chain for the issuers
             of this
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority],
             but not pem certificate for this CA itself.
+            This field is a member of `oneof`_ ``subordinate_config``.
     """
 
     class SubordinateConfigChain(proto.Message):
