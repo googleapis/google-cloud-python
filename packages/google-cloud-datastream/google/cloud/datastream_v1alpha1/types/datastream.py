@@ -59,27 +59,40 @@ __protobuf__ = proto.module(
 class DiscoverConnectionProfileRequest(proto.Message):
     r"""Request message for 'discover' ConnectionProfile request.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. The parent resource of the ConnectionProfile type.
             Must be in the format ``projects/*/locations/*``.
         connection_profile (google.cloud.datastream_v1alpha1.types.ConnectionProfile):
             An ad-hoc ConnectionProfile configuration.
+            This field is a member of `oneof`_ ``target``.
         connection_profile_name (str):
             A reference to an existing ConnectionProfile.
+            This field is a member of `oneof`_ ``target``.
         recursive (bool):
             Whether to retrieve the full hierarchy of
             data objects (TRUE) or only the current level
             (FALSE).
+            This field is a member of `oneof`_ ``depth``.
         recursion_depth (int):
             The number of hierarchy levels below the
             current level to be retrieved.
+            This field is a member of `oneof`_ ``depth``.
         oracle_rdbms (google.cloud.datastream_v1alpha1.types.OracleRdbms):
             Oracle RDBMS to enrich with child data
             objects and metadata.
+            This field is a member of `oneof`_ ``data_object``.
         mysql_rdbms (google.cloud.datastream_v1alpha1.types.MysqlRdbms):
             MySQL RDBMS to enrich with child data objects
             and metadata.
+            This field is a member of `oneof`_ ``data_object``.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
@@ -109,11 +122,20 @@ class DiscoverConnectionProfileRequest(proto.Message):
 class DiscoverConnectionProfileResponse(proto.Message):
     r"""
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         oracle_rdbms (google.cloud.datastream_v1alpha1.types.OracleRdbms):
             Enriched Oracle RDBMS object.
+            This field is a member of `oneof`_ ``data_object``.
         mysql_rdbms (google.cloud.datastream_v1alpha1.types.MysqlRdbms):
             Enriched MySQL RDBMS object.
+            This field is a member of `oneof`_ ``data_object``.
     """
 
     oracle_rdbms = proto.Field(

@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.datastream_v1alpha1.services.datastream import pagers
@@ -413,7 +415,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         request: Union[datastream.ListConnectionProfilesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectionProfilesPager:
@@ -491,7 +493,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         request: Union[datastream.GetConnectionProfileRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastream_resources.ConnectionProfile:
@@ -562,7 +564,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         parent: str = None,
         connection_profile: datastream_resources.ConnectionProfile = None,
         connection_profile_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -664,7 +666,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         *,
         connection_profile: datastream_resources.ConnectionProfile = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -763,7 +765,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         request: Union[datastream.DeleteConnectionProfileRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -855,7 +857,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         self,
         request: Union[datastream.DiscoverConnectionProfileRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastream.DiscoverConnectionProfileResponse:
@@ -910,7 +912,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         request: Union[datastream.ListStreamsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListStreamsPager:
@@ -988,7 +990,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         request: Union[datastream.GetStreamRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastream_resources.Stream:
@@ -1058,7 +1060,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         parent: str = None,
         stream: datastream_resources.Stream = None,
         stream_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1155,7 +1157,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         *,
         stream: datastream_resources.Stream = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1251,7 +1253,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         request: Union[datastream.DeleteStreamRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1341,7 +1343,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         self,
         request: Union[datastream.FetchErrorsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1404,7 +1406,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         request: Union[datastream.FetchStaticIpsRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.FetchStaticIpsPager:
@@ -1489,7 +1491,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         parent: str = None,
         private_connection: datastream_resources.PrivateConnection = None,
         private_connection_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1590,7 +1592,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         request: Union[datastream.GetPrivateConnectionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastream_resources.PrivateConnection:
@@ -1663,7 +1665,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         request: Union[datastream.ListPrivateConnectionsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPrivateConnectionsPager:
@@ -1742,7 +1744,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         request: Union[datastream.DeletePrivateConnectionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1838,7 +1840,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         parent: str = None,
         route: datastream_resources.Route = None,
         route_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1936,7 +1938,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         request: Union[datastream.GetRouteRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datastream_resources.Route:
@@ -2008,7 +2010,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         request: Union[datastream.ListRoutesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRoutesPager:
@@ -2087,7 +2089,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         request: Union[datastream.DeleteRouteRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
