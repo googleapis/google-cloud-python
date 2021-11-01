@@ -28,12 +28,14 @@ from typing import (
 )
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -163,11 +165,11 @@ class SpeechAsyncClient:
 
     async def recognize(
         self,
-        request: cloud_speech.RecognizeRequest = None,
+        request: Union[cloud_speech.RecognizeRequest, dict] = None,
         *,
         config: cloud_speech.RecognitionConfig = None,
         audio: cloud_speech.RecognitionAudio = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_speech.RecognizeResponse:
@@ -175,7 +177,7 @@ class SpeechAsyncClient:
         results after all audio has been sent and processed.
 
         Args:
-            request (:class:`google.cloud.speech_v1.types.RecognizeRequest`):
+            request (Union[google.cloud.speech_v1.types.RecognizeRequest, dict]):
                 The request object. The top-level message sent by the
                 client for the `Recognize` method.
             config (:class:`google.cloud.speech_v1.types.RecognitionConfig`):
@@ -251,11 +253,11 @@ class SpeechAsyncClient:
 
     async def long_running_recognize(
         self,
-        request: cloud_speech.LongRunningRecognizeRequest = None,
+        request: Union[cloud_speech.LongRunningRecognizeRequest, dict] = None,
         *,
         config: cloud_speech.RecognitionConfig = None,
         audio: cloud_speech.RecognitionAudio = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -267,7 +269,7 @@ class SpeechAsyncClient:
         `how-to <https://cloud.google.com/speech-to-text/docs/async-recognize>`__.
 
         Args:
-            request (:class:`google.cloud.speech_v1.types.LongRunningRecognizeRequest`):
+            request (Union[google.cloud.speech_v1.types.LongRunningRecognizeRequest, dict]):
                 The request object. The top-level message sent by the
                 client for the `LongRunningRecognize` method.
             config (:class:`google.cloud.speech_v1.types.RecognitionConfig`):
@@ -348,7 +350,7 @@ class SpeechAsyncClient:
         self,
         requests: AsyncIterator[cloud_speech.StreamingRecognizeRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[cloud_speech.StreamingRecognizeResponse]]:
