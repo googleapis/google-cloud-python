@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.texttospeech_v1beta1.types import cloud_tts
 from .transports.base import TextToSpeechTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import TextToSpeechGrpcTransport
@@ -333,7 +335,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
         request: Union[cloud_tts.ListVoicesRequest, dict] = None,
         *,
         language_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tts.ListVoicesResponse:
@@ -409,7 +411,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
         input: cloud_tts.SynthesisInput = None,
         voice: cloud_tts.VoiceSelectionParams = None,
         audio_config: cloud_tts.AudioConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tts.SynthesizeSpeechResponse:

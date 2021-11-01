@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.texttospeech_v1.types import cloud_tts
 from .transports.base import TextToSpeechTransport, DEFAULT_CLIENT_INFO
@@ -156,17 +158,17 @@ class TextToSpeechAsyncClient:
 
     async def list_voices(
         self,
-        request: cloud_tts.ListVoicesRequest = None,
+        request: Union[cloud_tts.ListVoicesRequest, dict] = None,
         *,
         language_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tts.ListVoicesResponse:
         r"""Returns a list of Voice supported for synthesis.
 
         Args:
-            request (:class:`google.cloud.texttospeech_v1.types.ListVoicesRequest`):
+            request (Union[google.cloud.texttospeech_v1.types.ListVoicesRequest, dict]):
                 The request object. The top-level message sent by the
                 client for the `ListVoices` method.
             language_code (:class:`str`):
@@ -239,12 +241,12 @@ class TextToSpeechAsyncClient:
 
     async def synthesize_speech(
         self,
-        request: cloud_tts.SynthesizeSpeechRequest = None,
+        request: Union[cloud_tts.SynthesizeSpeechRequest, dict] = None,
         *,
         input: cloud_tts.SynthesisInput = None,
         voice: cloud_tts.VoiceSelectionParams = None,
         audio_config: cloud_tts.AudioConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tts.SynthesizeSpeechResponse:
@@ -252,7 +254,7 @@ class TextToSpeechAsyncClient:
         after all text input has been processed.
 
         Args:
-            request (:class:`google.cloud.texttospeech_v1.types.SynthesizeSpeechRequest`):
+            request (Union[google.cloud.texttospeech_v1.types.SynthesizeSpeechRequest, dict]):
                 The request object. The top-level message sent by the
                 client for the `SynthesizeSpeech` method.
             input (:class:`google.cloud.texttospeech_v1.types.SynthesisInput`):
