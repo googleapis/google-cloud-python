@@ -37,6 +37,13 @@ class DataFormat(proto.Enum):
 class ReadSession(proto.Message):
     r"""Information about the ReadSession.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. Unique identifier for the session, in the form
@@ -50,8 +57,10 @@ class ReadSession(proto.Message):
             Immutable. Data format of the output data.
         avro_schema (google.cloud.bigquery_storage_v1beta2.types.AvroSchema):
             Output only. Avro schema.
+            This field is a member of `oneof`_ ``schema``.
         arrow_schema (google.cloud.bigquery_storage_v1beta2.types.ArrowSchema):
             Output only. Arrow schema.
+            This field is a member of `oneof`_ ``schema``.
         table (str):
             Immutable. Table that this ReadSession is reading from, in
             the form

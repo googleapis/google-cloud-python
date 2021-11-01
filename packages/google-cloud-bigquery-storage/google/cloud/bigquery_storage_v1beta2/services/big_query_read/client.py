@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.bigquery_storage_v1beta2.types import arrow
 from google.cloud.bigquery_storage_v1beta2.types import avro
 from google.cloud.bigquery_storage_v1beta2.types import storage
@@ -393,7 +395,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         parent: str = None,
         read_session: stream.ReadSession = None,
         max_stream_count: int = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> stream.ReadSession:
@@ -515,7 +517,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         *,
         read_stream: str = None,
         offset: int = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[storage.ReadRowsResponse]:
@@ -603,7 +605,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         self,
         request: Union[storage.SplitReadStreamRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> storage.SplitReadStreamResponse:

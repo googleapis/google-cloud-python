@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.bigquery_storage_v1.types import storage
 from google.cloud.bigquery_storage_v1.types import stream
 from google.cloud.bigquery_storage_v1.types import table
@@ -374,7 +376,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         *,
         parent: str = None,
         write_stream: stream.WriteStream = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> stream.WriteStream:
@@ -459,7 +461,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         self,
         requests: Iterator[storage.AppendRowsRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[storage.AppendRowsResponse]:
@@ -535,7 +537,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         request: Union[storage.GetWriteStreamRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> stream.WriteStream:
@@ -607,7 +609,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         request: Union[storage.FinalizeWriteStreamRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> storage.FinalizeWriteStreamResponse:
@@ -677,7 +679,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         request: Union[storage.BatchCommitWriteStreamsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> storage.BatchCommitWriteStreamsResponse:
@@ -754,7 +756,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         request: Union[storage.FlushRowsRequest, dict] = None,
         *,
         write_stream: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> storage.FlushRowsResponse:

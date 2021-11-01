@@ -149,12 +149,21 @@ class ReadRowsResponse(proto.Message):
     r"""Response from calling ``ReadRows`` may include row data, progress
     and throttling information.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         avro_rows (google.cloud.bigquery_storage_v1.types.AvroRows):
             Serialized row data in AVRO format.
+            This field is a member of `oneof`_ ``rows``.
         arrow_record_batch (google.cloud.bigquery_storage_v1.types.ArrowRecordBatch):
             Serialized row data in Arrow RecordBatch
             format.
+            This field is a member of `oneof`_ ``rows``.
         row_count (int):
             Number of serialized rows in the rows block.
         stats (google.cloud.bigquery_storage_v1.types.StreamStats):
@@ -165,8 +174,10 @@ class ReadRowsResponse(proto.Message):
             status.
         avro_schema (google.cloud.bigquery_storage_v1.types.AvroSchema):
             Output only. Avro schema.
+            This field is a member of `oneof`_ ``schema``.
         arrow_schema (google.cloud.bigquery_storage_v1.types.ArrowSchema):
             Output only. Arrow schema.
+            This field is a member of `oneof`_ ``schema``.
     """
 
     avro_rows = proto.Field(
@@ -253,6 +264,9 @@ class AppendRowsRequest(proto.Message):
     the first request sent each time the gRPC network connection is
     opened/reopened.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         write_stream (str):
             Required. The write_stream identifies the target of the
@@ -274,6 +288,7 @@ class AppendRowsRequest(proto.Message):
             AppendRows for the '_default' stream.
         proto_rows (google.cloud.bigquery_storage_v1.types.AppendRowsRequest.ProtoData):
             Rows in proto format.
+            This field is a member of `oneof`_ ``rows``.
         trace_id (str):
             Id set by client to annotate its identity.
             Only initial request setting is respected.
@@ -312,9 +327,17 @@ class AppendRowsRequest(proto.Message):
 class AppendRowsResponse(proto.Message):
     r"""Response message for ``AppendRows``.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         append_result (google.cloud.bigquery_storage_v1.types.AppendRowsResponse.AppendResult):
             Result if the append is successful.
+            This field is a member of `oneof`_ ``response``.
         error (google.rpc.status_pb2.Status):
             Error returned when problems were encountered. If present,
             it indicates rows were not accepted into the system. Users
@@ -339,6 +362,7 @@ class AppendRowsResponse(proto.Message):
 
             INTERNAL: Indicates server side error(s) that can be
             retried.
+            This field is a member of `oneof`_ ``response``.
         updated_schema (google.cloud.bigquery_storage_v1.types.TableSchema):
             If backend detects a schema update, pass it
             to user so that user can use it to input new
