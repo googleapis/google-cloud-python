@@ -428,7 +428,7 @@ class AddFulfillmentPlacesRequest(proto.Message):
 
             At least 1 value is required, and a maximum of 2000 values
             are allowed. Each value must be a string with a length limit
-            of 10 characters, matching the pattern ``[a-zA-Z0-9\_-]+``,
+            of 10 characters, matching the pattern ``[a-zA-Z0-9_-]+``,
             such as "store1" or "REGION-2". Otherwise, an
             INVALID_ARGUMENT error is returned.
 
@@ -517,7 +517,7 @@ class RemoveFulfillmentPlacesRequest(proto.Message):
 
             At least 1 value is required, and a maximum of 2000 values
             are allowed. Each value must be a string with a length limit
-            of 10 characters, matching the pattern ``[a-zA-Z0-9\_-]+``,
+            of 10 characters, matching the pattern ``[a-zA-Z0-9_-]+``,
             such as "store1" or "REGION-2". Otherwise, an
             INVALID_ARGUMENT error is returned.
         remove_time (google.protobuf.timestamp_pb2.Timestamp):
