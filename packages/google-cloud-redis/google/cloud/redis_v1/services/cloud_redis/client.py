@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.redis_v1.services.cloud_redis import pagers
@@ -376,7 +378,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         request: Union[cloud_redis.ListInstancesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesPager:
@@ -467,7 +469,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         request: Union[cloud_redis.GetInstanceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_redis.Instance:
@@ -539,7 +541,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         parent: str = None,
         instance_id: str = None,
         instance: cloud_redis.Instance = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -660,7 +662,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         update_mask: field_mask_pb2.FieldMask = None,
         instance: cloud_redis.Instance = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -766,7 +768,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         name: str = None,
         redis_version: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -860,7 +862,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         name: str = None,
         input_config: cloud_redis.InputConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -961,7 +963,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         name: str = None,
         output_config: cloud_redis.OutputConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1058,7 +1060,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         *,
         name: str = None,
         data_protection_mode: cloud_redis.FailoverInstanceRequest.DataProtectionMode = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1153,7 +1155,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         request: Union[cloud_redis.DeleteInstanceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
