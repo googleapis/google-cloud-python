@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.area120.tables_v1alpha1.services.tables_service import pagers
 from google.area120.tables_v1alpha1.types import tables
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -382,7 +384,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         request: Union[tables.GetTableRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Table:
@@ -450,7 +452,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         self,
         request: Union[tables.ListTablesRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTablesPager:
@@ -504,7 +506,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         request: Union[tables.GetWorkspaceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Workspace:
@@ -574,7 +576,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         self,
         request: Union[tables.ListWorkspacesRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkspacesPager:
@@ -628,7 +630,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         request: Union[tables.GetRowRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Row:
@@ -699,7 +701,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         request: Union[tables.ListRowsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRowsPager:
@@ -781,7 +783,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         *,
         parent: str = None,
         row: tables.Row = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Row:
@@ -857,7 +859,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         self,
         request: Union[tables.BatchCreateRowsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.BatchCreateRowsResponse:
@@ -909,7 +911,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         *,
         row: tables.Row = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Row:
@@ -982,7 +984,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         self,
         request: Union[tables.BatchUpdateRowsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.BatchUpdateRowsResponse:
@@ -1033,7 +1035,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         request: Union[tables.DeleteRowRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -1097,7 +1099,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         self,
         request: Union[tables.BatchDeleteRowsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
