@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation as gac_operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -161,16 +163,16 @@ class ApplicationsAsyncClient:
 
     async def get_application(
         self,
-        request: appengine.GetApplicationRequest = None,
+        request: Union[appengine.GetApplicationRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> application.Application:
         r"""Gets information about an application.
 
         Args:
-            request (:class:`google.cloud.appengine_admin_v1.types.GetApplicationRequest`):
+            request (Union[google.cloud.appengine_admin_v1.types.GetApplicationRequest, dict]):
                 The request object. Request message for
                 `Applications.GetApplication`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -211,9 +213,9 @@ class ApplicationsAsyncClient:
 
     async def create_application(
         self,
-        request: appengine.CreateApplicationRequest = None,
+        request: Union[appengine.CreateApplicationRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -230,7 +232,7 @@ class ApplicationsAsyncClient:
         Billing <https://cloud.google.com/appengine/docs/standard/python/console/>`__.
 
         Args:
-            request (:class:`google.cloud.appengine_admin_v1.types.CreateApplicationRequest`):
+            request (Union[google.cloud.appengine_admin_v1.types.CreateApplicationRequest, dict]):
                 The request object. Request message for
                 `Applications.CreateApplication`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -274,9 +276,9 @@ class ApplicationsAsyncClient:
 
     async def update_application(
         self,
-        request: appengine.UpdateApplicationRequest = None,
+        request: Union[appengine.UpdateApplicationRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -289,7 +291,7 @@ class ApplicationsAsyncClient:
            the application.
 
         Args:
-            request (:class:`google.cloud.appengine_admin_v1.types.UpdateApplicationRequest`):
+            request (Union[google.cloud.appengine_admin_v1.types.UpdateApplicationRequest, dict]):
                 The request object. Request message for
                 `Applications.UpdateApplication`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -339,9 +341,9 @@ class ApplicationsAsyncClient:
 
     async def repair_application(
         self,
-        request: appengine.RepairApplicationRequest = None,
+        request: Union[appengine.RepairApplicationRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -358,7 +360,7 @@ class ApplicationsAsyncClient:
         Cloud Console Activity Log.
 
         Args:
-            request (:class:`google.cloud.appengine_admin_v1.types.RepairApplicationRequest`):
+            request (Union[google.cloud.appengine_admin_v1.types.RepairApplicationRequest, dict]):
                 The request object. Request message for
                 'Applications.RepairApplication'.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

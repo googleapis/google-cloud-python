@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.appengine_admin_v1.services.authorized_certificates import pagers
 from google.cloud.appengine_admin_v1.types import appengine
@@ -169,9 +171,9 @@ class AuthorizedCertificatesAsyncClient:
 
     async def list_authorized_certificates(
         self,
-        request: appengine.ListAuthorizedCertificatesRequest = None,
+        request: Union[appengine.ListAuthorizedCertificatesRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAuthorizedCertificatesAsyncPager:
@@ -179,7 +181,7 @@ class AuthorizedCertificatesAsyncClient:
         administer.
 
         Args:
-            request (:class:`google.cloud.appengine_admin_v1.types.ListAuthorizedCertificatesRequest`):
+            request (Union[google.cloud.appengine_admin_v1.types.ListAuthorizedCertificatesRequest, dict]):
                 The request object. Request message for
                 `AuthorizedCertificates.ListAuthorizedCertificates`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -228,16 +230,16 @@ class AuthorizedCertificatesAsyncClient:
 
     async def get_authorized_certificate(
         self,
-        request: appengine.GetAuthorizedCertificateRequest = None,
+        request: Union[appengine.GetAuthorizedCertificateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate.AuthorizedCertificate:
         r"""Gets the specified SSL certificate.
 
         Args:
-            request (:class:`google.cloud.appengine_admin_v1.types.GetAuthorizedCertificateRequest`):
+            request (Union[google.cloud.appengine_admin_v1.types.GetAuthorizedCertificateRequest, dict]):
                 The request object. Request message for
                 `AuthorizedCertificates.GetAuthorizedCertificate`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -280,16 +282,16 @@ class AuthorizedCertificatesAsyncClient:
 
     async def create_authorized_certificate(
         self,
-        request: appengine.CreateAuthorizedCertificateRequest = None,
+        request: Union[appengine.CreateAuthorizedCertificateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate.AuthorizedCertificate:
         r"""Uploads the specified SSL certificate.
 
         Args:
-            request (:class:`google.cloud.appengine_admin_v1.types.CreateAuthorizedCertificateRequest`):
+            request (Union[google.cloud.appengine_admin_v1.types.CreateAuthorizedCertificateRequest, dict]):
                 The request object. Request message for
                 `AuthorizedCertificates.CreateAuthorizedCertificate`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -332,9 +334,9 @@ class AuthorizedCertificatesAsyncClient:
 
     async def update_authorized_certificate(
         self,
-        request: appengine.UpdateAuthorizedCertificateRequest = None,
+        request: Union[appengine.UpdateAuthorizedCertificateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate.AuthorizedCertificate:
@@ -346,7 +348,7 @@ class AuthorizedCertificatesAsyncClient:
         updated.
 
         Args:
-            request (:class:`google.cloud.appengine_admin_v1.types.UpdateAuthorizedCertificateRequest`):
+            request (Union[google.cloud.appengine_admin_v1.types.UpdateAuthorizedCertificateRequest, dict]):
                 The request object. Request message for
                 `AuthorizedCertificates.UpdateAuthorizedCertificate`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -389,16 +391,16 @@ class AuthorizedCertificatesAsyncClient:
 
     async def delete_authorized_certificate(
         self,
-        request: appengine.DeleteAuthorizedCertificateRequest = None,
+        request: Union[appengine.DeleteAuthorizedCertificateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified SSL certificate.
 
         Args:
-            request (:class:`google.cloud.appengine_admin_v1.types.DeleteAuthorizedCertificateRequest`):
+            request (Union[google.cloud.appengine_admin_v1.types.DeleteAuthorizedCertificateRequest, dict]):
                 The request object. Request message for
                 `AuthorizedCertificates.DeleteAuthorizedCertificate`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

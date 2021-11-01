@@ -124,6 +124,13 @@ class UrlMap(proto.Message):
     serving static files uploaded with the version, such as images,
     CSS, or JavaScript.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         url_regex (str):
             URL prefix. Uses regular expression syntax,
@@ -135,13 +142,16 @@ class UrlMap(proto.Message):
         static_files (google.cloud.appengine_admin_v1.types.StaticFilesHandler):
             Returns the contents of a file, such as an
             image, as the response.
+            This field is a member of `oneof`_ ``handler_type``.
         script (google.cloud.appengine_admin_v1.types.ScriptHandler):
             Executes a script to handle the requests that match this URL
             pattern. Only the ``auto`` value is supported for Node.js in
             the App Engine standard environment, for example
             ``"script": "auto"``.
+            This field is a member of `oneof`_ ``handler_type``.
         api_endpoint (google.cloud.appengine_admin_v1.types.ApiEndpointHandler):
             Uses API Endpoints to handle requests.
+            This field is a member of `oneof`_ ``handler_type``.
         security_level (google.cloud.appengine_admin_v1.types.SecurityLevel):
             Security (HTTPS) enforcement for this URL.
         login (google.cloud.appengine_admin_v1.types.LoginRequirement):

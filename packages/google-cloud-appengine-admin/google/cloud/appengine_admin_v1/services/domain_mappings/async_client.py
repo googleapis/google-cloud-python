@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation as gac_operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -166,16 +168,16 @@ class DomainMappingsAsyncClient:
 
     async def list_domain_mappings(
         self,
-        request: appengine.ListDomainMappingsRequest = None,
+        request: Union[appengine.ListDomainMappingsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDomainMappingsAsyncPager:
         r"""Lists the domain mappings on an application.
 
         Args:
-            request (:class:`google.cloud.appengine_admin_v1.types.ListDomainMappingsRequest`):
+            request (Union[google.cloud.appengine_admin_v1.types.ListDomainMappingsRequest, dict]):
                 The request object. Request message for
                 `DomainMappings.ListDomainMappings`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -223,16 +225,16 @@ class DomainMappingsAsyncClient:
 
     async def get_domain_mapping(
         self,
-        request: appengine.GetDomainMappingRequest = None,
+        request: Union[appengine.GetDomainMappingRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domain_mapping.DomainMapping:
         r"""Gets the specified domain mapping.
 
         Args:
-            request (:class:`google.cloud.appengine_admin_v1.types.GetDomainMappingRequest`):
+            request (Union[google.cloud.appengine_admin_v1.types.GetDomainMappingRequest, dict]):
                 The request object. Request message for
                 `DomainMappings.GetDomainMapping`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -272,9 +274,9 @@ class DomainMappingsAsyncClient:
 
     async def create_domain_mapping(
         self,
-        request: appengine.CreateDomainMappingRequest = None,
+        request: Union[appengine.CreateDomainMappingRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -284,7 +286,7 @@ class DomainMappingsAsyncClient:
         ```AuthorizedDomains.ListAuthorizedDomains`` <>`__.
 
         Args:
-            request (:class:`google.cloud.appengine_admin_v1.types.CreateDomainMappingRequest`):
+            request (Union[google.cloud.appengine_admin_v1.types.CreateDomainMappingRequest, dict]):
                 The request object. Request message for
                 `DomainMappings.CreateDomainMapping`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -335,9 +337,9 @@ class DomainMappingsAsyncClient:
 
     async def update_domain_mapping(
         self,
-        request: appengine.UpdateDomainMappingRequest = None,
+        request: Union[appengine.UpdateDomainMappingRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -348,7 +350,7 @@ class DomainMappingsAsyncClient:
         ``DomainMapping`` resource.
 
         Args:
-            request (:class:`google.cloud.appengine_admin_v1.types.UpdateDomainMappingRequest`):
+            request (Union[google.cloud.appengine_admin_v1.types.UpdateDomainMappingRequest, dict]):
                 The request object. Request message for
                 `DomainMappings.UpdateDomainMapping`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -399,9 +401,9 @@ class DomainMappingsAsyncClient:
 
     async def delete_domain_mapping(
         self,
-        request: appengine.DeleteDomainMappingRequest = None,
+        request: Union[appengine.DeleteDomainMappingRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -410,7 +412,7 @@ class DomainMappingsAsyncClient:
         ``DomainMapping`` resource.
 
         Args:
-            request (:class:`google.cloud.appengine_admin_v1.types.DeleteDomainMappingRequest`):
+            request (Union[google.cloud.appengine_admin_v1.types.DeleteDomainMappingRequest, dict]):
                 The request object. Request message for
                 `DomainMappings.DeleteDomainMapping`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

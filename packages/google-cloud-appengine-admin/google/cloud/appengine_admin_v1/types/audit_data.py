@@ -27,13 +27,22 @@ __protobuf__ = proto.module(
 class AuditData(proto.Message):
     r"""App Engine admin service audit log.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         update_service (google.cloud.appengine_admin_v1.types.UpdateServiceMethod):
             Detailed information about UpdateService
             call.
+            This field is a member of `oneof`_ ``method``.
         create_version (google.cloud.appengine_admin_v1.types.CreateVersionMethod):
             Detailed information about CreateVersion
             call.
+            This field is a member of `oneof`_ ``method``.
     """
 
     update_service = proto.Field(

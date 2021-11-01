@@ -69,6 +69,13 @@ class Version(proto.Message):
     r"""A Version resource is a specific set of source code and
     configuration files that are deployed into a service.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Full path to the Version resource in the API. Example:
@@ -85,6 +92,7 @@ class Version(proto.Message):
             response latencies, and other application
             metrics. Instances are dynamically created and
             destroyed as needed in order to handle traffic.
+            This field is a member of `oneof`_ ``scaling``.
         basic_scaling (google.cloud.appengine_admin_v1.types.BasicScaling):
             A service with basic scaling will create an
             instance when the application receives a
@@ -92,12 +100,14 @@ class Version(proto.Message):
             the app becomes idle. Basic scaling is ideal for
             work that is intermittent or driven by user
             activity.
+            This field is a member of `oneof`_ ``scaling``.
         manual_scaling (google.cloud.appengine_admin_v1.types.ManualScaling):
             A service with manual scaling runs
             continuously, allowing you to perform complex
             initialization and rely on the state of its
             memory over time. Manually scaled versions are
             sometimes referred to as "backends".
+            This field is a member of `oneof`_ ``scaling``.
         inbound_services (Sequence[google.cloud.appengine_admin_v1.types.InboundServiceType]):
             Before an application can receive email or
             XMPP messages, the application must be
@@ -698,10 +708,13 @@ class VpcAccessConnector(proto.Message):
 class Entrypoint(proto.Message):
     r"""The entrypoint for the application.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         shell (str):
             The format should be a shell command that can be fed to
             ``bash -c``.
+            This field is a member of `oneof`_ ``command``.
     """
 
     shell = proto.Field(proto.STRING, number=1, oneof="command",)

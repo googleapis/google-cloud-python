@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.appengine_admin_v1.services.authorized_certificates import pagers
 from google.cloud.appengine_admin_v1.types import appengine
 from google.cloud.appengine_admin_v1.types import certificate
@@ -342,7 +344,7 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
         self,
         request: Union[appengine.ListAuthorizedCertificatesRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAuthorizedCertificatesPager:
@@ -404,7 +406,7 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
         self,
         request: Union[appengine.GetAuthorizedCertificateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate.AuthorizedCertificate:
@@ -459,7 +461,7 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
         self,
         request: Union[appengine.CreateAuthorizedCertificateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate.AuthorizedCertificate:
@@ -514,7 +516,7 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
         self,
         request: Union[appengine.UpdateAuthorizedCertificateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate.AuthorizedCertificate:
@@ -574,7 +576,7 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
         self,
         request: Union[appengine.DeleteAuthorizedCertificateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
