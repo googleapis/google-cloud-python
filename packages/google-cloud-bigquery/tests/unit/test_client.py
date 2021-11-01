@@ -1554,7 +1554,7 @@ class TestClient(unittest.TestCase):
             self.PROJECT, self.DS_ID, self.TABLE_ID,
         )
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(ValueError):
             client.get_iam_policy(table_resource_string)
 
     def test_get_iam_policy_w_invalid_version(self):
@@ -1675,7 +1675,7 @@ class TestClient(unittest.TestCase):
             self.TABLE_ID,
         )
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(ValueError):
             client.set_iam_policy(table_resource_string, policy)
 
     def test_test_iam_permissions(self):
@@ -1717,7 +1717,7 @@ class TestClient(unittest.TestCase):
 
         PERMISSIONS = ["bigquery.tables.get", "bigquery.tables.update"]
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(ValueError):
             client.test_iam_permissions(table_resource_string, PERMISSIONS)
 
     def test_update_dataset_w_invalid_field(self):
