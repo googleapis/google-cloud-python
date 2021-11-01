@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.privatecatalog_v1beta1.services.private_catalog import pagers
 from google.cloud.privatecatalog_v1beta1.types import private_catalog
@@ -189,9 +191,9 @@ class PrivateCatalogAsyncClient:
 
     async def search_catalogs(
         self,
-        request: private_catalog.SearchCatalogsRequest = None,
+        request: Union[private_catalog.SearchCatalogsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchCatalogsAsyncPager:
@@ -200,7 +202,7 @@ class PrivateCatalogAsyncClient:
         consumer cloud resource hierarchy context.
 
         Args:
-            request (:class:`google.cloud.privatecatalog_v1beta1.types.SearchCatalogsRequest`):
+            request (Union[google.cloud.privatecatalog_v1beta1.types.SearchCatalogsRequest, dict]):
                 The request object. Request message for
                 [PrivateCatalog.SearchCatalogs][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchCatalogs].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -249,9 +251,9 @@ class PrivateCatalogAsyncClient:
 
     async def search_products(
         self,
-        request: private_catalog.SearchProductsRequest = None,
+        request: Union[private_catalog.SearchProductsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchProductsAsyncPager:
@@ -260,7 +262,7 @@ class PrivateCatalogAsyncClient:
         consumer cloud resource hierarchy context.
 
         Args:
-            request (:class:`google.cloud.privatecatalog_v1beta1.types.SearchProductsRequest`):
+            request (Union[google.cloud.privatecatalog_v1beta1.types.SearchProductsRequest, dict]):
                 The request object. Request message for
                 [PrivateCatalog.SearchProducts][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchProducts].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -309,9 +311,9 @@ class PrivateCatalogAsyncClient:
 
     async def search_versions(
         self,
-        request: private_catalog.SearchVersionsRequest = None,
+        request: Union[private_catalog.SearchVersionsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchVersionsAsyncPager:
@@ -320,7 +322,7 @@ class PrivateCatalogAsyncClient:
         consumer cloud resource hierarchy context.
 
         Args:
-            request (:class:`google.cloud.privatecatalog_v1beta1.types.SearchVersionsRequest`):
+            request (Union[google.cloud.privatecatalog_v1beta1.types.SearchVersionsRequest, dict]):
                 The request object. Request message for
                 [PrivateCatalog.SearchVersions][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchVersions].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
