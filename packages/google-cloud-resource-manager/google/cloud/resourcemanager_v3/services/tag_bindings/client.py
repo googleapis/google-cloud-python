@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.resourcemanager_v3.services.tag_bindings import pagers
@@ -351,7 +353,7 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
         request: Union[tag_bindings.ListTagBindingsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTagBindingsPager:
@@ -431,7 +433,7 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
         request: Union[tag_bindings.CreateTagBindingRequest, dict] = None,
         *,
         tag_binding: tag_bindings.TagBinding = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -510,7 +512,7 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
         request: Union[tag_bindings.DeleteTagBindingRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:

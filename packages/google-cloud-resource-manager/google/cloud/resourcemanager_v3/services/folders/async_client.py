@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -165,10 +167,10 @@ class FoldersAsyncClient:
 
     async def get_folder(
         self,
-        request: folders.GetFolderRequest = None,
+        request: Union[folders.GetFolderRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> folders.Folder:
@@ -179,7 +181,7 @@ class FoldersAsyncClient:
         the identified folder.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.GetFolderRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.GetFolderRequest, dict]):
                 The request object. The GetFolder request message.
             name (:class:`str`):
                 Required. The resource name of the folder to retrieve.
@@ -249,10 +251,10 @@ class FoldersAsyncClient:
 
     async def list_folders(
         self,
-        request: folders.ListFoldersRequest = None,
+        request: Union[folders.ListFoldersRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFoldersAsyncPager:
@@ -265,7 +267,7 @@ class FoldersAsyncClient:
         parent.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.ListFoldersRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.ListFoldersRequest, dict]):
                 The request object. The ListFolders request message.
             parent (:class:`str`):
                 Required. The resource name of the organization or
@@ -341,10 +343,10 @@ class FoldersAsyncClient:
 
     async def search_folders(
         self,
-        request: folders.SearchFoldersRequest = None,
+        request: Union[folders.SearchFoldersRequest, dict] = None,
         *,
         query: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchFoldersAsyncPager:
@@ -357,7 +359,7 @@ class FoldersAsyncClient:
         permission ``resourcemanager.folders.get``.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.SearchFoldersRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.SearchFoldersRequest, dict]):
                 The request object. The request message for searching
                 folders.
             query (:class:`str`):
@@ -452,10 +454,10 @@ class FoldersAsyncClient:
 
     async def create_folder(
         self,
-        request: folders.CreateFolderRequest = None,
+        request: Union[folders.CreateFolderRequest, dict] = None,
         *,
         folder: folders.Folder = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -490,7 +492,7 @@ class FoldersAsyncClient:
         permission on the identified parent.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.CreateFolderRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.CreateFolderRequest, dict]):
                 The request object. The CreateFolder request message.
             folder (:class:`google.cloud.resourcemanager_v3.types.Folder`):
                 Required. The folder being created,
@@ -556,11 +558,11 @@ class FoldersAsyncClient:
 
     async def update_folder(
         self,
-        request: folders.UpdateFolderRequest = None,
+        request: Union[folders.UpdateFolderRequest, dict] = None,
         *,
         folder: folders.Folder = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -584,7 +586,7 @@ class FoldersAsyncClient:
         returned in the Status.details field.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.UpdateFolderRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.UpdateFolderRequest, dict]):
                 The request object. The request sent to the
                 [UpdateFolder][google.cloud.resourcemanager.v3.Folder.UpdateFolder]
                 method.
@@ -672,11 +674,11 @@ class FoldersAsyncClient:
 
     async def move_folder(
         self,
-        request: folders.MoveFolderRequest = None,
+        request: Union[folders.MoveFolderRequest, dict] = None,
         *,
         name: str = None,
         destination_parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -700,7 +702,7 @@ class FoldersAsyncClient:
         current and proposed new parent.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.MoveFolderRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.MoveFolderRequest, dict]):
                 The request object. The MoveFolder request message.
             name (:class:`str`):
                 Required. The resource name of the Folder to move. Must
@@ -781,10 +783,10 @@ class FoldersAsyncClient:
 
     async def delete_folder(
         self,
-        request: folders.DeleteFolderRequest = None,
+        request: Union[folders.DeleteFolderRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -802,7 +804,7 @@ class FoldersAsyncClient:
         identified folder.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.DeleteFolderRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.DeleteFolderRequest, dict]):
                 The request object. The DeleteFolder request message.
             name (:class:`str`):
                 Required. The resource name of the folder to be deleted.
@@ -872,10 +874,10 @@ class FoldersAsyncClient:
 
     async def undelete_folder(
         self,
-        request: folders.UndeleteFolderRequest = None,
+        request: Union[folders.UndeleteFolderRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -894,7 +896,7 @@ class FoldersAsyncClient:
         identified folder.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.UndeleteFolderRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.UndeleteFolderRequest, dict]):
                 The request object. The UndeleteFolder request message.
             name (:class:`str`):
                 Required. The resource name of the folder to undelete.
@@ -964,10 +966,10 @@ class FoldersAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -979,7 +981,7 @@ class FoldersAsyncClient:
         identified folder.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.GetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1104,10 +1106,10 @@ class FoldersAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -1118,7 +1120,7 @@ class FoldersAsyncClient:
         identified folder.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.SetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1234,11 +1236,11 @@ class FoldersAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
@@ -1249,7 +1251,7 @@ class FoldersAsyncClient:
         There are no permissions required for making this API call.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):

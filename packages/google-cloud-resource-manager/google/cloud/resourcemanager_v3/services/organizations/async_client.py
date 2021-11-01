@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.resourcemanager_v3.services.organizations import pagers
 from google.cloud.resourcemanager_v3.types import organizations
@@ -166,10 +168,10 @@ class OrganizationsAsyncClient:
 
     async def get_organization(
         self,
-        request: organizations.GetOrganizationRequest = None,
+        request: Union[organizations.GetOrganizationRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> organizations.Organization:
@@ -177,7 +179,7 @@ class OrganizationsAsyncClient:
         specified resource name.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.GetOrganizationRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.GetOrganizationRequest, dict]):
                 The request object. The request sent to the
                 `GetOrganization` method. The `name` field is required.
                 `organization_id` is no longer accepted.
@@ -252,10 +254,10 @@ class OrganizationsAsyncClient:
 
     async def search_organizations(
         self,
-        request: organizations.SearchOrganizationsRequest = None,
+        request: Union[organizations.SearchOrganizationsRequest, dict] = None,
         *,
         query: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchOrganizationsAsyncPager:
@@ -269,7 +271,7 @@ class OrganizationsAsyncClient:
         permission ``resourcemanager.organizations.get``
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.SearchOrganizationsRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.SearchOrganizationsRequest, dict]):
                 The request object. The request sent to the
                 `SearchOrganizations` method.
             query (:class:`str`):
@@ -351,10 +353,10 @@ class OrganizationsAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -368,7 +370,7 @@ class OrganizationsAsyncClient:
         organization.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.GetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -493,10 +495,10 @@ class OrganizationsAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -510,7 +512,7 @@ class OrganizationsAsyncClient:
         organization.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.SetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -626,11 +628,11 @@ class OrganizationsAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
@@ -641,7 +643,7 @@ class OrganizationsAsyncClient:
         There are no permissions required for making this API call.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):

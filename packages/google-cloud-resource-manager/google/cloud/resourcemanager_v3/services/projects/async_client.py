@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -161,10 +163,10 @@ class ProjectsAsyncClient:
 
     async def get_project(
         self,
-        request: projects.GetProjectRequest = None,
+        request: Union[projects.GetProjectRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> projects.Project:
@@ -175,7 +177,7 @@ class ProjectsAsyncClient:
         for this project.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.GetProjectRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.GetProjectRequest, dict]):
                 The request object. The request sent to the
                 [GetProject][google.cloud.resourcemanager.v3.Projects.GetProject]
                 method.
@@ -248,10 +250,10 @@ class ProjectsAsyncClient:
 
     async def list_projects(
         self,
-        request: projects.ListProjectsRequest = None,
+        request: Union[projects.ListProjectsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProjectsAsyncPager:
@@ -264,7 +266,7 @@ class ProjectsAsyncClient:
         the identified parent.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.ListProjectsRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.ListProjectsRequest, dict]):
                 The request object. The request sent to the
                 [ListProjects][google.cloud.resourcemanager.v3.Projects.ListProjects]
                 method.
@@ -349,10 +351,10 @@ class ProjectsAsyncClient:
 
     async def search_projects(
         self,
-        request: projects.SearchProjectsRequest = None,
+        request: Union[projects.SearchProjectsRequest, dict] = None,
         *,
         query: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchProjectsAsyncPager:
@@ -371,7 +373,7 @@ class ProjectsAsyncClient:
         method.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.SearchProjectsRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.SearchProjectsRequest, dict]):
                 The request object. The request sent to the
                 [SearchProjects][google.cloud.resourcemanager.v3.Projects.SearchProjects]
                 method.
@@ -479,10 +481,10 @@ class ProjectsAsyncClient:
 
     async def create_project(
         self,
-        request: projects.CreateProjectRequest = None,
+        request: Union[projects.CreateProjectRequest, dict] = None,
         *,
         project: projects.Project = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -494,7 +496,7 @@ class ProjectsAsyncClient:
         ``DeleteOperation``.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.CreateProjectRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.CreateProjectRequest, dict]):
                 The request object. The request sent to the
                 [CreateProject][google.cloud.resourcemanager.v3.Projects.CreateProject]
                 method.
@@ -569,11 +571,11 @@ class ProjectsAsyncClient:
 
     async def update_project(
         self,
-        request: projects.UpdateProjectRequest = None,
+        request: Union[projects.UpdateProjectRequest, dict] = None,
         *,
         project: projects.Project = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -586,7 +588,7 @@ class ProjectsAsyncClient:
         permission for this project.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.UpdateProjectRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.UpdateProjectRequest, dict]):
                 The request object. The request sent to the
                 [UpdateProject][google.cloud.resourcemanager.v3.Projects.UpdateProject]
                 method.
@@ -675,11 +677,11 @@ class ProjectsAsyncClient:
 
     async def move_project(
         self,
-        request: projects.MoveProjectRequest = None,
+        request: Union[projects.MoveProjectRequest, dict] = None,
         *,
         name: str = None,
         destination_parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -697,7 +699,7 @@ class ProjectsAsyncClient:
         current and proposed new parent.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.MoveProjectRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.MoveProjectRequest, dict]):
                 The request object. The request sent to
                 [MoveProject][google.cloud.resourcemanager.v3.Projects.MoveProject]
                 method.
@@ -779,10 +781,10 @@ class ProjectsAsyncClient:
 
     async def delete_project(
         self,
-        request: projects.DeleteProjectRequest = None,
+        request: Union[projects.DeleteProjectRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -823,7 +825,7 @@ class ProjectsAsyncClient:
         permissions for this project.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.DeleteProjectRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.DeleteProjectRequest, dict]):
                 The request object. [DeleteProject][google.cloud.resourcemanager.v3.Projects.DeleteProject]
                 method.
             name (:class:`str`):
@@ -895,10 +897,10 @@ class ProjectsAsyncClient:
 
     async def undelete_project(
         self,
-        request: projects.UndeleteProjectRequest = None,
+        request: Union[projects.UndeleteProjectRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -912,7 +914,7 @@ class ProjectsAsyncClient:
         permission for this project.
 
         Args:
-            request (:class:`google.cloud.resourcemanager_v3.types.UndeleteProjectRequest`):
+            request (Union[google.cloud.resourcemanager_v3.types.UndeleteProjectRequest, dict]):
                 The request object. The request sent to the
                 [UndeleteProject]
                 [google.cloud.resourcemanager.v3.Projects.UndeleteProject]
@@ -988,10 +990,10 @@ class ProjectsAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -1000,7 +1002,7 @@ class ProjectsAsyncClient:
         the resource do not exist.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.GetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1125,10 +1127,10 @@ class ProjectsAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -1186,7 +1188,7 @@ class ProjectsAsyncClient:
            API.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.SetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1302,11 +1304,11 @@ class ProjectsAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
@@ -1314,7 +1316,7 @@ class ProjectsAsyncClient:
         specified project.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):

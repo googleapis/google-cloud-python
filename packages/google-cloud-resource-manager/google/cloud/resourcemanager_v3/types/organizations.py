@@ -35,6 +35,9 @@ class Organization(proto.Message):
     r"""The root node in the resource hierarchy to which a particular
     entity's (a company, for example) resources belong.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. The resource name of the organization. This is
@@ -52,6 +55,7 @@ class Organization(proto.Message):
         directory_customer_id (str):
             Immutable. The G Suite / Workspace customer
             id used in the Directory API.
+            This field is a member of `oneof`_ ``owner``.
         state (google.cloud.resourcemanager_v3.types.Organization.State):
             Output only. The organization's current
             lifecycle state.
