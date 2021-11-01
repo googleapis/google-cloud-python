@@ -90,11 +90,15 @@ class EvaluationConfig(proto.Message):
     creating an
     [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation].
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         bounding_box_evaluation_options (google.cloud.datalabeling_v1beta1.types.BoundingBoxEvaluationOptions):
             Only specify this field if the related model performs image
             object detection (``IMAGE_BOUNDING_BOX_ANNOTATION``).
             Describes how to evaluate bounding boxes.
+            This field is a member of `oneof`_ ``vertical_option``.
     """
 
     bounding_box_evaluation_options = proto.Field(
@@ -123,11 +127,20 @@ class BoundingBoxEvaluationOptions(proto.Message):
 class EvaluationMetrics(proto.Message):
     r"""
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         classification_metrics (google.cloud.datalabeling_v1beta1.types.ClassificationMetrics):
 
+            This field is a member of `oneof`_ ``metrics``.
         object_detection_metrics (google.cloud.datalabeling_v1beta1.types.ObjectDetectionMetrics):
 
+            This field is a member of `oneof`_ ``metrics``.
     """
 
     classification_metrics = proto.Field(

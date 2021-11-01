@@ -356,23 +356,34 @@ class DeleteAnnotatedDatasetRequest(proto.Message):
 class LabelImageRequest(proto.Message):
     r"""Request message for starting an image labeling task.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         image_classification_config (google.cloud.datalabeling_v1beta1.types.ImageClassificationConfig):
             Configuration for image classification task. One of
             image_classification_config, bounding_poly_config,
             polyline_config and segmentation_config are required.
+            This field is a member of `oneof`_ ``request_config``.
         bounding_poly_config (google.cloud.datalabeling_v1beta1.types.BoundingPolyConfig):
             Configuration for bounding box and bounding poly task. One
             of image_classification_config, bounding_poly_config,
             polyline_config and segmentation_config are required.
+            This field is a member of `oneof`_ ``request_config``.
         polyline_config (google.cloud.datalabeling_v1beta1.types.PolylineConfig):
             Configuration for polyline task. One of
             image_classification_config, bounding_poly_config,
             polyline_config and segmentation_config are required.
+            This field is a member of `oneof`_ ``request_config``.
         segmentation_config (google.cloud.datalabeling_v1beta1.types.SegmentationConfig):
             Configuration for segmentation task. One of
             image_classification_config, bounding_poly_config,
             polyline_config and segmentation_config are required.
+            This field is a member of `oneof`_ ``request_config``.
         parent (str):
             Required. Name of the dataset to request labeling task,
             format: projects/{project_id}/datasets/{dataset_id}
@@ -426,23 +437,34 @@ class LabelImageRequest(proto.Message):
 class LabelVideoRequest(proto.Message):
     r"""Request message for LabelVideo.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         video_classification_config (google.cloud.datalabeling_v1beta1.types.VideoClassificationConfig):
             Configuration for video classification task. One of
             video_classification_config, object_detection_config,
             object_tracking_config and event_config is required.
+            This field is a member of `oneof`_ ``request_config``.
         object_detection_config (google.cloud.datalabeling_v1beta1.types.ObjectDetectionConfig):
             Configuration for video object detection task. One of
             video_classification_config, object_detection_config,
             object_tracking_config and event_config is required.
+            This field is a member of `oneof`_ ``request_config``.
         object_tracking_config (google.cloud.datalabeling_v1beta1.types.ObjectTrackingConfig):
             Configuration for video object tracking task. One of
             video_classification_config, object_detection_config,
             object_tracking_config and event_config is required.
+            This field is a member of `oneof`_ ``request_config``.
         event_config (google.cloud.datalabeling_v1beta1.types.EventConfig):
             Configuration for video event task. One of
             video_classification_config, object_detection_config,
             object_tracking_config and event_config is required.
+            This field is a member of `oneof`_ ``request_config``.
         parent (str):
             Required. Name of the dataset to request labeling task,
             format: projects/{project_id}/datasets/{dataset_id}
@@ -494,15 +516,24 @@ class LabelVideoRequest(proto.Message):
 class LabelTextRequest(proto.Message):
     r"""Request message for LabelText.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         text_classification_config (google.cloud.datalabeling_v1beta1.types.TextClassificationConfig):
             Configuration for text classification task. One of
             text_classification_config and text_entity_extraction_config
             is required.
+            This field is a member of `oneof`_ ``request_config``.
         text_entity_extraction_config (google.cloud.datalabeling_v1beta1.types.TextEntityExtractionConfig):
             Configuration for entity extraction task. One of
             text_classification_config and text_entity_extraction_config
             is required.
+            This field is a member of `oneof`_ ``request_config``.
         parent (str):
             Required. Name of the data set to request labeling task,
             format: projects/{project_id}/datasets/{dataset_id}

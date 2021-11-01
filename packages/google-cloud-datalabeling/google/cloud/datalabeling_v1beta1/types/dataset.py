@@ -99,16 +99,26 @@ class InputConfig(proto.Message):
     r"""The configuration of input data, including data type,
     location, etc.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         text_metadata (google.cloud.datalabeling_v1beta1.types.TextMetadata):
             Required for text import, as language code
             must be specified.
+            This field is a member of `oneof`_ ``data_type_metadata``.
         gcs_source (google.cloud.datalabeling_v1beta1.types.GcsSource):
             Source located in Cloud Storage.
+            This field is a member of `oneof`_ ``source``.
         bigquery_source (google.cloud.datalabeling_v1beta1.types.BigQuerySource):
             Source located in BigQuery. You must specify this field if
             you are using this InputConfig in an
             [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob].
+            This field is a member of `oneof`_ ``source``.
         data_type (google.cloud.datalabeling_v1beta1.types.DataType):
             Required. Data type must be specifed when
             user tries to import data.
@@ -212,14 +222,23 @@ class BigQuerySource(proto.Message):
 class OutputConfig(proto.Message):
     r"""The configuration of output data.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_destination (google.cloud.datalabeling_v1beta1.types.GcsDestination):
             Output to a file in Cloud Storage. Should be
             used for labeling output other than image
             segmentation.
+            This field is a member of `oneof`_ ``destination``.
         gcs_folder_destination (google.cloud.datalabeling_v1beta1.types.GcsFolderDestination):
             Output to a folder in Cloud Storage. Should
             be used for image segmentation labeling output.
+            This field is a member of `oneof`_ ``destination``.
     """
 
     gcs_destination = proto.Field(
@@ -263,16 +282,26 @@ class DataItem(proto.Message):
     r"""DataItem is a piece of data, without annotation. For example,
     an image.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         image_payload (google.cloud.datalabeling_v1beta1.types.ImagePayload):
             The image payload, a container of the image
             bytes/uri.
+            This field is a member of `oneof`_ ``payload``.
         text_payload (google.cloud.datalabeling_v1beta1.types.TextPayload):
             The text payload, a container of text
             content.
+            This field is a member of `oneof`_ ``payload``.
         video_payload (google.cloud.datalabeling_v1beta1.types.VideoPayload):
             The video payload, a container of the video
             uri.
+            This field is a member of `oneof`_ ``payload``.
         name (str):
             Output only. Name of the data item, in format of:
             projects/{project_id}/datasets/{dataset_id}/dataItems/{data_item_id}
@@ -372,30 +401,47 @@ class LabelStats(proto.Message):
 class AnnotatedDatasetMetadata(proto.Message):
     r"""Metadata on AnnotatedDataset.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         image_classification_config (google.cloud.datalabeling_v1beta1.types.ImageClassificationConfig):
             Configuration for image classification task.
+            This field is a member of `oneof`_ ``annotation_request_config``.
         bounding_poly_config (google.cloud.datalabeling_v1beta1.types.BoundingPolyConfig):
             Configuration for image bounding box and
             bounding poly task.
+            This field is a member of `oneof`_ ``annotation_request_config``.
         polyline_config (google.cloud.datalabeling_v1beta1.types.PolylineConfig):
             Configuration for image polyline task.
+            This field is a member of `oneof`_ ``annotation_request_config``.
         segmentation_config (google.cloud.datalabeling_v1beta1.types.SegmentationConfig):
             Configuration for image segmentation task.
+            This field is a member of `oneof`_ ``annotation_request_config``.
         video_classification_config (google.cloud.datalabeling_v1beta1.types.VideoClassificationConfig):
             Configuration for video classification task.
+            This field is a member of `oneof`_ ``annotation_request_config``.
         object_detection_config (google.cloud.datalabeling_v1beta1.types.ObjectDetectionConfig):
             Configuration for video object detection
             task.
+            This field is a member of `oneof`_ ``annotation_request_config``.
         object_tracking_config (google.cloud.datalabeling_v1beta1.types.ObjectTrackingConfig):
             Configuration for video object tracking task.
+            This field is a member of `oneof`_ ``annotation_request_config``.
         event_config (google.cloud.datalabeling_v1beta1.types.EventConfig):
             Configuration for video event labeling task.
+            This field is a member of `oneof`_ ``annotation_request_config``.
         text_classification_config (google.cloud.datalabeling_v1beta1.types.TextClassificationConfig):
             Configuration for text classification task.
+            This field is a member of `oneof`_ ``annotation_request_config``.
         text_entity_extraction_config (google.cloud.datalabeling_v1beta1.types.TextEntityExtractionConfig):
             Configuration for text entity extraction
             task.
+            This field is a member of `oneof`_ ``annotation_request_config``.
         human_annotation_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             HumanAnnotationConfig used when requesting
             the human labeling task for this
@@ -473,16 +519,26 @@ class Example(proto.Message):
     r"""An Example is a piece of data and its annotation. For
     example, an image with label "house".
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         image_payload (google.cloud.datalabeling_v1beta1.types.ImagePayload):
             The image payload, a container of the image
             bytes/uri.
+            This field is a member of `oneof`_ ``payload``.
         text_payload (google.cloud.datalabeling_v1beta1.types.TextPayload):
             The text payload, a container of the text
             content.
+            This field is a member of `oneof`_ ``payload``.
         video_payload (google.cloud.datalabeling_v1beta1.types.VideoPayload):
             The video payload, a container of the video
             uri.
+            This field is a member of `oneof`_ ``payload``.
         name (str):
             Output only. Name of the example, in format of:
             projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/

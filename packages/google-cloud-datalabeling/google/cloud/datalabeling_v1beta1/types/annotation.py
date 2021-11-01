@@ -122,35 +122,51 @@ class Annotation(proto.Message):
 class AnnotationValue(proto.Message):
     r"""Annotation value for an example.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         image_classification_annotation (google.cloud.datalabeling_v1beta1.types.ImageClassificationAnnotation):
             Annotation value for image classification
             case.
+            This field is a member of `oneof`_ ``value_type``.
         image_bounding_poly_annotation (google.cloud.datalabeling_v1beta1.types.ImageBoundingPolyAnnotation):
             Annotation value for image bounding box,
             oriented bounding box and polygon cases.
+            This field is a member of `oneof`_ ``value_type``.
         image_polyline_annotation (google.cloud.datalabeling_v1beta1.types.ImagePolylineAnnotation):
             Annotation value for image polyline cases.
             Polyline here is different from BoundingPoly. It
             is formed by line segments connected to each
             other but not closed form(Bounding Poly). The
             line segments can cross each other.
+            This field is a member of `oneof`_ ``value_type``.
         image_segmentation_annotation (google.cloud.datalabeling_v1beta1.types.ImageSegmentationAnnotation):
             Annotation value for image segmentation.
+            This field is a member of `oneof`_ ``value_type``.
         text_classification_annotation (google.cloud.datalabeling_v1beta1.types.TextClassificationAnnotation):
             Annotation value for text classification
             case.
+            This field is a member of `oneof`_ ``value_type``.
         text_entity_extraction_annotation (google.cloud.datalabeling_v1beta1.types.TextEntityExtractionAnnotation):
             Annotation value for text entity extraction
             case.
+            This field is a member of `oneof`_ ``value_type``.
         video_classification_annotation (google.cloud.datalabeling_v1beta1.types.VideoClassificationAnnotation):
             Annotation value for video classification
             case.
+            This field is a member of `oneof`_ ``value_type``.
         video_object_tracking_annotation (google.cloud.datalabeling_v1beta1.types.VideoObjectTrackingAnnotation):
             Annotation value for video object detection
             and tracking case.
+            This field is a member of `oneof`_ ``value_type``.
         video_event_annotation (google.cloud.datalabeling_v1beta1.types.VideoEventAnnotation):
             Annotation value for video event case.
+            This field is a member of `oneof`_ ``value_type``.
     """
 
     image_classification_annotation = proto.Field(
@@ -276,11 +292,20 @@ class ImageBoundingPolyAnnotation(proto.Message):
     r"""Image bounding poly annotation. It represents a polygon
     including bounding box in the image.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         bounding_poly (google.cloud.datalabeling_v1beta1.types.BoundingPoly):
 
+            This field is a member of `oneof`_ ``bounded_area``.
         normalized_bounding_poly (google.cloud.datalabeling_v1beta1.types.NormalizedBoundingPoly):
 
+            This field is a member of `oneof`_ ``bounded_area``.
         annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
             Label of object in this bounding polygon.
     """
@@ -323,11 +348,20 @@ class NormalizedPolyline(proto.Message):
 class ImagePolylineAnnotation(proto.Message):
     r"""A polyline for the image annotation.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         polyline (google.cloud.datalabeling_v1beta1.types.Polyline):
 
+            This field is a member of `oneof`_ ``poly``.
         normalized_polyline (google.cloud.datalabeling_v1beta1.types.NormalizedPolyline):
 
+            This field is a member of `oneof`_ ``poly``.
         annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
             Label of this polyline.
     """
@@ -455,11 +489,20 @@ class ObjectTrackingFrame(proto.Message):
     r"""Video frame level annotation for object detection and
     tracking.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         bounding_poly (google.cloud.datalabeling_v1beta1.types.BoundingPoly):
 
+            This field is a member of `oneof`_ ``bounded_area``.
         normalized_bounding_poly (google.cloud.datalabeling_v1beta1.types.NormalizedBoundingPoly):
 
+            This field is a member of `oneof`_ ``bounded_area``.
         time_offset (google.protobuf.duration_pb2.Duration):
             The time offset of this frame relative to the
             beginning of the video.
