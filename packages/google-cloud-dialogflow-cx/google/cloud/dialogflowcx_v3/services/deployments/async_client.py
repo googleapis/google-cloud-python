@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dialogflowcx_v3.services.deployments import pagers
 from google.cloud.dialogflowcx_v3.types import deployment
@@ -170,10 +172,10 @@ class DeploymentsAsyncClient:
 
     async def list_deployments(
         self,
-        request: deployment.ListDeploymentsRequest = None,
+        request: Union[deployment.ListDeploymentsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDeploymentsAsyncPager:
@@ -181,7 +183,7 @@ class DeploymentsAsyncClient:
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.ListDeploymentsRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.ListDeploymentsRequest, dict]):
                 The request object. The request message for
                 [Deployments.ListDeployments][google.cloud.dialogflow.cx.v3.Deployments.ListDeployments].
             parent (:class:`str`):
@@ -253,10 +255,10 @@ class DeploymentsAsyncClient:
 
     async def get_deployment(
         self,
-        request: deployment.GetDeploymentRequest = None,
+        request: Union[deployment.GetDeploymentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> deployment.Deployment:
@@ -264,7 +266,7 @@ class DeploymentsAsyncClient:
         [Deployment][google.cloud.dialogflow.cx.v3.Deployment].
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.GetDeploymentRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.GetDeploymentRequest, dict]):
                 The request object. The request message for
                 [Deployments.GetDeployment][google.cloud.dialogflow.cx.v3.Deployments.GetDeployment].
             name (:class:`str`):

@@ -122,11 +122,20 @@ class Fulfillment(proto.Message):
                 r"""The list of messages or conditional cases to activate for
                 this case.
 
+                This message has `oneof`_ fields (mutually exclusive fields).
+                For each oneof, at most one member field can be set at the same time.
+                Setting any member of the oneof automatically clears all other
+                members.
+
+                .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
                 Attributes:
                     message (google.cloud.dialogflowcx_v3beta1.types.ResponseMessage):
                         Returned message.
+                        This field is a member of `oneof`_ ``cases_or_message``.
                     additional_cases (google.cloud.dialogflowcx_v3beta1.types.Fulfillment.ConditionalCases):
                         Additional cases to be evaluated.
+                        This field is a member of `oneof`_ ``cases_or_message``.
                 """
 
                 message = proto.Field(

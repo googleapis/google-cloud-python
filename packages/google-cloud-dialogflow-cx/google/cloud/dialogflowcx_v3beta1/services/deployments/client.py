@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dialogflowcx_v3beta1.services.deployments import pagers
 from google.cloud.dialogflowcx_v3beta1.types import deployment
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -421,7 +423,7 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
         request: Union[deployment.ListDeploymentsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDeploymentsPager:
@@ -504,7 +506,7 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
         request: Union[deployment.GetDeploymentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> deployment.Deployment:

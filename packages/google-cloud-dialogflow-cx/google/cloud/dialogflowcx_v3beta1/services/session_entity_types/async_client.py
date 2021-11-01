@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dialogflowcx_v3beta1.services.session_entity_types import pagers
 from google.cloud.dialogflowcx_v3beta1.types import entity_type
@@ -175,10 +177,10 @@ class SessionEntityTypesAsyncClient:
 
     async def list_session_entity_types(
         self,
-        request: session_entity_type.ListSessionEntityTypesRequest = None,
+        request: Union[session_entity_type.ListSessionEntityTypesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSessionEntityTypesAsyncPager:
@@ -186,7 +188,7 @@ class SessionEntityTypesAsyncClient:
         specified session.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.ListSessionEntityTypesRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.ListSessionEntityTypesRequest, dict]):
                 The request object. The request message for
                 [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.ListSessionEntityTypes].
             parent (:class:`str`):
@@ -261,17 +263,17 @@ class SessionEntityTypesAsyncClient:
 
     async def get_session_entity_type(
         self,
-        request: session_entity_type.GetSessionEntityTypeRequest = None,
+        request: Union[session_entity_type.GetSessionEntityTypeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> session_entity_type.SessionEntityType:
         r"""Retrieves the specified session entity type.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.GetSessionEntityTypeRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.GetSessionEntityTypeRequest, dict]):
                 The request object. The request message for
                 [SessionEntityTypes.GetSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.GetSessionEntityType].
             name (:class:`str`):
@@ -351,18 +353,20 @@ class SessionEntityTypesAsyncClient:
 
     async def create_session_entity_type(
         self,
-        request: gcdc_session_entity_type.CreateSessionEntityTypeRequest = None,
+        request: Union[
+            gcdc_session_entity_type.CreateSessionEntityTypeRequest, dict
+        ] = None,
         *,
         parent: str = None,
         session_entity_type: gcdc_session_entity_type.SessionEntityType = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_session_entity_type.SessionEntityType:
         r"""Creates a session entity type.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.CreateSessionEntityTypeRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateSessionEntityTypeRequest, dict]):
                 The request object. The request message for
                 [SessionEntityTypes.CreateSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.CreateSessionEntityType].
             parent (:class:`str`):
@@ -452,18 +456,20 @@ class SessionEntityTypesAsyncClient:
 
     async def update_session_entity_type(
         self,
-        request: gcdc_session_entity_type.UpdateSessionEntityTypeRequest = None,
+        request: Union[
+            gcdc_session_entity_type.UpdateSessionEntityTypeRequest, dict
+        ] = None,
         *,
         session_entity_type: gcdc_session_entity_type.SessionEntityType = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_session_entity_type.SessionEntityType:
         r"""Updates the specified session entity type.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.UpdateSessionEntityTypeRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateSessionEntityTypeRequest, dict]):
                 The request object. The request message for
                 [SessionEntityTypes.UpdateSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.UpdateSessionEntityType].
             session_entity_type (:class:`google.cloud.dialogflowcx_v3beta1.types.SessionEntityType`):
@@ -554,17 +560,17 @@ class SessionEntityTypesAsyncClient:
 
     async def delete_session_entity_type(
         self,
-        request: session_entity_type.DeleteSessionEntityTypeRequest = None,
+        request: Union[session_entity_type.DeleteSessionEntityTypeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified session entity type.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.DeleteSessionEntityTypeRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteSessionEntityTypeRequest, dict]):
                 The request object. The request message for
                 [SessionEntityTypes.DeleteSessionEntityType][google.cloud.dialogflow.cx.v3beta1.SessionEntityTypes.DeleteSessionEntityType].
             name (:class:`str`):

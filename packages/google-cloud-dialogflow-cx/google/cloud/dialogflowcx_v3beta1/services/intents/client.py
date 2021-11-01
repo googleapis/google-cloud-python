@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dialogflowcx_v3beta1.services.intents import pagers
 from google.cloud.dialogflowcx_v3beta1.types import intent
 from google.cloud.dialogflowcx_v3beta1.types import intent as gcdc_intent
@@ -372,7 +374,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         request: Union[intent.ListIntentsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListIntentsPager:
@@ -453,7 +455,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         request: Union[intent.GetIntentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> intent.Intent:
@@ -530,7 +532,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         *,
         parent: str = None,
         intent: gcdc_intent.Intent = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_intent.Intent:
@@ -618,7 +620,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         *,
         intent: gcdc_intent.Intent = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_intent.Intent:
@@ -708,7 +710,7 @@ class IntentsClient(metaclass=IntentsClientMeta):
         request: Union[intent.DeleteIntentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:

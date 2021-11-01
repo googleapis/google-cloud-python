@@ -112,6 +112,8 @@ class Experiment(proto.Message):
     class Definition(proto.Message):
         r"""Definition of the experiment.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             condition (str):
                 The condition defines which subset of sessions are selected
@@ -122,6 +124,7 @@ class Experiment(proto.Message):
             version_variants (google.cloud.dialogflowcx_v3.types.VersionVariants):
                 The flow versions as the variants of this
                 experiment.
+                This field is a member of `oneof`_ ``variants``.
         """
 
         condition = proto.Field(proto.STRING, number=1,)
@@ -184,6 +187,13 @@ class Experiment(proto.Message):
         class Metric(proto.Message):
             r"""Metric and corresponding confidence intervals.
 
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
             Attributes:
                 type_ (google.cloud.dialogflowcx_v3.types.Experiment.Result.MetricType):
                     Ratio-based metric type. Only one of type or count_type is
@@ -193,8 +203,10 @@ class Experiment(proto.Message):
                     specified in each Metric.
                 ratio (float):
                     Ratio value of a metric.
+                    This field is a member of `oneof`_ ``value``.
                 count (float):
                     Count value of a metric.
+                    This field is a member of `oneof`_ ``value``.
                 confidence_interval (google.cloud.dialogflowcx_v3.types.Experiment.Result.ConfidenceInterval):
                     The probability that the treatment is better
                     than all other treatments in the experiment
@@ -297,9 +309,12 @@ class VersionVariants(proto.Message):
 class VariantsHistory(proto.Message):
     r"""The history of variants update.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         version_variants (google.cloud.dialogflowcx_v3.types.VersionVariants):
             The flow versions as the variants.
+            This field is a member of `oneof`_ ``variants``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Update time of the variants.
     """

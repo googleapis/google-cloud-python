@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dialogflowcx_v3beta1.services.pages import pagers
 from google.cloud.dialogflowcx_v3beta1.types import fulfillment
@@ -170,17 +172,17 @@ class PagesAsyncClient:
 
     async def list_pages(
         self,
-        request: page.ListPagesRequest = None,
+        request: Union[page.ListPagesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPagesAsyncPager:
         r"""Returns the list of all pages in the specified flow.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.ListPagesRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.ListPagesRequest, dict]):
                 The request object. The request message for
                 [Pages.ListPages][google.cloud.dialogflow.cx.v3beta1.Pages.ListPages].
             parent (:class:`str`):
@@ -250,17 +252,17 @@ class PagesAsyncClient:
 
     async def get_page(
         self,
-        request: page.GetPageRequest = None,
+        request: Union[page.GetPageRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> page.Page:
         r"""Retrieves the specified page.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.GetPageRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.GetPageRequest, dict]):
                 The request object. The request message for
                 [Pages.GetPage][google.cloud.dialogflow.cx.v3beta1.Pages.GetPage].
             name (:class:`str`):
@@ -341,18 +343,18 @@ class PagesAsyncClient:
 
     async def create_page(
         self,
-        request: gcdc_page.CreatePageRequest = None,
+        request: Union[gcdc_page.CreatePageRequest, dict] = None,
         *,
         parent: str = None,
         page: gcdc_page.Page = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_page.Page:
         r"""Creates a page in the specified flow.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.CreatePageRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.CreatePageRequest, dict]):
                 The request object. The request message for
                 [Pages.CreatePage][google.cloud.dialogflow.cx.v3beta1.Pages.CreatePage].
             parent (:class:`str`):
@@ -440,18 +442,18 @@ class PagesAsyncClient:
 
     async def update_page(
         self,
-        request: gcdc_page.UpdatePageRequest = None,
+        request: Union[gcdc_page.UpdatePageRequest, dict] = None,
         *,
         page: gcdc_page.Page = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_page.Page:
         r"""Updates the specified page.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.UpdatePageRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdatePageRequest, dict]):
                 The request object. The request message for
                 [Pages.UpdatePage][google.cloud.dialogflow.cx.v3beta1.Pages.UpdatePage].
             page (:class:`google.cloud.dialogflowcx_v3beta1.types.Page`):
@@ -542,17 +544,17 @@ class PagesAsyncClient:
 
     async def delete_page(
         self,
-        request: page.DeletePageRequest = None,
+        request: Union[page.DeletePageRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified page.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.DeletePageRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.DeletePageRequest, dict]):
                 The request object. The request message for
                 [Pages.DeletePage][google.cloud.dialogflow.cx.v3beta1.Pages.DeletePage].
             name (:class:`str`):

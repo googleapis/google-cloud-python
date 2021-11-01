@@ -420,6 +420,13 @@ class ImportFlowRequest(proto.Message):
     r"""The request message for
     [Flows.ImportFlow][google.cloud.dialogflow.cx.v3.Flows.ImportFlow].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. The agent to import the flow into. Format:
@@ -429,8 +436,10 @@ class ImportFlowRequest(proto.Message):
             Storage <https://cloud.google.com/storage/docs/>`__ URI to
             import flow from. The format of this URI must be
             ``gs://<bucket-name>/<object-name>``.
+            This field is a member of `oneof`_ ``flow``.
         flow_content (bytes):
             Uncompressed raw byte content for flow.
+            This field is a member of `oneof`_ ``flow``.
         import_option (google.cloud.dialogflowcx_v3.types.ImportFlowRequest.ImportOption):
             Flow import mode. If not specified, ``KEEP`` is assumed.
     """
@@ -488,13 +497,22 @@ class ExportFlowResponse(proto.Message):
     r"""The response message for
     [Flows.ExportFlow][google.cloud.dialogflow.cx.v3.Flows.ExportFlow].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         flow_uri (str):
             The URI to a file containing the exported flow. This field
             is populated only if ``flow_uri`` is specified in
             [ExportFlowRequest][google.cloud.dialogflow.cx.v3.ExportFlowRequest].
+            This field is a member of `oneof`_ ``flow``.
         flow_content (bytes):
             Uncompressed raw byte content for flow.
+            This field is a member of `oneof`_ ``flow``.
     """
 
     flow_uri = proto.Field(proto.STRING, number=1, oneof="flow",)

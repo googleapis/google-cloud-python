@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dialogflowcx_v3beta1.services.changelogs import pagers
 from google.cloud.dialogflowcx_v3beta1.types import changelog
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -353,7 +355,7 @@ class ChangelogsClient(metaclass=ChangelogsClientMeta):
         request: Union[changelog.ListChangelogsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListChangelogsPager:
@@ -433,7 +435,7 @@ class ChangelogsClient(metaclass=ChangelogsClientMeta):
         request: Union[changelog.GetChangelogRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> changelog.Changelog:

@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -181,10 +183,10 @@ class EnvironmentsAsyncClient:
 
     async def list_environments(
         self,
-        request: environment.ListEnvironmentsRequest = None,
+        request: Union[environment.ListEnvironmentsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEnvironmentsAsyncPager:
@@ -192,7 +194,7 @@ class EnvironmentsAsyncClient:
         [Agent][google.cloud.dialogflow.cx.v3.Agent].
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.ListEnvironmentsRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.ListEnvironmentsRequest, dict]):
                 The request object. The request message for
                 [Environments.ListEnvironments][google.cloud.dialogflow.cx.v3.Environments.ListEnvironments].
             parent (:class:`str`):
@@ -264,10 +266,10 @@ class EnvironmentsAsyncClient:
 
     async def get_environment(
         self,
-        request: environment.GetEnvironmentRequest = None,
+        request: Union[environment.GetEnvironmentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> environment.Environment:
@@ -275,7 +277,7 @@ class EnvironmentsAsyncClient:
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.GetEnvironmentRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.GetEnvironmentRequest, dict]):
                 The request object. The request message for
                 [Environments.GetEnvironment][google.cloud.dialogflow.cx.v3.Environments.GetEnvironment].
             name (:class:`str`):
@@ -351,11 +353,11 @@ class EnvironmentsAsyncClient:
 
     async def create_environment(
         self,
-        request: gcdc_environment.CreateEnvironmentRequest = None,
+        request: Union[gcdc_environment.CreateEnvironmentRequest, dict] = None,
         *,
         parent: str = None,
         environment: gcdc_environment.Environment = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -374,7 +376,7 @@ class EnvironmentsAsyncClient:
            [Environment][google.cloud.dialogflow.cx.v3.Environment]
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.CreateEnvironmentRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.CreateEnvironmentRequest, dict]):
                 The request object. The request message for
                 [Environments.CreateEnvironment][google.cloud.dialogflow.cx.v3.Environments.CreateEnvironment].
             parent (:class:`str`):
@@ -465,11 +467,11 @@ class EnvironmentsAsyncClient:
 
     async def update_environment(
         self,
-        request: gcdc_environment.UpdateEnvironmentRequest = None,
+        request: Union[gcdc_environment.UpdateEnvironmentRequest, dict] = None,
         *,
         environment: gcdc_environment.Environment = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -487,7 +489,7 @@ class EnvironmentsAsyncClient:
            [Environment][google.cloud.dialogflow.cx.v3.Environment]
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.UpdateEnvironmentRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.UpdateEnvironmentRequest, dict]):
                 The request object. The request message for
                 [Environments.UpdateEnvironment][google.cloud.dialogflow.cx.v3.Environments.UpdateEnvironment].
             environment (:class:`google.cloud.dialogflowcx_v3.types.Environment`):
@@ -576,10 +578,10 @@ class EnvironmentsAsyncClient:
 
     async def delete_environment(
         self,
-        request: environment.DeleteEnvironmentRequest = None,
+        request: Union[environment.DeleteEnvironmentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -587,7 +589,7 @@ class EnvironmentsAsyncClient:
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.DeleteEnvironmentRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.DeleteEnvironmentRequest, dict]):
                 The request object. The request message for
                 [Environments.DeleteEnvironment][google.cloud.dialogflow.cx.v3.Environments.DeleteEnvironment].
             name (:class:`str`):
@@ -643,10 +645,10 @@ class EnvironmentsAsyncClient:
 
     async def lookup_environment_history(
         self,
-        request: environment.LookupEnvironmentHistoryRequest = None,
+        request: Union[environment.LookupEnvironmentHistoryRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.LookupEnvironmentHistoryAsyncPager:
@@ -654,7 +656,7 @@ class EnvironmentsAsyncClient:
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.LookupEnvironmentHistoryRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.LookupEnvironmentHistoryRequest, dict]):
                 The request object. The request message for
                 [Environments.LookupEnvironmentHistory][google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory].
             name (:class:`str`):
@@ -725,9 +727,9 @@ class EnvironmentsAsyncClient:
 
     async def run_continuous_test(
         self,
-        request: environment.RunContinuousTestRequest = None,
+        request: Union[environment.RunContinuousTestRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -745,7 +747,7 @@ class EnvironmentsAsyncClient:
            [RunContinuousTestResponse][google.cloud.dialogflow.cx.v3.RunContinuousTestResponse]
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.RunContinuousTestRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.RunContinuousTestRequest, dict]):
                 The request object. The request message for
                 [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3.Environments.RunContinuousTest].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -799,10 +801,10 @@ class EnvironmentsAsyncClient:
 
     async def list_continuous_test_results(
         self,
-        request: environment.ListContinuousTestResultsRequest = None,
+        request: Union[environment.ListContinuousTestResultsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListContinuousTestResultsAsyncPager:
@@ -810,7 +812,7 @@ class EnvironmentsAsyncClient:
         environment.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.ListContinuousTestResultsRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.ListContinuousTestResultsRequest, dict]):
                 The request object. The request message for
                 [Environments.ListContinuousTestResults][google.cloud.dialogflow.cx.v3.Environments.ListContinuousTestResults].
             parent (:class:`str`):
@@ -880,9 +882,9 @@ class EnvironmentsAsyncClient:
 
     async def deploy_flow(
         self,
-        request: environment.DeployFlowRequest = None,
+        request: Union[environment.DeployFlowRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -900,7 +902,7 @@ class EnvironmentsAsyncClient:
            [DeployFlowResponse][google.cloud.dialogflow.cx.v3.DeployFlowResponse]
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.DeployFlowRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.DeployFlowRequest, dict]):
                 The request object. The request message for
                 [Environments.DeployFlow][google.cloud.dialogflow.cx.v3.Environments.DeployFlow].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

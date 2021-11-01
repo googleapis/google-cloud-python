@@ -46,6 +46,13 @@ class Webhook(proto.Message):
     responses, validate collected data, or trigger actions on the
     backend.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The unique identifier of the webhook. Required for the
@@ -59,10 +66,12 @@ class Webhook(proto.Message):
             webhook, unique within the agent.
         generic_web_service (google.cloud.dialogflowcx_v3.types.Webhook.GenericWebService):
             Configuration for a generic web service.
+            This field is a member of `oneof`_ ``webhook``.
         service_directory (google.cloud.dialogflowcx_v3.types.Webhook.ServiceDirectoryConfig):
             Configuration for a `Service
             Directory <https://cloud.google.com/service-directory>`__
             service.
+            This field is a member of `oneof`_ ``webhook``.
         timeout (google.protobuf.duration_pb2.Duration):
             Webhook execution timeout. Execution is
             considered failed if Dialogflow doesn't receive
@@ -251,6 +260,13 @@ class WebhookRequest(proto.Message):
     as a JSON object and the field names will be presented in camel
     cases.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         detect_intent_response_id (str):
             Always present. The unique identifier of the
@@ -260,20 +276,24 @@ class WebhookRequest(proto.Message):
             If [natural language
             text][google.cloud.dialogflow.cx.v3.TextInput] was provided
             as input, this field will contain a copy of the text.
+            This field is a member of `oneof`_ ``query``.
         trigger_intent (str):
             If an [intent][google.cloud.dialogflow.cx.v3.IntentInput]
             was provided as input, this field will contain a copy of the
             intent identifier. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+            This field is a member of `oneof`_ ``query``.
         transcript (str):
             If [natural language speech
             audio][google.cloud.dialogflow.cx.v3.AudioInput] was
             provided as input, this field will contain the transcript
             for the audio.
+            This field is a member of `oneof`_ ``query``.
         trigger_event (str):
             If an [event][google.cloud.dialogflow.cx.v3.EventInput] was
             provided as input, this field will contain the name of the
             event.
+            This field is a member of `oneof`_ ``query``.
         language_code (str):
             The language code specified in the [original
             request][QueryInput.language_code].
@@ -401,6 +421,13 @@ class WebhookRequest(proto.Message):
 class WebhookResponse(proto.Message):
     r"""The response message for a webhook call.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         fulfillment_response (google.cloud.dialogflowcx_v3.types.WebhookResponse.FulfillmentResponse):
             The fulfillment response to send to the user.
@@ -421,9 +448,11 @@ class WebhookResponse(proto.Message):
         target_page (str):
             The target page to transition to. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+            This field is a member of `oneof`_ ``transition``.
         target_flow (str):
             The target flow to transition to. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            This field is a member of `oneof`_ ``transition``.
     """
 
     class FulfillmentResponse(proto.Message):

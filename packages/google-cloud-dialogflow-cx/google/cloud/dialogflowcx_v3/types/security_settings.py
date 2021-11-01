@@ -148,6 +148,9 @@ class SecuritySettings(proto.Message):
     on the settings to propagate to all the related components and
     take effect.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Resource name of the settings. Required for the
@@ -207,6 +210,7 @@ class SecuritySettings(proto.Message):
             Note: Interaction logging is a limited access
             feature. Talk to your Google representative to
             check availability for you.
+            This field is a member of `oneof`_ ``data_retention``.
         purge_data_types (Sequence[google.cloud.dialogflowcx_v3.types.SecuritySettings.PurgeDataType]):
             List of types of data to remove when
             retention settings triggers purge.

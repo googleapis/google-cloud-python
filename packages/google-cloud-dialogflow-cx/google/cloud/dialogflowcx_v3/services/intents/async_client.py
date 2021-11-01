@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dialogflowcx_v3.services.intents import pagers
 from google.cloud.dialogflowcx_v3.types import intent
@@ -161,10 +163,10 @@ class IntentsAsyncClient:
 
     async def list_intents(
         self,
-        request: intent.ListIntentsRequest = None,
+        request: Union[intent.ListIntentsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListIntentsAsyncPager:
@@ -172,7 +174,7 @@ class IntentsAsyncClient:
         agent.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.ListIntentsRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.ListIntentsRequest, dict]):
                 The request object. The request message for
                 [Intents.ListIntents][google.cloud.dialogflow.cx.v3.Intents.ListIntents].
             parent (:class:`str`):
@@ -242,17 +244,17 @@ class IntentsAsyncClient:
 
     async def get_intent(
         self,
-        request: intent.GetIntentRequest = None,
+        request: Union[intent.GetIntentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> intent.Intent:
         r"""Retrieves the specified intent.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.GetIntentRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.GetIntentRequest, dict]):
                 The request object. The request message for
                 [Intents.GetIntent][google.cloud.dialogflow.cx.v3.Intents.GetIntent].
             name (:class:`str`):
@@ -318,11 +320,11 @@ class IntentsAsyncClient:
 
     async def create_intent(
         self,
-        request: gcdc_intent.CreateIntentRequest = None,
+        request: Union[gcdc_intent.CreateIntentRequest, dict] = None,
         *,
         parent: str = None,
         intent: gcdc_intent.Intent = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_intent.Intent:
@@ -333,7 +335,7 @@ class IntentsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.CreateIntentRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.CreateIntentRequest, dict]):
                 The request object. The request message for
                 [Intents.CreateIntent][google.cloud.dialogflow.cx.v3.Intents.CreateIntent].
             parent (:class:`str`):
@@ -406,11 +408,11 @@ class IntentsAsyncClient:
 
     async def update_intent(
         self,
-        request: gcdc_intent.UpdateIntentRequest = None,
+        request: Union[gcdc_intent.UpdateIntentRequest, dict] = None,
         *,
         intent: gcdc_intent.Intent = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_intent.Intent:
@@ -421,7 +423,7 @@ class IntentsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.UpdateIntentRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.UpdateIntentRequest, dict]):
                 The request object. The request message for
                 [Intents.UpdateIntent][google.cloud.dialogflow.cx.v3.Intents.UpdateIntent].
             intent (:class:`google.cloud.dialogflowcx_v3.types.Intent`):
@@ -497,10 +499,10 @@ class IntentsAsyncClient:
 
     async def delete_intent(
         self,
-        request: intent.DeleteIntentRequest = None,
+        request: Union[intent.DeleteIntentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -511,7 +513,7 @@ class IntentsAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.DeleteIntentRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.DeleteIntentRequest, dict]):
                 The request object. The request message for
                 [Intents.DeleteIntent][google.cloud.dialogflow.cx.v3.Intents.DeleteIntent].
             name (:class:`str`):

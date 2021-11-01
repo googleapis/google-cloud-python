@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dialogflowcx_v3beta1.services.transition_route_groups import pagers
 from google.cloud.dialogflowcx_v3beta1.types import page
 from google.cloud.dialogflowcx_v3beta1.types import transition_route_group
@@ -435,7 +437,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         ] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransitionRouteGroupsPager:
@@ -523,7 +525,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transition_route_group.TransitionRouteGroup:
@@ -606,7 +608,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         *,
         parent: str = None,
         transition_route_group: gcdc_transition_route_group.TransitionRouteGroup = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_transition_route_group.TransitionRouteGroup:
@@ -705,7 +707,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         *,
         transition_route_group: gcdc_transition_route_group.TransitionRouteGroup = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_transition_route_group.TransitionRouteGroup:
@@ -802,7 +804,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:

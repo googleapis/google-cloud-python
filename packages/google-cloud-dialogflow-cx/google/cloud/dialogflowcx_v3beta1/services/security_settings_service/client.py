@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dialogflowcx_v3beta1.services.security_settings_service import pagers
 from google.cloud.dialogflowcx_v3beta1.types import security_settings
 from google.cloud.dialogflowcx_v3beta1.types import (
@@ -403,7 +405,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         *,
         parent: str = None,
         security_settings: gcdc_security_settings.SecuritySettings = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_security_settings.SecuritySettings:
@@ -491,7 +493,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         request: Union[security_settings.GetSecuritySettingsRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> security_settings.SecuritySettings:
@@ -571,7 +573,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         *,
         security_settings: gcdc_security_settings.SecuritySettings = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_security_settings.SecuritySettings:
@@ -661,7 +663,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         request: Union[security_settings.ListSecuritySettingsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSecuritySettingsPager:
@@ -743,7 +745,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         request: Union[security_settings.DeleteSecuritySettingsRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:

@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dialogflowcx_v3beta1.services.experiments import pagers
 from google.cloud.dialogflowcx_v3beta1.types import experiment
 from google.cloud.dialogflowcx_v3beta1.types import experiment as gcdc_experiment
@@ -380,7 +382,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         request: Union[experiment.ListExperimentsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListExperimentsPager:
@@ -463,7 +465,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         request: Union[experiment.GetExperimentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> experiment.Experiment:
@@ -538,7 +540,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         *,
         parent: str = None,
         experiment: gcdc_experiment.Experiment = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_experiment.Experiment:
@@ -624,7 +626,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         *,
         experiment: gcdc_experiment.Experiment = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_experiment.Experiment:
@@ -705,7 +707,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         request: Union[experiment.DeleteExperimentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -772,7 +774,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         request: Union[experiment.StartExperimentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> experiment.Experiment:
@@ -847,7 +849,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         request: Union[experiment.StopExperimentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> experiment.Experiment:

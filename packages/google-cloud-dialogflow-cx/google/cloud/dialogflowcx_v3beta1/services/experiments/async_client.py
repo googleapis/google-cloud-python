@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dialogflowcx_v3beta1.services.experiments import pagers
 from google.cloud.dialogflowcx_v3beta1.types import experiment
@@ -167,10 +169,10 @@ class ExperimentsAsyncClient:
 
     async def list_experiments(
         self,
-        request: experiment.ListExperimentsRequest = None,
+        request: Union[experiment.ListExperimentsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListExperimentsAsyncPager:
@@ -178,7 +180,7 @@ class ExperimentsAsyncClient:
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.ListExperimentsRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.ListExperimentsRequest, dict]):
                 The request object. The request message for
                 [Experiments.ListExperiments][google.cloud.dialogflow.cx.v3beta1.Experiments.ListExperiments].
             parent (:class:`str`):
@@ -250,10 +252,10 @@ class ExperimentsAsyncClient:
 
     async def get_experiment(
         self,
-        request: experiment.GetExperimentRequest = None,
+        request: Union[experiment.GetExperimentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> experiment.Experiment:
@@ -261,7 +263,7 @@ class ExperimentsAsyncClient:
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.GetExperimentRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.GetExperimentRequest, dict]):
                 The request object. The request message for
                 [Experiments.GetExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.GetExperiment].
             name (:class:`str`):
@@ -324,11 +326,11 @@ class ExperimentsAsyncClient:
 
     async def create_experiment(
         self,
-        request: gcdc_experiment.CreateExperimentRequest = None,
+        request: Union[gcdc_experiment.CreateExperimentRequest, dict] = None,
         *,
         parent: str = None,
         experiment: gcdc_experiment.Experiment = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_experiment.Experiment:
@@ -338,7 +340,7 @@ class ExperimentsAsyncClient:
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.CreateExperimentRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateExperimentRequest, dict]):
                 The request object. The request message for
                 [Experiments.CreateExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.CreateExperiment].
             parent (:class:`str`):
@@ -410,11 +412,11 @@ class ExperimentsAsyncClient:
 
     async def update_experiment(
         self,
-        request: gcdc_experiment.UpdateExperimentRequest = None,
+        request: Union[gcdc_experiment.UpdateExperimentRequest, dict] = None,
         *,
         experiment: gcdc_experiment.Experiment = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_experiment.Experiment:
@@ -422,7 +424,7 @@ class ExperimentsAsyncClient:
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.UpdateExperimentRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateExperimentRequest, dict]):
                 The request object. The request message for
                 [Experiments.UpdateExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.UpdateExperiment].
             experiment (:class:`google.cloud.dialogflowcx_v3beta1.types.Experiment`):
@@ -492,10 +494,10 @@ class ExperimentsAsyncClient:
 
     async def delete_experiment(
         self,
-        request: experiment.DeleteExperimentRequest = None,
+        request: Union[experiment.DeleteExperimentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -503,7 +505,7 @@ class ExperimentsAsyncClient:
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.DeleteExperimentRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteExperimentRequest, dict]):
                 The request object. The request message for
                 [Experiments.DeleteExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.DeleteExperiment].
             name (:class:`str`):
@@ -559,10 +561,10 @@ class ExperimentsAsyncClient:
 
     async def start_experiment(
         self,
-        request: experiment.StartExperimentRequest = None,
+        request: Union[experiment.StartExperimentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> experiment.Experiment:
@@ -572,7 +574,7 @@ class ExperimentsAsyncClient:
         RUNNING.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.StartExperimentRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.StartExperimentRequest, dict]):
                 The request object. The request message for
                 [Experiments.StartExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.StartExperiment].
             name (:class:`str`):
@@ -634,10 +636,10 @@ class ExperimentsAsyncClient:
 
     async def stop_experiment(
         self,
-        request: experiment.StopExperimentRequest = None,
+        request: Union[experiment.StopExperimentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> experiment.Experiment:
@@ -647,7 +649,7 @@ class ExperimentsAsyncClient:
         DONE.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.StopExperimentRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.StopExperimentRequest, dict]):
                 The request object. The request message for
                 [Experiments.StopExperiment][google.cloud.dialogflow.cx.v3beta1.Experiments.StopExperiment].
             name (:class:`str`):

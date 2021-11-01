@@ -252,11 +252,20 @@ class StreamingDetectIntentResponse(proto.Message):
     [DetectIntentResponse.response_type][google.cloud.dialogflow.cx.v3beta1.DetectIntentResponse.response_type]
     is set to ``FINAL``.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         recognition_result (google.cloud.dialogflowcx_v3beta1.types.StreamingRecognitionResult):
             The result of speech recognition.
+            This field is a member of `oneof`_ ``response``.
         detect_intent_response (google.cloud.dialogflowcx_v3beta1.types.DetectIntentResponse):
             The response from detect intent.
+            This field is a member of `oneof`_ ``response``.
     """
 
     recognition_result = proto.Field(
@@ -505,18 +514,30 @@ class QueryInput(proto.Message):
 
     4.  An event to be triggered.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         text (google.cloud.dialogflowcx_v3beta1.types.TextInput):
             The natural language text to be processed.
+            This field is a member of `oneof`_ ``input``.
         intent (google.cloud.dialogflowcx_v3beta1.types.IntentInput):
             The intent to be triggered.
+            This field is a member of `oneof`_ ``input``.
         audio (google.cloud.dialogflowcx_v3beta1.types.AudioInput):
             The natural language speech audio to be
             processed.
+            This field is a member of `oneof`_ ``input``.
         event (google.cloud.dialogflowcx_v3beta1.types.EventInput):
             The event to be triggered.
+            This field is a member of `oneof`_ ``input``.
         dtmf (google.cloud.dialogflowcx_v3beta1.types.DtmfInput):
             The DTMF event to be handled.
+            This field is a member of `oneof`_ ``input``.
         language_code (str):
             Required. The language of the input. See `Language
             Support <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
@@ -536,30 +557,42 @@ class QueryInput(proto.Message):
 class QueryResult(proto.Message):
     r"""Represents the result of a conversational query.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         text (str):
             If [natural language
             text][google.cloud.dialogflow.cx.v3beta1.TextInput] was
             provided as input, this field will contain a copy of the
             text.
+            This field is a member of `oneof`_ ``query``.
         trigger_intent (str):
             If an
             [intent][google.cloud.dialogflow.cx.v3beta1.IntentInput] was
             provided as input, this field will contain a copy of the
             intent identifier. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+            This field is a member of `oneof`_ ``query``.
         transcript (str):
             If [natural language speech
             audio][google.cloud.dialogflow.cx.v3beta1.AudioInput] was
             provided as input, this field will contain the transcript
             for the audio.
+            This field is a member of `oneof`_ ``query``.
         trigger_event (str):
             If an [event][google.cloud.dialogflow.cx.v3beta1.EventInput]
             was provided as input, this field will contain the name of
             the event.
+            This field is a member of `oneof`_ ``query``.
         dtmf (google.cloud.dialogflowcx_v3beta1.types.DtmfInput):
             If a [DTMF][DTMFInput] was provided as input, this field
             will contain a copy of the [DTMFInput][].
+            This field is a member of `oneof`_ ``query``.
         language_code (str):
             The language that was triggered during intent detection. See
             `Language
@@ -847,27 +880,38 @@ class MatchIntentRequest(proto.Message):
 class MatchIntentResponse(proto.Message):
     r"""Response of [MatchIntent][].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         text (str):
             If [natural language
             text][google.cloud.dialogflow.cx.v3beta1.TextInput] was
             provided as input, this field will contain a copy of the
             text.
+            This field is a member of `oneof`_ ``query``.
         trigger_intent (str):
             If an
             [intent][google.cloud.dialogflow.cx.v3beta1.IntentInput] was
             provided as input, this field will contain a copy of the
             intent identifier. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+            This field is a member of `oneof`_ ``query``.
         transcript (str):
             If [natural language speech
             audio][google.cloud.dialogflow.cx.v3beta1.AudioInput] was
             provided as input, this field will contain the transcript
             for the audio.
+            This field is a member of `oneof`_ ``query``.
         trigger_event (str):
             If an [event][google.cloud.dialogflow.cx.v3beta1.EventInput]
             was provided as input, this field will contain a copy of the
             event name.
+            This field is a member of `oneof`_ ``query``.
         matches (Sequence[google.cloud.dialogflowcx_v3beta1.types.Match]):
             Match results, if more than one, ordered
             descendingly by the confidence we have that the

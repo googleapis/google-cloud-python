@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dialogflowcx_v3beta1.services.webhooks import pagers
 from google.cloud.dialogflowcx_v3beta1.types import webhook
@@ -162,10 +164,10 @@ class WebhooksAsyncClient:
 
     async def list_webhooks(
         self,
-        request: webhook.ListWebhooksRequest = None,
+        request: Union[webhook.ListWebhooksRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWebhooksAsyncPager:
@@ -173,7 +175,7 @@ class WebhooksAsyncClient:
         agent.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.ListWebhooksRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.ListWebhooksRequest, dict]):
                 The request object. The request message for
                 [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3beta1.Webhooks.ListWebhooks].
             parent (:class:`str`):
@@ -243,17 +245,17 @@ class WebhooksAsyncClient:
 
     async def get_webhook(
         self,
-        request: webhook.GetWebhookRequest = None,
+        request: Union[webhook.GetWebhookRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> webhook.Webhook:
         r"""Retrieves the specified webhook.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.GetWebhookRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.GetWebhookRequest, dict]):
                 The request object. The request message for
                 [Webhooks.GetWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.GetWebhook].
             name (:class:`str`):
@@ -319,18 +321,18 @@ class WebhooksAsyncClient:
 
     async def create_webhook(
         self,
-        request: gcdc_webhook.CreateWebhookRequest = None,
+        request: Union[gcdc_webhook.CreateWebhookRequest, dict] = None,
         *,
         parent: str = None,
         webhook: gcdc_webhook.Webhook = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_webhook.Webhook:
         r"""Creates a webhook in the specified agent.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.CreateWebhookRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateWebhookRequest, dict]):
                 The request object. The request message for
                 [Webhooks.CreateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.CreateWebhook].
             parent (:class:`str`):
@@ -403,18 +405,18 @@ class WebhooksAsyncClient:
 
     async def update_webhook(
         self,
-        request: gcdc_webhook.UpdateWebhookRequest = None,
+        request: Union[gcdc_webhook.UpdateWebhookRequest, dict] = None,
         *,
         webhook: gcdc_webhook.Webhook = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_webhook.Webhook:
         r"""Updates the specified webhook.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.UpdateWebhookRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateWebhookRequest, dict]):
                 The request object. The request message for
                 [Webhooks.UpdateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.UpdateWebhook].
             webhook (:class:`google.cloud.dialogflowcx_v3beta1.types.Webhook`):
@@ -490,17 +492,17 @@ class WebhooksAsyncClient:
 
     async def delete_webhook(
         self,
-        request: webhook.DeleteWebhookRequest = None,
+        request: Union[webhook.DeleteWebhookRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified webhook.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.DeleteWebhookRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteWebhookRequest, dict]):
                 The request object. The request message for
                 [Webhooks.DeleteWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.DeleteWebhook].
             name (:class:`str`):

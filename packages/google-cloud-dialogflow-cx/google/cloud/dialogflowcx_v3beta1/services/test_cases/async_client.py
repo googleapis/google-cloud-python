@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -189,17 +191,17 @@ class TestCasesAsyncClient:
 
     async def list_test_cases(
         self,
-        request: test_case.ListTestCasesRequest = None,
+        request: Union[test_case.ListTestCasesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTestCasesAsyncPager:
         r"""Fetches a list of test cases for a given agent.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.ListTestCasesRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.ListTestCasesRequest, dict]):
                 The request object. The request message for
                 [TestCases.ListTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ListTestCases].
             parent (:class:`str`):
@@ -269,17 +271,17 @@ class TestCasesAsyncClient:
 
     async def batch_delete_test_cases(
         self,
-        request: test_case.BatchDeleteTestCasesRequest = None,
+        request: Union[test_case.BatchDeleteTestCasesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Batch deletes test cases.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.BatchDeleteTestCasesRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.BatchDeleteTestCasesRequest, dict]):
                 The request object. The request message for
                 [TestCases.BatchDeleteTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.BatchDeleteTestCases].
             parent (:class:`str`):
@@ -333,17 +335,17 @@ class TestCasesAsyncClient:
 
     async def get_test_case(
         self,
-        request: test_case.GetTestCaseRequest = None,
+        request: Union[test_case.GetTestCaseRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> test_case.TestCase:
         r"""Gets a test case.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.GetTestCaseRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.GetTestCaseRequest, dict]):
                 The request object. The request message for
                 [TestCases.GetTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.GetTestCase].
             name (:class:`str`):
@@ -402,18 +404,18 @@ class TestCasesAsyncClient:
 
     async def create_test_case(
         self,
-        request: gcdc_test_case.CreateTestCaseRequest = None,
+        request: Union[gcdc_test_case.CreateTestCaseRequest, dict] = None,
         *,
         parent: str = None,
         test_case: gcdc_test_case.TestCase = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_test_case.TestCase:
         r"""Creates a test case for the given agent.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.CreateTestCaseRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateTestCaseRequest, dict]):
                 The request object. The request message for
                 [TestCases.CreateTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.CreateTestCase].
             parent (:class:`str`):
@@ -479,18 +481,18 @@ class TestCasesAsyncClient:
 
     async def update_test_case(
         self,
-        request: gcdc_test_case.UpdateTestCaseRequest = None,
+        request: Union[gcdc_test_case.UpdateTestCaseRequest, dict] = None,
         *,
         test_case: gcdc_test_case.TestCase = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_test_case.TestCase:
         r"""Updates the specified test case.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.UpdateTestCaseRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateTestCaseRequest, dict]):
                 The request object. The request message for
                 [TestCases.UpdateTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.UpdateTestCase].
             test_case (:class:`google.cloud.dialogflowcx_v3beta1.types.TestCase`):
@@ -562,9 +564,9 @@ class TestCasesAsyncClient:
 
     async def run_test_case(
         self,
-        request: test_case.RunTestCaseRequest = None,
+        request: Union[test_case.RunTestCaseRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -581,7 +583,7 @@ class TestCasesAsyncClient:
            [RunTestCaseResponse][google.cloud.dialogflow.cx.v3beta1.RunTestCaseResponse]
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.RunTestCaseRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.RunTestCaseRequest, dict]):
                 The request object. The request message for
                 [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.RunTestCase].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -633,9 +635,9 @@ class TestCasesAsyncClient:
 
     async def batch_run_test_cases(
         self,
-        request: test_case.BatchRunTestCasesRequest = None,
+        request: Union[test_case.BatchRunTestCasesRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -652,7 +654,7 @@ class TestCasesAsyncClient:
            [BatchRunTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.BatchRunTestCasesResponse]
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.BatchRunTestCasesRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.BatchRunTestCasesRequest, dict]):
                 The request object. The request message for
                 [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.BatchRunTestCases].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -704,16 +706,16 @@ class TestCasesAsyncClient:
 
     async def calculate_coverage(
         self,
-        request: test_case.CalculateCoverageRequest = None,
+        request: Union[test_case.CalculateCoverageRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> test_case.CalculateCoverageResponse:
         r"""Calculates the test coverage for an agent.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.CalculateCoverageRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.CalculateCoverageRequest, dict]):
                 The request object. The request message for
                 [TestCases.CalculateCoverage][google.cloud.dialogflow.cx.v3beta1.TestCases.CalculateCoverage].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -753,9 +755,9 @@ class TestCasesAsyncClient:
 
     async def import_test_cases(
         self,
-        request: test_case.ImportTestCasesRequest = None,
+        request: Union[test_case.ImportTestCasesRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -775,7 +777,7 @@ class TestCasesAsyncClient:
            [ImportTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.ImportTestCasesResponse]
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.ImportTestCasesRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.ImportTestCasesRequest, dict]):
                 The request object. The request message for
                 [TestCases.ImportTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ImportTestCases].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -827,9 +829,9 @@ class TestCasesAsyncClient:
 
     async def export_test_cases(
         self,
-        request: test_case.ExportTestCasesRequest = None,
+        request: Union[test_case.ExportTestCasesRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -848,7 +850,7 @@ class TestCasesAsyncClient:
            [ExportTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.ExportTestCasesResponse]
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.ExportTestCasesRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.ExportTestCasesRequest, dict]):
                 The request object. The request message for
                 [TestCases.ExportTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ExportTestCases].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -900,17 +902,17 @@ class TestCasesAsyncClient:
 
     async def list_test_case_results(
         self,
-        request: test_case.ListTestCaseResultsRequest = None,
+        request: Union[test_case.ListTestCaseResultsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTestCaseResultsAsyncPager:
         r"""Fetches a list of results for a given test case.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.ListTestCaseResultsRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.ListTestCaseResultsRequest, dict]):
                 The request object. The request message for
                 [TestCases.ListTestCaseResults][google.cloud.dialogflow.cx.v3beta1.TestCases.ListTestCaseResults].
             parent (:class:`str`):
@@ -982,17 +984,17 @@ class TestCasesAsyncClient:
 
     async def get_test_case_result(
         self,
-        request: test_case.GetTestCaseResultRequest = None,
+        request: Union[test_case.GetTestCaseResultRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> test_case.TestCaseResult:
         r"""Gets a test case result.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.GetTestCaseResultRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.GetTestCaseResultRequest, dict]):
                 The request object. The request message for
                 [TestCases.GetTestCaseResult][google.cloud.dialogflow.cx.v3beta1.TestCases.GetTestCaseResult].
             name (:class:`str`):

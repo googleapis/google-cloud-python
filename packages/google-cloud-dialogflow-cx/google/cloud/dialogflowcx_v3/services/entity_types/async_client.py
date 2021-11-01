@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dialogflowcx_v3.services.entity_types import pagers
 from google.cloud.dialogflowcx_v3.types import entity_type
@@ -163,10 +165,10 @@ class EntityTypesAsyncClient:
 
     async def list_entity_types(
         self,
-        request: entity_type.ListEntityTypesRequest = None,
+        request: Union[entity_type.ListEntityTypesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEntityTypesAsyncPager:
@@ -174,7 +176,7 @@ class EntityTypesAsyncClient:
         agent.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.ListEntityTypesRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.ListEntityTypesRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.ListEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ListEntityTypes].
             parent (:class:`str`):
@@ -245,17 +247,17 @@ class EntityTypesAsyncClient:
 
     async def get_entity_type(
         self,
-        request: entity_type.GetEntityTypeRequest = None,
+        request: Union[entity_type.GetEntityTypeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> entity_type.EntityType:
         r"""Retrieves the specified entity type.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.GetEntityTypeRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.GetEntityTypeRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.GetEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.GetEntityType].
             name (:class:`str`):
@@ -348,11 +350,11 @@ class EntityTypesAsyncClient:
 
     async def create_entity_type(
         self,
-        request: gcdc_entity_type.CreateEntityTypeRequest = None,
+        request: Union[gcdc_entity_type.CreateEntityTypeRequest, dict] = None,
         *,
         parent: str = None,
         entity_type: gcdc_entity_type.EntityType = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_entity_type.EntityType:
@@ -363,7 +365,7 @@ class EntityTypesAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.CreateEntityTypeRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.CreateEntityTypeRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.CreateEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.CreateEntityType].
             parent (:class:`str`):
@@ -463,11 +465,11 @@ class EntityTypesAsyncClient:
 
     async def update_entity_type(
         self,
-        request: gcdc_entity_type.UpdateEntityTypeRequest = None,
+        request: Union[gcdc_entity_type.UpdateEntityTypeRequest, dict] = None,
         *,
         entity_type: gcdc_entity_type.EntityType = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_entity_type.EntityType:
@@ -478,7 +480,7 @@ class EntityTypesAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.UpdateEntityTypeRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.UpdateEntityTypeRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.UpdateEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.UpdateEntityType].
             entity_type (:class:`google.cloud.dialogflowcx_v3.types.EntityType`):
@@ -580,10 +582,10 @@ class EntityTypesAsyncClient:
 
     async def delete_entity_type(
         self,
-        request: entity_type.DeleteEntityTypeRequest = None,
+        request: Union[entity_type.DeleteEntityTypeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -594,7 +596,7 @@ class EntityTypesAsyncClient:
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3.types.DeleteEntityTypeRequest`):
+            request (Union[google.cloud.dialogflowcx_v3.types.DeleteEntityTypeRequest, dict]):
                 The request object. The request message for
                 [EntityTypes.DeleteEntityType][google.cloud.dialogflow.cx.v3.EntityTypes.DeleteEntityType].
             name (:class:`str`):

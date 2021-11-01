@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dialogflowcx_v3beta1.services.changelogs import pagers
 from google.cloud.dialogflowcx_v3beta1.types import changelog
@@ -160,17 +162,17 @@ class ChangelogsAsyncClient:
 
     async def list_changelogs(
         self,
-        request: changelog.ListChangelogsRequest = None,
+        request: Union[changelog.ListChangelogsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListChangelogsAsyncPager:
         r"""Returns the list of Changelogs.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.ListChangelogsRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.ListChangelogsRequest, dict]):
                 The request object. The request message for
                 [Changelogs.ListChangelogs][google.cloud.dialogflow.cx.v3beta1.Changelogs.ListChangelogs].
             parent (:class:`str`):
@@ -240,17 +242,17 @@ class ChangelogsAsyncClient:
 
     async def get_changelog(
         self,
-        request: changelog.GetChangelogRequest = None,
+        request: Union[changelog.GetChangelogRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> changelog.Changelog:
         r"""Retrieves the specified Changelog.
 
         Args:
-            request (:class:`google.cloud.dialogflowcx_v3beta1.types.GetChangelogRequest`):
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.GetChangelogRequest, dict]):
                 The request object. The request message for
                 [Changelogs.GetChangelog][google.cloud.dialogflow.cx.v3beta1.Changelogs.GetChangelog].
             name (:class:`str`):
