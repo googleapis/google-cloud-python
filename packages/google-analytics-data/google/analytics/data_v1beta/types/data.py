@@ -135,6 +135,7 @@ class MinuteRange(proto.Message):
             minutes of event data (``startMinutesAgo <= 29``), and 360
             Analytics properties can request up to the last 60 minutes
             of event data (``startMinutesAgo <= 59``).
+            This field is a member of `oneof`_ ``_start_minutes_ago``.
         end_minutes_ago (int):
             The inclusive end minute for the query as a number of
             minutes before now. Cannot be before ``startMinutesAgo``.
@@ -146,6 +147,7 @@ class MinuteRange(proto.Message):
             last 30 minutes of event data (``endMinutesAgo <= 29``), and
             360 Analytics properties can request any minute in the last
             60 minutes of event data (``endMinutesAgo <= 59``).
+            This field is a member of `oneof`_ ``_end_minutes_ago``.
         name (str):
             Assigns a name to this minute range. The dimension
             ``dateRange`` is valued to this name in a report response.
@@ -203,17 +205,27 @@ class DimensionExpression(proto.Message):
     1) lower_case(dimension)
     2) concatenate(dimension1, symbol, dimension2).
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         lower_case (google.analytics.data_v1beta.types.DimensionExpression.CaseExpression):
             Used to convert a dimension value to lower
             case.
+            This field is a member of `oneof`_ ``one_expression``.
         upper_case (google.analytics.data_v1beta.types.DimensionExpression.CaseExpression):
             Used to convert a dimension value to upper
             case.
+            This field is a member of `oneof`_ ``one_expression``.
         concatenate (google.analytics.data_v1beta.types.DimensionExpression.ConcatenateExpression):
             Used to combine dimension values to a single
             dimension. For example, dimension "country,
             city": concatenate(country, ", ", city).
+            This field is a member of `oneof`_ ``one_expression``.
     """
 
     class CaseExpression(proto.Message):
@@ -301,17 +313,28 @@ class FilterExpression(proto.Message):
     The fields in the same FilterExpression need to be either all
     dimensions or all metrics.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         and_group (google.analytics.data_v1beta.types.FilterExpressionList):
             The FilterExpressions in and_group have an AND relationship.
+            This field is a member of `oneof`_ ``expr``.
         or_group (google.analytics.data_v1beta.types.FilterExpressionList):
             The FilterExpressions in or_group have an OR relationship.
+            This field is a member of `oneof`_ ``expr``.
         not_expression (google.analytics.data_v1beta.types.FilterExpression):
             The FilterExpression is NOT of not_expression.
+            This field is a member of `oneof`_ ``expr``.
         filter (google.analytics.data_v1beta.types.Filter):
             A primitive filter.
             All fields in filter in same FilterExpression
             needs to be either all dimensions or metrics.
+            This field is a member of `oneof`_ ``expr``.
     """
 
     and_group = proto.Field(
@@ -342,18 +365,29 @@ class FilterExpressionList(proto.Message):
 class Filter(proto.Message):
     r"""An expression to filter dimension or metric values.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         field_name (str):
             The dimension name or metric name. Must be a
             name defined in dimensions or metrics.
         string_filter (google.analytics.data_v1beta.types.Filter.StringFilter):
             Strings related filter.
+            This field is a member of `oneof`_ ``one_filter``.
         in_list_filter (google.analytics.data_v1beta.types.Filter.InListFilter):
             A filter for in list values.
+            This field is a member of `oneof`_ ``one_filter``.
         numeric_filter (google.analytics.data_v1beta.types.Filter.NumericFilter):
             A filter for numeric or date values.
+            This field is a member of `oneof`_ ``one_filter``.
         between_filter (google.analytics.data_v1beta.types.Filter.BetweenFilter):
             A filter for two values.
+            This field is a member of `oneof`_ ``one_filter``.
     """
 
     class StringFilter(proto.Message):
@@ -454,14 +488,24 @@ class Filter(proto.Message):
 class OrderBy(proto.Message):
     r"""The sort options.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         metric (google.analytics.data_v1beta.types.OrderBy.MetricOrderBy):
             Sorts results by a metric's values.
+            This field is a member of `oneof`_ ``one_order_by``.
         dimension (google.analytics.data_v1beta.types.OrderBy.DimensionOrderBy):
             Sorts results by a dimension's values.
+            This field is a member of `oneof`_ ``one_order_by``.
         pivot (google.analytics.data_v1beta.types.OrderBy.PivotOrderBy):
             Sorts results by a metric's values within a
             pivot column group.
+            This field is a member of `oneof`_ ``one_order_by``.
         desc (bool):
             If true, sorts by descending order.
     """
@@ -903,10 +947,13 @@ class Row(proto.Message):
 class DimensionValue(proto.Message):
     r"""The value of a dimension.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         value (str):
             Value as a string if the dimension type is a
             string.
+            This field is a member of `oneof`_ ``one_value``.
     """
 
     value = proto.Field(proto.STRING, number=1, oneof="one_value",)
@@ -915,9 +962,12 @@ class DimensionValue(proto.Message):
 class MetricValue(proto.Message):
     r"""The value of a metric.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         value (str):
             Measurement value. See MetricHeader for type.
+            This field is a member of `oneof`_ ``one_value``.
     """
 
     value = proto.Field(proto.STRING, number=4, oneof="one_value",)
@@ -926,11 +976,20 @@ class MetricValue(proto.Message):
 class NumericValue(proto.Message):
     r"""To represent a number.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         int64_value (int):
             Integer value
+            This field is a member of `oneof`_ ``one_value``.
         double_value (float):
             Double value
+            This field is a member of `oneof`_ ``one_value``.
     """
 
     int64_value = proto.Field(proto.INT64, number=1, oneof="one_value",)
@@ -1090,10 +1149,12 @@ class DimensionCompatibility(proto.Message):
             for this compatibility information. The
             dimension metadata also contains other helpful
             information like the UI name and description.
+            This field is a member of `oneof`_ ``_dimension_metadata``.
         compatibility (google.analytics.data_v1beta.types.Compatibility):
             The compatibility of this dimension. If the
             compatibility is COMPATIBLE, this dimension can
             be successfully added to the report.
+            This field is a member of `oneof`_ ``_compatibility``.
     """
 
     dimension_metadata = proto.Field(
@@ -1113,10 +1174,12 @@ class MetricCompatibility(proto.Message):
             this compatibility information. The metric
             metadata also contains other helpful information
             like the UI name and description.
+            This field is a member of `oneof`_ ``_metric_metadata``.
         compatibility (google.analytics.data_v1beta.types.Compatibility):
             The compatibility of this metric. If the
             compatibility is COMPATIBLE, this metric can be
             successfully added to the report.
+            This field is a member of `oneof`_ ``_compatibility``.
     """
 
     metric_metadata = proto.Field(

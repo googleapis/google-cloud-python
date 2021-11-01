@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.analytics.data_v1beta.types import analytics_data_api
 from google.analytics.data_v1beta.types import data
 from .transports.base import BetaAnalyticsDataTransport, DEFAULT_CLIENT_INFO
@@ -348,7 +350,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         self,
         request: Union[analytics_data_api.RunReportRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.RunReportResponse:
@@ -405,7 +407,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         self,
         request: Union[analytics_data_api.RunPivotReportRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.RunPivotReportResponse:
@@ -460,7 +462,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         self,
         request: Union[analytics_data_api.BatchRunReportsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.BatchRunReportsResponse:
@@ -511,7 +513,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         self,
         request: Union[analytics_data_api.BatchRunPivotReportsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.BatchRunPivotReportsResponse:
@@ -563,7 +565,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         request: Union[analytics_data_api.GetMetadataRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.Metadata:
@@ -653,7 +655,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         self,
         request: Union[analytics_data_api.RunRealtimeReportRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.RunRealtimeReportResponse:
@@ -706,7 +708,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         self,
         request: Union[analytics_data_api.CheckCompatibilityRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.CheckCompatibilityResponse:

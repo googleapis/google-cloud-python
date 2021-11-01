@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.analytics.data_v1beta.types import analytics_data_api
 from google.analytics.data_v1beta.types import data
@@ -163,9 +165,9 @@ class BetaAnalyticsDataAsyncClient:
 
     async def run_report(
         self,
-        request: analytics_data_api.RunReportRequest = None,
+        request: Union[analytics_data_api.RunReportRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.RunReportResponse:
@@ -180,7 +182,7 @@ class BetaAnalyticsDataAsyncClient:
         criteria, such as country or event name.
 
         Args:
-            request (:class:`google.analytics.data_v1beta.types.RunReportRequest`):
+            request (Union[google.analytics.data_v1beta.types.RunReportRequest, dict]):
                 The request object. The request to generate a report.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -219,9 +221,9 @@ class BetaAnalyticsDataAsyncClient:
 
     async def run_pivot_report(
         self,
-        request: analytics_data_api.RunPivotReportRequest = None,
+        request: Union[analytics_data_api.RunPivotReportRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.RunPivotReportResponse:
@@ -233,7 +235,7 @@ class BetaAnalyticsDataAsyncClient:
         dissect your data.
 
         Args:
-            request (:class:`google.analytics.data_v1beta.types.RunPivotReportRequest`):
+            request (Union[google.analytics.data_v1beta.types.RunPivotReportRequest, dict]):
                 The request object. The request to generate a pivot
                 report.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -273,9 +275,9 @@ class BetaAnalyticsDataAsyncClient:
 
     async def batch_run_reports(
         self,
-        request: analytics_data_api.BatchRunReportsRequest = None,
+        request: Union[analytics_data_api.BatchRunReportsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.BatchRunReportsResponse:
@@ -283,7 +285,7 @@ class BetaAnalyticsDataAsyncClient:
         be for the same GA4 Property.
 
         Args:
-            request (:class:`google.analytics.data_v1beta.types.BatchRunReportsRequest`):
+            request (Union[google.analytics.data_v1beta.types.BatchRunReportsRequest, dict]):
                 The request object. The batch request containing
                 multiple report requests.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -323,9 +325,9 @@ class BetaAnalyticsDataAsyncClient:
 
     async def batch_run_pivot_reports(
         self,
-        request: analytics_data_api.BatchRunPivotReportsRequest = None,
+        request: Union[analytics_data_api.BatchRunPivotReportsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.BatchRunPivotReportsResponse:
@@ -333,7 +335,7 @@ class BetaAnalyticsDataAsyncClient:
         reports must be for the same GA4 Property.
 
         Args:
-            request (:class:`google.analytics.data_v1beta.types.BatchRunPivotReportsRequest`):
+            request (Union[google.analytics.data_v1beta.types.BatchRunPivotReportsRequest, dict]):
                 The request object. The batch request containing
                 multiple pivot report requests.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -373,10 +375,10 @@ class BetaAnalyticsDataAsyncClient:
 
     async def get_metadata(
         self,
-        request: analytics_data_api.GetMetadataRequest = None,
+        request: Union[analytics_data_api.GetMetadataRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.Metadata:
@@ -393,7 +395,7 @@ class BetaAnalyticsDataAsyncClient:
         such as ``country`` and ``totalUsers``.
 
         Args:
-            request (:class:`google.analytics.data_v1beta.types.GetMetadataRequest`):
+            request (Union[google.analytics.data_v1beta.types.GetMetadataRequest, dict]):
                 The request object. Request for a property's dimension
                 and metric metadata.
             name (:class:`str`):
@@ -464,9 +466,9 @@ class BetaAnalyticsDataAsyncClient:
 
     async def run_realtime_report(
         self,
-        request: analytics_data_api.RunRealtimeReportRequest = None,
+        request: Union[analytics_data_api.RunRealtimeReportRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.RunRealtimeReportResponse:
@@ -476,7 +478,7 @@ class BetaAnalyticsDataAsyncClient:
         last 30 minutes.
 
         Args:
-            request (:class:`google.analytics.data_v1beta.types.RunRealtimeReportRequest`):
+            request (Union[google.analytics.data_v1beta.types.RunRealtimeReportRequest, dict]):
                 The request object. The request to generate a realtime
                 report.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -516,9 +518,9 @@ class BetaAnalyticsDataAsyncClient:
 
     async def check_compatibility(
         self,
-        request: analytics_data_api.CheckCompatibilityRequest = None,
+        request: Union[analytics_data_api.CheckCompatibilityRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.CheckCompatibilityResponse:
@@ -535,7 +537,7 @@ class BetaAnalyticsDataAsyncClient:
         for Core reports.
 
         Args:
-            request (:class:`google.analytics.data_v1beta.types.CheckCompatibilityRequest`):
+            request (Union[google.analytics.data_v1beta.types.CheckCompatibilityRequest, dict]):
                 The request object. The request for compatibility
                 information for a report's dimensions and metrics. Check
                 compatibility provides a preview of the compatibility of
