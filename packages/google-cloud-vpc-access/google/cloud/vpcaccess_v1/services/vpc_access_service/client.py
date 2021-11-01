@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.vpcaccess_v1.services.vpc_access_service import pagers
@@ -360,7 +362,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         parent: str = None,
         connector_id: str = None,
         connector: vpc_access.Connector = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -460,7 +462,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         request: Union[vpc_access.GetConnectorRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vpc_access.Connector:
@@ -532,7 +534,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         request: Union[vpc_access.ListConnectorsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectorsPager:
@@ -612,7 +614,7 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         request: Union[vpc_access.DeleteConnectorRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
