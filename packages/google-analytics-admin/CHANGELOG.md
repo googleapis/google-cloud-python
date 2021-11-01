@@ -1,5 +1,18 @@
 # Changelog
 
+### [0.7.2](https://www.github.com/googleapis/python-analytics-admin/compare/v0.7.1...v0.7.2) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([be96ebc](https://www.github.com/googleapis/python-analytics-admin/commit/be96ebc5d99e3d3ea1883ce22fafa95847825fb3))
+* **deps:** require google-api-core >= 1.28.0 ([be96ebc](https://www.github.com/googleapis/python-analytics-admin/commit/be96ebc5d99e3d3ea1883ce22fafa95847825fb3))
+
+
+### Documentation
+
+* list oneofs in docstring ([be96ebc](https://www.github.com/googleapis/python-analytics-admin/commit/be96ebc5d99e3d3ea1883ce22fafa95847825fb3))
+
 ### [0.7.1](https://www.github.com/googleapis/python-analytics-admin/compare/v0.7.0...v0.7.1) (2021-10-19)
 
 
