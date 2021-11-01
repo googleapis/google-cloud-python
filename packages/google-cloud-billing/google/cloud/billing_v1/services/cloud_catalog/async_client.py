@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.billing_v1.services.cloud_catalog import pagers
 from google.cloud.billing_v1.types import cloud_catalog
@@ -164,16 +166,16 @@ class CloudCatalogAsyncClient:
 
     async def list_services(
         self,
-        request: cloud_catalog.ListServicesRequest = None,
+        request: Union[cloud_catalog.ListServicesRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesAsyncPager:
         r"""Lists all public cloud services.
 
         Args:
-            request (:class:`google.cloud.billing_v1.types.ListServicesRequest`):
+            request (Union[google.cloud.billing_v1.types.ListServicesRequest, dict]):
                 The request object. Request message for `ListServices`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -214,10 +216,10 @@ class CloudCatalogAsyncClient:
 
     async def list_skus(
         self,
-        request: cloud_catalog.ListSkusRequest = None,
+        request: Union[cloud_catalog.ListSkusRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSkusAsyncPager:
@@ -225,7 +227,7 @@ class CloudCatalogAsyncClient:
         service.
 
         Args:
-            request (:class:`google.cloud.billing_v1.types.ListSkusRequest`):
+            request (Union[google.cloud.billing_v1.types.ListSkusRequest, dict]):
                 The request object. Request message for `ListSkus`.
             parent (:class:`str`):
                 Required. The name of the service.
