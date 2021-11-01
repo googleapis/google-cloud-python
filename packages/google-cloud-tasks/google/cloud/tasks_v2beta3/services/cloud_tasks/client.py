@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.tasks_v2beta3.services.cloud_tasks import pagers
 from google.cloud.tasks_v2beta3.types import cloudtasks
 from google.cloud.tasks_v2beta3.types import queue
@@ -378,7 +380,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         request: Union[cloudtasks.ListQueuesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListQueuesPager:
@@ -459,7 +461,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         request: Union[cloudtasks.GetQueueRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> queue.Queue:
@@ -535,7 +537,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         *,
         parent: str = None,
         queue: gct_queue.Queue = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_queue.Queue:
@@ -637,7 +639,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         *,
         queue: gct_queue.Queue = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_queue.Queue:
@@ -747,7 +749,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         request: Union[cloudtasks.DeleteQueueRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -822,7 +824,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         request: Union[cloudtasks.PurgeQueueRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> queue.Queue:
@@ -902,7 +904,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         request: Union[cloudtasks.PauseQueueRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> queue.Queue:
@@ -984,7 +986,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         request: Union[cloudtasks.ResumeQueueRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> queue.Queue:
@@ -1073,7 +1075,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -1206,7 +1208,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -1344,7 +1346,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
@@ -1433,7 +1435,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         request: Union[cloudtasks.ListTasksRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTasksPager:
@@ -1523,7 +1525,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         request: Union[cloudtasks.GetTaskRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> task.Task:
@@ -1594,7 +1596,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         *,
         parent: str = None,
         task: gct_task.Task = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_task.Task:
@@ -1718,7 +1720,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         request: Union[cloudtasks.DeleteTaskRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -1786,7 +1788,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         request: Union[cloudtasks.RunTaskRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> task.Task:

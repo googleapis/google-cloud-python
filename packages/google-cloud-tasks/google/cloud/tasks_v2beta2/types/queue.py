@@ -32,6 +32,13 @@ class Queue(proto.Message):
     Configurable properties include rate limits, retry options,
     target types, and others.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Caller-specified and required in
@@ -61,11 +68,13 @@ class Queue(proto.Message):
 
             An App Engine queue is a queue that has an
             [AppEngineHttpTarget][google.cloud.tasks.v2beta2.AppEngineHttpTarget].
+            This field is a member of `oneof`_ ``target_type``.
         pull_target (google.cloud.tasks_v2beta2.types.PullTarget):
             Pull target.
 
             A pull queue is a queue that has a
             [PullTarget][google.cloud.tasks.v2beta2.PullTarget].
+            This field is a member of `oneof`_ ``target_type``.
         rate_limits (google.cloud.tasks_v2beta2.types.RateLimits):
             Rate limits for task dispatches.
 
@@ -285,6 +294,13 @@ class RetryConfig(proto.Message):
     r"""Retry config.
     These settings determine how a failed task attempt is retried.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         max_attempts (int):
             The maximum number of attempts for a task.
@@ -292,9 +308,11 @@ class RetryConfig(proto.Message):
             Cloud Tasks will attempt the task ``max_attempts`` times
             (that is, if the first attempt fails, then there will be
             ``max_attempts - 1`` retries). Must be > 0.
+            This field is a member of `oneof`_ ``num_attempts``.
         unlimited_attempts (bool):
             If true, then the number of attempts is
             unlimited.
+            This field is a member of `oneof`_ ``num_attempts``.
         max_retry_duration (google.protobuf.duration_pb2.Duration):
             If positive, ``max_retry_duration`` specifies the time limit
             for retrying a failed task, measured from when the task was

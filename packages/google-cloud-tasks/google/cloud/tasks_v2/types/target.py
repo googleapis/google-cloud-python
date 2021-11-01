@@ -77,6 +77,13 @@ class HttpRequest(proto.Message):
        queue being unpaused, or many tasks that are scheduled at the
        same time).
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         url (str):
             Required. The full url path that the request will be sent
@@ -143,6 +150,7 @@ class HttpRequest(proto.Message):
 
             This type of authorization should generally only be used
             when calling Google APIs hosted on \*.googleapis.com.
+            This field is a member of `oneof`_ ``authorization_header``.
         oidc_token (google.cloud.tasks_v2.types.OidcToken):
             If specified, an
             `OIDC <https://developers.google.com/identity/protocols/OpenIDConnect>`__
@@ -152,6 +160,7 @@ class HttpRequest(proto.Message):
             This type of authorization can be used for many scenarios,
             including calling Cloud Run, or endpoints where you intend
             to validate the token yourself.
+            This field is a member of `oneof`_ ``authorization_header``.
     """
 
     url = proto.Field(proto.STRING, number=1,)
