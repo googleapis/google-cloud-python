@@ -60,6 +60,13 @@ class Occurrence(proto.Message):
     r"""An instance of an analysis type that has been found on a
     resource.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. The name of the occurrence in the form of
@@ -89,24 +96,32 @@ class Occurrence(proto.Message):
             last updated.
         vulnerability (grafeas.grafeas_v1.types.VulnerabilityOccurrence):
             Describes a security vulnerability.
+            This field is a member of `oneof`_ ``details``.
         build (grafeas.grafeas_v1.types.BuildOccurrence):
             Describes a verifiable build.
+            This field is a member of `oneof`_ ``details``.
         image (grafeas.grafeas_v1.types.ImageOccurrence):
             Describes how this resource derives from the
             basis in the associated note.
+            This field is a member of `oneof`_ ``details``.
         package (grafeas.grafeas_v1.types.PackageOccurrence):
             Describes the installation of a package on
             the linked resource.
+            This field is a member of `oneof`_ ``details``.
         deployment (grafeas.grafeas_v1.types.DeploymentOccurrence):
             Describes the deployment of an artifact on a
             runtime.
+            This field is a member of `oneof`_ ``details``.
         discovery (grafeas.grafeas_v1.types.DiscoveryOccurrence):
             Describes when a resource was discovered.
+            This field is a member of `oneof`_ ``details``.
         attestation (grafeas.grafeas_v1.types.AttestationOccurrence):
             Describes an attestation of an artifact.
+            This field is a member of `oneof`_ ``details``.
         upgrade (grafeas.grafeas_v1.types.UpgradeOccurrence):
             Describes an available package upgrade on the
             linked resource.
+            This field is a member of `oneof`_ ``details``.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -157,6 +172,13 @@ class Occurrence(proto.Message):
 class Note(proto.Message):
     r"""A type of analysis that can be done for a resource.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. The name of the note in the form of
@@ -185,24 +207,32 @@ class Note(proto.Message):
             Other notes related to this note.
         vulnerability (grafeas.grafeas_v1.types.VulnerabilityNote):
             A note describing a package vulnerability.
+            This field is a member of `oneof`_ ``type``.
         build (grafeas.grafeas_v1.types.BuildNote):
             A note describing build provenance for a
             verifiable build.
+            This field is a member of `oneof`_ ``type``.
         image (grafeas.grafeas_v1.types.ImageNote):
             A note describing a base image.
+            This field is a member of `oneof`_ ``type``.
         package (grafeas.grafeas_v1.types.PackageNote):
             A note describing a package hosted by various
             package managers.
+            This field is a member of `oneof`_ ``type``.
         deployment (grafeas.grafeas_v1.types.DeploymentNote):
             A note describing something that can be
             deployed.
+            This field is a member of `oneof`_ ``type``.
         discovery (grafeas.grafeas_v1.types.DiscoveryNote):
             A note describing the initial analysis of a
             resource.
+            This field is a member of `oneof`_ ``type``.
         attestation (grafeas.grafeas_v1.types.AttestationNote):
             A note describing an attestation role.
+            This field is a member of `oneof`_ ``type``.
         upgrade (grafeas.grafeas_v1.types.UpgradeNote):
             A note describing available package upgrades.
+            This field is a member of `oneof`_ ``type``.
     """
 
     name = proto.Field(proto.STRING, number=1,)

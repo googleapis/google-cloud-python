@@ -232,16 +232,26 @@ class SourceContext(proto.Message):
     SourceContext together with a path point to a unique revision of
     a single file or directory.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         cloud_repo (grafeas.grafeas_v1.types.CloudRepoSourceContext):
             A SourceContext referring to a revision in a
             Google Cloud Source Repo.
+            This field is a member of `oneof`_ ``context``.
         gerrit (grafeas.grafeas_v1.types.GerritSourceContext):
             A SourceContext referring to a Gerrit
             project.
+            This field is a member of `oneof`_ ``context``.
         git (grafeas.grafeas_v1.types.GitSourceContext):
             A SourceContext referring to any third party
             Git repo (e.g., GitHub).
+            This field is a member of `oneof`_ ``context``.
         labels (Sequence[grafeas.grafeas_v1.types.SourceContext.LabelsEntry]):
             Labels with user defined metadata.
     """
@@ -283,13 +293,22 @@ class CloudRepoSourceContext(proto.Message):
     r"""A CloudRepoSourceContext denotes a particular revision in a
     Google Cloud Source Repo.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         repo_id (grafeas.grafeas_v1.types.RepoId):
             The ID of the repo.
         revision_id (str):
             A revision ID.
+            This field is a member of `oneof`_ ``revision``.
         alias_context (grafeas.grafeas_v1.types.AliasContext):
             An alias, which may be a branch or tag.
+            This field is a member of `oneof`_ ``revision``.
     """
 
     repo_id = proto.Field(proto.MESSAGE, number=1, message="RepoId",)
@@ -302,6 +321,13 @@ class CloudRepoSourceContext(proto.Message):
 class GerritSourceContext(proto.Message):
     r"""A SourceContext referring to a Gerrit project.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         host_uri (str):
             The URI of a running Gerrit instance.
@@ -312,8 +338,10 @@ class GerritSourceContext(proto.Message):
             hostURI/project.
         revision_id (str):
             A revision (commit) ID.
+            This field is a member of `oneof`_ ``revision``.
         alias_context (grafeas.grafeas_v1.types.AliasContext):
             An alias, which may be a branch or tag.
+            This field is a member of `oneof`_ ``revision``.
     """
 
     host_uri = proto.Field(proto.STRING, number=1,)
@@ -342,13 +370,22 @@ class GitSourceContext(proto.Message):
 class RepoId(proto.Message):
     r"""A unique identifier for a Cloud Repo.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project_repo_id (grafeas.grafeas_v1.types.ProjectRepoId):
             A combination of a project ID and a repo
             name.
+            This field is a member of `oneof`_ ``id``.
         uid (str):
             A server-assigned, globally unique
             identifier.
+            This field is a member of `oneof`_ ``id``.
     """
 
     project_repo_id = proto.Field(
