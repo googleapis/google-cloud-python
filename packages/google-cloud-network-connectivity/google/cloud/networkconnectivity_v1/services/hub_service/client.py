@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.networkconnectivity_v1.services.hub_service import pagers
@@ -441,7 +443,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         request: Union[hub.ListHubsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListHubsPager:
@@ -521,7 +523,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         request: Union[hub.GetHubRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> hub.Hub:
@@ -599,7 +601,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         parent: str = None,
         hub: gcn_hub.Hub = None,
         hub_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -700,7 +702,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         *,
         hub: gcn_hub.Hub = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -798,7 +800,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         request: Union[hub.DeleteHubRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -890,7 +892,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         request: Union[hub.ListSpokesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSpokesPager:
@@ -969,7 +971,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         request: Union[hub.GetSpokeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> hub.Spoke:
@@ -1050,7 +1052,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         parent: str = None,
         spoke: hub.Spoke = None,
         spoke_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1157,7 +1159,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         *,
         spoke: hub.Spoke = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1262,7 +1264,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         request: Union[hub.DeleteSpokeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
