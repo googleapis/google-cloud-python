@@ -555,6 +555,13 @@ class IPAllocationPolicy(proto.Message):
     r"""Configuration for controlling how IPs are allocated in the
     GKE cluster running the Apache Airflow software.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         use_ip_aliases (bool):
             Optional. Whether or not to enable Alias IPs in the GKE
@@ -565,6 +572,7 @@ class IPAllocationPolicy(proto.Message):
 
             This field is applicable only when ``use_ip_aliases`` is
             true.
+            This field is a member of `oneof`_ ``cluster_ip_allocation``.
         cluster_ipv4_cidr_block (str):
             Optional. The IP address range used to allocate IP addresses
             to pods in the GKE cluster.
@@ -583,12 +591,14 @@ class IPAllocationPolicy(proto.Message):
             notation (e.g. ``10.96.0.0/14``) from the RFC-1918 private
             networks (e.g. ``10.0.0.0/8``, ``172.16.0.0/12``,
             ``192.168.0.0/16``) to pick a specific range to use.
+            This field is a member of `oneof`_ ``cluster_ip_allocation``.
         services_secondary_range_name (str):
             Optional. The name of the services' secondary range used to
             allocate IP addresses to the GKE cluster.
 
             This field is applicable only when ``use_ip_aliases`` is
             true.
+            This field is a member of `oneof`_ ``services_ip_allocation``.
         services_ipv4_cidr_block (str):
             Optional. The IP address range of the services IP addresses
             in this GKE cluster.
@@ -607,6 +617,7 @@ class IPAllocationPolicy(proto.Message):
             notation (e.g. ``10.96.0.0/14``) from the RFC-1918 private
             networks (e.g. ``10.0.0.0/8``, ``172.16.0.0/12``,
             ``192.168.0.0/16``) to pick a specific range to use.
+            This field is a member of `oneof`_ ``services_ip_allocation``.
     """
 
     use_ip_aliases = proto.Field(proto.BOOL, number=1,)

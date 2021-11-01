@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.orchestration.airflow.service_v1.services.image_versions import pagers
 from google.cloud.orchestration.airflow.service_v1.types import image_versions
 from .transports.base import ImageVersionsTransport, DEFAULT_CLIENT_INFO
@@ -334,7 +336,7 @@ class ImageVersionsClient(metaclass=ImageVersionsClientMeta):
         request: Union[image_versions.ListImageVersionsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListImageVersionsPager:

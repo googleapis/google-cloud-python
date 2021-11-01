@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.orchestration.airflow.service_v1beta1.services.environments import (
@@ -359,7 +361,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         *,
         parent: str = None,
         environment: environments.Environment = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -447,7 +449,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         request: Union[environments.GetEnvironmentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> environments.Environment:
@@ -518,7 +520,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         request: Union[environments.ListEnvironmentsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEnvironmentsPager:
@@ -601,7 +603,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         name: str = None,
         environment: environments.Environment = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -882,7 +884,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         request: Union[environments.DeleteEnvironmentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -973,7 +975,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         self,
         request: Union[environments.RestartWebServerRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1033,7 +1035,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         self,
         request: Union[environments.CheckUpgradeRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
