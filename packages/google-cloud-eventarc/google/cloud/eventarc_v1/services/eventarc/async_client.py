@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -168,17 +170,17 @@ class EventarcAsyncClient:
 
     async def get_trigger(
         self,
-        request: eventarc.GetTriggerRequest = None,
+        request: Union[eventarc.GetTriggerRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> trigger.Trigger:
         r"""Get a single trigger.
 
         Args:
-            request (:class:`google.cloud.eventarc_v1.types.GetTriggerRequest`):
+            request (Union[google.cloud.eventarc_v1.types.GetTriggerRequest, dict]):
                 The request object. The request message for the
                 GetTrigger method.
             name (:class:`str`):
@@ -239,17 +241,17 @@ class EventarcAsyncClient:
 
     async def list_triggers(
         self,
-        request: eventarc.ListTriggersRequest = None,
+        request: Union[eventarc.ListTriggersRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTriggersAsyncPager:
         r"""List triggers.
 
         Args:
-            request (:class:`google.cloud.eventarc_v1.types.ListTriggersRequest`):
+            request (Union[google.cloud.eventarc_v1.types.ListTriggersRequest, dict]):
                 The request object. The request message for the
                 ListTriggers method.
             parent (:class:`str`):
@@ -319,12 +321,12 @@ class EventarcAsyncClient:
 
     async def create_trigger(
         self,
-        request: eventarc.CreateTriggerRequest = None,
+        request: Union[eventarc.CreateTriggerRequest, dict] = None,
         *,
         parent: str = None,
         trigger: gce_trigger.Trigger = None,
         trigger_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -332,7 +334,7 @@ class EventarcAsyncClient:
         location.
 
         Args:
-            request (:class:`google.cloud.eventarc_v1.types.CreateTriggerRequest`):
+            request (Union[google.cloud.eventarc_v1.types.CreateTriggerRequest, dict]):
                 The request object. The request message for the
                 CreateTrigger method.
             parent (:class:`str`):
@@ -420,19 +422,19 @@ class EventarcAsyncClient:
 
     async def update_trigger(
         self,
-        request: eventarc.UpdateTriggerRequest = None,
+        request: Union[eventarc.UpdateTriggerRequest, dict] = None,
         *,
         trigger: gce_trigger.Trigger = None,
         update_mask: field_mask_pb2.FieldMask = None,
         allow_missing: bool = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update a single trigger.
 
         Args:
-            request (:class:`google.cloud.eventarc_v1.types.UpdateTriggerRequest`):
+            request (Union[google.cloud.eventarc_v1.types.UpdateTriggerRequest, dict]):
                 The request object. The request message for the
                 UpdateTrigger method.
             trigger (:class:`google.cloud.eventarc_v1.types.Trigger`):
@@ -525,18 +527,18 @@ class EventarcAsyncClient:
 
     async def delete_trigger(
         self,
-        request: eventarc.DeleteTriggerRequest = None,
+        request: Union[eventarc.DeleteTriggerRequest, dict] = None,
         *,
         name: str = None,
         allow_missing: bool = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Delete a single trigger.
 
         Args:
-            request (:class:`google.cloud.eventarc_v1.types.DeleteTriggerRequest`):
+            request (Union[google.cloud.eventarc_v1.types.DeleteTriggerRequest, dict]):
                 The request object. The request message for the
                 DeleteTrigger method.
             name (:class:`str`):

@@ -126,11 +126,14 @@ class EventFilter(proto.Message):
 class Destination(proto.Message):
     r"""Represents a target of an invocation over HTTP.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         cloud_run (google.cloud.eventarc_v1.types.CloudRun):
             Cloud Run fully-managed service that receives
             the events. The service should be running in the
             same project of the trigger.
+            This field is a member of `oneof`_ ``descriptor``.
     """
 
     cloud_run = proto.Field(
@@ -142,10 +145,14 @@ class Transport(proto.Message):
     r"""Represents the transport intermediaries created for the
     trigger in order to deliver events.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         pubsub (google.cloud.eventarc_v1.types.Pubsub):
             The Pub/Sub topic and subscription used by
             Eventarc as delivery intermediary.
+            This field is a member of `oneof`_ ``intermediary``.
     """
 
     pubsub = proto.Field(

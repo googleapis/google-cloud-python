@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.eventarc_v1.services.eventarc import pagers
@@ -380,7 +382,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         request: Union[eventarc.GetTriggerRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> trigger.Trigger:
@@ -451,7 +453,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         request: Union[eventarc.ListTriggersRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTriggersPager:
@@ -533,7 +535,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         parent: str = None,
         trigger: gce_trigger.Trigger = None,
         trigger_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -634,7 +636,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         trigger: gce_trigger.Trigger = None,
         update_mask: field_mask_pb2.FieldMask = None,
         allow_missing: bool = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -738,7 +740,7 @@ class EventarcClient(metaclass=EventarcClientMeta):
         *,
         name: str = None,
         allow_missing: bool = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
