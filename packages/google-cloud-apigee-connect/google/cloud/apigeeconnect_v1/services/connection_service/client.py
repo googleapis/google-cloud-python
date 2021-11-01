@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.apigeeconnect_v1.services.connection_service import pagers
 from google.cloud.apigeeconnect_v1.types import connection
 from .transports.base import ConnectionServiceTransport, DEFAULT_CLIENT_INFO
@@ -353,7 +355,7 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         request: Union[connection.ListConnectionsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectionsPager:

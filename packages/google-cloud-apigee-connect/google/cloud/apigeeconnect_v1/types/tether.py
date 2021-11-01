@@ -87,13 +87,23 @@ class EgressRequest(proto.Message):
 class Payload(proto.Message):
     r"""Payload for EgressRequest.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         http_request (google.cloud.apigeeconnect_v1.types.HttpRequest):
             The HttpRequest proto.
+            This field is a member of `oneof`_ ``kind``.
         stream_info (google.cloud.apigeeconnect_v1.types.StreamInfo):
             The information of stream.
+            This field is a member of `oneof`_ ``kind``.
         action (google.cloud.apigeeconnect_v1.types.Action):
             The action taken by agent.
+            This field is a member of `oneof`_ ``kind``.
     """
 
     http_request = proto.Field(

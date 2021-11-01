@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.apigeeconnect_v1.types import tether
 from google.protobuf import duration_pb2  # type: ignore
 from .transports.base import TetherTransport, DEFAULT_CLIENT_INFO
@@ -337,7 +339,7 @@ class TetherClient(metaclass=TetherClientMeta):
         self,
         requests: Iterator[tether.EgressResponse] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[tether.EgressRequest]:
