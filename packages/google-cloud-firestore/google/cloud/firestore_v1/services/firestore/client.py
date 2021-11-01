@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.firestore_v1.services.firestore import pagers
 from google.cloud.firestore_v1.types import common
 from google.cloud.firestore_v1.types import document
@@ -348,7 +350,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         self,
         request: Union[firestore.GetDocumentRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
@@ -398,7 +400,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         self,
         request: Union[firestore.ListDocumentsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDocumentsPager:
@@ -459,7 +461,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         *,
         document: gf_document.Document = None,
         update_mask: common.DocumentMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gf_document.Document:
@@ -549,7 +551,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         request: Union[firestore.DeleteDocumentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -613,7 +615,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         self,
         request: Union[firestore.BatchGetDocumentsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[firestore.BatchGetDocumentsResponse]:
@@ -666,7 +668,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         request: Union[firestore.BeginTransactionRequest, dict] = None,
         *,
         database: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> firestore.BeginTransactionResponse:
@@ -738,7 +740,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         *,
         database: str = None,
         writes: Sequence[gf_write.Write] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> firestore.CommitResponse:
@@ -820,7 +822,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         *,
         database: str = None,
         transaction: bytes = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -892,7 +894,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         self,
         request: Union[firestore.RunQueryRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[firestore.RunQueryResponse]:
@@ -942,7 +944,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         self,
         request: Union[firestore.PartitionQueryRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.PartitionQueryPager:
@@ -1005,7 +1007,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         self,
         requests: Iterator[firestore.WriteRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[firestore.WriteResponse]:
@@ -1057,7 +1059,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         self,
         requests: Iterator[firestore.ListenRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[firestore.ListenResponse]:
@@ -1099,7 +1101,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         request: Union[firestore.ListCollectionIdsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCollectionIdsPager:
@@ -1180,7 +1182,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         self,
         request: Union[firestore.BatchWriteRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> firestore.BatchWriteResponse:
@@ -1240,7 +1242,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         self,
         request: Union[firestore.CreateDocumentRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:

@@ -37,14 +37,24 @@ __protobuf__ = proto.module(
 class Write(proto.Message):
     r"""A write on a document.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         update (google.cloud.firestore_v1.types.Document):
             A document to write.
+            This field is a member of `oneof`_ ``operation``.
         delete (str):
             A document name to delete. In the format:
             ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
+            This field is a member of `oneof`_ ``operation``.
         transform (google.cloud.firestore_v1.types.DocumentTransform):
             Applies a transformation to a document.
+            This field is a member of `oneof`_ ``operation``.
         update_mask (google.cloud.firestore_v1.types.DocumentMask):
             The fields to update in this write.
 
@@ -100,6 +110,13 @@ class DocumentTransform(proto.Message):
     class FieldTransform(proto.Message):
         r"""A transformation of a field of the document.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             field_path (str):
                 The path of the field. See
@@ -107,6 +124,7 @@ class DocumentTransform(proto.Message):
                 the field path syntax reference.
             set_to_server_value (google.cloud.firestore_v1.types.DocumentTransform.FieldTransform.ServerValue):
                 Sets the field to the given server value.
+                This field is a member of `oneof`_ ``transform_type``.
             increment (google.cloud.firestore_v1.types.Value):
                 Adds the given value to the field's current
                 value.
@@ -121,6 +139,7 @@ class DocumentTransform(proto.Message):
                 there is positive/negative integer overflow, the
                 field is resolved to the largest magnitude
                 positive/negative integer.
+                This field is a member of `oneof`_ ``transform_type``.
             maximum (google.cloud.firestore_v1.types.Value):
                 Sets the field to the maximum of its current
                 value and the given value.
@@ -138,6 +157,7 @@ class DocumentTransform(proto.Message):
                 zero input value is always the stored value.
                 The maximum of any numeric value x and NaN is
                 NaN.
+                This field is a member of `oneof`_ ``transform_type``.
             minimum (google.cloud.firestore_v1.types.Value):
                 Sets the field to the minimum of its current
                 value and the given value.
@@ -155,6 +175,7 @@ class DocumentTransform(proto.Message):
                 zero input value is always the stored value.
                 The minimum of any numeric value x and NaN is
                 NaN.
+                This field is a member of `oneof`_ ``transform_type``.
             append_missing_elements (google.cloud.firestore_v1.types.ArrayValue):
                 Append the given elements in order if they are not already
                 present in the current field value. If the field is not an
@@ -168,6 +189,7 @@ class DocumentTransform(proto.Message):
                 considered.
 
                 The corresponding transform_result will be the null value.
+                This field is a member of `oneof`_ ``transform_type``.
             remove_all_from_array (google.cloud.firestore_v1.types.ArrayValue):
                 Remove all of the given elements from the array in the
                 field. If the field is not an array, or if the field does
@@ -180,6 +202,7 @@ class DocumentTransform(proto.Message):
                 duplicates.
 
                 The corresponding transform_result will be the null value.
+                This field is a member of `oneof`_ ``transform_type``.
         """
 
         class ServerValue(proto.Enum):

@@ -83,6 +83,13 @@ class Index(proto.Message):
         r"""A field in an index. The field_path describes which field is
         indexed, the value_mode describes how the field value is indexed.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             field_path (str):
                 Can be **name**. For single field indexes, this must match
@@ -91,9 +98,11 @@ class Index(proto.Message):
                 Indicates that this field supports ordering
                 by the specified order or comparing using =, <,
                 <=, >, >=.
+                This field is a member of `oneof`_ ``value_mode``.
             array_config (google.cloud.firestore_admin_v1.types.Index.IndexField.ArrayConfig):
                 Indicates that this field supports operations on
                 ``array_value``\ s.
+                This field is a member of `oneof`_ ``value_mode``.
         """
 
         class Order(proto.Enum):

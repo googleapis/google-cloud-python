@@ -35,11 +35,14 @@ __protobuf__ = proto.module(
 class BundledQuery(proto.Message):
     r"""Encodes a query saved in the bundle.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             The parent resource name.
         structured_query (google.firestore.v1.query_pb2.StructuredQuery):
             A structured query.
+            This field is a member of `oneof`_ ``query_type``.
         limit_type (google.cloud.bundle.types.BundledQuery.LimitType):
 
     """
@@ -137,15 +140,26 @@ class BundleElement(proto.Message):
     follow after ``metadata``. Every ``document_metadata`` is
     immediately followed by a ``document``.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         metadata (google.cloud.bundle.types.BundleMetadata):
 
+            This field is a member of `oneof`_ ``element_type``.
         named_query (google.cloud.bundle.types.NamedQuery):
 
+            This field is a member of `oneof`_ ``element_type``.
         document_metadata (google.cloud.bundle.types.BundledDocumentMetadata):
 
+            This field is a member of `oneof`_ ``element_type``.
         document (google.firestore.v1.document_pb2.Document):
 
+            This field is a member of `oneof`_ ``element_type``.
     """
 
     metadata = proto.Field(

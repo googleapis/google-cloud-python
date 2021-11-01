@@ -96,13 +96,23 @@ class StructuredQuery(proto.Message):
     class Filter(proto.Message):
         r"""A filter.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             composite_filter (google.cloud.firestore_v1.types.StructuredQuery.CompositeFilter):
                 A composite filter.
+                This field is a member of `oneof`_ ``filter_type``.
             field_filter (google.cloud.firestore_v1.types.StructuredQuery.FieldFilter):
                 A filter on a document field.
+                This field is a member of `oneof`_ ``filter_type``.
             unary_filter (google.cloud.firestore_v1.types.StructuredQuery.UnaryFilter):
                 A filter that takes exactly one argument.
+                This field is a member of `oneof`_ ``filter_type``.
         """
 
         composite_filter = proto.Field(
@@ -185,11 +195,14 @@ class StructuredQuery(proto.Message):
     class UnaryFilter(proto.Message):
         r"""A filter with a single operand.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             op (google.cloud.firestore_v1.types.StructuredQuery.UnaryFilter.Operator):
                 The unary operator to apply.
             field (google.cloud.firestore_v1.types.StructuredQuery.FieldReference):
                 The field to which to apply the operator.
+                This field is a member of `oneof`_ ``operand_type``.
         """
 
         class Operator(proto.Enum):

@@ -86,43 +86,61 @@ class Document(proto.Message):
 class Value(proto.Message):
     r"""A message that can hold any of the supported value types.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         null_value (google.protobuf.struct_pb2.NullValue):
             A null value.
+            This field is a member of `oneof`_ ``value_type``.
         boolean_value (bool):
             A boolean value.
+            This field is a member of `oneof`_ ``value_type``.
         integer_value (int):
             An integer value.
+            This field is a member of `oneof`_ ``value_type``.
         double_value (float):
             A double value.
+            This field is a member of `oneof`_ ``value_type``.
         timestamp_value (google.protobuf.timestamp_pb2.Timestamp):
             A timestamp value.
             Precise only to microseconds. When stored, any
             additional precision is rounded down.
+            This field is a member of `oneof`_ ``value_type``.
         string_value (str):
             A string value.
             The string, represented as UTF-8, must not
             exceed 1 MiB - 89 bytes. Only the first 1,500
             bytes of the UTF-8 representation are considered
             by queries.
+            This field is a member of `oneof`_ ``value_type``.
         bytes_value (bytes):
             A bytes value.
             Must not exceed 1 MiB - 89 bytes.
             Only the first 1,500 bytes are considered by
             queries.
+            This field is a member of `oneof`_ ``value_type``.
         reference_value (str):
             A reference to a document. For example:
             ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
+            This field is a member of `oneof`_ ``value_type``.
         geo_point_value (google.type.latlng_pb2.LatLng):
             A geo point value representing a point on the
             surface of Earth.
+            This field is a member of `oneof`_ ``value_type``.
         array_value (google.cloud.firestore_v1.types.ArrayValue):
             An array value.
             Cannot directly contain another array value,
             though can contain an map which contains another
             array.
+            This field is a member of `oneof`_ ``value_type``.
         map_value (google.cloud.firestore_v1.types.MapValue):
             A map value.
+            This field is a member of `oneof`_ ``value_type``.
     """
 
     null_value = proto.Field(

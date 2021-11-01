@@ -45,13 +45,22 @@ class Precondition(proto.Message):
     r"""A precondition on a document, used for conditional
     operations.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         exists (bool):
             When set to ``true``, the target document must exist. When
             set to ``false``, the target document must not exist.
+            This field is a member of `oneof`_ ``condition_type``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             When set, the target document must exist and
             have been last updated at that time.
+            This field is a member of `oneof`_ ``condition_type``.
     """
 
     exists = proto.Field(proto.BOOL, number=1, oneof="condition_type",)
@@ -66,13 +75,22 @@ class Precondition(proto.Message):
 class TransactionOptions(proto.Message):
     r"""Options for creating a new transaction.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         read_only (google.cloud.firestore_v1.types.TransactionOptions.ReadOnly):
             The transaction can only be used for read
             operations.
+            This field is a member of `oneof`_ ``mode``.
         read_write (google.cloud.firestore_v1.types.TransactionOptions.ReadWrite):
             The transaction can be used for both read and
             write operations.
+            This field is a member of `oneof`_ ``mode``.
     """
 
     class ReadWrite(proto.Message):
@@ -90,10 +108,14 @@ class TransactionOptions(proto.Message):
         r"""Options for a transaction that can only be used to read
         documents.
 
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             read_time (google.protobuf.timestamp_pb2.Timestamp):
                 Reads documents at the given time.
                 This may not be older than 60 seconds.
+                This field is a member of `oneof`_ ``consistency_selector``.
         """
 
         read_time = proto.Field(
