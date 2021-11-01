@@ -345,6 +345,19 @@ class TestImpersonatedCredentials(object):
         signature = credentials.sign_bytes(b"signed bytes")
         assert signature == b"signature"
 
+    def test_sign_bytes_failure(self):
+        credentials = self.make_credentials(lifetime=None)
+
+        with mock.patch(
+            "google.auth.transport.requests.AuthorizedSession.request", autospec=True
+        ) as auth_session:
+            data = {"error": {"code": 403, "message": "unauthorized"}}
+            auth_session.return_value = MockResponse(data, http_client.FORBIDDEN)
+
+            with pytest.raises(exceptions.TransportError) as excinfo:
+                credentials.sign_bytes(b"foo")
+            assert excinfo.match("'code': 403")
+
     def test_with_quota_project(self):
         credentials = self.make_credentials()
 

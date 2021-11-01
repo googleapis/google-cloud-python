@@ -290,6 +290,11 @@ class Credentials(credentials.CredentialsWithQuotaProject, credentials.Signing):
             url=iam_sign_endpoint, headers=headers, json=body
         )
 
+        if response.status_code != http_client.OK:
+            raise exceptions.TransportError(
+                "Error calling sign_bytes: {}".format(response.json())
+            )
+
         return base64.b64decode(response.json()["signedBlob"])
 
     @property
