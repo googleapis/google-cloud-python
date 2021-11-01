@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [2.3.3](https://www.github.com/googleapis/google-auth-library-python/compare/v2.3.2...v2.3.3) (2021-11-01)
+
+
+### Bug Fixes
+
+* add fetch_id_token_credentials ([#866](https://www.github.com/googleapis/google-auth-library-python/issues/866)) ([8f1e9cf](https://www.github.com/googleapis/google-auth-library-python/commit/8f1e9cfd56dbaae0dff64499e1d0cf55abc5b97e))
+* fix error in sign_bytes ([#905](https://www.github.com/googleapis/google-auth-library-python/issues/905)) ([ef31284](https://www.github.com/googleapis/google-auth-library-python/commit/ef3128474431b07d1d519209ea61622bc245ce91))
+* use 'int.to_bytes' and 'int.from_bytes' for py3 ([#904](https://www.github.com/googleapis/google-auth-library-python/issues/904)) ([bd0ccc5](https://www.github.com/googleapis/google-auth-library-python/commit/bd0ccc5fe77d55f7a19f5278d6b60587c393ee3c))
+
 ### [2.3.2](https://www.github.com/googleapis/google-auth-library-python/compare/v2.3.1...v2.3.2) (2021-10-26)
 
 
