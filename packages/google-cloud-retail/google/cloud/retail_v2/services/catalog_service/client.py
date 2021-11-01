@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.retail_v2.services.catalog_service import pagers
 from google.cloud.retail_v2.types import catalog
 from google.cloud.retail_v2.types import catalog as gcr_catalog
@@ -372,7 +374,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         request: Union[catalog_service.ListCatalogsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCatalogsPager:
@@ -461,7 +463,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         *,
         catalog: gcr_catalog.Catalog = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_catalog.Catalog:
@@ -553,7 +555,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         request: Union[catalog_service.SetDefaultBranchRequest, dict] = None,
         *,
         catalog: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -656,7 +658,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         request: Union[catalog_service.GetDefaultBranchRequest, dict] = None,
         *,
         catalog: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog_service.GetDefaultBranchResponse:

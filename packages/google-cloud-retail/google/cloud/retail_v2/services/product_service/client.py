@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.retail_v2.services.product_service import pagers
@@ -388,7 +390,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         parent: str = None,
         product: gcr_product.Product = None,
         product_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_product.Product:
@@ -494,7 +496,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         request: Union[product_service.GetProductRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> product.Product:
@@ -576,7 +578,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         request: Union[product_service.ListProductsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProductsPager:
@@ -666,7 +668,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         *,
         product: gcr_product.Product = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_product.Product:
@@ -764,7 +766,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         request: Union[product_service.DeleteProductRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -850,7 +852,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         self,
         request: Union[import_config.ImportProductsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -923,7 +925,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         *,
         inventory: product.Product = None,
         set_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1107,7 +1109,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         request: Union[product_service.AddFulfillmentPlacesRequest, dict] = None,
         *,
         product: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1212,7 +1214,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         request: Union[product_service.RemoveFulfillmentPlacesRequest, dict] = None,
         *,
         product: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:

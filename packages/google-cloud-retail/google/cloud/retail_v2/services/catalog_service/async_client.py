@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.retail_v2.services.catalog_service import pagers
 from google.cloud.retail_v2.types import catalog
@@ -169,10 +171,10 @@ class CatalogServiceAsyncClient:
 
     async def list_catalogs(
         self,
-        request: catalog_service.ListCatalogsRequest = None,
+        request: Union[catalog_service.ListCatalogsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCatalogsAsyncPager:
@@ -180,7 +182,7 @@ class CatalogServiceAsyncClient:
         associated with the project.
 
         Args:
-            request (:class:`google.cloud.retail_v2.types.ListCatalogsRequest`):
+            request (Union[google.cloud.retail_v2.types.ListCatalogsRequest, dict]):
                 The request object. Request for
                 [CatalogService.ListCatalogs][google.cloud.retail.v2.CatalogService.ListCatalogs]
                 method.
@@ -257,18 +259,18 @@ class CatalogServiceAsyncClient:
 
     async def update_catalog(
         self,
-        request: catalog_service.UpdateCatalogRequest = None,
+        request: Union[catalog_service.UpdateCatalogRequest, dict] = None,
         *,
         catalog: gcr_catalog.Catalog = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_catalog.Catalog:
         r"""Updates the [Catalog][google.cloud.retail.v2.Catalog]s.
 
         Args:
-            request (:class:`google.cloud.retail_v2.types.UpdateCatalogRequest`):
+            request (Union[google.cloud.retail_v2.types.UpdateCatalogRequest, dict]):
                 The request object. Request for
                 [CatalogService.UpdateCatalog][google.cloud.retail.v2.CatalogService.UpdateCatalog]
                 method.
@@ -350,10 +352,10 @@ class CatalogServiceAsyncClient:
 
     async def set_default_branch(
         self,
-        request: catalog_service.SetDefaultBranchRequest = None,
+        request: Union[catalog_service.SetDefaultBranchRequest, dict] = None,
         *,
         catalog: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -399,7 +401,7 @@ class CatalogServiceAsyncClient:
         sales if you are interested in using Retail Search.
 
         Args:
-            request (:class:`google.cloud.retail_v2.types.SetDefaultBranchRequest`):
+            request (Union[google.cloud.retail_v2.types.SetDefaultBranchRequest, dict]):
                 The request object. Request message to set a specified
                 branch as new default_branch.
             catalog (:class:`str`):
@@ -453,10 +455,10 @@ class CatalogServiceAsyncClient:
 
     async def get_default_branch(
         self,
-        request: catalog_service.GetDefaultBranchRequest = None,
+        request: Union[catalog_service.GetDefaultBranchRequest, dict] = None,
         *,
         catalog: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> catalog_service.GetDefaultBranchResponse:
@@ -470,7 +472,7 @@ class CatalogServiceAsyncClient:
         sales if you are interested in using Retail Search.
 
         Args:
-            request (:class:`google.cloud.retail_v2.types.GetDefaultBranchRequest`):
+            request (Union[google.cloud.retail_v2.types.GetDefaultBranchRequest, dict]):
                 The request object. Request message to show which branch
                 is currently the default branch.
             catalog (:class:`str`):

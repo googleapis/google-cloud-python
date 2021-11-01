@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.retail_v2.services.search_service import pagers
 from google.cloud.retail_v2.types import search_service
 from .transports.base import SearchServiceTransport, DEFAULT_CLIENT_INFO
@@ -377,7 +379,7 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
         self,
         request: Union[search_service.SearchRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchPager:

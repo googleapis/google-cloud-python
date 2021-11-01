@@ -29,6 +29,13 @@ class Product(proto.Message):
     r"""Product captures all metadata information of items to be
     recommended or searched.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp when this product becomes unavailable for
@@ -53,6 +60,7 @@ class Product(proto.Message):
 
             Google Merchant Center property
             `expiration_date <https://support.google.com/merchants/answer/6324499>`__.
+            This field is a member of `oneof`_ ``expiration``.
         ttl (google.protobuf.duration_pb2.Duration):
             Input only. The TTL (time to live) of the product.
 
@@ -73,6 +81,7 @@ class Product(proto.Message):
             [ProductService.GetProduct][google.cloud.retail.v2.ProductService.GetProduct]
             and
             [ProductService.ListProducts][google.cloud.retail.v2.ProductService.ListProducts].
+            This field is a member of `oneof`_ ``expiration``.
         name (str):
             Immutable. Full resource name of the product, such as
             ``projects/*/locations/global/catalogs/default_catalog/branches/default_branch/products/product_id``.

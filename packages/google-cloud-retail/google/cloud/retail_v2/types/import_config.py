@@ -89,6 +89,8 @@ class GcsSource(proto.Message):
 class BigQuerySource(proto.Message):
     r"""BigQuery source import data from.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         partition_date (google.type.date_pb2.Date):
             BigQuery time partitioned table's \_PARTITIONDATE in
@@ -97,6 +99,7 @@ class BigQuerySource(proto.Message):
             Only supported when
             [ImportProductsRequest.reconciliation_mode][google.cloud.retail.v2.ImportProductsRequest.reconciliation_mode]
             is set to ``FULL``.
+            This field is a member of `oneof`_ ``partition``.
         project_id (str):
             The project ID (can be project # or ID) that
             the BigQuery source is in with a length limit of
@@ -179,12 +182,15 @@ class UserEventInlineSource(proto.Message):
 class ImportErrorsConfig(proto.Message):
     r"""Configuration of destination for Import related errors.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_prefix (str):
             Google Cloud Storage path for import errors. This must be an
             empty, existing Cloud Storage bucket. Import errors will be
             written to a file in this bucket, one per line, as a
             JSON-encoded ``google.rpc.Status`` message.
+            This field is a member of `oneof`_ ``destination``.
     """
 
     gcs_prefix = proto.Field(proto.STRING, number=1, oneof="destination",)
@@ -311,15 +317,25 @@ class ImportCompletionDataRequest(proto.Message):
 class ProductInputConfig(proto.Message):
     r"""The input config source for products.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         product_inline_source (google.cloud.retail_v2.types.ProductInlineSource):
             The Inline source for the input content for
             products.
+            This field is a member of `oneof`_ ``source``.
         gcs_source (google.cloud.retail_v2.types.GcsSource):
             Google Cloud Storage location for the input
             content.
+            This field is a member of `oneof`_ ``source``.
         big_query_source (google.cloud.retail_v2.types.BigQuerySource):
             BigQuery input source.
+            This field is a member of `oneof`_ ``source``.
     """
 
     product_inline_source = proto.Field(
@@ -336,15 +352,25 @@ class ProductInputConfig(proto.Message):
 class UserEventInputConfig(proto.Message):
     r"""The input config source for user events.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         user_event_inline_source (google.cloud.retail_v2.types.UserEventInlineSource):
             Required. The Inline source for the input
             content for UserEvents.
+            This field is a member of `oneof`_ ``source``.
         gcs_source (google.cloud.retail_v2.types.GcsSource):
             Required. Google Cloud Storage location for
             the input content.
+            This field is a member of `oneof`_ ``source``.
         big_query_source (google.cloud.retail_v2.types.BigQuerySource):
             Required. BigQuery input source.
+            This field is a member of `oneof`_ ``source``.
     """
 
     user_event_inline_source = proto.Field(
@@ -361,6 +387,8 @@ class UserEventInputConfig(proto.Message):
 class CompletionDataInputConfig(proto.Message):
     r"""The input config source for completion data.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         big_query_source (google.cloud.retail_v2.types.BigQuerySource):
             Required. BigQuery input source.
@@ -368,6 +396,7 @@ class CompletionDataInputConfig(proto.Message):
             for cloud-retail-customer-data-
             access@system.gserviceaccount.com before using
             this feature otherwise an error is thrown.
+            This field is a member of `oneof`_ ``source``.
     """
 
     big_query_source = proto.Field(
