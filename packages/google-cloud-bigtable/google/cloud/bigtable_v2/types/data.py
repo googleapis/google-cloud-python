@@ -130,19 +130,30 @@ class Cell(proto.Message):
 class RowRange(proto.Message):
     r"""Specifies a contiguous range of rows.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         start_key_closed (bytes):
             Used when giving an inclusive lower bound for
             the range.
+            This field is a member of `oneof`_ ``start_key``.
         start_key_open (bytes):
             Used when giving an exclusive lower bound for
             the range.
+            This field is a member of `oneof`_ ``start_key``.
         end_key_open (bytes):
             Used when giving an exclusive upper bound for
             the range.
+            This field is a member of `oneof`_ ``end_key``.
         end_key_closed (bytes):
             Used when giving an inclusive upper bound for
             the range.
+            This field is a member of `oneof`_ ``end_key``.
     """
 
     start_key_closed = proto.Field(proto.BYTES, number=1, oneof="start_key",)
@@ -171,6 +182,13 @@ class ColumnRange(proto.Message):
     <column_family>:<end_qualifier>, where both bounds can be either
     inclusive or exclusive.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         family_name (str):
             The name of the column family within which
@@ -178,15 +196,19 @@ class ColumnRange(proto.Message):
         start_qualifier_closed (bytes):
             Used when giving an inclusive lower bound for
             the range.
+            This field is a member of `oneof`_ ``start_qualifier``.
         start_qualifier_open (bytes):
             Used when giving an exclusive lower bound for
             the range.
+            This field is a member of `oneof`_ ``start_qualifier``.
         end_qualifier_closed (bytes):
             Used when giving an inclusive upper bound for
             the range.
+            This field is a member of `oneof`_ ``end_qualifier``.
         end_qualifier_open (bytes):
             Used when giving an exclusive upper bound for
             the range.
+            This field is a member of `oneof`_ ``end_qualifier``.
     """
 
     family_name = proto.Field(proto.STRING, number=1,)
@@ -217,19 +239,30 @@ class TimestampRange(proto.Message):
 class ValueRange(proto.Message):
     r"""Specifies a contiguous range of raw byte values.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         start_value_closed (bytes):
             Used when giving an inclusive lower bound for
             the range.
+            This field is a member of `oneof`_ ``start_value``.
         start_value_open (bytes):
             Used when giving an exclusive lower bound for
             the range.
+            This field is a member of `oneof`_ ``start_value``.
         end_value_closed (bytes):
             Used when giving an inclusive upper bound for
             the range.
+            This field is a member of `oneof`_ ``end_value``.
         end_value_open (bytes):
             Used when giving an exclusive upper bound for
             the range.
+            This field is a member of `oneof`_ ``end_value``.
     """
 
     start_value_closed = proto.Field(proto.BYTES, number=1, oneof="start_value",)
@@ -277,17 +310,27 @@ class RowFilter(proto.Message):
     4096 bytes, and RowFilters may not be nested within each other (in
     Chains or Interleaves) to a depth of more than 20.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         chain (google.cloud.bigtable_v2.types.RowFilter.Chain):
             Applies several RowFilters to the data in
             sequence, progressively narrowing the results.
+            This field is a member of `oneof`_ ``filter``.
         interleave (google.cloud.bigtable_v2.types.RowFilter.Interleave):
             Applies several RowFilters to the data in
             parallel and combines the results.
+            This field is a member of `oneof`_ ``filter``.
         condition (google.cloud.bigtable_v2.types.RowFilter.Condition):
             Applies one of two possible RowFilters to the
             data based on the output of a predicate
             RowFilter.
+            This field is a member of `oneof`_ ``filter``.
         sink (bool):
             ADVANCED USE ONLY. Hook for introspection into the
             RowFilter. Outputs all cells directly to the output of the
@@ -354,14 +397,17 @@ class RowFilter(proto.Message):
             Cannot be used within the ``predicate_filter``,
             ``true_filter``, or ``false_filter`` of a
             [Condition][google.bigtable.v2.RowFilter.Condition].
+            This field is a member of `oneof`_ ``filter``.
         pass_all_filter (bool):
             Matches all cells, regardless of input. Functionally
             equivalent to leaving ``filter`` unset, but included for
             completeness.
+            This field is a member of `oneof`_ ``filter``.
         block_all_filter (bool):
             Does not match any cells, regardless of
             input. Useful for temporarily disabling just
             part of a filter.
+            This field is a member of `oneof`_ ``filter``.
         row_key_regex_filter (bytes):
             Matches only cells from rows whose keys satisfy the given
             RE2 regex. In other words, passes through the entire row
@@ -370,10 +416,12 @@ class RowFilter(proto.Message):
             ``\C`` escape sequence must be used if a true wildcard is
             desired. The ``.`` character will not match the new line
             character ``\n``, which may be present in a binary key.
+            This field is a member of `oneof`_ ``filter``.
         row_sample_filter (float):
             Matches all cells from a row with probability
             p, and matches no cells from the row with
             probability 1-p.
+            This field is a member of `oneof`_ ``filter``.
         family_name_regex_filter (str):
             Matches only cells from columns whose families satisfy the
             given RE2 regex. For technical reasons, the regex must not
@@ -381,6 +429,7 @@ class RowFilter(proto.Message):
             a literal. Note that, since column families cannot contain
             the new line character ``\n``, it is sufficient to use ``.``
             as a full wildcard when matching column family names.
+            This field is a member of `oneof`_ ``filter``.
         column_qualifier_regex_filter (bytes):
             Matches only cells from columns whose qualifiers satisfy the
             given RE2 regex. Note that, since column qualifiers can
@@ -388,12 +437,15 @@ class RowFilter(proto.Message):
             used if a true wildcard is desired. The ``.`` character will
             not match the new line character ``\n``, which may be
             present in a binary qualifier.
+            This field is a member of `oneof`_ ``filter``.
         column_range_filter (google.cloud.bigtable_v2.types.ColumnRange):
             Matches only cells from columns within the
             given range.
+            This field is a member of `oneof`_ ``filter``.
         timestamp_range_filter (google.cloud.bigtable_v2.types.TimestampRange):
             Matches only cells with timestamps within the
             given range.
+            This field is a member of `oneof`_ ``filter``.
         value_regex_filter (bytes):
             Matches only cells with values that satisfy the given
             regular expression. Note that, since cell values can contain
@@ -401,20 +453,24 @@ class RowFilter(proto.Message):
             a true wildcard is desired. The ``.`` character will not
             match the new line character ``\n``, which may be present in
             a binary value.
+            This field is a member of `oneof`_ ``filter``.
         value_range_filter (google.cloud.bigtable_v2.types.ValueRange):
             Matches only cells with values that fall
             within the given range.
+            This field is a member of `oneof`_ ``filter``.
         cells_per_row_offset_filter (int):
             Skips the first N cells of each row, matching
             all subsequent cells. If duplicate cells are
             present, as is possible when using an
             Interleave, each copy of the cell is counted
             separately.
+            This field is a member of `oneof`_ ``filter``.
         cells_per_row_limit_filter (int):
             Matches only the first N cells of each row.
             If duplicate cells are present, as is possible
             when using an Interleave, each copy of the cell
             is counted separately.
+            This field is a member of `oneof`_ ``filter``.
         cells_per_column_limit_filter (int):
             Matches only the most recent N cells within each column. For
             example, if N=2, this filter would match column ``foo:bar``
@@ -423,9 +479,11 @@ class RowFilter(proto.Message):
             ``foo:bar2``. If duplicate cells are present, as is possible
             when using an Interleave, each copy of the cell is counted
             separately.
+            This field is a member of `oneof`_ ``filter``.
         strip_value_transformer (bool):
             Replaces each cell's value with the empty
             string.
+            This field is a member of `oneof`_ ``filter``.
         apply_label_transformer (str):
             Applies the given label to all cells in the output row. This
             allows the client to determine which results were produced
@@ -441,6 +499,7 @@ class RowFilter(proto.Message):
             contain multiple ``apply_label_transformers``, as they will
             be applied to separate copies of the input. This may be
             relaxed in the future.
+            This field is a member of `oneof`_ ``filter``.
     """
 
     class Chain(proto.Message):
@@ -558,15 +617,26 @@ class Mutation(proto.Message):
     r"""Specifies a particular change to be made to the contents of a
     row.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         set_cell (google.cloud.bigtable_v2.types.Mutation.SetCell):
             Set a cell's value.
+            This field is a member of `oneof`_ ``mutation``.
         delete_from_column (google.cloud.bigtable_v2.types.Mutation.DeleteFromColumn):
             Deletes cells from a column.
+            This field is a member of `oneof`_ ``mutation``.
         delete_from_family (google.cloud.bigtable_v2.types.Mutation.DeleteFromFamily):
             Deletes cells from a column family.
+            This field is a member of `oneof`_ ``mutation``.
         delete_from_row (google.cloud.bigtable_v2.types.Mutation.DeleteFromRow):
             Deletes cells from the entire row.
+            This field is a member of `oneof`_ ``mutation``.
     """
 
     class SetCell(proto.Message):
@@ -651,6 +721,13 @@ class ReadModifyWriteRule(proto.Message):
     r"""Specifies an atomic read/modify/write operation on the latest
     value of the specified column.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         family_name (str):
             The name of the family to which the read/modify/write should
@@ -664,12 +741,14 @@ class ReadModifyWriteRule(proto.Message):
             Rule specifying that ``append_value`` be appended to the
             existing value. If the targeted cell is unset, it will be
             treated as containing the empty string.
+            This field is a member of `oneof`_ ``rule``.
         increment_amount (int):
             Rule specifying that ``increment_amount`` be added to the
             existing value. If the targeted cell is unset, it will be
             treated as containing a zero. Otherwise, the targeted cell
             must contain an 8-byte value (interpreted as a 64-bit
             big-endian signed integer), or the entire request will fail.
+            This field is a member of `oneof`_ ``rule``.
     """
 
     family_name = proto.Field(proto.STRING, number=1,)

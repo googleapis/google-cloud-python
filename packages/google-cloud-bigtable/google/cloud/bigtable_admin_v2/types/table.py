@@ -45,12 +45,15 @@ class RestoreSourceType(proto.Enum):
 class RestoreInfo(proto.Message):
     r"""Information about a table restore.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         source_type (google.cloud.bigtable_admin_v2.types.RestoreSourceType):
             The type of the restore source.
         backup_info (google.cloud.bigtable_admin_v2.types.BackupInfo):
             Information about the backup used to restore
             the table. The backup may no longer exist.
+            This field is a member of `oneof`_ ``source_info``.
     """
 
     source_type = proto.Field(proto.ENUM, number=1, enum="RestoreSourceType",)
@@ -176,21 +179,32 @@ class GcRule(proto.Message):
     r"""Rule for determining which cells to delete during garbage
     collection.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         max_num_versions (int):
             Delete all cells in a column except the most
             recent N.
+            This field is a member of `oneof`_ ``rule``.
         max_age (google.protobuf.duration_pb2.Duration):
             Delete cells in a column older than the given
             age. Values must be at least one millisecond,
             and will be truncated to microsecond
             granularity.
+            This field is a member of `oneof`_ ``rule``.
         intersection (google.cloud.bigtable_admin_v2.types.GcRule.Intersection):
             Delete cells that would be deleted by every
             nested rule.
+            This field is a member of `oneof`_ ``rule``.
         union (google.cloud.bigtable_admin_v2.types.GcRule.Union):
             Delete cells that would be deleted by any
             nested rule.
+            This field is a member of `oneof`_ ``rule``.
     """
 
     class Intersection(proto.Message):

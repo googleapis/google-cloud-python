@@ -157,6 +157,13 @@ class AppProfile(proto.Message):
     r"""A configuration object describing how Cloud Bigtable should
     treat traffic from a particular end user application.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             (``OutputOnly``) The unique name of the app profile. Values
@@ -178,8 +185,10 @@ class AppProfile(proto.Message):
             case for this AppProfile.
         multi_cluster_routing_use_any (google.cloud.bigtable_admin_v2.types.AppProfile.MultiClusterRoutingUseAny):
             Use a multi-cluster routing policy.
+            This field is a member of `oneof`_ ``routing_policy``.
         single_cluster_routing (google.cloud.bigtable_admin_v2.types.AppProfile.SingleClusterRouting):
             Use a single-cluster routing policy.
+            This field is a member of `oneof`_ ``routing_policy``.
     """
 
     class MultiClusterRoutingUseAny(proto.Message):

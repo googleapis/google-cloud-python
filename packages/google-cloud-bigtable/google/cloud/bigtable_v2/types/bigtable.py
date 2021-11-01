@@ -95,6 +95,13 @@ class ReadRowsResponse(proto.Message):
         r"""Specifies a piece of a row's contents returned as part of the
         read response stream.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             row_key (bytes):
                 The row key for this chunk of data.  If the
@@ -146,9 +153,11 @@ class ReadRowsResponse(proto.Message):
             reset_row (bool):
                 Indicates that the client should drop all previous chunks
                 for ``row_key``, as it will be re-read from the beginning.
+                This field is a member of `oneof`_ ``row_status``.
             commit_row (bool):
                 Indicates that the client can safely process all previous
                 chunks for ``row_key``, as its data has been fully read.
+                This field is a member of `oneof`_ ``row_status``.
         """
 
         row_key = proto.Field(proto.BYTES, number=1,)

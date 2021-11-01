@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.bigtable_v2.types import bigtable
 from google.cloud.bigtable_v2.types import data
 from .transports.base import BigtableTransport, DEFAULT_CLIENT_INFO
@@ -353,7 +355,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
         *,
         table_name: str = None,
         app_profile_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[bigtable.ReadRowsResponse]:
@@ -444,7 +446,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
         *,
         table_name: str = None,
         app_profile_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[bigtable.SampleRowKeysResponse]:
@@ -536,7 +538,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
         row_key: bytes = None,
         mutations: Sequence[data.Mutation] = None,
         app_profile_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable.MutateRowResponse:
@@ -646,7 +648,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
         table_name: str = None,
         entries: Sequence[bigtable.MutateRowsRequest.Entry] = None,
         app_profile_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[bigtable.MutateRowsResponse]:
@@ -754,7 +756,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
         true_mutations: Sequence[data.Mutation] = None,
         false_mutations: Sequence[data.Mutation] = None,
         app_profile_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable.CheckAndMutateRowResponse:
@@ -901,7 +903,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
         row_key: bytes = None,
         rules: Sequence[data.ReadModifyWriteRule] = None,
         app_profile_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable.ReadModifyWriteRowResponse:

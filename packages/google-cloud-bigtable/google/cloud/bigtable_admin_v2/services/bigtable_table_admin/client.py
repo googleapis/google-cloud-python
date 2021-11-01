@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import pagers
@@ -456,7 +458,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         parent: str = None,
         table_id: str = None,
         table: gba_table.Table = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gba_table.Table:
@@ -554,7 +556,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         parent: str = None,
         table_id: str = None,
         source_snapshot: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -674,7 +676,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         request: Union[bigtable_table_admin.ListTablesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTablesPager:
@@ -755,7 +757,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         request: Union[bigtable_table_admin.GetTableRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> table.Table:
@@ -829,7 +831,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         request: Union[bigtable_table_admin.DeleteTableRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -898,7 +900,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         modifications: Sequence[
             bigtable_table_admin.ModifyColumnFamiliesRequest.Modification
         ] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> table.Table:
@@ -989,7 +991,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         self,
         request: Union[bigtable_table_admin.DropRowRangeRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -1038,7 +1040,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable_table_admin.GenerateConsistencyTokenResponse:
@@ -1119,7 +1121,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         *,
         name: str = None,
         consistency_token: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> bigtable_table_admin.CheckConsistencyResponse:
@@ -1206,7 +1208,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         cluster: str = None,
         snapshot_id: str = None,
         description: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1339,7 +1341,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         request: Union[bigtable_table_admin.GetSnapshotRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> table.Snapshot:
@@ -1434,7 +1436,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         request: Union[bigtable_table_admin.ListSnapshotsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSnapshotsPager:
@@ -1538,7 +1540,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         request: Union[bigtable_table_admin.DeleteSnapshotRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -1617,7 +1619,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         parent: str = None,
         backup_id: str = None,
         backup: table.Backup = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1730,7 +1732,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         request: Union[bigtable_table_admin.GetBackupRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> table.Backup:
@@ -1801,7 +1803,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         *,
         backup: table.Backup = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> table.Backup:
@@ -1890,7 +1892,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         request: Union[bigtable_table_admin.DeleteBackupRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -1955,7 +1957,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         request: Union[bigtable_table_admin.ListBackupsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBackupsPager:
@@ -2039,7 +2041,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         self,
         request: Union[bigtable_table_admin.RestoreTableRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -2109,7 +2111,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -2236,7 +2238,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -2363,7 +2365,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:

@@ -62,6 +62,9 @@ class RestoreTableRequest(proto.Message):
     r"""The request for
     [RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable].
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. The name of the instance in which to create the
@@ -77,6 +80,7 @@ class RestoreTableRequest(proto.Message):
             Name of the backup from which to restore. Values are of the
             form
             ``projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>``.
+            This field is a member of `oneof`_ ``source``.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
@@ -88,6 +92,9 @@ class RestoreTableMetadata(proto.Message):
     r"""Metadata type for the long-running operation returned by
     [RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable].
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Name of the table being created and restored
@@ -96,6 +103,7 @@ class RestoreTableMetadata(proto.Message):
             The type of the restore source.
         backup_info (google.cloud.bigtable_admin_v2.types.BackupInfo):
 
+            This field is a member of `oneof`_ ``source_info``.
         optimize_table_operation_name (str):
             If exists, the name of the long-running operation that will
             be used to track the post-restore optimization process to
@@ -232,6 +240,13 @@ class DropRowRangeRequest(proto.Message):
     r"""Request message for
     [google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange][google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange]
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Required. The unique name of the table on which to drop a
@@ -240,9 +255,11 @@ class DropRowRangeRequest(proto.Message):
         row_key_prefix (bytes):
             Delete all rows that start with this row key
             prefix. Prefix cannot be zero length.
+            This field is a member of `oneof`_ ``target``.
         delete_all_data_from_table (bool):
             Delete all rows in the table. Setting this to
             false is a no-op.
+            This field is a member of `oneof`_ ``target``.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -359,6 +376,13 @@ class ModifyColumnFamiliesRequest(proto.Message):
     class Modification(proto.Message):
         r"""A create, update, or delete of a particular column family.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             id (str):
                 The ID of the column family to be modified.
@@ -366,13 +390,16 @@ class ModifyColumnFamiliesRequest(proto.Message):
                 Create a new column family with the specified
                 schema, or fail if one already exists with the
                 given ID.
+                This field is a member of `oneof`_ ``mod``.
             update (google.cloud.bigtable_admin_v2.types.ColumnFamily):
                 Update an existing column family to the
                 specified schema, or fail if no column family
                 exists with the given ID.
+                This field is a member of `oneof`_ ``mod``.
             drop (bool):
                 Drop (delete) the column family with the
                 given ID, or fail if no such family exists.
+                This field is a member of `oneof`_ ``mod``.
         """
 
         id = proto.Field(proto.STRING, number=1,)
