@@ -38,19 +38,30 @@ class SourceContext(proto.Message):
     SourceContext together with a path point to a unique revision of
     a single file or directory.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         cloud_repo (google.cloud.source_context_v1.types.CloudRepoSourceContext):
             A SourceContext referring to a revision in a
             cloud repo.
+            This field is a member of `oneof`_ ``context``.
         cloud_workspace (google.cloud.source_context_v1.types.CloudWorkspaceSourceContext):
             A SourceContext referring to a snapshot in a
             cloud workspace.
+            This field is a member of `oneof`_ ``context``.
         gerrit (google.cloud.source_context_v1.types.GerritSourceContext):
             A SourceContext referring to a Gerrit
             project.
+            This field is a member of `oneof`_ ``context``.
         git (google.cloud.source_context_v1.types.GitSourceContext):
             A SourceContext referring to any third party
             Git repo (e.g. GitHub).
+            This field is a member of `oneof`_ ``context``.
     """
 
     cloud_repo = proto.Field(
@@ -107,15 +118,25 @@ class CloudRepoSourceContext(proto.Message):
     r"""A CloudRepoSourceContext denotes a particular revision in a
     cloud repo (a repo hosted by the Google Cloud Platform).
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         repo_id (google.cloud.source_context_v1.types.RepoId):
             The ID of the repo.
         revision_id (str):
             A revision ID.
+            This field is a member of `oneof`_ ``revision``.
         alias_name (str):
             The name of an alias (branch, tag, etc.).
+            This field is a member of `oneof`_ ``revision``.
         alias_context (google.cloud.source_context_v1.types.AliasContext):
             An alias, which may be a branch or tag.
+            This field is a member of `oneof`_ ``revision``.
     """
 
     repo_id = proto.Field(proto.MESSAGE, number=1, message="RepoId",)
@@ -145,6 +166,13 @@ class CloudWorkspaceSourceContext(proto.Message):
 class GerritSourceContext(proto.Message):
     r"""A SourceContext referring to a Gerrit project.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         host_uri (str):
             The URI of a running Gerrit instance.
@@ -155,10 +183,13 @@ class GerritSourceContext(proto.Message):
             hostURI/project.
         revision_id (str):
             A revision (commit) ID.
+            This field is a member of `oneof`_ ``revision``.
         alias_name (str):
             The name of an alias (branch, tag, etc.).
+            This field is a member of `oneof`_ ``revision``.
         alias_context (google.cloud.source_context_v1.types.AliasContext):
             An alias, which may be a branch or tag.
+            This field is a member of `oneof`_ ``revision``.
     """
 
     host_uri = proto.Field(proto.STRING, number=1,)
@@ -189,13 +220,22 @@ class GitSourceContext(proto.Message):
 class RepoId(proto.Message):
     r"""A unique identifier for a cloud repo.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project_repo_id (google.cloud.source_context_v1.types.ProjectRepoId):
             A combination of a project ID and a repo
             name.
+            This field is a member of `oneof`_ ``id``.
         uid (str):
             A server-assigned, globally unique
             identifier.
+            This field is a member of `oneof`_ ``id``.
     """
 
     project_repo_id = proto.Field(
