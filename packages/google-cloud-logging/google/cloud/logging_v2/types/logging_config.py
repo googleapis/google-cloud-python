@@ -154,6 +154,9 @@ class LogSink(proto.Message):
     created within a project, organization, billing account, or
     folder.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Required. The client-assigned sink identifier, unique within
@@ -238,6 +241,7 @@ class LogSink(proto.Message):
         bigquery_options (google.cloud.logging_v2.types.BigQueryOptions):
             Optional. Options that affect sinks exporting
             data to BigQuery.
+            This field is a member of `oneof`_ ``options``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation timestamp of the
             sink.
