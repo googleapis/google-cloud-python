@@ -28,6 +28,13 @@ class Environment(proto.Message):
     r"""Definition of a software environment that is used to start a
     notebook instance.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. Name of this environment. Format:
@@ -39,9 +46,11 @@ class Environment(proto.Message):
         vm_image (google.cloud.notebooks_v1beta1.types.VmImage):
             Use a Compute Engine VM image to start the
             notebook instance.
+            This field is a member of `oneof`_ ``image_type``.
         container_image (google.cloud.notebooks_v1beta1.types.ContainerImage):
             Use a container image to start the notebook
             instance.
+            This field is a member of `oneof`_ ``image_type``.
         post_startup_script (str):
             Path to a Bash script that automatically runs after a
             notebook instance fully boots up. The path must be a URL or
@@ -70,15 +79,24 @@ class VmImage(proto.Message):
     for starting a notebook instance with the environment installed
     directly on the VM.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project (str):
             Required. The name of the Google Cloud project that this VM
             image belongs to. Format: ``projects/{project_id}``
         image_name (str):
             Use VM image name to find the image.
+            This field is a member of `oneof`_ ``image``.
         image_family (str):
             Use this VM image family to find the image;
             the newest image in this family will be used.
+            This field is a member of `oneof`_ ``image``.
     """
 
     project = proto.Field(proto.STRING, number=1,)

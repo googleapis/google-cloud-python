@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.notebooks_v1.services.notebook_service import pagers
@@ -408,7 +410,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         request: Union[service.ListInstancesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesPager:
@@ -488,7 +490,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         request: Union[service.GetInstanceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.Instance:
@@ -561,7 +563,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         parent: str = None,
         instance: gcn_instance.Instance = None,
         instance_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -659,7 +661,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         self,
         request: Union[service.RegisterInstanceRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -725,7 +727,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         self,
         request: Union[service.SetInstanceAcceleratorRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -786,7 +788,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         self,
         request: Union[service.SetInstanceMachineTypeRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -849,7 +851,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         self,
         request: Union[service.UpdateInstanceConfigRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -910,7 +912,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         self,
         request: Union[service.UpdateShieldedInstanceConfigRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -975,7 +977,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         self,
         request: Union[service.SetInstanceLabelsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1036,7 +1038,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         request: Union[service.DeleteInstanceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1127,7 +1129,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         self,
         request: Union[service.StartInstanceRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1188,7 +1190,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         self,
         request: Union[service.StopInstanceRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1249,7 +1251,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         self,
         request: Union[service.ResetInstanceRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1310,7 +1312,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         self,
         request: Union[service.ReportInstanceInfoRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1375,7 +1377,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         self,
         request: Union[service.IsInstanceUpgradeableRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.IsInstanceUpgradeableResponse:
@@ -1428,7 +1430,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         request: Union[service.GetInstanceHealthRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.GetInstanceHealthResponse:
@@ -1498,7 +1500,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         self,
         request: Union[service.UpgradeInstanceRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1559,7 +1561,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         self,
         request: Union[service.RollbackInstanceRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1621,7 +1623,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         self,
         request: Union[service.UpgradeInstanceInternalRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1687,7 +1689,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         request: Union[service.ListEnvironmentsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEnvironmentsPager:
@@ -1765,7 +1767,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         request: Union[service.GetEnvironmentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> environment.Environment:
@@ -1839,7 +1841,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         parent: str = None,
         environment: gcn_environment.Environment = None,
         environment_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1941,7 +1943,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         request: Union[service.DeleteEnvironmentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -2033,7 +2035,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         request: Union[service.ListSchedulesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSchedulesPager:
@@ -2113,7 +2115,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         request: Union[service.GetScheduleRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> schedule.Schedule:
@@ -2182,7 +2184,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         request: Union[service.DeleteScheduleRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -2275,7 +2277,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         parent: str = None,
         schedule: gcn_schedule.Schedule = None,
         schedule_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -2373,7 +2375,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         self,
         request: Union[service.TriggerScheduleRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -2435,7 +2437,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         request: Union[service.ListExecutionsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListExecutionsPager:
@@ -2515,7 +2517,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         request: Union[service.GetExecutionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> execution.Execution:
@@ -2586,7 +2588,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         request: Union[service.DeleteExecutionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -2680,7 +2682,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         parent: str = None,
         execution: gcn_execution.Execution = None,
         execution_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:

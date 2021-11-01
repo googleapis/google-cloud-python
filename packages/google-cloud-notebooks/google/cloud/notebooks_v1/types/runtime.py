@@ -40,6 +40,8 @@ __protobuf__ = proto.module(
 class Runtime(proto.Message):
     r"""The definition of a Runtime for a managed notebook instance.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. The resource name of the runtime. Format:
@@ -47,6 +49,7 @@ class Runtime(proto.Message):
         virtual_machine (google.cloud.notebooks_v1.types.VirtualMachine):
             Use a Compute Engine VM image to start the
             managed notebook instance.
+            This field is a member of `oneof`_ ``runtime_type``.
         state (google.cloud.notebooks_v1.types.Runtime.State):
             Output only. Runtime state.
         health_state (google.cloud.notebooks_v1.types.Runtime.HealthState):
@@ -375,9 +378,11 @@ class RuntimeSoftwareConfig(proto.Message):
         enable_health_monitoring (bool):
             Verifies core internal services are running.
             Default: True
+            This field is a member of `oneof`_ ``_enable_health_monitoring``.
         idle_shutdown (bool):
             Runtime will automatically shutdown after
             idle_shutdown_time. Default: True
+            This field is a member of `oneof`_ ``_idle_shutdown``.
         idle_shutdown_timeout (int):
             Time in minutes to wait before shutting down
             runtime. Default: 180 minutes

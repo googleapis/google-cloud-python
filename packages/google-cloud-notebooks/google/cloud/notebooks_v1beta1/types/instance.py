@@ -27,6 +27,13 @@ __protobuf__ = proto.module(
 class Instance(proto.Message):
     r"""The definition of a notebook instance.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. The name of this notebook instance. Format:
@@ -34,9 +41,11 @@ class Instance(proto.Message):
         vm_image (google.cloud.notebooks_v1beta1.types.VmImage):
             Use a Compute Engine VM image to start the
             notebook instance.
+            This field is a member of `oneof`_ ``environment``.
         container_image (google.cloud.notebooks_v1beta1.types.ContainerImage):
             Use a container image to start the notebook
             instance.
+            This field is a member of `oneof`_ ``environment``.
         post_startup_script (str):
             Path to a Bash script that automatically runs after a
             notebook instance fully boots up. The path must be a URL or

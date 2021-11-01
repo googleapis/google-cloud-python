@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.notebooks_v1.services.managed_notebook_service import pagers
@@ -361,7 +363,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         request: Union[managed_service.ListRuntimesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRuntimesPager:
@@ -441,7 +443,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         request: Union[managed_service.GetRuntimeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> runtime.Runtime:
@@ -515,7 +517,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         parent: str = None,
         runtime_id: str = None,
         runtime: gcn_runtime.Runtime = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -614,7 +616,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         request: Union[managed_service.DeleteRuntimeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -706,7 +708,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         request: Union[managed_service.StartRuntimeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -794,7 +796,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         request: Union[managed_service.StopRuntimeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -882,7 +884,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         request: Union[managed_service.SwitchRuntimeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -964,7 +966,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         request: Union[managed_service.ResetRuntimeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1046,7 +1048,7 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         request: Union[managed_service.ReportRuntimeEventRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:

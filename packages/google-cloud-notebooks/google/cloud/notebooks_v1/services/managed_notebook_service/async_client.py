@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -173,17 +175,17 @@ class ManagedNotebookServiceAsyncClient:
 
     async def list_runtimes(
         self,
-        request: managed_service.ListRuntimesRequest = None,
+        request: Union[managed_service.ListRuntimesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRuntimesAsyncPager:
         r"""Lists Runtimes in a given project and location.
 
         Args:
-            request (:class:`google.cloud.notebooks_v1.types.ListRuntimesRequest`):
+            request (Union[google.cloud.notebooks_v1.types.ListRuntimesRequest, dict]):
                 The request object. Request for listing Managed Notebook
                 Runtimes.
             parent (:class:`str`):
@@ -253,10 +255,10 @@ class ManagedNotebookServiceAsyncClient:
 
     async def get_runtime(
         self,
-        request: managed_service.GetRuntimeRequest = None,
+        request: Union[managed_service.GetRuntimeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> runtime.Runtime:
@@ -264,7 +266,7 @@ class ManagedNotebookServiceAsyncClient:
         be a regional endpoint rather than zonal.
 
         Args:
-            request (:class:`google.cloud.notebooks_v1.types.GetRuntimeRequest`):
+            request (Union[google.cloud.notebooks_v1.types.GetRuntimeRequest, dict]):
                 The request object. Request for getting a Managed
                 Notebook Runtime.
             name (:class:`str`):
@@ -325,12 +327,12 @@ class ManagedNotebookServiceAsyncClient:
 
     async def create_runtime(
         self,
-        request: managed_service.CreateRuntimeRequest = None,
+        request: Union[managed_service.CreateRuntimeRequest, dict] = None,
         *,
         parent: str = None,
         runtime_id: str = None,
         runtime: gcn_runtime.Runtime = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -338,7 +340,7 @@ class ManagedNotebookServiceAsyncClient:
         location.
 
         Args:
-            request (:class:`google.cloud.notebooks_v1.types.CreateRuntimeRequest`):
+            request (Union[google.cloud.notebooks_v1.types.CreateRuntimeRequest, dict]):
                 The request object. Request for creating a Managed
                 Notebook Runtime.
             parent (:class:`str`):
@@ -426,17 +428,17 @@ class ManagedNotebookServiceAsyncClient:
 
     async def delete_runtime(
         self,
-        request: managed_service.DeleteRuntimeRequest = None,
+        request: Union[managed_service.DeleteRuntimeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Runtime.
 
         Args:
-            request (:class:`google.cloud.notebooks_v1.types.DeleteRuntimeRequest`):
+            request (Union[google.cloud.notebooks_v1.types.DeleteRuntimeRequest, dict]):
                 The request object. Request for deleting a Managed
                 Notebook Runtime.
             name (:class:`str`):
@@ -518,10 +520,10 @@ class ManagedNotebookServiceAsyncClient:
 
     async def start_runtime(
         self,
-        request: managed_service.StartRuntimeRequest = None,
+        request: Union[managed_service.StartRuntimeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -534,7 +536,7 @@ class ManagedNotebookServiceAsyncClient:
         resume-instance
 
         Args:
-            request (:class:`google.cloud.notebooks_v1.types.StartRuntimeRequest`):
+            request (Union[google.cloud.notebooks_v1.types.StartRuntimeRequest, dict]):
                 The request object. Request for starting a Managed
                 Notebook Runtime.
             name (:class:`str`):
@@ -606,10 +608,10 @@ class ManagedNotebookServiceAsyncClient:
 
     async def stop_runtime(
         self,
-        request: managed_service.StopRuntimeRequest = None,
+        request: Union[managed_service.StopRuntimeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -622,7 +624,7 @@ class ManagedNotebookServiceAsyncClient:
         resume-instance
 
         Args:
-            request (:class:`google.cloud.notebooks_v1.types.StopRuntimeRequest`):
+            request (Union[google.cloud.notebooks_v1.types.StopRuntimeRequest, dict]):
                 The request object. Request for stopping a Managed
                 Notebook Runtime.
             name (:class:`str`):
@@ -694,17 +696,17 @@ class ManagedNotebookServiceAsyncClient:
 
     async def switch_runtime(
         self,
-        request: managed_service.SwitchRuntimeRequest = None,
+        request: Union[managed_service.SwitchRuntimeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Switch a Managed Notebook Runtime.
 
         Args:
-            request (:class:`google.cloud.notebooks_v1.types.SwitchRuntimeRequest`):
+            request (Union[google.cloud.notebooks_v1.types.SwitchRuntimeRequest, dict]):
                 The request object. Request for switching a Managed
                 Notebook Runtime.
             name (:class:`str`):
@@ -776,17 +778,17 @@ class ManagedNotebookServiceAsyncClient:
 
     async def reset_runtime(
         self,
-        request: managed_service.ResetRuntimeRequest = None,
+        request: Union[managed_service.ResetRuntimeRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Resets a Managed Notebook Runtime.
 
         Args:
-            request (:class:`google.cloud.notebooks_v1.types.ResetRuntimeRequest`):
+            request (Union[google.cloud.notebooks_v1.types.ResetRuntimeRequest, dict]):
                 The request object. Request for reseting a Managed
                 Notebook Runtime.
             name (:class:`str`):
@@ -858,17 +860,17 @@ class ManagedNotebookServiceAsyncClient:
 
     async def report_runtime_event(
         self,
-        request: managed_service.ReportRuntimeEventRequest = None,
+        request: Union[managed_service.ReportRuntimeEventRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Report and process a runtime event.
 
         Args:
-            request (:class:`google.cloud.notebooks_v1.types.ReportRuntimeEventRequest`):
+            request (Union[google.cloud.notebooks_v1.types.ReportRuntimeEventRequest, dict]):
                 The request object. Request for reporting a Managed
                 Notebook Event.
             name (:class:`str`):

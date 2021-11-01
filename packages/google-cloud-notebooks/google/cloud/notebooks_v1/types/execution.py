@@ -26,6 +26,8 @@ __protobuf__ = proto.module(
 class ExecutionTemplate(proto.Message):
     r"""The description a notebook execution workload.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         scale_tier (google.cloud.notebooks_v1.types.ExecutionTemplate.ScaleTier):
             Required. Scale tier of the hardware used for
@@ -125,6 +127,7 @@ class ExecutionTemplate(proto.Message):
         dataproc_parameters (google.cloud.notebooks_v1.types.ExecutionTemplate.DataprocParameters):
             Parameters used in Dataproc JobType
             executions.
+            This field is a member of `oneof`_ ``job_parameters``.
     """
 
     class ScaleTier(proto.Enum):
