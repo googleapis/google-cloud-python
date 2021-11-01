@@ -31,6 +31,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service import pagers
 from google.cloud.bigquery_datatransfer_v1.types import datatransfer
 from google.cloud.bigquery_datatransfer_v1.types import transfer
@@ -396,7 +398,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         request: Union[datatransfer.GetDataSourceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datatransfer.DataSource:
@@ -471,7 +473,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         request: Union[datatransfer.ListDataSourcesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDataSourcesPager:
@@ -555,7 +557,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         *,
         parent: str = None,
         transfer_config: transfer.TransferConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer.TransferConfig:
@@ -652,7 +654,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         *,
         transfer_config: transfer.TransferConfig = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer.TransferConfig:
@@ -743,7 +745,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         request: Union[datatransfer.DeleteTransferConfigRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -811,7 +813,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         request: Union[datatransfer.GetTransferConfigRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer.TransferConfig:
@@ -890,7 +892,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         request: Union[datatransfer.ListTransferConfigsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferConfigsPager:
@@ -974,7 +976,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         parent: str = None,
         start_time: timestamp_pb2.Timestamp = None,
         end_time: timestamp_pb2.Timestamp = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datatransfer.ScheduleTransferRunsResponse:
@@ -1072,7 +1074,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         self,
         request: Union[datatransfer.StartManualTransferRunsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datatransfer.StartManualTransferRunsResponse:
@@ -1128,7 +1130,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         request: Union[datatransfer.GetTransferRunRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer.TransferRun:
@@ -1201,7 +1203,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         request: Union[datatransfer.DeleteTransferRunRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -1268,7 +1270,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         request: Union[datatransfer.ListTransferRunsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferRunsPager:
@@ -1353,7 +1355,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         request: Union[datatransfer.ListTransferLogsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferLogsPager:
@@ -1436,7 +1438,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         request: Union[datatransfer.CheckValidCredsRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datatransfer.CheckValidCredsResponse:

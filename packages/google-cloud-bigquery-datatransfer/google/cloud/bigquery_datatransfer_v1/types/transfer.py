@@ -106,6 +106,9 @@ class TransferConfig(proto.Message):
     ``destination_dataset_id`` is created when needed and shared with
     the appropriate data source service account.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The resource name of the transfer config. Transfer config
@@ -116,6 +119,7 @@ class TransferConfig(proto.Message):
             transfer config.
         destination_dataset_id (str):
             The BigQuery target dataset id.
+            This field is a member of `oneof`_ ``destination``.
         display_name (str):
             User specified display name for the data
             transfer.
@@ -207,6 +211,8 @@ class TransferConfig(proto.Message):
 class TransferRun(proto.Message):
     r"""Represents a data transfer run.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The resource name of the transfer run. Transfer run names
@@ -241,6 +247,7 @@ class TransferRun(proto.Message):
             transfer/docs/cloud-storage-transfer#bq
         destination_dataset_id (str):
             Output only. The BigQuery target dataset id.
+            This field is a member of `oneof`_ ``destination``.
         data_source_id (str):
             Output only. Data source id.
         state (google.cloud.bigquery_datatransfer_v1.types.TransferState):
