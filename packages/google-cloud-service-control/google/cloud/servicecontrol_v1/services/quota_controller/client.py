@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.servicecontrol_v1.types import metric_value
 from google.cloud.servicecontrol_v1.types import quota_controller
 from .transports.base import QuotaControllerTransport, DEFAULT_CLIENT_INFO
@@ -339,7 +341,7 @@ class QuotaControllerClient(metaclass=QuotaControllerClientMeta):
         self,
         request: Union[quota_controller.AllocateQuotaRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> quota_controller.AllocateQuotaResponse:

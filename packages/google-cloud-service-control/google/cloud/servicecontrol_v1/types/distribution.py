@@ -34,6 +34,13 @@ class Distribution(proto.Message):
        variance
     -  a histogram of the values of the sample points
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         count (int):
             The total number of samples in the
@@ -68,10 +75,13 @@ class Distribution(proto.Message):
             Any suffix of trailing zeros may be omitted.
         linear_buckets (google.cloud.servicecontrol_v1.types.Distribution.LinearBuckets):
             Buckets with constant width.
+            This field is a member of `oneof`_ ``bucket_option``.
         exponential_buckets (google.cloud.servicecontrol_v1.types.Distribution.ExponentialBuckets):
             Buckets with exponentially growing width.
+            This field is a member of `oneof`_ ``bucket_option``.
         explicit_buckets (google.cloud.servicecontrol_v1.types.Distribution.ExplicitBuckets):
             Buckets with arbitrary user-provided width.
+            This field is a member of `oneof`_ ``bucket_option``.
         exemplars (Sequence[google.api.distribution_pb2.Exemplar]):
             Example points. Must be in increasing order of ``value``
             field.

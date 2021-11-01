@@ -27,6 +27,13 @@ __protobuf__ = proto.module(
 class MetricValue(proto.Message):
     r"""Represents a single metric value.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         labels (Sequence[google.cloud.servicecontrol_v1.types.MetricValue.LabelsEntry]):
             The labels describing the metric value. See comments on
@@ -48,14 +55,19 @@ class MetricValue(proto.Message):
             will be used.
         bool_value (bool):
             A boolean value.
+            This field is a member of `oneof`_ ``value``.
         int64_value (int):
             A signed 64-bit integer value.
+            This field is a member of `oneof`_ ``value``.
         double_value (float):
             A double precision floating point value.
+            This field is a member of `oneof`_ ``value``.
         string_value (str):
             A text string value.
+            This field is a member of `oneof`_ ``value``.
         distribution_value (google.cloud.servicecontrol_v1.types.Distribution):
             A distribution value.
+            This field is a member of `oneof`_ ``value``.
     """
 
     labels = proto.MapField(proto.STRING, proto.STRING, number=1,)

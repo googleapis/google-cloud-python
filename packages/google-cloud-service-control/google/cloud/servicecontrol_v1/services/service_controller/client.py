@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.servicecontrol_v1.types import check_error
 from google.cloud.servicecontrol_v1.types import service_controller
 from .transports.base import ServiceControllerTransport, DEFAULT_CLIENT_INFO
@@ -341,7 +343,7 @@ class ServiceControllerClient(metaclass=ServiceControllerClientMeta):
         self,
         request: Union[service_controller.CheckRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service_controller.CheckResponse:
@@ -403,7 +405,7 @@ class ServiceControllerClient(metaclass=ServiceControllerClientMeta):
         self,
         request: Union[service_controller.ReportRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service_controller.ReportResponse:
