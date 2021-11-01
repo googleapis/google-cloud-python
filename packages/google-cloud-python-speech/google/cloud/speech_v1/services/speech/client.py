@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.speech_v1.types import cloud_speech
@@ -338,7 +340,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
         *,
         config: cloud_speech.RecognitionConfig = None,
         audio: cloud_speech.RecognitionAudio = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_speech.RecognizeResponse:
@@ -416,7 +418,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
         *,
         config: cloud_speech.RecognitionConfig = None,
         audio: cloud_speech.RecognitionAudio = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -509,7 +511,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
         self,
         requests: Iterator[cloud_speech.StreamingRecognizeRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[cloud_speech.StreamingRecognizeResponse]:
