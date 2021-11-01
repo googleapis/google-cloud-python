@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -165,10 +167,10 @@ class DataFusionAsyncClient:
 
     async def list_available_versions(
         self,
-        request: datafusion.ListAvailableVersionsRequest = None,
+        request: Union[datafusion.ListAvailableVersionsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAvailableVersionsAsyncPager:
@@ -176,7 +178,7 @@ class DataFusionAsyncClient:
         the specified project and location.
 
         Args:
-            request (:class:`google.cloud.data_fusion_v1.types.ListAvailableVersionsRequest`):
+            request (Union[google.cloud.data_fusion_v1.types.ListAvailableVersionsRequest, dict]):
                 The request object. Request message for the list
                 available versions request.
             parent (:class:`str`):
@@ -248,9 +250,9 @@ class DataFusionAsyncClient:
 
     async def list_instances(
         self,
-        request: datafusion.ListInstancesRequest = None,
+        request: Union[datafusion.ListInstancesRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesAsyncPager:
@@ -258,7 +260,7 @@ class DataFusionAsyncClient:
         and location.
 
         Args:
-            request (:class:`google.cloud.data_fusion_v1.types.ListInstancesRequest`):
+            request (Union[google.cloud.data_fusion_v1.types.ListInstancesRequest, dict]):
                 The request object. Request message for listing Data
                 Fusion instances.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -307,16 +309,16 @@ class DataFusionAsyncClient:
 
     async def get_instance(
         self,
-        request: datafusion.GetInstanceRequest = None,
+        request: Union[datafusion.GetInstanceRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datafusion.Instance:
         r"""Gets details of a single Data Fusion instance.
 
         Args:
-            request (:class:`google.cloud.data_fusion_v1.types.GetInstanceRequest`):
+            request (Union[google.cloud.data_fusion_v1.types.GetInstanceRequest, dict]):
                 The request object. Request message for getting details
                 about a Data Fusion instance.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -354,12 +356,12 @@ class DataFusionAsyncClient:
 
     async def create_instance(
         self,
-        request: datafusion.CreateInstanceRequest = None,
+        request: Union[datafusion.CreateInstanceRequest, dict] = None,
         *,
         parent: str = None,
         instance: datafusion.Instance = None,
         instance_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -367,7 +369,7 @@ class DataFusionAsyncClient:
         project and location.
 
         Args:
-            request (:class:`google.cloud.data_fusion_v1.types.CreateInstanceRequest`):
+            request (Union[google.cloud.data_fusion_v1.types.CreateInstanceRequest, dict]):
                 The request object. Request message for creating a Data
                 Fusion instance.
             parent (:class:`str`):
@@ -454,17 +456,17 @@ class DataFusionAsyncClient:
 
     async def delete_instance(
         self,
-        request: datafusion.DeleteInstanceRequest = None,
+        request: Union[datafusion.DeleteInstanceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Date Fusion instance.
 
         Args:
-            request (:class:`google.cloud.data_fusion_v1.types.DeleteInstanceRequest`):
+            request (Union[google.cloud.data_fusion_v1.types.DeleteInstanceRequest, dict]):
                 The request object. Request message for deleting a Data
                 Fusion instance.
             name (:class:`str`):
@@ -547,18 +549,18 @@ class DataFusionAsyncClient:
 
     async def update_instance(
         self,
-        request: datafusion.UpdateInstanceRequest = None,
+        request: Union[datafusion.UpdateInstanceRequest, dict] = None,
         *,
         instance: datafusion.Instance = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a single Data Fusion instance.
 
         Args:
-            request (:class:`google.cloud.data_fusion_v1.types.UpdateInstanceRequest`):
+            request (Union[google.cloud.data_fusion_v1.types.UpdateInstanceRequest, dict]):
                 The request object.
             instance (:class:`google.cloud.data_fusion_v1.types.Instance`):
                 The instance resource that replaces
@@ -649,9 +651,9 @@ class DataFusionAsyncClient:
 
     async def restart_instance(
         self,
-        request: datafusion.RestartInstanceRequest = None,
+        request: Union[datafusion.RestartInstanceRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -659,7 +661,7 @@ class DataFusionAsyncClient:
         At the end of an operation instance is fully restarted.
 
         Args:
-            request (:class:`google.cloud.data_fusion_v1.types.RestartInstanceRequest`):
+            request (Union[google.cloud.data_fusion_v1.types.RestartInstanceRequest, dict]):
                 The request object. Request message for restarting a
                 Data Fusion instance.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
