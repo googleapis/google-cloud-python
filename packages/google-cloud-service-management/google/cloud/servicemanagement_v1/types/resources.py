@@ -209,6 +209,13 @@ class Rollout(proto.Message):
     create a new version of the service config, and then create a
     Rollout to push the service config.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         rollout_id (str):
             Optional. Unique identifier of this Rollout. Must be no
@@ -233,9 +240,11 @@ class Rollout(proto.Message):
         traffic_percent_strategy (google.cloud.servicemanagement_v1.types.Rollout.TrafficPercentStrategy):
             Google Service Control selects service
             configurations based on traffic percentage.
+            This field is a member of `oneof`_ ``strategy``.
         delete_service_strategy (google.cloud.servicemanagement_v1.types.Rollout.DeleteServiceStrategy):
             The strategy associated with a rollout to delete a
             ``ManagedService``. Readonly.
+            This field is a member of `oneof`_ ``strategy``.
         service_name (str):
             The name of the service associated with this
             Rollout.

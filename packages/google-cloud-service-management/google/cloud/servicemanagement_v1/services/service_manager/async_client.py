@@ -20,12 +20,14 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 import warnings
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api import auth_pb2  # type: ignore
 from google.api import backend_pb2  # type: ignore
@@ -191,11 +193,11 @@ class ServiceManagerAsyncClient:
 
     async def list_services(
         self,
-        request: servicemanager.ListServicesRequest = None,
+        request: Union[servicemanager.ListServicesRequest, dict] = None,
         *,
         producer_project_id: str = None,
         consumer_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesAsyncPager:
@@ -210,7 +212,7 @@ class ServiceManagerAsyncClient:
         ``consumer_id`` must have the format of "project:{PROJECT-ID}".
 
         Args:
-            request (:class:`google.cloud.servicemanagement_v1.types.ListServicesRequest`):
+            request (Union[google.cloud.servicemanagement_v1.types.ListServicesRequest, dict]):
                 The request object. Request message for `ListServices`
                 method.
             producer_project_id (:class:`str`):
@@ -286,10 +288,10 @@ class ServiceManagerAsyncClient:
 
     async def get_service(
         self,
-        request: servicemanager.GetServiceRequest = None,
+        request: Union[servicemanager.GetServiceRequest, dict] = None,
         *,
         service_name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.ManagedService:
@@ -297,7 +299,7 @@ class ServiceManagerAsyncClient:
         unless the service is public.
 
         Args:
-            request (:class:`google.cloud.servicemanagement_v1.types.GetServiceRequest`):
+            request (Union[google.cloud.servicemanagement_v1.types.GetServiceRequest, dict]):
                 The request object. Request message for `GetService`
                 method.
             service_name (:class:`str`):
@@ -354,10 +356,10 @@ class ServiceManagerAsyncClient:
 
     async def create_service(
         self,
-        request: servicemanager.CreateServiceRequest = None,
+        request: Union[servicemanager.CreateServiceRequest, dict] = None,
         *,
         service: resources.ManagedService = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -367,7 +369,7 @@ class ServiceManagerAsyncClient:
         Operation<response: ManagedService>
 
         Args:
-            request (:class:`google.cloud.servicemanagement_v1.types.CreateServiceRequest`):
+            request (Union[google.cloud.servicemanagement_v1.types.CreateServiceRequest, dict]):
                 The request object. Request message for CreateService
                 method.
             service (:class:`google.cloud.servicemanagement_v1.types.ManagedService`):
@@ -432,10 +434,10 @@ class ServiceManagerAsyncClient:
 
     async def delete_service(
         self,
-        request: servicemanager.DeleteServiceRequest = None,
+        request: Union[servicemanager.DeleteServiceRequest, dict] = None,
         *,
         service_name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -449,7 +451,7 @@ class ServiceManagerAsyncClient:
         Operation<response: google.protobuf.Empty>
 
         Args:
-            request (:class:`google.cloud.servicemanagement_v1.types.DeleteServiceRequest`):
+            request (Union[google.cloud.servicemanagement_v1.types.DeleteServiceRequest, dict]):
                 The request object. Request message for DeleteService
                 method.
             service_name (:class:`str`):
@@ -527,10 +529,10 @@ class ServiceManagerAsyncClient:
 
     async def undelete_service(
         self,
-        request: servicemanager.UndeleteServiceRequest = None,
+        request: Union[servicemanager.UndeleteServiceRequest, dict] = None,
         *,
         service_name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -543,7 +545,7 @@ class ServiceManagerAsyncClient:
         Operation<response: UndeleteServiceResponse>
 
         Args:
-            request (:class:`google.cloud.servicemanagement_v1.types.UndeleteServiceRequest`):
+            request (Union[google.cloud.servicemanagement_v1.types.UndeleteServiceRequest, dict]):
                 The request object. Request message for UndeleteService
                 method.
             service_name (:class:`str`):
@@ -611,10 +613,10 @@ class ServiceManagerAsyncClient:
 
     async def list_service_configs(
         self,
-        request: servicemanager.ListServiceConfigsRequest = None,
+        request: Union[servicemanager.ListServiceConfigsRequest, dict] = None,
         *,
         service_name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServiceConfigsAsyncPager:
@@ -622,7 +624,7 @@ class ServiceManagerAsyncClient:
         managed service, from the newest to the oldest.
 
         Args:
-            request (:class:`google.cloud.servicemanagement_v1.types.ListServiceConfigsRequest`):
+            request (Union[google.cloud.servicemanagement_v1.types.ListServiceConfigsRequest, dict]):
                 The request object. Request message for
                 ListServiceConfigs method.
             service_name (:class:`str`):
@@ -688,12 +690,12 @@ class ServiceManagerAsyncClient:
 
     async def get_service_config(
         self,
-        request: servicemanager.GetServiceConfigRequest = None,
+        request: Union[servicemanager.GetServiceConfigRequest, dict] = None,
         *,
         service_name: str = None,
         config_id: str = None,
         view: servicemanager.GetServiceConfigRequest.ConfigView = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service_pb2.Service:
@@ -701,7 +703,7 @@ class ServiceManagerAsyncClient:
         service.
 
         Args:
-            request (:class:`google.cloud.servicemanagement_v1.types.GetServiceConfigRequest`):
+            request (Union[google.cloud.servicemanagement_v1.types.GetServiceConfigRequest, dict]):
                 The request object. Request message for GetServiceConfig
                 method.
             service_name (:class:`str`):
@@ -796,11 +798,11 @@ class ServiceManagerAsyncClient:
 
     async def create_service_config(
         self,
-        request: servicemanager.CreateServiceConfigRequest = None,
+        request: Union[servicemanager.CreateServiceConfigRequest, dict] = None,
         *,
         service_name: str = None,
         service_config: service_pb2.Service = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service_pb2.Service:
@@ -815,7 +817,7 @@ class ServiceManagerAsyncClient:
         rest will be deleted eventually.
 
         Args:
-            request (:class:`google.cloud.servicemanagement_v1.types.CreateServiceConfigRequest`):
+            request (Union[google.cloud.servicemanagement_v1.types.CreateServiceConfigRequest, dict]):
                 The request object. Request message for
                 CreateServiceConfig method.
             service_name (:class:`str`):
@@ -898,12 +900,12 @@ class ServiceManagerAsyncClient:
 
     async def submit_config_source(
         self,
-        request: servicemanager.SubmitConfigSourceRequest = None,
+        request: Union[servicemanager.SubmitConfigSourceRequest, dict] = None,
         *,
         service_name: str = None,
         config_source: resources.ConfigSource = None,
         validate_only: bool = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -922,7 +924,7 @@ class ServiceManagerAsyncClient:
         Operation<response: SubmitConfigSourceResponse>
 
         Args:
-            request (:class:`google.cloud.servicemanagement_v1.types.SubmitConfigSourceRequest`):
+            request (Union[google.cloud.servicemanagement_v1.types.SubmitConfigSourceRequest, dict]):
                 The request object. Request message for
                 SubmitConfigSource method.
             service_name (:class:`str`):
@@ -1010,11 +1012,11 @@ class ServiceManagerAsyncClient:
 
     async def list_service_rollouts(
         self,
-        request: servicemanager.ListServiceRolloutsRequest = None,
+        request: Union[servicemanager.ListServiceRolloutsRequest, dict] = None,
         *,
         service_name: str = None,
         filter: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServiceRolloutsAsyncPager:
@@ -1023,7 +1025,7 @@ class ServiceManagerAsyncClient:
         oldest.
 
         Args:
-            request (:class:`google.cloud.servicemanagement_v1.types.ListServiceRolloutsRequest`):
+            request (Union[google.cloud.servicemanagement_v1.types.ListServiceRolloutsRequest, dict]):
                 The request object. Request message for
                 'ListServiceRollouts'
             service_name (:class:`str`):
@@ -1105,11 +1107,11 @@ class ServiceManagerAsyncClient:
 
     async def get_service_rollout(
         self,
-        request: servicemanager.GetServiceRolloutRequest = None,
+        request: Union[servicemanager.GetServiceRolloutRequest, dict] = None,
         *,
         service_name: str = None,
         rollout_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Rollout:
@@ -1117,7 +1119,7 @@ class ServiceManagerAsyncClient:
         [rollout][google.api.servicemanagement.v1.Rollout].
 
         Args:
-            request (:class:`google.cloud.servicemanagement_v1.types.GetServiceRolloutRequest`):
+            request (Union[google.cloud.servicemanagement_v1.types.GetServiceRolloutRequest, dict]):
                 The request object. Request message for
                 GetServiceRollout method.
             service_name (:class:`str`):
@@ -1187,11 +1189,11 @@ class ServiceManagerAsyncClient:
 
     async def create_service_rollout(
         self,
-        request: servicemanager.CreateServiceRolloutRequest = None,
+        request: Union[servicemanager.CreateServiceRolloutRequest, dict] = None,
         *,
         service_name: str = None,
         rollout: resources.Rollout = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -1214,7 +1216,7 @@ class ServiceManagerAsyncClient:
         Operation<response: Rollout>
 
         Args:
-            request (:class:`google.cloud.servicemanagement_v1.types.CreateServiceRolloutRequest`):
+            request (Union[google.cloud.servicemanagement_v1.types.CreateServiceRolloutRequest, dict]):
                 The request object. Request message for
                 'CreateServiceRollout'
             service_name (:class:`str`):
@@ -1292,11 +1294,11 @@ class ServiceManagerAsyncClient:
 
     async def generate_config_report(
         self,
-        request: servicemanager.GenerateConfigReportRequest = None,
+        request: Union[servicemanager.GenerateConfigReportRequest, dict] = None,
         *,
         new_config: any_pb2.Any = None,
         old_config: any_pb2.Any = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> servicemanager.GenerateConfigReportResponse:
@@ -1314,7 +1316,7 @@ class ServiceManagerAsyncClient:
         the last pushed service configuration.
 
         Args:
-            request (:class:`google.cloud.servicemanagement_v1.types.GenerateConfigReportRequest`):
+            request (Union[google.cloud.servicemanagement_v1.types.GenerateConfigReportRequest, dict]):
                 The request object. Request message for
                 GenerateConfigReport method.
             new_config (:class:`google.protobuf.any_pb2.Any`):
@@ -1386,11 +1388,11 @@ class ServiceManagerAsyncClient:
 
     async def enable_service(
         self,
-        request: servicemanager.EnableServiceRequest = None,
+        request: Union[servicemanager.EnableServiceRequest, dict] = None,
         *,
         service_name: str = None,
         consumer_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -1403,7 +1405,7 @@ class ServiceManagerAsyncClient:
         Operation<response: EnableServiceResponse>
 
         Args:
-            request (:class:`google.cloud.servicemanagement_v1.types.EnableServiceRequest`):
+            request (Union[google.cloud.servicemanagement_v1.types.EnableServiceRequest, dict]):
                 The request object. Request message for EnableService
                 method.
             service_name (:class:`str`):
@@ -1491,11 +1493,11 @@ class ServiceManagerAsyncClient:
 
     async def disable_service(
         self,
-        request: servicemanager.DisableServiceRequest = None,
+        request: Union[servicemanager.DisableServiceRequest, dict] = None,
         *,
         service_name: str = None,
         consumer_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -1508,7 +1510,7 @@ class ServiceManagerAsyncClient:
         Operation<response: DisableServiceResponse>
 
         Args:
-            request (:class:`google.cloud.servicemanagement_v1.types.DisableServiceRequest`):
+            request (Union[google.cloud.servicemanagement_v1.types.DisableServiceRequest, dict]):
                 The request object. Request message for DisableService
                 method.
             service_name (:class:`str`):
