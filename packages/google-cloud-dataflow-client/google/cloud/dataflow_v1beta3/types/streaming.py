@@ -157,16 +157,27 @@ class StreamLocation(proto.Message):
     r"""Describes a stream of data, either as input to be processed
     or as output of a streaming Dataflow job.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         streaming_stage_location (google.cloud.dataflow_v1beta3.types.StreamingStageLocation):
             The stream is part of another computation
             within the current streaming Dataflow job.
+            This field is a member of `oneof`_ ``location``.
         pubsub_location (google.cloud.dataflow_v1beta3.types.PubsubLocation):
             The stream is a pubsub stream.
+            This field is a member of `oneof`_ ``location``.
         side_input_location (google.cloud.dataflow_v1beta3.types.StreamingSideInputLocation):
             The stream is a streaming side input.
+            This field is a member of `oneof`_ ``location``.
         custom_source_location (google.cloud.dataflow_v1beta3.types.CustomSourceLocation):
             The stream is a custom source.
+            This field is a member of `oneof`_ ``location``.
     """
 
     streaming_stage_location = proto.Field(

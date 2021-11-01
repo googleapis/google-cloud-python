@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dataflow_v1beta3.services.messages_v1_beta3 import pagers
 from google.cloud.dataflow_v1beta3.types import messages
@@ -163,9 +165,9 @@ class MessagesV1Beta3AsyncClient:
 
     async def list_job_messages(
         self,
-        request: messages.ListJobMessagesRequest = None,
+        request: Union[messages.ListJobMessagesRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobMessagesAsyncPager:
@@ -180,7 +182,7 @@ class MessagesV1Beta3AsyncClient:
         ``us-central1``.
 
         Args:
-            request (:class:`google.cloud.dataflow_v1beta3.types.ListJobMessagesRequest`):
+            request (Union[google.cloud.dataflow_v1beta3.types.ListJobMessagesRequest, dict]):
                 The request object. Request to list job messages.
                 Up to max_results messages will be returned in the time
                 range specified starting with the oldest messages first.

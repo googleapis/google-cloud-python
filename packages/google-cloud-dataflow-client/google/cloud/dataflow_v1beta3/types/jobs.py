@@ -648,6 +648,13 @@ class DisplayData(proto.Message):
     r"""Data provided with a pipeline or transform to provide
     descriptive info.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         key (str):
             The key identifying the display data.
@@ -663,22 +670,29 @@ class DisplayData(proto.Message):
             rendering.
         str_value (str):
             Contains value if the data is of string type.
+            This field is a member of `oneof`_ ``Value``.
         int64_value (int):
             Contains value if the data is of int64 type.
+            This field is a member of `oneof`_ ``Value``.
         float_value (float):
             Contains value if the data is of float type.
+            This field is a member of `oneof`_ ``Value``.
         java_class_value (str):
             Contains value if the data is of java class
             type.
+            This field is a member of `oneof`_ ``Value``.
         timestamp_value (google.protobuf.timestamp_pb2.Timestamp):
             Contains value if the data is of timestamp
             type.
+            This field is a member of `oneof`_ ``Value``.
         duration_value (google.protobuf.duration_pb2.Duration):
             Contains value if the data is of duration
             type.
+            This field is a member of `oneof`_ ``Value``.
         bool_value (bool):
             Contains value if the data is of a boolean
             type.
+            This field is a member of `oneof`_ ``Value``.
         short_str_value (str):
             A possible additional shorter value to display. For example
             a java_class_name_value of com.mypackage.MyDoFn will be

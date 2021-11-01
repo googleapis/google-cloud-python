@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dataflow_v1beta3.types import environment
 from google.cloud.dataflow_v1beta3.types import jobs
 from google.cloud.dataflow_v1beta3.types import templates
@@ -340,7 +342,7 @@ class TemplatesServiceClient(metaclass=TemplatesServiceClientMeta):
         self,
         request: Union[templates.CreateJobFromTemplateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
@@ -384,7 +386,7 @@ class TemplatesServiceClient(metaclass=TemplatesServiceClientMeta):
         self,
         request: Union[templates.LaunchTemplateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> templates.LaunchTemplateResponse:
@@ -427,7 +429,7 @@ class TemplatesServiceClient(metaclass=TemplatesServiceClientMeta):
         self,
         request: Union[templates.GetTemplateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> templates.GetTemplateResponse:

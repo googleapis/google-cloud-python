@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dataflow_v1beta3.types import snapshots
 from google.protobuf import duration_pb2  # type: ignore
@@ -164,16 +166,16 @@ class SnapshotsV1Beta3AsyncClient:
 
     async def get_snapshot(
         self,
-        request: snapshots.GetSnapshotRequest = None,
+        request: Union[snapshots.GetSnapshotRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> snapshots.Snapshot:
         r"""Gets information about a snapshot.
 
         Args:
-            request (:class:`google.cloud.dataflow_v1beta3.types.GetSnapshotRequest`):
+            request (Union[google.cloud.dataflow_v1beta3.types.GetSnapshotRequest, dict]):
                 The request object. Request to get information about a
                 snapshot
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -205,16 +207,16 @@ class SnapshotsV1Beta3AsyncClient:
 
     async def delete_snapshot(
         self,
-        request: snapshots.DeleteSnapshotRequest = None,
+        request: Union[snapshots.DeleteSnapshotRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> snapshots.DeleteSnapshotResponse:
         r"""Deletes a snapshot.
 
         Args:
-            request (:class:`google.cloud.dataflow_v1beta3.types.DeleteSnapshotRequest`):
+            request (Union[google.cloud.dataflow_v1beta3.types.DeleteSnapshotRequest, dict]):
                 The request object. Request to delete a snapshot.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -245,16 +247,16 @@ class SnapshotsV1Beta3AsyncClient:
 
     async def list_snapshots(
         self,
-        request: snapshots.ListSnapshotsRequest = None,
+        request: Union[snapshots.ListSnapshotsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> snapshots.ListSnapshotsResponse:
         r"""Lists snapshots.
 
         Args:
-            request (:class:`google.cloud.dataflow_v1beta3.types.ListSnapshotsRequest`):
+            request (Union[google.cloud.dataflow_v1beta3.types.ListSnapshotsRequest, dict]):
                 The request object. Request to list snapshots.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

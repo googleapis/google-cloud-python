@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dataflow_v1beta3.services.metrics_v1_beta3 import pagers
 from google.cloud.dataflow_v1beta3.types import metrics
@@ -164,9 +166,9 @@ class MetricsV1Beta3AsyncClient:
 
     async def get_job_metrics(
         self,
-        request: metrics.GetJobMetricsRequest = None,
+        request: Union[metrics.GetJobMetricsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> metrics.JobMetrics:
@@ -181,7 +183,7 @@ class MetricsV1Beta3AsyncClient:
         ``us-central1``.
 
         Args:
-            request (:class:`google.cloud.dataflow_v1beta3.types.GetJobMetricsRequest`):
+            request (Union[google.cloud.dataflow_v1beta3.types.GetJobMetricsRequest, dict]):
                 The request object. Request to get job metrics.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -223,9 +225,9 @@ class MetricsV1Beta3AsyncClient:
 
     async def get_job_execution_details(
         self,
-        request: metrics.GetJobExecutionDetailsRequest = None,
+        request: Union[metrics.GetJobExecutionDetailsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.GetJobExecutionDetailsAsyncPager:
@@ -235,7 +237,7 @@ class MetricsV1Beta3AsyncClient:
         without notice.
 
         Args:
-            request (:class:`google.cloud.dataflow_v1beta3.types.GetJobExecutionDetailsRequest`):
+            request (Union[google.cloud.dataflow_v1beta3.types.GetJobExecutionDetailsRequest, dict]):
                 The request object. Request to get job execution
                 details.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -278,9 +280,9 @@ class MetricsV1Beta3AsyncClient:
 
     async def get_stage_execution_details(
         self,
-        request: metrics.GetStageExecutionDetailsRequest = None,
+        request: Union[metrics.GetStageExecutionDetailsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.GetStageExecutionDetailsAsyncPager:
@@ -291,7 +293,7 @@ class MetricsV1Beta3AsyncClient:
         without notice.
 
         Args:
-            request (:class:`google.cloud.dataflow_v1beta3.types.GetStageExecutionDetailsRequest`):
+            request (Union[google.cloud.dataflow_v1beta3.types.GetStageExecutionDetailsRequest, dict]):
                 The request object. Request to get information about a
                 particular execution stage of a job. Currently only
                 tracked for Batch jobs.

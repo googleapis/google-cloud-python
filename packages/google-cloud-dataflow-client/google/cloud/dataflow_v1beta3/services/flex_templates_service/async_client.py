@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dataflow_v1beta3.types import jobs
 from google.cloud.dataflow_v1beta3.types import templates
@@ -164,16 +166,16 @@ class FlexTemplatesServiceAsyncClient:
 
     async def launch_flex_template(
         self,
-        request: templates.LaunchFlexTemplateRequest = None,
+        request: Union[templates.LaunchFlexTemplateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> templates.LaunchFlexTemplateResponse:
         r"""Launch a job with a FlexTemplate.
 
         Args:
-            request (:class:`google.cloud.dataflow_v1beta3.types.LaunchFlexTemplateRequest`):
+            request (Union[google.cloud.dataflow_v1beta3.types.LaunchFlexTemplateRequest, dict]):
                 The request object. A request to launch a Cloud Dataflow
                 job from a FlexTemplate.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

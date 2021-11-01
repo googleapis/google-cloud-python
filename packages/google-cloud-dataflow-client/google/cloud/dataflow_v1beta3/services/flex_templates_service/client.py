@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dataflow_v1beta3.types import jobs
 from google.cloud.dataflow_v1beta3.types import templates
 from .transports.base import FlexTemplatesServiceTransport, DEFAULT_CLIENT_INFO
@@ -339,7 +341,7 @@ class FlexTemplatesServiceClient(metaclass=FlexTemplatesServiceClientMeta):
         self,
         request: Union[templates.LaunchFlexTemplateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> templates.LaunchFlexTemplateResponse:

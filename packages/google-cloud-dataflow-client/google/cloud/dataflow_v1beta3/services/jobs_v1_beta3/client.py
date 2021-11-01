@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dataflow_v1beta3.services.jobs_v1_beta3 import pagers
 from google.cloud.dataflow_v1beta3.types import environment
 from google.cloud.dataflow_v1beta3.types import jobs
@@ -340,7 +342,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         self,
         request: Union[jobs.CreateJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
@@ -390,7 +392,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         self,
         request: Union[jobs.GetJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
@@ -440,7 +442,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         self,
         request: Union[jobs.UpdateJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
@@ -491,7 +493,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         self,
         request: Union[jobs.ListJobsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsPager:
@@ -558,7 +560,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         self,
         request: Union[jobs.ListJobsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListJobsPager:
@@ -617,7 +619,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         self,
         request: Union[jobs.CheckActiveJobsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.CheckActiveJobsResponse:
@@ -660,7 +662,7 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         self,
         request: Union[jobs.SnapshotJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> snapshots.Snapshot:

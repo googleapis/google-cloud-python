@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dataflow_v1beta3.services.messages_v1_beta3 import pagers
 from google.cloud.dataflow_v1beta3.types import messages
 from .transports.base import MessagesV1Beta3Transport, DEFAULT_CLIENT_INFO
@@ -337,7 +339,7 @@ class MessagesV1Beta3Client(metaclass=MessagesV1Beta3ClientMeta):
         self,
         request: Union[messages.ListJobMessagesRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobMessagesPager:

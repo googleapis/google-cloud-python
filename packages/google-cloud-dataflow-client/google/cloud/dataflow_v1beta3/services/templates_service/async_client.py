@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dataflow_v1beta3.types import environment
 from google.cloud.dataflow_v1beta3.types import jobs
@@ -166,16 +168,16 @@ class TemplatesServiceAsyncClient:
 
     async def create_job_from_template(
         self,
-        request: templates.CreateJobFromTemplateRequest = None,
+        request: Union[templates.CreateJobFromTemplateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> jobs.Job:
         r"""Creates a Cloud Dataflow job from a template.
 
         Args:
-            request (:class:`google.cloud.dataflow_v1beta3.types.CreateJobFromTemplateRequest`):
+            request (Union[google.cloud.dataflow_v1beta3.types.CreateJobFromTemplateRequest, dict]):
                 The request object. A request to create a Cloud Dataflow
                 job from a template.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -209,16 +211,16 @@ class TemplatesServiceAsyncClient:
 
     async def launch_template(
         self,
-        request: templates.LaunchTemplateRequest = None,
+        request: Union[templates.LaunchTemplateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> templates.LaunchTemplateResponse:
         r"""Launch a template.
 
         Args:
-            request (:class:`google.cloud.dataflow_v1beta3.types.LaunchTemplateRequest`):
+            request (Union[google.cloud.dataflow_v1beta3.types.LaunchTemplateRequest, dict]):
                 The request object. A request to launch a template.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -251,16 +253,16 @@ class TemplatesServiceAsyncClient:
 
     async def get_template(
         self,
-        request: templates.GetTemplateRequest = None,
+        request: Union[templates.GetTemplateRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> templates.GetTemplateResponse:
         r"""Get the template associated with a template.
 
         Args:
-            request (:class:`google.cloud.dataflow_v1beta3.types.GetTemplateRequest`):
+            request (Union[google.cloud.dataflow_v1beta3.types.GetTemplateRequest, dict]):
                 The request object. A request to retrieve a Cloud
                 Dataflow job template.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
