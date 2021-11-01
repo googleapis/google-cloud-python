@@ -108,6 +108,13 @@ class Inventory(proto.Message):
     class Item(proto.Message):
         r"""A single piece of inventory on a VM.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             id (str):
                 Identifier for this item, unique across items
@@ -123,9 +130,11 @@ class Inventory(proto.Message):
                 to its specific details.
             installed_package (google.cloud.osconfig_v1.types.Inventory.SoftwarePackage):
                 Software package present on the VM instance.
+                This field is a member of `oneof`_ ``details``.
             available_package (google.cloud.osconfig_v1.types.Inventory.SoftwarePackage):
                 Software package available to be installed on
                 the VM instance.
+                This field is a member of `oneof`_ ``details``.
         """
 
         class OriginType(proto.Enum):
@@ -166,41 +175,57 @@ class Inventory(proto.Message):
     class SoftwarePackage(proto.Message):
         r"""Software package information of the operating system.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             yum_package (google.cloud.osconfig_v1.types.Inventory.VersionedPackage):
                 Yum package info. For details about the yum package manager,
                 see
                 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-yum.
+                This field is a member of `oneof`_ ``details``.
             apt_package (google.cloud.osconfig_v1.types.Inventory.VersionedPackage):
                 Details of an APT package.
                 For details about the apt package manager, see
                 https://wiki.debian.org/Apt.
+                This field is a member of `oneof`_ ``details``.
             zypper_package (google.cloud.osconfig_v1.types.Inventory.VersionedPackage):
                 Details of a Zypper package. For details about the Zypper
                 package manager, see
                 https://en.opensuse.org/SDB:Zypper_manual.
+                This field is a member of `oneof`_ ``details``.
             googet_package (google.cloud.osconfig_v1.types.Inventory.VersionedPackage):
                 Details of a Googet package.
                 For details about the googet package manager,
                 see  https://github.com/google/googet.
+                This field is a member of `oneof`_ ``details``.
             zypper_patch (google.cloud.osconfig_v1.types.Inventory.ZypperPatch):
                 Details of a Zypper patch. For details about the Zypper
                 package manager, see
                 https://en.opensuse.org/SDB:Zypper_manual.
+                This field is a member of `oneof`_ ``details``.
             wua_package (google.cloud.osconfig_v1.types.Inventory.WindowsUpdatePackage):
                 Details of a Windows Update package. See
                 https://docs.microsoft.com/en-us/windows/win32/api/_wua/ for
                 information about Windows Update.
+                This field is a member of `oneof`_ ``details``.
             qfe_package (google.cloud.osconfig_v1.types.Inventory.WindowsQuickFixEngineeringPackage):
                 Details of a Windows Quick Fix engineering
                 package. See
                 https://docs.microsoft.com/en-
                 us/windows/win32/cimwin32prov/win32-quickfixengineering
                 for info in Windows Quick Fix Engineering.
+                This field is a member of `oneof`_ ``details``.
             cos_package (google.cloud.osconfig_v1.types.Inventory.VersionedPackage):
                 Details of a COS package.
+                This field is a member of `oneof`_ ``details``.
             windows_application (google.cloud.osconfig_v1.types.Inventory.WindowsApplication):
                 Details of Windows Application.
+                This field is a member of `oneof`_ ``details``.
         """
 
         yum_package = proto.Field(

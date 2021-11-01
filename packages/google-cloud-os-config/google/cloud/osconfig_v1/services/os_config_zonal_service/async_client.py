@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.osconfig_v1.services.os_config_zonal_service import pagers
 from google.cloud.osconfig_v1.types import inventory
@@ -178,10 +180,10 @@ class OsConfigZonalServiceAsyncClient:
 
     async def get_inventory(
         self,
-        request: inventory.GetInventoryRequest = None,
+        request: Union[inventory.GetInventoryRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> inventory.Inventory:
@@ -189,7 +191,7 @@ class OsConfigZonalServiceAsyncClient:
         no associated inventory, the message ``NOT_FOUND`` is returned.
 
         Args:
-            request (:class:`google.cloud.osconfig_v1.types.GetInventoryRequest`):
+            request (Union[google.cloud.osconfig_v1.types.GetInventoryRequest, dict]):
                 The request object. A request message for getting
                 inventory data for the specified VM.
             name (:class:`str`):
@@ -265,10 +267,10 @@ class OsConfigZonalServiceAsyncClient:
 
     async def list_inventories(
         self,
-        request: inventory.ListInventoriesRequest = None,
+        request: Union[inventory.ListInventoriesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInventoriesAsyncPager:
@@ -276,7 +278,7 @@ class OsConfigZonalServiceAsyncClient:
         specified zone.
 
         Args:
-            request (:class:`google.cloud.osconfig_v1.types.ListInventoriesRequest`):
+            request (Union[google.cloud.osconfig_v1.types.ListInventoriesRequest, dict]):
                 The request object. A request message for listing
                 inventory data for all VMs in the specified location.
             parent (:class:`str`):
@@ -352,10 +354,10 @@ class OsConfigZonalServiceAsyncClient:
 
     async def get_vulnerability_report(
         self,
-        request: vulnerability.GetVulnerabilityReportRequest = None,
+        request: Union[vulnerability.GetVulnerabilityReportRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vulnerability.VulnerabilityReport:
@@ -364,7 +366,7 @@ class OsConfigZonalServiceAsyncClient:
         vulnerability reports associated with them.
 
         Args:
-            request (:class:`google.cloud.osconfig_v1.types.GetVulnerabilityReportRequest`):
+            request (Union[google.cloud.osconfig_v1.types.GetVulnerabilityReportRequest, dict]):
                 The request object. A request message for getting the
                 vulnerability report for the specified VM.
             name (:class:`str`):
@@ -436,10 +438,10 @@ class OsConfigZonalServiceAsyncClient:
 
     async def list_vulnerability_reports(
         self,
-        request: vulnerability.ListVulnerabilityReportsRequest = None,
+        request: Union[vulnerability.ListVulnerabilityReportsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListVulnerabilityReportsAsyncPager:
@@ -447,7 +449,7 @@ class OsConfigZonalServiceAsyncClient:
         the specified zone.
 
         Args:
-            request (:class:`google.cloud.osconfig_v1.types.ListVulnerabilityReportsRequest`):
+            request (Union[google.cloud.osconfig_v1.types.ListVulnerabilityReportsRequest, dict]):
                 The request object. A request message for listing
                 vulnerability reports for all VM instances in the
                 specified location.

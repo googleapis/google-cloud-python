@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.osconfig_v1.services.os_config_service import pagers
 from google.cloud.osconfig_v1.types import patch_deployments
 from google.cloud.osconfig_v1.types import patch_jobs
@@ -387,7 +389,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         self,
         request: Union[patch_jobs.ExecutePatchJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> patch_jobs.PatchJob:
@@ -447,7 +449,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         request: Union[patch_jobs.GetPatchJobRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> patch_jobs.PatchJob:
@@ -527,7 +529,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         self,
         request: Union[patch_jobs.CancelPatchJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> patch_jobs.PatchJob:
@@ -586,7 +588,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         request: Union[patch_jobs.ListPatchJobsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPatchJobsPager:
@@ -664,7 +666,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         request: Union[patch_jobs.ListPatchJobInstanceDetailsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPatchJobInstanceDetailsPager:
@@ -748,7 +750,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         parent: str = None,
         patch_deployment: patch_deployments.PatchDeployment = None,
         patch_deployment_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> patch_deployments.PatchDeployment:
@@ -849,7 +851,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         request: Union[patch_deployments.GetPatchDeploymentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> patch_deployments.PatchDeployment:
@@ -924,7 +926,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         request: Union[patch_deployments.ListPatchDeploymentsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPatchDeploymentsPager:
@@ -1004,7 +1006,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         request: Union[patch_deployments.DeletePatchDeploymentRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:

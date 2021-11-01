@@ -25,13 +25,22 @@ class FixedOrPercent(proto.Message):
     r"""Message encapsulating a value that can be either absolute
     ("fixed") or relative ("percent") to a value.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         fixed (int):
             Specifies a fixed value.
+            This field is a member of `oneof`_ ``mode``.
         percent (int):
             Specifies the relative value defined as a
             percentage, which will be multiplied by a
             reference value.
+            This field is a member of `oneof`_ ``mode``.
     """
 
     fixed = proto.Field(proto.INT32, number=1, oneof="mode",)

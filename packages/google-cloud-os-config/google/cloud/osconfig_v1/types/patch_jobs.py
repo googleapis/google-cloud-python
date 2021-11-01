@@ -623,12 +623,21 @@ class ExecStep(proto.Message):
 class ExecStepConfig(proto.Message):
     r"""Common configurations for an ExecStep.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         local_path (str):
             An absolute path to the executable on the VM.
+            This field is a member of `oneof`_ ``executable``.
         gcs_object (google.cloud.osconfig_v1.types.GcsObject):
             A Cloud Storage object containing the
             executable.
+            This field is a member of `oneof`_ ``executable``.
         allowed_success_codes (Sequence[int]):
             Defaults to [0]. A list of possible return values that the
             execution can return to indicate a success.

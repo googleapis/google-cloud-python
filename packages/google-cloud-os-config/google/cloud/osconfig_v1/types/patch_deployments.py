@@ -48,6 +48,13 @@ class PatchDeployment(proto.Message):
     about creating and managing patch deployments, see `Scheduling patch
     jobs <https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs>`__.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Unique name for the patch deployment resource in a project.
@@ -69,8 +76,10 @@ class PatchDeployment(proto.Message):
             duration ends, the patch times out.
         one_time_schedule (google.cloud.osconfig_v1.types.OneTimeSchedule):
             Required. Schedule a one-time execution.
+            This field is a member of `oneof`_ ``schedule``.
         recurring_schedule (google.cloud.osconfig_v1.types.RecurringSchedule):
             Required. Schedule recurring executions.
+            This field is a member of `oneof`_ ``schedule``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time the patch deployment was created.
             Timestamp is in
@@ -129,6 +138,13 @@ class OneTimeSchedule(proto.Message):
 class RecurringSchedule(proto.Message):
     r"""Sets the time for recurring patch deployments.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         time_zone (google.type.datetime_pb2.TimeZone):
             Required. Defines the time zone that ``time_of_day`` is
@@ -149,8 +165,10 @@ class RecurringSchedule(proto.Message):
             recurring schedule.
         weekly (google.cloud.osconfig_v1.types.WeeklySchedule):
             Required. Schedule with weekly executions.
+            This field is a member of `oneof`_ ``schedule_config``.
         monthly (google.cloud.osconfig_v1.types.MonthlySchedule):
             Required. Schedule with monthly executions.
+            This field is a member of `oneof`_ ``schedule_config``.
         last_execute_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the last patch job ran
             successfully.
@@ -201,9 +219,17 @@ class MonthlySchedule(proto.Message):
     schedule is "on the third Tuesday of the month" or "on the 15th
     of the month".
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         week_day_of_month (google.cloud.osconfig_v1.types.WeekDayOfMonth):
             Required. Week day in a month.
+            This field is a member of `oneof`_ ``day_of_month``.
         month_day (int):
             Required. One day of the month. 1-31
             indicates the 1st to the 31st day. -1 indicates
@@ -211,6 +237,7 @@ class MonthlySchedule(proto.Message):
             target day will be skipped. For example, a
             schedule to run "every month on the 31st" will
             not run in February, April, June, etc.
+            This field is a member of `oneof`_ ``day_of_month``.
     """
 
     week_day_of_month = proto.Field(

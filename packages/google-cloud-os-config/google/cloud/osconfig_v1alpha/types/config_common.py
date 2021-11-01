@@ -72,6 +72,8 @@ class OSPolicyResourceConfigStep(proto.Message):
 class OSPolicyResourceCompliance(proto.Message):
     r"""Compliance data for an OS policy resource.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         os_policy_resource_id (str):
             The id of the OS policy resource.
@@ -82,6 +84,7 @@ class OSPolicyResourceCompliance(proto.Message):
             Compliance state of the OS policy resource.
         exec_resource_output (google.cloud.osconfig_v1alpha.types.OSPolicyResourceCompliance.ExecResourceOutput):
             ExecResource specific output.
+            This field is a member of `oneof`_ ``output``.
     """
 
     class ExecResourceOutput(proto.Message):
