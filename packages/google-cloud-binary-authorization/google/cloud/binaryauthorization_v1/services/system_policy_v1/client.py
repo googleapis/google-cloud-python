@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.binaryauthorization_v1.types import resources
 from google.cloud.binaryauthorization_v1.types import service
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -348,7 +350,7 @@ class SystemPolicyV1Client(metaclass=SystemPolicyV1ClientMeta):
         request: Union[service.GetSystemPolicyRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Policy:

@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.binaryauthorization_v1.types import service
 from .transports.base import ValidationHelperV1Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc import ValidationHelperV1GrpcTransport
@@ -336,7 +338,7 @@ class ValidationHelperV1Client(metaclass=ValidationHelperV1ClientMeta):
         self,
         request: Union[service.ValidateAttestationOccurrenceRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.ValidateAttestationOccurrenceResponse:

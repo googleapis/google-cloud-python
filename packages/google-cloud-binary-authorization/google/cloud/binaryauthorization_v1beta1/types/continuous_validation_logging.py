@@ -27,11 +27,20 @@ __protobuf__ = proto.module(
 class ContinuousValidationEvent(proto.Message):
     r"""Represents an auditing event from Continuous Validation.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         pod_event (google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.ContinuousValidationPodEvent):
             Pod event.
+            This field is a member of `oneof`_ ``event_type``.
         unsupported_policy_event (google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.UnsupportedPolicyEvent):
             Unsupported policy event.
+            This field is a member of `oneof`_ ``event_type``.
     """
 
     class ContinuousValidationPodEvent(proto.Message):

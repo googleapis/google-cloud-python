@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.binaryauthorization_v1.types import resources
 from google.cloud.binaryauthorization_v1.types import service
@@ -164,10 +166,10 @@ class SystemPolicyV1AsyncClient:
 
     async def get_system_policy(
         self,
-        request: service.GetSystemPolicyRequest = None,
+        request: Union[service.GetSystemPolicyRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Policy:
@@ -175,7 +177,7 @@ class SystemPolicyV1AsyncClient:
         location.
 
         Args:
-            request (:class:`google.cloud.binaryauthorization_v1.types.GetSystemPolicyRequest`):
+            request (Union[google.cloud.binaryauthorization_v1.types.GetSystemPolicyRequest, dict]):
                 The request object. Request to read the current system
                 policy.
             name (:class:`str`):

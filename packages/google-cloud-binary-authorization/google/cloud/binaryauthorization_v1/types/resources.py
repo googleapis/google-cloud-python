@@ -197,6 +197,9 @@ class Attestor(proto.Message):
     attests to container image artifacts. An existing attestor cannot be
     modified except where indicated.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Required. The resource name, in the format:
@@ -209,6 +212,7 @@ class Attestor(proto.Message):
             This specifies how an attestation will be
             read, and how it will be used during policy
             enforcement.
+            This field is a member of `oneof`_ ``attestor_type``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the attestor was last
             updated.
@@ -323,6 +327,13 @@ class AttestorPublicKey(proto.Message):
     key][google.cloud.binaryauthorization.v1.AttestorPublicKey] that
     will be used to verify attestations signed by this attestor.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         comment (str):
             Optional. A descriptive comment. This field
@@ -344,6 +355,7 @@ class AttestorPublicKey(proto.Message):
             OpenPGP RFC4880 V4 fingerprint, represented as upper-case
             hex. If ``id`` is provided by the caller, it will be
             overwritten by the API-calculated ID.
+            This field is a member of `oneof`_ ``public_key``.
         pkix_public_key (google.cloud.binaryauthorization_v1.types.PkixPublicKey):
             A raw PKIX SubjectPublicKeyInfo format public key.
 
@@ -352,6 +364,7 @@ class AttestorPublicKey(proto.Message):
             RFC3986 URI. If ``id`` is left blank, a default one will be
             computed based on the digest of the DER encoding of the
             public key.
+            This field is a member of `oneof`_ ``public_key``.
     """
 
     comment = proto.Field(proto.STRING, number=1,)
