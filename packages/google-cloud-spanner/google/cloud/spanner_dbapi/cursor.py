@@ -35,7 +35,7 @@ from google.cloud.spanner_dbapi.exceptions import ProgrammingError
 
 from google.cloud.spanner_dbapi import _helpers
 from google.cloud.spanner_dbapi._helpers import ColumnInfo
-from google.cloud.spanner_dbapi._helpers import code_to_display_size
+from google.cloud.spanner_dbapi._helpers import CODE_TO_DISPLAY_SIZE
 
 from google.cloud.spanner_dbapi import parse_utils
 from google.cloud.spanner_dbapi.parse_utils import get_param_types
@@ -80,7 +80,9 @@ class Cursor(object):
 
     @property
     def description(self):
-        """Read-only attribute containing a sequence of the following items:
+        """
+        Read-only attribute containing the result columns description
+        of a form:
 
         -   ``name``
         -   ``type_code``
@@ -91,28 +93,23 @@ class Cursor(object):
         -   ``null_ok``
 
         :rtype: tuple
-        :returns: A tuple of columns' information.
+        :returns: The result columns' description.
         """
-        if not self._result_set:
-            return None
-
         if not getattr(self._result_set, "metadata", None):
-            return None
+            return
 
-        row_type = self._result_set.metadata.row_type
         columns = []
-
-        for field in row_type.fields:
-            column_info = ColumnInfo(
-                name=field.name,
-                type_code=field.type_.code,
-                # Size of the SQL type of the column.
-                display_size=code_to_display_size.get(field.type_.code),
-                # Client perceived size of the column.
-                internal_size=field._pb.ByteSize(),
+        for field in self._result_set.metadata.row_type.fields:
+            columns.append(
+                ColumnInfo(
+                    name=field.name,
+                    type_code=field.type_.code,
+                    # Size of the SQL type of the column.
+                    display_size=CODE_TO_DISPLAY_SIZE.get(field.type_.code),
+                    # Client perceived size of the column.
+                    internal_size=field._pb.ByteSize(),
+                )
             )
-            columns.append(column_info)
-
         return tuple(columns)
 
     @property

@@ -46,7 +46,7 @@ SQL_GET_TABLE_COLUMN_SCHEMA = """SELECT
 # does not send back the actual size, we have to lookup the respective size.
 # Some fields' sizes are dependent upon the dynamic data hence aren't sent back
 # by Cloud Spanner.
-code_to_display_size = {
+CODE_TO_DISPLAY_SIZE = {
     param_types.BOOL.code: 1,
     param_types.DATE.code: 4,
     param_types.FLOAT64.code: 8,
