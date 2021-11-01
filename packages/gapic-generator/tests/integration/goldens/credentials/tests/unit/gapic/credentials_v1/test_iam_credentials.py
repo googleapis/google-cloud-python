@@ -549,9 +549,15 @@ def test_generate_access_token_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].scope == ['scope_value']
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].scope
+        mock_val = ['scope_value']
+        assert arg == mock_val
         assert DurationRule().to_proto(args[0].lifetime) == duration_pb2.Duration(seconds=751)
 
 
@@ -599,9 +605,15 @@ async def test_generate_access_token_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].scope == ['scope_value']
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].scope
+        mock_val = ['scope_value']
+        assert arg == mock_val
         assert DurationRule().to_proto(args[0].lifetime) == duration_pb2.Duration(seconds=751)
 
 
@@ -798,10 +810,18 @@ def test_generate_id_token_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].audience == 'audience_value'
-        assert args[0].include_email == True
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].audience
+        mock_val = 'audience_value'
+        assert arg == mock_val
+        arg = args[0].include_email
+        mock_val = True
+        assert arg == mock_val
 
 
 def test_generate_id_token_flattened_error():
@@ -848,10 +868,18 @@ async def test_generate_id_token_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].audience == 'audience_value'
-        assert args[0].include_email == True
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].audience
+        mock_val = 'audience_value'
+        assert arg == mock_val
+        arg = args[0].include_email
+        mock_val = True
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1050,9 +1078,15 @@ def test_sign_blob_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].payload == b'payload_blob'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].payload
+        mock_val = b'payload_blob'
+        assert arg == mock_val
 
 
 def test_sign_blob_flattened_error():
@@ -1097,9 +1131,15 @@ async def test_sign_blob_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].payload == b'payload_blob'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].payload
+        mock_val = b'payload_blob'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1297,9 +1337,15 @@ def test_sign_jwt_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].payload == 'payload_value'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].payload
+        mock_val = 'payload_value'
+        assert arg == mock_val
 
 
 def test_sign_jwt_flattened_error():
@@ -1344,9 +1390,15 @@ async def test_sign_jwt_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == 'name_value'
-        assert args[0].delegates == ['delegates_value']
-        assert args[0].payload == 'payload_value'
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].delegates
+        mock_val = ['delegates_value']
+        assert arg == mock_val
+        arg = args[0].payload
+        mock_val = 'payload_value'
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

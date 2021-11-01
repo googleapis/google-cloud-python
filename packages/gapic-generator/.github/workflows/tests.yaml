@@ -42,39 +42,6 @@ jobs:
         run: python -m pip install nox
       - name: Check type annotations.
         run: nox -s mypy
-  # publish_image:
-  #   runs-on: ubuntu-latest
-  #   container: docker
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - setup_remote_docker
-  #     - name: Build Docker image.
-  #       run: docker build . -t gcr.io/gapic-images/gapic-generator-python:latest
-  #     - name: Download curl
-  #       run: apk add --no-cache curl
-  #     - name: Download the GCR credential helper.
-  #       run: |
-  #           curl -fsSL https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v1.5.0/docker-credential-gcr_linux_amd64-1.5.0.tar.gz \
-  #             | tar xz --to-stdout ./docker-credential-gcr \
-  #             > /usr/bin/docker-credential-gcr && chmod a+x /usr/bin/docker-credential-gcr
-  #     - name: Set up authentication to Google Container Registry.
-  #       run: |
-  #           echo ${GCLOUD_SERVICE_KEY} > ${GOOGLE_APPLICATION_CREDENTIALS}
-  #           docker-credential-gcr configure-docker
-  #     - name: Tag the Docker image and push it to Google Container Registry.
-  #       run: |
-  #           if [ -n "$CIRCLE_TAG" ]; then
-  #             export MAJOR=`echo $CIRCLE_TAG | awk -F '.' '{ print $1; }'`
-  #             export MINOR=`echo $CIRCLE_TAG | awk -F '.' '{ print $2; }'`
-  #             export PATCH=`echo $CIRCLE_TAG | awk -F '.' '{ print $3; }'`
-  #             docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR.$PATCH
-  #             docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR
-  #             docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR
-  #             docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR.$PATCH
-  #             docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR
-  #             docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR
-  #           fi
-  #           docker push gcr.io/gapic-images/gapic-generator-python:latest
   showcase:
     strategy:
       matrix:
@@ -319,6 +286,30 @@ jobs:
             python -m pip install nox
       - name: Run unit tests.
         run: nox -s unit-${{ matrix.python }}
+  fragment:
+    strategy:
+      matrix:
+        python: [3.6, 3.7, 3.8, 3.9]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install pandoc
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y pandoc gcc git
+      - name: Install nox.
+        run: |
+            python -m pip install nox
+      - name: Run fragment tests.
+        run: nox -s fragment-${{ matrix.python }}
   integration:
     runs-on: ubuntu-latest
     steps:

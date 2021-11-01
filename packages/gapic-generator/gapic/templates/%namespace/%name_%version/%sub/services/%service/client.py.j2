@@ -405,7 +405,13 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             {% endif %}
             {% for key, field in method.flattened_fields.items() if not field.repeated or method.input.ident.package == method.ident.package %}
             if {{ field.name }} is not None:
+                {# Repeated values is a special case, because values can be lists. #}
+                {# In order to not confuse the marshalling logic, extend these fields instead of assigning #}
+                {% if field.ident.ident|string() == "struct_pb2.Value" and field.repeated %}
+                request.{{ key }}.extend({{ field.name }})
+                {% else %}
                 request.{{ key }} = {{ field.name }}
+                {% endif %}{# struct_pb2.Value #}
             {% endfor %}
             {# Map-y fields can be _updated_, however #}
             {% for key, field in method.flattened_fields.items() if field.repeated and method.input.ident.package != method.ident.package %}

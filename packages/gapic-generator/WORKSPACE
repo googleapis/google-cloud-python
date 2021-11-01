@@ -13,10 +13,6 @@ http_archive(
     url = "https://github.com/bazelbuild/rules_python/archive/0.1.0.tar.gz",
 )
 
-load("@rules_python//python:pip.bzl", "pip_repositories")
-
-pip_repositories()
-
 #
 # Import gapic-generator-python specific dependencies
 #
