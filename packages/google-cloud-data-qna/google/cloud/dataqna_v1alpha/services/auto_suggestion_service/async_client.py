@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dataqna_v1alpha.types import auto_suggestion_service
 from .transports.base import AutoSuggestionServiceTransport, DEFAULT_CLIENT_INFO
@@ -234,9 +236,9 @@ class AutoSuggestionServiceAsyncClient:
 
     async def suggest_queries(
         self,
-        request: auto_suggestion_service.SuggestQueriesRequest = None,
+        request: Union[auto_suggestion_service.SuggestQueriesRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> auto_suggestion_service.SuggestQueriesResponse:
@@ -244,7 +246,7 @@ class AutoSuggestionServiceAsyncClient:
         AutoSuggestion tolerance should be less than 1 second.
 
         Args:
-            request (:class:`google.cloud.dataqna_v1alpha.types.SuggestQueriesRequest`):
+            request (Union[google.cloud.dataqna_v1alpha.types.SuggestQueriesRequest, dict]):
                 The request object. Request for query suggestions.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

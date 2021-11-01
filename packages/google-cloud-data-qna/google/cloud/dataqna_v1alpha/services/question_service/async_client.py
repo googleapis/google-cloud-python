@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.dataqna_v1alpha.types import question
 from google.cloud.dataqna_v1alpha.types import question as gcd_question
@@ -190,17 +192,17 @@ class QuestionServiceAsyncClient:
 
     async def get_question(
         self,
-        request: question_service.GetQuestionRequest = None,
+        request: Union[question_service.GetQuestionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> question.Question:
         r"""Gets a previously created question.
 
         Args:
-            request (:class:`google.cloud.dataqna_v1alpha.types.GetQuestionRequest`):
+            request (Union[google.cloud.dataqna_v1alpha.types.GetQuestionRequest, dict]):
                 The request object. A request to get a previously
                 created question.
             name (:class:`str`):
@@ -264,18 +266,18 @@ class QuestionServiceAsyncClient:
 
     async def create_question(
         self,
-        request: question_service.CreateQuestionRequest = None,
+        request: Union[question_service.CreateQuestionRequest, dict] = None,
         *,
         parent: str = None,
         question: gcd_question.Question = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_question.Question:
         r"""Creates a question.
 
         Args:
-            request (:class:`google.cloud.dataqna_v1alpha.types.CreateQuestionRequest`):
+            request (Union[google.cloud.dataqna_v1alpha.types.CreateQuestionRequest, dict]):
                 The request object. Request to create a question
                 resource.
             parent (:class:`str`):
@@ -347,18 +349,18 @@ class QuestionServiceAsyncClient:
 
     async def execute_question(
         self,
-        request: question_service.ExecuteQuestionRequest = None,
+        request: Union[question_service.ExecuteQuestionRequest, dict] = None,
         *,
         name: str = None,
         interpretation_index: int = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> question.Question:
         r"""Executes an interpretation.
 
         Args:
-            request (:class:`google.cloud.dataqna_v1alpha.types.ExecuteQuestionRequest`):
+            request (Union[google.cloud.dataqna_v1alpha.types.ExecuteQuestionRequest, dict]):
                 The request object. Request to execute an
                 interpretation.
             name (:class:`str`):
@@ -431,17 +433,17 @@ class QuestionServiceAsyncClient:
 
     async def get_user_feedback(
         self,
-        request: question_service.GetUserFeedbackRequest = None,
+        request: Union[question_service.GetUserFeedbackRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> user_feedback.UserFeedback:
         r"""Gets previously created user feedback.
 
         Args:
-            request (:class:`google.cloud.dataqna_v1alpha.types.GetUserFeedbackRequest`):
+            request (Union[google.cloud.dataqna_v1alpha.types.GetUserFeedbackRequest, dict]):
                 The request object. Request to get user feedback.
             name (:class:`str`):
                 Required. The unique identifier for the user feedback.
@@ -501,11 +503,11 @@ class QuestionServiceAsyncClient:
 
     async def update_user_feedback(
         self,
-        request: question_service.UpdateUserFeedbackRequest = None,
+        request: Union[question_service.UpdateUserFeedbackRequest, dict] = None,
         *,
         user_feedback: gcd_user_feedback.UserFeedback = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_user_feedback.UserFeedback:
@@ -513,7 +515,7 @@ class QuestionServiceAsyncClient:
         there was none before (upsert).
 
         Args:
-            request (:class:`google.cloud.dataqna_v1alpha.types.UpdateUserFeedbackRequest`):
+            request (Union[google.cloud.dataqna_v1alpha.types.UpdateUserFeedbackRequest, dict]):
                 The request object. Request to updates user feedback.
             user_feedback (:class:`google.cloud.dataqna_v1alpha.types.UserFeedback`):
                 Required. The user feedback to

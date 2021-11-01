@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.dataqna_v1alpha.types import question
 from google.cloud.dataqna_v1alpha.types import question as gcd_question
 from google.cloud.dataqna_v1alpha.types import question_service
@@ -391,7 +393,7 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
         request: Union[question_service.GetQuestionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> question.Question:
@@ -466,7 +468,7 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
         *,
         parent: str = None,
         question: gcd_question.Question = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_question.Question:
@@ -549,7 +551,7 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
         *,
         name: str = None,
         interpretation_index: int = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> question.Question:
@@ -632,7 +634,7 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
         request: Union[question_service.GetUserFeedbackRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> user_feedback.UserFeedback:
@@ -703,7 +705,7 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
         *,
         user_feedback: gcd_user_feedback.UserFeedback = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_user_feedback.UserFeedback:
