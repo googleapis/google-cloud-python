@@ -1634,6 +1634,7 @@ class Cluster(proto.Message):
             Default NodePool settings for the entire
             cluster. These settings are overridden if
             specified on the specific NodePool object.
+            This field is a member of `oneof`_ ``_node_pool_defaults``.
         logging_config (google.cloud.container_v1beta1.types.LoggingConfig):
             Logging configuration for the cluster.
         monitoring_config (google.cloud.container_v1beta1.types.MonitoringConfig):
@@ -2156,17 +2157,27 @@ class OperationProgress(proto.Message):
     class Metric(proto.Message):
         r"""Progress metric is (string, int|float|string) pair.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             name (str):
                 Required. Metric name, e.g., "nodes total",
                 "percent done".
             int_value (int):
                 For metrics with integer value.
+                This field is a member of `oneof`_ ``value``.
             double_value (float):
                 For metrics with floating point value.
+                This field is a member of `oneof`_ ``value``.
             string_value (str):
                 For metrics with custom values (ratios,
                 visual progress, etc.).
+                This field is a member of `oneof`_ ``value``.
         """
 
         name = proto.Field(proto.STRING, number=1,)
@@ -3342,16 +3353,25 @@ class MaintenanceWindow(proto.Message):
     r"""MaintenanceWindow defines the maintenance window to be used
     for the cluster.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         daily_maintenance_window (google.cloud.container_v1beta1.types.DailyMaintenanceWindow):
             DailyMaintenanceWindow specifies a daily
             maintenance operation window.
+            This field is a member of `oneof`_ ``policy``.
         recurring_window (google.cloud.container_v1beta1.types.RecurringTimeWindow):
             RecurringWindow specifies some number of
             recurring time periods for maintenance to occur.
             The time windows may be overlapping. If no
             maintenance windows are set, maintenance can
             occur at any time.
+            This field is a member of `oneof`_ ``policy``.
         maintenance_exclusions (Sequence[google.cloud.container_v1beta1.types.MaintenanceWindow.MaintenanceExclusionsEntry]):
             Exceptions to maintenance window. Non-
             mergency maintenance should not occur in these
