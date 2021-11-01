@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.bigquery_migration_v2alpha.services.migration_service import pagers
 from google.cloud.bigquery_migration_v2alpha.types import migration_entities
@@ -176,18 +178,18 @@ class MigrationServiceAsyncClient:
 
     async def create_migration_workflow(
         self,
-        request: migration_service.CreateMigrationWorkflowRequest = None,
+        request: Union[migration_service.CreateMigrationWorkflowRequest, dict] = None,
         *,
         parent: str = None,
         migration_workflow: migration_entities.MigrationWorkflow = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> migration_entities.MigrationWorkflow:
         r"""Creates a migration workflow.
 
         Args:
-            request (:class:`google.cloud.bigquery_migration_v2alpha.types.CreateMigrationWorkflowRequest`):
+            request (Union[google.cloud.bigquery_migration_v2alpha.types.CreateMigrationWorkflowRequest, dict]):
                 The request object. Request to create a migration
                 workflow resource.
             parent (:class:`str`):
@@ -259,17 +261,17 @@ class MigrationServiceAsyncClient:
 
     async def get_migration_workflow(
         self,
-        request: migration_service.GetMigrationWorkflowRequest = None,
+        request: Union[migration_service.GetMigrationWorkflowRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> migration_entities.MigrationWorkflow:
         r"""Gets a previously created migration workflow.
 
         Args:
-            request (:class:`google.cloud.bigquery_migration_v2alpha.types.GetMigrationWorkflowRequest`):
+            request (Union[google.cloud.bigquery_migration_v2alpha.types.GetMigrationWorkflowRequest, dict]):
                 The request object. A request to get a previously
                 created migration workflow.
             name (:class:`str`):
@@ -341,17 +343,17 @@ class MigrationServiceAsyncClient:
 
     async def list_migration_workflows(
         self,
-        request: migration_service.ListMigrationWorkflowsRequest = None,
+        request: Union[migration_service.ListMigrationWorkflowsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMigrationWorkflowsAsyncPager:
         r"""Lists previously created migration workflow.
 
         Args:
-            request (:class:`google.cloud.bigquery_migration_v2alpha.types.ListMigrationWorkflowsRequest`):
+            request (Union[google.cloud.bigquery_migration_v2alpha.types.ListMigrationWorkflowsRequest, dict]):
                 The request object. A request to list previously created
                 migration workflows.
             parent (:class:`str`):
@@ -430,17 +432,17 @@ class MigrationServiceAsyncClient:
 
     async def delete_migration_workflow(
         self,
-        request: migration_service.DeleteMigrationWorkflowRequest = None,
+        request: Union[migration_service.DeleteMigrationWorkflowRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a migration workflow by name.
 
         Args:
-            request (:class:`google.cloud.bigquery_migration_v2alpha.types.DeleteMigrationWorkflowRequest`):
+            request (Union[google.cloud.bigquery_migration_v2alpha.types.DeleteMigrationWorkflowRequest, dict]):
                 The request object. A request to delete a previously
                 created migration workflow.
             name (:class:`str`):
@@ -495,10 +497,10 @@ class MigrationServiceAsyncClient:
 
     async def start_migration_workflow(
         self,
-        request: migration_service.StartMigrationWorkflowRequest = None,
+        request: Union[migration_service.StartMigrationWorkflowRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -509,7 +511,7 @@ class MigrationServiceAsyncClient:
         RUNNING.
 
         Args:
-            request (:class:`google.cloud.bigquery_migration_v2alpha.types.StartMigrationWorkflowRequest`):
+            request (Union[google.cloud.bigquery_migration_v2alpha.types.StartMigrationWorkflowRequest, dict]):
                 The request object. A request to start a previously
                 created migration workflow.
             name (:class:`str`):
@@ -573,17 +575,17 @@ class MigrationServiceAsyncClient:
 
     async def get_migration_subtask(
         self,
-        request: migration_service.GetMigrationSubtaskRequest = None,
+        request: Union[migration_service.GetMigrationSubtaskRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> migration_entities.MigrationSubtask:
         r"""Gets a previously created migration subtask.
 
         Args:
-            request (:class:`google.cloud.bigquery_migration_v2alpha.types.GetMigrationSubtaskRequest`):
+            request (Union[google.cloud.bigquery_migration_v2alpha.types.GetMigrationSubtaskRequest, dict]):
                 The request object. A request to get a previously
                 created migration subtasks.
             name (:class:`str`):
@@ -658,17 +660,17 @@ class MigrationServiceAsyncClient:
 
     async def list_migration_subtasks(
         self,
-        request: migration_service.ListMigrationSubtasksRequest = None,
+        request: Union[migration_service.ListMigrationSubtasksRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMigrationSubtasksAsyncPager:
         r"""Lists previously created migration subtasks.
 
         Args:
-            request (:class:`google.cloud.bigquery_migration_v2alpha.types.ListMigrationSubtasksRequest`):
+            request (Union[google.cloud.bigquery_migration_v2alpha.types.ListMigrationSubtasksRequest, dict]):
                 The request object. A request to list previously created
                 migration subtasks.
             parent (:class:`str`):
