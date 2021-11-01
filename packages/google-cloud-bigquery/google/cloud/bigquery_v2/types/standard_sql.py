@@ -35,6 +35,13 @@ class StandardSqlDataType(proto.Message):
     type={type_kind="STRING"}}, {name="y", type={type_kind="ARRAY",
     array_element_type="DATE"}} ]}}
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         type_kind (google.cloud.bigquery_v2.types.StandardSqlDataType.TypeKind):
             Required. The top level type of this field.
@@ -42,9 +49,11 @@ class StandardSqlDataType(proto.Message):
             "INT64", "DATE", "ARRAY").
         array_element_type (google.cloud.bigquery_v2.types.StandardSqlDataType):
             The type of the array's elements, if type_kind = "ARRAY".
+            This field is a member of `oneof`_ ``sub_type``.
         struct_type (google.cloud.bigquery_v2.types.StandardSqlStructType):
             The fields of this struct, in order, if type_kind =
             "STRUCT".
+            This field is a member of `oneof`_ ``sub_type``.
     """
 
     class TypeKind(proto.Enum):
