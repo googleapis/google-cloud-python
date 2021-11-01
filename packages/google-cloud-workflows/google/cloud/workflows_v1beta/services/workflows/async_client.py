@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -165,10 +167,10 @@ class WorkflowsAsyncClient:
 
     async def list_workflows(
         self,
-        request: workflows.ListWorkflowsRequest = None,
+        request: Union[workflows.ListWorkflowsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkflowsAsyncPager:
@@ -176,7 +178,7 @@ class WorkflowsAsyncClient:
         The default order is not specified.
 
         Args:
-            request (:class:`google.cloud.workflows_v1beta.types.ListWorkflowsRequest`):
+            request (Union[google.cloud.workflows_v1beta.types.ListWorkflowsRequest, dict]):
                 The request object. Request for the
                 [ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows]
                 method.
@@ -250,17 +252,17 @@ class WorkflowsAsyncClient:
 
     async def get_workflow(
         self,
-        request: workflows.GetWorkflowRequest = None,
+        request: Union[workflows.GetWorkflowRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> workflows.Workflow:
         r"""Gets details of a single Workflow.
 
         Args:
-            request (:class:`google.cloud.workflows_v1beta.types.GetWorkflowRequest`):
+            request (Union[google.cloud.workflows_v1beta.types.GetWorkflowRequest, dict]):
                 The request object. Request for the
                 [GetWorkflow][google.cloud.workflows.v1beta.Workflows.GetWorkflow]
                 method.
@@ -323,12 +325,12 @@ class WorkflowsAsyncClient:
 
     async def create_workflow(
         self,
-        request: workflows.CreateWorkflowRequest = None,
+        request: Union[workflows.CreateWorkflowRequest, dict] = None,
         *,
         parent: str = None,
         workflow: workflows.Workflow = None,
         workflow_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -338,7 +340,7 @@ class WorkflowsAsyncClient:
         [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS] error.
 
         Args:
-            request (:class:`google.cloud.workflows_v1beta.types.CreateWorkflowRequest`):
+            request (Union[google.cloud.workflows_v1beta.types.CreateWorkflowRequest, dict]):
                 The request object. Request for the
                 [CreateWorkflow][google.cloud.workflows.v1beta.Workflows.CreateWorkflow]
                 method.
@@ -437,10 +439,10 @@ class WorkflowsAsyncClient:
 
     async def delete_workflow(
         self,
-        request: workflows.DeleteWorkflowRequest = None,
+        request: Union[workflows.DeleteWorkflowRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -449,7 +451,7 @@ class WorkflowsAsyncClient:
         executions of the workflow.
 
         Args:
-            request (:class:`google.cloud.workflows_v1beta.types.DeleteWorkflowRequest`):
+            request (Union[google.cloud.workflows_v1beta.types.DeleteWorkflowRequest, dict]):
                 The request object. Request for the
                 [DeleteWorkflow][google.cloud.workflows.v1beta.Workflows.DeleteWorkflow]
                 method.
@@ -533,11 +535,11 @@ class WorkflowsAsyncClient:
 
     async def update_workflow(
         self,
-        request: workflows.UpdateWorkflowRequest = None,
+        request: Union[workflows.UpdateWorkflowRequest, dict] = None,
         *,
         workflow: workflows.Workflow = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -549,7 +551,7 @@ class WorkflowsAsyncClient:
         used in new workflow executions.
 
         Args:
-            request (:class:`google.cloud.workflows_v1beta.types.UpdateWorkflowRequest`):
+            request (Union[google.cloud.workflows_v1beta.types.UpdateWorkflowRequest, dict]):
                 The request object. Request for the
                 [UpdateWorkflow][google.cloud.workflows.v1beta.Workflows.UpdateWorkflow]
                 method.

@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.workflows.executions_v1beta.services.executions import pagers
 from google.cloud.workflows.executions_v1beta.types import executions
@@ -163,10 +165,10 @@ class ExecutionsAsyncClient:
 
     async def list_executions(
         self,
-        request: executions.ListExecutionsRequest = None,
+        request: Union[executions.ListExecutionsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListExecutionsAsyncPager:
@@ -177,7 +179,7 @@ class ExecutionsAsyncClient:
         first).
 
         Args:
-            request (:class:`google.cloud.workflows.executions_v1beta.types.ListExecutionsRequest`):
+            request (Union[google.cloud.workflows.executions_v1beta.types.ListExecutionsRequest, dict]):
                 The request object. Request for the
                 [ListExecutions][google.cloud.workflows.executions.v1beta.Executions.ListExecutions]
                 method.
@@ -251,11 +253,11 @@ class ExecutionsAsyncClient:
 
     async def create_execution(
         self,
-        request: executions.CreateExecutionRequest = None,
+        request: Union[executions.CreateExecutionRequest, dict] = None,
         *,
         parent: str = None,
         execution: executions.Execution = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> executions.Execution:
@@ -263,7 +265,7 @@ class ExecutionsAsyncClient:
         the given workflow.
 
         Args:
-            request (:class:`google.cloud.workflows.executions_v1beta.types.CreateExecutionRequest`):
+            request (Union[google.cloud.workflows.executions_v1beta.types.CreateExecutionRequest, dict]):
                 The request object. Request for the
                 [CreateExecution][google.cloud.workflows.executions.v1beta.Executions.CreateExecution]
                 method.
@@ -336,17 +338,17 @@ class ExecutionsAsyncClient:
 
     async def get_execution(
         self,
-        request: executions.GetExecutionRequest = None,
+        request: Union[executions.GetExecutionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> executions.Execution:
         r"""Returns an execution of the given name.
 
         Args:
-            request (:class:`google.cloud.workflows.executions_v1beta.types.GetExecutionRequest`):
+            request (Union[google.cloud.workflows.executions_v1beta.types.GetExecutionRequest, dict]):
                 The request object. Request for the
                 [GetExecution][google.cloud.workflows.executions.v1beta.Executions.GetExecution]
                 method.
@@ -409,17 +411,17 @@ class ExecutionsAsyncClient:
 
     async def cancel_execution(
         self,
-        request: executions.CancelExecutionRequest = None,
+        request: Union[executions.CancelExecutionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> executions.Execution:
         r"""Cancels an execution of the given name.
 
         Args:
-            request (:class:`google.cloud.workflows.executions_v1beta.types.CancelExecutionRequest`):
+            request (Union[google.cloud.workflows.executions_v1beta.types.CancelExecutionRequest, dict]):
                 The request object. Request for the
                 [CancelExecution][google.cloud.workflows.executions.v1beta.Executions.CancelExecution]
                 method.

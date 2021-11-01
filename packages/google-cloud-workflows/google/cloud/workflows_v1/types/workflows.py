@@ -37,6 +37,8 @@ __protobuf__ = proto.module(
 class Workflow(proto.Message):
     r"""Workflow program to be executed by Workflows.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The resource name of the workflow.
@@ -97,6 +99,7 @@ class Workflow(proto.Message):
         source_contents (str):
             Workflow code to be executed. The size limit
             is 128KB.
+            This field is a member of `oneof`_ ``source_code``.
     """
 
     class State(proto.Enum):

@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.workflows.executions_v1.services.executions import pagers
 from google.cloud.workflows.executions_v1.types import executions
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -371,7 +373,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         request: Union[executions.ListExecutionsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListExecutionsPager:
@@ -460,7 +462,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         *,
         parent: str = None,
         execution: executions.Execution = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> executions.Execution:
@@ -544,7 +546,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         request: Union[executions.GetExecutionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> executions.Execution:
@@ -617,7 +619,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         request: Union[executions.CancelExecutionRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> executions.Execution:
