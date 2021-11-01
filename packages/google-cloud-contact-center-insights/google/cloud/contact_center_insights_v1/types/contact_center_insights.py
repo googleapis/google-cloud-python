@@ -425,9 +425,12 @@ class DeleteAnalysisRequest(proto.Message):
 class ExportInsightsDataRequest(proto.Message):
     r"""The request to export insights.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         big_query_destination (google.cloud.contact_center_insights_v1.types.ExportInsightsDataRequest.BigQueryDestination):
             Specified if sink is a BigQuery table.
+            This field is a member of `oneof`_ ``destination``.
         parent (str):
             Required. The parent resource to export data
             from.

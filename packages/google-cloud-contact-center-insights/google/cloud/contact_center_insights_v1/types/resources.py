@@ -67,17 +67,27 @@ __protobuf__ = proto.module(
 class Conversation(proto.Message):
     r"""The conversation resource.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         call_metadata (google.cloud.contact_center_insights_v1.types.Conversation.CallMetadata):
             Call-specific metadata.
+            This field is a member of `oneof`_ ``metadata``.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which this conversation should
             expire. After this time, the conversation data
             and any associated analyses will be deleted.
+            This field is a member of `oneof`_ ``expiration``.
         ttl (google.protobuf.duration_pb2.Duration):
             Input only. The TTL for this resource. If
             specified, then this TTL will be used to
             calculate the expire time.
+            This field is a member of `oneof`_ ``expiration``.
         name (str):
             Immutable. The resource name of the
             conversation. Format:
@@ -327,13 +337,22 @@ class ConversationDataSource(proto.Message):
     r"""The conversation source, which is a combination of transcript
     and audio.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_source (google.cloud.contact_center_insights_v1.types.GcsSource):
             A Cloud Storage location specification for
             the audio and transcript.
+            This field is a member of `oneof`_ ``source``.
         dialogflow_source (google.cloud.contact_center_insights_v1.types.DialogflowSource):
             The source when the conversation comes from
             Dialogflow.
+            This field is a member of `oneof`_ ``source``.
     """
 
     gcs_source = proto.Field(
@@ -381,10 +400,13 @@ class DialogflowSource(proto.Message):
 class AnalysisResult(proto.Message):
     r"""The result of an analysis.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         call_analysis_metadata (google.cloud.contact_center_insights_v1.types.AnalysisResult.CallAnalysisMetadata):
             Call-specific metadata created by the
             analysis.
+            This field is a member of `oneof`_ ``metadata``.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the analysis ended.
     """
@@ -487,21 +509,35 @@ class IssueAssignment(proto.Message):
 class CallAnnotation(proto.Message):
     r"""A piece of metadata that applies to a window of a call.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         interruption_data (google.cloud.contact_center_insights_v1.types.InterruptionData):
             Data specifying an interruption.
+            This field is a member of `oneof`_ ``data``.
         sentiment_data (google.cloud.contact_center_insights_v1.types.SentimentData):
             Data specifying sentiment.
+            This field is a member of `oneof`_ ``data``.
         silence_data (google.cloud.contact_center_insights_v1.types.SilenceData):
             Data specifying silence.
+            This field is a member of `oneof`_ ``data``.
         hold_data (google.cloud.contact_center_insights_v1.types.HoldData):
             Data specifying a hold.
+            This field is a member of `oneof`_ ``data``.
         entity_mention_data (google.cloud.contact_center_insights_v1.types.EntityMentionData):
             Data specifying an entity mention.
+            This field is a member of `oneof`_ ``data``.
         intent_match_data (google.cloud.contact_center_insights_v1.types.IntentMatchData):
             Data specifying an intent match.
+            This field is a member of `oneof`_ ``data``.
         phrase_match_data (google.cloud.contact_center_insights_v1.types.PhraseMatchData):
             Data specifying a phrase match.
+            This field is a member of `oneof`_ ``data``.
         channel_tag (int):
             The channel of the audio where the annotation
             occurs. For single-channel audio, this field is
@@ -546,11 +582,15 @@ class AnnotationBoundary(proto.Message):
     r"""A point in a conversation that marks the start or the end of
     an annotation.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         word_index (int):
             The word index of this boundary with respect
             to the first word in the transcript piece. This
             index starts at zero.
+            This field is a member of `oneof`_ ``detailed_boundary``.
         transcript_index (int):
             The index in the sequence of transcribed
             pieces of the conversation where the boundary is
@@ -989,9 +1029,12 @@ class PhraseMatchRule(proto.Message):
 class PhraseMatchRuleConfig(proto.Message):
     r"""Configuration information of a phrase match rule.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         exact_match_config (google.cloud.contact_center_insights_v1.types.ExactMatchConfig):
             The configuration for the exact match rule.
+            This field is a member of `oneof`_ ``config``.
     """
 
     exact_match_config = proto.Field(
@@ -1089,17 +1132,29 @@ class RuntimeAnnotation(proto.Message):
     r"""An annotation that was generated during the customer and
     agent interaction.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         article_suggestion (google.cloud.contact_center_insights_v1.types.ArticleSuggestionData):
             Agent Assist Article Suggestion data.
+            This field is a member of `oneof`_ ``data``.
         faq_answer (google.cloud.contact_center_insights_v1.types.FaqAnswerData):
             Agent Assist FAQ answer data.
+            This field is a member of `oneof`_ ``data``.
         smart_reply (google.cloud.contact_center_insights_v1.types.SmartReplyData):
             Agent Assist Smart Reply data.
+            This field is a member of `oneof`_ ``data``.
         smart_compose_suggestion (google.cloud.contact_center_insights_v1.types.SmartComposeSuggestionData):
             Agent Assist Smart Compose suggestion data.
+            This field is a member of `oneof`_ ``data``.
         dialogflow_interaction (google.cloud.contact_center_insights_v1.types.DialogflowInteractionData):
             Dialogflow interaction data.
+            This field is a member of `oneof`_ ``data``.
         annotation_id (str):
             The unique identifier of the annotation. Format:
             projects/{project}/locations/{location}/conversationDatasets/{dataset}/conversationDataItems/{data_item}/conversationAnnotations/{annotation}
@@ -1306,14 +1361,23 @@ class DialogflowInteractionData(proto.Message):
 class ConversationParticipant(proto.Message):
     r"""The call participant speaking for a given utterance.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         dialogflow_participant_name (str):
             The name of the participant provided by
             Dialogflow. Format:
             projects/{project}/locations/{location}/conversations/{conversation}/participants/{participant}
+            This field is a member of `oneof`_ ``participant``.
         user_id (str):
             A user-specified ID representing the
             participant.
+            This field is a member of `oneof`_ ``participant``.
         dialogflow_participant (str):
             Deprecated. Use ``dialogflow_participant_name`` instead. The
             name of the Dialogflow participant. Format:
