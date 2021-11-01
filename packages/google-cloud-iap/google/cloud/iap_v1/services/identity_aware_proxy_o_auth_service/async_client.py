@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.iap_v1.services.identity_aware_proxy_o_auth_service import pagers
 from google.cloud.iap_v1.types import service
@@ -174,16 +176,16 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
     async def list_brands(
         self,
-        request: service.ListBrandsRequest = None,
+        request: Union[service.ListBrandsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.ListBrandsResponse:
         r"""Lists the existing brands for the project.
 
         Args:
-            request (:class:`google.cloud.iap_v1.types.ListBrandsRequest`):
+            request (Union[google.cloud.iap_v1.types.ListBrandsRequest, dict]):
                 The request object. The request sent to ListBrands.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -220,9 +222,9 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
     async def create_brand(
         self,
-        request: service.CreateBrandRequest = None,
+        request: Union[service.CreateBrandRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Brand:
@@ -238,7 +240,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         by the caller.
 
         Args:
-            request (:class:`google.cloud.iap_v1.types.CreateBrandRequest`):
+            request (Union[google.cloud.iap_v1.types.CreateBrandRequest, dict]):
                 The request object. The request sent to CreateBrand.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -278,16 +280,16 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
     async def get_brand(
         self,
-        request: service.GetBrandRequest = None,
+        request: Union[service.GetBrandRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Brand:
         r"""Retrieves the OAuth brand of the project.
 
         Args:
-            request (:class:`google.cloud.iap_v1.types.GetBrandRequest`):
+            request (Union[google.cloud.iap_v1.types.GetBrandRequest, dict]):
                 The request object. The request sent to GetBrand.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -327,9 +329,9 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
     async def create_identity_aware_proxy_client(
         self,
-        request: service.CreateIdentityAwareProxyClientRequest = None,
+        request: Union[service.CreateIdentityAwareProxyClientRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.IdentityAwareProxyClient:
@@ -339,7 +341,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         use.
 
         Args:
-            request (:class:`google.cloud.iap_v1.types.CreateIdentityAwareProxyClientRequest`):
+            request (Union[google.cloud.iap_v1.types.CreateIdentityAwareProxyClientRequest, dict]):
                 The request object. The request sent to
                 CreateIdentityAwareProxyClient.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -379,16 +381,16 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
     async def list_identity_aware_proxy_clients(
         self,
-        request: service.ListIdentityAwareProxyClientsRequest = None,
+        request: Union[service.ListIdentityAwareProxyClientsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListIdentityAwareProxyClientsAsyncPager:
         r"""Lists the existing clients for the brand.
 
         Args:
-            request (:class:`google.cloud.iap_v1.types.ListIdentityAwareProxyClientsRequest`):
+            request (Union[google.cloud.iap_v1.types.ListIdentityAwareProxyClientsRequest, dict]):
                 The request object. The request sent to
                 ListIdentityAwareProxyClients.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -437,9 +439,9 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
     async def get_identity_aware_proxy_client(
         self,
-        request: service.GetIdentityAwareProxyClientRequest = None,
+        request: Union[service.GetIdentityAwareProxyClientRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.IdentityAwareProxyClient:
@@ -447,7 +449,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         Requires that the client is owned by IAP.
 
         Args:
-            request (:class:`google.cloud.iap_v1.types.GetIdentityAwareProxyClientRequest`):
+            request (Union[google.cloud.iap_v1.types.GetIdentityAwareProxyClientRequest, dict]):
                 The request object. The request sent to
                 GetIdentityAwareProxyClient.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -487,9 +489,9 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
     async def reset_identity_aware_proxy_client_secret(
         self,
-        request: service.ResetIdentityAwareProxyClientSecretRequest = None,
+        request: Union[service.ResetIdentityAwareProxyClientSecretRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.IdentityAwareProxyClient:
@@ -498,7 +500,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         that the client is owned by IAP.
 
         Args:
-            request (:class:`google.cloud.iap_v1.types.ResetIdentityAwareProxyClientSecretRequest`):
+            request (Union[google.cloud.iap_v1.types.ResetIdentityAwareProxyClientSecretRequest, dict]):
                 The request object. The request sent to
                 ResetIdentityAwareProxyClientSecret.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -538,9 +540,9 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
     async def delete_identity_aware_proxy_client(
         self,
-        request: service.DeleteIdentityAwareProxyClientRequest = None,
+        request: Union[service.DeleteIdentityAwareProxyClientRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -550,7 +552,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         after tests. Requires that the client is owned by IAP.
 
         Args:
-            request (:class:`google.cloud.iap_v1.types.DeleteIdentityAwareProxyClientRequest`):
+            request (Union[google.cloud.iap_v1.types.DeleteIdentityAwareProxyClientRequest, dict]):
                 The request object. The request sent to
                 DeleteIdentityAwareProxyClient.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
