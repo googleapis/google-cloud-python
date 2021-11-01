@@ -301,6 +301,13 @@ class RestartMigrationJobRequest(proto.Message):
 class GenerateSshScriptRequest(proto.Message):
     r"""Request message for 'GenerateSshScript' request.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         migration_job (str):
             Name of the migration job resource to
@@ -310,8 +317,10 @@ class GenerateSshScriptRequest(proto.Message):
             to create.
         vm_creation_config (google.cloud.clouddms_v1.types.VmCreationConfig):
             The VM creation configuration
+            This field is a member of `oneof`_ ``vm_config``.
         vm_selection_config (google.cloud.clouddms_v1.types.VmSelectionConfig):
             The VM selection configuration
+            This field is a member of `oneof`_ ``vm_config``.
         vm_port (int):
             The port that will be open on the bastion
             host
