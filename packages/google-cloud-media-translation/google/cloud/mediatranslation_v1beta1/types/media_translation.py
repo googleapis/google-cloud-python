@@ -149,12 +149,20 @@ class StreamingTranslateSpeechRequest(proto.Message):
     ``audio_content`` data and must not contain a ``streaming_config``
     message.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         streaming_config (google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechConfig):
             Provides information to the recognizer that specifies how to
             process the request. The first
             ``StreamingTranslateSpeechRequest`` message must contain a
             ``streaming_config`` message.
+            This field is a member of `oneof`_ ``streaming_request``.
         audio_content (bytes):
             The audio data to be translated. Sequential chunks of audio
             data are sent in sequential
@@ -166,6 +174,7 @@ class StreamingTranslateSpeechRequest(proto.Message):
             specified in ``StreamingTranslateSpeechConfig``. Note: as
             with all bytes fields, protobuffers use a pure binary
             representation (not base64).
+            This field is a member of `oneof`_ ``streaming_request``.
     """
 
     streaming_config = proto.Field(
@@ -181,9 +190,13 @@ class StreamingTranslateSpeechResult(proto.Message):
     r"""A streaming speech translation result corresponding to a
     portion of the audio that is currently being processed.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         text_translation_result (google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResult.TextTranslationResult):
             Text translation result.
+            This field is a member of `oneof`_ ``result``.
     """
 
     class TextTranslationResult(proto.Message):

@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.mediatranslation_v1beta1.types import media_translation
 from google.rpc import status_pb2  # type: ignore
 from .transports.base import SpeechTranslationServiceTransport, DEFAULT_CLIENT_INFO
@@ -337,7 +339,7 @@ class SpeechTranslationServiceClient(metaclass=SpeechTranslationServiceClientMet
         self,
         requests: Iterator[media_translation.StreamingTranslateSpeechRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[media_translation.StreamingTranslateSpeechResponse]:
