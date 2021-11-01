@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.logging_v2.services.logging_service_v2 import pagers
 from google.cloud.logging_v2.types import log_entry
@@ -349,7 +351,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         request: Union[logging.DeleteLogRequest, dict] = None,
         *,
         log_name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -431,7 +433,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         resource: monitored_resource_pb2.MonitoredResource = None,
         labels: Sequence[logging.WriteLogEntriesRequest.LabelsEntry] = None,
         entries: Sequence[log_entry.LogEntry] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging.WriteLogEntriesResponse:
@@ -588,7 +590,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         resource_names: Sequence[str] = None,
         filter: str = None,
         order_by: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListLogEntriesPager:
@@ -709,7 +711,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         self,
         request: Union[logging.ListMonitoredResourceDescriptorsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMonitoredResourceDescriptorsPager:
@@ -766,7 +768,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         request: Union[logging.ListLogsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListLogsPager:
@@ -851,7 +853,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         self,
         requests: Iterator[logging.TailLogEntriesRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[logging.TailLogEntriesResponse]:
