@@ -264,11 +264,20 @@ class ImportCustomerRequest(proto.Message):
     r"""Request message for
     [CloudChannelService.ImportCustomer][google.cloud.channel.v1.CloudChannelService.ImportCustomer]
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         domain (str):
             Required. Customer domain.
+            This field is a member of `oneof`_ ``customer_identity``.
         cloud_identity_id (str):
             Required. Customer's Cloud Identity ID
+            This field is a member of `oneof`_ ``customer_identity``.
         parent (str):
             Required. The resource name of the reseller's account.
             Parent takes the format: accounts/{account_id} or
@@ -388,14 +397,23 @@ class ListTransferableSkusRequest(proto.Message):
     r"""Request message for
     [CloudChannelService.ListTransferableSkus][google.cloud.channel.v1.CloudChannelService.ListTransferableSkus]
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         cloud_identity_id (str):
             Customer's Cloud Identity ID
+            This field is a member of `oneof`_ ``transferred_customer_identity``.
         customer_name (str):
             A reseller is required to create a customer and use the
             resource name of the created customer here. Customer_name
             uses the format:
             accounts/{account_id}/customers/{customer_id}
+            This field is a member of `oneof`_ ``transferred_customer_identity``.
         parent (str):
             Required. The reseller account's resource name. Parent uses
             the format: accounts/{account_id}
@@ -469,12 +487,21 @@ class ListTransferableOffersRequest(proto.Message):
     r"""Request message for
     [CloudChannelService.ListTransferableOffers][google.cloud.channel.v1.CloudChannelService.ListTransferableOffers]
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         cloud_identity_id (str):
             Customer's Cloud Identity ID
+            This field is a member of `oneof`_ ``transferred_customer_identity``.
         customer_name (str):
             A reseller should create a customer and use
             the resource name of that customer here.
+            This field is a member of `oneof`_ ``transferred_customer_identity``.
         parent (str):
             Required. The resource name of the reseller's
             account.
@@ -1234,12 +1261,21 @@ class ListOffersResponse(proto.Message):
 class ListPurchasableSkusRequest(proto.Message):
     r"""Request message for ListPurchasableSkus.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         create_entitlement_purchase (google.cloud.channel_v1.types.ListPurchasableSkusRequest.CreateEntitlementPurchase):
             List SKUs for CreateEntitlement purchase.
+            This field is a member of `oneof`_ ``purchase_option``.
         change_offer_purchase (google.cloud.channel_v1.types.ListPurchasableSkusRequest.ChangeOfferPurchase):
             List SKUs for ChangeOffer purchase with a new
             SKU.
+            This field is a member of `oneof`_ ``purchase_option``.
         customer (str):
             Required. The resource name of the customer to list SKUs
             for. Format: accounts/{account_id}/customers/{customer_id}.
@@ -1348,11 +1384,20 @@ class PurchasableSku(proto.Message):
 class ListPurchasableOffersRequest(proto.Message):
     r"""Request message for ListPurchasableOffers.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         create_entitlement_purchase (google.cloud.channel_v1.types.ListPurchasableOffersRequest.CreateEntitlementPurchase):
             List Offers for CreateEntitlement purchase.
+            This field is a member of `oneof`_ ``purchase_option``.
         change_offer_purchase (google.cloud.channel_v1.types.ListPurchasableOffersRequest.ChangeOfferPurchase):
             List Offers for ChangeOffer purchase.
+            This field is a member of `oneof`_ ``purchase_option``.
         customer (str):
             Required. The resource name of the customer to list Offers
             for. Format: accounts/{account_id}/customers/{customer_id}.

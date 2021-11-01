@@ -81,13 +81,22 @@ class SubscriberEvent(proto.Message):
     r"""Represents information which resellers will get as part of
     notification from Cloud Pub/Sub.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         customer_event (google.cloud.channel_v1.types.CustomerEvent):
             Customer event send as part of Pub/Sub event
             to partners.
+            This field is a member of `oneof`_ ``event``.
         entitlement_event (google.cloud.channel_v1.types.EntitlementEvent):
             Entitlement event send as part of Pub/Sub
             event to partners.
+            This field is a member of `oneof`_ ``event``.
     """
 
     customer_event = proto.Field(

@@ -108,17 +108,29 @@ class CloudIdentityInfo(proto.Message):
 class Value(proto.Message):
     r"""Data type and value of a parameter.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         int64_value (int):
             Represents an int64 value.
+            This field is a member of `oneof`_ ``kind``.
         string_value (str):
             Represents a string value.
+            This field is a member of `oneof`_ ``kind``.
         double_value (float):
             Represents a double value.
+            This field is a member of `oneof`_ ``kind``.
         proto_value (google.protobuf.any_pb2.Any):
             Represents an 'Any' proto value.
+            This field is a member of `oneof`_ ``kind``.
         bool_value (bool):
             Represents a boolean value.
+            This field is a member of `oneof`_ ``kind``.
     """
 
     int64_value = proto.Field(proto.INT64, number=1, oneof="kind",)
