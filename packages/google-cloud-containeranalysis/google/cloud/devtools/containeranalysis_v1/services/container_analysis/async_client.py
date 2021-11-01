@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.devtools.containeranalysis_v1.types import containeranalysis
 from google.iam.v1 import iam_policy_pb2  # type: ignore
@@ -190,10 +192,10 @@ class ContainerAnalysisAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -208,7 +210,7 @@ class ContainerAnalysisAsyncClient:
         occurrences.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.SetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -324,10 +326,10 @@ class ContainerAnalysisAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -342,7 +344,7 @@ class ContainerAnalysisAsyncClient:
         occurrences.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.GetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -458,11 +460,11 @@ class ContainerAnalysisAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
@@ -476,7 +478,7 @@ class ContainerAnalysisAsyncClient:
         occurrences.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):
@@ -548,11 +550,13 @@ class ContainerAnalysisAsyncClient:
 
     async def get_vulnerability_occurrences_summary(
         self,
-        request: containeranalysis.GetVulnerabilityOccurrencesSummaryRequest = None,
+        request: Union[
+            containeranalysis.GetVulnerabilityOccurrencesSummaryRequest, dict
+        ] = None,
         *,
         parent: str = None,
         filter: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> containeranalysis.VulnerabilityOccurrencesSummary:
@@ -560,7 +564,7 @@ class ContainerAnalysisAsyncClient:
         occurrences.
 
         Args:
-            request (:class:`google.cloud.devtools.containeranalysis_v1.types.GetVulnerabilityOccurrencesSummaryRequest`):
+            request (Union[google.cloud.devtools.containeranalysis_v1.types.GetVulnerabilityOccurrencesSummaryRequest, dict]):
                 The request object. Request to get a vulnerability
                 summary for some set of occurrences.
             parent (:class:`str`):

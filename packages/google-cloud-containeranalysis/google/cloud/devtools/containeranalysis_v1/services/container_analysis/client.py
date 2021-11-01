@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.devtools.containeranalysis_v1.types import containeranalysis
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -367,7 +369,7 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
         request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -500,7 +502,7 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
         request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -634,7 +636,7 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
@@ -725,7 +727,7 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
         *,
         parent: str = None,
         filter: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> containeranalysis.VulnerabilityOccurrencesSummary:

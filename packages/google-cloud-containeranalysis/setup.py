@@ -28,10 +28,9 @@ dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
     # Until this issue is closed
     # https://github.com/googleapis/google-cloud-python/issues/10566
-    "google-api-core[grpc] >= 1.26.0, <3.0.0dev",
+    "google-api-core[grpc] >= 1.28.0, <3.0.0dev",
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
     "proto-plus >= 1.4.0",
-    "packaging >= 14.3",
     "grafeas >=1.0.0, <2.0dev",
 ]
 extras = {"libcst": "libcst >= 0.2.5"}
