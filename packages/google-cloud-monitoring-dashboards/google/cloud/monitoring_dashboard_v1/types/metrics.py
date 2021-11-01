@@ -43,14 +43,24 @@ class TimeSeriesQuery(proto.Message):
     r"""TimeSeriesQuery collects the set of supported methods for
     querying time series data from the Stackdriver metrics API.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         time_series_filter (google.cloud.monitoring_dashboard_v1.types.TimeSeriesFilter):
             Filter parameters to fetch time series.
+            This field is a member of `oneof`_ ``source``.
         time_series_filter_ratio (google.cloud.monitoring_dashboard_v1.types.TimeSeriesFilterRatio):
             Parameters to fetch a ratio between two time
             series filters.
+            This field is a member of `oneof`_ ``source``.
         time_series_query_language (str):
             A query used to fetch time series.
+            This field is a member of `oneof`_ ``source``.
         unit_override (str):
             The unit of data contained in fetched time series. If
             non-empty, this unit will override any unit that accompanies
@@ -75,6 +85,13 @@ class TimeSeriesFilter(proto.Message):
     ```ListTimeSeries`` <https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>`__
     method.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         filter (str):
             Required. The `monitoring
@@ -89,10 +106,12 @@ class TimeSeriesFilter(proto.Message):
             Apply a second aggregation after ``aggregation`` is applied.
         pick_time_series_filter (google.cloud.monitoring_dashboard_v1.types.PickTimeSeriesFilter):
             Ranking based time series filter.
+            This field is a member of `oneof`_ ``output_filter``.
         statistical_time_series_filter (google.cloud.monitoring_dashboard_v1.types.StatisticalTimeSeriesFilter):
             Statistics based time series filter.
             Note: This field is deprecated and completely
             ignored by the API.
+            This field is a member of `oneof`_ ``output_filter``.
     """
 
     filter = proto.Field(proto.STRING, number=1,)
@@ -120,6 +139,13 @@ class TimeSeriesFilterRatio(proto.Message):
     each aligned element from the numerator and denominator time
     series.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         numerator (google.cloud.monitoring_dashboard_v1.types.TimeSeriesFilterRatio.RatioPart):
             The numerator of the ratio.
@@ -130,10 +156,12 @@ class TimeSeriesFilterRatio(proto.Message):
             computed.
         pick_time_series_filter (google.cloud.monitoring_dashboard_v1.types.PickTimeSeriesFilter):
             Ranking based time series filter.
+            This field is a member of `oneof`_ ``output_filter``.
         statistical_time_series_filter (google.cloud.monitoring_dashboard_v1.types.StatisticalTimeSeriesFilter):
             Statistics based time series filter.
             Note: This field is deprecated and completely
             ignored by the API.
+            This field is a member of `oneof`_ ``output_filter``.
     """
 
     class RatioPart(proto.Message):

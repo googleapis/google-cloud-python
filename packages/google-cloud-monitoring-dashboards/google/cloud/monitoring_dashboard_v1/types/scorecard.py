@@ -28,6 +28,13 @@ class Scorecard(proto.Message):
     r"""A widget showing the latest value of a metric, and how this
     value relates to one or more thresholds.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         time_series_query (google.cloud.monitoring_dashboard_v1.types.TimeSeriesQuery):
             Required. Fields for querying time series
@@ -35,9 +42,11 @@ class Scorecard(proto.Message):
         gauge_view (google.cloud.monitoring_dashboard_v1.types.Scorecard.GaugeView):
             Will cause the scorecard to show a gauge
             chart.
+            This field is a member of `oneof`_ ``data_view``.
         spark_chart_view (google.cloud.monitoring_dashboard_v1.types.Scorecard.SparkChartView):
             Will cause the scorecard to show a spark
             chart.
+            This field is a member of `oneof`_ ``data_view``.
         thresholds (Sequence[google.cloud.monitoring_dashboard_v1.types.Threshold]):
             The thresholds used to determine the state of
             the scorecard given the time series' current

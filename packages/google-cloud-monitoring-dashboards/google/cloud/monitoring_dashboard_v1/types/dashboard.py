@@ -27,6 +27,13 @@ class Dashboard(proto.Message):
     r"""A Google Stackdriver dashboard. Dashboards define the content
     and layout of pages in the Stackdriver web application.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Immutable. The resource name of the
@@ -46,16 +53,20 @@ class Dashboard(proto.Message):
             Content is arranged with a basic layout that
             re-flows a simple list of informational elements
             like widgets or tiles.
+            This field is a member of `oneof`_ ``layout``.
         mosaic_layout (google.cloud.monitoring_dashboard_v1.types.MosaicLayout):
             The content is arranged as a grid of tiles,
             with each content widget occupying one or more
             grid blocks.
+            This field is a member of `oneof`_ ``layout``.
         row_layout (google.cloud.monitoring_dashboard_v1.types.RowLayout):
             The content is divided into equally spaced
             rows and the widgets are arranged horizontally.
+            This field is a member of `oneof`_ ``layout``.
         column_layout (google.cloud.monitoring_dashboard_v1.types.ColumnLayout):
             The content is divided into equally spaced
             columns and the widgets are arranged vertically.
+            This field is a member of `oneof`_ ``layout``.
     """
 
     name = proto.Field(proto.STRING, number=1,)
