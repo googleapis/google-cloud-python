@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.speech_v1p1beta1.services.adaptation import pagers
 from google.cloud.speech_v1p1beta1.types import cloud_speech_adaptation
@@ -161,12 +163,12 @@ class AdaptationAsyncClient:
 
     async def create_phrase_set(
         self,
-        request: cloud_speech_adaptation.CreatePhraseSetRequest = None,
+        request: Union[cloud_speech_adaptation.CreatePhraseSetRequest, dict] = None,
         *,
         parent: str = None,
         phrase_set: resource.PhraseSet = None,
         phrase_set_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.PhraseSet:
@@ -176,7 +178,7 @@ class AdaptationAsyncClient:
         when you send a call that includes the PhraseSet.
 
         Args:
-            request (:class:`google.cloud.speech_v1p1beta1.types.CreatePhraseSetRequest`):
+            request (Union[google.cloud.speech_v1p1beta1.types.CreatePhraseSetRequest, dict]):
                 The request object. Message sent by the client for the
                 `CreatePhraseSet` method.
             parent (:class:`str`):
@@ -259,17 +261,17 @@ class AdaptationAsyncClient:
 
     async def get_phrase_set(
         self,
-        request: cloud_speech_adaptation.GetPhraseSetRequest = None,
+        request: Union[cloud_speech_adaptation.GetPhraseSetRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.PhraseSet:
         r"""Get a phrase set.
 
         Args:
-            request (:class:`google.cloud.speech_v1p1beta1.types.GetPhraseSetRequest`):
+            request (Union[google.cloud.speech_v1p1beta1.types.GetPhraseSetRequest, dict]):
                 The request object. Message sent by the client for the
                 `GetPhraseSet` method.
             name (:class:`str`):
@@ -332,17 +334,17 @@ class AdaptationAsyncClient:
 
     async def list_phrase_set(
         self,
-        request: cloud_speech_adaptation.ListPhraseSetRequest = None,
+        request: Union[cloud_speech_adaptation.ListPhraseSetRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPhraseSetAsyncPager:
         r"""List phrase sets.
 
         Args:
-            request (:class:`google.cloud.speech_v1p1beta1.types.ListPhraseSetRequest`):
+            request (Union[google.cloud.speech_v1p1beta1.types.ListPhraseSetRequest, dict]):
                 The request object. Message sent by the client for the
                 `ListPhraseSet` method.
             parent (:class:`str`):
@@ -413,18 +415,18 @@ class AdaptationAsyncClient:
 
     async def update_phrase_set(
         self,
-        request: cloud_speech_adaptation.UpdatePhraseSetRequest = None,
+        request: Union[cloud_speech_adaptation.UpdatePhraseSetRequest, dict] = None,
         *,
         phrase_set: resource.PhraseSet = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.PhraseSet:
         r"""Update a phrase set.
 
         Args:
-            request (:class:`google.cloud.speech_v1p1beta1.types.UpdatePhraseSetRequest`):
+            request (Union[google.cloud.speech_v1p1beta1.types.UpdatePhraseSetRequest, dict]):
                 The request object. Message sent by the client for the
                 `UpdatePhraseSet` method.
             phrase_set (:class:`google.cloud.speech_v1p1beta1.types.PhraseSet`):
@@ -498,17 +500,17 @@ class AdaptationAsyncClient:
 
     async def delete_phrase_set(
         self,
-        request: cloud_speech_adaptation.DeletePhraseSetRequest = None,
+        request: Union[cloud_speech_adaptation.DeletePhraseSetRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Delete a phrase set.
 
         Args:
-            request (:class:`google.cloud.speech_v1p1beta1.types.DeletePhraseSetRequest`):
+            request (Union[google.cloud.speech_v1p1beta1.types.DeletePhraseSetRequest, dict]):
                 The request object. Message sent by the client for the
                 `DeletePhraseSet` method.
             name (:class:`str`):
@@ -562,19 +564,19 @@ class AdaptationAsyncClient:
 
     async def create_custom_class(
         self,
-        request: cloud_speech_adaptation.CreateCustomClassRequest = None,
+        request: Union[cloud_speech_adaptation.CreateCustomClassRequest, dict] = None,
         *,
         parent: str = None,
         custom_class: resource.CustomClass = None,
         custom_class_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.CustomClass:
         r"""Create a custom class.
 
         Args:
-            request (:class:`google.cloud.speech_v1p1beta1.types.CreateCustomClassRequest`):
+            request (Union[google.cloud.speech_v1p1beta1.types.CreateCustomClassRequest, dict]):
                 The request object. Message sent by the client for the
                 `CreateCustomClass` method.
             parent (:class:`str`):
@@ -661,17 +663,17 @@ class AdaptationAsyncClient:
 
     async def get_custom_class(
         self,
-        request: cloud_speech_adaptation.GetCustomClassRequest = None,
+        request: Union[cloud_speech_adaptation.GetCustomClassRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.CustomClass:
         r"""Get a custom class.
 
         Args:
-            request (:class:`google.cloud.speech_v1p1beta1.types.GetCustomClassRequest`):
+            request (Union[google.cloud.speech_v1p1beta1.types.GetCustomClassRequest, dict]):
                 The request object. Message sent by the client for the
                 `GetCustomClass` method.
             name (:class:`str`):
@@ -738,17 +740,17 @@ class AdaptationAsyncClient:
 
     async def list_custom_classes(
         self,
-        request: cloud_speech_adaptation.ListCustomClassesRequest = None,
+        request: Union[cloud_speech_adaptation.ListCustomClassesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCustomClassesAsyncPager:
         r"""List custom classes.
 
         Args:
-            request (:class:`google.cloud.speech_v1p1beta1.types.ListCustomClassesRequest`):
+            request (Union[google.cloud.speech_v1p1beta1.types.ListCustomClassesRequest, dict]):
                 The request object. Message sent by the client for the
                 `ListCustomClasses` method.
             parent (:class:`str`):
@@ -819,18 +821,18 @@ class AdaptationAsyncClient:
 
     async def update_custom_class(
         self,
-        request: cloud_speech_adaptation.UpdateCustomClassRequest = None,
+        request: Union[cloud_speech_adaptation.UpdateCustomClassRequest, dict] = None,
         *,
         custom_class: resource.CustomClass = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.CustomClass:
         r"""Update a custom class.
 
         Args:
-            request (:class:`google.cloud.speech_v1p1beta1.types.UpdateCustomClassRequest`):
+            request (Union[google.cloud.speech_v1p1beta1.types.UpdateCustomClassRequest, dict]):
                 The request object. Message sent by the client for the
                 `UpdateCustomClass` method.
             custom_class (:class:`google.cloud.speech_v1p1beta1.types.CustomClass`):
@@ -908,17 +910,17 @@ class AdaptationAsyncClient:
 
     async def delete_custom_class(
         self,
-        request: cloud_speech_adaptation.DeleteCustomClassRequest = None,
+        request: Union[cloud_speech_adaptation.DeleteCustomClassRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Delete a custom class.
 
         Args:
-            request (:class:`google.cloud.speech_v1p1beta1.types.DeleteCustomClassRequest`):
+            request (Union[google.cloud.speech_v1p1beta1.types.DeleteCustomClassRequest, dict]):
                 The request object. Message sent by the client for the
                 `DeleteCustomClass` method.
             name (:class:`str`):

@@ -89,12 +89,16 @@ class TranscriptOutputConfig(proto.Message):
     r"""Specifies an optional destination for the recognition
     results.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_uri (str):
             Specifies a Cloud Storage URI for the recognition results.
             Must be specified in the format:
             ``gs://bucket_name/object_name``, and the bucket must
             already exist.
+            This field is a member of `oneof`_ ``output_type``.
     """
 
     gcs_uri = proto.Field(proto.STRING, number=1, oneof="output_type",)
@@ -109,11 +113,19 @@ class StreamingRecognizeRequest(proto.Message):
     ``audio_content`` and must not contain a ``streaming_config``
     message.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         streaming_config (google.cloud.speech_v1.types.StreamingRecognitionConfig):
             Provides information to the recognizer that specifies how to
             process the request. The first ``StreamingRecognizeRequest``
             message must contain a ``streaming_config`` message.
+            This field is a member of `oneof`_ ``streaming_request``.
         audio_content (bytes):
             The audio data to be recognized. Sequential chunks of audio
             data are sent in sequential ``StreamingRecognizeRequest``
@@ -125,6 +137,7 @@ class StreamingRecognizeRequest(proto.Message):
             fields, proto buffers use a pure binary representation (not
             base64). See `content
             limits <https://cloud.google.com/speech-to-text/quotas#content>`__.
+            This field is a member of `oneof`_ ``streaming_request``.
     """
 
     streaming_config = proto.Field(
@@ -531,12 +544,20 @@ class RecognitionAudio(proto.Message):
     See `content
     limits <https://cloud.google.com/speech-to-text/quotas#content>`__.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         content (bytes):
             The audio data bytes encoded as specified in
             ``RecognitionConfig``. Note: as with all bytes fields, proto
             buffers use a pure binary representation, whereas JSON
             representations use base64.
+            This field is a member of `oneof`_ ``audio_source``.
         uri (str):
             URI that points to a file that contains audio data bytes as
             specified in ``RecognitionConfig``. The file must not be
@@ -547,6 +568,7 @@ class RecognitionAudio(proto.Message):
             [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]).
             For more information, see `Request
             URIs <https://cloud.google.com/storage/docs/reference-uris>`__.
+            This field is a member of `oneof`_ ``audio_source``.
     """
 
     content = proto.Field(proto.BYTES, number=1, oneof="audio_source",)
