@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -172,9 +174,9 @@ class StorageTransferServiceAsyncClient:
 
     async def get_google_service_account(
         self,
-        request: transfer.GetGoogleServiceAccountRequest = None,
+        request: Union[transfer.GetGoogleServiceAccountRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.GoogleServiceAccount:
@@ -190,7 +192,7 @@ class StorageTransferServiceAsyncClient:
         Service.
 
         Args:
-            request (:class:`google.cloud.storage_transfer_v1.types.GetGoogleServiceAccountRequest`):
+            request (Union[google.cloud.storage_transfer_v1.types.GetGoogleServiceAccountRequest, dict]):
                 The request object. Request passed to
                 GetGoogleServiceAccount.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -222,16 +224,16 @@ class StorageTransferServiceAsyncClient:
 
     async def create_transfer_job(
         self,
-        request: transfer.CreateTransferJobRequest = None,
+        request: Union[transfer.CreateTransferJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.TransferJob:
         r"""Creates a transfer job that runs periodically.
 
         Args:
-            request (:class:`google.cloud.storage_transfer_v1.types.CreateTransferJobRequest`):
+            request (Union[google.cloud.storage_transfer_v1.types.CreateTransferJobRequest, dict]):
                 The request object. Request passed to CreateTransferJob.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -265,9 +267,9 @@ class StorageTransferServiceAsyncClient:
 
     async def update_transfer_job(
         self,
-        request: transfer.UpdateTransferJobRequest = None,
+        request: Union[transfer.UpdateTransferJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.TransferJob:
@@ -284,7 +286,7 @@ class StorageTransferServiceAsyncClient:
         [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED]).
 
         Args:
-            request (:class:`google.cloud.storage_transfer_v1.types.UpdateTransferJobRequest`):
+            request (Union[google.cloud.storage_transfer_v1.types.UpdateTransferJobRequest, dict]):
                 The request object. Request passed to UpdateTransferJob.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -324,16 +326,16 @@ class StorageTransferServiceAsyncClient:
 
     async def get_transfer_job(
         self,
-        request: transfer.GetTransferJobRequest = None,
+        request: Union[transfer.GetTransferJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.TransferJob:
         r"""Gets a transfer job.
 
         Args:
-            request (:class:`google.cloud.storage_transfer_v1.types.GetTransferJobRequest`):
+            request (Union[google.cloud.storage_transfer_v1.types.GetTransferJobRequest, dict]):
                 The request object. Request passed to GetTransferJob.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -373,16 +375,16 @@ class StorageTransferServiceAsyncClient:
 
     async def list_transfer_jobs(
         self,
-        request: transfer.ListTransferJobsRequest = None,
+        request: Union[transfer.ListTransferJobsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferJobsAsyncPager:
         r"""Lists transfer jobs.
 
         Args:
-            request (:class:`google.cloud.storage_transfer_v1.types.ListTransferJobsRequest`):
+            request (Union[google.cloud.storage_transfer_v1.types.ListTransferJobsRequest, dict]):
                 The request object. `projectId`, `jobNames`, and
                 `jobStatuses` are query parameters that can be specified
                 when listing transfer jobs.
@@ -425,16 +427,16 @@ class StorageTransferServiceAsyncClient:
 
     async def pause_transfer_operation(
         self,
-        request: transfer.PauseTransferOperationRequest = None,
+        request: Union[transfer.PauseTransferOperationRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Pauses a transfer operation.
 
         Args:
-            request (:class:`google.cloud.storage_transfer_v1.types.PauseTransferOperationRequest`):
+            request (Union[google.cloud.storage_transfer_v1.types.PauseTransferOperationRequest, dict]):
                 The request object. Request passed to
                 PauseTransferOperation.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -467,16 +469,16 @@ class StorageTransferServiceAsyncClient:
 
     async def resume_transfer_operation(
         self,
-        request: transfer.ResumeTransferOperationRequest = None,
+        request: Union[transfer.ResumeTransferOperationRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Resumes a transfer operation that is paused.
 
         Args:
-            request (:class:`google.cloud.storage_transfer_v1.types.ResumeTransferOperationRequest`):
+            request (Union[google.cloud.storage_transfer_v1.types.ResumeTransferOperationRequest, dict]):
                 The request object. Request passed to
                 ResumeTransferOperation.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -509,9 +511,9 @@ class StorageTransferServiceAsyncClient:
 
     async def run_transfer_job(
         self,
-        request: transfer.RunTransferJobRequest = None,
+        request: Union[transfer.RunTransferJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -521,7 +523,7 @@ class StorageTransferServiceAsyncClient:
         a TransferOperation is active, an error wil be returned.
 
         Args:
-            request (:class:`google.cloud.storage_transfer_v1.types.RunTransferJobRequest`):
+            request (Union[google.cloud.storage_transfer_v1.types.RunTransferJobRequest, dict]):
                 The request object. Request passed to RunTransferJob.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

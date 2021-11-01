@@ -448,17 +448,29 @@ class TransferOptions(proto.Message):
 class TransferSpec(proto.Message):
     r"""Configuration for running a transfer.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_data_sink (google.cloud.storage_transfer_v1.types.GcsData):
             A Cloud Storage data sink.
+            This field is a member of `oneof`_ ``data_sink``.
         gcs_data_source (google.cloud.storage_transfer_v1.types.GcsData):
             A Cloud Storage data source.
+            This field is a member of `oneof`_ ``data_source``.
         aws_s3_data_source (google.cloud.storage_transfer_v1.types.AwsS3Data):
             An AWS S3 data source.
+            This field is a member of `oneof`_ ``data_source``.
         http_data_source (google.cloud.storage_transfer_v1.types.HttpData):
             An HTTP URL data source.
+            This field is a member of `oneof`_ ``data_source``.
         azure_blob_storage_data_source (google.cloud.storage_transfer_v1.types.AzureBlobStorageData):
             An Azure Blob Storage data source.
+            This field is a member of `oneof`_ ``data_source``.
         object_conditions (google.cloud.storage_transfer_v1.types.ObjectConditions):
             Only objects that satisfy these object
             conditions are included in the set of data

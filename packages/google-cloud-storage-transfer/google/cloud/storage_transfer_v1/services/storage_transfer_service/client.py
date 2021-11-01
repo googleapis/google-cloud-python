@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.storage_transfer_v1.services.storage_transfer_service import pagers
@@ -345,7 +347,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         self,
         request: Union[transfer.GetGoogleServiceAccountRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.GoogleServiceAccount:
@@ -398,7 +400,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         self,
         request: Union[transfer.CreateTransferJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.TransferJob:
@@ -442,7 +444,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         self,
         request: Union[transfer.UpdateTransferJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.TransferJob:
@@ -502,7 +504,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         self,
         request: Union[transfer.GetTransferJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.TransferJob:
@@ -552,7 +554,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         self,
         request: Union[transfer.ListTransferJobsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferJobsPager:
@@ -605,7 +607,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         self,
         request: Union[transfer.PauseTransferOperationRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -648,7 +650,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         self,
         request: Union[transfer.ResumeTransferOperationRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -693,7 +695,7 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         self,
         request: Union[transfer.RunTransferJobRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
