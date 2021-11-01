@@ -1,5 +1,17 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-bigquery-logging/compare/v1.0.0...v1.0.1) (2021-11-01)
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([a5b1978](https://www.github.com/googleapis/python-bigquery-logging/commit/a5b19782e2ac30f5de150fb873d777fa121bd0ad))
+* **deps:** require google-api-core >= 1.28.0 ([a5b1978](https://www.github.com/googleapis/python-bigquery-logging/commit/a5b19782e2ac30f5de150fb873d777fa121bd0ad))
+
+
+### Documentation
+
+* list oneofs in docstring ([a5b1978](https://www.github.com/googleapis/python-bigquery-logging/commit/a5b19782e2ac30f5de150fb873d777fa121bd0ad))
+
 ## [1.0.0](https://www.github.com/googleapis/python-bigquery-logging/compare/v0.3.0...v1.0.0) (2021-10-12)
 
 
