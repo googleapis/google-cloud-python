@@ -16,14 +16,12 @@ import logging
 import unittest
 import inspect
 
-import google.cloud.logging
-
 from ..common.common import Common
 
+class TestComputeEngine(Common, unittest.TestCase):
 
-class TestKubernetesEngine(Common, unittest.TestCase):
-    environment = "kubernetes"
+    environment = "compute"
     language = "java"
 
-    monitored_resource_name = "k8s_container"
-    monitored_resource_labels = ["project_id", "location", "cluster_name", "pod_name", "namespace_name"]
+    monitored_resource_name = "gce_instance"
+    monitored_resource_labels = ["instance_id", "zone"]

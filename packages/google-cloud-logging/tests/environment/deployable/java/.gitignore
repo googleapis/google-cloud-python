@@ -1,5 +1,6 @@
 java-logging
 _library
+workspace
 lib.tar
 *.sw*
 

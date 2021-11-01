@@ -154,7 +154,7 @@ public class DeployableApplication {
         // ****************** GAE, GKE, GCE ******************
         // Enable app subscriber for all environments except GCR
         Boolean enableSubscriber = Boolean.parseBoolean(System.getenv().getOrDefault("ENABLE_SUBSCRIBER", "false"));
-        System.out.format("ENV: ENABLE_SUBSCRIBER=true\n");
+        System.out.format("ENV: ENABLE_SUBSCRIBER=%b\n", enableSubscriber);
         if (enableSubscriber) {
           // start a pub/sub server and listen for messages
           startPubsubSubscription();

@@ -124,6 +124,7 @@ def blacken(session: nox.sessions.Session) -> None:
         "appengine_standard",
         "appengine_flex_python",
         "appengine_flex_container",
+        "appengine_flex",
         "kubernetes",
         "cloudrun",
         "functions",
@@ -158,4 +159,5 @@ def tests(session, language, platform):
     if os.path.exists(test_path):
         session.run("py.test", "-s", test_path, *session.posargs)
     else:
-        session.skip(f"not yet implemented: {test_path}")
+        print(f"not implemented: {test_path}")
+        exit(1)

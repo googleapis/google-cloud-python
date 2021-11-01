@@ -13,14 +13,14 @@
 # limitations under the License.
 
 # compile local java-logging library
-FROM docker.io/maven AS lib-env
+FROM maven:3.8.1 AS lib-env
 WORKDIR /app
-COPY _library ./java-logging
+COPY _library ./
 RUN mvn verify --fail-never
 RUN mvn -Dmaven.test.skip=true package
 
 # Compile the deployable code.
-FROM docker.io/maven AS build-env
+FROM maven:3.8.1 AS build-env
 WORKDIR /app
 COPY pom.xml /app/pom.xml
 # copy over compiled library

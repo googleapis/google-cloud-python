@@ -14,6 +14,7 @@
 
 import google.cloud.logging
 from google.cloud._helpers import UTC
+from google.cloud.logging_v2 import ProtobufEntry
 from google.cloud.logging_v2.handlers.handlers import CloudLoggingHandler
 from google.cloud.logging_v2.handlers.transports import SyncTransport
 from google.cloud.logging_v2 import Client
@@ -51,29 +52,69 @@ class Common:
     monitored_resource_labels = None
 
     def _add_time_condition_to_filter(self, filter_str, timestamp=None):
+        """
+        Appends a 10 minute limit to an arbitrary filter string
+        """
         time_format = "%Y-%m-%dT%H:%M:%S.%f%z"
         if not timestamp:
             timestamp = datetime.now(timezone.utc) - timedelta(minutes=10)
         return f'"{filter_str}" AND timestamp > "{timestamp.strftime(time_format)}"'
 
-    def _get_logs(self, filter_str=None):
+    def _get_logs(self, filter_str=None, ignore_protos=True):
+        """
+        Helper function to retrieve the text and json logs using an input
+        filter string.
+
+        Parameters:
+            filter_str (str): the filter string determining which logs to include
+            ignore_protos (bool): when disabled, matching protobuf entries will be included.
+                This may result false positives from AuditLogs on certain projects
+
+        Returns:
+            list[LogEntry]
+        """
         if not filter_str:
             _, filter_str, _ = self._script.run_command(Command.GetFilter)
         iterator = self._client.list_entries(filter_=filter_str)
         entries = list(iterator)
+        if ignore_protos:
+            # in most cases, we want to ignore AuditLogs in our tests
+            entries = [e for e in entries if not isinstance(e, ProtobufEntry)]
         if not entries:
             raise LogsNotFound
         return entries
 
     def _trigger(self, snippet, **kwargs):
+        """
+        Helper function for triggering a snippet deployed in a cloud environment
+        """
         timestamp = datetime.now(timezone.utc)
         args_str = ",".join([f'{k}="{v}"' for k, v in kwargs.items()])
         self._script.run_command(Command.Trigger, [snippet, args_str])
 
     @RetryErrors(exception=(LogsNotFound, RpcError), delay=2, max_tries=2)
     def trigger_and_retrieve(
-        self, log_text, snippet, append_uuid=True, max_tries=6, **kwargs
+        self, log_text, snippet, append_uuid=True, ignore_protos=True, max_tries=6, **kwargs
     ):
+        """
+        Trigger a snippet deployed in the cloud by envctl, and return resulting
+        logs.
+
+        Parameters:
+            log_text (str): passed as an argument to the snippet function.
+                Typically used for the body of the resulting log,
+            snippet (str): the name of the snippet to trigger.
+            append_uuid (bool): when true, appends a unique suffix to log_text,
+                to ensure old logs aren't picket up in later runs
+            ignore_protos: when disabled, matching protobuf entries will be included.
+                This may result false positives from AuditLogs on certain projects
+            max_tries (int): number of times to retry if logs haven't been found
+            **kwargs: additional arguments are passed as arguments to the snippet function
+
+        Returns:
+            list[LogEntry]
+        """
+
         if append_uuid:
             log_text = f"{log_text} {uuid.uuid1()}"
         self._trigger(snippet, log_text=log_text, **kwargs)
@@ -85,9 +126,10 @@ class Common:
         while tries < max_tries:
             # retrieve resulting logs
             try:
-                log_list = self._get_logs(filter_str)
+                log_list = self._get_logs(filter_str, ignore_protos)
                 return log_list
             except (LogsNotFound, RpcError) as e:
+                print("logs not found...")
                 sleep(5)
                 tries += 1
         # log not found
@@ -158,9 +200,11 @@ class Common:
         self.assertIsNotNone(found_log, "expected unicode log not found")
 
     def test_monitored_resource(self):
-        if self.language not in ["nodejs", "go"]:
-            # TODO: other languages to also support this test
+        if self.language == 'java' or self.language == 'python':
+            # TODO: implement in java
+            # TODO: remove python after v3.0.0
             return True
+
         log_text = f"{inspect.currentframe().f_code.co_name}"
         log_list = self.trigger_and_retrieve(log_text, "simplelog")
         found_resource = log_list[-1].resource
@@ -173,25 +217,7 @@ class Common:
             self.assertTrue(found_resource.labels[label],
                 f'resource.labels[{label}] is not set')
 
-    def test_request_log(self):
-        if self.language not in ["nodejs"]:
-            return True
-        log_text = f"{inspect.currentframe().f_code.co_name}"
-        log_list = self.trigger_and_retrieve(log_text, "requestlog")
-        # Note: 2 logs are spawned, only one containing http_request prop.
-        log_entry = log_list[-1]
-        if log_entry.http_request is None:
-          log_entry = log_list[-2]
-        found_request = log_entry.http_request
-        if hasattr(self, 'request_props'):
-            for prop in self.request_props:
-                self.assertTrue(found_request[prop],
-                f'{prop} is not set')
-
     def test_severity(self):
-        if self.language != "python":
-            # to do: enable test for other languages
-            return True
         log_text = f"{inspect.currentframe().f_code.co_name}"
         severities = [
             "EMERGENCY",

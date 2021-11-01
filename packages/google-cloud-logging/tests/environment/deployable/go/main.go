@@ -22,6 +22,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"cloud.google.com/go/compute/metadata"
@@ -207,7 +208,33 @@ func simplelog(args map[string]string) {
 		logtext = val
 	}
 
-	logger := client.Logger(logname).StandardLogger(logging.Info)
+	logseverity := logging.Info
+	if val, ok := args["severity"]; ok {
+		switch strings.ToUpper(val) {
+		case "DEFAULT":
+			logseverity = logging.Default
+		case "DEBUG":
+			logseverity = logging.Debug
+		case "INFO":
+			logseverity = logging.Info
+		case "NOTICE":
+			logseverity = logging.Notice
+		case "WARNING":
+			logseverity = logging.Warning
+		case "ERROR":
+			logseverity = logging.Error
+		case "CRITICAL":
+			logseverity = logging.Critical
+		case "ALERT":
+			logseverity = logging.Alert
+		case "EMERGENCY":
+			logseverity = logging.Emergency
+		default:
+			break
+		}
+	}
+
+	logger := client.Logger(logname).StandardLogger(logseverity)
 	logger.Println(logtext)
 }
 

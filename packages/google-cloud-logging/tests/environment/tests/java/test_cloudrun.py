@@ -15,15 +15,21 @@
 import logging
 import unittest
 import inspect
-
-import google.cloud.logging
+import uuid
 
 from ..common.common import Common
 
+class TestCloudRun(Common, unittest.TestCase):
 
-class TestKubernetesEngine(Common, unittest.TestCase):
-    environment = "kubernetes"
+    environment = "cloudrun"
     language = "java"
 
-    monitored_resource_name = "k8s_container"
-    monitored_resource_labels = ["project_id", "location", "cluster_name", "pod_name", "namespace_name"]
+    monitored_resource_name = "cloud_run_revision"
+    monitored_resource_labels = [
+        "project_id",
+        "service_name",
+        "revision_name",
+        "location",
+        "configuration_name",
+    ]
+

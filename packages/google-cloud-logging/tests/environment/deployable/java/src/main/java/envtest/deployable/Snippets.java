@@ -22,9 +22,35 @@ import com.google.cloud.logging.Logging;
 import com.google.cloud.logging.LoggingOptions;
 import com.google.cloud.logging.Payload.StringPayload;
 import com.google.cloud.logging.Severity;
+import com.google.cloud.logging.MonitoredResourceUtil;
 import com.google.logging.type.LogSeverity;
+import com.google.cloud.logging.Synchronicity;
 
 public class Snippets {
+
+    private Severity getSeverity(String severityString){
+        Severity severity;
+        if (severityString.equals("DEBUG")){
+            severity = Severity.DEBUG;
+        } else if(severityString.equals("INFO")){
+            severity = Severity.INFO;
+        } else if (severityString.equals("NOTICE")){
+            severity = Severity.NOTICE;
+        } else if(severityString.equals("WARNING")){
+            severity = Severity.WARNING;
+        } else if(severityString.equals("ERROR")){
+            severity = Severity.ERROR;
+        } else if(severityString.equals("CRITICAL")){
+            severity = Severity.CRITICAL;
+        } else if(severityString.equals("ALERT")){
+            severity = Severity.ALERT;
+        } else if(severityString.equals("EMERGENCY")){
+            severity = Severity.EMERGENCY;
+        } else {
+            severity = Severity.DEFAULT;
+        }
+        return severity;
+    }
 
     public void simplelog(Map<String,String> args){
         System.out.println("Called Simplelog!");
@@ -33,11 +59,14 @@ public class Snippets {
         String logName = args.getOrDefault("log_name", "test");
         String severityString = args.getOrDefault("severity", "DEFAULT");
 
+        // Set severity
+        Severity severity = getSeverity(severityString);
+
         // Instantiates a client
         Logging logging = LoggingOptions.getDefaultInstance().getService();
         LogEntry entry =
             LogEntry.newBuilder(StringPayload.of(logText))
-                .setSeverity(Severity.ERROR)
+                .setSeverity(severity)
                 .setLogName(logName)
                 .setResource(MonitoredResource.newBuilder("global").build())
                 .build();
