@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.asset_v1p1beta1.services.asset_service import pagers
 from google.cloud.asset_v1p1beta1.types import asset_service
@@ -158,12 +160,12 @@ class AssetServiceAsyncClient:
 
     async def search_all_resources(
         self,
-        request: asset_service.SearchAllResourcesRequest = None,
+        request: Union[asset_service.SearchAllResourcesRequest, dict] = None,
         *,
         scope: str = None,
         query: str = None,
         asset_types: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllResourcesAsyncPager:
@@ -176,7 +178,7 @@ class AssetServiceAsyncClient:
         requested scope, otherwise it will be rejected.
 
         Args:
-            request (:class:`google.cloud.asset_v1p1beta1.types.SearchAllResourcesRequest`):
+            request (Union[google.cloud.asset_v1p1beta1.types.SearchAllResourcesRequest, dict]):
                 The request object. Search all resources request.
             scope (:class:`str`):
                 Required. The relative name of an asset. The search is
@@ -278,11 +280,11 @@ class AssetServiceAsyncClient:
 
     async def search_all_iam_policies(
         self,
-        request: asset_service.SearchAllIamPoliciesRequest = None,
+        request: Union[asset_service.SearchAllIamPoliciesRequest, dict] = None,
         *,
         scope: str = None,
         query: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllIamPoliciesAsyncPager:
@@ -296,7 +298,7 @@ class AssetServiceAsyncClient:
         requested scope, otherwise it will be rejected.
 
         Args:
-            request (:class:`google.cloud.asset_v1p1beta1.types.SearchAllIamPoliciesRequest`):
+            request (Union[google.cloud.asset_v1p1beta1.types.SearchAllIamPoliciesRequest, dict]):
                 The request object. Search all IAM policies request.
             scope (:class:`str`):
                 Required. The relative name of an asset. The search is

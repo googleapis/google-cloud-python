@@ -5,12 +5,10 @@
 #
 # e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
 # Then this file should have foo==1.14.0
-google-api-core==1.26.0
+google-api-core==1.28.0
 grpc-google-iam-v1==0.12.3
 google-cloud-access-context-manager==0.1.2
 google-cloud-org-policy==0.1.2
 google-cloud-os-config==1.0.0
 proto-plus==1.10.0
 libcst==0.2.5
-packaging==14.3
-google-auth==1.24.0  # TODO: remove when google-auth>=1.25.0 is required transitively through google-api-core

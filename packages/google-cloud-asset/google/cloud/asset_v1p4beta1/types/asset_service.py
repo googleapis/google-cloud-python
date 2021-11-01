@@ -287,9 +287,13 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
     r"""Output configuration for export IAM policy analysis
     destination.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_destination (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisOutputConfig.GcsDestination):
             Destination on Cloud Storage.
+            This field is a member of `oneof`_ ``destination``.
     """
 
     class GcsDestination(proto.Message):

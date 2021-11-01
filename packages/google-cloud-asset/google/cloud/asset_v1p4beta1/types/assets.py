@@ -93,11 +93,20 @@ class IamPolicyAnalysisResult(proto.Message):
     class Access(proto.Message):
         r"""A role or permission that appears in an access control list.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             role (str):
                 The role.
+                This field is a member of `oneof`_ ``oneof_access``.
             permission (str):
                 The permission.
+                This field is a member of `oneof`_ ``oneof_access``.
             analysis_state (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisResult.AnalysisState):
                 The analysis state of this access node.
         """

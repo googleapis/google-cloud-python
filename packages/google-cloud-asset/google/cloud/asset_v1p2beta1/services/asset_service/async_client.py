@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.asset_v1p2beta1.types import asset_service
 from .transports.base import AssetServiceTransport, DEFAULT_CLIENT_INFO
@@ -158,10 +160,10 @@ class AssetServiceAsyncClient:
 
     async def create_feed(
         self,
-        request: asset_service.CreateFeedRequest = None,
+        request: Union[asset_service.CreateFeedRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.Feed:
@@ -170,7 +172,7 @@ class AssetServiceAsyncClient:
         updates.
 
         Args:
-            request (:class:`google.cloud.asset_v1p2beta1.types.CreateFeedRequest`):
+            request (Union[google.cloud.asset_v1p2beta1.types.CreateFeedRequest, dict]):
                 The request object. Create asset feed request.
             parent (:class:`str`):
                 Required. The name of the
@@ -242,17 +244,17 @@ class AssetServiceAsyncClient:
 
     async def get_feed(
         self,
-        request: asset_service.GetFeedRequest = None,
+        request: Union[asset_service.GetFeedRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
 
         Args:
-            request (:class:`google.cloud.asset_v1p2beta1.types.GetFeedRequest`):
+            request (Union[google.cloud.asset_v1p2beta1.types.GetFeedRequest, dict]):
                 The request object. Get asset feed request.
             name (:class:`str`):
                 Required. The name of the Feed and it must be in the
@@ -329,10 +331,10 @@ class AssetServiceAsyncClient:
 
     async def list_feeds(
         self,
-        request: asset_service.ListFeedsRequest = None,
+        request: Union[asset_service.ListFeedsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.ListFeedsResponse:
@@ -340,7 +342,7 @@ class AssetServiceAsyncClient:
         project/folder/organization.
 
         Args:
-            request (:class:`google.cloud.asset_v1p2beta1.types.ListFeedsRequest`):
+            request (Union[google.cloud.asset_v1p2beta1.types.ListFeedsRequest, dict]):
                 The request object. List asset feeds request.
             parent (:class:`str`):
                 Required. The parent
@@ -412,17 +414,17 @@ class AssetServiceAsyncClient:
 
     async def update_feed(
         self,
-        request: asset_service.UpdateFeedRequest = None,
+        request: Union[asset_service.UpdateFeedRequest, dict] = None,
         *,
         feed: asset_service.Feed = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
 
         Args:
-            request (:class:`google.cloud.asset_v1p2beta1.types.UpdateFeedRequest`):
+            request (Union[google.cloud.asset_v1p2beta1.types.UpdateFeedRequest, dict]):
                 The request object. Update asset feed request.
             feed (:class:`google.cloud.asset_v1p2beta1.types.Feed`):
                 Required. The new values of feed details. It must match
@@ -492,17 +494,17 @@ class AssetServiceAsyncClient:
 
     async def delete_feed(
         self,
-        request: asset_service.DeleteFeedRequest = None,
+        request: Union[asset_service.DeleteFeedRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an asset feed.
 
         Args:
-            request (:class:`google.cloud.asset_v1p2beta1.types.DeleteFeedRequest`):
+            request (Union[google.cloud.asset_v1p2beta1.types.DeleteFeedRequest, dict]):
                 The request object.
             name (:class:`str`):
                 Required. The name of the feed and it must be in the

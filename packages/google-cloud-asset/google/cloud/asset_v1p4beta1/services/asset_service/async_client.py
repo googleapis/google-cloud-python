@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -159,9 +161,9 @@ class AssetServiceAsyncClient:
 
     async def analyze_iam_policy(
         self,
-        request: asset_service.AnalyzeIamPolicyRequest = None,
+        request: Union[asset_service.AnalyzeIamPolicyRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.AnalyzeIamPolicyResponse:
@@ -171,7 +173,7 @@ class AssetServiceAsyncClient:
         matching the request.
 
         Args:
-            request (:class:`google.cloud.asset_v1p4beta1.types.AnalyzeIamPolicyRequest`):
+            request (Union[google.cloud.asset_v1p4beta1.types.AnalyzeIamPolicyRequest, dict]):
                 The request object. A request message for
                 [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1p4beta1.AssetService.AnalyzeIamPolicy].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -222,9 +224,9 @@ class AssetServiceAsyncClient:
 
     async def export_iam_policy_analysis(
         self,
-        request: asset_service.ExportIamPolicyAnalysisRequest = None,
+        request: Union[asset_service.ExportIamPolicyAnalysisRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -235,7 +237,7 @@ class AssetServiceAsyncClient:
         the request to help callers to map responses to requests.
 
         Args:
-            request (:class:`google.cloud.asset_v1p4beta1.types.ExportIamPolicyAnalysisRequest`):
+            request (Union[google.cloud.asset_v1p4beta1.types.ExportIamPolicyAnalysisRequest, dict]):
                 The request object. A request message for
                 [AssetService.ExportIamPolicyAnalysis][google.cloud.asset.v1p4beta1.AssetService.ExportIamPolicyAnalysis].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

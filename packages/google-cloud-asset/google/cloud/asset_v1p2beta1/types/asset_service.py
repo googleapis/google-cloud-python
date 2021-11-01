@@ -154,9 +154,12 @@ class DeleteFeedRequest(proto.Message):
 class OutputConfig(proto.Message):
     r"""Output configuration for export assets destination.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_destination (google.cloud.asset_v1p2beta1.types.GcsDestination):
             Destination on Cloud Storage.
+            This field is a member of `oneof`_ ``destination``.
     """
 
     gcs_destination = proto.Field(
@@ -167,6 +170,8 @@ class OutputConfig(proto.Message):
 class GcsDestination(proto.Message):
     r"""A Cloud Storage location.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         uri (str):
             The uri of the Cloud Storage object. It's the same uri that
@@ -175,6 +180,7 @@ class GcsDestination(proto.Message):
             Object
             Metadata <https://cloud.google.com/storage/docs/viewing-editing-metadata>`__
             for more information.
+            This field is a member of `oneof`_ ``object_uri``.
     """
 
     uri = proto.Field(proto.STRING, number=1, oneof="object_uri",)
@@ -195,9 +201,12 @@ class PubsubDestination(proto.Message):
 class FeedOutputConfig(proto.Message):
     r"""Output configuration for asset feed destination.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         pubsub_destination (google.cloud.asset_v1p2beta1.types.PubsubDestination):
             Destination on Cloud Pubsub.
+            This field is a member of `oneof`_ ``destination``.
     """
 
     pubsub_destination = proto.Field(

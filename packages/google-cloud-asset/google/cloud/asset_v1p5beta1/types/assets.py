@@ -32,6 +32,13 @@ class Asset(proto.Message):
     r"""Cloud asset. This includes all Google Cloud Platform
     resources, Cloud IAM policies, and other non-GCP assets.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The full name of the asset. For example:
@@ -56,10 +63,13 @@ class Asset(proto.Message):
             different constraints.
         access_policy (google.identity.accesscontextmanager.v1.access_policy_pb2.AccessPolicy):
 
+            This field is a member of `oneof`_ ``access_context_policy``.
         access_level (google.identity.accesscontextmanager.v1.access_level_pb2.AccessLevel):
 
+            This field is a member of `oneof`_ ``access_context_policy``.
         service_perimeter (google.identity.accesscontextmanager.v1.service_perimeter_pb2.ServicePerimeter):
 
+            This field is a member of `oneof`_ ``access_context_policy``.
         ancestors (Sequence[str]):
             Asset's ancestry path in Cloud Resource Manager (CRM)
             hierarchy, represented as a list of relative resource names.

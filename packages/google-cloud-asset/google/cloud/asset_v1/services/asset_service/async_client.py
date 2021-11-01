@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -175,9 +177,9 @@ class AssetServiceAsyncClient:
 
     async def export_assets(
         self,
-        request: asset_service.ExportAssetsRequest = None,
+        request: Union[asset_service.ExportAssetsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -196,7 +198,7 @@ class AssetServiceAsyncClient:
         the export operation usually finishes within 5 minutes.
 
         Args:
-            request (:class:`google.cloud.asset_v1.types.ExportAssetsRequest`):
+            request (Union[google.cloud.asset_v1.types.ExportAssetsRequest, dict]):
                 The request object. Export asset request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -248,10 +250,10 @@ class AssetServiceAsyncClient:
 
     async def list_assets(
         self,
-        request: asset_service.ListAssetsRequest = None,
+        request: Union[asset_service.ListAssetsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAssetsAsyncPager:
@@ -259,7 +261,7 @@ class AssetServiceAsyncClient:
         paged results in response.
 
         Args:
-            request (:class:`google.cloud.asset_v1.types.ListAssetsRequest`):
+            request (Union[google.cloud.asset_v1.types.ListAssetsRequest, dict]):
                 The request object. ListAssets request.
             parent (:class:`str`):
                 Required. Name of the organization or project the assets
@@ -340,9 +342,9 @@ class AssetServiceAsyncClient:
 
     async def batch_get_assets_history(
         self,
-        request: asset_service.BatchGetAssetsHistoryRequest = None,
+        request: Union[asset_service.BatchGetAssetsHistoryRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.BatchGetAssetsHistoryResponse:
@@ -355,7 +357,7 @@ class AssetServiceAsyncClient:
         INVALID_ARGUMENT error.
 
         Args:
-            request (:class:`google.cloud.asset_v1.types.BatchGetAssetsHistoryRequest`):
+            request (Union[google.cloud.asset_v1.types.BatchGetAssetsHistoryRequest, dict]):
                 The request object. Batch get assets history request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -402,10 +404,10 @@ class AssetServiceAsyncClient:
 
     async def create_feed(
         self,
-        request: asset_service.CreateFeedRequest = None,
+        request: Union[asset_service.CreateFeedRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.Feed:
@@ -414,7 +416,7 @@ class AssetServiceAsyncClient:
         updates.
 
         Args:
-            request (:class:`google.cloud.asset_v1.types.CreateFeedRequest`):
+            request (Union[google.cloud.asset_v1.types.CreateFeedRequest, dict]):
                 The request object. Create asset feed request.
             parent (:class:`str`):
                 Required. The name of the
@@ -486,17 +488,17 @@ class AssetServiceAsyncClient:
 
     async def get_feed(
         self,
-        request: asset_service.GetFeedRequest = None,
+        request: Union[asset_service.GetFeedRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
 
         Args:
-            request (:class:`google.cloud.asset_v1.types.GetFeedRequest`):
+            request (Union[google.cloud.asset_v1.types.GetFeedRequest, dict]):
                 The request object. Get asset feed request.
             name (:class:`str`):
                 Required. The name of the Feed and it must be in the
@@ -573,10 +575,10 @@ class AssetServiceAsyncClient:
 
     async def list_feeds(
         self,
-        request: asset_service.ListFeedsRequest = None,
+        request: Union[asset_service.ListFeedsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.ListFeedsResponse:
@@ -584,7 +586,7 @@ class AssetServiceAsyncClient:
         project/folder/organization.
 
         Args:
-            request (:class:`google.cloud.asset_v1.types.ListFeedsRequest`):
+            request (Union[google.cloud.asset_v1.types.ListFeedsRequest, dict]):
                 The request object. List asset feeds request.
             parent (:class:`str`):
                 Required. The parent
@@ -656,17 +658,17 @@ class AssetServiceAsyncClient:
 
     async def update_feed(
         self,
-        request: asset_service.UpdateFeedRequest = None,
+        request: Union[asset_service.UpdateFeedRequest, dict] = None,
         *,
         feed: asset_service.Feed = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
 
         Args:
-            request (:class:`google.cloud.asset_v1.types.UpdateFeedRequest`):
+            request (Union[google.cloud.asset_v1.types.UpdateFeedRequest, dict]):
                 The request object. Update asset feed request.
             feed (:class:`google.cloud.asset_v1.types.Feed`):
                 Required. The new values of feed details. It must match
@@ -736,17 +738,17 @@ class AssetServiceAsyncClient:
 
     async def delete_feed(
         self,
-        request: asset_service.DeleteFeedRequest = None,
+        request: Union[asset_service.DeleteFeedRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an asset feed.
 
         Args:
-            request (:class:`google.cloud.asset_v1.types.DeleteFeedRequest`):
+            request (Union[google.cloud.asset_v1.types.DeleteFeedRequest, dict]):
                 The request object.
             name (:class:`str`):
                 Required. The name of the feed and it must be in the
@@ -811,12 +813,12 @@ class AssetServiceAsyncClient:
 
     async def search_all_resources(
         self,
-        request: asset_service.SearchAllResourcesRequest = None,
+        request: Union[asset_service.SearchAllResourcesRequest, dict] = None,
         *,
         scope: str = None,
         query: str = None,
         asset_types: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllResourcesAsyncPager:
@@ -826,7 +828,7 @@ class AssetServiceAsyncClient:
         desired scope, otherwise the request will be rejected.
 
         Args:
-            request (:class:`google.cloud.asset_v1.types.SearchAllResourcesRequest`):
+            request (Union[google.cloud.asset_v1.types.SearchAllResourcesRequest, dict]):
                 The request object. Search all resources request.
             scope (:class:`str`):
                 Required. A scope can be a project, a folder, or an
@@ -993,11 +995,11 @@ class AssetServiceAsyncClient:
 
     async def search_all_iam_policies(
         self,
-        request: asset_service.SearchAllIamPoliciesRequest = None,
+        request: Union[asset_service.SearchAllIamPoliciesRequest, dict] = None,
         *,
         scope: str = None,
         query: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAllIamPoliciesAsyncPager:
@@ -1007,7 +1009,7 @@ class AssetServiceAsyncClient:
         desired scope, otherwise the request will be rejected.
 
         Args:
-            request (:class:`google.cloud.asset_v1.types.SearchAllIamPoliciesRequest`):
+            request (Union[google.cloud.asset_v1.types.SearchAllIamPoliciesRequest, dict]):
                 The request object. Search all IAM policies request.
             scope (:class:`str`):
                 Required. A scope can be a project, a folder, or an
@@ -1154,9 +1156,9 @@ class AssetServiceAsyncClient:
 
     async def analyze_iam_policy(
         self,
-        request: asset_service.AnalyzeIamPolicyRequest = None,
+        request: Union[asset_service.AnalyzeIamPolicyRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.AnalyzeIamPolicyResponse:
@@ -1164,7 +1166,7 @@ class AssetServiceAsyncClient:
         what accesses on which resources.
 
         Args:
-            request (:class:`google.cloud.asset_v1.types.AnalyzeIamPolicyRequest`):
+            request (Union[google.cloud.asset_v1.types.AnalyzeIamPolicyRequest, dict]):
                 The request object. A request message for
                 [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1215,9 +1217,9 @@ class AssetServiceAsyncClient:
 
     async def analyze_iam_policy_longrunning(
         self,
-        request: asset_service.AnalyzeIamPolicyLongrunningRequest = None,
+        request: Union[asset_service.AnalyzeIamPolicyLongrunningRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -1235,7 +1237,7 @@ class AssetServiceAsyncClient:
         for the long-running operation.
 
         Args:
-            request (:class:`google.cloud.asset_v1.types.AnalyzeIamPolicyLongrunningRequest`):
+            request (Union[google.cloud.asset_v1.types.AnalyzeIamPolicyLongrunningRequest, dict]):
                 The request object. A request message for
                 [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1289,9 +1291,9 @@ class AssetServiceAsyncClient:
 
     async def analyze_move(
         self,
-        request: asset_service.AnalyzeMoveRequest = None,
+        request: Union[asset_service.AnalyzeMoveRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.AnalyzeMoveResponse:
@@ -1304,7 +1306,7 @@ class AssetServiceAsyncClient:
         takes place.
 
         Args:
-            request (:class:`google.cloud.asset_v1.types.AnalyzeMoveRequest`):
+            request (Union[google.cloud.asset_v1.types.AnalyzeMoveRequest, dict]):
                 The request object. The request message for performing
                 resource move analysis.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
