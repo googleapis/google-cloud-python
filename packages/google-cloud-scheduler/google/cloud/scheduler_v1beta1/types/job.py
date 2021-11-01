@@ -30,6 +30,13 @@ class Job(proto.Message):
     r"""Configuration for a job.
     The maximum allowed size for a job is 100KB.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Optionally caller-specified in
@@ -62,10 +69,13 @@ class Job(proto.Message):
             not contain more than 500 characters.
         pubsub_target (google.cloud.scheduler_v1beta1.types.PubsubTarget):
             Pub/Sub target.
+            This field is a member of `oneof`_ ``target``.
         app_engine_http_target (google.cloud.scheduler_v1beta1.types.AppEngineHttpTarget):
             App Engine HTTP target.
+            This field is a member of `oneof`_ ``target``.
         http_target (google.cloud.scheduler_v1beta1.types.HttpTarget):
             HTTP target.
+            This field is a member of `oneof`_ ``target``.
         schedule (str):
             Required, except when used with
             [UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob].
