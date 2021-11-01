@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.servicedirectory_v1.types import lookup_service
 from google.cloud.servicedirectory_v1.types import service
 from .transports.base import LookupServiceTransport, DEFAULT_CLIENT_INFO
@@ -371,7 +373,7 @@ class LookupServiceClient(metaclass=LookupServiceClientMeta):
         self,
         request: Union[lookup_service.ResolveServiceRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> lookup_service.ResolveServiceResponse:

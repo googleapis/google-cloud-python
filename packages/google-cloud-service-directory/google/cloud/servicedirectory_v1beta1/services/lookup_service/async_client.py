@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.servicedirectory_v1beta1.types import lookup_service
 from google.cloud.servicedirectory_v1beta1.types import service
@@ -167,9 +169,9 @@ class LookupServiceAsyncClient:
 
     async def resolve_service(
         self,
-        request: lookup_service.ResolveServiceRequest = None,
+        request: Union[lookup_service.ResolveServiceRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> lookup_service.ResolveServiceResponse:
@@ -179,7 +181,7 @@ class LookupServiceAsyncClient:
         active developer method.
 
         Args:
-            request (:class:`google.cloud.servicedirectory_v1beta1.types.ResolveServiceRequest`):
+            request (Union[google.cloud.servicedirectory_v1beta1.types.ResolveServiceRequest, dict]):
                 The request object. The request message for
                 [LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService].
                 Looks up a service by its name, returns the service and

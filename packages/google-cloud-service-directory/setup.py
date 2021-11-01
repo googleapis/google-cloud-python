@@ -43,10 +43,9 @@ setuptools.setup(
         # NOTE: Maintainers, please do not require google-api-core>=2.x.x
         # Until this issue is closed
         # https://github.com/googleapis/google-cloud-python/issues/10566
-        "google-api-core >= 1.22.2, <3.0.0dev",
+        "google-api-core >= 1.28.0, <3.0.0dev",
         "proto-plus >= 1.10.0",
         "grpc-google-iam-v1",
-        "packaging >= 14.3",
     ),
     python_requires=">=3.6",
     classifiers=[
