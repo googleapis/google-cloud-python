@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -176,18 +178,18 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def create_workload(
         self,
-        request: assuredworkloads_v1beta1.CreateWorkloadRequest = None,
+        request: Union[assuredworkloads_v1beta1.CreateWorkloadRequest, dict] = None,
         *,
         parent: str = None,
         workload: assuredworkloads_v1beta1.Workload = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates Assured Workload.
 
         Args:
-            request (:class:`google.cloud.assuredworkloads_v1beta1.types.CreateWorkloadRequest`):
+            request (Union[google.cloud.assuredworkloads_v1beta1.types.CreateWorkloadRequest, dict]):
                 The request object. Request for creating a workload.
             parent (:class:`str`):
                 Required. The resource name of the new Workload's
@@ -265,11 +267,11 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def update_workload(
         self,
-        request: assuredworkloads_v1beta1.UpdateWorkloadRequest = None,
+        request: Union[assuredworkloads_v1beta1.UpdateWorkloadRequest, dict] = None,
         *,
         workload: assuredworkloads_v1beta1.Workload = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> assuredworkloads_v1beta1.Workload:
@@ -279,7 +281,7 @@ class AssuredWorkloadsServiceAsyncClient:
         workload can be in progress.
 
         Args:
-            request (:class:`google.cloud.assuredworkloads_v1beta1.types.UpdateWorkloadRequest`):
+            request (Union[google.cloud.assuredworkloads_v1beta1.types.UpdateWorkloadRequest, dict]):
                 The request object. Request for Updating a workload.
             workload (:class:`google.cloud.assuredworkloads_v1beta1.types.Workload`):
                 Required. The workload to update. The workload’s
@@ -353,10 +355,10 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def delete_workload(
         self,
-        request: assuredworkloads_v1beta1.DeleteWorkloadRequest = None,
+        request: Union[assuredworkloads_v1beta1.DeleteWorkloadRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -365,7 +367,7 @@ class AssuredWorkloadsServiceAsyncClient:
         with a FAILED_PRECONDITION error.
 
         Args:
-            request (:class:`google.cloud.assuredworkloads_v1beta1.types.DeleteWorkloadRequest`):
+            request (Union[google.cloud.assuredworkloads_v1beta1.types.DeleteWorkloadRequest, dict]):
                 The request object. Request for deleting a Workload.
             name (:class:`str`):
                 Required. The ``name`` field is used to identify the
@@ -428,17 +430,17 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def get_workload(
         self,
-        request: assuredworkloads_v1beta1.GetWorkloadRequest = None,
+        request: Union[assuredworkloads_v1beta1.GetWorkloadRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> assuredworkloads_v1beta1.Workload:
         r"""Gets Assured Workload associated with a CRM Node
 
         Args:
-            request (:class:`google.cloud.assuredworkloads_v1beta1.types.GetWorkloadRequest`):
+            request (Union[google.cloud.assuredworkloads_v1beta1.types.GetWorkloadRequest, dict]):
                 The request object. Request for fetching a workload.
             name (:class:`str`):
                 Required. The resource name of the Workload to fetch.
@@ -512,17 +514,17 @@ class AssuredWorkloadsServiceAsyncClient:
 
     async def list_workloads(
         self,
-        request: assuredworkloads_v1beta1.ListWorkloadsRequest = None,
+        request: Union[assuredworkloads_v1beta1.ListWorkloadsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkloadsAsyncPager:
         r"""Lists Assured Workloads under a CRM Node.
 
         Args:
-            request (:class:`google.cloud.assuredworkloads_v1beta1.types.ListWorkloadsRequest`):
+            request (Union[google.cloud.assuredworkloads_v1beta1.types.ListWorkloadsRequest, dict]):
                 The request object. Request for fetching workloads in an
                 organization.
             parent (:class:`str`):
