@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.cloud.webrisk_v1beta1.types import webrisk
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import WebRiskServiceV1Beta1Transport, DEFAULT_CLIENT_INFO
@@ -342,7 +344,7 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
         threat_type: webrisk.ThreatType = None,
         version_token: bytes = None,
         constraints: webrisk.ComputeThreatListDiffRequest.Constraints = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> webrisk.ComputeThreatListDiffResponse:
@@ -423,7 +425,7 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
         *,
         uri: str = None,
         threat_types: Sequence[webrisk.ThreatType] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> webrisk.SearchUrisResponse:
@@ -497,7 +499,7 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
         *,
         hash_prefix: bytes = None,
         threat_types: Sequence[webrisk.ThreatType] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> webrisk.SearchHashesResponse:
