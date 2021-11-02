@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+### [2.7.1](https://www.github.com/googleapis/python-texttospeech/compare/v2.7.0...v2.7.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([99ac70b](https://www.github.com/googleapis/python-texttospeech/commit/99ac70ba45d7c500d0f19a30dead060c0db4453c))
+* **deps:** require google-api-core >= 1.28.0 ([99ac70b](https://www.github.com/googleapis/python-texttospeech/commit/99ac70ba45d7c500d0f19a30dead060c0db4453c))
+
+
+### Documentation
+
+* list oneofs in docstring ([99ac70b](https://www.github.com/googleapis/python-texttospeech/commit/99ac70ba45d7c500d0f19a30dead060c0db4453c))
+
 ## [2.7.0](https://www.github.com/googleapis/python-texttospeech/compare/v2.6.0...v2.7.0) (2021-10-18)
 
 
