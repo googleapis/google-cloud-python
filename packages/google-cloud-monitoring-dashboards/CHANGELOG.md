@@ -1,5 +1,18 @@
 # Changelog
 
+### [2.4.1](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.4.0...v2.4.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([6044b1b](https://www.github.com/googleapis/python-monitoring-dashboards/commit/6044b1b2e19bfd3c5215ccbc7bdd8bd19a72f625))
+* **deps:** require google-api-core >= 1.28.0 ([6044b1b](https://www.github.com/googleapis/python-monitoring-dashboards/commit/6044b1b2e19bfd3c5215ccbc7bdd8bd19a72f625))
+
+
+### Documentation
+
+* list oneofs in docstring ([6044b1b](https://www.github.com/googleapis/python-monitoring-dashboards/commit/6044b1b2e19bfd3c5215ccbc7bdd8bd19a72f625))
+
 ## [2.4.0](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.3.0...v2.4.0) (2021-10-14)
 
 
