@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+### [2.3.1](https://www.github.com/googleapis/python-language/compare/v2.3.0...v2.3.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([6374e7f](https://www.github.com/googleapis/python-language/commit/6374e7fc497897fc44c02cd86f57759874c29e82))
+* **deps:** require google-api-core >= 1.28.0 ([6374e7f](https://www.github.com/googleapis/python-language/commit/6374e7fc497897fc44c02cd86f57759874c29e82))
+
+
+### Documentation
+
+* list oneofs in docstring ([6374e7f](https://www.github.com/googleapis/python-language/commit/6374e7fc497897fc44c02cd86f57759874c29e82))
+
 ## [2.3.0](https://www.github.com/googleapis/python-language/compare/v2.2.2...v2.3.0) (2021-10-09)
 
 
