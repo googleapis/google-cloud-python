@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-data-fusion/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([b4d2c35](https://www.github.com/googleapis/python-data-fusion/commit/b4d2c355353bb2621f2c077a15f2505068718fc1))
+* **deps:** require google-api-core >= 1.28.0 ([b4d2c35](https://www.github.com/googleapis/python-data-fusion/commit/b4d2c355353bb2621f2c077a15f2505068718fc1))
+
+
+### Documentation
+
+* list oneofs in docstring ([b4d2c35](https://www.github.com/googleapis/python-data-fusion/commit/b4d2c355353bb2621f2c077a15f2505068718fc1))
+
 ## [1.2.0](https://www.github.com/googleapis/python-data-fusion/compare/v1.1.0...v1.2.0) (2021-10-15)
 
 
