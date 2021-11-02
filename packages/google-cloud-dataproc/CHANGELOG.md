@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+### [3.1.1](https://www.github.com/googleapis/python-dataproc/compare/v3.1.0...v3.1.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([d4919c0](https://www.github.com/googleapis/python-dataproc/commit/d4919c029ad12b5ee44942b55c5560aaf441f5a9))
+* **deps:** require google-api-core >= 1.28.0 ([d4919c0](https://www.github.com/googleapis/python-dataproc/commit/d4919c029ad12b5ee44942b55c5560aaf441f5a9))
+
+
+### Documentation
+
+* list oneofs in docstring ([d4919c0](https://www.github.com/googleapis/python-dataproc/commit/d4919c029ad12b5ee44942b55c5560aaf441f5a9))
+
 ## [3.1.0](https://www.github.com/googleapis/python-dataproc/compare/v3.0.0...v3.1.0) (2021-10-26)
 
 
