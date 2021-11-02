@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/python-notebooks/compare/v1.1.0...v1.1.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([7750cb3](https://www.github.com/googleapis/python-notebooks/commit/7750cb35928891a955f89ead48c58d5af6b4e2b6))
+* **deps:** require google-api-core >= 1.28.0 ([7750cb3](https://www.github.com/googleapis/python-notebooks/commit/7750cb35928891a955f89ead48c58d5af6b4e2b6))
+
+
+### Documentation
+
+* list oneofs in docstring ([7750cb3](https://www.github.com/googleapis/python-notebooks/commit/7750cb35928891a955f89ead48c58d5af6b4e2b6))
+
 ## [1.1.0](https://www.github.com/googleapis/python-notebooks/compare/v1.0.0...v1.1.0) (2021-10-19)
 
 
