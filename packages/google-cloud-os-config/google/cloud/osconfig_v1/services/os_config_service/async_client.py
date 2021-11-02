@@ -572,7 +572,6 @@ class OsConfigServiceAsyncClient:
                 -  Must end with a number or a letter.
                 -  Must be unique within the project.
 
-
                 This corresponds to the ``patch_deployment_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
