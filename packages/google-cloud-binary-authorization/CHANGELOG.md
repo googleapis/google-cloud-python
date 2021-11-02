@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-binary-authorization/compare/v1.0.0...v1.0.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([d02c2fd](https://www.github.com/googleapis/python-binary-authorization/commit/d02c2fdbc52d4dc5f8ca333e99d7e7160dcd23e8))
+* **deps:** require google-api-core >= 1.28.0 ([d02c2fd](https://www.github.com/googleapis/python-binary-authorization/commit/d02c2fdbc52d4dc5f8ca333e99d7e7160dcd23e8))
+
+
+### Documentation
+
+* list oneofs in docstring ([d02c2fd](https://www.github.com/googleapis/python-binary-authorization/commit/d02c2fdbc52d4dc5f8ca333e99d7e7160dcd23e8))
+
 ## [1.0.0](https://www.github.com/googleapis/python-binary-authorization/compare/v0.6.0...v1.0.0) (2021-10-22)
 
 
