@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.4.1](https://www.github.com/googleapis/python-billing/compare/v1.4.0...v1.4.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([11ee1bf](https://www.github.com/googleapis/python-billing/commit/11ee1bfd84cfddcdc60ee2500273f5016919eba1))
+* **deps:** require google-api-core >= 1.28.0 ([11ee1bf](https://www.github.com/googleapis/python-billing/commit/11ee1bfd84cfddcdc60ee2500273f5016919eba1))
+
+
+### Documentation
+
+* list oneofs in docstring ([11ee1bf](https://www.github.com/googleapis/python-billing/commit/11ee1bfd84cfddcdc60ee2500273f5016919eba1))
+
 ## [1.4.0](https://www.github.com/googleapis/python-billing/compare/v1.3.4...v1.4.0) (2021-10-11)
 
 
