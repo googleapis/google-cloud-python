@@ -1,5 +1,18 @@
 # Changelog
 
+### [0.6.1](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.6.0...v0.6.1) (2021-11-02)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([daf9af8](https://www.github.com/googleapis/python-contact-center-insights/commit/daf9af84fc1b448f86d340c56bc37460b0254f82))
+* **deps:** require google-api-core >= 1.28.0 ([daf9af8](https://www.github.com/googleapis/python-contact-center-insights/commit/daf9af84fc1b448f86d340c56bc37460b0254f82))
+
+
+### Documentation
+
+* list oneofs in docstring ([daf9af8](https://www.github.com/googleapis/python-contact-center-insights/commit/daf9af84fc1b448f86d340c56bc37460b0254f82))
+
 ## [0.6.0](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.5.0...v0.6.0) (2021-10-11)
 
 
