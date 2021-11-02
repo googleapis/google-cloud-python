@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+### [1.6.1](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.6.0...v1.6.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([0134472](https://www.github.com/googleapis/python-websecurityscanner/commit/0134472b4ceeed6eb1b90d8dd6d98402a4d10c14))
+* **deps:** require google-api-core >= 1.28.0 ([0134472](https://www.github.com/googleapis/python-websecurityscanner/commit/0134472b4ceeed6eb1b90d8dd6d98402a4d10c14))
+
+
+### Documentation
+
+* list oneofs in docstring ([0134472](https://www.github.com/googleapis/python-websecurityscanner/commit/0134472b4ceeed6eb1b90d8dd6d98402a4d10c14))
+
 ## [1.6.0](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.5.0...v1.6.0) (2021-10-14)
 
 
