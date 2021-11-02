@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-apigee-connect/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([4cd9ea7](https://www.github.com/googleapis/python-apigee-connect/commit/4cd9ea7bd45e5a3410e6b1bde0a0ab629f75530d))
+* **deps:** require google-api-core >= 1.28.0 ([4cd9ea7](https://www.github.com/googleapis/python-apigee-connect/commit/4cd9ea7bd45e5a3410e6b1bde0a0ab629f75530d))
+
+
+### Documentation
+
+* list oneofs in docstring ([4cd9ea7](https://www.github.com/googleapis/python-apigee-connect/commit/4cd9ea7bd45e5a3410e6b1bde0a0ab629f75530d))
+
 ## [1.2.0](https://www.github.com/googleapis/python-apigee-connect/compare/v1.1.0...v1.2.0) (2021-10-15)
 
 
