@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+### [3.7.1](https://www.github.com/googleapis/python-asset/compare/v3.7.0...v3.7.1) (2021-11-02)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([3f3e552](https://www.github.com/googleapis/python-asset/commit/3f3e5522e5e550e2f401238e8b7f3cfc31cd17e9))
+* **deps:** require google-api-core >= 1.28.0 ([3f3e552](https://www.github.com/googleapis/python-asset/commit/3f3e5522e5e550e2f401238e8b7f3cfc31cd17e9))
+* fix extras_require typo in setup.py ([3f3e552](https://www.github.com/googleapis/python-asset/commit/3f3e5522e5e550e2f401238e8b7f3cfc31cd17e9))
+
+
+### Documentation
+
+* list oneofs in docstring ([3f3e552](https://www.github.com/googleapis/python-asset/commit/3f3e5522e5e550e2f401238e8b7f3cfc31cd17e9))
+
 ## [3.7.0](https://www.github.com/googleapis/python-asset/compare/v3.6.1...v3.7.0) (2021-10-12)
 
 
