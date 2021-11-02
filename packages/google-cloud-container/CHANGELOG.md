@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+### [2.10.1](https://www.github.com/googleapis/python-container/compare/v2.10.0...v2.10.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([838a97b](https://www.github.com/googleapis/python-container/commit/838a97b0a45dcb16e81ec3795beaf35eaa5e460d))
+* **deps:** require google-api-core >= 1.28.0 ([838a97b](https://www.github.com/googleapis/python-container/commit/838a97b0a45dcb16e81ec3795beaf35eaa5e460d))
+
+
+### Documentation
+
+* list oneofs in docstring ([838a97b](https://www.github.com/googleapis/python-container/commit/838a97b0a45dcb16e81ec3795beaf35eaa5e460d))
+
 ## [2.10.0](https://www.github.com/googleapis/python-container/compare/v2.9.0...v2.10.0) (2021-10-13)
 
 
