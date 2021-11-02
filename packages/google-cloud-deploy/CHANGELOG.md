@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-deploy/compare/v0.3.0...v1.0.0) (2021-11-01)
+
+
+### Features
+
+* bump release level to production/stable ([#3](https://www.github.com/googleapis/python-deploy/issues/3)) ([8bf3167](https://www.github.com/googleapis/python-deploy/commit/8bf31670c8a488d9c2eb39eae558e043e70d880e))
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([17baf34](https://www.github.com/googleapis/python-deploy/commit/17baf34008aa7a2afffe8bba6d8cc6df6d064678))
+* **deps:** require google-api-core >= 1.28.0 ([17baf34](https://www.github.com/googleapis/python-deploy/commit/17baf34008aa7a2afffe8bba6d8cc6df6d064678))
+
+
+### Documentation
+
+* list oneofs in docstring ([17baf34](https://www.github.com/googleapis/python-deploy/commit/17baf34008aa7a2afffe8bba6d8cc6df6d064678))
+
 ## [0.3.0](https://www.github.com/googleapis/python-deploy/compare/v0.2.0...v0.3.0) (2021-10-18)
 
 
