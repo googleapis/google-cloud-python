@@ -26,7 +26,10 @@ from google.api_core import retry as retries           # type: ignore
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
 
-OptionalRetry = Union[retries.Retry, object]
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:
+    OptionalRetry = Union[retries.Retry, object]
 
 from google.iam.credentials_v1.types import common
 from google.protobuf import duration_pb2  # type: ignore

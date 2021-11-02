@@ -15,7 +15,11 @@ from requests import __version__ as requests_version
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-OptionalRetry = Union[retries.Retry, object]
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:
+    OptionalRetry = Union[retries.Retry, object]
+
 {% extends '_base.py.j2' %}
 
 {% block content %}

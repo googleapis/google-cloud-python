@@ -30,7 +30,10 @@ from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
 from google.oauth2 import service_account                         # type: ignore
 
-OptionalRetry = Union[retries.Retry, object]
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:
+    OptionalRetry = Union[retries.Retry, object]
 
 from google.api import distribution_pb2  # type: ignore
 from google.api import metric_pb2  # type: ignore

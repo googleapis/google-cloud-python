@@ -26,7 +26,10 @@ from google.api_core import retry as retries           # type: ignore
 from google.auth import credentials as ga_credentials   # type: ignore
 from google.oauth2 import service_account              # type: ignore
 
-OptionalRetry = Union[retries.Retry, object]
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:
+    OptionalRetry = Union[retries.Retry, object]
 
 from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.logging_v2.services.logging_service_v2 import pagers
