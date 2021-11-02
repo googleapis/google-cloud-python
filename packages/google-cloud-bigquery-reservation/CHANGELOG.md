@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.4.1](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.4.0...v1.4.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([9b98c95](https://www.github.com/googleapis/python-bigquery-reservation/commit/9b98c95444b9d1467297ea4a87bbfb2954dc2999))
+* **deps:** require google-api-core >= 1.28.0 ([9b98c95](https://www.github.com/googleapis/python-bigquery-reservation/commit/9b98c95444b9d1467297ea4a87bbfb2954dc2999))
+
+
+### Documentation
+
+* list oneofs in docstring ([9b98c95](https://www.github.com/googleapis/python-bigquery-reservation/commit/9b98c95444b9d1467297ea4a87bbfb2954dc2999))
+
 ## [1.4.0](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.3.1...v1.4.0) (2021-10-08)
 
 
