@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-eventarc/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([f509558](https://www.github.com/googleapis/python-eventarc/commit/f509558fe1967d7b0fc65c27a1a0f498bddaa915))
+* **deps:** require google-api-core >= 1.28.0 ([f509558](https://www.github.com/googleapis/python-eventarc/commit/f509558fe1967d7b0fc65c27a1a0f498bddaa915))
+
+
+### Documentation
+
+* list oneofs in docstring ([f509558](https://www.github.com/googleapis/python-eventarc/commit/f509558fe1967d7b0fc65c27a1a0f498bddaa915))
+
 ## [1.2.0](https://www.github.com/googleapis/python-eventarc/compare/v1.1.0...v1.2.0) (2021-10-14)
 
 
