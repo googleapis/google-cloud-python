@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/python-api-gateway/compare/v1.1.0...v1.1.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([ddf46fa](https://www.github.com/googleapis/python-api-gateway/commit/ddf46faab34fee5c5e23578f9fcdd5f038f8708a))
+* **deps:** require google-api-core >= 1.28.0 ([ddf46fa](https://www.github.com/googleapis/python-api-gateway/commit/ddf46faab34fee5c5e23578f9fcdd5f038f8708a))
+
+
+### Documentation
+
+* list oneofs in docstring ([ddf46fa](https://www.github.com/googleapis/python-api-gateway/commit/ddf46faab34fee5c5e23578f9fcdd5f038f8708a))
+
 ## [1.1.0](https://www.github.com/googleapis/python-api-gateway/compare/v1.0.4...v1.1.0) (2021-10-11)
 
 
