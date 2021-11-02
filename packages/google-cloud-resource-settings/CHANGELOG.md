@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-resource-settings/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([89c426a](https://www.github.com/googleapis/python-resource-settings/commit/89c426a76cc41c4793040cfa90daafd2bfcf75e4))
+* **deps:** require google-api-core >= 1.28.0 ([89c426a](https://www.github.com/googleapis/python-resource-settings/commit/89c426a76cc41c4793040cfa90daafd2bfcf75e4))
+
+
+### Documentation
+
+* list oneofs in docstring ([89c426a](https://www.github.com/googleapis/python-resource-settings/commit/89c426a76cc41c4793040cfa90daafd2bfcf75e4))
+
 ## [1.2.0](https://www.github.com/googleapis/python-resource-settings/compare/v1.1.0...v1.2.0) (2021-10-15)
 
 
