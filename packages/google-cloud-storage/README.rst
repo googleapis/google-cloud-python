@@ -88,21 +88,19 @@ Windows
 Example Usage
 ~~~~~~~~~~~~~
 
-You need to create a Google Cloud Storage bucket to use this client library.
-Follow along with the `official Google Cloud Storage documentation`_ to learn
-how to create a bucket.
-
-.. _official Google Cloud Storage documentation: https://cloud.google.com/storage/docs/cloud-console#_creatingbuckets
-
 .. code:: python
 
     from google.cloud import storage
     client = storage.Client()
+    new_bucket = client.create_bucket('new-bucket-id')
+    new_blob = new_bucket.blob('remote/path/storage.txt')
+    new_blob.upload_from_filename(filename='/local/path.txt')
+
+    # Retrieve an existing bucket
     # https://console.cloud.google.com/storage/browser/[bucket-id]/
-    bucket = client.get_bucket('bucket-id-here')
+    bucket = client.get_bucket('bucket-id')
     # Then do other things...
     blob = bucket.get_blob('remote/path/to/file.txt')
     print(blob.download_as_bytes())
     blob.upload_from_string('New contents!')
-    blob2 = bucket.blob('remote/path/storage.txt')
-    blob2.upload_from_filename(filename='/local/path.txt')
+    
