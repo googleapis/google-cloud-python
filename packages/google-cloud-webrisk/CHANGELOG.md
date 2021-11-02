@@ -3,6 +3,19 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+### [1.6.1](https://www.github.com/googleapis/python-webrisk/compare/v1.6.0...v1.6.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([0c7a85a](https://www.github.com/googleapis/python-webrisk/commit/0c7a85ac69671d2acecd50c10cd2fc975539ebb6))
+* **deps:** require google-api-core >= 1.28.0 ([0c7a85a](https://www.github.com/googleapis/python-webrisk/commit/0c7a85ac69671d2acecd50c10cd2fc975539ebb6))
+
+
+### Documentation
+
+* list oneofs in docstring ([0c7a85a](https://www.github.com/googleapis/python-webrisk/commit/0c7a85ac69671d2acecd50c10cd2fc975539ebb6))
+
 ## [1.6.0](https://www.github.com/googleapis/python-webrisk/compare/v1.5.0...v1.6.0) (2021-10-18)
 
 
