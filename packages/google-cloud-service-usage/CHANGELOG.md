@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-service-usage/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([57a982c](https://www.github.com/googleapis/python-service-usage/commit/57a982c7cafb2f91a9c2d2f0f8b85be1502f14be))
+* **deps:** require google-api-core >= 1.28.0 ([57a982c](https://www.github.com/googleapis/python-service-usage/commit/57a982c7cafb2f91a9c2d2f0f8b85be1502f14be))
+
+
+### Documentation
+
+* list oneofs in docstring ([57a982c](https://www.github.com/googleapis/python-service-usage/commit/57a982c7cafb2f91a9c2d2f0f8b85be1502f14be))
+
 ## [1.2.0](https://www.github.com/googleapis/python-service-usage/compare/v1.1.0...v1.2.0) (2021-10-18)
 
 
