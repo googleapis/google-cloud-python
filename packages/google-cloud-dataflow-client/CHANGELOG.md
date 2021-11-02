@@ -1,5 +1,18 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-dataflow-client/compare/v0.3.0...v0.3.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([89dbf65](https://www.github.com/googleapis/python-dataflow-client/commit/89dbf6545f8eb317108c0c028f461f13e40c20cc))
+* **deps:** require google-api-core >= 1.28.0 ([89dbf65](https://www.github.com/googleapis/python-dataflow-client/commit/89dbf6545f8eb317108c0c028f461f13e40c20cc))
+
+
+### Documentation
+
+* list oneofs in docstring ([89dbf65](https://www.github.com/googleapis/python-dataflow-client/commit/89dbf6545f8eb317108c0c028f461f13e40c20cc))
+
 ## [0.3.0](https://www.github.com/googleapis/python-dataflow-client/compare/v0.2.0...v0.3.0) (2021-10-15)
 
 
