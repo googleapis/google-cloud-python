@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+### [2.10.1](https://www.github.com/googleapis/python-kms/compare/v2.10.0...v2.10.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([6d7b8c1](https://www.github.com/googleapis/python-kms/commit/6d7b8c1043e59f3749c58b032f3fe800293c03f5))
+* **deps:** require google-api-core >= 1.28.0 ([6d7b8c1](https://www.github.com/googleapis/python-kms/commit/6d7b8c1043e59f3749c58b032f3fe800293c03f5))
+
+
+### Documentation
+
+* list oneofs in docstring ([6d7b8c1](https://www.github.com/googleapis/python-kms/commit/6d7b8c1043e59f3749c58b032f3fe800293c03f5))
+
 ## [2.10.0](https://www.github.com/googleapis/python-kms/compare/v2.9.0...v2.10.0) (2021-10-18)
 
 
