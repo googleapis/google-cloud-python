@@ -5,6 +5,19 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+### [1.4.1](https://www.github.com/googleapis/python-phishingprotection/compare/v1.4.0...v1.4.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([da58ec0](https://www.github.com/googleapis/python-phishingprotection/commit/da58ec0c68c39ddee99b2da483abb2a0e4a5ac5b))
+* **deps:** require google-api-core >= 1.28.0 ([da58ec0](https://www.github.com/googleapis/python-phishingprotection/commit/da58ec0c68c39ddee99b2da483abb2a0e4a5ac5b))
+
+
+### Documentation
+
+* list oneofs in docstring ([da58ec0](https://www.github.com/googleapis/python-phishingprotection/commit/da58ec0c68c39ddee99b2da483abb2a0e4a5ac5b))
+
 ## [1.4.0](https://www.github.com/googleapis/python-phishingprotection/compare/v1.3.0...v1.4.0) (2021-10-14)
 
 
