@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-shell/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([ff43aa0](https://www.github.com/googleapis/python-shell/commit/ff43aa0900e4fc626ab3243621f1ccc763878616))
+* **deps:** require google-api-core >= 1.28.0 ([ff43aa0](https://www.github.com/googleapis/python-shell/commit/ff43aa0900e4fc626ab3243621f1ccc763878616))
+
+
+### Documentation
+
+* list oneofs in docstring ([ff43aa0](https://www.github.com/googleapis/python-shell/commit/ff43aa0900e4fc626ab3243621f1ccc763878616))
+
 ## [1.2.0](https://www.github.com/googleapis/python-shell/compare/v1.1.0...v1.2.0) (2021-10-18)
 
 
