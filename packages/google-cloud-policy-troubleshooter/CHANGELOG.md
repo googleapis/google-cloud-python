@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/googleapis/python-policy-troubleshooter/compare/v1.3.0...v1.3.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([8df5c2c](https://www.github.com/googleapis/python-policy-troubleshooter/commit/8df5c2cb6933cad3d2f0956c6727e9f51fcca417))
+* **deps:** require google-api-core >= 1.28.0 ([8df5c2c](https://www.github.com/googleapis/python-policy-troubleshooter/commit/8df5c2cb6933cad3d2f0956c6727e9f51fcca417))
+
+
+### Documentation
+
+* list oneofs in docstring ([8df5c2c](https://www.github.com/googleapis/python-policy-troubleshooter/commit/8df5c2cb6933cad3d2f0956c6727e9f51fcca417))
+
 ## [1.3.0](https://www.github.com/googleapis/python-policy-troubleshooter/compare/v1.2.0...v1.3.0) (2021-10-18)
 
 
