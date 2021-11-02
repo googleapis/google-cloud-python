@@ -1,5 +1,18 @@
 # Changelog
 
+### [0.5.1](https://www.github.com/googleapis/python-data-qna/compare/v0.5.0...v0.5.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([2cce50d](https://www.github.com/googleapis/python-data-qna/commit/2cce50dd31ed071a2a1ebaf14ae350238f60539e))
+* **deps:** require google-api-core >= 1.28.0 ([2cce50d](https://www.github.com/googleapis/python-data-qna/commit/2cce50dd31ed071a2a1ebaf14ae350238f60539e))
+
+
+### Documentation
+
+* list oneofs in docstring ([2cce50d](https://www.github.com/googleapis/python-data-qna/commit/2cce50dd31ed071a2a1ebaf14ae350238f60539e))
+
 ## [0.5.0](https://www.github.com/googleapis/python-data-qna/compare/v0.4.0...v0.5.0) (2021-10-21)
 
 
