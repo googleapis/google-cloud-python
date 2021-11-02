@@ -1,4 +1,18 @@
 # Changelog
+### [1.5.1](https://www.github.com/googleapis/python-billingbudgets/compare/v1.5.0...v1.5.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([cfccdf0](https://www.github.com/googleapis/python-billingbudgets/commit/cfccdf02a3b0e9d3cdf59a053766963da8f7da37))
+* **deps:** require google-api-core >= 1.28.0 ([cfccdf0](https://www.github.com/googleapis/python-billingbudgets/commit/cfccdf02a3b0e9d3cdf59a053766963da8f7da37))
+* fix extras_require typo in setup.py ([cfccdf0](https://www.github.com/googleapis/python-billingbudgets/commit/cfccdf02a3b0e9d3cdf59a053766963da8f7da37))
+
+
+### Documentation
+
+* list oneofs in docstring ([cfccdf0](https://www.github.com/googleapis/python-billingbudgets/commit/cfccdf02a3b0e9d3cdf59a053766963da8f7da37))
+
 ## [1.5.0](https://www.github.com/googleapis/python-billingbudgets/compare/v1.4.4...v1.5.0) (2021-10-11)
 
 
