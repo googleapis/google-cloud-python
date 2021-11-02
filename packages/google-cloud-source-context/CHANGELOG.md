@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-source-context/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([5234b6b](https://www.github.com/googleapis/python-source-context/commit/5234b6bd2e42a1b7cd6bcb4a0055801a81c928ca))
+* **deps:** require google-api-core >= 1.28.0 ([5234b6b](https://www.github.com/googleapis/python-source-context/commit/5234b6bd2e42a1b7cd6bcb4a0055801a81c928ca))
+
+
+### Documentation
+
+* list oneofs in docstring ([5234b6b](https://www.github.com/googleapis/python-source-context/commit/5234b6bd2e42a1b7cd6bcb4a0055801a81c928ca))
+
 ## [1.2.0](https://www.github.com/googleapis/python-source-context/compare/v1.1.0...v1.2.0) (2021-10-18)
 
 
