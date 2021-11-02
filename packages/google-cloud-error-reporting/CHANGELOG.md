@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+### [1.4.1](https://www.github.com/googleapis/python-error-reporting/compare/v1.4.0...v1.4.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([31e3d6b](https://www.github.com/googleapis/python-error-reporting/commit/31e3d6b269139831e914165a316b450c01bc6c0d))
+* **deps:** require google-api-core >= 1.28.0 ([31e3d6b](https://www.github.com/googleapis/python-error-reporting/commit/31e3d6b269139831e914165a316b450c01bc6c0d))
+
+
+### Documentation
+
+* list oneofs in docstring ([31e3d6b](https://www.github.com/googleapis/python-error-reporting/commit/31e3d6b269139831e914165a316b450c01bc6c0d))
+
 ## [1.4.0](https://www.github.com/googleapis/python-error-reporting/compare/v1.3.0...v1.4.0) (2021-10-14)
 
 
