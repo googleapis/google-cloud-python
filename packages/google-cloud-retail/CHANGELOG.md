@@ -1,5 +1,19 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-retail/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([1f05fe4](https://www.github.com/googleapis/python-retail/commit/1f05fe4e88059839627c46f000305f7a2d4c456c))
+* **deps:** require google-api-core >= 1.28.0 ([1f05fe4](https://www.github.com/googleapis/python-retail/commit/1f05fe4e88059839627c46f000305f7a2d4c456c))
+
+
+### Documentation
+
+* fix docstring formatting ([#111](https://www.github.com/googleapis/python-retail/issues/111)) ([fdf5dcd](https://www.github.com/googleapis/python-retail/commit/fdf5dcd5042b9b664186914eea5d4b94fb04eda8))
+* list oneofs in docstring ([1f05fe4](https://www.github.com/googleapis/python-retail/commit/1f05fe4e88059839627c46f000305f7a2d4c456c))
+
 ## [1.2.0](https://www.github.com/googleapis/python-retail/compare/v1.1.0...v1.2.0) (2021-10-18)
 
 
