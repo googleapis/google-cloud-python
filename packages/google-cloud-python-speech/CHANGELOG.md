@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+### [2.11.1](https://www.github.com/googleapis/python-speech/compare/v2.11.0...v2.11.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([43f25c0](https://www.github.com/googleapis/python-speech/commit/43f25c0612ef5b88f848b13ae42f711a4fc2d72a))
+* **deps:** require google-api-core >= 1.28.0 ([43f25c0](https://www.github.com/googleapis/python-speech/commit/43f25c0612ef5b88f848b13ae42f711a4fc2d72a))
+
+
+### Documentation
+
+* list oneofs in docstring ([43f25c0](https://www.github.com/googleapis/python-speech/commit/43f25c0612ef5b88f848b13ae42f711a4fc2d72a))
+
 ## [2.11.0](https://www.github.com/googleapis/python-speech/compare/v2.10.0...v2.11.0) (2021-10-25)
 
 
