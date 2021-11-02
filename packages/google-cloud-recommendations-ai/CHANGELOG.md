@@ -1,5 +1,18 @@
 # Changelog
 
+### [0.5.1](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.5.0...v0.5.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([d9cd029](https://www.github.com/googleapis/python-recommendations-ai/commit/d9cd029713bc127c6d84670923dfb9957dbf2c0d))
+* **deps:** require google-api-core >= 1.28.0 ([d9cd029](https://www.github.com/googleapis/python-recommendations-ai/commit/d9cd029713bc127c6d84670923dfb9957dbf2c0d))
+
+
+### Documentation
+
+* list oneofs in docstring ([d9cd029](https://www.github.com/googleapis/python-recommendations-ai/commit/d9cd029713bc127c6d84670923dfb9957dbf2c0d))
+
 ## [0.5.0](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.4.0...v0.5.0) (2021-10-18)
 
 
