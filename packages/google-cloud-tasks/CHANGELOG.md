@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+### [2.7.1](https://www.github.com/googleapis/python-tasks/compare/v2.7.0...v2.7.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([72f150f](https://www.github.com/googleapis/python-tasks/commit/72f150fe39313173ac6c02616b6ca4466f5855fe))
+* **deps:** require google-api-core >= 1.28.0 ([72f150f](https://www.github.com/googleapis/python-tasks/commit/72f150fe39313173ac6c02616b6ca4466f5855fe))
+
+
+### Documentation
+
+* list oneofs in docstring ([72f150f](https://www.github.com/googleapis/python-tasks/commit/72f150fe39313173ac6c02616b6ca4466f5855fe))
+
 ## [2.7.0](https://www.github.com/googleapis/python-tasks/compare/v2.6.0...v2.7.0) (2021-10-15)
 
 
