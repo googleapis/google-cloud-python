@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [1.4.0](https://www.github.com/googleapis/python-datalabeling/compare/v1.3.0...v1.4.0) (2021-11-01)
+
+
+### Features
+
+* add support for python 3.10 ([#159](https://www.github.com/googleapis/python-datalabeling/issues/159)) ([5910974](https://www.github.com/googleapis/python-datalabeling/commit/59109748d6a4db830d5a48d1adb8ac74bf417037))
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([0710b41](https://www.github.com/googleapis/python-datalabeling/commit/0710b4160a909aac9f6578dac5f84c312bea28d5))
+* **deps:** require google-api-core >= 1.28.0 ([0710b41](https://www.github.com/googleapis/python-datalabeling/commit/0710b4160a909aac9f6578dac5f84c312bea28d5))
+* fix extras_require typo in setup.py ([0710b41](https://www.github.com/googleapis/python-datalabeling/commit/0710b4160a909aac9f6578dac5f84c312bea28d5))
+
+
+### Documentation
+
+* list oneofs in docstring ([0710b41](https://www.github.com/googleapis/python-datalabeling/commit/0710b4160a909aac9f6578dac5f84c312bea28d5))
+
 ## [1.3.0](https://www.github.com/googleapis/python-datalabeling/compare/v1.2.4...v1.3.0) (2021-10-08)
 
 
