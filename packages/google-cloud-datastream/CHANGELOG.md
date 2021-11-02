@@ -1,5 +1,18 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-datastream/compare/v0.3.0...v0.3.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([1ea0cb4](https://www.github.com/googleapis/python-datastream/commit/1ea0cb4ea38123cc737c5c82b28e093ec9943d8b))
+* **deps:** require google-api-core >= 1.28.0 ([1ea0cb4](https://www.github.com/googleapis/python-datastream/commit/1ea0cb4ea38123cc737c5c82b28e093ec9943d8b))
+
+
+### Documentation
+
+* list oneofs in docstring ([1ea0cb4](https://www.github.com/googleapis/python-datastream/commit/1ea0cb4ea38123cc737c5c82b28e093ec9943d8b))
+
 ## [0.3.0](https://www.github.com/googleapis/python-datastream/compare/v0.2.0...v0.3.0) (2021-10-15)
 
 
