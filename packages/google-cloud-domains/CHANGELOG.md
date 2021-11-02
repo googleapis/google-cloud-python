@@ -1,5 +1,18 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-domains/compare/v0.4.0...v0.4.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([2375457](https://www.github.com/googleapis/python-domains/commit/2375457fc8772914f8689bdcfd132c15fb504d84))
+* **deps:** require google-api-core >= 1.28.0 ([2375457](https://www.github.com/googleapis/python-domains/commit/2375457fc8772914f8689bdcfd132c15fb504d84))
+
+
+### Documentation
+
+* list oneofs in docstring ([2375457](https://www.github.com/googleapis/python-domains/commit/2375457fc8772914f8689bdcfd132c15fb504d84))
+
 ## [0.4.0](https://www.github.com/googleapis/python-domains/compare/v0.3.0...v0.4.0) (2021-10-21)
 
 
