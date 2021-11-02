@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.3.0...v1.3.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([7abadeb](https://www.github.com/googleapis/python-dataproc-metastore/commit/7abadeb6de0d3e7e45f6d38eeac7abc9a76bca24))
+* **deps:** require google-api-core >= 1.28.0 ([7abadeb](https://www.github.com/googleapis/python-dataproc-metastore/commit/7abadeb6de0d3e7e45f6d38eeac7abc9a76bca24))
+
+
+### Documentation
+
+* list oneofs in docstring ([7abadeb](https://www.github.com/googleapis/python-dataproc-metastore/commit/7abadeb6de0d3e7e45f6d38eeac7abc9a76bca24))
+
 ## [1.3.0](https://www.github.com/googleapis/python-dataproc-metastore/compare/v1.2.0...v1.3.0) (2021-10-13)
 
 
