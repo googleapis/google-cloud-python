@@ -1,5 +1,18 @@
 # Changelog
 
+### [0.5.1](https://www.github.com/googleapis/python-area120-tables/compare/v0.5.0...v0.5.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([76b9cba](https://www.github.com/googleapis/python-area120-tables/commit/76b9cba55f3ba56dd015591820c34f59b68c796d))
+* **deps:** require google-api-core >= 1.28.0 ([76b9cba](https://www.github.com/googleapis/python-area120-tables/commit/76b9cba55f3ba56dd015591820c34f59b68c796d))
+
+
+### Documentation
+
+* list oneofs in docstring ([76b9cba](https://www.github.com/googleapis/python-area120-tables/commit/76b9cba55f3ba56dd015591820c34f59b68c796d))
+
 ## [0.5.0](https://www.github.com/googleapis/python-area120-tables/compare/v0.4.4...v0.5.0) (2021-10-11)
 
 
