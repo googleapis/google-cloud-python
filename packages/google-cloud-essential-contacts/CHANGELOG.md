@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-essential-contacts/compare/v1.0.0...v1.0.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([81ae849](https://www.github.com/googleapis/python-essential-contacts/commit/81ae849e2bf9dbd41f23c3846f3a54177e615ad5))
+* **deps:** require google-api-core >= 1.28.0 ([81ae849](https://www.github.com/googleapis/python-essential-contacts/commit/81ae849e2bf9dbd41f23c3846f3a54177e615ad5))
+
+
+### Documentation
+
+* list oneofs in docstring ([81ae849](https://www.github.com/googleapis/python-essential-contacts/commit/81ae849e2bf9dbd41f23c3846f3a54177e615ad5))
+
 ## [1.0.0](https://www.github.com/googleapis/python-essential-contacts/compare/v0.4.0...v1.0.0) (2021-10-25)
 
 
