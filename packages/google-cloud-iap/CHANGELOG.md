@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-iap/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([30b353c](https://www.github.com/googleapis/python-iap/commit/30b353c9296d37f8792759a5ee997b3f50572f19))
+* **deps:** require google-api-core >= 1.28.0 ([30b353c](https://www.github.com/googleapis/python-iap/commit/30b353c9296d37f8792759a5ee997b3f50572f19))
+
+
+### Documentation
+
+* list oneofs in docstring ([30b353c](https://www.github.com/googleapis/python-iap/commit/30b353c9296d37f8792759a5ee997b3f50572f19))
+
 ## [1.2.0](https://www.github.com/googleapis/python-iap/compare/v1.1.0...v1.2.0) (2021-10-18)
 
 
