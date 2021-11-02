@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/googleapis/python-functions/compare/v1.3.0...v1.3.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([7076c62](https://www.github.com/googleapis/python-functions/commit/7076c62bf0d9ba93c1ad2726978224f1f7402ab9))
+* **deps:** require google-api-core >= 1.28.0 ([7076c62](https://www.github.com/googleapis/python-functions/commit/7076c62bf0d9ba93c1ad2726978224f1f7402ab9))
+
+
+### Documentation
+
+* list oneofs in docstring ([7076c62](https://www.github.com/googleapis/python-functions/commit/7076c62bf0d9ba93c1ad2726978224f1f7402ab9))
+
 ## [1.3.0](https://www.github.com/googleapis/python-functions/compare/v1.2.0...v1.3.0) (2021-10-21)
 
 
