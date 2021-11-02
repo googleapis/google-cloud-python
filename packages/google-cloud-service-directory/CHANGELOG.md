@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-service-directory/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([809bcd7](https://www.github.com/googleapis/python-service-directory/commit/809bcd7ee993eba50cb3be1cf70658beb008db5b))
+* **deps:** require google-api-core >= 1.28.0 ([809bcd7](https://www.github.com/googleapis/python-service-directory/commit/809bcd7ee993eba50cb3be1cf70658beb008db5b))
+
+
+### Documentation
+
+* list oneofs in docstring ([809bcd7](https://www.github.com/googleapis/python-service-directory/commit/809bcd7ee993eba50cb3be1cf70658beb008db5b))
+
 ## [1.2.0](https://www.github.com/googleapis/python-service-directory/compare/v1.1.0...v1.2.0) (2021-10-20)
 
 
