@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+### [1.5.1](https://www.github.com/googleapis/python-trace/compare/v1.5.0...v1.5.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([755b803](https://www.github.com/googleapis/python-trace/commit/755b8033a5e43490eda443e8ac6817f0d14ecc85))
+* **deps:** require google-api-core >= 1.28.0 ([755b803](https://www.github.com/googleapis/python-trace/commit/755b8033a5e43490eda443e8ac6817f0d14ecc85))
+
+
+### Documentation
+
+* list oneofs in docstring ([755b803](https://www.github.com/googleapis/python-trace/commit/755b8033a5e43490eda443e8ac6817f0d14ecc85))
+
 ## [1.5.0](https://www.github.com/googleapis/python-trace/compare/v1.4.0...v1.5.0) (2021-10-14)
 
 
