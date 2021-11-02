@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [2.7.0](https://www.github.com/googleapis/python-logging/compare/v2.6.0...v2.7.0) (2021-11-02)
+
+
+### Features
+
+* add context manager support in client ([#415](https://www.github.com/googleapis/python-logging/issues/415)) ([f5af164](https://www.github.com/googleapis/python-logging/commit/f5af16439807a0954ee78fa91cb69b9493b80176))
+* added support for iam AuditData proto ([#396](https://www.github.com/googleapis/python-logging/issues/396)) ([e3a1eba](https://www.github.com/googleapis/python-logging/commit/e3a1eba74dd8b67bcc73a78f784189ef2a9927c2))
+* use structured logging on GCF with python 3.7 ([#434](https://www.github.com/googleapis/python-logging/issues/434)) ([5055919](https://www.github.com/googleapis/python-logging/commit/5055919f70c82b38de6d1fa7f1df6006865a857b))
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([76ac729](https://www.github.com/googleapis/python-logging/commit/76ac729e42a782524be87ad71745aad37bbe1653))
+* add 'dict' annotation type to 'request' ([23f9e1f](https://www.github.com/googleapis/python-logging/commit/23f9e1f6e9af30c4e65578edbf73c8c893b35285))
+* **deps:** drop packaging dependency ([9d38995](https://www.github.com/googleapis/python-logging/commit/9d389958c7de31ae9e21228eaf965762b31d5e48))
+* **deps:** require google-api-core >= 1.28.0 ([9d38995](https://www.github.com/googleapis/python-logging/commit/9d389958c7de31ae9e21228eaf965762b31d5e48))
+* **deps:** require proto-plus==1.15.0 ([76ac729](https://www.github.com/googleapis/python-logging/commit/76ac729e42a782524be87ad71745aad37bbe1653))
+* exception log message format ([#394](https://www.github.com/googleapis/python-logging/issues/394)) ([c426bf5](https://www.github.com/googleapis/python-logging/commit/c426bf56787fa02140e8aa142ecd4d4e45432697))
+* improper types in pagers generation ([76ac729](https://www.github.com/googleapis/python-logging/commit/76ac729e42a782524be87ad71745aad37bbe1653))
+* improper types in pagers generation ([6a837a5](https://www.github.com/googleapis/python-logging/commit/6a837a5d1faab1f9fa8ac94e424e847821a0069f))
+
+
+### Documentation
+
+* list oneofs in docstring ([9d38995](https://www.github.com/googleapis/python-logging/commit/9d389958c7de31ae9e21228eaf965762b31d5e48))
+
 ## [2.6.0](https://www.github.com/googleapis/python-logging/compare/v2.5.0...v2.6.0) (2021-07-28)
 
 
