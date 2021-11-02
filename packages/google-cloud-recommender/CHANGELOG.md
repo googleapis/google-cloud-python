@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+### [2.5.1](https://www.github.com/googleapis/python-recommender/compare/v2.5.0...v2.5.1) (2021-11-02)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([55a42ff](https://www.github.com/googleapis/python-recommender/commit/55a42ff6f2951ca2280a899cce836ccf19664613))
+* **deps:** require google-api-core >= 1.28.0 ([55a42ff](https://www.github.com/googleapis/python-recommender/commit/55a42ff6f2951ca2280a899cce836ccf19664613))
+
+
+### Documentation
+
+* fix docstring formatting ([#147](https://www.github.com/googleapis/python-recommender/issues/147)) ([bb0fc1a](https://www.github.com/googleapis/python-recommender/commit/bb0fc1ada9b681eb9e457f63cdbc9d30f53603f9))
+* list oneofs in docstring ([55a42ff](https://www.github.com/googleapis/python-recommender/commit/55a42ff6f2951ca2280a899cce836ccf19664613))
+
 ## [2.5.0](https://www.github.com/googleapis/python-recommender/compare/v2.4.0...v2.5.0) (2021-10-14)
 
 
