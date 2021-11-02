@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+### [2.5.1](https://www.github.com/googleapis/python-iam/compare/v2.5.0...v2.5.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([ffde276](https://www.github.com/googleapis/python-iam/commit/ffde276b9cc7f988044bed897b30cad957d9ce93))
+* **deps:** require google-api-core >= 1.28.0 ([ffde276](https://www.github.com/googleapis/python-iam/commit/ffde276b9cc7f988044bed897b30cad957d9ce93))
+
+
+### Documentation
+
+* list oneofs in docstring ([ffde276](https://www.github.com/googleapis/python-iam/commit/ffde276b9cc7f988044bed897b30cad957d9ce93))
+
 ## [2.5.0](https://www.github.com/googleapis/python-iam/compare/v2.4.0...v2.5.0) (2021-10-14)
 
 
