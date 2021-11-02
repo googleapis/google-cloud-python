@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-appengine-admin/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([fd7fdd7](https://www.github.com/googleapis/python-appengine-admin/commit/fd7fdd7f7ef666f1c9ff64ac27f98b4573a5d1f3))
+* **deps:** require google-api-core >= 1.28.0 ([fd7fdd7](https://www.github.com/googleapis/python-appengine-admin/commit/fd7fdd7f7ef666f1c9ff64ac27f98b4573a5d1f3))
+
+
+### Documentation
+
+* list oneofs in docstring ([fd7fdd7](https://www.github.com/googleapis/python-appengine-admin/commit/fd7fdd7f7ef666f1c9ff64ac27f98b4573a5d1f3))
+
 ## [1.2.0](https://www.github.com/googleapis/python-appengine-admin/compare/v1.1.5...v1.2.0) (2021-10-11)
 
 
