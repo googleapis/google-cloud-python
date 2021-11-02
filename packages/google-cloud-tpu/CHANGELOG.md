@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-tpu/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([6b3efb3](https://www.github.com/googleapis/python-tpu/commit/6b3efb38c6bdf23c8dae3fe965e01a3457f5757e))
+* **deps:** require google-api-core >= 1.28.0 ([6b3efb3](https://www.github.com/googleapis/python-tpu/commit/6b3efb38c6bdf23c8dae3fe965e01a3457f5757e))
+
+
+### Documentation
+
+* list oneofs in docstring ([6b3efb3](https://www.github.com/googleapis/python-tpu/commit/6b3efb38c6bdf23c8dae3fe965e01a3457f5757e))
+
 ## [1.2.0](https://www.github.com/googleapis/python-tpu/compare/v1.1.0...v1.2.0) (2021-10-15)
 
 
