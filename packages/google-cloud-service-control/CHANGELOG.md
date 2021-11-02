@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-service-control/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([eef4248](https://www.github.com/googleapis/python-service-control/commit/eef42489c674dd3637d39d02577af08f42fdba4d))
+* **deps:** require google-api-core >= 1.28.0 ([eef4248](https://www.github.com/googleapis/python-service-control/commit/eef42489c674dd3637d39d02577af08f42fdba4d))
+
+
+### Documentation
+
+* list oneofs in docstring ([eef4248](https://www.github.com/googleapis/python-service-control/commit/eef42489c674dd3637d39d02577af08f42fdba4d))
+
 ## [1.2.0](https://www.github.com/googleapis/python-service-control/compare/v1.1.0...v1.2.0) (2021-10-20)
 
 
