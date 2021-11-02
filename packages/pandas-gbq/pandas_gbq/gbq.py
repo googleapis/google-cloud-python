@@ -927,11 +927,12 @@ def to_gbq(
     table_schema : list of dicts, optional
         List of BigQuery table fields to which according DataFrame
         columns conform to, e.g. ``[{'name': 'col1', 'type':
-        'STRING'},...]``.
+        'STRING'},...]``.  The ``type`` values must be BigQuery type names.
 
         - If ``table_schema`` is provided, it may contain all or a subset of
           DataFrame columns. If a subset is provided, the rest will be
-          inferred from the DataFrame dtypes.
+          inferred from the DataFrame dtypes.  If ``table_schema`` contains
+          columns not in the DataFrame, they'll be ignored.
         - If ``table_schema`` is **not** provided, it will be
           generated according to dtypes of DataFrame columns. See
           `Inferring the Table Schema
