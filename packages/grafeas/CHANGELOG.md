@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+### [1.3.1](https://www.github.com/googleapis/python-grafeas/compare/v1.3.0...v1.3.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([b90b6fe](https://www.github.com/googleapis/python-grafeas/commit/b90b6fe80fe7358a245109b8c331bddba6f68e7e))
+* **deps:** require google-api-core >= 1.28.0 ([b90b6fe](https://www.github.com/googleapis/python-grafeas/commit/b90b6fe80fe7358a245109b8c331bddba6f68e7e))
+
+
+### Documentation
+
+* list oneofs in docstring ([b90b6fe](https://www.github.com/googleapis/python-grafeas/commit/b90b6fe80fe7358a245109b8c331bddba6f68e7e))
+
 ## [1.3.0](https://www.github.com/googleapis/python-grafeas/compare/v1.2.0...v1.3.0) (2021-10-14)
 
 
