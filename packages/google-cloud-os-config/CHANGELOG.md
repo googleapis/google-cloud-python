@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.7.1](https://www.github.com/googleapis/python-os-config/compare/v1.7.0...v1.7.1) (2021-11-02)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([df69ccc](https://www.github.com/googleapis/python-os-config/commit/df69ccc66f45ccb4e94fbe8251c3f58e744fcf6b))
+* **deps:** require google-api-core >= 1.28.0 ([df69ccc](https://www.github.com/googleapis/python-os-config/commit/df69ccc66f45ccb4e94fbe8251c3f58e744fcf6b))
+
+
+### Documentation
+
+* list oneofs in docstring ([df69ccc](https://www.github.com/googleapis/python-os-config/commit/df69ccc66f45ccb4e94fbe8251c3f58e744fcf6b))
+
 ## [1.7.0](https://www.github.com/googleapis/python-os-config/compare/v1.6.0...v1.7.0) (2021-10-18)
 
 
