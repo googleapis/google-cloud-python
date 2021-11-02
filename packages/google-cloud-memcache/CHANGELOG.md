@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-memcache/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([5159fe9](https://www.github.com/googleapis/python-memcache/commit/5159fe99b200979b54ce76633a7b8cda87931eee))
+* **deps:** require google-api-core >= 1.28.0 ([5159fe9](https://www.github.com/googleapis/python-memcache/commit/5159fe99b200979b54ce76633a7b8cda87931eee))
+
+
+### Documentation
+
+* list oneofs in docstring ([5159fe9](https://www.github.com/googleapis/python-memcache/commit/5159fe99b200979b54ce76633a7b8cda87931eee))
+
 ## [1.2.0](https://www.github.com/googleapis/python-memcache/compare/v1.1.3...v1.2.0) (2021-10-12)
 
 
