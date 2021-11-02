@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+### [2.4.1](https://www.github.com/googleapis/python-redis/compare/v2.4.0...v2.4.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([2069ea6](https://www.github.com/googleapis/python-redis/commit/2069ea6ff1dd200a9b3162fe892f425e36da1aff))
+* **deps:** require google-api-core >= 1.28.0 ([2069ea6](https://www.github.com/googleapis/python-redis/commit/2069ea6ff1dd200a9b3162fe892f425e36da1aff))
+
+
+### Documentation
+
+* list oneofs in docstring ([2069ea6](https://www.github.com/googleapis/python-redis/commit/2069ea6ff1dd200a9b3162fe892f425e36da1aff))
+
 ## [2.4.0](https://www.github.com/googleapis/python-redis/compare/v2.3.0...v2.4.0) (2021-10-14)
 
 
