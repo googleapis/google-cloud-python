@@ -1,5 +1,18 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-private-catalog/compare/v0.4.0...v0.4.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([5f48f5b](https://www.github.com/googleapis/python-private-catalog/commit/5f48f5b616ceaff7a8b1c48dab3c29e4a97c95b6))
+* **deps:** require google-api-core >= 1.28.0 ([5f48f5b](https://www.github.com/googleapis/python-private-catalog/commit/5f48f5b616ceaff7a8b1c48dab3c29e4a97c95b6))
+
+
+### Documentation
+
+* list oneofs in docstring ([5f48f5b](https://www.github.com/googleapis/python-private-catalog/commit/5f48f5b616ceaff7a8b1c48dab3c29e4a97c95b6))
+
 ## [0.4.0](https://www.github.com/googleapis/python-private-catalog/compare/v0.3.0...v0.4.0) (2021-10-18)
 
 
