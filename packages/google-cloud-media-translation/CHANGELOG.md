@@ -1,5 +1,18 @@
 # Changelog
 
+### [0.7.1](https://www.github.com/googleapis/python-media-translation/compare/v0.7.0...v0.7.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([b40537e](https://www.github.com/googleapis/python-media-translation/commit/b40537ea4240cd8e91120ed158094b3c3346f8ee))
+* **deps:** require google-api-core >= 1.28.0 ([b40537e](https://www.github.com/googleapis/python-media-translation/commit/b40537ea4240cd8e91120ed158094b3c3346f8ee))
+
+
+### Documentation
+
+* list oneofs in docstring ([b40537e](https://www.github.com/googleapis/python-media-translation/commit/b40537ea4240cd8e91120ed158094b3c3346f8ee))
+
 ## [0.7.0](https://www.github.com/googleapis/python-media-translation/compare/v0.6.0...v0.7.0) (2021-10-25)
 
 
