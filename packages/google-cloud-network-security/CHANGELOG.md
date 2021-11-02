@@ -1,5 +1,18 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-network-security/compare/v0.3.0...v0.3.1) (2021-11-02)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([518f32b](https://www.github.com/googleapis/python-network-security/commit/518f32b90db80cd8a5b2774aba8c9a4b13ea1f57))
+* **deps:** require google-api-core >= 1.28.0 ([518f32b](https://www.github.com/googleapis/python-network-security/commit/518f32b90db80cd8a5b2774aba8c9a4b13ea1f57))
+
+
+### Documentation
+
+* list oneofs in docstring ([518f32b](https://www.github.com/googleapis/python-network-security/commit/518f32b90db80cd8a5b2774aba8c9a4b13ea1f57))
+
 ## [0.3.0](https://www.github.com/googleapis/python-network-security/compare/v0.2.0...v0.3.0) (2021-10-14)
 
 
