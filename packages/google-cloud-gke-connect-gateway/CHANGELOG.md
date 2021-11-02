@@ -1,5 +1,18 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-gke-connect-gateway/compare/v0.4.0...v0.4.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([5dab6d6](https://www.github.com/googleapis/python-gke-connect-gateway/commit/5dab6d661f23ef844f5cbfc17a3767767526407b))
+* **deps:** require google-api-core >= 1.28.0 ([5dab6d6](https://www.github.com/googleapis/python-gke-connect-gateway/commit/5dab6d661f23ef844f5cbfc17a3767767526407b))
+
+
+### Documentation
+
+* list oneofs in docstring ([5dab6d6](https://www.github.com/googleapis/python-gke-connect-gateway/commit/5dab6d661f23ef844f5cbfc17a3767767526407b))
+
 ## [0.4.0](https://www.github.com/googleapis/python-gke-connect-gateway/compare/v0.3.0...v0.4.0) (2021-10-20)
 
 
