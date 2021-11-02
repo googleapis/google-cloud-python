@@ -97,6 +97,9 @@ Libraries
    * - `Asset Inventory <https://github.com/googleapis/python-asset>`_
      - |ga|
      - |PyPI-google-cloud-asset|
+   * - `Assured Workloads for Government <https://github.com/googleapis/python-assured-workloads>`_
+     - |ga|
+     - |PyPI-google-cloud-assured-workloads|
    * - `AutoML <https://github.com/googleapis/python-automl>`_
      - |ga|
      - |PyPI-google-cloud-automl|
@@ -166,6 +169,9 @@ Libraries
    * - `Debugger <https://github.com/googleapis/python-debugger-client>`_
      - |ga|
      - |PyPI-google-cloud-debugger-client|
+   * - `Deploy <https://github.com/googleapis/python-deploy>`_
+     - |ga|
+     - |PyPI-google-cloud-deploy|
    * - `Dialogflow <https://github.com/googleapis/python-dialogflow>`_
      - |ga|
      - |PyPI-google-cloud-dialogflow|
@@ -355,9 +361,6 @@ Libraries
    * - `Analytics Data API <https://github.com/googleapis/python-analytics-data>`_
      - |beta|
      - |PyPI-google-analytics-data|
-   * - `Assured Workloads for Government <https://github.com/googleapis/python-assured-workloads>`_
-     - |beta|
-     - |PyPI-google-cloud-assured-workloads|
    * - `Audit Log <https://github.com/googleapis/python-audit-log>`_
      - |beta|
      - |PyPI-google-cloud-audit-log|
@@ -376,9 +379,6 @@ Libraries
    * - `Dataflow <https://github.com/googleapis/python-dataflow-client>`_
      - |beta|
      - |PyPI-google-cloud-dataflow-client|
-   * - `Deploy <https://github.com/googleapis/python-deploy>`_
-     - |beta|
-     - |PyPI-google-cloud-deploy|
    * - `Domains <https://github.com/googleapis/python-domains>`_
      - |beta|
      - |PyPI-google-cloud-domains|
@@ -464,6 +464,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-artifact-registry
 .. |PyPI-google-cloud-asset| image:: https://img.shields.io/pypi/v/google-cloud-asset.svg
      :target: https://pypi.org/project/google-cloud-asset
+.. |PyPI-google-cloud-assured-workloads| image:: https://img.shields.io/pypi/v/google-cloud-assured-workloads.svg
+     :target: https://pypi.org/project/google-cloud-assured-workloads
 .. |PyPI-google-cloud-automl| image:: https://img.shields.io/pypi/v/google-cloud-automl.svg
      :target: https://pypi.org/project/google-cloud-automl
 .. |PyPI-google-cloud-bigquery| image:: https://img.shields.io/pypi/v/google-cloud-bigquery.svg
@@ -510,6 +512,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-datastore
 .. |PyPI-google-cloud-debugger-client| image:: https://img.shields.io/pypi/v/google-cloud-debugger-client.svg
      :target: https://pypi.org/project/google-cloud-debugger-client
+.. |PyPI-google-cloud-deploy| image:: https://img.shields.io/pypi/v/google-cloud-deploy.svg
+     :target: https://pypi.org/project/google-cloud-deploy
 .. |PyPI-google-cloud-dialogflow| image:: https://img.shields.io/pypi/v/google-cloud-dialogflow.svg
      :target: https://pypi.org/project/google-cloud-dialogflow
 .. |PyPI-google-cloud-dialogflow-cx| image:: https://img.shields.io/pypi/v/google-cloud-dialogflow-cx.svg
@@ -636,8 +640,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-recaptcha-enterprise
 .. |PyPI-google-analytics-data| image:: https://img.shields.io/pypi/v/google-analytics-data.svg
      :target: https://pypi.org/project/google-analytics-data
-.. |PyPI-google-cloud-assured-workloads| image:: https://img.shields.io/pypi/v/google-cloud-assured-workloads.svg
-     :target: https://pypi.org/project/google-cloud-assured-workloads
 .. |PyPI-google-cloud-audit-log| image:: https://img.shields.io/pypi/v/google-cloud-audit-log.svg
      :target: https://pypi.org/project/google-cloud-audit-log
 .. |PyPI-pandas-gbq| image:: https://img.shields.io/pypi/v/pandas-gbq.svg
@@ -650,8 +652,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-datalabeling
 .. |PyPI-google-cloud-dataflow-client| image:: https://img.shields.io/pypi/v/google-cloud-dataflow-client.svg
      :target: https://pypi.org/project/google-cloud-dataflow-client
-.. |PyPI-google-cloud-deploy| image:: https://img.shields.io/pypi/v/google-cloud-deploy.svg
-     :target: https://pypi.org/project/google-cloud-deploy
 .. |PyPI-google-cloud-domains| image:: https://img.shields.io/pypi/v/google-cloud-domains.svg
      :target: https://pypi.org/project/google-cloud-domains
 .. |PyPI-google-cloud-error-reporting| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
