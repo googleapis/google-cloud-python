@@ -1,5 +1,18 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-life-sciences/compare/v0.4.0...v0.4.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([3364a46](https://www.github.com/googleapis/python-life-sciences/commit/3364a46234f2667908d6be5dbce125debc9be582))
+* **deps:** require google-api-core >= 1.28.0 ([3364a46](https://www.github.com/googleapis/python-life-sciences/commit/3364a46234f2667908d6be5dbce125debc9be582))
+
+
+### Documentation
+
+* list oneofs in docstring ([3364a46](https://www.github.com/googleapis/python-life-sciences/commit/3364a46234f2667908d6be5dbce125debc9be582))
+
 ## [0.4.0](https://www.github.com/googleapis/python-life-sciences/compare/v0.3.0...v0.4.0) (2021-10-18)
 
 
