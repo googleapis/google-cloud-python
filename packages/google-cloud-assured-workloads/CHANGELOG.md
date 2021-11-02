@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-assured-workloads/compare/v0.8.0...v1.0.0) (2021-11-01)
+
+
+### Features
+
+* bump release level to production/stable ([#92](https://www.github.com/googleapis/python-assured-workloads/issues/92)) ([c346fbb](https://www.github.com/googleapis/python-assured-workloads/commit/c346fbb3c3c4388100ba08d5a30889e96727e351))
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([2bc0174](https://www.github.com/googleapis/python-assured-workloads/commit/2bc01744f9bbc48f3e5d1de1dd196571fc1494db))
+* **deps:** require google-api-core >= 1.28.0 ([2bc0174](https://www.github.com/googleapis/python-assured-workloads/commit/2bc01744f9bbc48f3e5d1de1dd196571fc1494db))
+
+
+### Documentation
+
+* list oneofs in docstring ([2bc0174](https://www.github.com/googleapis/python-assured-workloads/commit/2bc01744f9bbc48f3e5d1de1dd196571fc1494db))
+
 ## [0.8.0](https://www.github.com/googleapis/python-assured-workloads/compare/v0.7.2...v0.8.0) (2021-10-11)
 
 
