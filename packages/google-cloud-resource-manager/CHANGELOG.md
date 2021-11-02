@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+### [1.3.1](https://www.github.com/googleapis/python-resource-manager/compare/v1.3.0...v1.3.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([a6a9231](https://www.github.com/googleapis/python-resource-manager/commit/a6a9231410e73d89b98f3a031bb465a2cc3a672b))
+* **deps:** require google-api-core >= 1.28.0 ([a6a9231](https://www.github.com/googleapis/python-resource-manager/commit/a6a9231410e73d89b98f3a031bb465a2cc3a672b))
+
+
+### Documentation
+
+* list oneofs in docstring ([a6a9231](https://www.github.com/googleapis/python-resource-manager/commit/a6a9231410e73d89b98f3a031bb465a2cc3a672b))
+
 ## [1.3.0](https://www.github.com/googleapis/python-resource-manager/compare/v1.2.0...v1.3.0) (2021-10-14)
 
 
