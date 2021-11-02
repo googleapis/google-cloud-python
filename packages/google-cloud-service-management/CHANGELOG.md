@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/python-service-management/compare/v1.1.0...v1.1.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([f00ac02](https://www.github.com/googleapis/python-service-management/commit/f00ac02469bd7b8b5462ffcf2028fa25d33369cb))
+* **deps:** require google-api-core >= 1.28.0 ([f00ac02](https://www.github.com/googleapis/python-service-management/commit/f00ac02469bd7b8b5462ffcf2028fa25d33369cb))
+
+
+### Documentation
+
+* list oneofs in docstring ([f00ac02](https://www.github.com/googleapis/python-service-management/commit/f00ac02469bd7b8b5462ffcf2028fa25d33369cb))
+
 ## [1.1.0](https://www.github.com/googleapis/python-service-management/compare/v1.0.4...v1.1.0) (2021-10-26)
 
 
