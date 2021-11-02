@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.4.1](https://www.github.com/googleapis/python-workflows/compare/v1.4.0...v1.4.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([a294177](https://www.github.com/googleapis/python-workflows/commit/a294177e4d23f35e60fdcaa2023efea9bce366a4))
+* **deps:** require google-api-core >= 1.28.0 ([a294177](https://www.github.com/googleapis/python-workflows/commit/a294177e4d23f35e60fdcaa2023efea9bce366a4))
+
+
+### Documentation
+
+* list oneofs in docstring ([a294177](https://www.github.com/googleapis/python-workflows/commit/a294177e4d23f35e60fdcaa2023efea9bce366a4))
+
 ## [1.4.0](https://www.github.com/googleapis/python-workflows/compare/v1.3.0...v1.4.0) (2021-10-19)
 
 
