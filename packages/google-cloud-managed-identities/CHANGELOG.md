@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/googleapis/python-managed-identities/compare/v1.3.0...v1.3.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([0e325ae](https://www.github.com/googleapis/python-managed-identities/commit/0e325ae6f338fed1d7f815a4ecda87a9c9998412))
+* **deps:** require google-api-core >= 1.28.0 ([0e325ae](https://www.github.com/googleapis/python-managed-identities/commit/0e325ae6f338fed1d7f815a4ecda87a9c9998412))
+
+
+### Documentation
+
+* list oneofs in docstring ([0e325ae](https://www.github.com/googleapis/python-managed-identities/commit/0e325ae6f338fed1d7f815a4ecda87a9c9998412))
+
 ## [1.3.0](https://www.github.com/googleapis/python-managed-identities/compare/v1.2.0...v1.3.0) (2021-10-21)
 
 
