@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-vpc-access/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([cd6b816](https://www.github.com/googleapis/python-vpc-access/commit/cd6b816ece0ea0de28619d2072d980678e82c414))
+* **deps:** require google-api-core >= 1.28.0 ([cd6b816](https://www.github.com/googleapis/python-vpc-access/commit/cd6b816ece0ea0de28619d2072d980678e82c414))
+
+
+### Documentation
+
+* list oneofs in docstring ([cd6b816](https://www.github.com/googleapis/python-vpc-access/commit/cd6b816ece0ea0de28619d2072d980678e82c414))
+
 ## [1.2.0](https://www.github.com/googleapis/python-vpc-access/compare/v1.1.0...v1.2.0) (2021-10-18)
 
 
