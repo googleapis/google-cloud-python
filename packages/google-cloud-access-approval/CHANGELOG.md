@@ -1,5 +1,19 @@
 # Changelog
 
+### [1.4.1](https://www.github.com/googleapis/python-access-approval/compare/v1.4.0...v1.4.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([d6e1bd6](https://www.github.com/googleapis/python-access-approval/commit/d6e1bd63bdf6b8881659eb41c1a9e15968c3dfee))
+* **deps:** require google-api-core >= 1.28.0 ([d6e1bd6](https://www.github.com/googleapis/python-access-approval/commit/d6e1bd63bdf6b8881659eb41c1a9e15968c3dfee))
+* fix extras_require typo in setup.py ([d6e1bd6](https://www.github.com/googleapis/python-access-approval/commit/d6e1bd63bdf6b8881659eb41c1a9e15968c3dfee))
+
+
+### Documentation
+
+* list oneofs in docstring ([d6e1bd6](https://www.github.com/googleapis/python-access-approval/commit/d6e1bd63bdf6b8881659eb41c1a9e15968c3dfee))
+
 ## [1.4.0](https://www.github.com/googleapis/python-access-approval/compare/v1.3.5...v1.4.0) (2021-10-11)
 
 
