@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+### [3.4.1](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.4.0...v3.4.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([2a7e0db](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/2a7e0dba3714d1664d9c67518040ccf6b51eda83))
+* **deps:** require google-api-core >= 1.28.0 ([2a7e0db](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/2a7e0dba3714d1664d9c67518040ccf6b51eda83))
+
+
+### Documentation
+
+* list oneofs in docstring ([2a7e0db](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/2a7e0dba3714d1664d9c67518040ccf6b51eda83))
+
 ## [3.4.0](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.3.4...v3.4.0) (2021-10-08)
 
 
