@@ -1,5 +1,18 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-bigquery-migration/compare/v0.2.0...v0.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([70ec0c5](https://www.github.com/googleapis/python-bigquery-migration/commit/70ec0c5da7cf18ed632bfb19c5f2d6bfb8d2334a))
+* **deps:** require google-api-core >= 1.28.0 ([70ec0c5](https://www.github.com/googleapis/python-bigquery-migration/commit/70ec0c5da7cf18ed632bfb19c5f2d6bfb8d2334a))
+
+
+### Documentation
+
+* list oneofs in docstring ([70ec0c5](https://www.github.com/googleapis/python-bigquery-migration/commit/70ec0c5da7cf18ed632bfb19c5f2d6bfb8d2334a))
+
 ## [0.2.0](https://www.github.com/googleapis/python-bigquery-migration/compare/v0.1.0...v0.2.0) (2021-10-08)
 
 
