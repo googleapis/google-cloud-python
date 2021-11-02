@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-orchestration-airflow/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([be8de44](https://www.github.com/googleapis/python-orchestration-airflow/commit/be8de448aa7b0bdfb40edf5c41b0a2d5a411b9cc))
+* **deps:** require google-api-core >= 1.28.0 ([be8de44](https://www.github.com/googleapis/python-orchestration-airflow/commit/be8de448aa7b0bdfb40edf5c41b0a2d5a411b9cc))
+
+
+### Documentation
+
+* list oneofs in docstring ([be8de44](https://www.github.com/googleapis/python-orchestration-airflow/commit/be8de448aa7b0bdfb40edf5c41b0a2d5a411b9cc))
+
 ## [1.2.0](https://www.github.com/googleapis/python-orchestration-airflow/compare/v1.1.0...v1.2.0) (2021-10-18)
 
 
