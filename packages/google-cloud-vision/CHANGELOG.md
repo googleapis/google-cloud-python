@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+### [2.6.2](https://www.github.com/googleapis/python-vision/compare/v2.6.1...v2.6.2) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([b6bf6ab](https://www.github.com/googleapis/python-vision/commit/b6bf6abb9114ffbf426ad3aca49d76190a421e3e))
+* **deps:** require google-api-core >= 1.28.0 ([b6bf6ab](https://www.github.com/googleapis/python-vision/commit/b6bf6abb9114ffbf426ad3aca49d76190a421e3e))
+
+
+### Documentation
+
+* list oneofs in docstring ([b6bf6ab](https://www.github.com/googleapis/python-vision/commit/b6bf6abb9114ffbf426ad3aca49d76190a421e3e))
+
 ### [2.6.1](https://www.github.com/googleapis/python-vision/compare/v2.6.0...v2.6.1) (2021-10-26)
 
 
