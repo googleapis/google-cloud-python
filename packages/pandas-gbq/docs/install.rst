@@ -29,7 +29,7 @@ Install from Source
 
 .. code-block:: shell
 
-    $ pip install git+https://github.com/pydata/pandas-gbq.git
+    $ pip install git+https://github.com/googleapis/python-bigquery-pandas.git
 
 
 Dependencies
@@ -38,6 +38,7 @@ Dependencies
 This module requires following additional dependencies:
 
 - `pydata-google-auth <https://github.com/pydata/pydata-google-auth>`__: Helpers for authentication to Google's API
+- `pyarrow <https://arrow.apache.org/docs/python/>`__: Format for getting data to/from Google BigQuery
 - `google-auth <https://github.com/GoogleCloudPlatform/google-auth-library-python>`__: authentication and authorization for Google's API
 - `google-auth-oauthlib <https://github.com/GoogleCloudPlatform/google-auth-library-python-oauthlib>`__: integration with `oauthlib <https://github.com/idan/oauthlib>`__ for end-user authentication
 - `google-cloud-bigquery <https://googleapis.dev/python/bigquery/latest/index.html>`__: Google Cloud client library for BigQuery

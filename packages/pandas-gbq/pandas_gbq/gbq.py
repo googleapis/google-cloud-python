@@ -18,8 +18,11 @@ except ImportError:  # pragma: NO COVER
     bigquery = None
     google_exceptions = None
 
-from pandas_gbq.exceptions import AccessDenied
-from pandas_gbq.exceptions import PerformanceWarning
+from pandas_gbq.exceptions import (
+    AccessDenied,
+    GenericGBQException,
+    PerformanceWarning,
+)
 from pandas_gbq import features
 from pandas_gbq.features import FEATURES
 import pandas_gbq.schema
@@ -64,14 +67,6 @@ def _test_google_api_imports():
 class DatasetCreationError(ValueError):
     """
     Raised when the create dataset method fails
-    """
-
-    pass
-
-
-class GenericGBQException(ValueError):
-    """
-    Raised when an unrecognized Google API Error occurs.
     """
 
     pass
@@ -520,7 +515,7 @@ class GbqConnector(object):
             df = rows_iter.to_dataframe(
                 dtypes=conversion_dtypes,
                 progress_bar_type=progress_bar_type,
-                **to_dataframe_kwargs
+                **to_dataframe_kwargs,
             )
         except self.http_error as ex:
             self.process_http_error(ex)
@@ -541,6 +536,7 @@ class GbqConnector(object):
         chunksize=None,
         schema=None,
         progress_bar=True,
+        api_method: str = "load_parquet",
     ):
         from pandas_gbq import load
 
@@ -554,6 +550,7 @@ class GbqConnector(object):
                 chunksize=chunksize,
                 schema=schema,
                 location=self.location,
+                api_method=api_method,
             )
             if progress_bar and tqdm:
                 chunks = tqdm.tqdm(chunks)
@@ -876,6 +873,7 @@ def to_gbq(
     location=None,
     progress_bar=True,
     credentials=None,
+    api_method: str = "default",
     verbose=None,
     private_key=None,
 ):
@@ -964,6 +962,12 @@ def to_gbq(
         :class:`google.oauth2.service_account.Credentials` directly.
 
         .. versionadded:: 0.8.0
+    api_method : str, optional
+        API method used to upload DataFrame to BigQuery. One of "load_parquet",
+        "load_csv". Default "load_parquet" if pandas is version 1.1.0+,
+        otherwise "load_csv".
+
+        .. versionadded:: 0.16.0
     verbose : bool, deprecated
         Deprecated in Pandas-GBQ 0.4.0. Use the `logging module
         to adjust verbosity instead
@@ -987,6 +991,28 @@ def to_gbq(
             FutureWarning,
             stacklevel=1,
         )
+
+    if api_method == "default":
+        # Avoid using parquet if pandas doesn't support lossless conversions to
+        # parquet timestamp. See: https://stackoverflow.com/a/69758676/101923
+        if FEATURES.pandas_has_parquet_with_lossless_timestamp:
+            api_method = "load_parquet"
+        else:
+            api_method = "load_csv"
+
+    if chunksize is not None:
+        if api_method == "load_parquet":
+            warnings.warn(
+                "chunksize is ignored when using api_method='load_parquet'",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+        elif api_method == "load_csv":
+            warnings.warn(
+                "chunksize will be ignored when using api_method='load_csv' in a future version of pandas-gbq",
+                PendingDeprecationWarning,
+                stacklevel=2,
+            )
 
     if if_exists not in ("fail", "replace", "append"):
         raise ValueError("'{0}' is not valid for if_exists".format(if_exists))
@@ -1071,6 +1097,7 @@ def to_gbq(
         chunksize=chunksize,
         schema=table_schema,
         progress_bar=progress_bar,
+        api_method=api_method,
     )
 
 

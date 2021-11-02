@@ -1185,77 +1185,6 @@ class TestToGBQIntegration(object):
                 credentials=self.credentials,
             )
 
-    def test_upload_chinese_unicode_data(self, project_id):
-        test_id = "2"
-        test_size = 6
-        df = DataFrame(np.random.randn(6, 4), index=range(6), columns=list("ABCD"))
-        df["s"] = u"信用卡"
-
-        gbq.to_gbq(
-            df,
-            self.destination_table + test_id,
-            project_id,
-            credentials=self.credentials,
-            chunksize=10000,
-        )
-
-        result_df = gbq.read_gbq(
-            "SELECT * FROM {0}".format(self.destination_table + test_id),
-            project_id=project_id,
-            credentials=self.credentials,
-            dialect="legacy",
-        )
-
-        assert len(result_df) == test_size
-
-        if sys.version_info.major < 3:
-            pytest.skip(msg="Unicode comparison in Py2 not working")
-
-        result = result_df["s"].sort_values()
-        expected = df["s"].sort_values()
-
-        tm.assert_numpy_array_equal(expected.values, result.values)
-
-    def test_upload_other_unicode_data(self, project_id):
-        test_id = "3"
-        test_size = 3
-        df = DataFrame(
-            {
-                "s": ["Skywalker™", "lego", "hülle"],
-                "i": [200, 300, 400],
-                "d": [
-                    "2017-12-13 17:40:39",
-                    "2017-12-13 17:40:39",
-                    "2017-12-13 17:40:39",
-                ],
-            }
-        )
-
-        gbq.to_gbq(
-            df,
-            self.destination_table + test_id,
-            project_id=project_id,
-            credentials=self.credentials,
-            chunksize=10000,
-        )
-
-        result_df = gbq.read_gbq(
-            "SELECT * FROM {0}".format(self.destination_table + test_id),
-            project_id=project_id,
-            credentials=self.credentials,
-            dialect="legacy",
-        )
-
-        assert len(result_df) == test_size
-
-        if sys.version_info.major < 3:
-            pytest.skip(msg="Unicode comparison in Py2 not working")
-
-        result = result_df["s"].sort_values()
-        expected = df["s"].sort_values()
-
-        tm.assert_numpy_array_equal(expected.values, result.values)
-
     def test_upload_mixed_float_and_int(self, project_id):
         """Test that we can upload a dataframe containing an int64 and float64 column.
         See: https://github.com/pydata/pandas-gbq/issues/116
@@ -1454,6 +1383,9 @@ class TestToGBQIntegration(object):
             project_id,
             credentials=self.credentials,
             table_schema=test_schema,
+            # Loading string pandas series to FLOAT column not supported with
+            # Parquet.
+            api_method="load_csv",
         )
         dataset, table = destination_table.split(".")
         assert verify_schema(

@@ -124,6 +124,29 @@ def test_to_gbq_with_no_project_id_given_should_fail(monkeypatch):
         gbq.to_gbq(DataFrame([[1]]), "dataset.tablename")
 
 
+@pytest.mark.parametrize(
+    ["api_method", "warning_message", "warning_type"],
+    [
+        ("load_parquet", "chunksize is ignored", DeprecationWarning),
+        ("load_csv", "chunksize will be ignored", PendingDeprecationWarning),
+    ],
+)
+def test_to_gbq_with_chunksize_warns_deprecation(
+    api_method, warning_message, warning_type
+):
+    with pytest.warns(warning_type, match=warning_message):
+        try:
+            gbq.to_gbq(
+                DataFrame([[1]]),
+                "dataset.tablename",
+                project_id="my-project",
+                api_method=api_method,
+                chunksize=100,
+            )
+        except gbq.TableCreationError:
+            pass
+
+
 @pytest.mark.parametrize(["verbose"], [(True,), (False,)])
 def test_to_gbq_with_verbose_new_pandas_warns_deprecation(monkeypatch, verbose):
     monkeypatch.setattr(

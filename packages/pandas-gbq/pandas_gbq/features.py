@@ -10,6 +10,7 @@ BIGQUERY_CLIENT_INFO_VERSION = "1.12.0"
 BIGQUERY_BQSTORAGE_VERSION = "1.24.0"
 BIGQUERY_FROM_DATAFRAME_CSV_VERSION = "2.6.0"
 PANDAS_VERBOSITY_DEPRECATION_VERSION = "0.23.0"
+PANDAS_PARQUET_LOSSLESS_TIMESTAMP_VERSION = "1.1.0"
 
 
 class Features:
@@ -88,6 +89,15 @@ class Features:
             PANDAS_VERBOSITY_DEPRECATION_VERSION
         )
         return self.pandas_installed_version >= pandas_verbosity_deprecation
+
+    @property
+    def pandas_has_parquet_with_lossless_timestamp(self):
+        import pkg_resources
+
+        desired_version = pkg_resources.parse_version(
+            PANDAS_PARQUET_LOSSLESS_TIMESTAMP_VERSION
+        )
+        return self.pandas_installed_version >= desired_version
 
 
 FEATURES = Features()

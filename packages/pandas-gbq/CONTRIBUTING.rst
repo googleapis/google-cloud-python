@@ -148,7 +148,7 @@ Running System Tests
 
   .. note::
 
-      System tests are only configured to run under Python 3.8 and 3.9.
+      System tests are only configured to run under Python 3.7, 3.8 and 3.9.
       For expediency, we do not run them in older versions of Python 3.
 
   This alone will not run the tests. You'll need to change some local

@@ -1,6 +1,7 @@
 pydata-google-auth
 google-cloud-bigquery
 google-cloud-bigquery-storage
+pyarrow
 pytest
 pytest-cov
 codecov
