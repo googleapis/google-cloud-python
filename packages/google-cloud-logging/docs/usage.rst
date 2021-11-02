@@ -84,6 +84,15 @@ Retrieve entries for a single logger, sorting in descending timestamp order:
     :end-before: [END logger_list_entries]
     :dedent: 4
 
+And as a practical example, retrieve all `GKE Admin Activity audit logs`_
+from the past 24 hours:
+
+.. _GKE Admin Activity audit logs: https://cloud.google.com/kubernetes-engine/docs/how-to/audit-logging#audit_logs_in_your_project
+
+.. literalinclude:: ../samples/snippets/usage_guide.py
+    :start-after: [START logging_list_gke_audit_logs]
+    :end-before: [END logging_list_gke_audit_logs]
+    :dedent: 4
 
 Delete all entries for a logger
 -------------------------------
