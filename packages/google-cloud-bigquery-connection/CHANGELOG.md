@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.3.0...v1.3.1) (2021-11-02)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([826da22](https://www.github.com/googleapis/python-bigquery-connection/commit/826da22f591ab1c16eadf3a53cc8476e04577f40))
+* **deps:** require google-api-core >= 1.28.0 ([826da22](https://www.github.com/googleapis/python-bigquery-connection/commit/826da22f591ab1c16eadf3a53cc8476e04577f40))
+
+
+### Documentation
+
+* list oneofs in docstring ([826da22](https://www.github.com/googleapis/python-bigquery-connection/commit/826da22f591ab1c16eadf3a53cc8476e04577f40))
+
 ## [1.3.0](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.2.3...v1.3.0) (2021-10-08)
 
 
