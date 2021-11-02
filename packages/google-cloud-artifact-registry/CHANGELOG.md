@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-artifact-registry/compare/v1.0.0...v1.0.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([90e3313](https://www.github.com/googleapis/python-artifact-registry/commit/90e3313b50b127d6fc562e7138b12743412fa064))
+* **deps:** require google-api-core >= 1.28.0 ([90e3313](https://www.github.com/googleapis/python-artifact-registry/commit/90e3313b50b127d6fc562e7138b12743412fa064))
+
+
+### Documentation
+
+* list oneofs in docstring ([90e3313](https://www.github.com/googleapis/python-artifact-registry/commit/90e3313b50b127d6fc562e7138b12743412fa064))
+
 ## [1.0.0](https://www.github.com/googleapis/python-artifact-registry/compare/v0.5.0...v1.0.0) (2021-10-22)
 
 
