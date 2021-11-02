@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-network-connectivity/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([c6cd1b0](https://www.github.com/googleapis/python-network-connectivity/commit/c6cd1b0f58803d8eb13c3d7bf4e60780650f668e))
+* **deps:** require google-api-core >= 1.28.0 ([c6cd1b0](https://www.github.com/googleapis/python-network-connectivity/commit/c6cd1b0f58803d8eb13c3d7bf4e60780650f668e))
+
+
+### Documentation
+
+* list oneofs in docstring ([c6cd1b0](https://www.github.com/googleapis/python-network-connectivity/commit/c6cd1b0f58803d8eb13c3d7bf4e60780650f668e))
+
 ## [1.2.0](https://www.github.com/googleapis/python-network-connectivity/compare/v1.1.0...v1.2.0) (2021-10-18)
 
 
