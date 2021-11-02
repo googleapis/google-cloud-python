@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/python-storage-transfer/compare/v1.1.0...v1.1.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([4ab0dba](https://www.github.com/googleapis/python-storage-transfer/commit/4ab0dba044184036c40020443384f0966fee21c5))
+* **deps:** require google-api-core >= 1.28.0 ([4ab0dba](https://www.github.com/googleapis/python-storage-transfer/commit/4ab0dba044184036c40020443384f0966fee21c5))
+
+
+### Documentation
+
+* list oneofs in docstring ([4ab0dba](https://www.github.com/googleapis/python-storage-transfer/commit/4ab0dba044184036c40020443384f0966fee21c5))
+
 ## [1.1.0](https://www.github.com/googleapis/python-storage-transfer/compare/v1.0.2...v1.1.0) (2021-10-15)
 
 
