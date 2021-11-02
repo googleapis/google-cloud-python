@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-dms/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([c369810](https://www.github.com/googleapis/python-dms/commit/c369810a8dd6771a065cc99ff62d550a1658a014))
+* **deps:** require google-api-core >= 1.28.0 ([c369810](https://www.github.com/googleapis/python-dms/commit/c369810a8dd6771a065cc99ff62d550a1658a014))
+
+
+### Documentation
+
+* list oneofs in docstring ([c369810](https://www.github.com/googleapis/python-dms/commit/c369810a8dd6771a065cc99ff62d550a1658a014))
+
 ## [1.2.0](https://www.github.com/googleapis/python-dms/compare/v1.1.0...v1.2.0) (2021-10-18)
 
 
