@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-org-policy/compare/v1.2.0...v1.2.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([1d6e752](https://www.github.com/googleapis/python-org-policy/commit/1d6e7524d8bfefd52998e887665ab3ba1b507134))
+* **deps:** require google-api-core >= 1.28.0 ([1d6e752](https://www.github.com/googleapis/python-org-policy/commit/1d6e7524d8bfefd52998e887665ab3ba1b507134))
+
+
+### Documentation
+
+* list oneofs in docstring ([1d6e752](https://www.github.com/googleapis/python-org-policy/commit/1d6e7524d8bfefd52998e887665ab3ba1b507134))
+
 ## [1.2.0](https://www.github.com/googleapis/python-org-policy/compare/v1.1.0...v1.2.0) (2021-10-14)
 
 
