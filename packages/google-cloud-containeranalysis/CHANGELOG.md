@@ -1,5 +1,18 @@
 # Changelog
 
+### [2.6.2](https://www.github.com/googleapis/python-containeranalysis/compare/v2.6.1...v2.6.2) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([5de0b09](https://www.github.com/googleapis/python-containeranalysis/commit/5de0b093d7495f9d46c332463aa68a7a5995e317))
+* **deps:** require google-api-core >= 1.28.0 ([5de0b09](https://www.github.com/googleapis/python-containeranalysis/commit/5de0b093d7495f9d46c332463aa68a7a5995e317))
+
+
+### Documentation
+
+* list oneofs in docstring ([5de0b09](https://www.github.com/googleapis/python-containeranalysis/commit/5de0b093d7495f9d46c332463aa68a7a5995e317))
+
 ### [2.6.1](https://www.github.com/googleapis/python-containeranalysis/compare/v2.6.0...v2.6.1) (2021-10-28)
 
 
