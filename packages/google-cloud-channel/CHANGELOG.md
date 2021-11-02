@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.6.1](https://www.github.com/googleapis/python-channel/compare/v1.6.0...v1.6.1) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([339c62c](https://www.github.com/googleapis/python-channel/commit/339c62c4a1b491bd86bb70530376b65183a2b7d4))
+* **deps:** require google-api-core >= 1.28.0 ([339c62c](https://www.github.com/googleapis/python-channel/commit/339c62c4a1b491bd86bb70530376b65183a2b7d4))
+
+
+### Documentation
+
+* list oneofs in docstring ([339c62c](https://www.github.com/googleapis/python-channel/commit/339c62c4a1b491bd86bb70530376b65183a2b7d4))
+
 ## [1.6.0](https://www.github.com/googleapis/python-channel/compare/v1.5.0...v1.6.0) (2021-10-27)
 
 
