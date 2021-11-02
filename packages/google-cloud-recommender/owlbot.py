@@ -24,23 +24,6 @@ common = gcp.CommonTemplates()
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
-    # Fix docstring with regex pattern that breaks docgen
-    s.replace(library / "google/**/*client.py", "(/\^.*\$/)", "``\g<1>``")
-
-    # Fix more regex in docstrings
-    s.replace(library / "google/**/types/*.py",
-        "(regex\s+)(/.*?/)\.",
-        "\g<1>``\g<2>``.",
-        flags=re.MULTILINE | re.DOTALL,
-    )
-
-    # Fix docstring with JSON example by wrapping with backticks
-    s.replace(library / "google/**/types/recommendation.py",
-        "( -  Example: )(\{.*?\})",
-        "\g<1>``\g<2>``",
-        flags=re.MULTILINE | re.DOTALL,
-    )
-
     s.move(library, excludes=["docs/index.rst", "README.rst", "setup.py"])
 
 s.remove_staging_dirs()

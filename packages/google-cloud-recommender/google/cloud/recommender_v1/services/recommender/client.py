@@ -888,8 +888,8 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
             state_metadata (Sequence[google.cloud.recommender_v1.types.MarkRecommendationClaimedRequest.StateMetadataEntry]):
                 State properties to include with this state. Overwrites
                 any existing ``state_metadata``. Keys must match the
-                regex ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must match
-                the regex ``/^[a-zA-Z0-9_./-]{0,255}$/``.
+                regex ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must
+                match the regex ``/^[a-zA-Z0-9_./-]{0,255}$/``.
 
                 This corresponds to the ``state_metadata`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1000,8 +1000,8 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
             state_metadata (Sequence[google.cloud.recommender_v1.types.MarkRecommendationSucceededRequest.StateMetadataEntry]):
                 State properties to include with this state. Overwrites
                 any existing ``state_metadata``. Keys must match the
-                regex ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must match
-                the regex ``/^[a-zA-Z0-9_./-]{0,255}$/``.
+                regex ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must
+                match the regex ``/^[a-zA-Z0-9_./-]{0,255}$/``.
 
                 This corresponds to the ``state_metadata`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1112,8 +1112,8 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
             state_metadata (Sequence[google.cloud.recommender_v1.types.MarkRecommendationFailedRequest.StateMetadataEntry]):
                 State properties to include with this state. Overwrites
                 any existing ``state_metadata``. Keys must match the
-                regex ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must match
-                the regex ``/^[a-zA-Z0-9_./-]{0,255}$/``.
+                regex ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must
+                match the regex ``/^[a-zA-Z0-9_./-]{0,255}$/``.
 
                 This corresponds to the ``state_metadata`` field
                 on the ``request`` instance; if ``request`` is provided, this

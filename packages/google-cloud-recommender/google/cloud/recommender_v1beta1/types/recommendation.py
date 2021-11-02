@@ -212,15 +212,35 @@ class Operation(proto.Message):
             intended to be an exact match per filter. To perform
             advanced matching, use path_value_matchers.
 
-            -  Example: ``{ "/versions/*/name" : "it-123"
-               "/versions/*/targetSize/percent": 20 }``
-            -  Example: ``{ "/bindings/*/role": "roles/owner"
-               "/bindings/*/condition" : null }``
-            -  Example: ``{ "/bindings/*/role": "roles/owner"
-               "/bindings/*/members/*" : ["x@example.com",
-               "y@example.com"] }`` When both path_filters and
-               path_value_matchers are set, an implicit AND must be
-               performed.
+            -  Example:
+
+            ::
+
+               {
+                 "/versions/*/name" : "it-123"
+                 "/versions/*/targetSize/percent": 20
+               }
+
+            -  Example:
+
+            ::
+
+               {
+                 "/bindings/*/role": "roles/owner"
+                 "/bindings/*/condition" : null
+               }
+
+            -  Example:
+
+            ::
+
+               {
+                 "/bindings/*/role": "roles/owner"
+                 "/bindings/*/members/*" : ["x@example.com", "y@example.com"]
+               }
+
+            When both path_filters and path_value_matchers are set, an
+            implicit AND must be performed.
         path_value_matchers (Sequence[google.cloud.recommender_v1beta1.types.Operation.PathValueMatchersEntry]):
             Similar to path_filters, this contains set of filters to
             apply if ``path`` field referes to array elements. This is
