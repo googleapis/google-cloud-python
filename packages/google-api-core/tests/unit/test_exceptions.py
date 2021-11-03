@@ -237,6 +237,34 @@ def test_from_grpc_error_non_call():
     assert exception.response == error
 
 
+@pytest.mark.skipif(grpc is None, reason="No grpc")
+def test_from_grpc_error_bare_call():
+    message = "Testing"
+
+    class TestingError(grpc.Call, grpc.RpcError):
+        def __init__(self, exception):
+            self.exception = exception
+
+        def code(self):
+            return self.exception.grpc_status_code
+
+        def details(self):
+            return message
+
+    nested_message = "message"
+    error = TestingError(exceptions.GoogleAPICallError(nested_message))
+
+    exception = exceptions.from_grpc_error(error)
+
+    assert isinstance(exception, exceptions.GoogleAPICallError)
+    assert exception.code is None
+    assert exception.grpc_status_code is None
+    assert exception.message == message
+    assert exception.errors == [error]
+    assert exception.response == error
+    assert exception.details == []
+
+
 def create_bad_request_details():
     bad_request_details = error_details_pb2.BadRequest()
     field_violation = bad_request_details.field_violations.add()

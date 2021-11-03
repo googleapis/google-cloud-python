@@ -487,9 +487,14 @@ def _is_informative_grpc_error(rpc_exc):
 
 
 def _parse_grpc_error_details(rpc_exc):
-    status = rpc_status.from_call(rpc_exc)
+    try:
+        status = rpc_status.from_call(rpc_exc)
+    except NotImplementedError:  # workaround
+        return []
+
     if not status:
         return []
+
     possible_errors = [
         error_details_pb2.BadRequest,
         error_details_pb2.PreconditionFailure,
