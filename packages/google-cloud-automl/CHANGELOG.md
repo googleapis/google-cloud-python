@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+### [2.5.2](https://www.github.com/googleapis/python-automl/compare/v2.5.1...v2.5.2) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([e50d4c9](https://www.github.com/googleapis/python-automl/commit/e50d4c928601f6a32b22dcd36338e820254451d4))
+* **deps:** require google-api-core >= 1.28.0 ([e50d4c9](https://www.github.com/googleapis/python-automl/commit/e50d4c928601f6a32b22dcd36338e820254451d4))
+
+
+### Documentation
+
+* list oneofs in docstring ([e50d4c9](https://www.github.com/googleapis/python-automl/commit/e50d4c928601f6a32b22dcd36338e820254451d4))
+
 ### [2.5.1](https://www.github.com/googleapis/python-automl/compare/v2.5.0...v2.5.1) (2021-10-20)
 
 
