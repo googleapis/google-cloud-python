@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.3.1...v1.4.0) (2021-11-03)
+
+
+### Features
+
+* add reCAPTCHA Enterprise account defender API methods ([#146](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/146)) ([8149df9](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/8149df9e3038bf02483fb2ee0c9dfc9d713a6152))
+
+
+### Documentation
+
+* **samples:** removed assessment name in create_assessment sample ([#147](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/147)) ([f11134d](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/f11134da5e9e9770b73dadd96c08ba69c99b968f))
+
 ### [1.3.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.3.0...v1.3.1) (2021-11-01)
 
 
