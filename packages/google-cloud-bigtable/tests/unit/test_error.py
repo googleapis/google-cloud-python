@@ -12,86 +12,90 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+
+def _make_status_pb(**kwargs):
+    from google.rpc.status_pb2 import Status
+
+    return Status(**kwargs)
 
 
-class TestStatus(unittest.TestCase):
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.bigtable.error import Status
+def _make_status(status_pb):
+    from google.cloud.bigtable.error import Status
 
-        return Status
+    return Status(status_pb)
 
-    @staticmethod
-    def _make_status_pb(**kwargs):
-        from google.rpc.status_pb2 import Status
 
-        return Status(**kwargs)
+def test_status_ctor():
+    status_pb = _make_status_pb()
+    status = _make_status(status_pb)
+    assert status.status_pb is status_pb
 
-    def _make_one(self, status_pb):
-        return self._get_target_class()(status_pb)
 
-    def test_ctor(self):
-        status_pb = self._make_status_pb()
-        status = self._make_one(status_pb)
-        self.assertIs(status.status_pb, status_pb)
+def test_status_code():
+    code = 123
+    status_pb = _make_status_pb(code=code)
+    status = _make_status(status_pb)
+    assert status.code == code
 
-    def test_code(self):
-        code = 123
-        status_pb = self._make_status_pb(code=code)
-        status = self._make_one(status_pb)
-        self.assertEqual(status.code, code)
 
-    def test_message(self):
-        message = "message"
-        status_pb = self._make_status_pb(message=message)
-        status = self._make_one(status_pb)
-        self.assertEqual(status.message, message)
+def test_status_message():
+    message = "message"
+    status_pb = _make_status_pb(message=message)
+    status = _make_status(status_pb)
+    assert status.message == message
 
-    def test___eq___self(self):
-        status_pb = self._make_status_pb()
-        status = self._make_one(status_pb)
-        self.assertTrue(status == status)
 
-    def test___eq___other_hit(self):
-        status_pb = self._make_status_pb(code=123, message="message")
-        status = self._make_one(status_pb)
-        other = self._make_one(status_pb)
-        self.assertTrue(status == other)
+def test_status___eq___self():
+    status_pb = _make_status_pb()
+    status = _make_status(status_pb)
+    assert status == status
 
-    def test___eq___other_miss(self):
-        status_pb = self._make_status_pb(code=123, message="message")
-        other_status_pb = self._make_status_pb(code=456, message="oops")
-        status = self._make_one(status_pb)
-        other = self._make_one(other_status_pb)
-        self.assertFalse(status == other)
 
-    def test___eq___wrong_type(self):
-        status_pb = self._make_status_pb(code=123, message="message")
-        status = self._make_one(status_pb)
-        other = object()
-        self.assertFalse(status == other)
+def test_status___eq___other_hit():
+    status_pb = _make_status_pb(code=123, message="message")
+    status = _make_status(status_pb)
+    other = _make_status(status_pb)
+    assert status == other
 
-    def test___ne___self(self):
-        status_pb = self._make_status_pb()
-        status = self._make_one(status_pb)
-        self.assertFalse(status != status)
 
-    def test___ne___other_hit(self):
-        status_pb = self._make_status_pb(code=123, message="message")
-        status = self._make_one(status_pb)
-        other = self._make_one(status_pb)
-        self.assertFalse(status != other)
+def test_status___eq___other_miss():
+    status_pb = _make_status_pb(code=123, message="message")
+    other_status_pb = _make_status_pb(code=456, message="oops")
+    status = _make_status(status_pb)
+    other = _make_status(other_status_pb)
+    assert not (status == other)
 
-    def test___ne___other_miss(self):
-        status_pb = self._make_status_pb(code=123, message="message")
-        other_status_pb = self._make_status_pb(code=456, message="oops")
-        status = self._make_one(status_pb)
-        other = self._make_one(other_status_pb)
-        self.assertTrue(status != other)
 
-    def test___ne___wrong_type(self):
-        status_pb = self._make_status_pb(code=123, message="message")
-        status = self._make_one(status_pb)
-        other = object()
-        self.assertTrue(status != other)
+def test_status___eq___wrong_type():
+    status_pb = _make_status_pb(code=123, message="message")
+    status = _make_status(status_pb)
+    other = object()
+    assert not (status == other)
+
+
+def test_status___ne___self():
+    status_pb = _make_status_pb()
+    status = _make_status(status_pb)
+    assert not (status != status)
+
+
+def test_status___ne___other_hit():
+    status_pb = _make_status_pb(code=123, message="message")
+    status = _make_status(status_pb)
+    other = _make_status(status_pb)
+    assert not (status != other)
+
+
+def test_status___ne___other_miss():
+    status_pb = _make_status_pb(code=123, message="message")
+    other_status_pb = _make_status_pb(code=456, message="oops")
+    status = _make_status(status_pb)
+    other = _make_status(other_status_pb)
+    assert status != other
+
+
+def test_status___ne___wrong_type():
+    status_pb = _make_status_pb(code=123, message="message")
+    status = _make_status(status_pb)
+    other = object()
+    assert status != other

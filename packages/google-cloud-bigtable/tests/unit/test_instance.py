@@ -13,1014 +13,919 @@
 # limitations under the License.
 
 
-import unittest
-
 import mock
+import pytest
 
 from ._testing import _make_credentials
 from google.cloud.bigtable.cluster import Cluster
 
+PROJECT = "project"
+INSTANCE_ID = "instance-id"
+INSTANCE_NAME = "projects/" + PROJECT + "/instances/" + INSTANCE_ID
+LOCATION_ID = "locid"
+LOCATION = "projects/" + PROJECT + "/locations/" + LOCATION_ID
+APP_PROFILE_PATH = "projects/" + PROJECT + "/instances/" + INSTANCE_ID + "/appProfiles/"
+DISPLAY_NAME = "display_name"
+LABELS = {"foo": "bar"}
+OP_ID = 8915
+OP_NAME = "operations/projects/{}/instances/{}operations/{}".format(
+    PROJECT, INSTANCE_ID, OP_ID
+)
+TABLE_ID = "table_id"
+TABLE_NAME = INSTANCE_NAME + "/tables/" + TABLE_ID
+CLUSTER_ID = "cluster-id"
+CLUSTER_NAME = INSTANCE_NAME + "/clusters/" + CLUSTER_ID
+BACKUP_ID = "backup-id"
+BACKUP_NAME = CLUSTER_NAME + "/backups/" + BACKUP_ID
 
-class TestInstance(unittest.TestCase):
+APP_PROFILE_ID_1 = "app-profile-id-1"
+DESCRIPTION_1 = "routing policy any"
+APP_PROFILE_ID_2 = "app-profile-id-2"
+DESCRIPTION_2 = "routing policy single"
+ALLOW_WRITES = True
+CLUSTER_ID = "cluster-id"
 
-    PROJECT = "project"
-    INSTANCE_ID = "instance-id"
-    INSTANCE_NAME = "projects/" + PROJECT + "/instances/" + INSTANCE_ID
-    LOCATION_ID = "locid"
-    LOCATION = "projects/" + PROJECT + "/locations/" + LOCATION_ID
-    APP_PROFILE_PATH = (
-        "projects/" + PROJECT + "/instances/" + INSTANCE_ID + "/appProfiles/"
+
+def _make_client(*args, **kwargs):
+    from google.cloud.bigtable.client import Client
+
+    return Client(*args, **kwargs)
+
+
+def _make_instance_admin_api():
+    from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
+        BigtableInstanceAdminClient,
     )
-    DISPLAY_NAME = "display_name"
-    LABELS = {"foo": "bar"}
-    OP_ID = 8915
-    OP_NAME = "operations/projects/{}/instances/{}operations/{}".format(
-        PROJECT, INSTANCE_ID, OP_ID
+
+    return mock.create_autospec(BigtableInstanceAdminClient)
+
+
+def _make_instance(*args, **kwargs):
+    from google.cloud.bigtable.instance import Instance
+
+    return Instance(*args, **kwargs)
+
+
+def test_instance_constructor_defaults():
+
+    client = object()
+    instance = _make_instance(INSTANCE_ID, client)
+    assert instance.instance_id == INSTANCE_ID
+    assert instance.display_name == INSTANCE_ID
+    assert instance.type_ is None
+    assert instance.labels is None
+    assert instance._client is client
+    assert instance.state is None
+
+
+def test_instance_constructor_non_default():
+    from google.cloud.bigtable import enums
+
+    instance_type = enums.Instance.Type.DEVELOPMENT
+    state = enums.Instance.State.READY
+    labels = {"test": "test"}
+    client = object()
+
+    instance = _make_instance(
+        INSTANCE_ID,
+        client,
+        display_name=DISPLAY_NAME,
+        instance_type=instance_type,
+        labels=labels,
+        _state=state,
     )
-    TABLE_ID = "table_id"
-    TABLE_NAME = INSTANCE_NAME + "/tables/" + TABLE_ID
-    CLUSTER_ID = "cluster-id"
-    CLUSTER_NAME = INSTANCE_NAME + "/clusters/" + CLUSTER_ID
-    BACKUP_ID = "backup-id"
-    BACKUP_NAME = CLUSTER_NAME + "/backups/" + BACKUP_ID
+    assert instance.instance_id == INSTANCE_ID
+    assert instance.display_name == DISPLAY_NAME
+    assert instance.type_ == instance_type
+    assert instance.labels == labels
+    assert instance._client is client
+    assert instance.state == state
 
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.bigtable.instance import Instance
 
-        return Instance
+def test_instance__update_from_pb_success():
+    from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
+    from google.cloud.bigtable import enums
 
-    def _make_one(self, *args, **kwargs):
-        return self._get_target_class()(*args, **kwargs)
+    instance_type = data_v2_pb2.Instance.Type.PRODUCTION
+    state = enums.Instance.State.READY
+    # todo type to type_?
+    instance_pb = data_v2_pb2.Instance(
+        display_name=DISPLAY_NAME, type_=instance_type, labels=LABELS, state=state,
+    )
 
-    @staticmethod
-    def _get_target_client_class():
-        from google.cloud.bigtable.client import Client
+    instance = _make_instance(None, None)
+    assert instance.display_name is None
+    assert instance.type_ is None
+    assert instance.labels is None
+    instance._update_from_pb(instance_pb._pb)
+    assert instance.display_name == DISPLAY_NAME
+    assert instance.type_ == instance_type
+    assert instance.labels == LABELS
+    assert instance._state == state
 
-        return Client
 
-    def _make_client(self, *args, **kwargs):
-        return self._get_target_client_class()(*args, **kwargs)
+def test_instance__update_from_pb_success_defaults():
+    from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
+    from google.cloud.bigtable import enums
 
-    def test_constructor_defaults(self):
+    instance_pb = data_v2_pb2.Instance(display_name=DISPLAY_NAME)
 
-        client = object()
-        instance = self._make_one(self.INSTANCE_ID, client)
-        self.assertEqual(instance.instance_id, self.INSTANCE_ID)
-        self.assertEqual(instance.display_name, self.INSTANCE_ID)
-        self.assertIsNone(instance.type_)
-        self.assertIsNone(instance.labels)
-        self.assertIs(instance._client, client)
-        self.assertIsNone(instance.state)
+    instance = _make_instance(None, None)
+    assert instance.display_name is None
+    assert instance.type_ is None
+    assert instance.labels is None
+    instance._update_from_pb(instance_pb._pb)
+    assert instance.display_name == DISPLAY_NAME
+    assert instance.type_ == enums.Instance.Type.UNSPECIFIED
+    assert not instance.labels
 
-    def test_constructor_non_default(self):
-        from google.cloud.bigtable import enums
 
-        instance_type = enums.Instance.Type.DEVELOPMENT
-        state = enums.Instance.State.READY
-        labels = {"test": "test"}
-        client = object()
+def test_instance__update_from_pb_wo_display_name():
+    from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
 
-        instance = self._make_one(
-            self.INSTANCE_ID,
-            client,
-            display_name=self.DISPLAY_NAME,
-            instance_type=instance_type,
-            labels=labels,
-            _state=state,
-        )
-        self.assertEqual(instance.instance_id, self.INSTANCE_ID)
-        self.assertEqual(instance.display_name, self.DISPLAY_NAME)
-        self.assertEqual(instance.type_, instance_type)
-        self.assertEqual(instance.labels, labels)
-        self.assertIs(instance._client, client)
-        self.assertEqual(instance.state, state)
+    instance_pb = data_v2_pb2.Instance()
+    instance = _make_instance(None, None)
+    assert instance.display_name is None
 
-    def test__update_from_pb_success(self):
-        from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
-        from google.cloud.bigtable import enums
+    with pytest.raises(ValueError):
+        instance._update_from_pb(instance_pb)
 
-        instance_type = data_v2_pb2.Instance.Type.PRODUCTION
-        state = enums.Instance.State.READY
-        # todo type to type_?
-        instance_pb = data_v2_pb2.Instance(
-            display_name=self.DISPLAY_NAME,
-            type_=instance_type,
-            labels=self.LABELS,
-            state=state,
-        )
 
-        instance = self._make_one(None, None)
-        self.assertIsNone(instance.display_name)
-        self.assertIsNone(instance.type_)
-        self.assertIsNone(instance.labels)
-        instance._update_from_pb(instance_pb._pb)
-        self.assertEqual(instance.display_name, self.DISPLAY_NAME)
-        self.assertEqual(instance.type_, instance_type)
-        self.assertEqual(instance.labels, self.LABELS)
-        self.assertEqual(instance._state, state)
+def test_instance_from_pb_success():
+    from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
+    from google.cloud.bigtable import enums
+    from google.cloud.bigtable.instance import Instance
 
-    def test__update_from_pb_success_defaults(self):
-        from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
-        from google.cloud.bigtable import enums
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    instance_type = enums.Instance.Type.PRODUCTION
+    state = enums.Instance.State.READY
+    instance_pb = data_v2_pb2.Instance(
+        name=INSTANCE_NAME,
+        display_name=INSTANCE_ID,
+        type_=instance_type,
+        labels=LABELS,
+        state=state,
+    )
 
-        instance_pb = data_v2_pb2.Instance(display_name=self.DISPLAY_NAME)
+    instance = Instance.from_pb(instance_pb, client)
 
-        instance = self._make_one(None, None)
-        self.assertIsNone(instance.display_name)
-        self.assertIsNone(instance.type_)
-        self.assertIsNone(instance.labels)
-        instance._update_from_pb(instance_pb._pb)
-        self.assertEqual(instance.display_name, self.DISPLAY_NAME)
-        self.assertEqual(instance.type_, enums.Instance.Type.UNSPECIFIED)
-        self.assertFalse(instance.labels)
+    assert isinstance(instance, Instance)
+    assert instance._client == client
+    assert instance.instance_id == INSTANCE_ID
+    assert instance.display_name == INSTANCE_ID
+    assert instance.type_ == instance_type
+    assert instance.labels == LABELS
+    assert instance._state == state
 
-    def test__update_from_pb_no_display_name(self):
-        from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
 
-        instance_pb = data_v2_pb2.Instance()
-        instance = self._make_one(None, None)
-        self.assertIsNone(instance.display_name)
-        with self.assertRaises(ValueError):
-            instance._update_from_pb(instance_pb)
+def test_instance_from_pb_bad_instance_name():
+    from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
+    from google.cloud.bigtable.instance import Instance
 
-    def test_from_pb_success(self):
-        from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
-        from google.cloud.bigtable import enums
+    instance_name = "INCORRECT_FORMAT"
+    instance_pb = data_v2_pb2.Instance(name=instance_name)
 
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
-        instance_type = enums.Instance.Type.PRODUCTION
-        state = enums.Instance.State.READY
-        instance_pb = data_v2_pb2.Instance(
-            name=self.INSTANCE_NAME,
-            display_name=self.INSTANCE_ID,
-            type_=instance_type,
-            labels=self.LABELS,
-            state=state,
-        )
+    with pytest.raises(ValueError):
+        Instance.from_pb(instance_pb, None)
 
-        klass = self._get_target_class()
-        instance = klass.from_pb(instance_pb, client)
-        self.assertIsInstance(instance, klass)
-        self.assertEqual(instance._client, client)
-        self.assertEqual(instance.instance_id, self.INSTANCE_ID)
-        self.assertEqual(instance.display_name, self.INSTANCE_ID)
-        self.assertEqual(instance.type_, instance_type)
-        self.assertEqual(instance.labels, self.LABELS)
-        self.assertEqual(instance._state, state)
 
-    def test_from_pb_bad_instance_name(self):
-        from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
+def test_instance_from_pb_project_mistmatch():
+    from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
+    from google.cloud.bigtable.instance import Instance
 
-        instance_name = "INCORRECT_FORMAT"
-        instance_pb = data_v2_pb2.Instance(name=instance_name)
+    ALT_PROJECT = "ALT_PROJECT"
+    credentials = _make_credentials()
+    client = _make_client(project=ALT_PROJECT, credentials=credentials, admin=True)
 
-        klass = self._get_target_class()
-        with self.assertRaises(ValueError):
-            klass.from_pb(instance_pb, None)
+    instance_pb = data_v2_pb2.Instance(name=INSTANCE_NAME)
 
-    def test_from_pb_project_mistmatch(self):
-        from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
+    with pytest.raises(ValueError):
+        Instance.from_pb(instance_pb, client)
 
-        ALT_PROJECT = "ALT_PROJECT"
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=ALT_PROJECT, credentials=credentials, admin=True
-        )
 
-        self.assertNotEqual(self.PROJECT, ALT_PROJECT)
+def test_instance_name():
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
 
-        instance_pb = data_v2_pb2.Instance(name=self.INSTANCE_NAME)
+    api = client._instance_admin_client = _make_instance_admin_api()
+    api.instance_path.return_value = INSTANCE_NAME
+    instance = _make_instance(INSTANCE_ID, client)
 
-        klass = self._get_target_class()
-        with self.assertRaises(ValueError):
-            klass.from_pb(instance_pb, client)
+    assert instance.name == INSTANCE_NAME
 
-    def test_name_property(self):
-        from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
-            BigtableInstanceAdminClient,
-        )
 
-        api = mock.create_autospec(BigtableInstanceAdminClient)
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
+def test_instance___eq__():
+    client = object()
+    instance1 = _make_instance(INSTANCE_ID, client)
+    instance2 = _make_instance(INSTANCE_ID, client)
+    assert instance1 == instance2
 
-        api.instance_path.return_value = "projects/project/instances/instance-id"
-        # Patch the the API method.
-        client._instance_admin_client = api
 
-        instance = self._make_one(self.INSTANCE_ID, client)
-        self.assertEqual(instance.name, self.INSTANCE_NAME)
+def test_instance___eq__type_differ():
+    client = object()
+    instance1 = _make_instance(INSTANCE_ID, client)
+    instance2 = object()
+    assert instance1 != instance2
 
-    def test___eq__(self):
-        client = object()
-        instance1 = self._make_one(self.INSTANCE_ID, client)
-        instance2 = self._make_one(self.INSTANCE_ID, client)
-        self.assertEqual(instance1, instance2)
 
-    def test___eq__type_differ(self):
-        client = object()
-        instance1 = self._make_one(self.INSTANCE_ID, client)
-        instance2 = object()
-        self.assertNotEqual(instance1, instance2)
+def test_instance___ne__same_value():
+    client = object()
+    instance1 = _make_instance(INSTANCE_ID, client)
+    instance2 = _make_instance(INSTANCE_ID, client)
+    assert not (instance1 != instance2)
 
-    def test___ne__same_value(self):
-        client = object()
-        instance1 = self._make_one(self.INSTANCE_ID, client)
-        instance2 = self._make_one(self.INSTANCE_ID, client)
-        comparison_val = instance1 != instance2
-        self.assertFalse(comparison_val)
 
-    def test___ne__(self):
-        instance1 = self._make_one("instance_id1", "client1")
-        instance2 = self._make_one("instance_id2", "client2")
-        self.assertNotEqual(instance1, instance2)
+def test_instance___ne__():
+    instance1 = _make_instance("instance_id1", "client1")
+    instance2 = _make_instance("instance_id2", "client2")
+    assert instance1 != instance2
 
-    def test_create_check_location_and_clusters(self):
-        instance = self._make_one(self.INSTANCE_ID, None)
 
-        with self.assertRaises(ValueError):
-            instance.create(location_id=self.LOCATION_ID, clusters=[object(), object()])
+def test_instance_create_w_location_and_clusters():
+    instance = _make_instance(INSTANCE_ID, None)
 
-    def test_create_check_serve_nodes_and_clusters(self):
-        instance = self._make_one(self.INSTANCE_ID, None)
+    with pytest.raises(ValueError):
+        instance.create(location_id=LOCATION_ID, clusters=[object(), object()])
 
-        with self.assertRaises(ValueError):
-            instance.create(serve_nodes=3, clusters=[object(), object()])
 
-    def test_create_check_default_storage_type_and_clusters(self):
-        instance = self._make_one(self.INSTANCE_ID, None)
+def test_instance_create_w_serve_nodes_and_clusters():
+    instance = _make_instance(INSTANCE_ID, None)
 
-        with self.assertRaises(ValueError):
-            instance.create(default_storage_type=1, clusters=[object(), object()])
+    with pytest.raises(ValueError):
+        instance.create(serve_nodes=3, clusters=[object(), object()])
 
-    def _instance_api_response_for_create(self):
-        import datetime
-        from google.api_core import operation
-        from google.longrunning import operations_pb2
-        from google.protobuf.any_pb2 import Any
-        from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
-            BigtableInstanceAdminClient,
-        )
-        from google.cloud.bigtable_admin_v2.types import (
-            bigtable_instance_admin as messages_v2_pb2,
-        )
-        from google.cloud.bigtable_admin_v2.types import instance
 
-        NOW = datetime.datetime.utcnow()
-        NOW_PB = _datetime_to_pb_timestamp(NOW)
-        metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
-        type_url = "type.googleapis.com/{}".format(
-            messages_v2_pb2.CreateInstanceMetadata._meta._pb.DESCRIPTOR.full_name
-        )
-        response_pb = operations_pb2.Operation(
-            name=self.OP_NAME,
-            metadata=Any(type_url=type_url, value=metadata._pb.SerializeToString()),
-        )
-        response = operation.from_gapic(
-            response_pb,
-            mock.Mock(),
-            instance.Instance,
-            metadata_type=messages_v2_pb2.CreateInstanceMetadata,
-        )
-        project_path_template = "projects/{}"
-        location_path_template = "projects/{}/locations/{}"
-        instance_api = mock.create_autospec(BigtableInstanceAdminClient)
-        instance_api.create_instance.return_value = response
-        instance_api.project_path = project_path_template.format
-        instance_api.location_path = location_path_template.format
-        instance_api.common_location_path = location_path_template.format
-        return instance_api, response
+def test_instance_create_w_default_storage_type_and_clusters():
+    instance = _make_instance(INSTANCE_ID, None)
 
-    def test_create(self):
-        from google.cloud.bigtable import enums
-        from google.cloud.bigtable_admin_v2.types import Instance
-        from google.cloud.bigtable_admin_v2.types import Cluster
-        import warnings
+    with pytest.raises(ValueError):
+        instance.create(default_storage_type=1, clusters=[object(), object()])
 
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
-        instance = self._make_one(
-            self.INSTANCE_ID,
-            client,
-            self.DISPLAY_NAME,
-            enums.Instance.Type.PRODUCTION,
-            self.LABELS,
-        )
-        instance_api, response = self._instance_api_response_for_create()
-        instance_api.common_project_path.return_value = "projects/project"
-        client._instance_admin_client = instance_api
-        serve_nodes = 3
 
-        with warnings.catch_warnings(record=True) as warned:
-            result = instance.create(
-                location_id=self.LOCATION_ID, serve_nodes=serve_nodes
-            )
+def _instance_api_response_for_create():
+    import datetime
+    from google.api_core import operation
+    from google.longrunning import operations_pb2
+    from google.protobuf.any_pb2 import Any
+    from google.cloud._helpers import _datetime_to_pb_timestamp
+    from google.cloud.bigtable_admin_v2.types import (
+        bigtable_instance_admin as messages_v2_pb2,
+    )
+    from google.cloud.bigtable_admin_v2.types import instance
 
-        cluster_pb = Cluster(
-            location=instance_api.location_path(self.PROJECT, self.LOCATION_ID),
-            serve_nodes=serve_nodes,
-            default_storage_type=enums.StorageType.UNSPECIFIED,
-        )
-        instance_pb = Instance(
-            display_name=self.DISPLAY_NAME,
-            type_=enums.Instance.Type.PRODUCTION,
-            labels=self.LABELS,
-        )
-        cluster_id = "{}-cluster".format(self.INSTANCE_ID)
-        instance_api.create_instance.assert_called_once_with(
-            request={
-                "parent": instance_api.project_path(self.PROJECT),
-                "instance_id": self.INSTANCE_ID,
-                "instance": instance_pb,
-                "clusters": {cluster_id: cluster_pb},
-            }
-        )
+    NOW = datetime.datetime.utcnow()
+    NOW_PB = _datetime_to_pb_timestamp(NOW)
+    metadata = messages_v2_pb2.CreateInstanceMetadata(request_time=NOW_PB)
+    type_url = "type.googleapis.com/{}".format(
+        messages_v2_pb2.CreateInstanceMetadata._meta._pb.DESCRIPTOR.full_name
+    )
+    response_pb = operations_pb2.Operation(
+        name=OP_NAME,
+        metadata=Any(type_url=type_url, value=metadata._pb.SerializeToString()),
+    )
+    response = operation.from_gapic(
+        response_pb,
+        mock.Mock(),
+        instance.Instance,
+        metadata_type=messages_v2_pb2.CreateInstanceMetadata,
+    )
+    project_path_template = "projects/{}"
+    location_path_template = "projects/{}/locations/{}"
+    api = _make_instance_admin_api()
+    api.create_instance.return_value = response
+    api.project_path = project_path_template.format
+    api.location_path = location_path_template.format
+    api.common_location_path = location_path_template.format
+    return api, response
 
-        self.assertEqual(len(warned), 1)
-        self.assertIs(warned[0].category, DeprecationWarning)
 
-        self.assertIs(result, response)
+def test_instance_create():
+    from google.cloud.bigtable import enums
+    from google.cloud.bigtable_admin_v2.types import Instance
+    from google.cloud.bigtable_admin_v2.types import Cluster
+    import warnings
 
-    def test_create_w_clusters(self):
-        from google.cloud.bigtable import enums
-        from google.cloud.bigtable.cluster import Cluster
-        from google.cloud.bigtable_admin_v2.types import Cluster as cluster_pb
-        from google.cloud.bigtable_admin_v2.types import Instance as instance_pb
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    instance = _make_instance(
+        INSTANCE_ID, client, DISPLAY_NAME, enums.Instance.Type.PRODUCTION, LABELS,
+    )
+    api, response = _instance_api_response_for_create()
+    client._instance_admin_client = api
+    api.common_project_path.return_value = "projects/project"
+    serve_nodes = 3
 
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
-        instance = self._make_one(
-            self.INSTANCE_ID,
-            client,
-            self.DISPLAY_NAME,
-            enums.Instance.Type.PRODUCTION,
-            self.LABELS,
-        )
-        instance_api, response = self._instance_api_response_for_create()
-        instance_api.common_project_path.return_value = "projects/project"
-        client._instance_admin_client = instance_api
+    with warnings.catch_warnings(record=True) as warned:
+        result = instance.create(location_id=LOCATION_ID, serve_nodes=serve_nodes)
 
-        # Perform the method and check the result.
-        cluster_id_1 = "cluster-1"
-        cluster_id_2 = "cluster-2"
-        location_id_1 = "location-id-1"
-        location_id_2 = "location-id-2"
-        serve_nodes_1 = 3
-        serve_nodes_2 = 5
-        clusters = [
-            Cluster(
-                cluster_id_1,
-                instance,
-                location_id=location_id_1,
-                serve_nodes=serve_nodes_1,
-            ),
-            Cluster(
-                cluster_id_2,
-                instance,
-                location_id=location_id_2,
-                serve_nodes=serve_nodes_2,
-            ),
-        ]
+    assert result is response
 
-        result = instance.create(clusters=clusters)
+    cluster_pb = Cluster(
+        location=api.location_path(PROJECT, LOCATION_ID),
+        serve_nodes=serve_nodes,
+        default_storage_type=enums.StorageType.UNSPECIFIED,
+    )
+    instance_pb = Instance(
+        display_name=DISPLAY_NAME, type_=enums.Instance.Type.PRODUCTION, labels=LABELS,
+    )
+    cluster_id = "{}-cluster".format(INSTANCE_ID)
+    api.create_instance.assert_called_once_with(
+        request={
+            "parent": api.project_path(PROJECT),
+            "instance_id": INSTANCE_ID,
+            "instance": instance_pb,
+            "clusters": {cluster_id: cluster_pb},
+        }
+    )
 
-        cluster_pb_1 = cluster_pb(
-            location=instance_api.location_path(self.PROJECT, location_id_1),
+    assert len(warned) == 1
+    assert warned[0].category is DeprecationWarning
+
+
+def test_instance_create_w_clusters():
+    from google.cloud.bigtable import enums
+    from google.cloud.bigtable.cluster import Cluster
+    from google.cloud.bigtable_admin_v2.types import Cluster as cluster_pb
+    from google.cloud.bigtable_admin_v2.types import Instance as instance_pb
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    instance = _make_instance(
+        INSTANCE_ID, client, DISPLAY_NAME, enums.Instance.Type.PRODUCTION, LABELS,
+    )
+    api, response = _instance_api_response_for_create()
+    client._instance_admin_client = api
+    api.common_project_path.return_value = "projects/project"
+    cluster_id_1 = "cluster-1"
+    cluster_id_2 = "cluster-2"
+    location_id_1 = "location-id-1"
+    location_id_2 = "location-id-2"
+    serve_nodes_1 = 3
+    serve_nodes_2 = 5
+    clusters = [
+        Cluster(
+            cluster_id_1,
+            instance,
+            location_id=location_id_1,
             serve_nodes=serve_nodes_1,
-            default_storage_type=enums.StorageType.UNSPECIFIED,
-        )
-        cluster_pb_2 = cluster_pb(
-            location=instance_api.location_path(self.PROJECT, location_id_2),
+        ),
+        Cluster(
+            cluster_id_2,
+            instance,
+            location_id=location_id_2,
             serve_nodes=serve_nodes_2,
-            default_storage_type=enums.StorageType.UNSPECIFIED,
-        )
-        instance_pb = instance_pb(
-            display_name=self.DISPLAY_NAME,
-            type_=enums.Instance.Type.PRODUCTION,
-            labels=self.LABELS,
-        )
-        instance_api.create_instance.assert_called_once_with(
-            request={
-                "parent": instance_api.project_path(self.PROJECT),
-                "instance_id": self.INSTANCE_ID,
-                "instance": instance_pb,
-                "clusters": {cluster_id_1: cluster_pb_1, cluster_id_2: cluster_pb_2},
-            }
-        )
-
-        self.assertIs(result, response)
-
-    def test_exists(self):
-        from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
-            BigtableInstanceAdminClient,
-        )
-        from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
-        from google.api_core import exceptions
-
-        api = mock.create_autospec(BigtableInstanceAdminClient)
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
-
-        # Create response_pb
-        instance_name = client.instance_admin_client.instance_path(
-            self.PROJECT, self.INSTANCE_ID
-        )
-        response_pb = data_v2_pb2.Instance(name=instance_name)
-
-        # Patch the stub used by the API method.
-        client._instance_admin_client = api
-        instance_admin_stub = client._instance_admin_client
-
-        instance_admin_stub.get_instance.side_effect = [
-            response_pb,
-            exceptions.NotFound("testing"),
-            exceptions.BadRequest("testing"),
-        ]
-
-        # Perform the method and check the result.
-        non_existing_instance_id = "instance-id-2"
-        alt_instance_1 = self._make_one(self.INSTANCE_ID, client)
-        alt_instance_2 = self._make_one(non_existing_instance_id, client)
-        self.assertTrue(alt_instance_1.exists())
-        self.assertFalse(alt_instance_2.exists())
-
-        with self.assertRaises(exceptions.BadRequest):
-            alt_instance_2.exists()
-
-    def test_reload(self):
-        from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
-        from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
-            BigtableInstanceAdminClient,
-        )
-        from google.cloud.bigtable import enums
-
-        api = mock.create_autospec(BigtableInstanceAdminClient)
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
-        instance = self._make_one(self.INSTANCE_ID, client)
-
-        # Create response_pb
-        DISPLAY_NAME = u"hey-hi-hello"
-        instance_type = enums.Instance.Type.PRODUCTION
-        response_pb = data_v2_pb2.Instance(
-            display_name=DISPLAY_NAME, type_=instance_type, labels=self.LABELS
-        )
-
-        # Patch the stub used by the API method.
-        client._instance_admin_client = api
-        bigtable_instance_stub = client._instance_admin_client
-        bigtable_instance_stub.get_instance.side_effect = [response_pb]
-
-        # Create expected_result.
-        expected_result = None  # reload() has no return value.
-
-        # Check Instance optional config values before.
-        self.assertEqual(instance.display_name, self.INSTANCE_ID)
-
-        # Perform the method and check the result.
-        result = instance.reload()
-        self.assertEqual(result, expected_result)
-
-        # Check Instance optional config values before.
-        self.assertEqual(instance.display_name, DISPLAY_NAME)
-
-    def _instance_api_response_for_update(self):
-        import datetime
-        from google.api_core import operation
-        from google.longrunning import operations_pb2
-        from google.protobuf.any_pb2 import Any
-        from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
-            BigtableInstanceAdminClient,
-        )
-        from google.cloud.bigtable_admin_v2.types import (
-            bigtable_instance_admin as messages_v2_pb2,
-        )
-        from google.cloud.bigtable_admin_v2.types import instance
-
-        NOW = datetime.datetime.utcnow()
-        NOW_PB = _datetime_to_pb_timestamp(NOW)
-        metadata = messages_v2_pb2.UpdateInstanceMetadata(request_time=NOW_PB)
-        type_url = "type.googleapis.com/{}".format(
-            messages_v2_pb2.UpdateInstanceMetadata._meta._pb.DESCRIPTOR.full_name
-        )
-        response_pb = operations_pb2.Operation(
-            name=self.OP_NAME,
-            metadata=Any(type_url=type_url, value=metadata._pb.SerializeToString()),
-        )
-        response = operation.from_gapic(
-            response_pb,
-            mock.Mock(),
-            instance.Instance,
-            metadata_type=messages_v2_pb2.UpdateInstanceMetadata,
-        )
-        instance_path_template = "projects/{project}/instances/{instance}"
-        instance_api = mock.create_autospec(BigtableInstanceAdminClient)
-        instance_api.partial_update_instance.return_value = response
-        instance_api.instance_path = instance_path_template.format
-        return instance_api, response
-
-    def test_update(self):
-        from google.cloud.bigtable import enums
-        from google.protobuf import field_mask_pb2
-        from google.cloud.bigtable_admin_v2.types import Instance
-
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
-        instance = self._make_one(
-            self.INSTANCE_ID,
-            client,
-            display_name=self.DISPLAY_NAME,
-            instance_type=enums.Instance.Type.DEVELOPMENT,
-            labels=self.LABELS,
-        )
-        instance_api, response = self._instance_api_response_for_update()
-        client._instance_admin_client = instance_api
-
-        result = instance.update()
-
-        instance_pb = Instance(
-            name=instance.name,
-            display_name=instance.display_name,
-            type_=instance.type_,
-            labels=instance.labels,
-        )
-        update_mask_pb = field_mask_pb2.FieldMask(
-            paths=["display_name", "type", "labels"]
-        )
-
-        instance_api.partial_update_instance.assert_called_once_with(
-            request={"instance": instance_pb, "update_mask": update_mask_pb}
-        )
-
-        self.assertIs(result, response)
-
-    def test_update_empty(self):
-        from google.protobuf import field_mask_pb2
-        from google.cloud.bigtable_admin_v2.types import Instance
-
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
-        instance = self._make_one(None, client)
-        instance_api, response = self._instance_api_response_for_update()
-        client._instance_admin_client = instance_api
-
-        result = instance.update()
-
-        instance_pb = Instance(
-            name=instance.name,
-            display_name=instance.display_name,
-            type_=instance.type_,
-            labels=instance.labels,
-        )
-        update_mask_pb = field_mask_pb2.FieldMask()
-
-        instance_api.partial_update_instance.assert_called_once_with(
-            request={"instance": instance_pb, "update_mask": update_mask_pb}
-        )
-
-        self.assertIs(result, response)
-
-    def test_delete(self):
-        from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
-            BigtableInstanceAdminClient,
-        )
-
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
-        instance = self._make_one(self.INSTANCE_ID, client)
-        instance_api = mock.create_autospec(BigtableInstanceAdminClient)
-        instance_api.delete_instance.return_value = None
-        client._instance_admin_client = instance_api
-
-        result = instance.delete()
-
-        instance_api.delete_instance.assert_called_once_with(
-            request={"name": instance.name}
-        )
-
-        self.assertIsNone(result)
-
-    def test_get_iam_policy(self):
-        from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
-            BigtableInstanceAdminClient,
-        )
-        from google.iam.v1 import policy_pb2
-        from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
-
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
-        instance = self._make_one(self.INSTANCE_ID, client)
-
-        version = 1
-        etag = b"etag_v1"
-        members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
-        bindings = [{"role": BIGTABLE_ADMIN_ROLE, "members": members}]
-        iam_policy = policy_pb2.Policy(version=version, etag=etag, bindings=bindings)
-
-        # Patch the stub used by the API method.
-        instance_api = mock.create_autospec(BigtableInstanceAdminClient)
-        client._instance_admin_client = instance_api
-        instance_api.get_iam_policy.return_value = iam_policy
-
-        # Perform the method and check the result.
-        result = instance.get_iam_policy()
-
-        instance_api.get_iam_policy.assert_called_once_with(
-            request={"resource": instance.name}
-        )
-        self.assertEqual(result.version, version)
-        self.assertEqual(result.etag, etag)
-        admins = result.bigtable_admins
-        self.assertEqual(len(admins), len(members))
-        for found, expected in zip(sorted(admins), sorted(members)):
-            self.assertEqual(found, expected)
-
-    def test_get_iam_policy_w_requested_policy_version(self):
-        from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
-            BigtableInstanceAdminClient,
-        )
-        from google.iam.v1 import policy_pb2, options_pb2
-        from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
-
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
-        instance = self._make_one(self.INSTANCE_ID, client)
-
-        version = 1
-        etag = b"etag_v1"
-        members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
-        bindings = [{"role": BIGTABLE_ADMIN_ROLE, "members": members}]
-        iam_policy = policy_pb2.Policy(version=version, etag=etag, bindings=bindings)
-
-        # Patch the stub used by the API method.
-        instance_api = mock.create_autospec(BigtableInstanceAdminClient)
-        client._instance_admin_client = instance_api
-        instance_api.get_iam_policy.return_value = iam_policy
-
-        # Perform the method and check the result.
-        result = instance.get_iam_policy(requested_policy_version=3)
-
-        instance_api.get_iam_policy.assert_called_once_with(
-            request={
-                "resource": instance.name,
-                "options_": options_pb2.GetPolicyOptions(requested_policy_version=3),
-            }
-        )
-        self.assertEqual(result.version, version)
-        self.assertEqual(result.etag, etag)
-        admins = result.bigtable_admins
-        self.assertEqual(len(admins), len(members))
-        for found, expected in zip(sorted(admins), sorted(members)):
-            self.assertEqual(found, expected)
-
-    def test_set_iam_policy(self):
-        from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
-            BigtableInstanceAdminClient,
-        )
-        from google.iam.v1 import policy_pb2
-        from google.cloud.bigtable.policy import Policy
-        from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
-
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
-        instance = self._make_one(self.INSTANCE_ID, client)
-
-        version = 1
-        etag = b"etag_v1"
-        members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
-        bindings = [{"role": BIGTABLE_ADMIN_ROLE, "members": sorted(members)}]
-        iam_policy_pb = policy_pb2.Policy(version=version, etag=etag, bindings=bindings)
-
-        # Patch the stub used by the API method.
-        instance_api = mock.create_autospec(BigtableInstanceAdminClient)
-        instance_api.set_iam_policy.return_value = iam_policy_pb
-        client._instance_admin_client = instance_api
-
-        # Perform the method and check the result.
-        iam_policy = Policy(etag=etag, version=version)
-        iam_policy[BIGTABLE_ADMIN_ROLE] = [
-            Policy.user("user1@test.com"),
-            Policy.service_account("service_acc1@test.com"),
-        ]
-
-        result = instance.set_iam_policy(iam_policy)
-
-        instance_api.set_iam_policy.assert_called_once_with(
-            request={"resource": instance.name, "policy": iam_policy_pb}
-        )
-        self.assertEqual(result.version, version)
-        self.assertEqual(result.etag, etag)
-        admins = result.bigtable_admins
-        self.assertEqual(len(admins), len(members))
-        for found, expected in zip(sorted(admins), sorted(members)):
-            self.assertEqual(found, expected)
-
-    def test_test_iam_permissions(self):
-        from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
-            BigtableInstanceAdminClient,
-        )
-        from google.iam.v1 import iam_policy_pb2
-
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
-        instance = self._make_one(self.INSTANCE_ID, client)
-
-        permissions = ["bigtable.tables.create", "bigtable.clusters.create"]
-
-        response = iam_policy_pb2.TestIamPermissionsResponse(permissions=permissions)
-
-        instance_api = mock.create_autospec(BigtableInstanceAdminClient)
-        instance_api.test_iam_permissions.return_value = response
-        client._instance_admin_client = instance_api
-
-        result = instance.test_iam_permissions(permissions)
-
-        self.assertEqual(result, permissions)
-        instance_api.test_iam_permissions.assert_called_once_with(
-            request={"resource": instance.name, "permissions": permissions}
-        )
-
-    def test_cluster_factory(self):
-        from google.cloud.bigtable import enums
-
-        CLUSTER_ID = "{}-cluster".format(self.INSTANCE_ID)
-        LOCATION_ID = "us-central1-c"
-        SERVE_NODES = 3
-        STORAGE_TYPE = enums.StorageType.HDD
-
-        instance = self._make_one(self.INSTANCE_ID, None)
-
-        cluster = instance.cluster(
-            CLUSTER_ID,
-            location_id=LOCATION_ID,
-            serve_nodes=SERVE_NODES,
-            default_storage_type=STORAGE_TYPE,
-        )
-        self.assertIsInstance(cluster, Cluster)
-        self.assertEqual(cluster.cluster_id, CLUSTER_ID)
-        self.assertEqual(cluster.location_id, LOCATION_ID)
-        self.assertIsNone(cluster._state)
-        self.assertEqual(cluster.serve_nodes, SERVE_NODES)
-        self.assertEqual(cluster.default_storage_type, STORAGE_TYPE)
-
-    def test_list_clusters(self):
-        from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
-            BigtableInstanceAdminClient,
-        )
-        from google.cloud.bigtable_admin_v2.types import (
-            bigtable_instance_admin as messages_v2_pb2,
-        )
-        from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
-        from google.cloud.bigtable.instance import Instance
-        from google.cloud.bigtable.instance import Cluster
-
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
-        instance = Instance(self.INSTANCE_ID, client)
-
-        failed_location = "FAILED"
-        cluster_id1 = "cluster-id1"
-        cluster_id2 = "cluster-id2"
-        cluster_path_template = "projects/{}/instances/{}/clusters/{}"
-        cluster_name1 = cluster_path_template.format(
-            self.PROJECT, self.INSTANCE_ID, cluster_id1
-        )
-        cluster_name2 = cluster_path_template.format(
-            self.PROJECT, self.INSTANCE_ID, cluster_id2
-        )
-
-        # Create response_pb
-        response_pb = messages_v2_pb2.ListClustersResponse(
-            failed_locations=[failed_location],
-            clusters=[
-                data_v2_pb2.Cluster(name=cluster_name1),
-                data_v2_pb2.Cluster(name=cluster_name2),
-            ],
-        )
-
-        # Patch the stub used by the API method.
-        instance_api = mock.create_autospec(BigtableInstanceAdminClient)
-        instance_api.list_clusters.side_effect = [response_pb]
-        instance_api.cluster_path = cluster_path_template.format
-        client._instance_admin_client = instance_api
-
-        # Perform the method and check the result.
-        clusters, failed_locations = instance.list_clusters()
-
-        cluster_1, cluster_2 = clusters
-
-        self.assertIsInstance(cluster_1, Cluster)
-        self.assertEqual(cluster_1.name, cluster_name1)
-
-        self.assertIsInstance(cluster_2, Cluster)
-        self.assertEqual(cluster_2.name, cluster_name2)
-
-        self.assertEqual(failed_locations, [failed_location])
-
-    def test_table_factory(self):
-        from google.cloud.bigtable.table import Table
-
-        app_profile_id = "appProfileId1262094415"
-        instance = self._make_one(self.INSTANCE_ID, None)
-
-        table = instance.table(self.TABLE_ID, app_profile_id=app_profile_id)
-        self.assertIsInstance(table, Table)
-        self.assertEqual(table.table_id, self.TABLE_ID)
-        self.assertEqual(table._instance, instance)
-        self.assertEqual(table._app_profile_id, app_profile_id)
-
-    def _list_tables_helper(self, table_name=None):
-        from google.cloud.bigtable_admin_v2.types import table as table_data_v2_pb2
-        from google.cloud.bigtable_admin_v2.types import (
-            bigtable_table_admin as table_messages_v1_pb2,
-        )
-        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
-            BigtableTableAdminClient,
-        )
-        from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
-            BigtableInstanceAdminClient,
-        )
-
-        table_api = mock.create_autospec(BigtableTableAdminClient)
-        instance_api = mock.create_autospec(BigtableInstanceAdminClient)
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
-        instance = self._make_one(self.INSTANCE_ID, client)
-
-        instance_api.instance_path.return_value = instance.name
-        # Create response_pb
-        if table_name is None:
-            table_name = self.TABLE_NAME
-
-        response_pb = table_messages_v1_pb2.ListTablesResponse(
-            tables=[table_data_v2_pb2.Table(name=table_name)]
-        )
-
-        # Patch the stub used by the API method.
-        client._table_admin_client = table_api
-        client._instance_admin_client = instance_api
-        bigtable_table_stub = client._table_admin_client
-        bigtable_table_stub.list_tables.side_effect = [response_pb]
-
-        # Create expected_result.
-        expected_table = instance.table(self.TABLE_ID)
-        expected_result = [expected_table]
-
-        # Perform the method and check the result.
-        result = instance.list_tables()
-
-        self.assertEqual(result, expected_result)
-
-    def test_list_tables(self):
-        self._list_tables_helper()
-
-    def test_list_tables_failure_bad_split(self):
-        with self.assertRaises(ValueError):
-            self._list_tables_helper(table_name="wrong-format")
-
-    def test_list_tables_failure_name_bad_before(self):
-        BAD_TABLE_NAME = (
-            "nonempty-section-before"
-            + "projects/"
-            + self.PROJECT
-            + "/instances/"
-            + self.INSTANCE_ID
-            + "/tables/"
-            + self.TABLE_ID
-        )
-        with self.assertRaises(ValueError):
-            self._list_tables_helper(table_name=BAD_TABLE_NAME)
-
-    def test_app_profile_factory(self):
-        from google.cloud.bigtable.enums import RoutingPolicyType
-
-        APP_PROFILE_ID_1 = "app-profile-id-1"
-        ANY = RoutingPolicyType.ANY
-        DESCRIPTION_1 = "routing policy any"
-        APP_PROFILE_ID_2 = "app-profile-id-2"
-        SINGLE = RoutingPolicyType.SINGLE
-        DESCRIPTION_2 = "routing policy single"
-        ALLOW_WRITES = True
-        CLUSTER_ID = "cluster-id"
-
-        instance = self._make_one(self.INSTANCE_ID, None)
-
-        app_profile1 = instance.app_profile(
-            APP_PROFILE_ID_1, routing_policy_type=ANY, description=DESCRIPTION_1
-        )
-
-        app_profile2 = instance.app_profile(
-            APP_PROFILE_ID_2,
-            routing_policy_type=SINGLE,
-            description=DESCRIPTION_2,
-            cluster_id=CLUSTER_ID,
-            allow_transactional_writes=ALLOW_WRITES,
-        )
-        self.assertEqual(app_profile1.app_profile_id, APP_PROFILE_ID_1)
-        self.assertIs(app_profile1._instance, instance)
-        self.assertEqual(app_profile1.routing_policy_type, ANY)
-        self.assertEqual(app_profile1.description, DESCRIPTION_1)
-        self.assertEqual(app_profile2.app_profile_id, APP_PROFILE_ID_2)
-        self.assertIs(app_profile2._instance, instance)
-        self.assertEqual(app_profile2.routing_policy_type, SINGLE)
-        self.assertEqual(app_profile2.description, DESCRIPTION_2)
-        self.assertEqual(app_profile2.cluster_id, CLUSTER_ID)
-        self.assertEqual(app_profile2.allow_transactional_writes, ALLOW_WRITES)
-
-    def test_list_app_profiles(self):
-        from google.api_core.page_iterator import Iterator
-        from google.api_core.page_iterator import Page
-        from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
-            BigtableInstanceAdminClient,
-        )
-        from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
-        from google.cloud.bigtable.app_profile import AppProfile
-
-        class _Iterator(Iterator):
-            def __init__(self, pages):
-                super(_Iterator, self).__init__(client=None)
-                self._pages = pages
-
-            def _next_page(self):
-                if self._pages:
-                    page, self._pages = self._pages[0], self._pages[1:]
-                    return Page(self, page, self.item_to_value)
-
-        credentials = _make_credentials()
-        client = self._make_client(
-            project=self.PROJECT, credentials=credentials, admin=True
-        )
-        instance = self._make_one(self.INSTANCE_ID, client)
-
-        # Setup Expected Response
-        app_profile_path_template = "projects/{}/instances/{}/appProfiles/{}"
-        app_profile_id1 = "app-profile-id1"
-        app_profile_id2 = "app-profile-id2"
-        app_profile_name1 = app_profile_path_template.format(
-            self.PROJECT, self.INSTANCE_ID, app_profile_id1
-        )
-        app_profile_name2 = app_profile_path_template.format(
-            self.PROJECT, self.INSTANCE_ID, app_profile_id2
-        )
-        routing_policy = data_v2_pb2.AppProfile.MultiClusterRoutingUseAny()
-
-        app_profiles = [
-            data_v2_pb2.AppProfile(
-                name=app_profile_name1, multi_cluster_routing_use_any=routing_policy
-            ),
-            data_v2_pb2.AppProfile(
-                name=app_profile_name2, multi_cluster_routing_use_any=routing_policy
-            ),
-        ]
-        iterator = _Iterator(pages=[app_profiles])
-
-        # Patch the stub used by the API method.
-        instance_api = mock.create_autospec(BigtableInstanceAdminClient)
-        client._instance_admin_client = instance_api
-        instance_api.app_profile_path = app_profile_path_template.format
-        instance_api.list_app_profiles.return_value = iterator
-
-        # Perform the method and check the result.
-        app_profiles = instance.list_app_profiles()
-
-        app_profile_1, app_profile_2 = app_profiles
-
-        self.assertIsInstance(app_profile_1, AppProfile)
-        self.assertEqual(app_profile_1.name, app_profile_name1)
-
-        self.assertIsInstance(app_profile_2, AppProfile)
-        self.assertEqual(app_profile_2.name, app_profile_name2)
+        ),
+    ]
+
+    result = instance.create(clusters=clusters)
+
+    assert result is response
+
+    cluster_pb_1 = cluster_pb(
+        location=api.location_path(PROJECT, location_id_1),
+        serve_nodes=serve_nodes_1,
+        default_storage_type=enums.StorageType.UNSPECIFIED,
+    )
+    cluster_pb_2 = cluster_pb(
+        location=api.location_path(PROJECT, location_id_2),
+        serve_nodes=serve_nodes_2,
+        default_storage_type=enums.StorageType.UNSPECIFIED,
+    )
+    instance_pb = instance_pb(
+        display_name=DISPLAY_NAME, type_=enums.Instance.Type.PRODUCTION, labels=LABELS,
+    )
+    api.create_instance.assert_called_once_with(
+        request={
+            "parent": api.project_path(PROJECT),
+            "instance_id": INSTANCE_ID,
+            "instance": instance_pb,
+            "clusters": {cluster_id_1: cluster_pb_1, cluster_id_2: cluster_pb_2},
+        }
+    )
+
+
+def test_instance_exists_hit():
+    from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    response_pb = data_v2_pb2.Instance(name=INSTANCE_NAME)
+    api = client._instance_admin_client = _make_instance_admin_api()
+    api.instance_path.return_value = INSTANCE_NAME
+    api.get_instance.return_value = response_pb
+    instance = _make_instance(INSTANCE_ID, client)
+
+    assert instance.exists()
+
+    api.get_instance.assert_called_once_with(request={"name": INSTANCE_NAME})
+
+
+def test_instance_exists_miss():
+    from google.api_core import exceptions
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+
+    api = client._instance_admin_client = _make_instance_admin_api()
+    api.instance_path.return_value = INSTANCE_NAME
+    api.get_instance.side_effect = exceptions.NotFound("testing")
+
+    non_existing_instance_id = "instance-id-2"
+    instance = _make_instance(non_existing_instance_id, client)
+
+    assert not instance.exists()
+
+    api.get_instance.assert_called_once_with(request={"name": INSTANCE_NAME})
+
+
+def test_instance_exists_w_error():
+    from google.api_core import exceptions
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+
+    api = client._instance_admin_client = _make_instance_admin_api()
+    api.instance_path.return_value = INSTANCE_NAME
+    api.get_instance.side_effect = exceptions.BadRequest("testing")
+    instance = _make_instance(INSTANCE_ID, client)
+
+    with pytest.raises(exceptions.BadRequest):
+        instance.exists()
+
+    api.get_instance.assert_called_once_with(request={"name": INSTANCE_NAME})
+
+
+def test_instance_reload():
+    from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
+    from google.cloud.bigtable import enums
+
+    DISPLAY_NAME = u"hey-hi-hello"
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    instance = _make_instance(INSTANCE_ID, client)
+    response_pb = data_v2_pb2.Instance(
+        display_name=DISPLAY_NAME, type_=enums.Instance.Type.PRODUCTION, labels=LABELS
+    )
+    api = client._instance_admin_client = _make_instance_admin_api()
+    api.get_instance.side_effect = [response_pb]
+    assert instance.display_name == INSTANCE_ID
+
+    result = instance.reload()
+
+    assert result is None
+    assert instance.display_name == DISPLAY_NAME
+
+
+def _instance_api_response_for_update():
+    import datetime
+    from google.api_core import operation
+    from google.longrunning import operations_pb2
+    from google.protobuf.any_pb2 import Any
+    from google.cloud._helpers import _datetime_to_pb_timestamp
+    from google.cloud.bigtable_admin_v2.types import (
+        bigtable_instance_admin as messages_v2_pb2,
+    )
+    from google.cloud.bigtable_admin_v2.types import instance
+
+    NOW = datetime.datetime.utcnow()
+    NOW_PB = _datetime_to_pb_timestamp(NOW)
+    metadata = messages_v2_pb2.UpdateInstanceMetadata(request_time=NOW_PB)
+    type_url = "type.googleapis.com/{}".format(
+        messages_v2_pb2.UpdateInstanceMetadata._meta._pb.DESCRIPTOR.full_name
+    )
+    response_pb = operations_pb2.Operation(
+        name=OP_NAME,
+        metadata=Any(type_url=type_url, value=metadata._pb.SerializeToString()),
+    )
+    response = operation.from_gapic(
+        response_pb,
+        mock.Mock(),
+        instance.Instance,
+        metadata_type=messages_v2_pb2.UpdateInstanceMetadata,
+    )
+    instance_path_template = "projects/{project}/instances/{instance}"
+    api = _make_instance_admin_api()
+    api.partial_update_instance.return_value = response
+    api.instance_path = instance_path_template.format
+    return api, response
+
+
+def test_instance_update():
+    from google.cloud.bigtable import enums
+    from google.protobuf import field_mask_pb2
+    from google.cloud.bigtable_admin_v2.types import Instance
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    instance = _make_instance(
+        INSTANCE_ID,
+        client,
+        display_name=DISPLAY_NAME,
+        instance_type=enums.Instance.Type.DEVELOPMENT,
+        labels=LABELS,
+    )
+    api, response = _instance_api_response_for_update()
+    client._instance_admin_client = api
+
+    result = instance.update()
+
+    assert result is response
+
+    instance_pb = Instance(
+        name=instance.name,
+        display_name=instance.display_name,
+        type_=instance.type_,
+        labels=instance.labels,
+    )
+    update_mask_pb = field_mask_pb2.FieldMask(paths=["display_name", "type", "labels"])
+
+    api.partial_update_instance.assert_called_once_with(
+        request={"instance": instance_pb, "update_mask": update_mask_pb}
+    )
+
+
+def test_instance_update_empty():
+    from google.protobuf import field_mask_pb2
+    from google.cloud.bigtable_admin_v2.types import Instance
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    instance = _make_instance(None, client)
+    api, response = _instance_api_response_for_update()
+    client._instance_admin_client = api
+
+    result = instance.update()
+
+    assert result is response
+
+    instance_pb = Instance(
+        name=instance.name,
+        display_name=instance.display_name,
+        type_=instance.type_,
+        labels=instance.labels,
+    )
+    update_mask_pb = field_mask_pb2.FieldMask()
+
+    api.partial_update_instance.assert_called_once_with(
+        request={"instance": instance_pb, "update_mask": update_mask_pb}
+    )
+
+
+def test_instance_delete():
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    instance = _make_instance(INSTANCE_ID, client)
+    api = client._instance_admin_client = _make_instance_admin_api()
+    api.delete_instance.return_value = None
+
+    result = instance.delete()
+
+    assert result is None
+
+    api.delete_instance.assert_called_once_with(request={"name": instance.name})
+
+
+def test_instance_get_iam_policy():
+    from google.iam.v1 import policy_pb2
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    instance = _make_instance(INSTANCE_ID, client)
+
+    version = 1
+    etag = b"etag_v1"
+    members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
+    bindings = [{"role": BIGTABLE_ADMIN_ROLE, "members": members}]
+    iam_policy = policy_pb2.Policy(version=version, etag=etag, bindings=bindings)
+    api = client._instance_admin_client = _make_instance_admin_api()
+    api.get_iam_policy.return_value = iam_policy
+
+    result = instance.get_iam_policy()
+
+    assert result.version == version
+    assert result.etag == etag
+    admins = result.bigtable_admins
+    assert len(admins) == len(members)
+
+    for found, expected in zip(sorted(admins), sorted(members)):
+        assert found == expected
+    api.get_iam_policy.assert_called_once_with(request={"resource": instance.name})
+
+
+def test_instance_get_iam_policy_w_requested_policy_version():
+    from google.iam.v1 import policy_pb2, options_pb2
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    instance = _make_instance(INSTANCE_ID, client)
+
+    version = 1
+    etag = b"etag_v1"
+    members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
+    bindings = [{"role": BIGTABLE_ADMIN_ROLE, "members": members}]
+    iam_policy = policy_pb2.Policy(version=version, etag=etag, bindings=bindings)
+
+    api = client._instance_admin_client = _make_instance_admin_api()
+    api.get_iam_policy.return_value = iam_policy
+
+    result = instance.get_iam_policy(requested_policy_version=3)
+
+    assert result.version == version
+    assert result.etag == etag
+    admins = result.bigtable_admins
+    assert len(admins) == len(members)
+    for found, expected in zip(sorted(admins), sorted(members)):
+        assert found == expected
+
+    api.get_iam_policy.assert_called_once_with(
+        request={
+            "resource": instance.name,
+            "options_": options_pb2.GetPolicyOptions(requested_policy_version=3),
+        }
+    )
+
+
+def test_instance_set_iam_policy():
+    from google.iam.v1 import policy_pb2
+    from google.cloud.bigtable.policy import Policy
+    from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    instance = _make_instance(INSTANCE_ID, client)
+
+    version = 1
+    etag = b"etag_v1"
+    members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
+    bindings = [{"role": BIGTABLE_ADMIN_ROLE, "members": sorted(members)}]
+    iam_policy_pb = policy_pb2.Policy(version=version, etag=etag, bindings=bindings)
+
+    api = client._instance_admin_client = _make_instance_admin_api()
+    api.set_iam_policy.return_value = iam_policy_pb
+    iam_policy = Policy(etag=etag, version=version)
+    iam_policy[BIGTABLE_ADMIN_ROLE] = [
+        Policy.user("user1@test.com"),
+        Policy.service_account("service_acc1@test.com"),
+    ]
+
+    result = instance.set_iam_policy(iam_policy)
+
+    api.set_iam_policy.assert_called_once_with(
+        request={"resource": instance.name, "policy": iam_policy_pb}
+    )
+    assert result.version == version
+    assert result.etag == etag
+    admins = result.bigtable_admins
+    assert len(admins) == len(members)
+    for found, expected in zip(sorted(admins), sorted(members)):
+        assert found == expected
+
+
+def test_instance_test_iam_permissions():
+    from google.iam.v1 import iam_policy_pb2
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    instance = _make_instance(INSTANCE_ID, client)
+
+    permissions = ["bigtable.tables.create", "bigtable.clusters.create"]
+
+    response = iam_policy_pb2.TestIamPermissionsResponse(permissions=permissions)
+    api = client._instance_admin_client = _make_instance_admin_api()
+    api.test_iam_permissions.return_value = response
+
+    result = instance.test_iam_permissions(permissions)
+
+    assert result == permissions
+    api.test_iam_permissions.assert_called_once_with(
+        request={"resource": instance.name, "permissions": permissions}
+    )
+
+
+def test_instance_cluster_factory():
+    from google.cloud.bigtable import enums
+
+    CLUSTER_ID = "{}-cluster".format(INSTANCE_ID)
+    LOCATION_ID = "us-central1-c"
+    SERVE_NODES = 3
+    STORAGE_TYPE = enums.StorageType.HDD
+
+    instance = _make_instance(INSTANCE_ID, None)
+
+    cluster = instance.cluster(
+        CLUSTER_ID,
+        location_id=LOCATION_ID,
+        serve_nodes=SERVE_NODES,
+        default_storage_type=STORAGE_TYPE,
+    )
+    assert isinstance(cluster, Cluster)
+    assert cluster.cluster_id == CLUSTER_ID
+    assert cluster.location_id == LOCATION_ID
+    assert cluster._state is None
+    assert cluster.serve_nodes == SERVE_NODES
+    assert cluster.default_storage_type == STORAGE_TYPE
+
+
+def test_instance_list_clusters():
+    from google.cloud.bigtable_admin_v2.types import (
+        bigtable_instance_admin as messages_v2_pb2,
+    )
+    from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
+    from google.cloud.bigtable.instance import Instance
+    from google.cloud.bigtable.instance import Cluster
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    instance = Instance(INSTANCE_ID, client)
+
+    failed_location = "FAILED"
+    cluster_id1 = "cluster-id1"
+    cluster_id2 = "cluster-id2"
+    cluster_path_template = "projects/{}/instances/{}/clusters/{}"
+    cluster_name1 = cluster_path_template.format(PROJECT, INSTANCE_ID, cluster_id1)
+    cluster_name2 = cluster_path_template.format(PROJECT, INSTANCE_ID, cluster_id2)
+    response_pb = messages_v2_pb2.ListClustersResponse(
+        failed_locations=[failed_location],
+        clusters=[
+            data_v2_pb2.Cluster(name=cluster_name1),
+            data_v2_pb2.Cluster(name=cluster_name2),
+        ],
+    )
+    api = client._instance_admin_client = _make_instance_admin_api()
+    api.list_clusters.side_effect = [response_pb]
+    api.cluster_path = cluster_path_template.format
+
+    # Perform the method and check the result.
+    clusters, failed_locations = instance.list_clusters()
+
+    cluster_1, cluster_2 = clusters
+
+    assert isinstance(cluster_1, Cluster)
+    assert cluster_1.name == cluster_name1
+
+    assert isinstance(cluster_2, Cluster)
+    assert cluster_2.name == cluster_name2
+
+    assert failed_locations == [failed_location]
+
+
+def test_instance_table_factory():
+    from google.cloud.bigtable.table import Table
+
+    app_profile_id = "appProfileId1262094415"
+    instance = _make_instance(INSTANCE_ID, None)
+
+    table = instance.table(TABLE_ID, app_profile_id=app_profile_id)
+    assert isinstance(table, Table)
+    assert table.table_id == TABLE_ID
+    assert table._instance == instance
+    assert table._app_profile_id == app_profile_id
+
+
+def _list_tables_helper(table_name=None):
+    from google.cloud.bigtable_admin_v2.types import table as table_data_v2_pb2
+    from google.cloud.bigtable_admin_v2.types import (
+        bigtable_table_admin as table_messages_v1_pb2,
+    )
+    from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+        BigtableTableAdminClient,
+    )
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    instance = _make_instance(INSTANCE_ID, client)
+
+    instance_api = client._instance_admin_client = _make_instance_admin_api()
+    instance_api.instance_path.return_value = "projects/project/instances/instance-id"
+    table_api = client._table_admin_client = mock.create_autospec(
+        BigtableTableAdminClient
+    )
+    if table_name is None:
+        table_name = TABLE_NAME
+
+    response_pb = table_messages_v1_pb2.ListTablesResponse(
+        tables=[table_data_v2_pb2.Table(name=table_name)]
+    )
+
+    table_api.list_tables.side_effect = [response_pb]
+
+    result = instance.list_tables()
+
+    expected_table = instance.table(TABLE_ID)
+    assert result == [expected_table]
+
+
+def test_instance_list_tables():
+    _list_tables_helper()
+
+
+def test_instance_list_tables_failure_bad_split():
+    with pytest.raises(ValueError):
+        _list_tables_helper(table_name="wrong-format")
+
+
+def test_instance_list_tables_failure_name_bad_before():
+    BAD_TABLE_NAME = (
+        "nonempty-section-before"
+        + "projects/"
+        + PROJECT
+        + "/instances/"
+        + INSTANCE_ID
+        + "/tables/"
+        + TABLE_ID
+    )
+    with pytest.raises(ValueError):
+        _list_tables_helper(table_name=BAD_TABLE_NAME)
+
+
+def test_instance_app_profile_factory():
+    from google.cloud.bigtable.enums import RoutingPolicyType
+
+    instance = _make_instance(INSTANCE_ID, None)
+
+    app_profile1 = instance.app_profile(
+        APP_PROFILE_ID_1,
+        routing_policy_type=RoutingPolicyType.ANY,
+        description=DESCRIPTION_1,
+    )
+
+    app_profile2 = instance.app_profile(
+        APP_PROFILE_ID_2,
+        routing_policy_type=RoutingPolicyType.SINGLE,
+        description=DESCRIPTION_2,
+        cluster_id=CLUSTER_ID,
+        allow_transactional_writes=ALLOW_WRITES,
+    )
+    assert app_profile1.app_profile_id == APP_PROFILE_ID_1
+    assert app_profile1._instance is instance
+    assert app_profile1.routing_policy_type == RoutingPolicyType.ANY
+    assert app_profile1.description == DESCRIPTION_1
+    assert app_profile2.app_profile_id == APP_PROFILE_ID_2
+    assert app_profile2._instance is instance
+    assert app_profile2.routing_policy_type == RoutingPolicyType.SINGLE
+    assert app_profile2.description == DESCRIPTION_2
+    assert app_profile2.cluster_id == CLUSTER_ID
+    assert app_profile2.allow_transactional_writes == ALLOW_WRITES
+
+
+def test_instance_list_app_profiles():
+    from google.api_core.page_iterator import Iterator
+    from google.api_core.page_iterator import Page
+    from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
+    from google.cloud.bigtable.app_profile import AppProfile
+
+    class _Iterator(Iterator):
+        def __init__(self, pages):
+            super(_Iterator, self).__init__(client=None)
+            self._pages = pages
+
+        def _next_page(self):
+            if self._pages:
+                page, self._pages = self._pages[0], self._pages[1:]
+                return Page(self, page, self.item_to_value)
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    instance = _make_instance(INSTANCE_ID, client)
+
+    # Setup Expected Response
+    app_profile_path_template = "projects/{}/instances/{}/appProfiles/{}"
+    app_profile_id1 = "app-profile-id1"
+    app_profile_id2 = "app-profile-id2"
+    app_profile_name1 = app_profile_path_template.format(
+        PROJECT, INSTANCE_ID, app_profile_id1
+    )
+    app_profile_name2 = app_profile_path_template.format(
+        PROJECT, INSTANCE_ID, app_profile_id2
+    )
+    routing_policy = data_v2_pb2.AppProfile.MultiClusterRoutingUseAny()
+
+    app_profiles = [
+        data_v2_pb2.AppProfile(
+            name=app_profile_name1, multi_cluster_routing_use_any=routing_policy
+        ),
+        data_v2_pb2.AppProfile(
+            name=app_profile_name2, multi_cluster_routing_use_any=routing_policy
+        ),
+    ]
+    iterator = _Iterator(pages=[app_profiles])
+
+    # Patch the stub used by the API method.
+    api = _make_instance_admin_api()
+    client._instance_admin_client = api
+    api.app_profile_path = app_profile_path_template.format
+    api.list_app_profiles.return_value = iterator
+
+    # Perform the method and check the result.
+    app_profiles = instance.list_app_profiles()
+
+    app_profile_1, app_profile_2 = app_profiles
+
+    assert isinstance(app_profile_1, AppProfile)
+    assert app_profile_1.name == app_profile_name1
+
+    assert isinstance(app_profile_2, AppProfile)
+    assert app_profile_2.name == app_profile_name2
