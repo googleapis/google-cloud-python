@@ -2,6 +2,7 @@
 
 .. include:: multiprocessing.rst
 
+
 API Reference
 -------------
 .. toctree::
@@ -10,12 +11,13 @@ API Reference
     bigquery_migration_v2alpha/services
     bigquery_migration_v2alpha/types
 
+
 Changelog
 ---------
 
 For a list of all ``google-cloud-bigquery-migration`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
