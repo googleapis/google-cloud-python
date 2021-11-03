@@ -233,7 +233,8 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         headers = dict(metadata)
         headers['Content-Type'] = 'application/json'
         response=getattr(self._session, method)(
-            uri,
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
             timeout=timeout,
             headers=headers,
             params=rest_helpers.flatten_query_params(query_params),
