@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.6.1...v1.0.0) (2021-11-03)
+
+
+### Features
+
+* bump release level to production/stable ([#89](https://www.github.com/googleapis/python-contact-center-insights/issues/89)) ([d93e829](https://www.github.com/googleapis/python-contact-center-insights/commit/d93e829c10a39c67970edb4f89e55bb39f5ae5a0))
+
 ### [0.6.1](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.6.0...v0.6.1) (2021-11-02)
 
 
