@@ -17,8 +17,8 @@ import warnings
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
-except AttributeError:
-    OptionalRetry = Union[retries.Retry, object]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 {% extends '_base.py.j2' %}
 

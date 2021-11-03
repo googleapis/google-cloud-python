@@ -32,8 +32,8 @@ from google.oauth2 import service_account                         # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
-except AttributeError:
-    OptionalRetry = Union[retries.Retry, object]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api import distribution_pb2  # type: ignore
 from google.api import metric_pb2  # type: ignore
