@@ -20,8 +20,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from grafeas.grafeas_v1.types import attestation as g_attestation
 from grafeas.grafeas_v1.types import build as g_build
 from grafeas.grafeas_v1.types import common
+from grafeas.grafeas_v1.types import compliance as g_compliance
 from grafeas.grafeas_v1.types import deployment as g_deployment
 from grafeas.grafeas_v1.types import discovery as g_discovery
+from grafeas.grafeas_v1.types import dsse_attestation as g_dsse_attestation
 from grafeas.grafeas_v1.types import image as g_image
 from grafeas.grafeas_v1.types import package as g_package
 from grafeas.grafeas_v1.types import upgrade as g_upgrade
@@ -122,6 +124,16 @@ class Occurrence(proto.Message):
             Describes an available package upgrade on the
             linked resource.
             This field is a member of `oneof`_ ``details``.
+        compliance (grafeas.grafeas_v1.types.ComplianceOccurrence):
+            Describes a compliance violation on a linked
+            resource.
+            This field is a member of `oneof`_ ``details``.
+        dsse_attestation (grafeas.grafeas_v1.types.DSSEAttestationOccurrence):
+            Describes an attestation of an artifact using
+            dsse.
+            This field is a member of `oneof`_ ``details``.
+        envelope (grafeas.grafeas_v1.types.Envelope):
+            https://github.com/secure-systems-lab/dsse
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -167,6 +179,19 @@ class Occurrence(proto.Message):
     upgrade = proto.Field(
         proto.MESSAGE, number=15, oneof="details", message=g_upgrade.UpgradeOccurrence,
     )
+    compliance = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        oneof="details",
+        message=g_compliance.ComplianceOccurrence,
+    )
+    dsse_attestation = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        oneof="details",
+        message=g_dsse_attestation.DSSEAttestationOccurrence,
+    )
+    envelope = proto.Field(proto.MESSAGE, number=18, message=common.Envelope,)
 
 
 class Note(proto.Message):
@@ -233,6 +258,12 @@ class Note(proto.Message):
         upgrade (grafeas.grafeas_v1.types.UpgradeNote):
             A note describing available package upgrades.
             This field is a member of `oneof`_ ``type``.
+        compliance (grafeas.grafeas_v1.types.ComplianceNote):
+            A note describing a compliance check.
+            This field is a member of `oneof`_ ``type``.
+        dsse_attestation (grafeas.grafeas_v1.types.DSSEAttestationNote):
+            A note describing a dsse attestation note.
+            This field is a member of `oneof`_ ``type``.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -274,6 +305,15 @@ class Note(proto.Message):
     )
     upgrade = proto.Field(
         proto.MESSAGE, number=17, oneof="type", message=g_upgrade.UpgradeNote,
+    )
+    compliance = proto.Field(
+        proto.MESSAGE, number=18, oneof="type", message=g_compliance.ComplianceNote,
+    )
+    dsse_attestation = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        oneof="type",
+        message=g_dsse_attestation.DSSEAttestationNote,
     )
 
 

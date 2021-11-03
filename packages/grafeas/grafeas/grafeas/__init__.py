@@ -19,16 +19,25 @@ from grafeas.grafeas_v1.services.grafeas.async_client import GrafeasAsyncClient
 
 from grafeas.grafeas_v1.types.attestation import AttestationNote
 from grafeas.grafeas_v1.types.attestation import AttestationOccurrence
+from grafeas.grafeas_v1.types.attestation import Jwt
 from grafeas.grafeas_v1.types.build import BuildNote
 from grafeas.grafeas_v1.types.build import BuildOccurrence
+from grafeas.grafeas_v1.types.common import Envelope
+from grafeas.grafeas_v1.types.common import EnvelopeSignature
 from grafeas.grafeas_v1.types.common import RelatedUrl
 from grafeas.grafeas_v1.types.common import Signature
 from grafeas.grafeas_v1.types.common import NoteKind
+from grafeas.grafeas_v1.types.compliance import ComplianceNote
+from grafeas.grafeas_v1.types.compliance import ComplianceOccurrence
+from grafeas.grafeas_v1.types.compliance import ComplianceVersion
+from grafeas.grafeas_v1.types.compliance import NonCompliantFile
 from grafeas.grafeas_v1.types.cvss import CVSSv3
 from grafeas.grafeas_v1.types.deployment import DeploymentNote
 from grafeas.grafeas_v1.types.deployment import DeploymentOccurrence
 from grafeas.grafeas_v1.types.discovery import DiscoveryNote
 from grafeas.grafeas_v1.types.discovery import DiscoveryOccurrence
+from grafeas.grafeas_v1.types.dsse_attestation import DSSEAttestationNote
+from grafeas.grafeas_v1.types.dsse_attestation import DSSEAttestationOccurrence
 from grafeas.grafeas_v1.types.grafeas import BatchCreateNotesRequest
 from grafeas.grafeas_v1.types.grafeas import BatchCreateNotesResponse
 from grafeas.grafeas_v1.types.grafeas import BatchCreateOccurrencesRequest
@@ -54,6 +63,13 @@ from grafeas.grafeas_v1.types.image import Fingerprint
 from grafeas.grafeas_v1.types.image import ImageNote
 from grafeas.grafeas_v1.types.image import ImageOccurrence
 from grafeas.grafeas_v1.types.image import Layer
+from grafeas.grafeas_v1.types.intoto_provenance import BuilderConfig
+from grafeas.grafeas_v1.types.intoto_provenance import Completeness
+from grafeas.grafeas_v1.types.intoto_provenance import InTotoProvenance
+from grafeas.grafeas_v1.types.intoto_provenance import Metadata
+from grafeas.grafeas_v1.types.intoto_provenance import Recipe
+from grafeas.grafeas_v1.types.intoto_statement import InTotoStatement
+from grafeas.grafeas_v1.types.intoto_statement import Subject
 from grafeas.grafeas_v1.types.package import Distribution
 from grafeas.grafeas_v1.types.package import Location
 from grafeas.grafeas_v1.types.package import PackageNote
@@ -73,6 +89,7 @@ from grafeas.grafeas_v1.types.provenance import ProjectRepoId
 from grafeas.grafeas_v1.types.provenance import RepoId
 from grafeas.grafeas_v1.types.provenance import Source
 from grafeas.grafeas_v1.types.provenance import SourceContext
+from grafeas.grafeas_v1.types.slsa_provenance import SlsaProvenance
 from grafeas.grafeas_v1.types.upgrade import UpgradeDistribution
 from grafeas.grafeas_v1.types.upgrade import UpgradeNote
 from grafeas.grafeas_v1.types.upgrade import UpgradeOccurrence
@@ -86,16 +103,25 @@ __all__ = (
     "GrafeasAsyncClient",
     "AttestationNote",
     "AttestationOccurrence",
+    "Jwt",
     "BuildNote",
     "BuildOccurrence",
+    "Envelope",
+    "EnvelopeSignature",
     "RelatedUrl",
     "Signature",
     "NoteKind",
+    "ComplianceNote",
+    "ComplianceOccurrence",
+    "ComplianceVersion",
+    "NonCompliantFile",
     "CVSSv3",
     "DeploymentNote",
     "DeploymentOccurrence",
     "DiscoveryNote",
     "DiscoveryOccurrence",
+    "DSSEAttestationNote",
+    "DSSEAttestationOccurrence",
     "BatchCreateNotesRequest",
     "BatchCreateNotesResponse",
     "BatchCreateOccurrencesRequest",
@@ -121,6 +147,13 @@ __all__ = (
     "ImageNote",
     "ImageOccurrence",
     "Layer",
+    "BuilderConfig",
+    "Completeness",
+    "InTotoProvenance",
+    "Metadata",
+    "Recipe",
+    "InTotoStatement",
+    "Subject",
     "Distribution",
     "Location",
     "PackageNote",
@@ -140,6 +173,7 @@ __all__ = (
     "RepoId",
     "Source",
     "SourceContext",
+    "SlsaProvenance",
     "UpgradeDistribution",
     "UpgradeNote",
     "UpgradeOccurrence",

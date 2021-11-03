@@ -38,8 +38,10 @@ from grafeas.grafeas_v1.services.grafeas import pagers
 from grafeas.grafeas_v1.types import attestation
 from grafeas.grafeas_v1.types import build
 from grafeas.grafeas_v1.types import common
+from grafeas.grafeas_v1.types import compliance
 from grafeas.grafeas_v1.types import deployment
 from grafeas.grafeas_v1.types import discovery
+from grafeas.grafeas_v1.types import dsse_attestation
 from grafeas.grafeas_v1.types import grafeas
 from grafeas.grafeas_v1.types import image
 from grafeas.grafeas_v1.types import package

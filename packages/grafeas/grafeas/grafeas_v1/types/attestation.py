@@ -19,7 +19,7 @@ from grafeas.grafeas_v1.types import common
 
 
 __protobuf__ = proto.module(
-    package="grafeas.v1", manifest={"AttestationNote", "AttestationOccurrence",},
+    package="grafeas.v1", manifest={"AttestationNote", "Jwt", "AttestationOccurrence",},
 )
 
 
@@ -61,6 +61,20 @@ class AttestationNote(proto.Message):
     hint = proto.Field(proto.MESSAGE, number=1, message=Hint,)
 
 
+class Jwt(proto.Message):
+    r"""
+
+    Attributes:
+        compact_jwt (str):
+            The compact encoding of a JWS, which is
+            always three base64 encoded strings joined by
+            periods. For details, see:
+            https://tools.ietf.org/html/rfc7515.html#section-3.1
+    """
+
+    compact_jwt = proto.Field(proto.STRING, number=1,)
+
+
 class AttestationOccurrence(proto.Message):
     r"""Occurrence that represents a single "attestation". The
     authenticity of an attestation can be verified using the
@@ -82,10 +96,22 @@ class AttestationOccurrence(proto.Message):
             verified if at least one ``signature`` verifies
             ``serialized_payload``. See ``Signature`` in common.proto
             for more details on signature structure and verification.
+        jwts (Sequence[grafeas.grafeas_v1.types.Jwt]):
+            One or more JWTs encoding a self-contained attestation. Each
+            JWT encodes the payload that it verifies within the JWT
+            itself. Verifier implementation SHOULD ignore the
+            ``serialized_payload`` field when verifying these JWTs. If
+            only JWTs are present on this AttestationOccurrence, then
+            the ``serialized_payload`` SHOULD be left empty. Each JWT
+            SHOULD encode a claim specific to the ``resource_uri`` of
+            this Occurrence, but this is not validated by Grafeas
+            metadata API implementations. The JWT itself is opaque to
+            Grafeas.
     """
 
     serialized_payload = proto.Field(proto.BYTES, number=1,)
     signatures = proto.RepeatedField(proto.MESSAGE, number=2, message=common.Signature,)
+    jwts = proto.RepeatedField(proto.MESSAGE, number=3, message="Jwt",)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

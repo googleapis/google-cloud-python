@@ -17,7 +17,8 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="grafeas.v1", manifest={"NoteKind", "RelatedUrl", "Signature",},
+    package="grafeas.v1",
+    manifest={"NoteKind", "RelatedUrl", "Signature", "Envelope", "EnvelopeSignature",},
 )
 
 
@@ -32,6 +33,8 @@ class NoteKind(proto.Enum):
     DISCOVERY = 6
     ATTESTATION = 7
     UPGRADE = 8
+    COMPLIANCE = 9
+    DSSE_ATTESTATION = 10
 
 
 class RelatedUrl(proto.Message):
@@ -90,7 +93,8 @@ class Signature(proto.Message):
             signature.
 
             -  The ``public_key_id`` is required.
-            -  The ``public_key_id`` MUST be an RFC3986 conformant URI.
+            -  The ``public_key_id`` SHOULD be an RFC3986 conformant
+               URI.
             -  When possible, the ``public_key_id`` SHOULD be an
                immutable reference, such as a cryptographic digest.
 
@@ -112,6 +116,42 @@ class Signature(proto.Message):
 
     signature = proto.Field(proto.BYTES, number=1,)
     public_key_id = proto.Field(proto.STRING, number=2,)
+
+
+class Envelope(proto.Message):
+    r"""MUST match
+    https://github.com/secure-systems-
+    lab/dsse/blob/master/envelope.proto. An authenticated message of
+    arbitrary type.
+
+    Attributes:
+        payload (bytes):
+
+        payload_type (str):
+
+        signatures (Sequence[grafeas.grafeas_v1.types.EnvelopeSignature]):
+
+    """
+
+    payload = proto.Field(proto.BYTES, number=1,)
+    payload_type = proto.Field(proto.STRING, number=2,)
+    signatures = proto.RepeatedField(
+        proto.MESSAGE, number=3, message="EnvelopeSignature",
+    )
+
+
+class EnvelopeSignature(proto.Message):
+    r"""
+
+    Attributes:
+        sig (bytes):
+
+        keyid (str):
+
+    """
+
+    sig = proto.Field(proto.BYTES, number=1,)
+    keyid = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

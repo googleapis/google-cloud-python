@@ -43,13 +43,18 @@ from grafeas.grafeas_v1.services.grafeas import transports
 from grafeas.grafeas_v1.types import attestation
 from grafeas.grafeas_v1.types import build
 from grafeas.grafeas_v1.types import common
+from grafeas.grafeas_v1.types import compliance
 from grafeas.grafeas_v1.types import cvss
 from grafeas.grafeas_v1.types import deployment
 from grafeas.grafeas_v1.types import discovery
+from grafeas.grafeas_v1.types import dsse_attestation
 from grafeas.grafeas_v1.types import grafeas
 from grafeas.grafeas_v1.types import image
+from grafeas.grafeas_v1.types import intoto_provenance
+from grafeas.grafeas_v1.types import intoto_statement
 from grafeas.grafeas_v1.types import package
 from grafeas.grafeas_v1.types import provenance
+from grafeas.grafeas_v1.types import slsa_provenance
 from grafeas.grafeas_v1.types import upgrade
 from grafeas.grafeas_v1.types import vulnerability
 import google.auth

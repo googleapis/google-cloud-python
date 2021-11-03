@@ -16,15 +16,24 @@
 from .attestation import (
     AttestationNote,
     AttestationOccurrence,
+    Jwt,
 )
 from .build import (
     BuildNote,
     BuildOccurrence,
 )
 from .common import (
+    Envelope,
+    EnvelopeSignature,
     RelatedUrl,
     Signature,
     NoteKind,
+)
+from .compliance import (
+    ComplianceNote,
+    ComplianceOccurrence,
+    ComplianceVersion,
+    NonCompliantFile,
 )
 from .cvss import CVSSv3
 from .deployment import (
@@ -34,6 +43,10 @@ from .deployment import (
 from .discovery import (
     DiscoveryNote,
     DiscoveryOccurrence,
+)
+from .dsse_attestation import (
+    DSSEAttestationNote,
+    DSSEAttestationOccurrence,
 )
 from .grafeas import (
     BatchCreateNotesRequest,
@@ -64,6 +77,17 @@ from .image import (
     ImageOccurrence,
     Layer,
 )
+from .intoto_provenance import (
+    BuilderConfig,
+    Completeness,
+    InTotoProvenance,
+    Metadata,
+    Recipe,
+)
+from .intoto_statement import (
+    InTotoStatement,
+    Subject,
+)
 from .package import (
     Distribution,
     Location,
@@ -87,6 +111,7 @@ from .provenance import (
     Source,
     SourceContext,
 )
+from .slsa_provenance import SlsaProvenance
 from .upgrade import (
     UpgradeDistribution,
     UpgradeNote,
@@ -102,16 +127,25 @@ from .vulnerability import (
 __all__ = (
     "AttestationNote",
     "AttestationOccurrence",
+    "Jwt",
     "BuildNote",
     "BuildOccurrence",
+    "Envelope",
+    "EnvelopeSignature",
     "RelatedUrl",
     "Signature",
     "NoteKind",
+    "ComplianceNote",
+    "ComplianceOccurrence",
+    "ComplianceVersion",
+    "NonCompliantFile",
     "CVSSv3",
     "DeploymentNote",
     "DeploymentOccurrence",
     "DiscoveryNote",
     "DiscoveryOccurrence",
+    "DSSEAttestationNote",
+    "DSSEAttestationOccurrence",
     "BatchCreateNotesRequest",
     "BatchCreateNotesResponse",
     "BatchCreateOccurrencesRequest",
@@ -137,6 +171,13 @@ __all__ = (
     "ImageNote",
     "ImageOccurrence",
     "Layer",
+    "BuilderConfig",
+    "Completeness",
+    "InTotoProvenance",
+    "Metadata",
+    "Recipe",
+    "InTotoStatement",
+    "Subject",
     "Distribution",
     "Location",
     "PackageNote",
@@ -156,6 +197,7 @@ __all__ = (
     "RepoId",
     "Source",
     "SourceContext",
+    "SlsaProvenance",
     "UpgradeDistribution",
     "UpgradeNote",
     "UpgradeOccurrence",

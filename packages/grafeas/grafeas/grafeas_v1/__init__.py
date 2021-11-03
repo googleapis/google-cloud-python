@@ -19,16 +19,25 @@ from .services.grafeas import GrafeasAsyncClient
 
 from .types.attestation import AttestationNote
 from .types.attestation import AttestationOccurrence
+from .types.attestation import Jwt
 from .types.build import BuildNote
 from .types.build import BuildOccurrence
+from .types.common import Envelope
+from .types.common import EnvelopeSignature
 from .types.common import RelatedUrl
 from .types.common import Signature
 from .types.common import NoteKind
+from .types.compliance import ComplianceNote
+from .types.compliance import ComplianceOccurrence
+from .types.compliance import ComplianceVersion
+from .types.compliance import NonCompliantFile
 from .types.cvss import CVSSv3
 from .types.deployment import DeploymentNote
 from .types.deployment import DeploymentOccurrence
 from .types.discovery import DiscoveryNote
 from .types.discovery import DiscoveryOccurrence
+from .types.dsse_attestation import DSSEAttestationNote
+from .types.dsse_attestation import DSSEAttestationOccurrence
 from .types.grafeas import BatchCreateNotesRequest
 from .types.grafeas import BatchCreateNotesResponse
 from .types.grafeas import BatchCreateOccurrencesRequest
@@ -54,6 +63,13 @@ from .types.image import Fingerprint
 from .types.image import ImageNote
 from .types.image import ImageOccurrence
 from .types.image import Layer
+from .types.intoto_provenance import BuilderConfig
+from .types.intoto_provenance import Completeness
+from .types.intoto_provenance import InTotoProvenance
+from .types.intoto_provenance import Metadata
+from .types.intoto_provenance import Recipe
+from .types.intoto_statement import InTotoStatement
+from .types.intoto_statement import Subject
 from .types.package import Distribution
 from .types.package import Location
 from .types.package import PackageNote
@@ -73,6 +89,7 @@ from .types.provenance import ProjectRepoId
 from .types.provenance import RepoId
 from .types.provenance import Source
 from .types.provenance import SourceContext
+from .types.slsa_provenance import SlsaProvenance
 from .types.upgrade import UpgradeDistribution
 from .types.upgrade import UpgradeNote
 from .types.upgrade import UpgradeOccurrence
@@ -95,11 +112,18 @@ __all__ = (
     "BuildNote",
     "BuildOccurrence",
     "BuildProvenance",
+    "BuilderConfig",
     "CVSSv3",
     "CloudRepoSourceContext",
     "Command",
+    "Completeness",
+    "ComplianceNote",
+    "ComplianceOccurrence",
+    "ComplianceVersion",
     "CreateNoteRequest",
     "CreateOccurrenceRequest",
+    "DSSEAttestationNote",
+    "DSSEAttestationOccurrence",
     "DeleteNoteRequest",
     "DeleteOccurrenceRequest",
     "DeploymentNote",
@@ -107,6 +131,8 @@ __all__ = (
     "DiscoveryNote",
     "DiscoveryOccurrence",
     "Distribution",
+    "Envelope",
+    "EnvelopeSignature",
     "FileHashes",
     "Fingerprint",
     "GerritSourceContext",
@@ -118,6 +144,9 @@ __all__ = (
     "Hash",
     "ImageNote",
     "ImageOccurrence",
+    "InTotoProvenance",
+    "InTotoStatement",
+    "Jwt",
     "Layer",
     "ListNoteOccurrencesRequest",
     "ListNoteOccurrencesResponse",
@@ -126,18 +155,23 @@ __all__ = (
     "ListOccurrencesRequest",
     "ListOccurrencesResponse",
     "Location",
+    "Metadata",
+    "NonCompliantFile",
     "Note",
     "NoteKind",
     "Occurrence",
     "PackageNote",
     "PackageOccurrence",
     "ProjectRepoId",
+    "Recipe",
     "RelatedUrl",
     "RepoId",
     "Severity",
     "Signature",
+    "SlsaProvenance",
     "Source",
     "SourceContext",
+    "Subject",
     "UpdateNoteRequest",
     "UpdateOccurrenceRequest",
     "UpgradeDistribution",

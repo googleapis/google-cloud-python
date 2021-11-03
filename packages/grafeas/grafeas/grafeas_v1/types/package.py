@@ -145,6 +145,16 @@ class Version(proto.Message):
         revision (str):
             The iteration of the package build from the
             above version.
+        inclusive (bool):
+            Whether this version is specifying part of an
+            inclusive range. Grafeas does not have the
+            capability to specify version ranges; instead we
+            have fields that specify start version and end
+            versions. At times this is insufficient - we
+            also need to specify whether the version is
+            included in the range or is excluded from the
+            range. This boolean is expected to be set to
+            true when the version is included in a range.
         kind (grafeas.grafeas_v1.types.Version.VersionKind):
             Required. Distinguishes between sentinel
             MIN/MAX versions and normal versions.
@@ -166,6 +176,7 @@ class Version(proto.Message):
     epoch = proto.Field(proto.INT32, number=1,)
     name = proto.Field(proto.STRING, number=2,)
     revision = proto.Field(proto.STRING, number=3,)
+    inclusive = proto.Field(proto.BOOL, number=6,)
     kind = proto.Field(proto.ENUM, number=4, enum=VersionKind,)
     full_name = proto.Field(proto.STRING, number=5,)
 
