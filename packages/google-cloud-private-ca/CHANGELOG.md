@@ -1,5 +1,19 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-security-private-ca/compare/v1.2.0...v1.2.1) (2021-11-02)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([7a1d242](https://www.github.com/googleapis/python-security-private-ca/commit/7a1d2429be86650e03607ca4435fe8a8593509ae))
+* **deps:** require google-api-core >= 1.28.0 ([7a1d242](https://www.github.com/googleapis/python-security-private-ca/commit/7a1d2429be86650e03607ca4435fe8a8593509ae))
+
+
+### Documentation
+
+* fix docstring formatting ([#141](https://www.github.com/googleapis/python-security-private-ca/issues/141)) ([79e9911](https://www.github.com/googleapis/python-security-private-ca/commit/79e991145543f7588d21bcc274eba983aba3653d))
+* list oneofs in docstring ([7a1d242](https://www.github.com/googleapis/python-security-private-ca/commit/7a1d2429be86650e03607ca4435fe8a8593509ae))
+
 ## [1.2.0](https://www.github.com/googleapis/python-security-private-ca/compare/v1.1.0...v1.2.0) (2021-10-25)
 
 
