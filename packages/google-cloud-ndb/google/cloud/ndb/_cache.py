@@ -27,7 +27,7 @@ from google.cloud.ndb import utils
 
 _LOCKED_FOR_READ = b"0-"
 _LOCKED_FOR_WRITE = b"00"
-_LOCK_TIME = 32
+_LOCK_TIME = 64
 _PREFIX = b"NDB30"
 
 warnings.filterwarnings("always", module=__name__)
@@ -659,9 +659,25 @@ def global_unlock_for_write(key, lock):
     utils.logging_debug(log, "unlock for write: {}", lock)
 
     def new_value(old_value):
-        assert lock in old_value, "attempt to remove lock that isn't present"
-        value = old_value.replace(lock, b"")
+        value = old_value
+        if value and lock in value:
+            value = value.replace(lock, b"")
+
+        else:
+            warnings.warn(
+                "Attempt to remove a lock that doesn't exist. This is mostly likely "
+                "caused by a long running operation and the lock timing out.",
+                RuntimeWarning,
+            )
+
         if value == _LOCKED_FOR_WRITE:
+            value = b""
+
+        if value and not value.startswith(_LOCKED_FOR_WRITE):
+            # If this happens, it means the lock expired and something else got written
+            # to the cache in the meantime. Whatever value that is, since there was a
+            # write operation that is concluding now, we should consider it stale and
+            # write a blank value.
             value = b""
 
         return value
@@ -684,6 +700,10 @@ def _update_key(key, new_value):
 
         value = new_value(old_value)
         utils.logging_debug(log, "new value: {}", value)  # pragma: SYNCPOINT update key
+
+        if old_value == value:
+            utils.logging_debug(log, "nothing to do")
+            return
 
         if old_value is not None:
             utils.logging_debug(log, "compare and swap")

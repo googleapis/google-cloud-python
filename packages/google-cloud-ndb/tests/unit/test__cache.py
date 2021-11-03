@@ -880,7 +880,7 @@ class Test_global_lock_for_write:
 
         assert _cache.global_lock_for_write(b"key").result() == b".arandomuuid"
         _global_get.assert_called_once_with(b"key")
-        global_set_if_not_exists.assert_called_once_with(b"key", lock_value, expires=32)
+        global_set_if_not_exists.assert_called_once_with(b"key", lock_value, expires=64)
 
     @staticmethod
     @mock.patch("google.cloud.ndb._cache.uuid")
@@ -922,8 +922,8 @@ class Test_global_lock_for_write:
         )
         _global_compare_and_swap.assert_has_calls(
             [
-                mock.call(b"key", new_lock_value, expires=32),
-                mock.call(b"key", new_lock_value, expires=32),
+                mock.call(b"key", new_lock_value, expires=64),
+                mock.call(b"key", new_lock_value, expires=64),
             ]
         )
 
@@ -955,7 +955,102 @@ class Test_global_unlock_for_write:
         assert _cache.global_unlock_for_write(b"key", lock).result() is None
         _global_get.assert_called_once_with(b"key")
         _global_watch.assert_called_once_with(b"key", lock_value)
-        _global_compare_and_swap.assert_called_once_with(b"key", b"", expires=32)
+        _global_compare_and_swap.assert_called_once_with(b"key", b"", expires=64)
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache.uuid")
+    @mock.patch("google.cloud.ndb._cache._global_compare_and_swap")
+    @mock.patch("google.cloud.ndb._cache._global_watch")
+    @mock.patch("google.cloud.ndb._cache._global_get")
+    @mock.patch("google.cloud.ndb._cache._global_cache")
+    def test_lock_missing(
+        _global_cache, _global_get, _global_watch, _global_compare_and_swap, uuid
+    ):
+        lock = b".arandomuuid"
+
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(),
+            strict_write=False,
+            spec=("transient_errors", "strict_write"),
+        )
+
+        lock_value = _cache._LOCKED_FOR_WRITE + b".adifferentlock"
+        _global_get.return_value = _future_result(lock_value)
+        _global_watch.return_value = _future_result(None)
+        _global_compare_and_swap.return_value = _future_result(True)
+
+        with warnings.catch_warnings(record=True) as logged:
+            assert _cache.global_unlock_for_write(b"key", lock).result() is None
+            logged = [
+                warning for warning in logged if warning.category is RuntimeWarning
+            ]
+            assert len(logged) == 1
+
+        _global_get.assert_called_once_with(b"key")
+        _global_watch.assert_not_called()
+        _global_compare_and_swap.assert_not_called()
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache.uuid")
+    @mock.patch("google.cloud.ndb._cache.global_set_if_not_exists")
+    @mock.patch("google.cloud.ndb._cache._global_get")
+    @mock.patch("google.cloud.ndb._cache._global_cache")
+    def test_no_value_in_cache(
+        _global_cache, _global_get, global_set_if_not_exists, uuid
+    ):
+        lock = b".arandomuuid"
+
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(),
+            strict_write=False,
+            spec=("transient_errors", "strict_write"),
+        )
+
+        _global_get.return_value = _future_result(None)
+        global_set_if_not_exists.return_value = _future_result(True)
+
+        with warnings.catch_warnings(record=True) as logged:
+            assert _cache.global_unlock_for_write(b"key", lock).result() is None
+            logged = [
+                warning for warning in logged if warning.category is RuntimeWarning
+            ]
+            assert len(logged) == 1
+
+        _global_get.assert_called_once_with(b"key")
+        global_set_if_not_exists.assert_not_called()
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache.uuid")
+    @mock.patch("google.cloud.ndb._cache._global_compare_and_swap")
+    @mock.patch("google.cloud.ndb._cache._global_watch")
+    @mock.patch("google.cloud.ndb._cache._global_get")
+    @mock.patch("google.cloud.ndb._cache._global_cache")
+    def test_lock_overwritten(
+        _global_cache, _global_get, _global_watch, _global_compare_and_swap, uuid
+    ):
+        lock = b".arandomuuid"
+
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(),
+            strict_write=False,
+            spec=("transient_errors", "strict_write"),
+        )
+
+        lock_value = b"SOMERANDOMVALUE"
+        _global_get.return_value = _future_result(lock_value)
+        _global_watch.return_value = _future_result(None)
+        _global_compare_and_swap.return_value = _future_result(True)
+
+        with warnings.catch_warnings(record=True) as logged:
+            assert _cache.global_unlock_for_write(b"key", lock).result() is None
+            logged = [
+                warning for warning in logged if warning.category is RuntimeWarning
+            ]
+            assert len(logged) == 1
+
+        _global_get.assert_called_once_with(b"key")
+        _global_watch.assert_called_once_with(b"key", lock_value)
+        _global_compare_and_swap.assert_called_once_with(b"key", b"", expires=64)
 
     @staticmethod
     @mock.patch("google.cloud.ndb._cache.uuid")
@@ -1023,8 +1118,8 @@ class Test_global_unlock_for_write:
         )
         _global_compare_and_swap.assert_has_calls(
             [
-                mock.call(b"key", new_lock_value, expires=32),
-                mock.call(b"key", new_lock_value, expires=32),
+                mock.call(b"key", new_lock_value, expires=64),
+                mock.call(b"key", new_lock_value, expires=64),
             ]
         )
 
