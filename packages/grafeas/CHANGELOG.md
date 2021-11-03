@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.4.0](https://www.github.com/googleapis/python-grafeas/compare/v1.3.1...v1.4.0) (2021-11-03)
+
+
+### Features
+
+* Add compliance and intoto attestation protos ([#123](https://www.github.com/googleapis/python-grafeas/issues/123)) ([ff88a63](https://www.github.com/googleapis/python-grafeas/commit/ff88a6388c1117d17f5e33e28aa1c7e090b34659))
+
 ### [1.3.1](https://www.github.com/googleapis/python-grafeas/compare/v1.3.0...v1.3.1) (2021-11-01)
 
 
