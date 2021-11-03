@@ -59,7 +59,7 @@ extras = {
     ]
     + pyarrow_dep,
     "geopandas": ["geopandas>=0.9.0, <1.0dev", "Shapely>=1.6.0, <2.0dev"],
-    "pandas": ["pandas>=0.23.0"] + pyarrow_dep,
+    "pandas": ["pandas>=0.24.2"] + pyarrow_dep,
     "bignumeric_type": pyarrow_dep,
     "tqdm": ["tqdm >= 4.7.4, <5.0.0dev"],
     "opentelemetry": [
@@ -127,6 +127,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Operating System :: OS Independent",
         "Topic :: Internet",
     ],
@@ -135,7 +136,7 @@ setuptools.setup(
     namespace_packages=namespaces,
     install_requires=dependencies,
     extras_require=extras,
-    python_requires=">=3.6, <3.10",
+    python_requires=">=3.6, <3.11",
     include_package_data=True,
     zip_safe=False,
 )
