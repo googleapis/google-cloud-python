@@ -23,7 +23,7 @@ import setuptools
 name = "google-cloud-filestore"
 description = "Filestore API client library"
 version = "0.2.1"
-release_status = "Development Status :: 4 - Beta"
+release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-filestore"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
