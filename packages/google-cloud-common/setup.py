@@ -23,7 +23,7 @@ import setuptools
 name = "google-cloud-common"
 description = "Google Cloud Common client library"
 version = "0.2.0"
-release_status = "Development Status :: 4 - Beta"
+release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-cloud-common"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x

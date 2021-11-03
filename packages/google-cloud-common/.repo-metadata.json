@@ -3,7 +3,7 @@
     "name_pretty": "Google Cloud Common",
     "client_documentation": "https://googleapis.dev/python/common/latest",
     "issue_tracker": "",
-    "release_level": "beta",
+    "release_level": "ga",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-cloud-common",
