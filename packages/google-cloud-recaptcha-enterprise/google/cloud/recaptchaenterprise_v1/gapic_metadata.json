@@ -45,9 +45,24 @@
                 "list_keys"
               ]
             },
+            "ListRelatedAccountGroupMemberships": {
+              "methods": [
+                "list_related_account_group_memberships"
+              ]
+            },
+            "ListRelatedAccountGroups": {
+              "methods": [
+                "list_related_account_groups"
+              ]
+            },
             "MigrateKey": {
               "methods": [
                 "migrate_key"
+              ]
+            },
+            "SearchRelatedAccountGroupMemberships": {
+              "methods": [
+                "search_related_account_group_memberships"
               ]
             },
             "UpdateKey": {
@@ -95,9 +110,24 @@
                 "list_keys"
               ]
             },
+            "ListRelatedAccountGroupMemberships": {
+              "methods": [
+                "list_related_account_group_memberships"
+              ]
+            },
+            "ListRelatedAccountGroups": {
+              "methods": [
+                "list_related_account_groups"
+              ]
+            },
             "MigrateKey": {
               "methods": [
                 "migrate_key"
+              ]
+            },
+            "SearchRelatedAccountGroupMemberships": {
+              "methods": [
+                "search_related_account_group_memberships"
               ]
             },
             "UpdateKey": {

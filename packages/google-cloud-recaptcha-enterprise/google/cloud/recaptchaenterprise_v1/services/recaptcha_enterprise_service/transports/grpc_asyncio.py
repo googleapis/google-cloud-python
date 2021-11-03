@@ -494,6 +494,99 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
             )
         return self._stubs["get_metrics"]
 
+    @property
+    def list_related_account_groups(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.ListRelatedAccountGroupsRequest],
+        Awaitable[recaptchaenterprise.ListRelatedAccountGroupsResponse],
+    ]:
+        r"""Return a callable for the list related account groups method over gRPC.
+
+        List groups of related accounts.
+
+        Returns:
+            Callable[[~.ListRelatedAccountGroupsRequest],
+                    Awaitable[~.ListRelatedAccountGroupsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_related_account_groups" not in self._stubs:
+            self._stubs["list_related_account_groups"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListRelatedAccountGroups",
+                request_serializer=recaptchaenterprise.ListRelatedAccountGroupsRequest.serialize,
+                response_deserializer=recaptchaenterprise.ListRelatedAccountGroupsResponse.deserialize,
+            )
+        return self._stubs["list_related_account_groups"]
+
+    @property
+    def list_related_account_group_memberships(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest],
+        Awaitable[recaptchaenterprise.ListRelatedAccountGroupMembershipsResponse],
+    ]:
+        r"""Return a callable for the list related account group
+        memberships method over gRPC.
+
+        Get the memberships in a group of related accounts.
+
+        Returns:
+            Callable[[~.ListRelatedAccountGroupMembershipsRequest],
+                    Awaitable[~.ListRelatedAccountGroupMembershipsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_related_account_group_memberships" not in self._stubs:
+            self._stubs[
+                "list_related_account_group_memberships"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListRelatedAccountGroupMemberships",
+                request_serializer=recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest.serialize,
+                response_deserializer=recaptchaenterprise.ListRelatedAccountGroupMembershipsResponse.deserialize,
+            )
+        return self._stubs["list_related_account_group_memberships"]
+
+    @property
+    def search_related_account_group_memberships(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest],
+        Awaitable[recaptchaenterprise.SearchRelatedAccountGroupMembershipsResponse],
+    ]:
+        r"""Return a callable for the search related account group
+        memberships method over gRPC.
+
+        Search group memberships related to a given account.
+
+        Returns:
+            Callable[[~.SearchRelatedAccountGroupMembershipsRequest],
+                    Awaitable[~.SearchRelatedAccountGroupMembershipsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "search_related_account_group_memberships" not in self._stubs:
+            self._stubs[
+                "search_related_account_group_memberships"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/SearchRelatedAccountGroupMemberships",
+                request_serializer=recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest.serialize,
+                response_deserializer=recaptchaenterprise.SearchRelatedAccountGroupMembershipsResponse.deserialize,
+            )
+        return self._stubs["search_related_account_group_memberships"]
+
     def close(self):
         return self.grpc_channel.close()
 

@@ -17,6 +17,7 @@
 from .services.recaptcha_enterprise_service import RecaptchaEnterpriseServiceClient
 from .services.recaptcha_enterprise_service import RecaptchaEnterpriseServiceAsyncClient
 
+from .types.recaptchaenterprise import AccountDefenderAssessment
 from .types.recaptchaenterprise import AndroidKeySettings
 from .types.recaptchaenterprise import AnnotateAssessmentRequest
 from .types.recaptchaenterprise import AnnotateAssessmentResponse
@@ -32,11 +33,19 @@ from .types.recaptchaenterprise import IOSKeySettings
 from .types.recaptchaenterprise import Key
 from .types.recaptchaenterprise import ListKeysRequest
 from .types.recaptchaenterprise import ListKeysResponse
+from .types.recaptchaenterprise import ListRelatedAccountGroupMembershipsRequest
+from .types.recaptchaenterprise import ListRelatedAccountGroupMembershipsResponse
+from .types.recaptchaenterprise import ListRelatedAccountGroupsRequest
+from .types.recaptchaenterprise import ListRelatedAccountGroupsResponse
 from .types.recaptchaenterprise import Metrics
 from .types.recaptchaenterprise import MigrateKeyRequest
+from .types.recaptchaenterprise import RelatedAccountGroup
+from .types.recaptchaenterprise import RelatedAccountGroupMembership
 from .types.recaptchaenterprise import RiskAnalysis
 from .types.recaptchaenterprise import ScoreDistribution
 from .types.recaptchaenterprise import ScoreMetrics
+from .types.recaptchaenterprise import SearchRelatedAccountGroupMembershipsRequest
+from .types.recaptchaenterprise import SearchRelatedAccountGroupMembershipsResponse
 from .types.recaptchaenterprise import TestingOptions
 from .types.recaptchaenterprise import TokenProperties
 from .types.recaptchaenterprise import UpdateKeyRequest
@@ -44,6 +53,7 @@ from .types.recaptchaenterprise import WebKeySettings
 
 __all__ = (
     "RecaptchaEnterpriseServiceAsyncClient",
+    "AccountDefenderAssessment",
     "AndroidKeySettings",
     "AnnotateAssessmentRequest",
     "AnnotateAssessmentResponse",
@@ -59,12 +69,20 @@ __all__ = (
     "Key",
     "ListKeysRequest",
     "ListKeysResponse",
+    "ListRelatedAccountGroupMembershipsRequest",
+    "ListRelatedAccountGroupMembershipsResponse",
+    "ListRelatedAccountGroupsRequest",
+    "ListRelatedAccountGroupsResponse",
     "Metrics",
     "MigrateKeyRequest",
     "RecaptchaEnterpriseServiceClient",
+    "RelatedAccountGroup",
+    "RelatedAccountGroupMembership",
     "RiskAnalysis",
     "ScoreDistribution",
     "ScoreMetrics",
+    "SearchRelatedAccountGroupMembershipsRequest",
+    "SearchRelatedAccountGroupMembershipsResponse",
     "TestingOptions",
     "TokenProperties",
     "UpdateKeyRequest",

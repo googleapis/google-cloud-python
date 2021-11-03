@@ -22,6 +22,9 @@ from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.a
 )
 
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    AccountDefenderAssessment,
+)
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     AndroidKeySettings,
 )
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
@@ -56,15 +59,39 @@ from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     ListKeysResponse,
 )
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    ListRelatedAccountGroupMembershipsRequest,
+)
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    ListRelatedAccountGroupMembershipsResponse,
+)
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    ListRelatedAccountGroupsRequest,
+)
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    ListRelatedAccountGroupsResponse,
+)
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import Metrics
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     MigrateKeyRequest,
+)
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    RelatedAccountGroup,
+)
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    RelatedAccountGroupMembership,
 )
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import RiskAnalysis
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     ScoreDistribution,
 )
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import ScoreMetrics
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    SearchRelatedAccountGroupMembershipsRequest,
+)
+from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    SearchRelatedAccountGroupMembershipsResponse,
+)
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import TestingOptions
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     TokenProperties,
@@ -77,6 +104,7 @@ from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import WebKey
 __all__ = (
     "RecaptchaEnterpriseServiceClient",
     "RecaptchaEnterpriseServiceAsyncClient",
+    "AccountDefenderAssessment",
     "AndroidKeySettings",
     "AnnotateAssessmentRequest",
     "AnnotateAssessmentResponse",
@@ -92,11 +120,19 @@ __all__ = (
     "Key",
     "ListKeysRequest",
     "ListKeysResponse",
+    "ListRelatedAccountGroupMembershipsRequest",
+    "ListRelatedAccountGroupMembershipsResponse",
+    "ListRelatedAccountGroupsRequest",
+    "ListRelatedAccountGroupsResponse",
     "Metrics",
     "MigrateKeyRequest",
+    "RelatedAccountGroup",
+    "RelatedAccountGroupMembership",
     "RiskAnalysis",
     "ScoreDistribution",
     "ScoreMetrics",
+    "SearchRelatedAccountGroupMembershipsRequest",
+    "SearchRelatedAccountGroupMembershipsResponse",
     "TestingOptions",
     "TokenProperties",
     "UpdateKeyRequest",

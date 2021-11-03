@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
         "Event",
         "RiskAnalysis",
         "TokenProperties",
+        "AccountDefenderAssessment",
         "CreateKeyRequest",
         "ListKeysRequest",
         "ListKeysResponse",
@@ -46,6 +47,14 @@ __protobuf__ = proto.module(
         "ScoreDistribution",
         "ScoreMetrics",
         "ChallengeMetrics",
+        "ListRelatedAccountGroupMembershipsRequest",
+        "ListRelatedAccountGroupMembershipsResponse",
+        "ListRelatedAccountGroupsRequest",
+        "ListRelatedAccountGroupsResponse",
+        "SearchRelatedAccountGroupMembershipsRequest",
+        "SearchRelatedAccountGroupMembershipsResponse",
+        "RelatedAccountGroupMembership",
+        "RelatedAccountGroup",
     },
 )
 
@@ -83,6 +92,13 @@ class AnnotateAssessmentRequest(proto.Message):
         reasons (Sequence[google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest.Reason]):
             Optional. Optional reasons for the annotation
             that will be assigned to the Event.
+        hashed_account_id (bytes):
+            Optional. Optional unique stable hashed user identifier to
+            apply to the assessment. This is an alternative to setting
+            the hashed_account_id in CreateAssessment, for example when
+            the account identifier is not yet known in the initial
+            request. It is recommended that the identifier is hashed
+            using hmac-sha256 with stable secret.
     """
 
     class Annotation(proto.Enum):
@@ -109,6 +125,7 @@ class AnnotateAssessmentRequest(proto.Message):
     name = proto.Field(proto.STRING, number=1,)
     annotation = proto.Field(proto.ENUM, number=2, enum=Annotation,)
     reasons = proto.RepeatedField(proto.ENUM, number=3, enum=Reason,)
+    hashed_account_id = proto.Field(proto.BYTES, number=4,)
 
 
 class AnnotateAssessmentResponse(proto.Message):
@@ -132,12 +149,18 @@ class Assessment(proto.Message):
         token_properties (google.cloud.recaptchaenterprise_v1.types.TokenProperties):
             Output only. Properties of the provided event
             token.
+        account_defender_assessment (google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment):
+            Assessment returned by Account Defender when a
+            hashed_account_id is provided.
     """
 
     name = proto.Field(proto.STRING, number=1,)
     event = proto.Field(proto.MESSAGE, number=2, message="Event",)
     risk_analysis = proto.Field(proto.MESSAGE, number=3, message="RiskAnalysis",)
     token_properties = proto.Field(proto.MESSAGE, number=4, message="TokenProperties",)
+    account_defender_assessment = proto.Field(
+        proto.MESSAGE, number=6, message="AccountDefenderAssessment",
+    )
 
 
 class Event(proto.Message):
@@ -165,6 +188,11 @@ class Event(proto.Message):
             provided at token generation time on client-side
             platforms already integrated with recaptcha
             enterprise.
+        hashed_account_id (bytes):
+            Optional. Optional unique stable hashed user
+            identifier for the request. The identifier
+            should ideally be hashed using sha256 with
+            stable secret.
     """
 
     token = proto.Field(proto.STRING, number=1,)
@@ -172,6 +200,7 @@ class Event(proto.Message):
     user_agent = proto.Field(proto.STRING, number=3,)
     user_ip_address = proto.Field(proto.STRING, number=4,)
     expected_action = proto.Field(proto.STRING, number=5,)
+    hashed_account_id = proto.Field(proto.BYTES, number=6,)
 
 
 class RiskAnalysis(proto.Message):
@@ -239,6 +268,25 @@ class TokenProperties(proto.Message):
     create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
     hostname = proto.Field(proto.STRING, number=4,)
     action = proto.Field(proto.STRING, number=5,)
+
+
+class AccountDefenderAssessment(proto.Message):
+    r"""Account Defender risk assessment.
+
+    Attributes:
+        labels (Sequence[google.cloud.recaptchaenterprise_v1.types.AccountDefenderAssessment.AccountDefenderLabel]):
+            Labels for this request.
+    """
+
+    class AccountDefenderLabel(proto.Enum):
+        r"""Labels returned by Account Defender for this request."""
+        ACCOUNT_DEFENDER_LABEL_UNSPECIFIED = 0
+        PROFILE_MATCH = 1
+        SUSPICIOUS_LOGIN_ACTIVITY = 2
+        SUSPICIOUS_ACCOUNT_CREATION = 3
+        RELATED_ACCOUNTS_NUMBER_HIGH = 4
+
+    labels = proto.RepeatedField(proto.ENUM, number=1, enum=AccountDefenderLabel,)
 
 
 class CreateKeyRequest(proto.Message):
@@ -498,9 +546,9 @@ class WebKeySettings(proto.Message):
             port, query or fragment. Examples: 'example.com'
             or 'subdomain.example.com'
         allow_amp_traffic (bool):
-            Required. Whether this key can be used on AMP
-            (Accelerated Mobile Pages) websites. This can
-            only be set for the SCORE integration type.
+            If set to true, the key can be used on AMP
+            (Accelerated Mobile Pages) websites. This is
+            supported only for the SCORE integration type.
         integration_type (google.cloud.recaptchaenterprise_v1.types.WebKeySettings.IntegrationType):
             Required. Describes how this key is
             integrated with the website.
@@ -541,8 +589,7 @@ class AndroidKeySettings(proto.Message):
 
     Attributes:
         allow_all_package_names (bool):
-            If set to true, it means allowed_package_names will not be
-            enforced.
+            If set to true, allowed_package_names are not enforced.
         allowed_package_names (Sequence[str]):
             Android package names of apps allowed to use
             the key. Example: 'com.companyname.appname'
@@ -557,8 +604,7 @@ class IOSKeySettings(proto.Message):
 
     Attributes:
         allow_all_bundle_ids (bool):
-            If set to true, it means allowed_bundle_ids will not be
-            enforced.
+            If set to true, allowed_bundle_ids are not enforced.
         allowed_bundle_ids (Sequence[str]):
             iOS bundle ids of apps allowed to use the
             key. Example:
@@ -628,6 +674,198 @@ class ChallengeMetrics(proto.Message):
     nocaptcha_count = proto.Field(proto.INT64, number=2,)
     failed_count = proto.Field(proto.INT64, number=3,)
     passed_count = proto.Field(proto.INT64, number=4,)
+
+
+class ListRelatedAccountGroupMembershipsRequest(proto.Message):
+    r"""The request message to list memberships in a related account
+    group.
+
+    Attributes:
+        parent (str):
+            Required. The resource name for the related account group in
+            the format
+            ``projects/{project}/relatedaccountgroups/{relatedaccountgroup}``.
+        page_size (int):
+            Optional. The maximum number of accounts to
+            return. The service may return fewer than this
+            value. If unspecified, at most 50 accounts will
+            be returned. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListRelatedAccountGroupMemberships`` call.
+
+            When paginating, all other parameters provided to
+            ``ListRelatedAccountGroupMemberships`` must match the call
+            that provided the page token.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+
+
+class ListRelatedAccountGroupMembershipsResponse(proto.Message):
+    r"""The response to a ``ListRelatedAccountGroupMemberships`` call.
+
+    Attributes:
+        related_account_group_memberships (Sequence[google.cloud.recaptchaenterprise_v1.types.RelatedAccountGroupMembership]):
+            The memberships listed by the query.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    related_account_group_memberships = proto.RepeatedField(
+        proto.MESSAGE, number=1, message="RelatedAccountGroupMembership",
+    )
+    next_page_token = proto.Field(proto.STRING, number=2,)
+
+
+class ListRelatedAccountGroupsRequest(proto.Message):
+    r"""The request message to list related account groups.
+
+    Attributes:
+        parent (str):
+            Required. The name of the project to list
+            related account groups from, in the format
+            "projects/{project}".
+        page_size (int):
+            Optional. The maximum number of groups to
+            return. The service may return fewer than this
+            value. If unspecified, at most 50 groups will be
+            returned. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListRelatedAccountGroups`` call. Provide this to retrieve
+            the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListRelatedAccountGroups`` must match the call that
+            provided the page token.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+
+
+class ListRelatedAccountGroupsResponse(proto.Message):
+    r"""The response to a ``ListRelatedAccountGroups`` call.
+
+    Attributes:
+        related_account_groups (Sequence[google.cloud.recaptchaenterprise_v1.types.RelatedAccountGroup]):
+            The groups of related accounts listed by the
+            query.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    related_account_groups = proto.RepeatedField(
+        proto.MESSAGE, number=1, message="RelatedAccountGroup",
+    )
+    next_page_token = proto.Field(proto.STRING, number=2,)
+
+
+class SearchRelatedAccountGroupMembershipsRequest(proto.Message):
+    r"""The request message to search related account group
+    memberships.
+
+    Attributes:
+        parent (str):
+            Required. The name of the project to search
+            related account group memberships from, in the
+            format "projects/{project}".
+        hashed_account_id (bytes):
+            Optional. The unique stable hashed user identifier we should
+            search connections to. The identifier should correspond to a
+            ``hashed_account_id`` provided in a previous
+            CreateAssessment or AnnotateAssessment call.
+        page_size (int):
+            Optional. The maximum number of groups to
+            return. The service may return fewer than this
+            value. If unspecified, at most 50 groups will be
+            returned. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``SearchRelatedAccountGroupMemberships`` call. Provide this
+            to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``SearchRelatedAccountGroupMemberships`` must match the call
+            that provided the page token.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    hashed_account_id = proto.Field(proto.BYTES, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
+
+
+class SearchRelatedAccountGroupMembershipsResponse(proto.Message):
+    r"""The response to a ``SearchRelatedAccountGroupMemberships`` call.
+
+    Attributes:
+        related_account_group_memberships (Sequence[google.cloud.recaptchaenterprise_v1.types.RelatedAccountGroupMembership]):
+            The queried memberships.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    related_account_group_memberships = proto.RepeatedField(
+        proto.MESSAGE, number=1, message="RelatedAccountGroupMembership",
+    )
+    next_page_token = proto.Field(proto.STRING, number=2,)
+
+
+class RelatedAccountGroupMembership(proto.Message):
+    r"""A membership in a group of related accounts.
+
+    Attributes:
+        name (str):
+            Required. The resource name for this membership in the
+            format
+            ``projects/{project}/relatedaccountgroups/{relatedaccountgroup}/memberships/{membership}``.
+        hashed_account_id (bytes):
+            The unique stable hashed user identifier of the member. The
+            identifier corresponds to a ``hashed_account_id`` provided
+            in a previous CreateAssessment or AnnotateAssessment call.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    hashed_account_id = proto.Field(proto.BYTES, number=2,)
+
+
+class RelatedAccountGroup(proto.Message):
+    r"""A group of related accounts.
+
+    Attributes:
+        name (str):
+            Required. The resource name for the related account group in
+            the format
+            ``projects/{project}/relatedaccountgroups/{related_account_group}``.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

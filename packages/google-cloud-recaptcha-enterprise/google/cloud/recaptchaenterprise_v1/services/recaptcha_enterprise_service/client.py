@@ -200,6 +200,42 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         return m.groupdict() if m else {}
 
     @staticmethod
+    def related_account_group_path(project: str, relatedaccountgroup: str,) -> str:
+        """Returns a fully-qualified related_account_group string."""
+        return "projects/{project}/relatedaccountgroups/{relatedaccountgroup}".format(
+            project=project, relatedaccountgroup=relatedaccountgroup,
+        )
+
+    @staticmethod
+    def parse_related_account_group_path(path: str) -> Dict[str, str]:
+        """Parses a related_account_group path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/relatedaccountgroups/(?P<relatedaccountgroup>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def related_account_group_membership_path(
+        project: str, relatedaccountgroup: str, membership: str,
+    ) -> str:
+        """Returns a fully-qualified related_account_group_membership string."""
+        return "projects/{project}/relatedaccountgroups/{relatedaccountgroup}/memberships/{membership}".format(
+            project=project,
+            relatedaccountgroup=relatedaccountgroup,
+            membership=membership,
+        )
+
+    @staticmethod
+    def parse_related_account_group_membership_path(path: str) -> Dict[str, str]:
+        """Parses a related_account_group_membership path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/relatedaccountgroups/(?P<relatedaccountgroup>.+?)/memberships/(?P<membership>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
@@ -914,6 +950,281 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def list_related_account_groups(
+        self,
+        request: Union[
+            recaptchaenterprise.ListRelatedAccountGroupsRequest, dict
+        ] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListRelatedAccountGroupsPager:
+        r"""List groups of related accounts.
+
+        Args:
+            request (Union[google.cloud.recaptchaenterprise_v1.types.ListRelatedAccountGroupsRequest, dict]):
+                The request object. The request message to list related
+                account groups.
+            parent (str):
+                Required. The name of the project to
+                list related account groups from, in the
+                format "projects/{project}".
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.pagers.ListRelatedAccountGroupsPager:
+                The response to a ListRelatedAccountGroups call.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a recaptchaenterprise.ListRelatedAccountGroupsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, recaptchaenterprise.ListRelatedAccountGroupsRequest):
+            request = recaptchaenterprise.ListRelatedAccountGroupsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_related_account_groups
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListRelatedAccountGroupsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_related_account_group_memberships(
+        self,
+        request: Union[
+            recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest, dict
+        ] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListRelatedAccountGroupMembershipsPager:
+        r"""Get the memberships in a group of related accounts.
+
+        Args:
+            request (Union[google.cloud.recaptchaenterprise_v1.types.ListRelatedAccountGroupMembershipsRequest, dict]):
+                The request object. The request message to list
+                memberships in a related account group.
+            parent (str):
+                Required. The resource name for the related account
+                group in the format
+                ``projects/{project}/relatedaccountgroups/{relatedaccountgroup}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.pagers.ListRelatedAccountGroupMembershipsPager:
+                The response to a ListRelatedAccountGroupMemberships
+                call.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest
+        ):
+            request = recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_related_account_group_memberships
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListRelatedAccountGroupMembershipsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def search_related_account_group_memberships(
+        self,
+        request: Union[
+            recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest, dict
+        ] = None,
+        *,
+        parent: str = None,
+        hashed_account_id: bytes = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.SearchRelatedAccountGroupMembershipsPager:
+        r"""Search group memberships related to a given account.
+
+        Args:
+            request (Union[google.cloud.recaptchaenterprise_v1.types.SearchRelatedAccountGroupMembershipsRequest, dict]):
+                The request object. The request message to search
+                related account group memberships.
+            parent (str):
+                Required. The name of the project to
+                search related account group memberships
+                from, in the format
+                "projects/{project}".
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            hashed_account_id (bytes):
+                Optional. The unique stable hashed user identifier we
+                should search connections to. The identifier should
+                correspond to a ``hashed_account_id`` provided in a
+                previous CreateAssessment or AnnotateAssessment call.
+
+                This corresponds to the ``hashed_account_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.pagers.SearchRelatedAccountGroupMembershipsPager:
+                The response to a SearchRelatedAccountGroupMemberships
+                call.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, hashed_account_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest
+        ):
+            request = recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if hashed_account_id is not None:
+                request.hashed_account_id = hashed_account_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.search_related_account_group_memberships
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.SearchRelatedAccountGroupMembershipsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
