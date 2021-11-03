@@ -9,7 +9,7 @@ If you experience issues or have questions, please file an [issue](https://githu
 ## Supported Python Versions
 
 | Applicable previous versions |
-|:-----------------------------|
+|------------------------------|
 | v1.0.0 or lower              |
 
 > **WARNING**: Breaking change
@@ -20,7 +20,7 @@ If you experience issues or have questions, please file an [issue](https://githu
 ## Method Calls
 
 | Applicable previous versions |
-|:-----------------------------|
+|------------------------------|
 | v1.0.0 or lower              |
 
 > **WARNING**: Breaking change
