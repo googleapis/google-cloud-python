@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.5.0](https://www.github.com/googleapis/python-datacatalog/compare/v3.4.3...v3.5.0) (2021-10-28)
+
+
+### Features
+
+* add context manager support in client ([#240](https://www.github.com/googleapis/python-datacatalog/issues/240)) ([c403d1d](https://www.github.com/googleapis/python-datacatalog/commit/c403d1d5a637b23343b23e74debed5f8b4c5c12a))
+
 ### [3.4.3](https://www.github.com/googleapis/python-datacatalog/compare/v3.4.2...v3.4.3) (2021-10-05)
 
 
