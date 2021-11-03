@@ -18,6 +18,6 @@ Changelog
 For a list of all ``google-cloud-monitoring-metrics-scopes`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
