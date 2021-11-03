@@ -188,14 +188,31 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         """
 
         http_options = [
-        {%- for rule in method.http_options %}{
-            'method': '{{ rule.method }}',
-            'uri': '{{ rule.uri }}',
-            {%- if rule.body %}
-            'body': '{{ rule.body }}',
-            {%- endif %}
-        },
-        {%- endfor %}]
+            {% for rule in method.http_options %}
+            {
+                'method': '{{ rule.method }}',
+                'uri': '{{ rule.uri }}',
+                {% if rule.body %}
+                'body': '{{ rule.body }}',
+                {% endif %}
+            },
+            {% endfor %}
+        ]
+
+        {% if method.input.required_fields %}
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            {% for req_field in method.input.required_fields %}
+            {% if req_field.is_primitive %}
+            (
+                "{{ req_field.name | snake_case }}",
+                "{{ req_field.name | camel_case }}"
+            ),
+            {% endif %}{# is primitive #}
+            {% endfor %}{# required fields #}
+        ]
+
+        {% endif %}
 
         request_kwargs = {{method.input.ident}}.to_dict(request)
         transcoded_request = path_template.transcode(
@@ -228,6 +245,18 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             including_default_value_fields=False,
             use_integers_for_enums=False
         ))
+
+        {% if method.input.required_fields %}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+
+        {% endif %}
 
         # Send the request
         headers = dict(metadata)
