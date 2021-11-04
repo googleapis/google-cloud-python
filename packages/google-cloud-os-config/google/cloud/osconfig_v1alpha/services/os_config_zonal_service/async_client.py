@@ -253,7 +253,6 @@ class OsConfigZonalServiceAsyncClient:
                 -  Must end with a number or a letter.
                 -  Must be unique within the project.
 
-
                 This corresponds to the ``os_policy_assignment_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

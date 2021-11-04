@@ -32,9 +32,16 @@ from google.oauth2 import service_account  # type: ignore
 
 OptionalRetry = Union[retries.Retry, object]
 
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.cloud.osconfig_v1.services.os_config_zonal_service import pagers
 from google.cloud.osconfig_v1.types import inventory
+from google.cloud.osconfig_v1.types import os_policy
+from google.cloud.osconfig_v1.types import os_policy_assignment_reports
+from google.cloud.osconfig_v1.types import os_policy_assignments
 from google.cloud.osconfig_v1.types import vulnerability
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import OsConfigZonalServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import OsConfigZonalServiceGrpcTransport
@@ -182,6 +189,27 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def instance_os_policy_assignment_path(
+        project: str, location: str, instance: str, assignment: str,
+    ) -> str:
+        """Returns a fully-qualified instance_os_policy_assignment string."""
+        return "projects/{project}/locations/{location}/instances/{instance}/osPolicyAssignments/{assignment}".format(
+            project=project,
+            location=location,
+            instance=instance,
+            assignment=assignment,
+        )
+
+    @staticmethod
+    def parse_instance_os_policy_assignment_path(path: str) -> Dict[str, str]:
+        """Parses a instance_os_policy_assignment path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/instances/(?P<instance>.+?)/osPolicyAssignments/(?P<assignment>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def inventory_path(project: str, location: str, instance: str,) -> str:
         """Returns a fully-qualified inventory string."""
         return "projects/{project}/locations/{location}/instances/{instance}/inventory".format(
@@ -193,6 +221,47 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
         """Parses a inventory path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/instances/(?P<instance>.+?)/inventory$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def os_policy_assignment_path(
+        project: str, location: str, os_policy_assignment: str,
+    ) -> str:
+        """Returns a fully-qualified os_policy_assignment string."""
+        return "projects/{project}/locations/{location}/osPolicyAssignments/{os_policy_assignment}".format(
+            project=project,
+            location=location,
+            os_policy_assignment=os_policy_assignment,
+        )
+
+    @staticmethod
+    def parse_os_policy_assignment_path(path: str) -> Dict[str, str]:
+        """Parses a os_policy_assignment path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/osPolicyAssignments/(?P<os_policy_assignment>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def os_policy_assignment_report_path(
+        project: str, location: str, instance: str, assignment: str,
+    ) -> str:
+        """Returns a fully-qualified os_policy_assignment_report string."""
+        return "projects/{project}/locations/{location}/instances/{instance}/osPolicyAssignments/{assignment}/report".format(
+            project=project,
+            location=location,
+            instance=instance,
+            assignment=assignment,
+        )
+
+    @staticmethod
+    def parse_os_policy_assignment_report_path(path: str) -> Dict[str, str]:
+        """Parses a os_policy_assignment_report path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/instances/(?P<instance>.+?)/osPolicyAssignments/(?P<assignment>.+?)/report$",
             path,
         )
         return m.groupdict() if m else {}
@@ -388,6 +457,839 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
                 client_info=client_info,
                 always_use_jwt_access=True,
             )
+
+    def create_os_policy_assignment(
+        self,
+        request: Union[
+            os_policy_assignments.CreateOSPolicyAssignmentRequest, dict
+        ] = None,
+        *,
+        parent: str = None,
+        os_policy_assignment: os_policy_assignments.OSPolicyAssignment = None,
+        os_policy_assignment_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Create an OS policy assignment.
+
+        This method also creates the first revision of the OS policy
+        assignment.
+
+        This method returns a long running operation (LRO) that contains
+        the rollout details. The rollout can be cancelled by cancelling
+        the LRO.
+
+        For more information, see `Method:
+        projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel>`__.
+
+        Args:
+            request (Union[google.cloud.osconfig_v1.types.CreateOSPolicyAssignmentRequest, dict]):
+                The request object. A request message to create an OS
+                policy assignment
+            parent (str):
+                Required. The parent resource name in
+                the form:
+                projects/{project}/locations/{location}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            os_policy_assignment (google.cloud.osconfig_v1.types.OSPolicyAssignment):
+                Required. The OS policy assignment to
+                be created.
+
+                This corresponds to the ``os_policy_assignment`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            os_policy_assignment_id (str):
+                Required. The logical name of the OS policy assignment
+                in the project with the following restrictions:
+
+                -  Must contain only lowercase letters, numbers, and
+                   hyphens.
+                -  Must start with a letter.
+                -  Must be between 1-63 characters.
+                -  Must end with a number or a letter.
+                -  Must be unique within the project.
+
+                This corresponds to the ``os_policy_assignment_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.osconfig_v1.types.OSPolicyAssignment` OS policy assignment is an API resource that is used to
+                   apply a set of OS policies to a dynamically targeted
+                   group of Compute Engine VM instances.
+
+                   An OS policy is used to define the desired state
+                   configuration for a Compute Engine VM instance
+                   through a set of configuration resources that provide
+                   capabilities such as installing or removing software
+                   packages, or executing a script.
+
+                   For more information, see [OS policy and OS policy
+                   assignment](\ https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [parent, os_policy_assignment, os_policy_assignment_id]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a os_policy_assignments.CreateOSPolicyAssignmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, os_policy_assignments.CreateOSPolicyAssignmentRequest
+        ):
+            request = os_policy_assignments.CreateOSPolicyAssignmentRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if os_policy_assignment is not None:
+                request.os_policy_assignment = os_policy_assignment
+            if os_policy_assignment_id is not None:
+                request.os_policy_assignment_id = os_policy_assignment_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_os_policy_assignment
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            os_policy_assignments.OSPolicyAssignment,
+            metadata_type=os_policy_assignments.OSPolicyAssignmentOperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_os_policy_assignment(
+        self,
+        request: Union[
+            os_policy_assignments.UpdateOSPolicyAssignmentRequest, dict
+        ] = None,
+        *,
+        os_policy_assignment: os_policy_assignments.OSPolicyAssignment = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Update an existing OS policy assignment.
+
+        This method creates a new revision of the OS policy assignment.
+
+        This method returns a long running operation (LRO) that contains
+        the rollout details. The rollout can be cancelled by cancelling
+        the LRO.
+
+        For more information, see `Method:
+        projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel>`__.
+
+        Args:
+            request (Union[google.cloud.osconfig_v1.types.UpdateOSPolicyAssignmentRequest, dict]):
+                The request object. A request message to update an OS
+                policy assignment
+            os_policy_assignment (google.cloud.osconfig_v1.types.OSPolicyAssignment):
+                Required. The updated OS policy
+                assignment.
+
+                This corresponds to the ``os_policy_assignment`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. Field mask that controls
+                which fields of the assignment should be
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.osconfig_v1.types.OSPolicyAssignment` OS policy assignment is an API resource that is used to
+                   apply a set of OS policies to a dynamically targeted
+                   group of Compute Engine VM instances.
+
+                   An OS policy is used to define the desired state
+                   configuration for a Compute Engine VM instance
+                   through a set of configuration resources that provide
+                   capabilities such as installing or removing software
+                   packages, or executing a script.
+
+                   For more information, see [OS policy and OS policy
+                   assignment](\ https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([os_policy_assignment, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a os_policy_assignments.UpdateOSPolicyAssignmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, os_policy_assignments.UpdateOSPolicyAssignmentRequest
+        ):
+            request = os_policy_assignments.UpdateOSPolicyAssignmentRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if os_policy_assignment is not None:
+                request.os_policy_assignment = os_policy_assignment
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_os_policy_assignment
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("os_policy_assignment.name", request.os_policy_assignment.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            os_policy_assignments.OSPolicyAssignment,
+            metadata_type=os_policy_assignments.OSPolicyAssignmentOperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_os_policy_assignment(
+        self,
+        request: Union[os_policy_assignments.GetOSPolicyAssignmentRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> os_policy_assignments.OSPolicyAssignment:
+        r"""Retrieve an existing OS policy assignment.
+
+        This method always returns the latest revision. In order to
+        retrieve a previous revision of the assignment, also provide the
+        revision ID in the ``name`` parameter.
+
+        Args:
+            request (Union[google.cloud.osconfig_v1.types.GetOSPolicyAssignmentRequest, dict]):
+                The request object. A request message to get an OS
+                policy assignment
+            name (str):
+                Required. The resource name of OS policy assignment.
+
+                Format:
+                ``projects/{project}/locations/{location}/osPolicyAssignments/{os_policy_assignment}@{revisionId}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.osconfig_v1.types.OSPolicyAssignment:
+                OS policy assignment is an API resource that is used to
+                   apply a set of OS policies to a dynamically targeted
+                   group of Compute Engine VM instances.
+
+                   An OS policy is used to define the desired state
+                   configuration for a Compute Engine VM instance
+                   through a set of configuration resources that provide
+                   capabilities such as installing or removing software
+                   packages, or executing a script.
+
+                   For more information, see [OS policy and OS policy
+                   assignment](\ https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a os_policy_assignments.GetOSPolicyAssignmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, os_policy_assignments.GetOSPolicyAssignmentRequest):
+            request = os_policy_assignments.GetOSPolicyAssignmentRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_os_policy_assignment]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def list_os_policy_assignments(
+        self,
+        request: Union[
+            os_policy_assignments.ListOSPolicyAssignmentsRequest, dict
+        ] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListOSPolicyAssignmentsPager:
+        r"""List the OS policy assignments under the parent
+        resource.
+        For each OS policy assignment, the latest revision is
+        returned.
+
+        Args:
+            request (Union[google.cloud.osconfig_v1.types.ListOSPolicyAssignmentsRequest, dict]):
+                The request object. A request message to list OS policy
+                assignments for a parent resource
+            parent (str):
+                Required. The parent resource name.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.osconfig_v1.services.os_config_zonal_service.pagers.ListOSPolicyAssignmentsPager:
+                A response message for listing all
+                assignments under given parent.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a os_policy_assignments.ListOSPolicyAssignmentsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, os_policy_assignments.ListOSPolicyAssignmentsRequest
+        ):
+            request = os_policy_assignments.ListOSPolicyAssignmentsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_os_policy_assignments
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListOSPolicyAssignmentsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_os_policy_assignment_revisions(
+        self,
+        request: Union[
+            os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest, dict
+        ] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListOSPolicyAssignmentRevisionsPager:
+        r"""List the OS policy assignment revisions for a given
+        OS policy assignment.
+
+        Args:
+            request (Union[google.cloud.osconfig_v1.types.ListOSPolicyAssignmentRevisionsRequest, dict]):
+                The request object. A request message to list revisions
+                for a OS policy assignment
+            name (str):
+                Required. The name of the OS policy
+                assignment to list revisions for.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.osconfig_v1.services.os_config_zonal_service.pagers.ListOSPolicyAssignmentRevisionsPager:
+                A response message for listing all
+                revisions for a OS policy assignment.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest
+        ):
+            request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_os_policy_assignment_revisions
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListOSPolicyAssignmentRevisionsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_os_policy_assignment(
+        self,
+        request: Union[
+            os_policy_assignments.DeleteOSPolicyAssignmentRequest, dict
+        ] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Delete the OS policy assignment.
+
+        This method creates a new revision of the OS policy assignment.
+
+        This method returns a long running operation (LRO) that contains
+        the rollout details. The rollout can be cancelled by cancelling
+        the LRO.
+
+        If the LRO completes and is not cancelled, all revisions
+        associated with the OS policy assignment are deleted.
+
+        For more information, see `Method:
+        projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel>`__.
+
+        Args:
+            request (Union[google.cloud.osconfig_v1.types.DeleteOSPolicyAssignmentRequest, dict]):
+                The request object. A request message for deleting a OS
+                policy assignment.
+            name (str):
+                Required. The name of the OS policy
+                assignment to be deleted
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+                   The JSON representation for Empty is empty JSON
+                   object {}.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a os_policy_assignments.DeleteOSPolicyAssignmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, os_policy_assignments.DeleteOSPolicyAssignmentRequest
+        ):
+            request = os_policy_assignments.DeleteOSPolicyAssignmentRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_os_policy_assignment
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=os_policy_assignments.OSPolicyAssignmentOperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_os_policy_assignment_report(
+        self,
+        request: Union[
+            os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest, dict
+        ] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> os_policy_assignment_reports.OSPolicyAssignmentReport:
+        r"""Get the OS policy asssignment report for the
+        specified Compute Engine VM instance.
+
+        Args:
+            request (Union[google.cloud.osconfig_v1.types.GetOSPolicyAssignmentReportRequest, dict]):
+                The request object. Get a report of the OS policy
+                assignment for a VM instance.
+            name (str):
+                Required. API resource name for OS policy assignment
+                report.
+
+                Format:
+                ``/projects/{project}/locations/{location}/instances/{instance}/osPolicyAssignments/{assignment}/report``
+
+                For ``{project}``, either ``project-number`` or
+                ``project-id`` can be provided. For ``{instance_id}``,
+                either Compute Engine ``instance-id`` or
+                ``instance-name`` can be provided. For
+                ``{assignment_id}``, the OSPolicyAssignment id must be
+                provided.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.osconfig_v1.types.OSPolicyAssignmentReport:
+                A report of the OS policy assignment
+                status for a given instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest
+        ):
+            request = os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_os_policy_assignment_report
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def list_os_policy_assignment_reports(
+        self,
+        request: Union[
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest, dict
+        ] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListOSPolicyAssignmentReportsPager:
+        r"""List OS policy asssignment reports for all Compute
+        Engine VM instances in the specified zone.
+
+        Args:
+            request (Union[google.cloud.osconfig_v1.types.ListOSPolicyAssignmentReportsRequest, dict]):
+                The request object. List the OS policy assignment
+                reports for VM instances.
+            parent (str):
+                Required. The parent resource name.
+
+                Format:
+                ``projects/{project}/locations/{location}/instances/{instance}/osPolicyAssignments/{assignment}/reports``
+
+                For ``{project}``, either ``project-number`` or
+                ``project-id`` can be provided. For ``{instance}``,
+                either ``instance-name``, ``instance-id``, or ``-`` can
+                be provided. If '-' is provided, the response will
+                include OSPolicyAssignmentReports for all instances in
+                the project/location. For ``{assignment}``, either
+                ``assignment-id`` or ``-`` can be provided. If '-' is
+                provided, the response will include
+                OSPolicyAssignmentReports for all OSPolicyAssignments in
+                the project/location. Either {instance} or {assignment}
+                must be ``-``.
+
+                For example:
+                ``projects/{project}/locations/{location}/instances/{instance}/osPolicyAssignments/-/reports``
+                returns all reports for the instance
+                ``projects/{project}/locations/{location}/instances/-/osPolicyAssignments/{assignment-id}/reports``
+                returns all the reports for the given assignment across
+                all instances.
+                ``projects/{project}/locations/{location}/instances/-/osPolicyAssignments/-/reports``
+                returns all the reports for all assignments across all
+                instances.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.osconfig_v1.services.os_config_zonal_service.pagers.ListOSPolicyAssignmentReportsPager:
+                A response message for listing OS
+                Policy assignment reports including the
+                page of results and page token.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest
+        ):
+            request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_os_policy_assignment_reports
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListOSPolicyAssignmentReportsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     def get_inventory(
         self,

@@ -17,6 +17,7 @@ import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
+from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -25,7 +26,10 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud.osconfig_v1.types import inventory
+from google.cloud.osconfig_v1.types import os_policy_assignment_reports
+from google.cloud.osconfig_v1.types import os_policy_assignments
 from google.cloud.osconfig_v1.types import vulnerability
+from google.longrunning import operations_pb2  # type: ignore
 from .base import OsConfigZonalServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -114,6 +118,7 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -228,6 +233,302 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
         """Return the channel designed to connect to this service.
         """
         return self._grpc_channel
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Sanity check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+
+        # Return the client from cache.
+        return self._operations_client
+
+    @property
+    def create_os_policy_assignment(
+        self,
+    ) -> Callable[
+        [os_policy_assignments.CreateOSPolicyAssignmentRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the create os policy assignment method over gRPC.
+
+        Create an OS policy assignment.
+
+        This method also creates the first revision of the OS policy
+        assignment.
+
+        This method returns a long running operation (LRO) that contains
+        the rollout details. The rollout can be cancelled by cancelling
+        the LRO.
+
+        For more information, see `Method:
+        projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel>`__.
+
+        Returns:
+            Callable[[~.CreateOSPolicyAssignmentRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_os_policy_assignment" not in self._stubs:
+            self._stubs["create_os_policy_assignment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.osconfig.v1.OsConfigZonalService/CreateOSPolicyAssignment",
+                request_serializer=os_policy_assignments.CreateOSPolicyAssignmentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_os_policy_assignment"]
+
+    @property
+    def update_os_policy_assignment(
+        self,
+    ) -> Callable[
+        [os_policy_assignments.UpdateOSPolicyAssignmentRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the update os policy assignment method over gRPC.
+
+        Update an existing OS policy assignment.
+
+        This method creates a new revision of the OS policy assignment.
+
+        This method returns a long running operation (LRO) that contains
+        the rollout details. The rollout can be cancelled by cancelling
+        the LRO.
+
+        For more information, see `Method:
+        projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel>`__.
+
+        Returns:
+            Callable[[~.UpdateOSPolicyAssignmentRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_os_policy_assignment" not in self._stubs:
+            self._stubs["update_os_policy_assignment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.osconfig.v1.OsConfigZonalService/UpdateOSPolicyAssignment",
+                request_serializer=os_policy_assignments.UpdateOSPolicyAssignmentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_os_policy_assignment"]
+
+    @property
+    def get_os_policy_assignment(
+        self,
+    ) -> Callable[
+        [os_policy_assignments.GetOSPolicyAssignmentRequest],
+        os_policy_assignments.OSPolicyAssignment,
+    ]:
+        r"""Return a callable for the get os policy assignment method over gRPC.
+
+        Retrieve an existing OS policy assignment.
+
+        This method always returns the latest revision. In order to
+        retrieve a previous revision of the assignment, also provide the
+        revision ID in the ``name`` parameter.
+
+        Returns:
+            Callable[[~.GetOSPolicyAssignmentRequest],
+                    ~.OSPolicyAssignment]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_os_policy_assignment" not in self._stubs:
+            self._stubs["get_os_policy_assignment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.osconfig.v1.OsConfigZonalService/GetOSPolicyAssignment",
+                request_serializer=os_policy_assignments.GetOSPolicyAssignmentRequest.serialize,
+                response_deserializer=os_policy_assignments.OSPolicyAssignment.deserialize,
+            )
+        return self._stubs["get_os_policy_assignment"]
+
+    @property
+    def list_os_policy_assignments(
+        self,
+    ) -> Callable[
+        [os_policy_assignments.ListOSPolicyAssignmentsRequest],
+        os_policy_assignments.ListOSPolicyAssignmentsResponse,
+    ]:
+        r"""Return a callable for the list os policy assignments method over gRPC.
+
+        List the OS policy assignments under the parent
+        resource.
+        For each OS policy assignment, the latest revision is
+        returned.
+
+        Returns:
+            Callable[[~.ListOSPolicyAssignmentsRequest],
+                    ~.ListOSPolicyAssignmentsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_os_policy_assignments" not in self._stubs:
+            self._stubs["list_os_policy_assignments"] = self.grpc_channel.unary_unary(
+                "/google.cloud.osconfig.v1.OsConfigZonalService/ListOSPolicyAssignments",
+                request_serializer=os_policy_assignments.ListOSPolicyAssignmentsRequest.serialize,
+                response_deserializer=os_policy_assignments.ListOSPolicyAssignmentsResponse.deserialize,
+            )
+        return self._stubs["list_os_policy_assignments"]
+
+    @property
+    def list_os_policy_assignment_revisions(
+        self,
+    ) -> Callable[
+        [os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest],
+        os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse,
+    ]:
+        r"""Return a callable for the list os policy assignment
+        revisions method over gRPC.
+
+        List the OS policy assignment revisions for a given
+        OS policy assignment.
+
+        Returns:
+            Callable[[~.ListOSPolicyAssignmentRevisionsRequest],
+                    ~.ListOSPolicyAssignmentRevisionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_os_policy_assignment_revisions" not in self._stubs:
+            self._stubs[
+                "list_os_policy_assignment_revisions"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.osconfig.v1.OsConfigZonalService/ListOSPolicyAssignmentRevisions",
+                request_serializer=os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest.serialize,
+                response_deserializer=os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.deserialize,
+            )
+        return self._stubs["list_os_policy_assignment_revisions"]
+
+    @property
+    def delete_os_policy_assignment(
+        self,
+    ) -> Callable[
+        [os_policy_assignments.DeleteOSPolicyAssignmentRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the delete os policy assignment method over gRPC.
+
+        Delete the OS policy assignment.
+
+        This method creates a new revision of the OS policy assignment.
+
+        This method returns a long running operation (LRO) that contains
+        the rollout details. The rollout can be cancelled by cancelling
+        the LRO.
+
+        If the LRO completes and is not cancelled, all revisions
+        associated with the OS policy assignment are deleted.
+
+        For more information, see `Method:
+        projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel>`__.
+
+        Returns:
+            Callable[[~.DeleteOSPolicyAssignmentRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_os_policy_assignment" not in self._stubs:
+            self._stubs["delete_os_policy_assignment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.osconfig.v1.OsConfigZonalService/DeleteOSPolicyAssignment",
+                request_serializer=os_policy_assignments.DeleteOSPolicyAssignmentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_os_policy_assignment"]
+
+    @property
+    def get_os_policy_assignment_report(
+        self,
+    ) -> Callable[
+        [os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest],
+        os_policy_assignment_reports.OSPolicyAssignmentReport,
+    ]:
+        r"""Return a callable for the get os policy assignment
+        report method over gRPC.
+
+        Get the OS policy asssignment report for the
+        specified Compute Engine VM instance.
+
+        Returns:
+            Callable[[~.GetOSPolicyAssignmentReportRequest],
+                    ~.OSPolicyAssignmentReport]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_os_policy_assignment_report" not in self._stubs:
+            self._stubs[
+                "get_os_policy_assignment_report"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.osconfig.v1.OsConfigZonalService/GetOSPolicyAssignmentReport",
+                request_serializer=os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest.serialize,
+                response_deserializer=os_policy_assignment_reports.OSPolicyAssignmentReport.deserialize,
+            )
+        return self._stubs["get_os_policy_assignment_report"]
+
+    @property
+    def list_os_policy_assignment_reports(
+        self,
+    ) -> Callable[
+        [os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest],
+        os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse,
+    ]:
+        r"""Return a callable for the list os policy assignment
+        reports method over gRPC.
+
+        List OS policy asssignment reports for all Compute
+        Engine VM instances in the specified zone.
+
+        Returns:
+            Callable[[~.ListOSPolicyAssignmentReportsRequest],
+                    ~.ListOSPolicyAssignmentReportsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_os_policy_assignment_reports" not in self._stubs:
+            self._stubs[
+                "list_os_policy_assignment_reports"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.osconfig.v1.OsConfigZonalService/ListOSPolicyAssignmentReports",
+                request_serializer=os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest.serialize,
+                response_deserializer=os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.deserialize,
+            )
+        return self._stubs["list_os_policy_assignment_reports"]
 
     @property
     def get_inventory(

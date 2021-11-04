@@ -25,7 +25,431 @@ from typing import (
 )
 
 from google.cloud.osconfig_v1.types import inventory
+from google.cloud.osconfig_v1.types import os_policy_assignment_reports
+from google.cloud.osconfig_v1.types import os_policy_assignments
 from google.cloud.osconfig_v1.types import vulnerability
+
+
+class ListOSPolicyAssignmentsPager:
+    """A pager for iterating through ``list_os_policy_assignments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.osconfig_v1.types.ListOSPolicyAssignmentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``os_policy_assignments`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListOSPolicyAssignments`` requests and continue to iterate
+    through the ``os_policy_assignments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.osconfig_v1.types.ListOSPolicyAssignmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., os_policy_assignments.ListOSPolicyAssignmentsResponse],
+        request: os_policy_assignments.ListOSPolicyAssignmentsRequest,
+        response: os_policy_assignments.ListOSPolicyAssignmentsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.osconfig_v1.types.ListOSPolicyAssignmentsRequest):
+                The initial request object.
+            response (google.cloud.osconfig_v1.types.ListOSPolicyAssignmentsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = os_policy_assignments.ListOSPolicyAssignmentsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[os_policy_assignments.ListOSPolicyAssignmentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[os_policy_assignments.OSPolicyAssignment]:
+        for page in self.pages:
+            yield from page.os_policy_assignments
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListOSPolicyAssignmentsAsyncPager:
+    """A pager for iterating through ``list_os_policy_assignments`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.osconfig_v1.types.ListOSPolicyAssignmentsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``os_policy_assignments`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListOSPolicyAssignments`` requests and continue to iterate
+    through the ``os_policy_assignments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.osconfig_v1.types.ListOSPolicyAssignmentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[os_policy_assignments.ListOSPolicyAssignmentsResponse]
+        ],
+        request: os_policy_assignments.ListOSPolicyAssignmentsRequest,
+        response: os_policy_assignments.ListOSPolicyAssignmentsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.osconfig_v1.types.ListOSPolicyAssignmentsRequest):
+                The initial request object.
+            response (google.cloud.osconfig_v1.types.ListOSPolicyAssignmentsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = os_policy_assignments.ListOSPolicyAssignmentsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[os_policy_assignments.ListOSPolicyAssignmentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[os_policy_assignments.OSPolicyAssignment]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.os_policy_assignments:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListOSPolicyAssignmentRevisionsPager:
+    """A pager for iterating through ``list_os_policy_assignment_revisions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.osconfig_v1.types.ListOSPolicyAssignmentRevisionsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``os_policy_assignments`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListOSPolicyAssignmentRevisions`` requests and continue to iterate
+    through the ``os_policy_assignments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.osconfig_v1.types.ListOSPolicyAssignmentRevisionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse
+        ],
+        request: os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest,
+        response: os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.osconfig_v1.types.ListOSPolicyAssignmentRevisionsRequest):
+                The initial request object.
+            response (google.cloud.osconfig_v1.types.ListOSPolicyAssignmentRevisionsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(
+            request
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[os_policy_assignments.OSPolicyAssignment]:
+        for page in self.pages:
+            yield from page.os_policy_assignments
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListOSPolicyAssignmentRevisionsAsyncPager:
+    """A pager for iterating through ``list_os_policy_assignment_revisions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.osconfig_v1.types.ListOSPolicyAssignmentRevisionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``os_policy_assignments`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListOSPolicyAssignmentRevisions`` requests and continue to iterate
+    through the ``os_policy_assignments`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.osconfig_v1.types.ListOSPolicyAssignmentRevisionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            Awaitable[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse],
+        ],
+        request: os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest,
+        response: os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.osconfig_v1.types.ListOSPolicyAssignmentRevisionsRequest):
+                The initial request object.
+            response (google.cloud.osconfig_v1.types.ListOSPolicyAssignmentRevisionsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest(
+            request
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[os_policy_assignments.OSPolicyAssignment]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.os_policy_assignments:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListOSPolicyAssignmentReportsPager:
+    """A pager for iterating through ``list_os_policy_assignment_reports`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.osconfig_v1.types.ListOSPolicyAssignmentReportsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``os_policy_assignment_reports`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListOSPolicyAssignmentReports`` requests and continue to iterate
+    through the ``os_policy_assignment_reports`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.osconfig_v1.types.ListOSPolicyAssignmentReportsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse
+        ],
+        request: os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
+        response: os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.osconfig_v1.types.ListOSPolicyAssignmentReportsRequest):
+                The initial request object.
+            response (google.cloud.osconfig_v1.types.ListOSPolicyAssignmentReportsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(
+            request
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(
+        self,
+    ) -> Iterator[os_policy_assignment_reports.OSPolicyAssignmentReport]:
+        for page in self.pages:
+            yield from page.os_policy_assignment_reports
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListOSPolicyAssignmentReportsAsyncPager:
+    """A pager for iterating through ``list_os_policy_assignment_reports`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.osconfig_v1.types.ListOSPolicyAssignmentReportsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``os_policy_assignment_reports`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListOSPolicyAssignmentReports`` requests and continue to iterate
+    through the ``os_policy_assignment_reports`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.osconfig_v1.types.ListOSPolicyAssignmentReportsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            Awaitable[
+                os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse
+            ],
+        ],
+        request: os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest,
+        response: os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.osconfig_v1.types.ListOSPolicyAssignmentReportsRequest):
+                The initial request object.
+            response (google.cloud.osconfig_v1.types.ListOSPolicyAssignmentReportsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest(
+            request
+        )
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[
+        os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[os_policy_assignment_reports.OSPolicyAssignmentReport]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.os_policy_assignment_reports:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListInventoriesPager:

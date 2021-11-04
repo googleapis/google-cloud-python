@@ -22,11 +22,15 @@ import google.api_core  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
+from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.osconfig_v1.types import inventory
+from google.cloud.osconfig_v1.types import os_policy_assignment_reports
+from google.cloud.osconfig_v1.types import os_policy_assignments
 from google.cloud.osconfig_v1.types import vulnerability
+from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -120,6 +124,46 @@ class OsConfigZonalServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.create_os_policy_assignment: gapic_v1.method.wrap_method(
+                self.create_os_policy_assignment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_os_policy_assignment: gapic_v1.method.wrap_method(
+                self.update_os_policy_assignment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_os_policy_assignment: gapic_v1.method.wrap_method(
+                self.get_os_policy_assignment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_os_policy_assignments: gapic_v1.method.wrap_method(
+                self.list_os_policy_assignments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_os_policy_assignment_revisions: gapic_v1.method.wrap_method(
+                self.list_os_policy_assignment_revisions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_os_policy_assignment: gapic_v1.method.wrap_method(
+                self.delete_os_policy_assignment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_os_policy_assignment_report: gapic_v1.method.wrap_method(
+                self.get_os_policy_assignment_report,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_os_policy_assignment_reports: gapic_v1.method.wrap_method(
+                self.list_os_policy_assignment_reports,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_inventory: gapic_v1.method.wrap_method(
                 self.get_inventory, default_timeout=None, client_info=client_info,
             ),
@@ -145,6 +189,100 @@ class OsConfigZonalServiceTransport(abc.ABC):
             Only call this method if the transport is NOT shared
             with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
+        raise NotImplementedError()
+
+    @property
+    def create_os_policy_assignment(
+        self,
+    ) -> Callable[
+        [os_policy_assignments.CreateOSPolicyAssignmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_os_policy_assignment(
+        self,
+    ) -> Callable[
+        [os_policy_assignments.UpdateOSPolicyAssignmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_os_policy_assignment(
+        self,
+    ) -> Callable[
+        [os_policy_assignments.GetOSPolicyAssignmentRequest],
+        Union[
+            os_policy_assignments.OSPolicyAssignment,
+            Awaitable[os_policy_assignments.OSPolicyAssignment],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_os_policy_assignments(
+        self,
+    ) -> Callable[
+        [os_policy_assignments.ListOSPolicyAssignmentsRequest],
+        Union[
+            os_policy_assignments.ListOSPolicyAssignmentsResponse,
+            Awaitable[os_policy_assignments.ListOSPolicyAssignmentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_os_policy_assignment_revisions(
+        self,
+    ) -> Callable[
+        [os_policy_assignments.ListOSPolicyAssignmentRevisionsRequest],
+        Union[
+            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse,
+            Awaitable[os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_os_policy_assignment(
+        self,
+    ) -> Callable[
+        [os_policy_assignments.DeleteOSPolicyAssignmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_os_policy_assignment_report(
+        self,
+    ) -> Callable[
+        [os_policy_assignment_reports.GetOSPolicyAssignmentReportRequest],
+        Union[
+            os_policy_assignment_reports.OSPolicyAssignmentReport,
+            Awaitable[os_policy_assignment_reports.OSPolicyAssignmentReport],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_os_policy_assignment_reports(
+        self,
+    ) -> Callable[
+        [os_policy_assignment_reports.ListOSPolicyAssignmentReportsRequest],
+        Union[
+            os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse,
+            Awaitable[
+                os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse
+            ],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property

@@ -40,18 +40,26 @@ class osconfigCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'cancel_patch_job': ('name', ),
+        'create_os_policy_assignment': ('parent', 'os_policy_assignment', 'os_policy_assignment_id', ),
         'create_patch_deployment': ('parent', 'patch_deployment_id', 'patch_deployment', ),
+        'delete_os_policy_assignment': ('name', ),
         'delete_patch_deployment': ('name', ),
         'execute_patch_job': ('parent', 'instance_filter', 'description', 'patch_config', 'duration', 'dry_run', 'display_name', 'rollout', ),
         'get_inventory': ('name', 'view', ),
+        'get_os_policy_assignment': ('name', ),
+        'get_os_policy_assignment_report': ('name', ),
         'get_patch_deployment': ('name', ),
         'get_patch_job': ('name', ),
         'get_vulnerability_report': ('name', ),
         'list_inventories': ('parent', 'view', 'page_size', 'page_token', 'filter', ),
+        'list_os_policy_assignment_reports': ('parent', 'page_size', 'filter', 'page_token', ),
+        'list_os_policy_assignment_revisions': ('name', 'page_size', 'page_token', ),
+        'list_os_policy_assignments': ('parent', 'page_size', 'page_token', ),
         'list_patch_deployments': ('parent', 'page_size', 'page_token', ),
         'list_patch_job_instance_details': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_patch_jobs': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_vulnerability_reports': ('parent', 'page_size', 'page_token', 'filter', ),
+        'update_os_policy_assignment': ('os_policy_assignment', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

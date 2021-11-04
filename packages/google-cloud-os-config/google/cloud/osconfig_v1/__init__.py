@@ -24,6 +24,21 @@ from .types.inventory import Inventory
 from .types.inventory import ListInventoriesRequest
 from .types.inventory import ListInventoriesResponse
 from .types.inventory import InventoryView
+from .types.os_policy import OSPolicy
+from .types.os_policy_assignment_reports import GetOSPolicyAssignmentReportRequest
+from .types.os_policy_assignment_reports import ListOSPolicyAssignmentReportsRequest
+from .types.os_policy_assignment_reports import ListOSPolicyAssignmentReportsResponse
+from .types.os_policy_assignment_reports import OSPolicyAssignmentReport
+from .types.os_policy_assignments import CreateOSPolicyAssignmentRequest
+from .types.os_policy_assignments import DeleteOSPolicyAssignmentRequest
+from .types.os_policy_assignments import GetOSPolicyAssignmentRequest
+from .types.os_policy_assignments import ListOSPolicyAssignmentRevisionsRequest
+from .types.os_policy_assignments import ListOSPolicyAssignmentRevisionsResponse
+from .types.os_policy_assignments import ListOSPolicyAssignmentsRequest
+from .types.os_policy_assignments import ListOSPolicyAssignmentsResponse
+from .types.os_policy_assignments import OSPolicyAssignment
+from .types.os_policy_assignments import OSPolicyAssignmentOperationMetadata
+from .types.os_policy_assignments import UpdateOSPolicyAssignmentRequest
 from .types.osconfig_common import FixedOrPercent
 from .types.patch_deployments import CreatePatchDeploymentRequest
 from .types.patch_deployments import DeletePatchDeploymentRequest
@@ -69,7 +84,9 @@ __all__ = (
     "AptSettings",
     "CVSSv3",
     "CancelPatchJobRequest",
+    "CreateOSPolicyAssignmentRequest",
     "CreatePatchDeploymentRequest",
+    "DeleteOSPolicyAssignmentRequest",
     "DeletePatchDeploymentRequest",
     "ExecStep",
     "ExecStepConfig",
@@ -77,6 +94,8 @@ __all__ = (
     "FixedOrPercent",
     "GcsObject",
     "GetInventoryRequest",
+    "GetOSPolicyAssignmentReportRequest",
+    "GetOSPolicyAssignmentRequest",
     "GetPatchDeploymentRequest",
     "GetPatchJobRequest",
     "GetVulnerabilityReportRequest",
@@ -86,6 +105,12 @@ __all__ = (
     "InventoryView",
     "ListInventoriesRequest",
     "ListInventoriesResponse",
+    "ListOSPolicyAssignmentReportsRequest",
+    "ListOSPolicyAssignmentReportsResponse",
+    "ListOSPolicyAssignmentRevisionsRequest",
+    "ListOSPolicyAssignmentRevisionsResponse",
+    "ListOSPolicyAssignmentsRequest",
+    "ListOSPolicyAssignmentsResponse",
     "ListPatchDeploymentsRequest",
     "ListPatchDeploymentsResponse",
     "ListPatchJobInstanceDetailsRequest",
@@ -95,6 +120,10 @@ __all__ = (
     "ListVulnerabilityReportsRequest",
     "ListVulnerabilityReportsResponse",
     "MonthlySchedule",
+    "OSPolicy",
+    "OSPolicyAssignment",
+    "OSPolicyAssignmentOperationMetadata",
+    "OSPolicyAssignmentReport",
     "OneTimeSchedule",
     "OsConfigServiceClient",
     "OsConfigZonalServiceClient",
@@ -105,6 +134,7 @@ __all__ = (
     "PatchJobInstanceDetails",
     "PatchRollout",
     "RecurringSchedule",
+    "UpdateOSPolicyAssignmentRequest",
     "VulnerabilityReport",
     "WeekDayOfMonth",
     "WeeklySchedule",

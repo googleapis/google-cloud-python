@@ -32,6 +32,47 @@ from google.cloud.osconfig_v1.types.inventory import Inventory
 from google.cloud.osconfig_v1.types.inventory import ListInventoriesRequest
 from google.cloud.osconfig_v1.types.inventory import ListInventoriesResponse
 from google.cloud.osconfig_v1.types.inventory import InventoryView
+from google.cloud.osconfig_v1.types.os_policy import OSPolicy
+from google.cloud.osconfig_v1.types.os_policy_assignment_reports import (
+    GetOSPolicyAssignmentReportRequest,
+)
+from google.cloud.osconfig_v1.types.os_policy_assignment_reports import (
+    ListOSPolicyAssignmentReportsRequest,
+)
+from google.cloud.osconfig_v1.types.os_policy_assignment_reports import (
+    ListOSPolicyAssignmentReportsResponse,
+)
+from google.cloud.osconfig_v1.types.os_policy_assignment_reports import (
+    OSPolicyAssignmentReport,
+)
+from google.cloud.osconfig_v1.types.os_policy_assignments import (
+    CreateOSPolicyAssignmentRequest,
+)
+from google.cloud.osconfig_v1.types.os_policy_assignments import (
+    DeleteOSPolicyAssignmentRequest,
+)
+from google.cloud.osconfig_v1.types.os_policy_assignments import (
+    GetOSPolicyAssignmentRequest,
+)
+from google.cloud.osconfig_v1.types.os_policy_assignments import (
+    ListOSPolicyAssignmentRevisionsRequest,
+)
+from google.cloud.osconfig_v1.types.os_policy_assignments import (
+    ListOSPolicyAssignmentRevisionsResponse,
+)
+from google.cloud.osconfig_v1.types.os_policy_assignments import (
+    ListOSPolicyAssignmentsRequest,
+)
+from google.cloud.osconfig_v1.types.os_policy_assignments import (
+    ListOSPolicyAssignmentsResponse,
+)
+from google.cloud.osconfig_v1.types.os_policy_assignments import OSPolicyAssignment
+from google.cloud.osconfig_v1.types.os_policy_assignments import (
+    OSPolicyAssignmentOperationMetadata,
+)
+from google.cloud.osconfig_v1.types.os_policy_assignments import (
+    UpdateOSPolicyAssignmentRequest,
+)
 from google.cloud.osconfig_v1.types.osconfig_common import FixedOrPercent
 from google.cloud.osconfig_v1.types.patch_deployments import (
     CreatePatchDeploymentRequest,
@@ -91,6 +132,21 @@ __all__ = (
     "ListInventoriesRequest",
     "ListInventoriesResponse",
     "InventoryView",
+    "OSPolicy",
+    "GetOSPolicyAssignmentReportRequest",
+    "ListOSPolicyAssignmentReportsRequest",
+    "ListOSPolicyAssignmentReportsResponse",
+    "OSPolicyAssignmentReport",
+    "CreateOSPolicyAssignmentRequest",
+    "DeleteOSPolicyAssignmentRequest",
+    "GetOSPolicyAssignmentRequest",
+    "ListOSPolicyAssignmentRevisionsRequest",
+    "ListOSPolicyAssignmentRevisionsResponse",
+    "ListOSPolicyAssignmentsRequest",
+    "ListOSPolicyAssignmentsResponse",
+    "OSPolicyAssignment",
+    "OSPolicyAssignmentOperationMetadata",
+    "UpdateOSPolicyAssignmentRequest",
     "FixedOrPercent",
     "CreatePatchDeploymentRequest",
     "DeletePatchDeploymentRequest",
