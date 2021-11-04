@@ -5,6 +5,19 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+### [2.30.1](https://www.github.com/googleapis/python-bigquery/compare/v2.30.0...v2.30.1) (2021-11-04)
+
+
+### Bug Fixes
+
+* error if eval()-ing repr(SchemaField) ([#1046](https://www.github.com/googleapis/python-bigquery/issues/1046)) ([13ac860](https://www.github.com/googleapis/python-bigquery/commit/13ac860de689ea13b35932c67042bc35e388cb30))
+
+
+### Documentation
+
+* show gcloud command to authorize against sheets ([#1045](https://www.github.com/googleapis/python-bigquery/issues/1045)) ([20c9024](https://www.github.com/googleapis/python-bigquery/commit/20c9024b5760f7ae41301f4da54568496922cbe2))
+* use stable URL for pandas intersphinx links ([#1048](https://www.github.com/googleapis/python-bigquery/issues/1048)) ([73312f8](https://www.github.com/googleapis/python-bigquery/commit/73312f8f0f22ff9175a4f5f7db9bb438a496c164))
+
 ## [2.30.0](https://www.github.com/googleapis/python-bigquery/compare/v2.29.0...v2.30.0) (2021-11-03)
 
 
