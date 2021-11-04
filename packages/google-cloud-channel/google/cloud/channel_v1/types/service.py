@@ -859,8 +859,12 @@ class ChangeParametersRequest(proto.Message):
             the format:
             accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
         parameters (Sequence[google.cloud.channel_v1.types.Parameter]):
-            Required. Entitlement parameters to update.
-            You can only change editable parameters.
+            Required. Entitlement parameters to update. You can only
+            change editable parameters.
+
+            To view the available Parameters for a request, refer to the
+            [Offer.parameter_definitions][google.cloud.channel.v1.Offer.parameter_definitions]
+            from the desired offer.
         request_id (str):
             Optional. You can specify an optional unique request ID, and
             if you need to retry your request, the server will know to
@@ -937,8 +941,10 @@ class ChangeOfferRequest(proto.Message):
             Required. New Offer. Format:
             accounts/{account_id}/offers/{offer_id}.
         parameters (Sequence[google.cloud.channel_v1.types.Parameter]):
-            Optional. Parameters needed to purchase the
-            Offer.
+            Optional. Parameters needed to purchase the Offer. To view
+            the available Parameters refer to the
+            [Offer.parameter_definitions][google.cloud.channel.v1.Offer.parameter_definitions]
+            from the desired offer.
         purchase_order_id (str):
             Optional. Purchase order id provided by the
             reseller.
