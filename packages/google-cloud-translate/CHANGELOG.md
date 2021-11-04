@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+### [3.6.1](https://www.github.com/googleapis/python-translate/compare/v3.6.0...v3.6.1) (2021-11-04)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([7924322](https://www.github.com/googleapis/python-translate/commit/79243222e5e16e1b7cb50b9d69862ddf6023ad4f))
+* **deps:** require google-api-core >= 1.28.0 ([7924322](https://www.github.com/googleapis/python-translate/commit/79243222e5e16e1b7cb50b9d69862ddf6023ad4f))
+
+
+### Documentation
+
+* list oneofs in docstring ([7924322](https://www.github.com/googleapis/python-translate/commit/79243222e5e16e1b7cb50b9d69862ddf6023ad4f))
+* **samples:** Add Cloud Code tags for API Explorer pilot ([#282](https://www.github.com/googleapis/python-translate/issues/282)) ([3e8df68](https://www.github.com/googleapis/python-translate/commit/3e8df6836f0508fb4c6cd1c4a9f2f39192a01cea))
+
 ## [3.6.0](https://www.github.com/googleapis/python-translate/compare/v3.5.0...v3.6.0) (2021-10-18)
 
 
