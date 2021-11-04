@@ -186,7 +186,11 @@ def snippets(session):
     session.install("google-cloud-storage", "-c", constraints_path)
     session.install("grpcio", "-c", constraints_path)
 
-    session.install("-e", ".[all]", "-c", constraints_path)
+    if session.python == "3.10":
+        extras = "[bqstorage,pandas,tqdm,opentelemetry]"
+    else:
+        extras = "[all]"
+    session.install("-e", f".{extras}", "-c", constraints_path)
 
     # Run py.test against the snippets tests.
     # Skip tests in samples/snippets, as those are run in a different session
