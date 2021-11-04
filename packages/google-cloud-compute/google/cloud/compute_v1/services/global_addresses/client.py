@@ -365,31 +365,21 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource.
-
-                   Google Compute Engine has three Operation resources:
-
-                   -  [Global](/compute/docs/reference/rest/{$api_version}/globalOperations)
-                      \*
-                      [Regional](/compute/docs/reference/rest/{$api_version}/regionOperations)
-                      \*
-                      [Zonal](/compute/docs/reference/rest/{$api_version}/zoneOperations)
-
-                   You can use an operation resource to manage
-                   asynchronous API requests. For more information, read
-                   Handling API responses.
-
-                   Operations can be global, regional or zonal. - For
-                   global operations, use the globalOperations resource.
-                   - For regional operations, use the regionOperations
-                   resource. - For zonal operations, use the
-                   zonalOperations resource.
-
-                   For more information, read Global, Regional, and
-                   Zonal Resources. (== resource_for
-                   {$api_version}.globalOperations ==) (== resource_for
-                   {$api_version}.regionOperations ==) (== resource_for
-                   {$api_version}.zoneOperations ==)
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                [Global](/compute/docs/reference/rest/v1/globalOperations)
+                \*
+                [Regional](/compute/docs/reference/rest/v1/regionOperations)
+                \*
+                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the globalOperations
+                resource. - For regional operations, use the
+                regionOperations resource. - For zonal operations, use
+                the zonalOperations resource. For more information, read
+                Global, Regional, and Zonal Resources.
 
         """
         # Create or coerce a protobuf request object.
@@ -463,35 +453,13 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Address:
-                Use global external addresses for GFE-based external
-                HTTP(S) load balancers in Premium Tier.
-
-                   Use global internal addresses for reserved peering
-                   network range.
-
-                   Use regional external addresses for the following
-                   resources:
-
-                   -  External IP addresses for VM instances - Regional
-                      external forwarding rules - Cloud NAT external IP
-                      addresses - GFE based LBs in Standard Tier -
-                      Network LBs in Premium or Standard Tier - Cloud
-                      VPN gateways (both Classic and HA)
-
-                   Use regional internal IP addresses for subnet IP
-                   ranges (primary and secondary). This includes:
-
-                   -  Internal IP addresses for VM instances - Alias IP
-                      ranges of VM instances (/32 only) - Regional
-                      internal forwarding rules - Internal TCP/UDP load
-                      balancer addresses - Internal HTTP(S) load
-                      balancer addresses - Cloud DNS inbound forwarding
-                      IP addresses
-
-                   For more information, read reserved IP address.
-
-                   (== resource_for {$api_version}.addresses ==) (==
-                   resource_for {$api_version}.globalAddresses ==)
+                Represents an IP Address resource. Google Compute Engine
+                has two IP Address resources: \* [Global (external and
+                internal)](\ https://cloud.google.com/compute/docs/reference/rest/v1/globalAddresses)
+                \* [Regional (external and
+                internal)](\ https://cloud.google.com/compute/docs/reference/rest/v1/addresses)
+                For more information, see Reserving a static external IP
+                address.
 
         """
         # Create or coerce a protobuf request object.
@@ -563,31 +531,21 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource.
-
-                   Google Compute Engine has three Operation resources:
-
-                   -  [Global](/compute/docs/reference/rest/{$api_version}/globalOperations)
-                      \*
-                      [Regional](/compute/docs/reference/rest/{$api_version}/regionOperations)
-                      \*
-                      [Zonal](/compute/docs/reference/rest/{$api_version}/zoneOperations)
-
-                   You can use an operation resource to manage
-                   asynchronous API requests. For more information, read
-                   Handling API responses.
-
-                   Operations can be global, regional or zonal. - For
-                   global operations, use the globalOperations resource.
-                   - For regional operations, use the regionOperations
-                   resource. - For zonal operations, use the
-                   zonalOperations resource.
-
-                   For more information, read Global, Regional, and
-                   Zonal Resources. (== resource_for
-                   {$api_version}.globalOperations ==) (== resource_for
-                   {$api_version}.regionOperations ==) (== resource_for
-                   {$api_version}.zoneOperations ==)
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                [Global](/compute/docs/reference/rest/v1/globalOperations)
+                \*
+                [Regional](/compute/docs/reference/rest/v1/regionOperations)
+                \*
+                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the globalOperations
+                resource. - For regional operations, use the
+                regionOperations resource. - For zonal operations, use
+                the zonalOperations resource. For more information, read
+                Global, Regional, and Zonal Resources.
 
         """
         # Create or coerce a protobuf request object.

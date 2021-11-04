@@ -477,6 +477,7 @@ def test_get_rest(
             region_infos=[compute.InterconnectLocationRegionInfo(expected_rtt_ms=1610)],
             self_link="self_link_value",
             status=compute.InterconnectLocation.Status.AVAILABLE,
+            supports_pzs=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -508,6 +509,7 @@ def test_get_rest(
     ]
     assert response.self_link == "self_link_value"
     assert response.status == compute.InterconnectLocation.Status.AVAILABLE
+    assert response.supports_pzs is True
 
 
 def test_get_rest_from_dict():

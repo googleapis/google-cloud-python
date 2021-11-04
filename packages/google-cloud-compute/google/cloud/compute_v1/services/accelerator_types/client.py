@@ -446,14 +446,14 @@ class AcceleratorTypesClient(metaclass=AcceleratorTypesClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.AcceleratorType:
-                Represents an Accelerator Type resource.
-
-                   Google Cloud Platform provides graphics processing
-                   units (accelerators) that you can add to VM instances
-                   to improve or accelerate performance when working
-                   with intensive workloads. For more information, read
-                   GPUs on Compute Engine. (== resource_for
-                   {$api_version}.acceleratorTypes ==)
+                Represents an Accelerator Type
+                resource. Google Cloud Platform provides
+                graphics processing units (accelerators)
+                that you can add to VM instances to
+                improve or accelerate performance when
+                working with intensive workloads. For
+                more information, read GPUs on Compute
+                Engine.
 
         """
         # Create or coerce a protobuf request object.

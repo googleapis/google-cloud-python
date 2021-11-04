@@ -117,34 +117,21 @@ class BackendServicesRestTransport(BackendServicesTransport):
 
         Returns:
             ~.compute.Operation:
-                Represents an Operation resource.
-
-                Google Compute Engine has three Operation resources:
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/globalOperations>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionOperations>`__
-                   \*
-                   `Zonal </compute/docs/reference/rest/{$api_version}/zoneOperations>`__
-
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
                 You can use an operation resource to manage asynchronous
                 API requests. For more information, read Handling API
-                responses.
-
-                Operations can be global, regional or zonal.
-
-                -  For global operations, use the ``globalOperations``
-                   resource.
-                -  For regional operations, use the ``regionOperations``
-                   resource.
-                -  For zonal operations, use the ``zonalOperations``
-                   resource.
-
-                For more information, read Global, Regional, and Zonal
-                Resources. (== resource_for
-                {$api_version}.globalOperations ==) (== resource_for
-                {$api_version}.regionOperations ==) (== resource_for
-                {$api_version}.zoneOperations ==)
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
 
         """
 
@@ -267,34 +254,21 @@ class BackendServicesRestTransport(BackendServicesTransport):
 
         Returns:
             ~.compute.Operation:
-                Represents an Operation resource.
-
-                Google Compute Engine has three Operation resources:
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/globalOperations>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionOperations>`__
-                   \*
-                   `Zonal </compute/docs/reference/rest/{$api_version}/zoneOperations>`__
-
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
                 You can use an operation resource to manage asynchronous
                 API requests. For more information, read Handling API
-                responses.
-
-                Operations can be global, regional or zonal.
-
-                -  For global operations, use the ``globalOperations``
-                   resource.
-                -  For regional operations, use the ``regionOperations``
-                   resource.
-                -  For zonal operations, use the ``zonalOperations``
-                   resource.
-
-                For more information, read Global, Regional, and Zonal
-                Resources. (== resource_for
-                {$api_version}.globalOperations ==) (== resource_for
-                {$api_version}.regionOperations ==) (== resource_for
-                {$api_version}.zoneOperations ==)
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
 
         """
 
@@ -344,34 +318,21 @@ class BackendServicesRestTransport(BackendServicesTransport):
 
         Returns:
             ~.compute.Operation:
-                Represents an Operation resource.
-
-                Google Compute Engine has three Operation resources:
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/globalOperations>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionOperations>`__
-                   \*
-                   `Zonal </compute/docs/reference/rest/{$api_version}/zoneOperations>`__
-
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
                 You can use an operation resource to manage asynchronous
                 API requests. For more information, read Handling API
-                responses.
-
-                Operations can be global, regional or zonal.
-
-                -  For global operations, use the ``globalOperations``
-                   resource.
-                -  For regional operations, use the ``regionOperations``
-                   resource.
-                -  For zonal operations, use the ``zonalOperations``
-                   resource.
-
-                For more information, read Global, Regional, and Zonal
-                Resources. (== resource_for
-                {$api_version}.globalOperations ==) (== resource_for
-                {$api_version}.regionOperations ==) (== resource_for
-                {$api_version}.zoneOperations ==)
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
 
         """
 
@@ -422,28 +383,21 @@ class BackendServicesRestTransport(BackendServicesTransport):
 
         Returns:
             ~.compute.BackendService:
-                Represents a Backend Service resource.
-
-                A backend service defines how Google Cloud load
-                balancers distribute traffic. The backend service
-                configuration contains a set of values, such as the
-                protocol used to connect to backends, various
-                distribution and session settings, health checks, and
-                timeouts. These settings provide fine-grained control
-                over how your load balancer behaves. Most of the
-                settings have default values that allow for easy
-                configuration if you need to get started quickly.
-
-                Backend services in Google Compute Engine can be either
-                regionally or globally scoped.
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/backendServices>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionBackendServices>`__
-
+                Represents a Backend Service resource. A backend service
+                defines how Google Cloud load balancers distribute
+                traffic. The backend service configuration contains a
+                set of values, such as the protocol used to connect to
+                backends, various distribution and session settings,
+                health checks, and timeouts. These settings provide
+                fine-grained control over how your load balancer
+                behaves. Most of the settings have default values that
+                allow for easy configuration if you need to get started
+                quickly. Backend services in Google Compute Engine can
+                be either regionally or globally scoped. \*
+                `Global <https://cloud.google.com/compute/docs/reference/rest/v1/backendServices>`__
+                \*
+                `Regional <https://cloud.google.com/compute/docs/reference/rest/v1/regionBackendServices>`__
                 For more information, see Backend Services.
-
-                (== resource_for {$api_version}.backendService ==)
 
         """
 
@@ -551,34 +505,21 @@ class BackendServicesRestTransport(BackendServicesTransport):
 
         Returns:
             ~.compute.Operation:
-                Represents an Operation resource.
-
-                Google Compute Engine has three Operation resources:
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/globalOperations>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionOperations>`__
-                   \*
-                   `Zonal </compute/docs/reference/rest/{$api_version}/zoneOperations>`__
-
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
                 You can use an operation resource to manage asynchronous
                 API requests. For more information, read Handling API
-                responses.
-
-                Operations can be global, regional or zonal.
-
-                -  For global operations, use the ``globalOperations``
-                   resource.
-                -  For regional operations, use the ``regionOperations``
-                   resource.
-                -  For zonal operations, use the ``zonalOperations``
-                   resource.
-
-                For more information, read Global, Regional, and Zonal
-                Resources. (== resource_for
-                {$api_version}.globalOperations ==) (== resource_for
-                {$api_version}.regionOperations ==) (== resource_for
-                {$api_version}.zoneOperations ==)
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
 
         """
 
@@ -694,34 +635,21 @@ class BackendServicesRestTransport(BackendServicesTransport):
 
         Returns:
             ~.compute.Operation:
-                Represents an Operation resource.
-
-                Google Compute Engine has three Operation resources:
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/globalOperations>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionOperations>`__
-                   \*
-                   `Zonal </compute/docs/reference/rest/{$api_version}/zoneOperations>`__
-
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
                 You can use an operation resource to manage asynchronous
                 API requests. For more information, read Handling API
-                responses.
-
-                Operations can be global, regional or zonal.
-
-                -  For global operations, use the ``globalOperations``
-                   resource.
-                -  For regional operations, use the ``regionOperations``
-                   resource.
-                -  For zonal operations, use the ``zonalOperations``
-                   resource.
-
-                For more information, read Global, Regional, and Zonal
-                Resources. (== resource_for
-                {$api_version}.globalOperations ==) (== resource_for
-                {$api_version}.regionOperations ==) (== resource_for
-                {$api_version}.zoneOperations ==)
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
 
         """
 
@@ -780,34 +708,21 @@ class BackendServicesRestTransport(BackendServicesTransport):
 
         Returns:
             ~.compute.Operation:
-                Represents an Operation resource.
-
-                Google Compute Engine has three Operation resources:
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/globalOperations>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionOperations>`__
-                   \*
-                   `Zonal </compute/docs/reference/rest/{$api_version}/zoneOperations>`__
-
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
                 You can use an operation resource to manage asynchronous
                 API requests. For more information, read Handling API
-                responses.
-
-                Operations can be global, regional or zonal.
-
-                -  For global operations, use the ``globalOperations``
-                   resource.
-                -  For regional operations, use the ``regionOperations``
-                   resource.
-                -  For zonal operations, use the ``zonalOperations``
-                   resource.
-
-                For more information, read Global, Regional, and Zonal
-                Resources. (== resource_for
-                {$api_version}.globalOperations ==) (== resource_for
-                {$api_version}.regionOperations ==) (== resource_for
-                {$api_version}.zoneOperations ==)
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
 
         """
 
@@ -866,34 +781,21 @@ class BackendServicesRestTransport(BackendServicesTransport):
 
         Returns:
             ~.compute.Operation:
-                Represents an Operation resource.
-
-                Google Compute Engine has three Operation resources:
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/globalOperations>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionOperations>`__
-                   \*
-                   `Zonal </compute/docs/reference/rest/{$api_version}/zoneOperations>`__
-
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
                 You can use an operation resource to manage asynchronous
                 API requests. For more information, read Handling API
-                responses.
-
-                Operations can be global, regional or zonal.
-
-                -  For global operations, use the ``globalOperations``
-                   resource.
-                -  For regional operations, use the ``regionOperations``
-                   resource.
-                -  For zonal operations, use the ``zonalOperations``
-                   resource.
-
-                For more information, read Global, Regional, and Zonal
-                Resources. (== resource_for
-                {$api_version}.globalOperations ==) (== resource_for
-                {$api_version}.regionOperations ==) (== resource_for
-                {$api_version}.zoneOperations ==)
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
 
         """
 

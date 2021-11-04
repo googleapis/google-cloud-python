@@ -21,6 +21,7 @@ Services for Google Cloud Compute v1 API
     global_organization_operations
     global_public_delegated_prefixes
     health_checks
+    image_family_views
     images
     instance_group_managers
     instance_groups
@@ -64,6 +65,7 @@ Services for Google Cloud Compute v1 API
     routers
     routes
     security_policies
+    service_attachments
     snapshots
     ssl_certificates
     ssl_policies

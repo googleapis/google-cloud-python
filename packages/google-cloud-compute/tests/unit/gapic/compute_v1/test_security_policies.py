@@ -709,6 +709,14 @@ def test_get_rest(
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.SecurityPolicy(
+            adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
+                layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
+                    enable=True
+                )
+            ),
+            advanced_options_config=compute.SecurityPolicyAdvancedOptionsConfig(
+                json_parsing=compute.SecurityPolicyAdvancedOptionsConfig.JsonParsing.DISABLED
+            ),
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             fingerprint="fingerprint_value",
@@ -729,6 +737,20 @@ def test_get_rest(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.SecurityPolicy)
+    assert (
+        response.adaptive_protection_config
+        == compute.SecurityPolicyAdaptiveProtectionConfig(
+            layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
+                enable=True
+            )
+        )
+    )
+    assert (
+        response.advanced_options_config
+        == compute.SecurityPolicyAdvancedOptionsConfig(
+            json_parsing=compute.SecurityPolicyAdvancedOptionsConfig.JsonParsing.DISABLED
+        )
+    )
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.fingerprint == "fingerprint_value"
@@ -985,7 +1007,11 @@ def test_insert_rest_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         security_policy_resource = compute.SecurityPolicy(
-            creation_timestamp="creation_timestamp_value"
+            adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
+                layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
+                    enable=True
+                )
+            )
         )
         client.insert(
             project="project_value", security_policy_resource=security_policy_resource,
@@ -1015,7 +1041,11 @@ def test_insert_rest_flattened_error():
             compute.InsertSecurityPolicyRequest(),
             project="project_value",
             security_policy_resource=compute.SecurityPolicy(
-                creation_timestamp="creation_timestamp_value"
+                adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
+                    layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
+                        enable=True
+                    )
+                )
             ),
         )
 
@@ -1037,7 +1067,13 @@ def test_list_rest(
         return_value = compute.SecurityPolicyList(
             id="id_value",
             items=[
-                compute.SecurityPolicy(creation_timestamp="creation_timestamp_value")
+                compute.SecurityPolicy(
+                    adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
+                        layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
+                            enable=True
+                        )
+                    )
+                )
             ],
             kind="kind_value",
             next_page_token="next_page_token_value",
@@ -1056,7 +1092,13 @@ def test_list_rest(
     assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [
-        compute.SecurityPolicy(creation_timestamp="creation_timestamp_value")
+        compute.SecurityPolicy(
+            adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
+                layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
+                    enable=True
+                )
+            )
+        )
     ]
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
@@ -1347,7 +1389,11 @@ def test_patch_rest_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         security_policy_resource = compute.SecurityPolicy(
-            creation_timestamp="creation_timestamp_value"
+            adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
+                layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
+                    enable=True
+                )
+            )
         )
         client.patch(
             project="project_value",
@@ -1381,7 +1427,11 @@ def test_patch_rest_flattened_error():
             project="project_value",
             security_policy="security_policy_value",
             security_policy_resource=compute.SecurityPolicy(
-                creation_timestamp="creation_timestamp_value"
+                adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
+                    layer7_ddos_defense_config=compute.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(
+                        enable=True
+                    )
+                )
             ),
         )
 

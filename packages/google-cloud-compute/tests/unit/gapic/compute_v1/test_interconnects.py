@@ -583,6 +583,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInterconnectR
             peer_ip_address="peer_ip_address_value",
             provisioned_link_count=2375,
             requested_link_count=2151,
+            satisfies_pzs=True,
             self_link="self_link_value",
             state=compute.Interconnect.State.ACTIVE,
         )
@@ -627,6 +628,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInterconnectR
     assert response.peer_ip_address == "peer_ip_address_value"
     assert response.provisioned_link_count == 2375
     assert response.requested_link_count == 2151
+    assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
     assert response.state == compute.Interconnect.State.ACTIVE
 

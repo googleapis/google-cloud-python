@@ -179,34 +179,21 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
 
         Returns:
             ~.compute.Operation:
-                Represents an Operation resource.
-
-                Google Compute Engine has three Operation resources:
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/globalOperations>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionOperations>`__
-                   \*
-                   `Zonal </compute/docs/reference/rest/{$api_version}/zoneOperations>`__
-
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
                 You can use an operation resource to manage asynchronous
                 API requests. For more information, read Handling API
-                responses.
-
-                Operations can be global, regional or zonal.
-
-                -  For global operations, use the ``globalOperations``
-                   resource.
-                -  For regional operations, use the ``regionOperations``
-                   resource.
-                -  For zonal operations, use the ``zonalOperations``
-                   resource.
-
-                For more information, read Global, Regional, and Zonal
-                Resources. (== resource_for
-                {$api_version}.globalOperations ==) (== resource_for
-                {$api_version}.regionOperations ==) (== resource_for
-                {$api_version}.zoneOperations ==)
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
 
         """
 
@@ -256,29 +243,19 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
 
         Returns:
             ~.compute.TargetHttpProxy:
-                Represents a Target HTTP Proxy resource.
-
-                Google Compute Engine has two Target HTTP Proxy
-                resources:
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/targetHttpProxies>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionTargetHttpProxies>`__
-
+                Represents a Target HTTP Proxy resource. Google Compute
+                Engine has two Target HTTP Proxy resources: \*
+                `Global </compute/docs/reference/rest/v1/targetHttpProxies>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionTargetHttpProxies>`__
                 A target HTTP proxy is a component of GCP HTTP load
-                balancers.
-
-                -  targetHttpProxies are used by external HTTP load
-                   balancers and Traffic Director. \*
-                   regionTargetHttpProxies are used by internal HTTP
-                   load balancers.
-
-                Forwarding rules reference a target HTTP proxy, and the
-                target proxy then references a URL map. For more
-                information, read Using Target Proxies and Forwarding
-                rule concepts. (== resource_for
-                {$api_version}.targetHttpProxies ==) (== resource_for
-                {$api_version}.regionTargetHttpProxies ==)
+                balancers. \* targetHttpProxies are used by external
+                HTTP load balancers and Traffic Director. \*
+                regionTargetHttpProxies are used by internal HTTP load
+                balancers. Forwarding rules reference a target HTTP
+                proxy, and the target proxy then references a URL map.
+                For more information, read Using Target Proxies and
+                Forwarding rule concepts.
 
         """
 
@@ -328,34 +305,21 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
 
         Returns:
             ~.compute.Operation:
-                Represents an Operation resource.
-
-                Google Compute Engine has three Operation resources:
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/globalOperations>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionOperations>`__
-                   \*
-                   `Zonal </compute/docs/reference/rest/{$api_version}/zoneOperations>`__
-
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
                 You can use an operation resource to manage asynchronous
                 API requests. For more information, read Handling API
-                responses.
-
-                Operations can be global, regional or zonal.
-
-                -  For global operations, use the ``globalOperations``
-                   resource.
-                -  For regional operations, use the ``regionOperations``
-                   resource.
-                -  For zonal operations, use the ``zonalOperations``
-                   resource.
-
-                For more information, read Global, Regional, and Zonal
-                Resources. (== resource_for
-                {$api_version}.globalOperations ==) (== resource_for
-                {$api_version}.regionOperations ==) (== resource_for
-                {$api_version}.zoneOperations ==)
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
 
         """
 
@@ -469,34 +433,21 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
 
         Returns:
             ~.compute.Operation:
-                Represents an Operation resource.
-
-                Google Compute Engine has three Operation resources:
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/globalOperations>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionOperations>`__
-                   \*
-                   `Zonal </compute/docs/reference/rest/{$api_version}/zoneOperations>`__
-
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
                 You can use an operation resource to manage asynchronous
                 API requests. For more information, read Handling API
-                responses.
-
-                Operations can be global, regional or zonal.
-
-                -  For global operations, use the ``globalOperations``
-                   resource.
-                -  For regional operations, use the ``regionOperations``
-                   resource.
-                -  For zonal operations, use the ``zonalOperations``
-                   resource.
-
-                For more information, read Global, Regional, and Zonal
-                Resources. (== resource_for
-                {$api_version}.globalOperations ==) (== resource_for
-                {$api_version}.regionOperations ==) (== resource_for
-                {$api_version}.zoneOperations ==)
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
 
         """
 
@@ -555,34 +506,21 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
 
         Returns:
             ~.compute.Operation:
-                Represents an Operation resource.
-
-                Google Compute Engine has three Operation resources:
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/globalOperations>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionOperations>`__
-                   \*
-                   `Zonal </compute/docs/reference/rest/{$api_version}/zoneOperations>`__
-
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
                 You can use an operation resource to manage asynchronous
                 API requests. For more information, read Handling API
-                responses.
-
-                Operations can be global, regional or zonal.
-
-                -  For global operations, use the ``globalOperations``
-                   resource.
-                -  For regional operations, use the ``regionOperations``
-                   resource.
-                -  For zonal operations, use the ``zonalOperations``
-                   resource.
-
-                For more information, read Global, Regional, and Zonal
-                Resources. (== resource_for
-                {$api_version}.globalOperations ==) (== resource_for
-                {$api_version}.regionOperations ==) (== resource_for
-                {$api_version}.zoneOperations ==)
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
 
         """
 

@@ -760,6 +760,7 @@ def test_get_rest(
             port_range="port_range_value",
             ports=["ports_value"],
             psc_connection_id=1793,
+            psc_connection_status=compute.ForwardingRule.PscConnectionStatus.ACCEPTED,
             region="region_value",
             self_link="self_link_value",
             service_directory_registrations=[
@@ -812,6 +813,10 @@ def test_get_rest(
     assert response.port_range == "port_range_value"
     assert response.ports == ["ports_value"]
     assert response.psc_connection_id == 1793
+    assert (
+        response.psc_connection_status
+        == compute.ForwardingRule.PscConnectionStatus.ACCEPTED
+    )
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
     assert response.service_directory_registrations == [

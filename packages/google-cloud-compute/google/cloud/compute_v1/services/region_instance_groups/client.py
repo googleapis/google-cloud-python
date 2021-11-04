@@ -375,28 +375,20 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.InstanceGroup:
-                Represents an Instance Group resource.
-
-                   Instance Groups can be used to configure a target for
-                   load balancing.
-
-                   Instance groups can either be managed or unmanaged.
-
-                   To create managed instance groups, use the
-                   instanceGroupManager or regionInstanceGroupManager
-                   resource instead.
-
-                   Use zonal unmanaged instance groups if you need to
-                   apply load balancing to groups of heterogeneous
-                   instances or if you need to manage the instances
-                   yourself. You cannot create regional unmanaged
-                   instance groups.
-
-                   For more information, read Instance groups.
-
-                   (== resource_for {$api_version}.instanceGroups ==)
-                   (== resource_for {$api_version}.regionInstanceGroups
-                   ==)
+                Represents an Instance Group
+                resource. Instance Groups can be used to
+                configure a target for load balancing.
+                Instance groups can either be managed or
+                unmanaged. To create managed instance
+                groups, use the instanceGroupManager or
+                regionInstanceGroupManager resource
+                instead. Use zonal unmanaged instance
+                groups if you need to apply load
+                balancing to groups of heterogeneous
+                instances or if you need to manage the
+                instances yourself. You cannot create
+                regional unmanaged instance groups. For
+                more information, read Instance groups.
 
         """
         # Create or coerce a protobuf request object.
@@ -682,31 +674,21 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource.
-
-                   Google Compute Engine has three Operation resources:
-
-                   -  [Global](/compute/docs/reference/rest/{$api_version}/globalOperations)
-                      \*
-                      [Regional](/compute/docs/reference/rest/{$api_version}/regionOperations)
-                      \*
-                      [Zonal](/compute/docs/reference/rest/{$api_version}/zoneOperations)
-
-                   You can use an operation resource to manage
-                   asynchronous API requests. For more information, read
-                   Handling API responses.
-
-                   Operations can be global, regional or zonal. - For
-                   global operations, use the globalOperations resource.
-                   - For regional operations, use the regionOperations
-                   resource. - For zonal operations, use the
-                   zonalOperations resource.
-
-                   For more information, read Global, Regional, and
-                   Zonal Resources. (== resource_for
-                   {$api_version}.globalOperations ==) (== resource_for
-                   {$api_version}.regionOperations ==) (== resource_for
-                   {$api_version}.zoneOperations ==)
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                [Global](/compute/docs/reference/rest/v1/globalOperations)
+                \*
+                [Regional](/compute/docs/reference/rest/v1/regionOperations)
+                \*
+                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the globalOperations
+                resource. - For regional operations, use the
+                regionOperations resource. - For zonal operations, use
+                the zonalOperations resource. For more information, read
+                Global, Regional, and Zonal Resources.
 
         """
         # Create or coerce a protobuf request object.

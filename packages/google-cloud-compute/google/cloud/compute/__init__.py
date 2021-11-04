@@ -54,6 +54,9 @@ from google.cloud.compute_v1.services.global_public_delegated_prefixes.client im
     GlobalPublicDelegatedPrefixesClient,
 )
 from google.cloud.compute_v1.services.health_checks.client import HealthChecksClient
+from google.cloud.compute_v1.services.image_family_views.client import (
+    ImageFamilyViewsClient,
+)
 from google.cloud.compute_v1.services.images.client import ImagesClient
 from google.cloud.compute_v1.services.instance_group_managers.client import (
     InstanceGroupManagersClient,
@@ -146,6 +149,9 @@ from google.cloud.compute_v1.services.routers.client import RoutersClient
 from google.cloud.compute_v1.services.routes.client import RoutesClient
 from google.cloud.compute_v1.services.security_policies.client import (
     SecurityPoliciesClient,
+)
+from google.cloud.compute_v1.services.service_attachments.client import (
+    ServiceAttachmentsClient,
 )
 from google.cloud.compute_v1.services.snapshots.client import SnapshotsClient
 from google.cloud.compute_v1.services.ssl_certificates.client import (
@@ -245,6 +251,9 @@ from google.cloud.compute_v1.types.compute import AggregatedListRegionCommitment
 from google.cloud.compute_v1.types.compute import AggregatedListReservationsRequest
 from google.cloud.compute_v1.types.compute import AggregatedListResourcePoliciesRequest
 from google.cloud.compute_v1.types.compute import AggregatedListRoutersRequest
+from google.cloud.compute_v1.types.compute import (
+    AggregatedListServiceAttachmentsRequest,
+)
 from google.cloud.compute_v1.types.compute import AggregatedListSslCertificatesRequest
 from google.cloud.compute_v1.types.compute import AggregatedListSubnetworksRequest
 from google.cloud.compute_v1.types.compute import AggregatedListTargetHttpProxiesRequest
@@ -439,6 +448,7 @@ from google.cloud.compute_v1.types.compute import DeleteResourcePolicyRequest
 from google.cloud.compute_v1.types.compute import DeleteRouteRequest
 from google.cloud.compute_v1.types.compute import DeleteRouterRequest
 from google.cloud.compute_v1.types.compute import DeleteSecurityPolicyRequest
+from google.cloud.compute_v1.types.compute import DeleteServiceAttachmentRequest
 from google.cloud.compute_v1.types.compute import DeleteSignedUrlKeyBackendBucketRequest
 from google.cloud.compute_v1.types.compute import (
     DeleteSignedUrlKeyBackendServiceRequest,
@@ -560,8 +570,10 @@ from google.cloud.compute_v1.types.compute import GetIamPolicyNodeTemplateReques
 from google.cloud.compute_v1.types.compute import GetIamPolicyRegionDiskRequest
 from google.cloud.compute_v1.types.compute import GetIamPolicyReservationRequest
 from google.cloud.compute_v1.types.compute import GetIamPolicyResourcePolicyRequest
+from google.cloud.compute_v1.types.compute import GetIamPolicyServiceAttachmentRequest
 from google.cloud.compute_v1.types.compute import GetIamPolicySnapshotRequest
 from google.cloud.compute_v1.types.compute import GetIamPolicySubnetworkRequest
+from google.cloud.compute_v1.types.compute import GetImageFamilyViewRequest
 from google.cloud.compute_v1.types.compute import GetImageRequest
 from google.cloud.compute_v1.types.compute import GetInstanceGroupManagerRequest
 from google.cloud.compute_v1.types.compute import GetInstanceGroupRequest
@@ -610,6 +622,7 @@ from google.cloud.compute_v1.types.compute import GetRuleSecurityPolicyRequest
 from google.cloud.compute_v1.types.compute import GetScreenshotInstanceRequest
 from google.cloud.compute_v1.types.compute import GetSecurityPolicyRequest
 from google.cloud.compute_v1.types.compute import GetSerialPortOutputInstanceRequest
+from google.cloud.compute_v1.types.compute import GetServiceAttachmentRequest
 from google.cloud.compute_v1.types.compute import (
     GetShieldedInstanceIdentityInstanceRequest,
 )
@@ -675,6 +688,7 @@ from google.cloud.compute_v1.types.compute import HttpRouteRule
 from google.cloud.compute_v1.types.compute import HttpRouteRuleMatch
 from google.cloud.compute_v1.types.compute import HTTPSHealthCheck
 from google.cloud.compute_v1.types.compute import Image
+from google.cloud.compute_v1.types.compute import ImageFamilyView
 from google.cloud.compute_v1.types.compute import ImageList
 from google.cloud.compute_v1.types.compute import InitialStateConfig
 from google.cloud.compute_v1.types.compute import InsertAddressRequest
@@ -734,6 +748,7 @@ from google.cloud.compute_v1.types.compute import InsertResourcePolicyRequest
 from google.cloud.compute_v1.types.compute import InsertRouteRequest
 from google.cloud.compute_v1.types.compute import InsertRouterRequest
 from google.cloud.compute_v1.types.compute import InsertSecurityPolicyRequest
+from google.cloud.compute_v1.types.compute import InsertServiceAttachmentRequest
 from google.cloud.compute_v1.types.compute import InsertSslCertificateRequest
 from google.cloud.compute_v1.types.compute import InsertSslPolicyRequest
 from google.cloud.compute_v1.types.compute import InsertSubnetworkRequest
@@ -970,6 +985,7 @@ from google.cloud.compute_v1.types.compute import ListResourcePoliciesRequest
 from google.cloud.compute_v1.types.compute import ListRoutersRequest
 from google.cloud.compute_v1.types.compute import ListRoutesRequest
 from google.cloud.compute_v1.types.compute import ListSecurityPoliciesRequest
+from google.cloud.compute_v1.types.compute import ListServiceAttachmentsRequest
 from google.cloud.compute_v1.types.compute import ListSnapshotsRequest
 from google.cloud.compute_v1.types.compute import ListSslCertificatesRequest
 from google.cloud.compute_v1.types.compute import ListSslPoliciesRequest
@@ -1123,6 +1139,7 @@ from google.cloud.compute_v1.types.compute import PatchRouterRequest
 from google.cloud.compute_v1.types.compute import PatchRuleFirewallPolicyRequest
 from google.cloud.compute_v1.types.compute import PatchRuleSecurityPolicyRequest
 from google.cloud.compute_v1.types.compute import PatchSecurityPolicyRequest
+from google.cloud.compute_v1.types.compute import PatchServiceAttachmentRequest
 from google.cloud.compute_v1.types.compute import PatchSslPolicyRequest
 from google.cloud.compute_v1.types.compute import PatchSubnetworkRequest
 from google.cloud.compute_v1.types.compute import PatchTargetGrpcProxyRequest
@@ -1284,22 +1301,27 @@ from google.cloud.compute_v1.types.compute import (
 from google.cloud.compute_v1.types.compute import ResourcePolicyWeeklyCycle
 from google.cloud.compute_v1.types.compute import ResourcePolicyWeeklyCycleDayOfWeek
 from google.cloud.compute_v1.types.compute import Route
+from google.cloud.compute_v1.types.compute import RouteAsPath
 from google.cloud.compute_v1.types.compute import RouteList
 from google.cloud.compute_v1.types.compute import Router
 from google.cloud.compute_v1.types.compute import RouterAdvertisedIpRange
 from google.cloud.compute_v1.types.compute import RouterAggregatedList
 from google.cloud.compute_v1.types.compute import RouterBgp
 from google.cloud.compute_v1.types.compute import RouterBgpPeer
+from google.cloud.compute_v1.types.compute import RouterBgpPeerBfd
 from google.cloud.compute_v1.types.compute import RouterInterface
 from google.cloud.compute_v1.types.compute import RouterList
 from google.cloud.compute_v1.types.compute import RouterNat
 from google.cloud.compute_v1.types.compute import RouterNatLogConfig
+from google.cloud.compute_v1.types.compute import RouterNatRule
+from google.cloud.compute_v1.types.compute import RouterNatRuleAction
 from google.cloud.compute_v1.types.compute import RouterNatSubnetworkToNat
 from google.cloud.compute_v1.types.compute import RoutersPreviewResponse
 from google.cloud.compute_v1.types.compute import RoutersScopedList
 from google.cloud.compute_v1.types.compute import RouterStatus
 from google.cloud.compute_v1.types.compute import RouterStatusBgpPeerStatus
 from google.cloud.compute_v1.types.compute import RouterStatusNatStatus
+from google.cloud.compute_v1.types.compute import RouterStatusNatStatusNatRuleStatus
 from google.cloud.compute_v1.types.compute import RouterStatusResponse
 from google.cloud.compute_v1.types.compute import Rule
 from google.cloud.compute_v1.types.compute import ScalingScheduleStatus
@@ -1312,15 +1334,30 @@ from google.cloud.compute_v1.types.compute import (
 )
 from google.cloud.compute_v1.types.compute import SecurityPoliciesWafConfig
 from google.cloud.compute_v1.types.compute import SecurityPolicy
+from google.cloud.compute_v1.types.compute import SecurityPolicyAdaptiveProtectionConfig
+from google.cloud.compute_v1.types.compute import (
+    SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig,
+)
+from google.cloud.compute_v1.types.compute import SecurityPolicyAdvancedOptionsConfig
 from google.cloud.compute_v1.types.compute import SecurityPolicyList
 from google.cloud.compute_v1.types.compute import SecurityPolicyReference
 from google.cloud.compute_v1.types.compute import SecurityPolicyRule
 from google.cloud.compute_v1.types.compute import SecurityPolicyRuleMatcher
 from google.cloud.compute_v1.types.compute import SecurityPolicyRuleMatcherConfig
 from google.cloud.compute_v1.types.compute import SecuritySettings
+from google.cloud.compute_v1.types.compute import SendDiagnosticInterruptInstanceRequest
+from google.cloud.compute_v1.types.compute import (
+    SendDiagnosticInterruptInstanceResponse,
+)
 from google.cloud.compute_v1.types.compute import SerialPortOutput
 from google.cloud.compute_v1.types.compute import ServerBinding
 from google.cloud.compute_v1.types.compute import ServiceAccount
+from google.cloud.compute_v1.types.compute import ServiceAttachment
+from google.cloud.compute_v1.types.compute import ServiceAttachmentAggregatedList
+from google.cloud.compute_v1.types.compute import ServiceAttachmentConnectedEndpoint
+from google.cloud.compute_v1.types.compute import ServiceAttachmentConsumerProjectLimit
+from google.cloud.compute_v1.types.compute import ServiceAttachmentList
+from google.cloud.compute_v1.types.compute import ServiceAttachmentsScopedList
 from google.cloud.compute_v1.types.compute import SetBackendServiceTargetSslProxyRequest
 from google.cloud.compute_v1.types.compute import SetBackendServiceTargetTcpProxyRequest
 from google.cloud.compute_v1.types.compute import SetBackupTargetPoolRequest
@@ -1341,6 +1378,7 @@ from google.cloud.compute_v1.types.compute import SetIamPolicyNodeTemplateReques
 from google.cloud.compute_v1.types.compute import SetIamPolicyRegionDiskRequest
 from google.cloud.compute_v1.types.compute import SetIamPolicyReservationRequest
 from google.cloud.compute_v1.types.compute import SetIamPolicyResourcePolicyRequest
+from google.cloud.compute_v1.types.compute import SetIamPolicyServiceAttachmentRequest
 from google.cloud.compute_v1.types.compute import SetIamPolicySnapshotRequest
 from google.cloud.compute_v1.types.compute import SetIamPolicySubnetworkRequest
 from google.cloud.compute_v1.types.compute import (
@@ -1446,6 +1484,7 @@ from google.cloud.compute_v1.types.compute import SubnetworksScopedList
 from google.cloud.compute_v1.types.compute import (
     SubnetworksSetPrivateIpGoogleAccessRequest,
 )
+from google.cloud.compute_v1.types.compute import Subsetting
 from google.cloud.compute_v1.types.compute import SwitchToCustomModeNetworkRequest
 from google.cloud.compute_v1.types.compute import Tags
 from google.cloud.compute_v1.types.compute import TargetGrpcProxy
@@ -1526,11 +1565,15 @@ from google.cloud.compute_v1.types.compute import TestIamPermissionsReservationR
 from google.cloud.compute_v1.types.compute import (
     TestIamPermissionsResourcePolicyRequest,
 )
+from google.cloud.compute_v1.types.compute import (
+    TestIamPermissionsServiceAttachmentRequest,
+)
 from google.cloud.compute_v1.types.compute import TestIamPermissionsSnapshotRequest
 from google.cloud.compute_v1.types.compute import TestIamPermissionsSubnetworkRequest
 from google.cloud.compute_v1.types.compute import TestIamPermissionsVpnGatewayRequest
 from google.cloud.compute_v1.types.compute import TestPermissionsRequest
 from google.cloud.compute_v1.types.compute import TestPermissionsResponse
+from google.cloud.compute_v1.types.compute import Uint128
 from google.cloud.compute_v1.types.compute import UpdateAccessConfigInstanceRequest
 from google.cloud.compute_v1.types.compute import UpdateAutoscalerRequest
 from google.cloud.compute_v1.types.compute import UpdateBackendBucketRequest
@@ -1628,6 +1671,7 @@ __all__ = (
     "GlobalOrganizationOperationsClient",
     "GlobalPublicDelegatedPrefixesClient",
     "HealthChecksClient",
+    "ImageFamilyViewsClient",
     "ImagesClient",
     "InstanceGroupManagersClient",
     "InstanceGroupsClient",
@@ -1671,6 +1715,7 @@ __all__ = (
     "RoutersClient",
     "RoutesClient",
     "SecurityPoliciesClient",
+    "ServiceAttachmentsClient",
     "SnapshotsClient",
     "SslCertificatesClient",
     "SslPoliciesClient",
@@ -1740,6 +1785,7 @@ __all__ = (
     "AggregatedListReservationsRequest",
     "AggregatedListResourcePoliciesRequest",
     "AggregatedListRoutersRequest",
+    "AggregatedListServiceAttachmentsRequest",
     "AggregatedListSslCertificatesRequest",
     "AggregatedListSubnetworksRequest",
     "AggregatedListTargetHttpProxiesRequest",
@@ -1878,6 +1924,7 @@ __all__ = (
     "DeleteRouteRequest",
     "DeleteRouterRequest",
     "DeleteSecurityPolicyRequest",
+    "DeleteServiceAttachmentRequest",
     "DeleteSignedUrlKeyBackendBucketRequest",
     "DeleteSignedUrlKeyBackendServiceRequest",
     "DeleteSnapshotRequest",
@@ -1989,8 +2036,10 @@ __all__ = (
     "GetIamPolicyRegionDiskRequest",
     "GetIamPolicyReservationRequest",
     "GetIamPolicyResourcePolicyRequest",
+    "GetIamPolicyServiceAttachmentRequest",
     "GetIamPolicySnapshotRequest",
     "GetIamPolicySubnetworkRequest",
+    "GetImageFamilyViewRequest",
     "GetImageRequest",
     "GetInstanceGroupManagerRequest",
     "GetInstanceGroupRequest",
@@ -2039,6 +2088,7 @@ __all__ = (
     "GetScreenshotInstanceRequest",
     "GetSecurityPolicyRequest",
     "GetSerialPortOutputInstanceRequest",
+    "GetServiceAttachmentRequest",
     "GetShieldedInstanceIdentityInstanceRequest",
     "GetSnapshotRequest",
     "GetSslCertificateRequest",
@@ -2098,6 +2148,7 @@ __all__ = (
     "HttpRouteRuleMatch",
     "HTTPSHealthCheck",
     "Image",
+    "ImageFamilyView",
     "ImageList",
     "InitialStateConfig",
     "InsertAddressRequest",
@@ -2147,6 +2198,7 @@ __all__ = (
     "InsertRouteRequest",
     "InsertRouterRequest",
     "InsertSecurityPolicyRequest",
+    "InsertServiceAttachmentRequest",
     "InsertSslCertificateRequest",
     "InsertSslPolicyRequest",
     "InsertSubnetworkRequest",
@@ -2321,6 +2373,7 @@ __all__ = (
     "ListRoutersRequest",
     "ListRoutesRequest",
     "ListSecurityPoliciesRequest",
+    "ListServiceAttachmentsRequest",
     "ListSnapshotsRequest",
     "ListSslCertificatesRequest",
     "ListSslPoliciesRequest",
@@ -2454,6 +2507,7 @@ __all__ = (
     "PatchRuleFirewallPolicyRequest",
     "PatchRuleSecurityPolicyRequest",
     "PatchSecurityPolicyRequest",
+    "PatchServiceAttachmentRequest",
     "PatchSslPolicyRequest",
     "PatchSubnetworkRequest",
     "PatchTargetGrpcProxyRequest",
@@ -2559,22 +2613,27 @@ __all__ = (
     "ResourcePolicyWeeklyCycle",
     "ResourcePolicyWeeklyCycleDayOfWeek",
     "Route",
+    "RouteAsPath",
     "RouteList",
     "Router",
     "RouterAdvertisedIpRange",
     "RouterAggregatedList",
     "RouterBgp",
     "RouterBgpPeer",
+    "RouterBgpPeerBfd",
     "RouterInterface",
     "RouterList",
     "RouterNat",
     "RouterNatLogConfig",
+    "RouterNatRule",
+    "RouterNatRuleAction",
     "RouterNatSubnetworkToNat",
     "RoutersPreviewResponse",
     "RoutersScopedList",
     "RouterStatus",
     "RouterStatusBgpPeerStatus",
     "RouterStatusNatStatus",
+    "RouterStatusNatStatusNatRuleStatus",
     "RouterStatusResponse",
     "Rule",
     "ScalingScheduleStatus",
@@ -2585,15 +2644,26 @@ __all__ = (
     "SecurityPoliciesListPreconfiguredExpressionSetsResponse",
     "SecurityPoliciesWafConfig",
     "SecurityPolicy",
+    "SecurityPolicyAdaptiveProtectionConfig",
+    "SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig",
+    "SecurityPolicyAdvancedOptionsConfig",
     "SecurityPolicyList",
     "SecurityPolicyReference",
     "SecurityPolicyRule",
     "SecurityPolicyRuleMatcher",
     "SecurityPolicyRuleMatcherConfig",
     "SecuritySettings",
+    "SendDiagnosticInterruptInstanceRequest",
+    "SendDiagnosticInterruptInstanceResponse",
     "SerialPortOutput",
     "ServerBinding",
     "ServiceAccount",
+    "ServiceAttachment",
+    "ServiceAttachmentAggregatedList",
+    "ServiceAttachmentConnectedEndpoint",
+    "ServiceAttachmentConsumerProjectLimit",
+    "ServiceAttachmentList",
+    "ServiceAttachmentsScopedList",
     "SetBackendServiceTargetSslProxyRequest",
     "SetBackendServiceTargetTcpProxyRequest",
     "SetBackupTargetPoolRequest",
@@ -2612,6 +2682,7 @@ __all__ = (
     "SetIamPolicyRegionDiskRequest",
     "SetIamPolicyReservationRequest",
     "SetIamPolicyResourcePolicyRequest",
+    "SetIamPolicyServiceAttachmentRequest",
     "SetIamPolicySnapshotRequest",
     "SetIamPolicySubnetworkRequest",
     "SetInstanceTemplateInstanceGroupManagerRequest",
@@ -2689,6 +2760,7 @@ __all__ = (
     "SubnetworksExpandIpCidrRangeRequest",
     "SubnetworksScopedList",
     "SubnetworksSetPrivateIpGoogleAccessRequest",
+    "Subsetting",
     "SwitchToCustomModeNetworkRequest",
     "Tags",
     "TargetGrpcProxy",
@@ -2747,11 +2819,13 @@ __all__ = (
     "TestIamPermissionsRegionDiskRequest",
     "TestIamPermissionsReservationRequest",
     "TestIamPermissionsResourcePolicyRequest",
+    "TestIamPermissionsServiceAttachmentRequest",
     "TestIamPermissionsSnapshotRequest",
     "TestIamPermissionsSubnetworkRequest",
     "TestIamPermissionsVpnGatewayRequest",
     "TestPermissionsRequest",
     "TestPermissionsResponse",
+    "Uint128",
     "UpdateAccessConfigInstanceRequest",
     "UpdateAutoscalerRequest",
     "UpdateBackendBucketRequest",

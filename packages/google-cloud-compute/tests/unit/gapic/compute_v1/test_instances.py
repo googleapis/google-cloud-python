@@ -504,7 +504,9 @@ def test_add_access_config_rest_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        access_config_resource = compute.AccessConfig(kind="kind_value")
+        access_config_resource = compute.AccessConfig(
+            external_ipv6="external_ipv6_value"
+        )
         client.add_access_config(
             project="project_value",
             zone="zone_value",
@@ -542,7 +544,9 @@ def test_add_access_config_rest_flattened_error():
             zone="zone_value",
             instance="instance_value",
             network_interface="network_interface_value",
-            access_config_resource=compute.AccessConfig(kind="kind_value"),
+            access_config_resource=compute.AccessConfig(
+                external_ipv6="external_ipv6_value"
+            ),
         )
 
 
@@ -1576,7 +1580,9 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceReque
             name="name_value",
             network_interfaces=[
                 compute.NetworkInterface(
-                    access_configs=[compute.AccessConfig(kind="kind_value")]
+                    access_configs=[
+                        compute.AccessConfig(external_ipv6="external_ipv6_value")
+                    ]
                 )
             ],
             private_ipv6_google_access=compute.Instance.PrivateIpv6GoogleAccess.ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE,
@@ -1642,7 +1648,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceReque
     assert response.name == "name_value"
     assert response.network_interfaces == [
         compute.NetworkInterface(
-            access_configs=[compute.AccessConfig(kind="kind_value")]
+            access_configs=[compute.AccessConfig(external_ipv6="external_ipv6_value")]
         )
     ]
     assert (
@@ -2968,6 +2974,88 @@ def test_reset_rest_flattened_error():
     with pytest.raises(ValueError):
         client.reset(
             compute.ResetInstanceRequest(),
+            project="project_value",
+            zone="zone_value",
+            instance="instance_value",
+        )
+
+
+def test_send_diagnostic_interrupt_rest(
+    transport: str = "rest", request_type=compute.SendDiagnosticInterruptInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.SendDiagnosticInterruptInstanceResponse()
+
+        # Wrap the value into a proper Response obj
+        json_return_value = compute.SendDiagnosticInterruptInstanceResponse.to_json(
+            return_value
+        )
+        response_value = Response()
+        response_value.status_code = 200
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.send_diagnostic_interrupt(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.SendDiagnosticInterruptInstanceResponse)
+
+
+def test_send_diagnostic_interrupt_rest_from_dict():
+    test_send_diagnostic_interrupt_rest(request_type=dict)
+
+
+def test_send_diagnostic_interrupt_rest_flattened():
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.SendDiagnosticInterruptInstanceResponse()
+
+        # Wrap the value into a proper Response obj
+        json_return_value = compute.SendDiagnosticInterruptInstanceResponse.to_json(
+            return_value
+        )
+        response_value = Response()
+        response_value.status_code = 200
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.send_diagnostic_interrupt(
+            project="project_value", zone="zone_value", instance="instance_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, http_call, http_params = req.mock_calls[0]
+        body = http_params.get("data")
+        params = http_params.get("params")
+        assert "project_value" in http_call[1] + str(body) + str(params)
+        assert "zone_value" in http_call[1] + str(body) + str(params)
+        assert "instance_value" in http_call[1] + str(body) + str(params)
+
+
+def test_send_diagnostic_interrupt_rest_flattened_error():
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.send_diagnostic_interrupt(
+            compute.SendDiagnosticInterruptInstanceRequest(),
             project="project_value",
             zone="zone_value",
             instance="instance_value",
@@ -5516,7 +5604,9 @@ def test_update_access_config_rest_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        access_config_resource = compute.AccessConfig(kind="kind_value")
+        access_config_resource = compute.AccessConfig(
+            external_ipv6="external_ipv6_value"
+        )
         client.update_access_config(
             project="project_value",
             zone="zone_value",
@@ -5554,7 +5644,9 @@ def test_update_access_config_rest_flattened_error():
             zone="zone_value",
             instance="instance_value",
             network_interface="network_interface_value",
-            access_config_resource=compute.AccessConfig(kind="kind_value"),
+            access_config_resource=compute.AccessConfig(
+                external_ipv6="external_ipv6_value"
+            ),
         )
 
 
@@ -5798,7 +5890,7 @@ def test_update_network_interface_rest_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         network_interface_resource = compute.NetworkInterface(
-            access_configs=[compute.AccessConfig(kind="kind_value")]
+            access_configs=[compute.AccessConfig(external_ipv6="external_ipv6_value")]
         )
         client.update_network_interface(
             project="project_value",
@@ -5838,7 +5930,9 @@ def test_update_network_interface_rest_flattened_error():
             instance="instance_value",
             network_interface="network_interface_value",
             network_interface_resource=compute.NetworkInterface(
-                access_configs=[compute.AccessConfig(kind="kind_value")]
+                access_configs=[
+                    compute.AccessConfig(external_ipv6="external_ipv6_value")
+                ]
             ),
         )
 
@@ -6077,6 +6171,7 @@ def test_instances_base_transport():
         "list_referrers",
         "remove_resource_policies",
         "reset",
+        "send_diagnostic_interrupt",
         "set_deletion_protection",
         "set_disk_auto_delete",
         "set_iam_policy",

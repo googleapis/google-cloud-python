@@ -797,6 +797,20 @@
         }
       }
     },
+    "ImageFamilyViews": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ImageFamilyViewsClient",
+          "rpcs": {
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            }
+          }
+        }
+      }
+    },
     "Images": {
       "clients": {
         "rest": {
@@ -1171,6 +1185,11 @@
             "Reset": {
               "methods": [
                 "reset"
+              ]
+            },
+            "SendDiagnosticInterrupt": {
+              "methods": [
+                "send_diagnostic_interrupt"
               ]
             },
             "SetDeletionProtection": {
@@ -2843,6 +2862,60 @@
             "RemoveRule": {
               "methods": [
                 "remove_rule"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ServiceAttachments": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ServiceAttachmentsClient",
+          "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
               ]
             }
           }

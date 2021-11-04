@@ -535,6 +535,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetRouteRequest)
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Route(
+            as_paths=[compute.RouteAsPath(as_lists=[866])],
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             dest_range="dest_range_value",
@@ -550,6 +551,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetRouteRequest)
             next_hop_peering="next_hop_peering_value",
             next_hop_vpn_tunnel="next_hop_vpn_tunnel_value",
             priority=898,
+            route_type=compute.Route.RouteType.BGP,
             self_link="self_link_value",
             tags=["tags_value"],
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
@@ -565,6 +567,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetRouteRequest)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Route)
+    assert response.as_paths == [compute.RouteAsPath(as_lists=[866])]
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.dest_range == "dest_range_value"
@@ -580,6 +583,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetRouteRequest)
     assert response.next_hop_peering == "next_hop_peering_value"
     assert response.next_hop_vpn_tunnel == "next_hop_vpn_tunnel_value"
     assert response.priority == 898
+    assert response.route_type == compute.Route.RouteType.BGP
     assert response.self_link == "self_link_value"
     assert response.tags == ["tags_value"]
     assert response.warnings == [
@@ -731,7 +735,7 @@ def test_insert_rest_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        route_resource = compute.Route(creation_timestamp="creation_timestamp_value")
+        route_resource = compute.Route(as_paths=[compute.RouteAsPath(as_lists=[866])])
         client.insert(
             project="project_value", route_resource=route_resource,
         )
@@ -759,7 +763,9 @@ def test_insert_rest_flattened_error():
         client.insert(
             compute.InsertRouteRequest(),
             project="project_value",
-            route_resource=compute.Route(creation_timestamp="creation_timestamp_value"),
+            route_resource=compute.Route(
+                as_paths=[compute.RouteAsPath(as_lists=[866])]
+            ),
         )
 
 
@@ -777,7 +783,7 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListRoutesReque
         # Designate an appropriate value for the returned response.
         return_value = compute.RouteList(
             id="id_value",
-            items=[compute.Route(creation_timestamp="creation_timestamp_value")],
+            items=[compute.Route(as_paths=[compute.RouteAsPath(as_lists=[866])])],
             kind="kind_value",
             next_page_token="next_page_token_value",
             self_link="self_link_value",
@@ -796,7 +802,7 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListRoutesReque
     assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [
-        compute.Route(creation_timestamp="creation_timestamp_value")
+        compute.Route(as_paths=[compute.RouteAsPath(as_lists=[866])])
     ]
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"

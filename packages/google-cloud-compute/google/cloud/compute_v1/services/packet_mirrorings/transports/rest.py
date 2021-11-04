@@ -179,34 +179,21 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
 
         Returns:
             ~.compute.Operation:
-                Represents an Operation resource.
-
-                Google Compute Engine has three Operation resources:
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/globalOperations>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionOperations>`__
-                   \*
-                   `Zonal </compute/docs/reference/rest/{$api_version}/zoneOperations>`__
-
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
                 You can use an operation resource to manage asynchronous
                 API requests. For more information, read Handling API
-                responses.
-
-                Operations can be global, regional or zonal.
-
-                -  For global operations, use the ``globalOperations``
-                   resource.
-                -  For regional operations, use the ``regionOperations``
-                   resource.
-                -  For zonal operations, use the ``zonalOperations``
-                   resource.
-
-                For more information, read Global, Regional, and Zonal
-                Resources. (== resource_for
-                {$api_version}.globalOperations ==) (== resource_for
-                {$api_version}.regionOperations ==) (== resource_for
-                {$api_version}.zoneOperations ==)
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
 
         """
 
@@ -257,15 +244,16 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
 
         Returns:
             ~.compute.PacketMirroring:
-                Represents a Packet Mirroring resource.
-
-                Packet Mirroring clones the traffic of specified
-                instances in your Virtual Private Cloud (VPC) network
-                and forwards it to a collector destination, such as an
-                instance group of an internal TCP/UDP load balancer, for
-                analysis or examination. For more information about
-                setting up Packet Mirroring, see Using Packet Mirroring.
-                (== resource_for {$api_version}.packetMirrorings ==)
+                Represents a Packet Mirroring
+                resource. Packet Mirroring clones the
+                traffic of specified instances in your
+                Virtual Private Cloud (VPC) network and
+                forwards it to a collector destination,
+                such as an instance group of an internal
+                TCP/UDP load balancer, for analysis or
+                examination. For more information about
+                setting up Packet Mirroring, see Using
+                Packet Mirroring.
 
         """
 
@@ -316,34 +304,21 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
 
         Returns:
             ~.compute.Operation:
-                Represents an Operation resource.
-
-                Google Compute Engine has three Operation resources:
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/globalOperations>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionOperations>`__
-                   \*
-                   `Zonal </compute/docs/reference/rest/{$api_version}/zoneOperations>`__
-
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
                 You can use an operation resource to manage asynchronous
                 API requests. For more information, read Handling API
-                responses.
-
-                Operations can be global, regional or zonal.
-
-                -  For global operations, use the ``globalOperations``
-                   resource.
-                -  For regional operations, use the ``regionOperations``
-                   resource.
-                -  For zonal operations, use the ``zonalOperations``
-                   resource.
-
-                For more information, read Global, Regional, and Zonal
-                Resources. (== resource_for
-                {$api_version}.globalOperations ==) (== resource_for
-                {$api_version}.regionOperations ==) (== resource_for
-                {$api_version}.zoneOperations ==)
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
 
         """
 
@@ -459,34 +434,21 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
 
         Returns:
             ~.compute.Operation:
-                Represents an Operation resource.
-
-                Google Compute Engine has three Operation resources:
-
-                -  `Global </compute/docs/reference/rest/{$api_version}/globalOperations>`__
-                   \*
-                   `Regional </compute/docs/reference/rest/{$api_version}/regionOperations>`__
-                   \*
-                   `Zonal </compute/docs/reference/rest/{$api_version}/zoneOperations>`__
-
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                \*
+                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                \*
+                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
                 You can use an operation resource to manage asynchronous
                 API requests. For more information, read Handling API
-                responses.
-
-                Operations can be global, regional or zonal.
-
-                -  For global operations, use the ``globalOperations``
-                   resource.
-                -  For regional operations, use the ``regionOperations``
-                   resource.
-                -  For zonal operations, use the ``zonalOperations``
-                   resource.
-
-                For more information, read Global, Regional, and Zonal
-                Resources. (== resource_for
-                {$api_version}.globalOperations ==) (== resource_for
-                {$api_version}.regionOperations ==) (== resource_for
-                {$api_version}.zoneOperations ==)
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the ``globalOperations``
+                resource. - For regional operations, use the
+                ``regionOperations`` resource. - For zonal operations,
+                use the ``zonalOperations`` resource. For more
+                information, read Global, Regional, and Zonal Resources.
 
         """
 

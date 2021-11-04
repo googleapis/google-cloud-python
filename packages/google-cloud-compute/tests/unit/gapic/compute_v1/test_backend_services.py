@@ -1048,6 +1048,9 @@ def test_get_rest(
             ),
             self_link="self_link_value",
             session_affinity=compute.BackendService.SessionAffinity.CLIENT_IP,
+            subsetting=compute.Subsetting(
+                policy=compute.Subsetting.Policy.CONSISTENT_HASH_SUBSETTING
+            ),
             timeout_sec=1185,
         )
 
@@ -1119,6 +1122,9 @@ def test_get_rest(
     )
     assert response.self_link == "self_link_value"
     assert response.session_affinity == compute.BackendService.SessionAffinity.CLIENT_IP
+    assert response.subsetting == compute.Subsetting(
+        policy=compute.Subsetting.Policy.CONSISTENT_HASH_SUBSETTING
+    )
     assert response.timeout_sec == 1185
 
 

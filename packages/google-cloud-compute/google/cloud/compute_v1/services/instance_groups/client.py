@@ -342,8 +342,8 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
     ) -> compute.Operation:
         r"""Adds a list of instances to the specified instance
         group. All of the instances in the instance group must
-        be in the same network/subnetwork. Read  Adding
-        instances for more information.
+        be in the same network/subnetwork. Read Adding instances
+        for more information.
 
         Args:
             request (google.cloud.compute_v1.types.AddInstancesInstanceGroupRequest):
@@ -382,31 +382,21 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource.
-
-                   Google Compute Engine has three Operation resources:
-
-                   -  [Global](/compute/docs/reference/rest/{$api_version}/globalOperations)
-                      \*
-                      [Regional](/compute/docs/reference/rest/{$api_version}/regionOperations)
-                      \*
-                      [Zonal](/compute/docs/reference/rest/{$api_version}/zoneOperations)
-
-                   You can use an operation resource to manage
-                   asynchronous API requests. For more information, read
-                   Handling API responses.
-
-                   Operations can be global, regional or zonal. - For
-                   global operations, use the globalOperations resource.
-                   - For regional operations, use the regionOperations
-                   resource. - For zonal operations, use the
-                   zonalOperations resource.
-
-                   For more information, read Global, Regional, and
-                   Zonal Resources. (== resource_for
-                   {$api_version}.globalOperations ==) (== resource_for
-                   {$api_version}.regionOperations ==) (== resource_for
-                   {$api_version}.zoneOperations ==)
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                [Global](/compute/docs/reference/rest/v1/globalOperations)
+                \*
+                [Regional](/compute/docs/reference/rest/v1/regionOperations)
+                \*
+                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the globalOperations
+                resource. - For regional operations, use the
+                regionOperations resource. - For zonal operations, use
+                the zonalOperations resource. For more information, read
+                Global, Regional, and Zonal Resources.
 
         """
         # Create or coerce a protobuf request object.
@@ -540,7 +530,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
     ) -> compute.Operation:
         r"""Deletes the specified instance group. The instances
         in the group are not deleted. Note that instance group
-        must not belong to a backend service. Read  Deleting an
+        must not belong to a backend service. Read Deleting an
         instance group for more information.
 
         Args:
@@ -575,31 +565,21 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource.
-
-                   Google Compute Engine has three Operation resources:
-
-                   -  [Global](/compute/docs/reference/rest/{$api_version}/globalOperations)
-                      \*
-                      [Regional](/compute/docs/reference/rest/{$api_version}/regionOperations)
-                      \*
-                      [Zonal](/compute/docs/reference/rest/{$api_version}/zoneOperations)
-
-                   You can use an operation resource to manage
-                   asynchronous API requests. For more information, read
-                   Handling API responses.
-
-                   Operations can be global, regional or zonal. - For
-                   global operations, use the globalOperations resource.
-                   - For regional operations, use the regionOperations
-                   resource. - For zonal operations, use the
-                   zonalOperations resource.
-
-                   For more information, read Global, Regional, and
-                   Zonal Resources. (== resource_for
-                   {$api_version}.globalOperations ==) (== resource_for
-                   {$api_version}.regionOperations ==) (== resource_for
-                   {$api_version}.zoneOperations ==)
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                [Global](/compute/docs/reference/rest/v1/globalOperations)
+                \*
+                [Regional](/compute/docs/reference/rest/v1/regionOperations)
+                \*
+                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the globalOperations
+                resource. - For regional operations, use the
+                regionOperations resource. - For zonal operations, use
+                the zonalOperations resource. For more information, read
+                Global, Regional, and Zonal Resources.
 
         """
         # Create or coerce a protobuf request object.
@@ -650,7 +630,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
     ) -> compute.InstanceGroup:
         r"""Returns the specified zonal instance group. Get a
         list of available zonal instance groups by making a
-        list() request.  For managed instance groups, use the
+        list() request. For managed instance groups, use the
         instanceGroupManagers or regionInstanceGroupManagers
         methods instead.
 
@@ -684,28 +664,20 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.InstanceGroup:
-                Represents an Instance Group resource.
-
-                   Instance Groups can be used to configure a target for
-                   load balancing.
-
-                   Instance groups can either be managed or unmanaged.
-
-                   To create managed instance groups, use the
-                   instanceGroupManager or regionInstanceGroupManager
-                   resource instead.
-
-                   Use zonal unmanaged instance groups if you need to
-                   apply load balancing to groups of heterogeneous
-                   instances or if you need to manage the instances
-                   yourself. You cannot create regional unmanaged
-                   instance groups.
-
-                   For more information, read Instance groups.
-
-                   (== resource_for {$api_version}.instanceGroups ==)
-                   (== resource_for {$api_version}.regionInstanceGroups
-                   ==)
+                Represents an Instance Group
+                resource. Instance Groups can be used to
+                configure a target for load balancing.
+                Instance groups can either be managed or
+                unmanaged. To create managed instance
+                groups, use the instanceGroupManager or
+                regionInstanceGroupManager resource
+                instead. Use zonal unmanaged instance
+                groups if you need to apply load
+                balancing to groups of heterogeneous
+                instances or if you need to manage the
+                instances yourself. You cannot create
+                regional unmanaged instance groups. For
+                more information, read Instance groups.
 
         """
         # Create or coerce a protobuf request object.
@@ -787,31 +759,21 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource.
-
-                   Google Compute Engine has three Operation resources:
-
-                   -  [Global](/compute/docs/reference/rest/{$api_version}/globalOperations)
-                      \*
-                      [Regional](/compute/docs/reference/rest/{$api_version}/regionOperations)
-                      \*
-                      [Zonal](/compute/docs/reference/rest/{$api_version}/zoneOperations)
-
-                   You can use an operation resource to manage
-                   asynchronous API requests. For more information, read
-                   Handling API responses.
-
-                   Operations can be global, regional or zonal. - For
-                   global operations, use the globalOperations resource.
-                   - For regional operations, use the regionOperations
-                   resource. - For zonal operations, use the
-                   zonalOperations resource.
-
-                   For more information, read Global, Regional, and
-                   Zonal Resources. (== resource_for
-                   {$api_version}.globalOperations ==) (== resource_for
-                   {$api_version}.regionOperations ==) (== resource_for
-                   {$api_version}.zoneOperations ==)
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                [Global](/compute/docs/reference/rest/v1/globalOperations)
+                \*
+                [Regional](/compute/docs/reference/rest/v1/regionOperations)
+                \*
+                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the globalOperations
+                resource. - For regional operations, use the
+                regionOperations resource. - For zonal operations, use
+                the zonalOperations resource. For more information, read
+                Global, Regional, and Zonal Resources.
 
         """
         # Create or coerce a protobuf request object.
@@ -860,10 +822,9 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of zonal instance group resources
-        contained within the specified zone.
-        For managed instance groups, use the
-        instanceGroupManagers or regionInstanceGroupManagers
-        methods instead.
+        contained within the specified zone. For managed
+        instance groups, use the instanceGroupManagers or
+        regionInstanceGroupManagers methods instead.
 
         Args:
             request (google.cloud.compute_v1.types.ListInstanceGroupsRequest):
@@ -1058,7 +1019,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Removes one or more instances from the specified
-        instance group, but does not delete those instances.  If
+        instance group, but does not delete those instances. If
         the group is part of a backend service that has enabled
         connection draining, it can take up to 60 seconds after
         the connection draining duration before the VM instance
@@ -1101,31 +1062,21 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource.
-
-                   Google Compute Engine has three Operation resources:
-
-                   -  [Global](/compute/docs/reference/rest/{$api_version}/globalOperations)
-                      \*
-                      [Regional](/compute/docs/reference/rest/{$api_version}/regionOperations)
-                      \*
-                      [Zonal](/compute/docs/reference/rest/{$api_version}/zoneOperations)
-
-                   You can use an operation resource to manage
-                   asynchronous API requests. For more information, read
-                   Handling API responses.
-
-                   Operations can be global, regional or zonal. - For
-                   global operations, use the globalOperations resource.
-                   - For regional operations, use the regionOperations
-                   resource. - For zonal operations, use the
-                   zonalOperations resource.
-
-                   For more information, read Global, Regional, and
-                   Zonal Resources. (== resource_for
-                   {$api_version}.globalOperations ==) (== resource_for
-                   {$api_version}.regionOperations ==) (== resource_for
-                   {$api_version}.zoneOperations ==)
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                [Global](/compute/docs/reference/rest/v1/globalOperations)
+                \*
+                [Regional](/compute/docs/reference/rest/v1/regionOperations)
+                \*
+                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the globalOperations
+                resource. - For regional operations, use the
+                regionOperations resource. - For zonal operations, use
+                the zonalOperations resource. For more information, read
+                Global, Regional, and Zonal Resources.
 
         """
         # Create or coerce a protobuf request object.
@@ -1226,31 +1177,21 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource.
-
-                   Google Compute Engine has three Operation resources:
-
-                   -  [Global](/compute/docs/reference/rest/{$api_version}/globalOperations)
-                      \*
-                      [Regional](/compute/docs/reference/rest/{$api_version}/regionOperations)
-                      \*
-                      [Zonal](/compute/docs/reference/rest/{$api_version}/zoneOperations)
-
-                   You can use an operation resource to manage
-                   asynchronous API requests. For more information, read
-                   Handling API responses.
-
-                   Operations can be global, regional or zonal. - For
-                   global operations, use the globalOperations resource.
-                   - For regional operations, use the regionOperations
-                   resource. - For zonal operations, use the
-                   zonalOperations resource.
-
-                   For more information, read Global, Regional, and
-                   Zonal Resources. (== resource_for
-                   {$api_version}.globalOperations ==) (== resource_for
-                   {$api_version}.regionOperations ==) (== resource_for
-                   {$api_version}.zoneOperations ==)
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                [Global](/compute/docs/reference/rest/v1/globalOperations)
+                \*
+                [Regional](/compute/docs/reference/rest/v1/regionOperations)
+                \*
+                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the globalOperations
+                resource. - For regional operations, use the
+                regionOperations resource. - For zonal operations, use
+                the zonalOperations resource. For more information, read
+                Global, Regional, and Zonal Resources.
 
         """
         # Create or coerce a protobuf request object.

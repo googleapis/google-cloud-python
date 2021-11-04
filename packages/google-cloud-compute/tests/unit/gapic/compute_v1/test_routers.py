@@ -969,7 +969,7 @@ def test_get_router_status_rest(
             kind="kind_value",
             result=compute.RouterStatus(
                 best_routes=[
-                    compute.Route(creation_timestamp="creation_timestamp_value")
+                    compute.Route(as_paths=[compute.RouteAsPath(as_lists=[866])])
                 ]
             ),
         )
@@ -986,7 +986,7 @@ def test_get_router_status_rest(
     assert isinstance(response, compute.RouterStatusResponse)
     assert response.kind == "kind_value"
     assert response.result == compute.RouterStatus(
-        best_routes=[compute.Route(creation_timestamp="creation_timestamp_value")]
+        best_routes=[compute.Route(as_paths=[compute.RouteAsPath(as_lists=[866])])]
     )
 
 

@@ -625,6 +625,7 @@ def test_get_rest(
             start_timestamp="start_timestamp_value",
             status=compute.Commitment.Status.ACTIVE,
             status_message="status_message_value",
+            type_=compute.Commitment.Type.ACCELERATOR_OPTIMIZED,
         )
 
         # Wrap the value into a proper Response obj
@@ -655,6 +656,7 @@ def test_get_rest(
     assert response.start_timestamp == "start_timestamp_value"
     assert response.status == compute.Commitment.Status.ACTIVE
     assert response.status_message == "status_message_value"
+    assert response.type_ == compute.Commitment.Type.ACCELERATOR_OPTIMIZED
 
 
 def test_get_rest_from_dict():

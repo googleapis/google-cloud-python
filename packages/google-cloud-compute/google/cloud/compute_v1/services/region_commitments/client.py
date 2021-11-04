@@ -339,7 +339,8 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of commitments.
+        r"""Retrieves an aggregated list of commitments by
+        region.
 
         Args:
             request (google.cloud.compute_v1.types.AggregatedListRegionCommitmentsRequest):
@@ -444,15 +445,15 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Commitment:
-                Represents a regional Commitment resource.
-
-                   Creating a commitment resource means that you are
-                   purchasing a committed use contract with an explicit
-                   start and end time. You can create commitments based
-                   on vCPUs and memory usage and receive discounted
-                   rates. For full details, read Signing Up for
-                   Committed Use Discounts. (== resource_for
-                   {$api_version}.regionCommitments ==)
+                Represents a regional Commitment
+                resource. Creating a commitment resource
+                means that you are purchasing a
+                committed use contract with an explicit
+                start and end time. You can create
+                commitments based on vCPUs and memory
+                usage and receive discounted rates. For
+                full details, read Signing Up for
+                Committed Use Discounts.
 
         """
         # Create or coerce a protobuf request object.
@@ -532,31 +533,21 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource.
-
-                   Google Compute Engine has three Operation resources:
-
-                   -  [Global](/compute/docs/reference/rest/{$api_version}/globalOperations)
-                      \*
-                      [Regional](/compute/docs/reference/rest/{$api_version}/regionOperations)
-                      \*
-                      [Zonal](/compute/docs/reference/rest/{$api_version}/zoneOperations)
-
-                   You can use an operation resource to manage
-                   asynchronous API requests. For more information, read
-                   Handling API responses.
-
-                   Operations can be global, regional or zonal. - For
-                   global operations, use the globalOperations resource.
-                   - For regional operations, use the regionOperations
-                   resource. - For zonal operations, use the
-                   zonalOperations resource.
-
-                   For more information, read Global, Regional, and
-                   Zonal Resources. (== resource_for
-                   {$api_version}.globalOperations ==) (== resource_for
-                   {$api_version}.regionOperations ==) (== resource_for
-                   {$api_version}.zoneOperations ==)
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                [Global](/compute/docs/reference/rest/v1/globalOperations)
+                \*
+                [Regional](/compute/docs/reference/rest/v1/regionOperations)
+                \*
+                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the globalOperations
+                resource. - For regional operations, use the
+                regionOperations resource. - For zonal operations, use
+                the zonalOperations resource. For more information, read
+                Global, Regional, and Zonal Resources.
 
         """
         # Create or coerce a protobuf request object.

@@ -34,6 +34,7 @@ from .services.global_public_delegated_prefixes import (
     GlobalPublicDelegatedPrefixesClient,
 )
 from .services.health_checks import HealthChecksClient
+from .services.image_family_views import ImageFamilyViewsClient
 from .services.images import ImagesClient
 from .services.instance_group_managers import InstanceGroupManagersClient
 from .services.instance_groups import InstanceGroupsClient
@@ -77,6 +78,7 @@ from .services.resource_policies import ResourcePoliciesClient
 from .services.routers import RoutersClient
 from .services.routes import RoutesClient
 from .services.security_policies import SecurityPoliciesClient
+from .services.service_attachments import ServiceAttachmentsClient
 from .services.snapshots import SnapshotsClient
 from .services.ssl_certificates import SslCertificatesClient
 from .services.ssl_policies import SslPoliciesClient
@@ -147,6 +149,7 @@ from .types.compute import AggregatedListRegionCommitmentsRequest
 from .types.compute import AggregatedListReservationsRequest
 from .types.compute import AggregatedListResourcePoliciesRequest
 from .types.compute import AggregatedListRoutersRequest
+from .types.compute import AggregatedListServiceAttachmentsRequest
 from .types.compute import AggregatedListSslCertificatesRequest
 from .types.compute import AggregatedListSubnetworksRequest
 from .types.compute import AggregatedListTargetHttpProxiesRequest
@@ -287,6 +290,7 @@ from .types.compute import DeleteResourcePolicyRequest
 from .types.compute import DeleteRouteRequest
 from .types.compute import DeleteRouterRequest
 from .types.compute import DeleteSecurityPolicyRequest
+from .types.compute import DeleteServiceAttachmentRequest
 from .types.compute import DeleteSignedUrlKeyBackendBucketRequest
 from .types.compute import DeleteSignedUrlKeyBackendServiceRequest
 from .types.compute import DeleteSnapshotRequest
@@ -398,8 +402,10 @@ from .types.compute import GetIamPolicyNodeTemplateRequest
 from .types.compute import GetIamPolicyRegionDiskRequest
 from .types.compute import GetIamPolicyReservationRequest
 from .types.compute import GetIamPolicyResourcePolicyRequest
+from .types.compute import GetIamPolicyServiceAttachmentRequest
 from .types.compute import GetIamPolicySnapshotRequest
 from .types.compute import GetIamPolicySubnetworkRequest
+from .types.compute import GetImageFamilyViewRequest
 from .types.compute import GetImageRequest
 from .types.compute import GetInstanceGroupManagerRequest
 from .types.compute import GetInstanceGroupRequest
@@ -448,6 +454,7 @@ from .types.compute import GetRuleSecurityPolicyRequest
 from .types.compute import GetScreenshotInstanceRequest
 from .types.compute import GetSecurityPolicyRequest
 from .types.compute import GetSerialPortOutputInstanceRequest
+from .types.compute import GetServiceAttachmentRequest
 from .types.compute import GetShieldedInstanceIdentityInstanceRequest
 from .types.compute import GetSnapshotRequest
 from .types.compute import GetSslCertificateRequest
@@ -507,6 +514,7 @@ from .types.compute import HttpRouteRule
 from .types.compute import HttpRouteRuleMatch
 from .types.compute import HTTPSHealthCheck
 from .types.compute import Image
+from .types.compute import ImageFamilyView
 from .types.compute import ImageList
 from .types.compute import InitialStateConfig
 from .types.compute import InsertAddressRequest
@@ -556,6 +564,7 @@ from .types.compute import InsertResourcePolicyRequest
 from .types.compute import InsertRouteRequest
 from .types.compute import InsertRouterRequest
 from .types.compute import InsertSecurityPolicyRequest
+from .types.compute import InsertServiceAttachmentRequest
 from .types.compute import InsertSslCertificateRequest
 from .types.compute import InsertSslPolicyRequest
 from .types.compute import InsertSubnetworkRequest
@@ -730,6 +739,7 @@ from .types.compute import ListResourcePoliciesRequest
 from .types.compute import ListRoutersRequest
 from .types.compute import ListRoutesRequest
 from .types.compute import ListSecurityPoliciesRequest
+from .types.compute import ListServiceAttachmentsRequest
 from .types.compute import ListSnapshotsRequest
 from .types.compute import ListSslCertificatesRequest
 from .types.compute import ListSslPoliciesRequest
@@ -863,6 +873,7 @@ from .types.compute import PatchRouterRequest
 from .types.compute import PatchRuleFirewallPolicyRequest
 from .types.compute import PatchRuleSecurityPolicyRequest
 from .types.compute import PatchSecurityPolicyRequest
+from .types.compute import PatchServiceAttachmentRequest
 from .types.compute import PatchSslPolicyRequest
 from .types.compute import PatchSubnetworkRequest
 from .types.compute import PatchTargetGrpcProxyRequest
@@ -968,22 +979,27 @@ from .types.compute import ResourcePolicySnapshotSchedulePolicySnapshotPropertie
 from .types.compute import ResourcePolicyWeeklyCycle
 from .types.compute import ResourcePolicyWeeklyCycleDayOfWeek
 from .types.compute import Route
+from .types.compute import RouteAsPath
 from .types.compute import RouteList
 from .types.compute import Router
 from .types.compute import RouterAdvertisedIpRange
 from .types.compute import RouterAggregatedList
 from .types.compute import RouterBgp
 from .types.compute import RouterBgpPeer
+from .types.compute import RouterBgpPeerBfd
 from .types.compute import RouterInterface
 from .types.compute import RouterList
 from .types.compute import RouterNat
 from .types.compute import RouterNatLogConfig
+from .types.compute import RouterNatRule
+from .types.compute import RouterNatRuleAction
 from .types.compute import RouterNatSubnetworkToNat
 from .types.compute import RoutersPreviewResponse
 from .types.compute import RoutersScopedList
 from .types.compute import RouterStatus
 from .types.compute import RouterStatusBgpPeerStatus
 from .types.compute import RouterStatusNatStatus
+from .types.compute import RouterStatusNatStatusNatRuleStatus
 from .types.compute import RouterStatusResponse
 from .types.compute import Rule
 from .types.compute import ScalingScheduleStatus
@@ -994,15 +1010,26 @@ from .types.compute import Screenshot
 from .types.compute import SecurityPoliciesListPreconfiguredExpressionSetsResponse
 from .types.compute import SecurityPoliciesWafConfig
 from .types.compute import SecurityPolicy
+from .types.compute import SecurityPolicyAdaptiveProtectionConfig
+from .types.compute import SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig
+from .types.compute import SecurityPolicyAdvancedOptionsConfig
 from .types.compute import SecurityPolicyList
 from .types.compute import SecurityPolicyReference
 from .types.compute import SecurityPolicyRule
 from .types.compute import SecurityPolicyRuleMatcher
 from .types.compute import SecurityPolicyRuleMatcherConfig
 from .types.compute import SecuritySettings
+from .types.compute import SendDiagnosticInterruptInstanceRequest
+from .types.compute import SendDiagnosticInterruptInstanceResponse
 from .types.compute import SerialPortOutput
 from .types.compute import ServerBinding
 from .types.compute import ServiceAccount
+from .types.compute import ServiceAttachment
+from .types.compute import ServiceAttachmentAggregatedList
+from .types.compute import ServiceAttachmentConnectedEndpoint
+from .types.compute import ServiceAttachmentConsumerProjectLimit
+from .types.compute import ServiceAttachmentList
+from .types.compute import ServiceAttachmentsScopedList
 from .types.compute import SetBackendServiceTargetSslProxyRequest
 from .types.compute import SetBackendServiceTargetTcpProxyRequest
 from .types.compute import SetBackupTargetPoolRequest
@@ -1021,6 +1048,7 @@ from .types.compute import SetIamPolicyNodeTemplateRequest
 from .types.compute import SetIamPolicyRegionDiskRequest
 from .types.compute import SetIamPolicyReservationRequest
 from .types.compute import SetIamPolicyResourcePolicyRequest
+from .types.compute import SetIamPolicyServiceAttachmentRequest
 from .types.compute import SetIamPolicySnapshotRequest
 from .types.compute import SetIamPolicySubnetworkRequest
 from .types.compute import SetInstanceTemplateInstanceGroupManagerRequest
@@ -1098,6 +1126,7 @@ from .types.compute import SubnetworkSecondaryRange
 from .types.compute import SubnetworksExpandIpCidrRangeRequest
 from .types.compute import SubnetworksScopedList
 from .types.compute import SubnetworksSetPrivateIpGoogleAccessRequest
+from .types.compute import Subsetting
 from .types.compute import SwitchToCustomModeNetworkRequest
 from .types.compute import Tags
 from .types.compute import TargetGrpcProxy
@@ -1156,11 +1185,13 @@ from .types.compute import TestIamPermissionsPacketMirroringRequest
 from .types.compute import TestIamPermissionsRegionDiskRequest
 from .types.compute import TestIamPermissionsReservationRequest
 from .types.compute import TestIamPermissionsResourcePolicyRequest
+from .types.compute import TestIamPermissionsServiceAttachmentRequest
 from .types.compute import TestIamPermissionsSnapshotRequest
 from .types.compute import TestIamPermissionsSubnetworkRequest
 from .types.compute import TestIamPermissionsVpnGatewayRequest
 from .types.compute import TestPermissionsRequest
 from .types.compute import TestPermissionsResponse
+from .types.compute import Uint128
 from .types.compute import UpdateAccessConfigInstanceRequest
 from .types.compute import UpdateAutoscalerRequest
 from .types.compute import UpdateBackendBucketRequest
@@ -1284,6 +1315,7 @@ __all__ = (
     "AggregatedListReservationsRequest",
     "AggregatedListResourcePoliciesRequest",
     "AggregatedListRoutersRequest",
+    "AggregatedListServiceAttachmentsRequest",
     "AggregatedListSslCertificatesRequest",
     "AggregatedListSubnetworksRequest",
     "AggregatedListTargetHttpProxiesRequest",
@@ -1425,6 +1457,7 @@ __all__ = (
     "DeleteRouteRequest",
     "DeleteRouterRequest",
     "DeleteSecurityPolicyRequest",
+    "DeleteServiceAttachmentRequest",
     "DeleteSignedUrlKeyBackendBucketRequest",
     "DeleteSignedUrlKeyBackendServiceRequest",
     "DeleteSnapshotRequest",
@@ -1543,8 +1576,10 @@ __all__ = (
     "GetIamPolicyRegionDiskRequest",
     "GetIamPolicyReservationRequest",
     "GetIamPolicyResourcePolicyRequest",
+    "GetIamPolicyServiceAttachmentRequest",
     "GetIamPolicySnapshotRequest",
     "GetIamPolicySubnetworkRequest",
+    "GetImageFamilyViewRequest",
     "GetImageRequest",
     "GetInstanceGroupManagerRequest",
     "GetInstanceGroupRequest",
@@ -1593,6 +1628,7 @@ __all__ = (
     "GetScreenshotInstanceRequest",
     "GetSecurityPolicyRequest",
     "GetSerialPortOutputInstanceRequest",
+    "GetServiceAttachmentRequest",
     "GetShieldedInstanceIdentityInstanceRequest",
     "GetSnapshotRequest",
     "GetSslCertificateRequest",
@@ -1658,6 +1694,8 @@ __all__ = (
     "HttpRouteRule",
     "HttpRouteRuleMatch",
     "Image",
+    "ImageFamilyView",
+    "ImageFamilyViewsClient",
     "ImageList",
     "ImagesClient",
     "InitialStateConfig",
@@ -1708,6 +1746,7 @@ __all__ = (
     "InsertRouteRequest",
     "InsertRouterRequest",
     "InsertSecurityPolicyRequest",
+    "InsertServiceAttachmentRequest",
     "InsertSslCertificateRequest",
     "InsertSslPolicyRequest",
     "InsertSubnetworkRequest",
@@ -1891,6 +1930,7 @@ __all__ = (
     "ListRoutersRequest",
     "ListRoutesRequest",
     "ListSecurityPoliciesRequest",
+    "ListServiceAttachmentsRequest",
     "ListSnapshotsRequest",
     "ListSslCertificatesRequest",
     "ListSslPoliciesRequest",
@@ -2031,6 +2071,7 @@ __all__ = (
     "PatchRuleFirewallPolicyRequest",
     "PatchRuleSecurityPolicyRequest",
     "PatchSecurityPolicyRequest",
+    "PatchServiceAttachmentRequest",
     "PatchSslPolicyRequest",
     "PatchSubnetworkRequest",
     "PatchTargetGrpcProxyRequest",
@@ -2159,20 +2200,25 @@ __all__ = (
     "ResourcePolicyWeeklyCycle",
     "ResourcePolicyWeeklyCycleDayOfWeek",
     "Route",
+    "RouteAsPath",
     "RouteList",
     "Router",
     "RouterAdvertisedIpRange",
     "RouterAggregatedList",
     "RouterBgp",
     "RouterBgpPeer",
+    "RouterBgpPeerBfd",
     "RouterInterface",
     "RouterList",
     "RouterNat",
     "RouterNatLogConfig",
+    "RouterNatRule",
+    "RouterNatRuleAction",
     "RouterNatSubnetworkToNat",
     "RouterStatus",
     "RouterStatusBgpPeerStatus",
     "RouterStatusNatStatus",
+    "RouterStatusNatStatusNatRuleStatus",
     "RouterStatusResponse",
     "RoutersClient",
     "RoutersPreviewResponse",
@@ -2189,15 +2235,27 @@ __all__ = (
     "SecurityPoliciesListPreconfiguredExpressionSetsResponse",
     "SecurityPoliciesWafConfig",
     "SecurityPolicy",
+    "SecurityPolicyAdaptiveProtectionConfig",
+    "SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig",
+    "SecurityPolicyAdvancedOptionsConfig",
     "SecurityPolicyList",
     "SecurityPolicyReference",
     "SecurityPolicyRule",
     "SecurityPolicyRuleMatcher",
     "SecurityPolicyRuleMatcherConfig",
     "SecuritySettings",
+    "SendDiagnosticInterruptInstanceRequest",
+    "SendDiagnosticInterruptInstanceResponse",
     "SerialPortOutput",
     "ServerBinding",
     "ServiceAccount",
+    "ServiceAttachment",
+    "ServiceAttachmentAggregatedList",
+    "ServiceAttachmentConnectedEndpoint",
+    "ServiceAttachmentConsumerProjectLimit",
+    "ServiceAttachmentList",
+    "ServiceAttachmentsClient",
+    "ServiceAttachmentsScopedList",
     "SetBackendServiceTargetSslProxyRequest",
     "SetBackendServiceTargetTcpProxyRequest",
     "SetBackupTargetPoolRequest",
@@ -2216,6 +2274,7 @@ __all__ = (
     "SetIamPolicyRegionDiskRequest",
     "SetIamPolicyReservationRequest",
     "SetIamPolicyResourcePolicyRequest",
+    "SetIamPolicyServiceAttachmentRequest",
     "SetIamPolicySnapshotRequest",
     "SetIamPolicySubnetworkRequest",
     "SetInstanceTemplateInstanceGroupManagerRequest",
@@ -2296,6 +2355,7 @@ __all__ = (
     "SubnetworksExpandIpCidrRangeRequest",
     "SubnetworksScopedList",
     "SubnetworksSetPrivateIpGoogleAccessRequest",
+    "Subsetting",
     "SwitchToCustomModeNetworkRequest",
     "TCPHealthCheck",
     "Tags",
@@ -2362,11 +2422,13 @@ __all__ = (
     "TestIamPermissionsRegionDiskRequest",
     "TestIamPermissionsReservationRequest",
     "TestIamPermissionsResourcePolicyRequest",
+    "TestIamPermissionsServiceAttachmentRequest",
     "TestIamPermissionsSnapshotRequest",
     "TestIamPermissionsSubnetworkRequest",
     "TestIamPermissionsVpnGatewayRequest",
     "TestPermissionsRequest",
     "TestPermissionsResponse",
+    "Uint128",
     "UpdateAccessConfigInstanceRequest",
     "UpdateAutoscalerRequest",
     "UpdateBackendBucketRequest",

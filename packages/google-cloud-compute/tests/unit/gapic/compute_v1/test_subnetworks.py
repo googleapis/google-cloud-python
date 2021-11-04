@@ -861,10 +861,12 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetSubnetworkReq
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             enable_flow_logs=True,
+            external_ipv6_prefix="external_ipv6_prefix_value",
             fingerprint="fingerprint_value",
             gateway_address="gateway_address_value",
             id=205,
             ip_cidr_range="ip_cidr_range_value",
+            ipv6_access_type=compute.Subnetwork.Ipv6AccessType.EXTERNAL,
             ipv6_cidr_range="ipv6_cidr_range_value",
             kind="kind_value",
             log_config=compute.SubnetworkLogConfig(
@@ -881,6 +883,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetSubnetworkReq
                 compute.SubnetworkSecondaryRange(ip_cidr_range="ip_cidr_range_value")
             ],
             self_link="self_link_value",
+            stack_type=compute.Subnetwork.StackType.IPV4_IPV6,
             state=compute.Subnetwork.State.DRAINING,
         )
 
@@ -897,10 +900,12 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetSubnetworkReq
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.enable_flow_logs is True
+    assert response.external_ipv6_prefix == "external_ipv6_prefix_value"
     assert response.fingerprint == "fingerprint_value"
     assert response.gateway_address == "gateway_address_value"
     assert response.id == 205
     assert response.ip_cidr_range == "ip_cidr_range_value"
+    assert response.ipv6_access_type == compute.Subnetwork.Ipv6AccessType.EXTERNAL
     assert response.ipv6_cidr_range == "ipv6_cidr_range_value"
     assert response.kind == "kind_value"
     assert response.log_config == compute.SubnetworkLogConfig(
@@ -920,6 +925,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetSubnetworkReq
         compute.SubnetworkSecondaryRange(ip_cidr_range="ip_cidr_range_value")
     ]
     assert response.self_link == "self_link_value"
+    assert response.stack_type == compute.Subnetwork.StackType.IPV4_IPV6
     assert response.state == compute.Subnetwork.State.DRAINING
 
 

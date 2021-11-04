@@ -232,6 +232,11 @@ class InstancesTransport(abc.ABC):
             self.reset: gapic_v1.method.wrap_method(
                 self.reset, default_timeout=None, client_info=client_info,
             ),
+            self.send_diagnostic_interrupt: gapic_v1.method.wrap_method(
+                self.send_diagnostic_interrupt,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.set_deletion_protection: gapic_v1.method.wrap_method(
                 self.set_deletion_protection,
                 default_timeout=None,
@@ -509,6 +514,18 @@ class InstancesTransport(abc.ABC):
     ) -> Callable[
         [compute.ResetInstanceRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def send_diagnostic_interrupt(
+        self,
+    ) -> Callable[
+        [compute.SendDiagnosticInterruptInstanceRequest],
+        Union[
+            compute.SendDiagnosticInterruptInstanceResponse,
+            Awaitable[compute.SendDiagnosticInterruptInstanceResponse],
+        ],
     ]:
         raise NotImplementedError()
 

@@ -442,12 +442,10 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
         Returns:
             google.cloud.compute_v1.types.MachineType:
                 Represents a Machine Type resource.
-
-                   You can use specific machine types for your VM
-                   instances based on performance and pricing
-                   requirements. For more information, read Machine
-                   Types. (== resource_for {$api_version}.machineTypes
-                   ==)
+                You can use specific machine types for
+                your VM instances based on performance
+                and pricing requirements. For more
+                information, read Machine Types.
 
         """
         # Create or coerce a protobuf request object.

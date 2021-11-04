@@ -4,14 +4,14 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-compute.git",
-        "sha": "b4bea0b0761bf28d4eaf2643ec1f3e97d8142352"
+        "sha": "6248fdd993c914ed4b94ab483a8168fb3fcd615e"
       }
     },
     {
       "git": {
         "name": "googleapis-discovery",
         "remote": "https://github.com/googleapis/googleapis-discovery.git",
-        "sha": "ac663f7f0afb13e3a8cfd04160d1677655c5c613"
+        "sha": "638b68a77742cb7f4af82e204c9e8c29ef9ada63"
       }
     }
   ],
@@ -113,6 +113,7 @@
     "docs/compute_v1/global_organization_operations.rst",
     "docs/compute_v1/global_public_delegated_prefixes.rst",
     "docs/compute_v1/health_checks.rst",
+    "docs/compute_v1/image_family_views.rst",
     "docs/compute_v1/images.rst",
     "docs/compute_v1/instance_group_managers.rst",
     "docs/compute_v1/instance_groups.rst",
@@ -156,6 +157,7 @@
     "docs/compute_v1/routers.rst",
     "docs/compute_v1/routes.rst",
     "docs/compute_v1/security_policies.rst",
+    "docs/compute_v1/service_attachments.rst",
     "docs/compute_v1/services.rst",
     "docs/compute_v1/snapshots.rst",
     "docs/compute_v1/ssl_certificates.rst",
@@ -291,6 +293,11 @@
     "google/cloud/compute_v1/services/health_checks/transports/__init__.py",
     "google/cloud/compute_v1/services/health_checks/transports/base.py",
     "google/cloud/compute_v1/services/health_checks/transports/rest.py",
+    "google/cloud/compute_v1/services/image_family_views/__init__.py",
+    "google/cloud/compute_v1/services/image_family_views/client.py",
+    "google/cloud/compute_v1/services/image_family_views/transports/__init__.py",
+    "google/cloud/compute_v1/services/image_family_views/transports/base.py",
+    "google/cloud/compute_v1/services/image_family_views/transports/rest.py",
     "google/cloud/compute_v1/services/images/__init__.py",
     "google/cloud/compute_v1/services/images/client.py",
     "google/cloud/compute_v1/services/images/pagers.py",
@@ -547,6 +554,12 @@
     "google/cloud/compute_v1/services/security_policies/transports/__init__.py",
     "google/cloud/compute_v1/services/security_policies/transports/base.py",
     "google/cloud/compute_v1/services/security_policies/transports/rest.py",
+    "google/cloud/compute_v1/services/service_attachments/__init__.py",
+    "google/cloud/compute_v1/services/service_attachments/client.py",
+    "google/cloud/compute_v1/services/service_attachments/pagers.py",
+    "google/cloud/compute_v1/services/service_attachments/transports/__init__.py",
+    "google/cloud/compute_v1/services/service_attachments/transports/base.py",
+    "google/cloud/compute_v1/services/service_attachments/transports/rest.py",
     "google/cloud/compute_v1/services/snapshots/__init__.py",
     "google/cloud/compute_v1/services/snapshots/client.py",
     "google/cloud/compute_v1/services/snapshots/pagers.py",
@@ -686,6 +699,7 @@
     "tests/unit/gapic/compute_v1/test_global_organization_operations.py",
     "tests/unit/gapic/compute_v1/test_global_public_delegated_prefixes.py",
     "tests/unit/gapic/compute_v1/test_health_checks.py",
+    "tests/unit/gapic/compute_v1/test_image_family_views.py",
     "tests/unit/gapic/compute_v1/test_images.py",
     "tests/unit/gapic/compute_v1/test_instance_group_managers.py",
     "tests/unit/gapic/compute_v1/test_instance_groups.py",
@@ -729,6 +743,7 @@
     "tests/unit/gapic/compute_v1/test_routers.py",
     "tests/unit/gapic/compute_v1/test_routes.py",
     "tests/unit/gapic/compute_v1/test_security_policies.py",
+    "tests/unit/gapic/compute_v1/test_service_attachments.py",
     "tests/unit/gapic/compute_v1/test_snapshots.py",
     "tests/unit/gapic/compute_v1/test_ssl_certificates.py",
     "tests/unit/gapic/compute_v1/test_ssl_policies.py",

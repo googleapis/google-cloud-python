@@ -803,6 +803,7 @@ def test_get_rest(
             ),
             region="region_value",
             router="router_value",
+            satisfies_pzs=True,
             self_link="self_link_value",
             state=compute.InterconnectAttachment.State.ACTIVE,
             type_=compute.InterconnectAttachment.Type.DEDICATED,
@@ -854,6 +855,7 @@ def test_get_rest(
     )
     assert response.region == "region_value"
     assert response.router == "router_value"
+    assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
     assert response.state == compute.InterconnectAttachment.State.ACTIVE
     assert response.type_ == compute.InterconnectAttachment.Type.DEDICATED
