@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://www.github.com/googleapis/python-os-config/compare/v1.7.1...v1.8.0) (2021-11-04)
+
+
+### Features
+
+* add OS policy assignment rpcs ([#142](https://www.github.com/googleapis/python-os-config/issues/142)) ([44c158d](https://www.github.com/googleapis/python-os-config/commit/44c158dd19c4329678e170733377494821ca955f))
+
 ### [1.7.1](https://www.github.com/googleapis/python-os-config/compare/v1.7.0...v1.7.1) (2021-11-02)
 
 
