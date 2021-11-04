@@ -45,6 +45,17 @@ for library in s.get_staging_dirs(default_version):
 
 s.remove_staging_dirs()
 
+# work around gapic generator bug
+# https://github.com/googleapis/gapic-generator-python/pull/1071
+s.replace(
+    "google/cloud/**/types/*.py",
+    """\.
+            This field is a member of `oneof`_""",
+    """.
+
+            This field is a member of `oneof`_"""
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

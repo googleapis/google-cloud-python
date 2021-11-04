@@ -236,6 +236,8 @@ class Translation(proto.Message):
 class DetectLanguageRequest(proto.Message):
     r"""The request message for language detection.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. Project or location to make a call. Must refer to
@@ -264,6 +266,8 @@ class DetectLanguageRequest(proto.Message):
             If not specified, the default model is used.
         content (str):
             The content of the input stored as a string.
+
+            This field is a member of `oneof`_ ``source``.
         mime_type (str):
             Optional. The format of the source text, for
             example, "text/html", "text/plain". If left
@@ -424,6 +428,8 @@ class GcsSource(proto.Message):
 class InputConfig(proto.Message):
     r"""Input configuration for BatchTranslateText request.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         mime_type (str):
             Optional. Can be "text/plain" or "text/html". For ``.tsv``,
@@ -450,6 +456,8 @@ class InputConfig(proto.Message):
 
             The other supported file extensions are ``.txt`` or
             ``.html``, which is treated as a single large chunk of text.
+
+            This field is a member of `oneof`_ ``source``.
     """
 
     mime_type = proto.Field(proto.STRING, number=1,)
@@ -476,6 +484,8 @@ class GcsDestination(proto.Message):
 
 class OutputConfig(proto.Message):
     r"""Output configuration for BatchTranslateText request.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         gcs_destination (google.cloud.translate_v3.types.GcsDestination):
@@ -555,6 +565,7 @@ class OutputConfig(proto.Message):
             glossary_error_file will be generated that contains error
             details. glossary_error_file has format of
             gs://translation_test/a_b_c\_'trg'_glossary_errors.[extension]
+            This field is a member of `oneof`_ ``destination``.
     """
 
     gcs_destination = proto.Field(
@@ -565,13 +576,23 @@ class OutputConfig(proto.Message):
 class DocumentInputConfig(proto.Message):
     r"""A document translation request input config.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         content (bytes):
             Document's content represented as a stream of
             bytes.
+
+            This field is a member of `oneof`_ ``source``.
         gcs_source (google.cloud.translate_v3.types.GcsSource):
             Google Cloud Storage location. This must be a single file.
             For example: gs://example_bucket/example_file.pdf
+            This field is a member of `oneof`_ ``source``.
         mime_type (str):
             Specifies the input document's mime_type.
 
@@ -595,6 +616,8 @@ class DocumentInputConfig(proto.Message):
 
 class DocumentOutputConfig(proto.Message):
     r"""A document translation request output config.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         gcs_destination (google.cloud.translate_v3.types.GcsDestination):
@@ -647,6 +670,8 @@ class DocumentOutputConfig(proto.Message):
             Callers should expect no partial outputs. If there is any
             error during document translation, no output will be stored
             in the Cloud Storage bucket.
+
+            This field is a member of `oneof`_ ``destination``.
         mime_type (str):
             Optional. Specifies the translated document's mime_type. If
             not specified, the translated file's mime type will be the
@@ -968,6 +993,8 @@ class BatchTranslateResponse(proto.Message):
 class GlossaryInputConfig(proto.Message):
     r"""Input configuration for glossaries.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_source (google.cloud.translate_v3.types.GcsSource):
             Required. Google Cloud Storage location of glossary data.
@@ -994,6 +1021,8 @@ class GlossaryInputConfig(proto.Message):
                glossary terms in multiple languages. See documentation
                for more information -
                `glossaries <https://cloud.google.com/translate/docs/advanced/glossary>`__.
+
+            This field is a member of `oneof`_ ``source``.
     """
 
     gcs_source = proto.Field(
@@ -1004,6 +1033,13 @@ class GlossaryInputConfig(proto.Message):
 class Glossary(proto.Message):
     r"""Represents a glossary built from user provided data.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Required. The resource name of the glossary. Glossary names
@@ -1011,8 +1047,12 @@ class Glossary(proto.Message):
             ``projects/{project-number-or-id}/locations/{location-id}/glossaries/{glossary-id}``.
         language_pair (google.cloud.translate_v3.types.Glossary.LanguageCodePair):
             Used with unidirectional glossaries.
+
+            This field is a member of `oneof`_ ``languages``.
         language_codes_set (google.cloud.translate_v3.types.Glossary.LanguageCodesSet):
             Used with equivalent term set glossaries.
+
+            This field is a member of `oneof`_ ``languages``.
         input_config (google.cloud.translate_v3.types.GlossaryInputConfig):
             Required. Provides examples to build the
             glossary from. Total glossary must not exceed
@@ -1356,6 +1396,8 @@ class BatchTranslateDocumentRequest(proto.Message):
 class BatchDocumentInputConfig(proto.Message):
     r"""Input configuration for BatchTranslateDocument request.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gcs_source (google.cloud.translate_v3.types.GcsSource):
             Google Cloud Storage location for the source input. This can
@@ -1378,6 +1420,8 @@ class BatchDocumentInputConfig(proto.Message):
             ``.xlsx`` is 100MB. The max file size to support for
             ``.pdf`` is 1GB and the max page limit is 1000 pages. The
             max file size to support for all input documents is 1GB.
+
+            This field is a member of `oneof`_ ``source``.
     """
 
     gcs_source = proto.Field(
@@ -1387,6 +1431,8 @@ class BatchDocumentInputConfig(proto.Message):
 
 class BatchDocumentOutputConfig(proto.Message):
     r"""Output configuration for BatchTranslateDocument request.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         gcs_destination (google.cloud.translate_v3.types.GcsDestination):
@@ -1442,6 +1488,8 @@ class BatchDocumentOutputConfig(proto.Message):
             ``glossary_error_output``:
             gs://translation_test/a_b_c*\ [trg]_glossary_translation.txt
             The error output is a txt file containing error details.
+
+            This field is a member of `oneof`_ ``destination``.
     """
 
     gcs_destination = proto.Field(

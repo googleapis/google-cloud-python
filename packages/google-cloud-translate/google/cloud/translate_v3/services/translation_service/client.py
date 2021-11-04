@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.translate_v3.services.translation_service import pagers
@@ -362,7 +364,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         model: str = None,
         mime_type: str = None,
         source_language_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> translation_service.TranslateTextResponse:
@@ -530,7 +532,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         model: str = None,
         mime_type: str = None,
         content: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> translation_service.DetectLanguageResponse:
@@ -652,7 +654,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         parent: str = None,
         model: str = None,
         display_language_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> translation_service.SupportedLanguages:
@@ -768,7 +770,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         self,
         request: Union[translation_service.TranslateDocumentRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> translation_service.TranslateDocumentResponse:
@@ -817,7 +819,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         self,
         request: Union[translation_service.BatchTranslateTextRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -891,7 +893,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         target_language_codes: Sequence[str] = None,
         input_configs: Sequence[translation_service.BatchDocumentInputConfig] = None,
         output_config: translation_service.BatchDocumentOutputConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1048,7 +1050,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         *,
         parent: str = None,
         glossary: translation_service.Glossary = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1135,7 +1137,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         request: Union[translation_service.ListGlossariesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGlossariesPager:
@@ -1215,7 +1217,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         request: Union[translation_service.GetGlossaryRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> translation_service.Glossary:
@@ -1286,7 +1288,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         request: Union[translation_service.DeleteGlossaryRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:

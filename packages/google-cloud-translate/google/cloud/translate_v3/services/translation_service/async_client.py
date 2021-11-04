@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -167,7 +169,7 @@ class TranslationServiceAsyncClient:
 
     async def translate_text(
         self,
-        request: translation_service.TranslateTextRequest = None,
+        request: Union[translation_service.TranslateTextRequest, dict] = None,
         *,
         parent: str = None,
         target_language_code: str = None,
@@ -175,14 +177,14 @@ class TranslationServiceAsyncClient:
         model: str = None,
         mime_type: str = None,
         source_language_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> translation_service.TranslateTextResponse:
         r"""Translates input text and returns translated text.
 
         Args:
-            request (:class:`google.cloud.translate_v3.types.TranslateTextRequest`):
+            request (Union[google.cloud.translate_v3.types.TranslateTextRequest, dict]):
                 The request object. The request message for synchronous
                 translation.
             parent (:class:`str`):
@@ -337,20 +339,20 @@ class TranslationServiceAsyncClient:
 
     async def detect_language(
         self,
-        request: translation_service.DetectLanguageRequest = None,
+        request: Union[translation_service.DetectLanguageRequest, dict] = None,
         *,
         parent: str = None,
         model: str = None,
         mime_type: str = None,
         content: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> translation_service.DetectLanguageResponse:
         r"""Detects the language of text within a request.
 
         Args:
-            request (:class:`google.cloud.translate_v3.types.DetectLanguageRequest`):
+            request (Union[google.cloud.translate_v3.types.DetectLanguageRequest, dict]):
                 The request object. The request message for language
                 detection.
             parent (:class:`str`):
@@ -460,12 +462,12 @@ class TranslationServiceAsyncClient:
 
     async def get_supported_languages(
         self,
-        request: translation_service.GetSupportedLanguagesRequest = None,
+        request: Union[translation_service.GetSupportedLanguagesRequest, dict] = None,
         *,
         parent: str = None,
         model: str = None,
         display_language_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> translation_service.SupportedLanguages:
@@ -473,7 +475,7 @@ class TranslationServiceAsyncClient:
         translation.
 
         Args:
-            request (:class:`google.cloud.translate_v3.types.GetSupportedLanguagesRequest`):
+            request (Union[google.cloud.translate_v3.types.GetSupportedLanguagesRequest, dict]):
                 The request object. The request message for discovering
                 supported languages.
             parent (:class:`str`):
@@ -589,16 +591,16 @@ class TranslationServiceAsyncClient:
 
     async def translate_document(
         self,
-        request: translation_service.TranslateDocumentRequest = None,
+        request: Union[translation_service.TranslateDocumentRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> translation_service.TranslateDocumentResponse:
         r"""Translates documents in synchronous mode.
 
         Args:
-            request (:class:`google.cloud.translate_v3.types.TranslateDocumentRequest`):
+            request (Union[google.cloud.translate_v3.types.TranslateDocumentRequest, dict]):
                 The request object. A document translation request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -637,9 +639,9 @@ class TranslationServiceAsyncClient:
 
     async def batch_translate_text(
         self,
-        request: translation_service.BatchTranslateTextRequest = None,
+        request: Union[translation_service.BatchTranslateTextRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -654,7 +656,7 @@ class TranslationServiceAsyncClient:
         of the call.
 
         Args:
-            request (:class:`google.cloud.translate_v3.types.BatchTranslateTextRequest`):
+            request (Union[google.cloud.translate_v3.types.BatchTranslateTextRequest, dict]):
                 The request object. The batch translation request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -705,14 +707,14 @@ class TranslationServiceAsyncClient:
 
     async def batch_translate_document(
         self,
-        request: translation_service.BatchTranslateDocumentRequest = None,
+        request: Union[translation_service.BatchTranslateDocumentRequest, dict] = None,
         *,
         parent: str = None,
         source_language_code: str = None,
         target_language_codes: Sequence[str] = None,
         input_configs: Sequence[translation_service.BatchDocumentInputConfig] = None,
         output_config: translation_service.BatchDocumentOutputConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -727,7 +729,7 @@ class TranslationServiceAsyncClient:
         the call.
 
         Args:
-            request (:class:`google.cloud.translate_v3.types.BatchTranslateDocumentRequest`):
+            request (Union[google.cloud.translate_v3.types.BatchTranslateDocumentRequest, dict]):
                 The request object. The BatchTranslateDocument request.
             parent (:class:`str`):
                 Required. Location to make a regional call.
@@ -865,11 +867,11 @@ class TranslationServiceAsyncClient:
 
     async def create_glossary(
         self,
-        request: translation_service.CreateGlossaryRequest = None,
+        request: Union[translation_service.CreateGlossaryRequest, dict] = None,
         *,
         parent: str = None,
         glossary: translation_service.Glossary = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -877,7 +879,7 @@ class TranslationServiceAsyncClient:
         Returns NOT_FOUND, if the project doesn't exist.
 
         Args:
-            request (:class:`google.cloud.translate_v3.types.CreateGlossaryRequest`):
+            request (Union[google.cloud.translate_v3.types.CreateGlossaryRequest, dict]):
                 The request object. Request message for CreateGlossary.
             parent (:class:`str`):
                 Required. The project name.
@@ -953,10 +955,10 @@ class TranslationServiceAsyncClient:
 
     async def list_glossaries(
         self,
-        request: translation_service.ListGlossariesRequest = None,
+        request: Union[translation_service.ListGlossariesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGlossariesAsyncPager:
@@ -964,7 +966,7 @@ class TranslationServiceAsyncClient:
         doesn't exist.
 
         Args:
-            request (:class:`google.cloud.translate_v3.types.ListGlossariesRequest`):
+            request (Union[google.cloud.translate_v3.types.ListGlossariesRequest, dict]):
                 The request object. Request message for ListGlossaries.
             parent (:class:`str`):
                 Required. The name of the project
@@ -1043,10 +1045,10 @@ class TranslationServiceAsyncClient:
 
     async def get_glossary(
         self,
-        request: translation_service.GetGlossaryRequest = None,
+        request: Union[translation_service.GetGlossaryRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> translation_service.Glossary:
@@ -1054,7 +1056,7 @@ class TranslationServiceAsyncClient:
         exist.
 
         Args:
-            request (:class:`google.cloud.translate_v3.types.GetGlossaryRequest`):
+            request (Union[google.cloud.translate_v3.types.GetGlossaryRequest, dict]):
                 The request object. Request message for GetGlossary.
             name (:class:`str`):
                 Required. The name of the glossary to
@@ -1124,10 +1126,10 @@ class TranslationServiceAsyncClient:
 
     async def delete_glossary(
         self,
-        request: translation_service.DeleteGlossaryRequest = None,
+        request: Union[translation_service.DeleteGlossaryRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -1136,7 +1138,7 @@ class TranslationServiceAsyncClient:
         doesn't exist.
 
         Args:
-            request (:class:`google.cloud.translate_v3.types.DeleteGlossaryRequest`):
+            request (Union[google.cloud.translate_v3.types.DeleteGlossaryRequest, dict]):
                 The request object. Request message for DeleteGlossary.
             name (:class:`str`):
                 Required. The name of the glossary to
