@@ -48,6 +48,13 @@ __protobuf__ = proto.module(
 class Job(proto.Message):
     r"""Transcoding job resource.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The resource name of the job. Format:
@@ -74,8 +81,11 @@ class Job(proto.Message):
             -  ``preset/{preset_id}``
 
             -  User defined JobTemplate: ``{job_template_id}``
+
+            This field is a member of `oneof`_ ``job_config``.
         config (google.cloud.video.transcoder_v1.types.JobConfig):
             The configuration for this job.
+            This field is a member of `oneof`_ ``job_config``.
         state (google.cloud.video.transcoder_v1.types.Job.ProcessingState):
             Output only. The current state of the job.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -269,16 +279,26 @@ class ElementaryStream(proto.Message):
     track. Elementary streams must be packaged before
     mapping and sharing between different output formats.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         key (str):
             A unique key for this elementary stream.
         video_stream (google.cloud.video.transcoder_v1.types.VideoStream):
             Encoding of a video stream.
+            This field is a member of `oneof`_ ``elementary_stream``.
         audio_stream (google.cloud.video.transcoder_v1.types.AudioStream):
             Encoding of an audio stream.
+            This field is a member of `oneof`_ ``elementary_stream``.
         text_stream (google.cloud.video.transcoder_v1.types.TextStream):
             Encoding of a text stream. For example,
             closed captions or subtitles.
+            This field is a member of `oneof`_ ``elementary_stream``.
     """
 
     key = proto.Field(proto.STRING, number=4,)
@@ -378,6 +398,13 @@ class PubsubDestination(proto.Message):
 class SpriteSheet(proto.Message):
     r"""Sprite sheet configuration.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         format_ (str):
             Format type. The default is ``jpeg``.
@@ -428,9 +455,11 @@ class SpriteSheet(proto.Message):
             number of sprites distributed evenly across the
             timeline of the output media. The default is
             100.
+            This field is a member of `oneof`_ ``extraction_strategy``.
         interval (google.protobuf.duration_pb2.Duration):
             Starting from ``0s``, create sprites at regular intervals.
             Specify the interval value in seconds.
+            This field is a member of `oneof`_ ``extraction_strategy``.
         quality (int):
             The quality of the generated sprite sheet.
             Enter a value between 1 and 100, where 1 is the
@@ -592,13 +621,23 @@ class Overlay(proto.Message):
     class Animation(proto.Message):
         r"""Animation types.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             animation_static (google.cloud.video.transcoder_v1.types.Overlay.AnimationStatic):
                 Display static overlay object.
+                This field is a member of `oneof`_ ``animation_type``.
             animation_fade (google.cloud.video.transcoder_v1.types.Overlay.AnimationFade):
                 Display overlay object with fade animation.
+                This field is a member of `oneof`_ ``animation_type``.
             animation_end (google.cloud.video.transcoder_v1.types.Overlay.AnimationEnd):
                 End previous animation.
+                This field is a member of `oneof`_ ``animation_type``.
         """
 
         animation_static = proto.Field(
@@ -794,17 +833,34 @@ class PreprocessingConfig(proto.Message):
 class VideoStream(proto.Message):
     r"""Video stream resource.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         h264 (google.cloud.video.transcoder_v1.types.VideoStream.H264CodecSettings):
             H264 codec settings.
+            This field is a member of `oneof`_ ``codec_settings``.
         h265 (google.cloud.video.transcoder_v1.types.VideoStream.H265CodecSettings):
             H265 codec settings.
+            This field is a member of `oneof`_ ``codec_settings``.
         vp9 (google.cloud.video.transcoder_v1.types.VideoStream.Vp9CodecSettings):
             VP9 codec settings.
+            This field is a member of `oneof`_ ``codec_settings``.
     """
 
     class H264CodecSettings(proto.Message):
         r"""H264 codec settings.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             width_pixels (int):
@@ -863,12 +919,14 @@ class VideoStream(proto.Message):
             gop_frame_count (int):
                 Select the GOP size based on the specified
                 frame count. Must be greater than zero.
+                This field is a member of `oneof`_ ``gop_mode``.
             gop_duration (google.protobuf.duration_pb2.Duration):
                 Select the GOP size based on the specified duration. The
                 default is ``3s``. Note that ``gopDuration`` must be less
                 than or equal to ```segmentDuration`` <#SegmentSettings>`__,
                 and ```segmentDuration`` <#SegmentSettings>`__ must be
                 divisible by ``gopDuration``.
+                This field is a member of `oneof`_ ``gop_mode``.
             enable_two_pass (bool):
                 Use two-pass encoding strategy to achieve better video
                 quality. ``VideoStream.rate_control_mode`` must be ``vbr``.
@@ -955,6 +1013,13 @@ class VideoStream(proto.Message):
     class H265CodecSettings(proto.Message):
         r"""H265 codec settings.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             width_pixels (int):
                 The width of the video in pixels. Must be an
@@ -1012,12 +1077,14 @@ class VideoStream(proto.Message):
             gop_frame_count (int):
                 Select the GOP size based on the specified
                 frame count. Must be greater than zero.
+                This field is a member of `oneof`_ ``gop_mode``.
             gop_duration (google.protobuf.duration_pb2.Duration):
                 Select the GOP size based on the specified duration. The
                 default is ``3s``. Note that ``gopDuration`` must be less
                 than or equal to ```segmentDuration`` <#SegmentSettings>`__,
                 and ```segmentDuration`` <#SegmentSettings>`__ must be
                 divisible by ``gopDuration``.
+                This field is a member of `oneof`_ ``gop_mode``.
             enable_two_pass (bool):
                 Use two-pass encoding strategy to achieve better video
                 quality. ``VideoStream.rate_control_mode`` must be ``vbr``.
@@ -1116,6 +1183,13 @@ class VideoStream(proto.Message):
     class Vp9CodecSettings(proto.Message):
         r"""VP9 codec settings.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             width_pixels (int):
                 The width of the video in pixels. Must be an
@@ -1170,12 +1244,14 @@ class VideoStream(proto.Message):
             gop_frame_count (int):
                 Select the GOP size based on the specified
                 frame count. Must be greater than zero.
+                This field is a member of `oneof`_ ``gop_mode``.
             gop_duration (google.protobuf.duration_pb2.Duration):
                 Select the GOP size based on the specified duration. The
                 default is ``3s``. Note that ``gopDuration`` must be less
                 than or equal to ```segmentDuration`` <#SegmentSettings>`__,
                 and ```segmentDuration`` <#SegmentSettings>`__ must be
                 divisible by ``gopDuration``.
+                This field is a member of `oneof`_ ``gop_mode``.
             profile (str):
                 Enforces the specified codec profile. The following profiles
                 are supported:
