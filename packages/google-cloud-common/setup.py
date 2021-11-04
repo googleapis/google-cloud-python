@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-common"
 description = "Google Cloud Common client library"
-version = "0.2.0"
+version = "1.0.0"
 release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-cloud-common"
 dependencies = [
