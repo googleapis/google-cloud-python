@@ -417,6 +417,8 @@ s.replace(
         session.run("pytype")'''
     ),
 )
-
+s.replace(
+    "noxfile.py", "--cov=google", "--cov=google/cloud",
+)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
