@@ -1,5 +1,18 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-video-transcoder/compare/v1.2.0...v1.2.1) (2021-11-04)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([9850614](https://www.github.com/googleapis/python-video-transcoder/commit/985061433802e6a49a23e53b77aecbaafe7bf12a))
+* **deps:** require google-api-core >= 1.28.0 ([9850614](https://www.github.com/googleapis/python-video-transcoder/commit/985061433802e6a49a23e53b77aecbaafe7bf12a))
+
+
+### Documentation
+
+* list oneofs in docstring ([9850614](https://www.github.com/googleapis/python-video-transcoder/commit/985061433802e6a49a23e53b77aecbaafe7bf12a))
+
 ## [1.2.0](https://www.github.com/googleapis/python-video-transcoder/compare/v1.1.0...v1.2.0) (2021-10-14)
 
 
