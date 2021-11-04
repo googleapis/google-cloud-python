@@ -100,7 +100,7 @@ templated_files = common.py_library(
     intersphinx_dependencies={
         "dateutil": "https://dateutil.readthedocs.io/en/latest/",
         "geopandas": "https://geopandas.org/",
-        "pandas": "https://pandas.pydata.org/pandas-docs/dev",
+        "pandas": "https://pandas.pydata.org/pandas-docs/stable/",
     },
 )
 
