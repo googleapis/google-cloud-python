@@ -272,6 +272,13 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
         self.assertEqual(writer._chunk_size, 512 * 1024)
         self.assertEqual(writer._retry, DEFAULT_RETRY)
 
+    def test_deprecated_text_mode_attribute(self):
+        blob = mock.Mock()
+        blob.chunk_size = 256 * 1024
+        writer = self._make_blob_writer(blob, text_mode=True)
+        self.assertTrue(writer._ignore_flush)
+        writer.flush()  # This should do nothing and not raise an error.
+
     def test_reject_wrong_chunk_size(self):
         blob = mock.Mock()
         blob.chunk_size = 123
@@ -857,7 +864,7 @@ class TestBlobWriterText(unittest.TestCase, _BlobWriterBase):
             unwrapped_writer = self._make_blob_writer(
                 blob,
                 chunk_size=chunk_size,
-                text_mode=True,
+                ignore_flush=True,
                 num_retries=NUM_RETRIES,
                 content_type=PLAIN_CONTENT_TYPE,
             )

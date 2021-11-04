@@ -5585,6 +5585,8 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(type(f.buffer), BlobWriter)
         f = blob.open("wb")
         self.assertEqual(type(f), BlobWriter)
+        f = blob.open("wb", ignore_flush=True)
+        self.assertTrue(f._ignore_flush)
 
         with self.assertRaises(NotImplementedError):
             blob.open("a")
@@ -5592,6 +5594,12 @@ class Test_Blob(unittest.TestCase):
             blob.open("rb", encoding="utf-8")
         with self.assertRaises(ValueError):
             blob.open("wb", encoding="utf-8")
+        with self.assertRaises(ValueError):
+            blob.open("r", ignore_flush=True)
+        with self.assertRaises(ValueError):
+            blob.open("rb", ignore_flush=True)
+        with self.assertRaises(ValueError):
+            blob.open("w", ignore_flush=False)
 
 
 class Test__quote(unittest.TestCase):
