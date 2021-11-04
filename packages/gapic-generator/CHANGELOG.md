@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.55.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.55.0...v0.55.1) (2021-11-04)
+
+
+### Bug Fixes
+
+* fix missing http schema (http/https) for REST clients ([#1063](https://www.github.com/googleapis/gapic-generator-python/issues/1063)) ([e3aa7a0](https://www.github.com/googleapis/gapic-generator-python/commit/e3aa7a0b23bc4bfd5170753f74bdeac219902d1a))
+* handle required fields properly in query_params ([#1068](https://www.github.com/googleapis/gapic-generator-python/issues/1068)) ([0e379ca](https://www.github.com/googleapis/gapic-generator-python/commit/0e379ca6c0aee9d79d11a14074b7e9343e9e6af2))
+* leave a newline between field description and oneof line ([#1071](https://www.github.com/googleapis/gapic-generator-python/issues/1071)) ([4d0e365](https://www.github.com/googleapis/gapic-generator-python/commit/4d0e36528a8eb23ea3893b0bbcca10b679867445))
+* suppress type error for fallback def of OptionalRetry ([#1065](https://www.github.com/googleapis/gapic-generator-python/issues/1065)) ([e47faa6](https://www.github.com/googleapis/gapic-generator-python/commit/e47faa6c59a1fadf7dfebc965c962aa05ca30f74))
+* unignore 'google.api_core' imports ([#1066](https://www.github.com/googleapis/gapic-generator-python/issues/1066)) ([13f764c](https://www.github.com/googleapis/gapic-generator-python/commit/13f764c6513b91e7143a4a4a0bcc661cd19be0d8))
+* use (new) typing for 'gapic_v1.method.DEFAULT' ([#1032](https://www.github.com/googleapis/gapic-generator-python/issues/1032)) ([d85dfad](https://www.github.com/googleapis/gapic-generator-python/commit/d85dfadc180e5f218ad582a306c1c441a6c668db))
+
 ## [0.55.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.54.0...v0.55.0) (2021-11-01)
 
 
