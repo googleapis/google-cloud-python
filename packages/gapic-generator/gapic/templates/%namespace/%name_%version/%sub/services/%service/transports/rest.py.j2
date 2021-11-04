@@ -3,11 +3,11 @@ import json  # type: ignore
 import grpc  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import retry as retries  # type: ignore
-from google.api_core import rest_helpers  # type: ignore
-from google.api_core import path_template  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import path_template
+from google.api_core import gapic_v1
 {% if service.has_lro %}
 from google.api_core import operations_v1
 {% endif %}

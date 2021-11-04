@@ -39,8 +39,8 @@ from google.api import client_pb2
 from google.api import field_behavior_pb2
 from google.api import http_pb2
 from google.api import resource_pb2
-from google.api_core import exceptions      # type: ignore
-from google.api_core import path_template   # type: ignore
+from google.api_core import exceptions
+from google.api_core import path_template
 from google.protobuf import descriptor_pb2  # type: ignore
 from google.protobuf.json_format import MessageToDict  # type: ignore
 

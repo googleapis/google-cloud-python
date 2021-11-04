@@ -20,10 +20,10 @@ import re
 from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions         # type: ignore
-from google.api_core import gapic_v1                              # type: ignore
-from google.api_core import retry as retries                      # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
 from google.auth.transport.grpc import SslCredentials             # type: ignore

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from gapic.utils.reserved_names import RESERVED_NAMES
-from google.api_core import path_template  # type: ignore
+from google.api_core import path_template
 
 
 def convert_uri_fieldnames(uri: str) -> str:

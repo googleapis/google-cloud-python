@@ -26,7 +26,7 @@ import sys
 from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequence, Set, Tuple
 from types import MappingProxyType
 
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions
 from google.api import resource_pb2  # type: ignore
 from google.gapic.metadata import gapic_metadata_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
