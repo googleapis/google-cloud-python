@@ -19,6 +19,7 @@ class {{ message.name }}({{ p }}.Message):
         {{ field.name }} ({{ field.ident.sphinx }}):
             {{ field.meta.doc|rst(indent=12, nl=False) }}
             {% if field.oneof %}
+
             This field is a member of `oneof`_ ``{{ field.oneof }}``.
             {% endif %}
     {% endfor %}
