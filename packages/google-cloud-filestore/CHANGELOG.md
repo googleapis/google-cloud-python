@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-filestore/compare/v0.2.1...v1.0.0) (2021-11-03)
+
+
+### Features
+
+* bump release level to production/stable ([#7](https://www.github.com/googleapis/python-filestore/issues/7)) ([7b30a52](https://www.github.com/googleapis/python-filestore/commit/7b30a5284bc8595d276af1224a32ff7c7c28e765))
+
 ### [0.2.1](https://www.github.com/googleapis/python-filestore/compare/v0.2.0...v0.2.1) (2021-11-01)
 
 
