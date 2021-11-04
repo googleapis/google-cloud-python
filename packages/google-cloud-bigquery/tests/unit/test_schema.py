@@ -510,8 +510,29 @@ class TestSchemaField(unittest.TestCase):
 
     def test___repr__(self):
         field1 = self._make_one("field1", "STRING")
-        expected = "SchemaField('field1', 'STRING', 'NULLABLE', None, (), ())"
+        expected = "SchemaField('field1', 'STRING', 'NULLABLE', None, (), None)"
         self.assertEqual(repr(field1), expected)
+
+    def test___repr__evaluable_no_policy_tags(self):
+        field = self._make_one("field1", "STRING", "REQUIRED", "Description")
+        field_repr = repr(field)
+        SchemaField = self._get_target_class()  # needed for eval  # noqa
+
+        evaled_field = eval(field_repr)
+
+        assert field == evaled_field
+
+    def test___repr__evaluable_with_policy_tags(self):
+        policy_tags = PolicyTagList(names=["foo", "bar"])
+        field = self._make_one(
+            "field1", "STRING", "REQUIRED", "Description", policy_tags=policy_tags,
+        )
+        field_repr = repr(field)
+        SchemaField = self._get_target_class()  # needed for eval  # noqa
+
+        evaled_field = eval(field_repr)
+
+        assert field == evaled_field
 
 
 # TODO: dedup with the same class in test_table.py.
@@ -785,6 +806,34 @@ class TestPolicyTags(unittest.TestCase):
         set_one = {policy1}
         set_two = {policy2}
         self.assertNotEqual(set_one, set_two)
+
+    def test___repr__no_tags(self):
+        policy = self._make_one()
+        assert repr(policy) == "PolicyTagList(names=())"
+
+    def test___repr__with_tags(self):
+        policy1 = self._make_one(["foo", "bar", "baz"])
+        policy2 = self._make_one(["baz", "bar", "foo"])
+        expected_repr = "PolicyTagList(names=('bar', 'baz', 'foo'))"  # alphabetical
+
+        assert repr(policy1) == expected_repr
+        assert repr(policy2) == expected_repr
+
+    def test___repr__evaluable_no_tags(self):
+        policy = self._make_one(names=[])
+        policy_repr = repr(policy)
+
+        evaled_policy = eval(policy_repr)
+
+        assert policy == evaled_policy
+
+    def test___repr__evaluable_with_tags(self):
+        policy = self._make_one(names=["foo", "bar"])
+        policy_repr = repr(policy)
+
+        evaled_policy = eval(policy_repr)
+
+        assert policy == evaled_policy
 
 
 @pytest.mark.parametrize(
