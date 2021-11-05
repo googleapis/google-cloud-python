@@ -34,8 +34,11 @@ async def sample_get_cmek_settings():
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    name = f"projects/{project}/cmekSettings"
+
     request = logging_v2.GetCmekSettingsRequest(
-        name="projects/{project}/cmekSettings",
+        name=name,
     )
 
     # Make the request

@@ -34,8 +34,12 @@ async def sample_list_resources():
     client = mollusca_v1.SnippetsAsyncClient()
 
     # Initialize request argument(s)
+    item_id = "item_id_value"
+    part_id = "part_id_value"
+    parent = f"items/{item_id}/parts/{part_id}"
+
     request = mollusca_v1.ListResourcesRequest(
-        parent="items/{item_id}/parts/{part_id}",
+        parent=parent,
     )
 
     # Make the request

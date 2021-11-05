@@ -34,8 +34,13 @@ async def sample_upgrade_instance():
     client = redis_v1.CloudRedisAsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    location = "us-central1"
+    instance = "instance_value"
+    name = f"projects/{project}/locations/{location}/instances/{instance}"
+
     request = redis_v1.UpgradeInstanceRequest(
-        name="projects/{project}/locations/{location}/instances/{instance}",
+        name=name,
         redis_version="redis_version_value",
     )
 

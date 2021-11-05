@@ -34,8 +34,12 @@ def sample_list_instances():
     client = redis_v1.CloudRedisClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    location = "us-central1"
+    parent = f"projects/{project}/locations/{location}"
+
     request = redis_v1.ListInstancesRequest(
-        parent="projects/{project}/locations/{location}",
+        parent=parent,
     )
 
     # Make the request

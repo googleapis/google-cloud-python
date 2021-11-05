@@ -34,8 +34,12 @@ def sample_generate_access_token():
     client = credentials_v1.IAMCredentialsClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    service_account = "service_account_value"
+    name = f"projects/{project}/serviceAccounts/{service_account}"
+
     request = credentials_v1.GenerateAccessTokenRequest(
-        name="projects/{project}/serviceAccounts/{service_account}",
+        name=name,
         scope=['scope_value_1', 'scope_value_2'],
     )
 

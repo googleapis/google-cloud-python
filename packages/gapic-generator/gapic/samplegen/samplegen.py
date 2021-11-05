@@ -116,7 +116,7 @@ class TransformedRequest:
     def build(
         cls,
         request_type: wrappers.MessageType,
-        api_schema,
+        api_schema: api.API,
         base: str,
         attrs: List[AttributeRequestSetup],
         is_resource_request: bool,
@@ -163,25 +163,22 @@ class TransformedRequest:
             #
             # It's a precondition that the base field is
             # a valid field of the request message type.
-            resource_typestr = (
-                request_type.fields[base]
-                .options.Extensions[resource_pb2.resource_reference]
-                .type
-            )
+            resource_reference = request_type.fields[base].options.Extensions[resource_pb2.resource_reference]
+            resource_typestr = resource_reference.type or resource_reference.child_type
 
-            resource_message_descriptor = next(
-                (
-                    msg.options.Extensions[resource_pb2.resource]
-                    for msg in api_schema.messages.values()
-                    if msg.options.Extensions[resource_pb2.resource].type
-                    == resource_typestr
-                ),
-                None,
-            )
-            if not resource_message_descriptor:
+            resource_message = None
+            for service in api_schema.services.values():
+                resource_message = service.resource_messages_dict.get(
+                    resource_typestr)
+                if resource_message is not None:
+                    break
+
+            if resource_message is None:
                 raise types.NoSuchResource(
-                    f"No message exists for resource: {resource_typestr}"
+                    f"No message exists for resource: {resource_typestr}",
                 )
+            resource_message_descriptor = resource_message.options.Extensions[
+                resource_pb2.resource]
 
             # The field is only ever empty for singleton attributes.
             attr_names: List[str] = [a.field for a in attrs]  # type: ignore
@@ -944,6 +941,37 @@ def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str
                         yield spec
 
 
+def _generate_resource_path_request_object(field_name: str, message: wrappers.MessageType) -> List[Dict[str, str]]:
+    """Given a message that represents a resource, generate request objects that 
+    populate the resource path args.
+
+    Args:
+        field_name (str): The name of the field.
+        message (wrappers.MessageType): The message the field belongs to.
+
+    Returns:
+        List[Dict[str, str]]: A list of dicts that can be turned into TransformedRequests.
+    """
+    request = []
+
+    # Look for specific field names to substitute more realistic values
+    special_values_dict = {
+        "project": '"my-project-id"',
+        "location": '"us-central1"'
+    }
+
+    for resource_path_arg in message.resource_path_args:
+        value = special_values_dict.get(
+            resource_path_arg, f'"{resource_path_arg}_value"')
+        request.append({
+            # See TransformedRequest.build() for how 'field' is parsed
+            "field": f"{field_name}%{resource_path_arg}",
+            "value": value,
+        })
+
+    return request
+
+
 def generate_request_object(api_schema: api.API, service: wrappers.Service, message: wrappers.MessageType, field_name_prefix: str = ""):
     """Generate dummy input for a given message.
 
@@ -972,12 +1000,18 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
 
         # TODO(busunkim): Properly handle map fields
         if field.is_primitive:
-            placeholder_value = field.mock_value_original_type
-            # If this field identifies a resource use the resource path
-            if service.resource_messages_dict.get(field.resource_reference):
-                placeholder_value = service.resource_messages_dict[
-                    field.resource_reference].resource_path
-            request.append({"field": field_name, "value": placeholder_value})
+            resource_reference_message = service.resource_messages_dict.get(
+                field.resource_reference)
+            # Some resource patterns have no resource_path_args
+            # https://github.com/googleapis/gapic-generator-python/issues/701
+            if resource_reference_message and resource_reference_message.resource_path_args:
+                request += _generate_resource_path_request_object(
+                    field_name,
+                    resource_reference_message
+                )
+            else:
+                request.append(
+                    {"field": field_name, "value": field.mock_value_original_type})
         elif field.enum:
             # Choose the last enum value in the list since index 0 is often "unspecified"
             request.append(

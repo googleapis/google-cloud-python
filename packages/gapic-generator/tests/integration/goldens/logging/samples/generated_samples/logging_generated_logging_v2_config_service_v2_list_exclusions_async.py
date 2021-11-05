@@ -34,8 +34,12 @@ async def sample_list_exclusions():
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    exclusion = "exclusion_value"
+    parent = f"projects/{project}/exclusions/{exclusion}"
+
     request = logging_v2.ListExclusionsRequest(
-        parent="projects/{project}/exclusions/{exclusion}",
+        parent=parent,
     )
 
     # Make the request

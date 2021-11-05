@@ -34,8 +34,12 @@ def sample_get_log_metric():
     client = logging_v2.MetricsServiceV2Client()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    metric = "metric_value"
+    metric_name = f"projects/{project}/metrics/{metric}"
+
     request = logging_v2.GetLogMetricRequest(
-        metric_name="projects/{project}/metrics/{metric}",
+        metric_name=metric_name,
     )
 
     # Make the request

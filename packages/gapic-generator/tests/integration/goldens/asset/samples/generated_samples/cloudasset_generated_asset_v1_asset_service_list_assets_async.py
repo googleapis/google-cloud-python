@@ -35,7 +35,7 @@ async def sample_list_assets():
 
     # Initialize request argument(s)
     request = asset_v1.ListAssetsRequest(
-        parent="*",
+        parent="parent_value",
     )
 
     # Make the request

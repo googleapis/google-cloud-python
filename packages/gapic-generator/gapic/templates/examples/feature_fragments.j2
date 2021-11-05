@@ -160,9 +160,10 @@ client = {{ module_name }}.{{ client_name }}()
 {# This is a resource-name patterned lookup parameter #}
 {% with formals = [] %}
 {% for attr in parameter_block.body %}
-{% do formals.append("%s=%s"|format(attr.field, attr.input_parameter or attr.value)) %}
+{{ attr.field }} = {{ attr.input_parameter or attr.value }}
 {% endfor %}
-{{ parameter_block.base }} = "{{parameter_block.pattern }}".format({{ formals|join(", ") }})
+{{ parameter_block.base }} = f"{{parameter_block.pattern }}"
+
 {% endwith %}
 {% else %}{# End resource name construction #}
 {{ parameter_block.base }} = {{ module_name }}.{{ request_type.get_field(parameter_block.base).type.name }}()

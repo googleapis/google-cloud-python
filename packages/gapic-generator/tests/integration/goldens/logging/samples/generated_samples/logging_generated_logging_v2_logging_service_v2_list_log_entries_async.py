@@ -34,8 +34,12 @@ async def sample_list_log_entries():
     client = logging_v2.LoggingServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    log = "log_value"
+    resource_names = f"projects/{project}/logs/{log}"
+
     request = logging_v2.ListLogEntriesRequest(
-        resource_names="projects/{project}/logs/{log}",
+        resource_names=resource_names,
     )
 
     # Make the request

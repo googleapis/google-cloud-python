@@ -34,8 +34,13 @@ def sample_delete_bucket():
     client = logging_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    location = "us-central1"
+    bucket = "bucket_value"
+    name = f"projects/{project}/locations/{location}/buckets/{bucket}"
+
     request = logging_v2.DeleteBucketRequest(
-        name="projects/{project}/locations/{location}/buckets/{bucket}",
+        name=name,
     )
 
     # Make the request

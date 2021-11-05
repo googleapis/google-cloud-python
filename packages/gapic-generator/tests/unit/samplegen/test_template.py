@@ -301,7 +301,10 @@ def test_render_request_resource_name():
         ''',
         '''
         # Initialize request argument(s)
-        taxon = "kingdom/{kingdom}/phylum/{phylum}".format(kingdom="animalia", phylum=mollusca)
+        kingdom = "animalia"
+        phylum = mollusca
+        taxon = f"kingdom/{kingdom}/phylum/{phylum}"
+
         ''',
         request=samplegen.FullRequest(
             request_list=[

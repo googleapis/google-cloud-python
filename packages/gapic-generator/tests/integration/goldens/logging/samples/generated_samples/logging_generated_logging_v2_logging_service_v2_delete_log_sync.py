@@ -34,8 +34,12 @@ def sample_delete_log():
     client = logging_v2.LoggingServiceV2Client()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    log = "log_value"
+    log_name = f"projects/{project}/logs/{log}"
+
     request = logging_v2.DeleteLogRequest(
-        log_name="projects/{project}/logs/{log}",
+        log_name=log_name,
     )
 
     # Make the request

@@ -34,8 +34,12 @@ async def sample_get_sink():
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    sink = "sink_value"
+    sink_name = f"projects/{project}/sinks/{sink}"
+
     request = logging_v2.GetSinkRequest(
-        sink_name="projects/{project}/sinks/{sink}",
+        sink_name=sink_name,
     )
 
     # Make the request

@@ -34,8 +34,13 @@ async def sample_create_bucket():
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    location = "us-central1"
+    bucket = "bucket_value"
+    parent = f"projects/{project}/locations/{location}/buckets/{bucket}"
+
     request = logging_v2.CreateBucketRequest(
-        parent="projects/{project}/locations/{location}/buckets/{bucket}",
+        parent=parent,
         bucket_id="bucket_id_value",
     )
 

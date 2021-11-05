@@ -34,8 +34,12 @@ async def sample_get_feed():
     client = asset_v1.AssetServiceAsyncClient()
 
     # Initialize request argument(s)
+    project = "my-project-id"
+    feed = "feed_value"
+    name = f"projects/{project}/feeds/{feed}"
+
     request = asset_v1.GetFeedRequest(
-        name="projects/{project}/feeds/{feed}",
+        name=name,
     )
 
     # Make the request
