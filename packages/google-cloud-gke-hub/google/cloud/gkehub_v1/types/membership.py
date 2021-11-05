@@ -34,10 +34,14 @@ __protobuf__ = proto.module(
 class Membership(proto.Message):
     r"""Membership contains information about a member cluster.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         endpoint (google.cloud.gkehub_v1.types.MembershipEndpoint):
             Optional. Endpoint information to reach this
             member.
+
+            This field is a member of `oneof`_ ``type``.
         name (str):
             Output only. The full, unique name of this Membership
             resource in the format

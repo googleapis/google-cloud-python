@@ -66,14 +66,6 @@ for library in s.get_staging_dirs(default_version):
           f"{submodule}_v1"
         )
 
-    # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
-    s.replace(library / f"google/cloud/**/types/*.py",
-              r""".
-    Attributes:""",
-              r""".\n
-    Attributes:""",
-    )
-
     # Work around docs issue. Fix proposed upstream in cl/382492769
     s.replace(library / f"google/cloud/gkehub_{library.name}/types/feature.py",
         "    projects/{p}/locations/{l}/memberships/{m}",
@@ -102,6 +94,46 @@ for library in s.get_staging_dirs(default_version):
     s.move(library, excludes=excludes)
 
 s.remove_staging_dirs()
+
+# Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/pull/1071
+s.replace(
+    "google/cloud/**/types/*.py",
+    """\.
+            This field is a member of `oneof`_""",
+    """.
+
+            This field is a member of `oneof`_"""
+)
+
+# Work around gapic generator bug
+s.replace(
+    "google/cloud/**/types/configmanagement.py",
+    """Configuration for Policy Controller\n
+    Attributes""",
+    """Configuration for Policy Controller\n
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields\n
+    Attributes"""
+)
+
+# Work around issue with docstring
+s.replace("google/cloud/gkehub_v1beta1/types/membership.py",
+"""For example:
+             //gkeonprem.googleapis.com/projects/my-""",
+"""For example:
+            //gkeonprem.googleapis.com/projects/my-""",
+)
+
+
+# Work around issue with docstring
+s.replace("google/cloud/gkehub_v1beta1/types/membership.py",
+"""For example:
+
+             //gkemulticloud.googleapis.com/projects/my-""",
+"""For example:
+
+            //gkemulticloud.googleapis.com/projects/my-""",
+)
+
 
 # ----------------------------------------------------------------------------
 # Add templated files

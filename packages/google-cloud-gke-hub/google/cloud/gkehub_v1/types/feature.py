@@ -174,9 +174,13 @@ class FeatureState(proto.Message):
 class CommonFeatureSpec(proto.Message):
     r"""CommonFeatureSpec contains Hub-wide configuration information
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         multiclusteringress (google.cloud.gkehub_v1.multiclusteringress_v1.FeatureSpec):
             Multicluster Ingress-specific spec.
+
+            This field is a member of `oneof`_ ``feature_spec``.
     """
 
     multiclusteringress = proto.Field(
@@ -204,9 +208,14 @@ class MembershipFeatureSpec(proto.Message):
     r"""MembershipFeatureSpec contains configuration information for
     a single Membership.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         configmanagement (google.cloud.gkehub_v1.configmanagement_v1.MembershipSpec):
             Config Management-specific spec.
+
+            This field is a member of `oneof`_ ``feature_spec``.
     """
 
     configmanagement = proto.Field(
@@ -221,9 +230,14 @@ class MembershipFeatureState(proto.Message):
     r"""MembershipFeatureState contains Feature status information
     for a single Membership.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         configmanagement (google.cloud.gkehub_v1.configmanagement_v1.MembershipState):
             Config Management-specific state.
+
+            This field is a member of `oneof`_ ``feature_state``.
         state (google.cloud.gkehub_v1.types.FeatureState):
             The high-level state of this Feature for a
             single membership.

@@ -21,7 +21,7 @@ deep-remove-regex:
 deep-preserve-regex:
   - /owl-bot-staging/v1alpha
   - /owl-bot-staging/v1alpha2
-  - /owl-bot-staging/v1beta
+  - /owl-bot-staging/v1beta/
 
 deep-copy-regex:
   - source: /google/cloud/gkehub/(v.*)/.*-py/(.*)

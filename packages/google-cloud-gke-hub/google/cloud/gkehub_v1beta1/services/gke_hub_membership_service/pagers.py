@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.gkehub_v1beta1.types import membership
@@ -74,14 +74,14 @@ class ListMembershipsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[membership.ListMembershipsResponse]:
+    def pages(self) -> Iterator[membership.ListMembershipsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[membership.Membership]:
+    def __iter__(self) -> Iterator[membership.Membership]:
         for page in self.pages:
             yield from page.resources
 
@@ -136,14 +136,14 @@ class ListMembershipsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[membership.ListMembershipsResponse]:
+    async def pages(self) -> AsyncIterator[membership.ListMembershipsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[membership.Membership]:
+    def __aiter__(self) -> AsyncIterator[membership.Membership]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.resources:

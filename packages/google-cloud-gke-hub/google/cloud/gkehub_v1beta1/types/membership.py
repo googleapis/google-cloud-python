@@ -29,6 +29,8 @@ __protobuf__ = proto.module(
         "ResourceOptions",
         "ResourceManifest",
         "GkeCluster",
+        "OnPremCluster",
+        "MultiCloudCluster",
         "KubernetesMetadata",
         "Authority",
         "MembershipState",
@@ -54,6 +56,9 @@ __protobuf__ = proto.module(
 
 class Membership(proto.Message):
     r"""Membership contains information about a member cluster.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Output only. The full, unique name of this Membership
@@ -75,12 +80,14 @@ class Membership(proto.Message):
         labels (Sequence[google.cloud.gkehub_v1beta1.types.Membership.LabelsEntry]):
             Optional. GCP labels for this membership.
         description (str):
-            Required. Description of this membership, limited to 63
+            Optional. Description of this membership, limited to 63
             characters. Must match the regex:
             ``[a-zA-Z0-9][a-zA-Z0-9_\-\.\ ]*``
         endpoint (google.cloud.gkehub_v1beta1.types.MembershipEndpoint):
             Optional. Endpoint information to reach this
             member.
+
+            This field is a member of `oneof`_ ``type``.
         state (google.cloud.gkehub_v1beta1.types.MembershipState):
             Output only. State of the Membership
             resource.
@@ -162,10 +169,29 @@ class MembershipEndpoint(proto.Message):
     r"""MembershipEndpoint contains information needed to contact a
     Kubernetes API, endpoint and any additional Kubernetes metadata.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         gke_cluster (google.cloud.gkehub_v1beta1.types.GkeCluster):
-            Optional. GKE-specific information. Only
-            present if this Membership is a GKE cluster.
+            Optional. Specific information for a GKE-on-
+            CP cluster.
+
+            This field is a member of `oneof`_ ``type``.
+        on_prem_cluster (google.cloud.gkehub_v1beta1.types.OnPremCluster):
+            Optional. Specific information for a GKE On-
+            rem cluster.
+
+            This field is a member of `oneof`_ ``type``.
+        multi_cloud_cluster (google.cloud.gkehub_v1beta1.types.MultiCloudCluster):
+            Optional. Specific information for a GKE
+            Multi-Cloud cluster.
+
+            This field is a member of `oneof`_ ``type``.
         kubernetes_metadata (google.cloud.gkehub_v1beta1.types.KubernetesMetadata):
             Output only. Useful Kubernetes-specific
             metadata.
@@ -182,7 +208,15 @@ class MembershipEndpoint(proto.Message):
                Features.
     """
 
-    gke_cluster = proto.Field(proto.MESSAGE, number=4, message="GkeCluster",)
+    gke_cluster = proto.Field(
+        proto.MESSAGE, number=4, oneof="type", message="GkeCluster",
+    )
+    on_prem_cluster = proto.Field(
+        proto.MESSAGE, number=7, oneof="type", message="OnPremCluster",
+    )
+    multi_cloud_cluster = proto.Field(
+        proto.MESSAGE, number=8, oneof="type", message="MultiCloudCluster",
+    )
     kubernetes_metadata = proto.Field(
         proto.MESSAGE, number=5, message="KubernetesMetadata",
     )
@@ -289,16 +323,73 @@ class ResourceManifest(proto.Message):
 
 class GkeCluster(proto.Message):
     r"""GkeCluster contains information specific to GKE clusters.
+
     Attributes:
         resource_link (str):
             Immutable. Self-link of the GCP resource for
             the GKE cluster. For example:
-            > container.googleapis.com/projects/my-
+            //container.googleapis.com/projects/my-
             project/locations/us-west1-a/clusters/my-cluster
             Zonal clusters are also supported.
+        cluster_missing (bool):
+            Output only. If cluster_missing is set then it denotes that
+            the GKE cluster no longer exists in the GKE Control Plane.
     """
 
     resource_link = proto.Field(proto.STRING, number=1,)
+    cluster_missing = proto.Field(proto.BOOL, number=3,)
+
+
+class OnPremCluster(proto.Message):
+    r"""OnPremCluster contains information specific to GKE On-Prem
+    clusters.
+
+    Attributes:
+        resource_link (str):
+            Immutable. Self-link of the GCP resource for
+            the GKE On-Prem cluster. For example:
+            //gkeonprem.googleapis.com/projects/my-
+            project/locations/us-west1-a/vmwareClusters/my-
+            cluster  //gkeonprem.googleapis.com/projects/my-
+            project/locations/us-
+            west1-a/bareMetalClusters/my-cluster
+        cluster_missing (bool):
+            Output only. If cluster_missing is set then it denotes that
+            API(gkeonprem.googleapis.com) resource for this GKE On-Prem
+            cluster no longer exists.
+        admin_cluster (bool):
+            Immutable. Whether the cluster is an admin
+            cluster.
+    """
+
+    resource_link = proto.Field(proto.STRING, number=1,)
+    cluster_missing = proto.Field(proto.BOOL, number=2,)
+    admin_cluster = proto.Field(proto.BOOL, number=3,)
+
+
+class MultiCloudCluster(proto.Message):
+    r"""MultiCloudCluster contains information specific to GKE Multi-
+    loud clusters.
+
+    Attributes:
+        resource_link (str):
+            Immutable. Self-link of the GCP resource for
+            the GKE Multi-Cloud cluster. For example:
+
+            //gkemulticloud.googleapis.com/projects/my-
+            project/locations/us-west1-a/awsClusters/my-
+            cluster
+            //gkemulticloud.googleapis.com/projects/my-
+            project/locations/us-west1-a/azureClusters/my-
+            cluster
+        cluster_missing (bool):
+            Output only. If cluster_missing is set then it denotes that
+            API(gkemulticloud.googleapis.com) resource for this GKE
+            Multi-Cloud cluster no longer exists.
+    """
+
+    resource_link = proto.Field(proto.STRING, number=1,)
+    cluster_missing = proto.Field(proto.BOOL, number=2,)
 
 
 class KubernetesMetadata(proto.Message):
@@ -392,6 +483,7 @@ class Authority(proto.Message):
 
 class MembershipState(proto.Message):
     r"""State of the Membership resource.
+
     Attributes:
         code (google.cloud.gkehub_v1beta1.types.MembershipState.Code):
             Output only. The current state of the
@@ -533,11 +625,30 @@ class CreateMembershipRequest(proto.Message):
             63 characters.
         resource (google.cloud.gkehub_v1beta1.types.Membership):
             Required. The membership to create.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server will guarantee that for at
+            least 60 minutes after the first request.
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
     """
 
     parent = proto.Field(proto.STRING, number=1,)
     membership_id = proto.Field(proto.STRING, number=2,)
     resource = proto.Field(proto.MESSAGE, number=3, message="Membership",)
+    request_id = proto.Field(proto.STRING, number=4,)
 
 
 class DeleteMembershipRequest(proto.Message):
@@ -548,9 +659,28 @@ class DeleteMembershipRequest(proto.Message):
         name (str):
             Required. The Membership resource name in the format
             ``projects/*/locations/*/memberships/*``.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server will guarantee that for at
+            least 60 minutes after the first request.
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
     """
 
     name = proto.Field(proto.STRING, number=1,)
+    request_id = proto.Field(proto.STRING, number=4,)
 
 
 class UpdateMembershipRequest(proto.Message):
@@ -570,7 +700,27 @@ class UpdateMembershipRequest(proto.Message):
             its value here that field will be deleted. If you are
             updating a map field, set the value of a key to null or
             empty string to delete the key from the map. It's not
-            possible to update a key's value to the empty string.
+            possible to update a key's value to the empty string. If you
+            specify the update_mask to be a special path "*", fully
+            replaces all user-modifiable fields to match ``resource``.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server will guarantee that for at
+            least 60 minutes after the first request.
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -578,6 +728,7 @@ class UpdateMembershipRequest(proto.Message):
         proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
     )
     resource = proto.Field(proto.MESSAGE, number=3, message="Membership",)
+    request_id = proto.Field(proto.STRING, number=4,)
 
 
 class GenerateConnectManifestRequest(proto.Message):
@@ -663,6 +814,7 @@ class TypeMeta(proto.Message):
 
 class ConnectAgent(proto.Message):
     r"""The information required from end users to use GKE Connect.
+
     Attributes:
         name (str):
             Do not set.
@@ -775,6 +927,7 @@ class GenerateExclusivityManifestResponse(proto.Message):
 
 class OperationMetadata(proto.Message):
     r"""Represents the metadata of the long-running operation.
+
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the operation was

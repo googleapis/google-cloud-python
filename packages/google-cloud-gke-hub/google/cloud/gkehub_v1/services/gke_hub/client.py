@@ -30,6 +30,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+OptionalRetry = Union[retries.Retry, object]
+
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.gkehub_v1.services.gke_hub import pagers
@@ -387,7 +389,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
         request: Union[service.ListMembershipsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMembershipsPager:
@@ -467,7 +469,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
         request: Union[service.ListFeaturesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFeaturesPager:
@@ -547,7 +549,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
         request: Union[service.GetMembershipRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> membership.Membership:
@@ -618,7 +620,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
         request: Union[service.GetFeatureRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> feature.Feature:
@@ -691,7 +693,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
         parent: str = None,
         resource: membership.Membership = None,
         membership_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -806,7 +808,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
         parent: str = None,
         resource: feature.Feature = None,
         feature_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -903,7 +905,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
         request: Union[service.DeleteMembershipRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1000,7 +1002,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
         request: Union[service.DeleteFeatureRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1094,7 +1096,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
         name: str = None,
         resource: membership.Membership = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1201,7 +1203,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
         name: str = None,
         resource: feature.Feature = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
@@ -1305,7 +1307,7 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
         self,
         request: Union[service.GenerateConnectManifestRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.GenerateConnectManifestResponse:

@@ -181,6 +181,8 @@ class GitConfig(proto.Message):
 class PolicyController(proto.Message):
     r"""Configuration for Policy Controller
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         enabled (bool):
             Enables the installation of Policy
@@ -189,10 +191,14 @@ class PolicyController(proto.Message):
         template_library_installed (bool):
             Installs the default template library along
             with Policy Controller.
+
+            This field is a member of `oneof`_ ``_template_library_installed``.
         audit_interval_seconds (int):
             Sets the interval for Policy Controller Audit
             Scans (in seconds). When set to 0, this disables
             audit functionality altogether.
+
+            This field is a member of `oneof`_ ``_audit_interval_seconds``.
         exemptable_namespaces (Sequence[str]):
             The set of namespaces that are excluded from
             Policy Controller checks. Namespaces do not need
