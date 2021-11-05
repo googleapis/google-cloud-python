@@ -678,6 +678,84 @@ class VersionsAsyncClient:
         # Done; return the response.
         return response
 
+    async def compare_versions(
+        self,
+        request: Union[version.CompareVersionsRequest, dict] = None,
+        *,
+        base_version: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> version.CompareVersionsResponse:
+        r"""Compares the specified base version with target
+        version.
+
+        Args:
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.CompareVersionsRequest, dict]):
+                The request object. The request message for
+                [Versions.CompareVersions][google.cloud.dialogflow.cx.v3beta1.Versions.CompareVersions].
+            base_version (:class:`str`):
+                Required. Name of the base flow version to compare with
+                the target version. Use version ID ``0`` to indicate the
+                draft version of the specified flow.
+
+                Format:
+                ``projects/<Project ID>/locations/<Location ID>/agents/ <Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+
+                This corresponds to the ``base_version`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflowcx_v3beta1.types.CompareVersionsResponse:
+                The response message for
+                [Versions.CompareVersions][google.cloud.dialogflow.cx.v3beta1.Versions.CompareVersions].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([base_version])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = version.CompareVersionsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if base_version is not None:
+            request.base_version = base_version
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.compare_versions,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("base_version", request.base_version),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
     async def __aenter__(self):
         return self
 

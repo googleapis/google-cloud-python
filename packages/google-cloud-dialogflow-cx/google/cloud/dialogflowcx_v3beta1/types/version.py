@@ -32,6 +32,8 @@ __protobuf__ = proto.module(
         "UpdateVersionRequest",
         "DeleteVersionRequest",
         "LoadVersionRequest",
+        "CompareVersionsRequest",
+        "CompareVersionsResponse",
     },
 )
 
@@ -227,6 +229,60 @@ class LoadVersionRequest(proto.Message):
 
     name = proto.Field(proto.STRING, number=1,)
     allow_override_agent_resources = proto.Field(proto.BOOL, number=2,)
+
+
+class CompareVersionsRequest(proto.Message):
+    r"""The request message for
+    [Versions.CompareVersions][google.cloud.dialogflow.cx.v3beta1.Versions.CompareVersions].
+
+    Attributes:
+        base_version (str):
+            Required. Name of the base flow version to compare with the
+            target version. Use version ID ``0`` to indicate the draft
+            version of the specified flow.
+
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/ <Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+        target_version (str):
+            Required. Name of the target flow version to compare with
+            the base version. Use version ID ``0`` to indicate the draft
+            version of the specified flow. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+        language_code (str):
+            The language to compare the flow versions for.
+
+            If not specified, the agent's default language is used.
+            `Many
+            languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            are supported. Note: languages must be enabled in the agent
+            before they can be used.
+    """
+
+    base_version = proto.Field(proto.STRING, number=1,)
+    target_version = proto.Field(proto.STRING, number=2,)
+    language_code = proto.Field(proto.STRING, number=3,)
+
+
+class CompareVersionsResponse(proto.Message):
+    r"""The response message for
+    [Versions.CompareVersions][google.cloud.dialogflow.cx.v3beta1.Versions.CompareVersions].
+
+    Attributes:
+        base_version_content_json (str):
+            JSON representation of the base version
+            content.
+        target_version_content_json (str):
+            JSON representation of the target version
+            content.
+        compare_time (google.protobuf.timestamp_pb2.Timestamp):
+            The timestamp when the two version compares.
+    """
+
+    base_version_content_json = proto.Field(proto.STRING, number=1,)
+    target_version_content_json = proto.Field(proto.STRING, number=2,)
+    compare_time = proto.Field(
+        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

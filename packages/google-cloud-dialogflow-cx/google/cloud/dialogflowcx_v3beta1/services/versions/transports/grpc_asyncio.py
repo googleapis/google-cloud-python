@@ -435,6 +435,35 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
             )
         return self._stubs["load_version"]
 
+    @property
+    def compare_versions(
+        self,
+    ) -> Callable[
+        [version.CompareVersionsRequest], Awaitable[version.CompareVersionsResponse]
+    ]:
+        r"""Return a callable for the compare versions method over gRPC.
+
+        Compares the specified base version with target
+        version.
+
+        Returns:
+            Callable[[~.CompareVersionsRequest],
+                    Awaitable[~.CompareVersionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "compare_versions" not in self._stubs:
+            self._stubs["compare_versions"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Versions/CompareVersions",
+                request_serializer=version.CompareVersionsRequest.serialize,
+                response_deserializer=version.CompareVersionsResponse.deserialize,
+            )
+        return self._stubs["compare_versions"]
+
     def close(self):
         return self.grpc_channel.close()
 

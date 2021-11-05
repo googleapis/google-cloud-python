@@ -1795,6 +1795,214 @@ async def test_load_version_flattened_error_async():
         )
 
 
+def test_compare_versions(
+    transport: str = "grpc", request_type=version.CompareVersionsRequest
+):
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.compare_versions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = version.CompareVersionsResponse(
+            base_version_content_json="base_version_content_json_value",
+            target_version_content_json="target_version_content_json_value",
+        )
+        response = client.compare_versions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == version.CompareVersionsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, version.CompareVersionsResponse)
+    assert response.base_version_content_json == "base_version_content_json_value"
+    assert response.target_version_content_json == "target_version_content_json_value"
+
+
+def test_compare_versions_from_dict():
+    test_compare_versions(request_type=dict)
+
+
+def test_compare_versions_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.compare_versions), "__call__") as call:
+        client.compare_versions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == version.CompareVersionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_compare_versions_async(
+    transport: str = "grpc_asyncio", request_type=version.CompareVersionsRequest
+):
+    client = VersionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.compare_versions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            version.CompareVersionsResponse(
+                base_version_content_json="base_version_content_json_value",
+                target_version_content_json="target_version_content_json_value",
+            )
+        )
+        response = await client.compare_versions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == version.CompareVersionsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, version.CompareVersionsResponse)
+    assert response.base_version_content_json == "base_version_content_json_value"
+    assert response.target_version_content_json == "target_version_content_json_value"
+
+
+@pytest.mark.asyncio
+async def test_compare_versions_async_from_dict():
+    await test_compare_versions_async(request_type=dict)
+
+
+def test_compare_versions_field_headers():
+    client = VersionsClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = version.CompareVersionsRequest()
+
+    request.base_version = "base_version/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.compare_versions), "__call__") as call:
+        call.return_value = version.CompareVersionsResponse()
+        client.compare_versions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "base_version=base_version/value",) in kw[
+        "metadata"
+    ]
+
+
+@pytest.mark.asyncio
+async def test_compare_versions_field_headers_async():
+    client = VersionsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = version.CompareVersionsRequest()
+
+    request.base_version = "base_version/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.compare_versions), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            version.CompareVersionsResponse()
+        )
+        await client.compare_versions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "base_version=base_version/value",) in kw[
+        "metadata"
+    ]
+
+
+def test_compare_versions_flattened():
+    client = VersionsClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.compare_versions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = version.CompareVersionsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.compare_versions(base_version="base_version_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].base_version == "base_version_value"
+
+
+def test_compare_versions_flattened_error():
+    client = VersionsClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.compare_versions(
+            version.CompareVersionsRequest(), base_version="base_version_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_compare_versions_flattened_async():
+    client = VersionsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.compare_versions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = version.CompareVersionsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            version.CompareVersionsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.compare_versions(base_version="base_version_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].base_version == "base_version_value"
+
+
+@pytest.mark.asyncio
+async def test_compare_versions_flattened_error_async():
+    client = VersionsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.compare_versions(
+            version.CompareVersionsRequest(), base_version="base_version_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.VersionsGrpcTransport(
@@ -1895,6 +2103,7 @@ def test_versions_base_transport():
         "update_version",
         "delete_version",
         "load_version",
+        "compare_versions",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):

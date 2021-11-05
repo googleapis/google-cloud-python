@@ -146,6 +146,9 @@ class VersionsTransport(abc.ABC):
             self.load_version: gapic_v1.method.wrap_method(
                 self.load_version, default_timeout=None, client_info=client_info,
             ),
+            self.compare_versions: gapic_v1.method.wrap_method(
+                self.compare_versions, default_timeout=None, client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -212,6 +215,17 @@ class VersionsTransport(abc.ABC):
     ) -> Callable[
         [version.LoadVersionRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def compare_versions(
+        self,
+    ) -> Callable[
+        [version.CompareVersionsRequest],
+        Union[
+            version.CompareVersionsResponse, Awaitable[version.CompareVersionsResponse]
+        ],
     ]:
         raise NotImplementedError()
 
