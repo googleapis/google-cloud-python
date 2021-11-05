@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.56.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.55.1...v0.56.0) (2021-11-05)
+
+
+### Features
+
+* **snippetgen:** turn resource path strings into f-strings ([#1012](https://www.github.com/googleapis/gapic-generator-python/issues/1012)) ([a110e1d](https://www.github.com/googleapis/gapic-generator-python/commit/a110e1d8387ea37b85ab0621bacd30da175fe85b))
+
+
+### Bug Fixes
+
+* fix rest unit test ([#1074](https://www.github.com/googleapis/gapic-generator-python/issues/1074)) ([3b2918e](https://www.github.com/googleapis/gapic-generator-python/commit/3b2918ecaeb90229f22834438dc31755498ee2d0))
+
 ### [0.55.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.55.0...v0.55.1) (2021-11-04)
 
 
