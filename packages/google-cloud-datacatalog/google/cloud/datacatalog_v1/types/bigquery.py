@@ -29,12 +29,16 @@ __protobuf__ = proto.module(
 class BigQueryConnectionSpec(proto.Message):
     r"""Specification for the BigQuery connection.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         connection_type (google.cloud.datacatalog_v1.types.BigQueryConnectionSpec.ConnectionType):
             The type of the BigQuery connection.
         cloud_sql (google.cloud.datacatalog_v1.types.CloudSqlBigQueryConnectionSpec):
             Specification for the BigQuery connection to
             a Cloud SQL instance.
+
+            This field is a member of `oneof`_ ``connection_spec``.
         has_credential (bool):
             True if there are credentials attached to the
             BigQuery connection; false otherwise.

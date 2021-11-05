@@ -38,6 +38,13 @@ class SearchCatalogResult(proto.Message):
     Each result captures details of one entry that matches the
     search.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         search_result_type (google.cloud.datacatalog_v1.types.SearchResultType):
             Type of the search result.
@@ -75,9 +82,13 @@ class SearchCatalogResult(proto.Message):
             Output only. The source system that Data
             Catalog automatically integrates  with, such as
             BigQuery, Cloud Pub/Sub, or Dataproc Metastore.
+
+            This field is a member of `oneof`_ ``system``.
         user_specified_system (str):
             Custom source system that you can manually
             integrate Data Catalog with.
+
+            This field is a member of `oneof`_ ``system``.
         fully_qualified_name (str):
             Fully qualified name (FQN) of the resource.
 

@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.cloud.datacatalog_v1.types import policytagmanager
 from google.cloud.datacatalog_v1.types import policytagmanagerserialization
@@ -177,9 +179,11 @@ class PolicyTagManagerSerializationAsyncClient:
 
     async def replace_taxonomy(
         self,
-        request: policytagmanagerserialization.ReplaceTaxonomyRequest = None,
+        request: Union[
+            policytagmanagerserialization.ReplaceTaxonomyRequest, dict
+        ] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanager.Taxonomy:
@@ -198,7 +202,7 @@ class PolicyTagManagerSerializationAsyncClient:
         -  Updates policy tags with valid resources names accordingly.
 
         Args:
-            request (:class:`google.cloud.datacatalog_v1.types.ReplaceTaxonomyRequest`):
+            request (Union[google.cloud.datacatalog_v1.types.ReplaceTaxonomyRequest, dict]):
                 The request object. Request message for
                 [ReplaceTaxonomy][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ReplaceTaxonomy].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -248,9 +252,11 @@ class PolicyTagManagerSerializationAsyncClient:
 
     async def import_taxonomies(
         self,
-        request: policytagmanagerserialization.ImportTaxonomiesRequest = None,
+        request: Union[
+            policytagmanagerserialization.ImportTaxonomiesRequest, dict
+        ] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanagerserialization.ImportTaxonomiesResponse:
@@ -264,7 +270,7 @@ class PolicyTagManagerSerializationAsyncClient:
         created in bulk using nested protocol buffer structures.
 
         Args:
-            request (:class:`google.cloud.datacatalog_v1.types.ImportTaxonomiesRequest`):
+            request (Union[google.cloud.datacatalog_v1.types.ImportTaxonomiesRequest, dict]):
                 The request object. Request message for
                 [ImportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ImportTaxonomies].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -304,9 +310,11 @@ class PolicyTagManagerSerializationAsyncClient:
 
     async def export_taxonomies(
         self,
-        request: policytagmanagerserialization.ExportTaxonomiesRequest = None,
+        request: Union[
+            policytagmanagerserialization.ExportTaxonomiesRequest, dict
+        ] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanagerserialization.ExportTaxonomiesResponse:
@@ -319,7 +327,7 @@ class PolicyTagManagerSerializationAsyncClient:
         ``ImportTaxonomies`` calls.
 
         Args:
-            request (:class:`google.cloud.datacatalog_v1.types.ExportTaxonomiesRequest`):
+            request (Union[google.cloud.datacatalog_v1.types.ExportTaxonomiesRequest, dict]):
                 The request object. Request message for
                 [ExportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ExportTaxonomies].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,

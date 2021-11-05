@@ -463,6 +463,13 @@ class LookupEntryRequest(proto.Message):
     r"""Request message for
     [LookupEntry][google.cloud.datacatalog.v1.DataCatalog.LookupEntry].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         linked_resource (str):
             The full name of the Google Cloud Platform resource the Data
@@ -474,6 +481,8 @@ class LookupEntryRequest(proto.Message):
 
             -  ``//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/{DATASET_ID}/tables/{TABLE_ID}``
             -  ``//pubsub.googleapis.com/projects/{PROJECT_ID}/topics/{TOPIC_ID}``
+
+            This field is a member of `oneof`_ ``target_name``.
         sql_resource (str):
             The SQL name of the entry. SQL names are case-sensitive.
 
@@ -488,6 +497,8 @@ class LookupEntryRequest(proto.Message):
             Identifiers (``*_ID``) should comply with the [Lexical
             structure in Standard SQL]
             (https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical).
+
+            This field is a member of `oneof`_ ``target_name``.
         fully_qualified_name (str):
             Fully qualified name (FQN) of the resource.
 
@@ -504,6 +515,7 @@ class LookupEntryRequest(proto.Message):
             Example for a DPMS table:
 
             ``dataproc_metastore:{PROJECT_ID}.{LOCATION_ID}.{INSTANCE_ID}.{DATABASE_ID}.{TABLE_ID}``
+            This field is a member of `oneof`_ ``target_name``.
     """
 
     linked_resource = proto.Field(proto.STRING, number=1, oneof="target_name",)
@@ -521,6 +533,13 @@ class Entry(proto.Message):
     An entry resource contains resource details, for example, its
     schema. Additionally, you can attach flexible metadata to an entry
     in the form of a [Tag][google.cloud.datacatalog.v1.Tag].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -577,6 +596,8 @@ class Entry(proto.Message):
             Currently, only ``FILESET`` enum value is allowed. All other
             entries created in Data Catalog must use the
             ``user_specified_type``.
+
+            This field is a member of `oneof`_ ``entry_type``.
         user_specified_type (str):
             Custom entry type that doesn't match any of the values
             allowed for input and listed in the ``EntryType`` enum.
@@ -593,10 +614,14 @@ class Entry(proto.Message):
             -  Can only contain letters, numbers, and underscores.
             -  Must be at least 1 character and at most 64 characters
                long.
+
+            This field is a member of `oneof`_ ``entry_type``.
         integrated_system (google.cloud.datacatalog_v1.types.IntegratedSystem):
             Output only. Indicates the entry's source
             system that Data Catalog integrates with, such
             as BigQuery, Pub/Sub, or Dataproc Metastore.
+
+            This field is a member of `oneof`_ ``system``.
         user_specified_system (str):
             Indicates the entry's source system that Data Catalog
             doesn't automatically integrate with.
@@ -609,12 +634,18 @@ class Entry(proto.Message):
             -  Can only contain letters, numbers, and underscores.
             -  Must be at least 1 character and at most 64 characters
                long.
+
+            This field is a member of `oneof`_ ``system``.
         gcs_fileset_spec (google.cloud.datacatalog_v1.types.GcsFilesetSpec):
             Specification that applies to a Cloud Storage fileset. Valid
             only for entries with the ``FILESET`` type.
+
+            This field is a member of `oneof`_ ``type_spec``.
         bigquery_table_spec (google.cloud.datacatalog_v1.types.BigQueryTableSpec):
             Specification that applies to a BigQuery table. Valid only
             for entries with the ``TABLE`` type.
+
+            This field is a member of `oneof`_ ``type_spec``.
         bigquery_date_sharded_spec (google.cloud.datacatalog_v1.types.BigQueryDateShardedSpec):
             Specification for a group of BigQuery tables with the
             ``[prefix]YYYYMMDD`` name pattern.
@@ -622,16 +653,24 @@ class Entry(proto.Message):
             For more information, see [Introduction to partitioned
             tables]
             (https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding).
+
+            This field is a member of `oneof`_ ``type_spec``.
         database_table_spec (google.cloud.datacatalog_v1.types.DatabaseTableSpec):
             Specification that applies to a table resource. Valid only
             for entries with the ``TABLE`` type.
+
+            This field is a member of `oneof`_ ``spec``.
         data_source_connection_spec (google.cloud.datacatalog_v1.types.DataSourceConnectionSpec):
             Specification that applies to a data source connection.
             Valid only for entries with the ``DATA_SOURCE_CONNECTION``
             type.
+
+            This field is a member of `oneof`_ ``spec``.
         routine_spec (google.cloud.datacatalog_v1.types.RoutineSpec):
             Specification that applies to a user-defined function or
             procedure. Valid only for entries with the ``ROUTINE`` type.
+
+            This field is a member of `oneof`_ ``spec``.
         display_name (str):
             Display name of an entry.
 
@@ -757,6 +796,9 @@ class RoutineSpec(proto.Message):
     r"""Specification that applies to a routine. Valid only for entries with
     the ``ROUTINE`` type.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         routine_type (google.cloud.datacatalog_v1.types.RoutineSpec.RoutineType):
             The type of the routine.
@@ -776,6 +818,8 @@ class RoutineSpec(proto.Message):
             The body of the routine.
         bigquery_routine_spec (google.cloud.datacatalog_v1.types.BigQueryRoutineSpec):
             Fields specific for BigQuery routines.
+
+            This field is a member of `oneof`_ ``system_spec``.
     """
 
     class RoutineType(proto.Enum):

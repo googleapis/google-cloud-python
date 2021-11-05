@@ -39,15 +39,26 @@ class TableSourceType(proto.Enum):
 class BigQueryTableSpec(proto.Message):
     r"""Describes a BigQuery table.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         table_source_type (google.cloud.datacatalog_v1.types.TableSourceType):
             Output only. The table source type.
         view_spec (google.cloud.datacatalog_v1.types.ViewSpec):
             Table view specification. Populated only if the
             ``table_source_type`` is ``BIGQUERY_VIEW``.
+
+            This field is a member of `oneof`_ ``type_spec``.
         table_spec (google.cloud.datacatalog_v1.types.TableSpec):
             Specification of a BigQuery table. Populated only if the
             ``table_source_type`` is ``BIGQUERY_TABLE``.
+
+            This field is a member of `oneof`_ ``type_spec``.
     """
 
     table_source_type = proto.Field(proto.ENUM, number=1, enum="TableSourceType",)

@@ -116,14 +116,25 @@ class ImportTaxonomiesRequest(proto.Message):
     r"""Request message for
     [ImportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ImportTaxonomies].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. Resource name of project that the
             imported taxonomies will belong to.
         inline_source (google.cloud.datacatalog_v1.types.InlineSource):
             Inline source taxonomy to import.
+
+            This field is a member of `oneof`_ ``source``.
         cross_regional_source (google.cloud.datacatalog_v1.types.CrossRegionalSource):
             Cross-regional source taxonomy to import.
+
+            This field is a member of `oneof`_ ``source``.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
@@ -179,6 +190,9 @@ class ExportTaxonomiesRequest(proto.Message):
     r"""Request message for
     [ExportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ExportTaxonomies].
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         parent (str):
             Required. Resource name of the project that
@@ -189,6 +203,8 @@ class ExportTaxonomiesRequest(proto.Message):
         serialized_taxonomies (bool):
             Serialized export taxonomies that contain all
             the policy tags as nested protocol buffers.
+
+            This field is a member of `oneof`_ ``destination``.
     """
 
     parent = proto.Field(proto.STRING, number=1,)

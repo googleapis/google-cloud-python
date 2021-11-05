@@ -33,6 +33,9 @@ class Tag(proto.Message):
     IAM <https://cloud.google.com/data-catalog/docs/concepts/iam>`__ for
     information on the permissions needed to create or view tags.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The resource name of the tag in URL format
@@ -56,6 +59,8 @@ class Tag(proto.Message):
 
             To attach a tag to a nested column, separate column names
             with a dot (``.``). Example: ``column.nested_column``.
+
+            This field is a member of `oneof`_ ``scope``.
         fields (Sequence[google.cloud.datacatalog_v1.types.Tag.FieldsEntry]):
             Required. Maps the ID of a tag field to its
             value and additional information about that
@@ -76,23 +81,40 @@ class TagField(proto.Message):
     r"""Contains the value and additional information on a field within a
     [Tag][google.cloud.datacatalog.v1.Tag].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         display_name (str):
             Output only. The display name of this field.
         double_value (float):
             The value of a tag field with a double type.
+
+            This field is a member of `oneof`_ ``kind``.
         string_value (str):
             The value of a tag field with a string type.
             The maximum length is 2000 UTF-8 characters.
+
+            This field is a member of `oneof`_ ``kind``.
         bool_value (bool):
             The value of a tag field with a boolean type.
+
+            This field is a member of `oneof`_ ``kind``.
         timestamp_value (google.protobuf.timestamp_pb2.Timestamp):
             The value of a tag field with a timestamp
             type.
+
+            This field is a member of `oneof`_ ``kind``.
         enum_value (google.cloud.datacatalog_v1.types.TagField.EnumValue):
             The value of a tag field with an enum type.
             This value must be one of the allowed values
             listed in this enum.
+
+            This field is a member of `oneof`_ ``kind``.
         richtext_value (str):
             The value of a tag field with a rich text
             type.
@@ -100,6 +122,8 @@ class TagField(proto.Message):
             HTML descriptions including encoded images. The
             maximum length of the text without images is 100
             KiB.
+
+            This field is a member of `oneof`_ ``kind``.
         order (int):
             Output only. The order of this field with respect to other
             fields in this tag. Can be set by
@@ -269,12 +293,23 @@ class TagTemplateField(proto.Message):
 class FieldType(proto.Message):
     r"""
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         primitive_type (google.cloud.datacatalog_v1.types.FieldType.PrimitiveType):
             Primitive types, such as string, boolean,
             etc.
+
+            This field is a member of `oneof`_ ``type_decl``.
         enum_type (google.cloud.datacatalog_v1.types.FieldType.EnumType):
             An enum type.
+
+            This field is a member of `oneof`_ ``type_decl``.
     """
 
     class PrimitiveType(proto.Enum):
