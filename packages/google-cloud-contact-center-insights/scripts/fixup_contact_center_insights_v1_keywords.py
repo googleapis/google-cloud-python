@@ -66,6 +66,7 @@ class contact_center_insightsCallTransformer(cst.CSTTransformer):
         'update_conversation': ('conversation', 'update_mask', ),
         'update_issue': ('issue', 'update_mask', ),
         'update_issue_model': ('issue_model', 'update_mask', ),
+        'update_phrase_matcher': ('phrase_matcher', 'update_mask', ),
         'update_settings': ('settings', 'update_mask', ),
     }
 

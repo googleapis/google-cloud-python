@@ -151,6 +151,9 @@ from google.cloud.contact_center_insights_v1.types.contact_center_insights impor
     UpdateIssueRequest,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    UpdatePhraseMatcherRequest,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
     UpdateSettingsRequest,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
@@ -255,6 +258,7 @@ __all__ = (
     "UpdateConversationRequest",
     "UpdateIssueModelRequest",
     "UpdateIssueRequest",
+    "UpdatePhraseMatcherRequest",
     "UpdateSettingsRequest",
     "ConversationView",
     "Analysis",

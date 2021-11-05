@@ -60,6 +60,7 @@ from .types.contact_center_insights import UndeployIssueModelResponse
 from .types.contact_center_insights import UpdateConversationRequest
 from .types.contact_center_insights import UpdateIssueModelRequest
 from .types.contact_center_insights import UpdateIssueRequest
+from .types.contact_center_insights import UpdatePhraseMatcherRequest
 from .types.contact_center_insights import UpdateSettingsRequest
 from .types.contact_center_insights import ConversationView
 from .types.resources import Analysis
@@ -186,5 +187,6 @@ __all__ = (
     "UpdateConversationRequest",
     "UpdateIssueModelRequest",
     "UpdateIssueRequest",
+    "UpdatePhraseMatcherRequest",
     "UpdateSettingsRequest",
 )

@@ -974,6 +974,35 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["delete_phrase_matcher"]
 
     @property
+    def update_phrase_matcher(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdatePhraseMatcherRequest],
+        Awaitable[resources.PhraseMatcher],
+    ]:
+        r"""Return a callable for the update phrase matcher method over gRPC.
+
+        Updates a phrase matcher.
+
+        Returns:
+            Callable[[~.UpdatePhraseMatcherRequest],
+                    Awaitable[~.PhraseMatcher]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_phrase_matcher" not in self._stubs:
+            self._stubs["update_phrase_matcher"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdatePhraseMatcher",
+                request_serializer=contact_center_insights.UpdatePhraseMatcherRequest.serialize,
+                response_deserializer=resources.PhraseMatcher.deserialize,
+            )
+        return self._stubs["update_phrase_matcher"]
+
+    @property
     def calculate_stats(
         self,
     ) -> Callable[

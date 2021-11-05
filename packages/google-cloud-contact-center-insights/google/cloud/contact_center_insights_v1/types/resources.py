@@ -892,10 +892,13 @@ class IssueModelLabelStats(proto.Message):
             labeled_conversations_count (int):
                 Number of conversations attached to the issue
                 at this point in time.
+            display_name (str):
+                Display name of the issue.
         """
 
         issue = proto.Field(proto.STRING, number=1,)
         labeled_conversations_count = proto.Field(proto.INT64, number=2,)
+        display_name = proto.Field(proto.STRING, number=3,)
 
     analyzed_conversations_count = proto.Field(proto.INT64, number=1,)
     unclassified_conversations_count = proto.Field(proto.INT64, number=2,)

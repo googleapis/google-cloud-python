@@ -145,6 +145,11 @@
                 "update_issue_model"
               ]
             },
+            "UpdatePhraseMatcher": {
+              "methods": [
+                "update_phrase_matcher"
+              ]
+            },
             "UpdateSettings": {
               "methods": [
                 "update_settings"
@@ -288,6 +293,11 @@
             "UpdateIssueModel": {
               "methods": [
                 "update_issue_model"
+              ]
+            },
+            "UpdatePhraseMatcher": {
+              "methods": [
+                "update_phrase_matcher"
               ]
             },
             "UpdateSettings": {

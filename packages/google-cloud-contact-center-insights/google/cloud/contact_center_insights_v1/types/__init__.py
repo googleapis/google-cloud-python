@@ -57,6 +57,7 @@ from .contact_center_insights import (
     UpdateConversationRequest,
     UpdateIssueModelRequest,
     UpdateIssueRequest,
+    UpdatePhraseMatcherRequest,
     UpdateSettingsRequest,
     ConversationView,
 )
@@ -145,6 +146,7 @@ __all__ = (
     "UpdateConversationRequest",
     "UpdateIssueModelRequest",
     "UpdateIssueRequest",
+    "UpdatePhraseMatcherRequest",
     "UpdateSettingsRequest",
     "ConversationView",
     "Analysis",

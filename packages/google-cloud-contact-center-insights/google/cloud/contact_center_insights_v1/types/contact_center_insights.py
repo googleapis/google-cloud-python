@@ -68,6 +68,7 @@ __protobuf__ = proto.module(
         "ListPhraseMatchersResponse",
         "GetPhraseMatcherRequest",
         "DeletePhraseMatcherRequest",
+        "UpdatePhraseMatcherRequest",
         "GetSettingsRequest",
         "UpdateSettingsRequest",
     },
@@ -124,6 +125,11 @@ class CalculateStatsResponse(proto.Message):
             Key has the format:
             ``projects/<Project ID>/locations/<Location ID>/issueModels/<Issue Model ID>/issues/<Issue ID>``
             Deprecated, use ``issue_matches_stats`` field instead.
+        issue_matches_stats (Sequence[google.cloud.contact_center_insights_v1.types.CalculateStatsResponse.IssueMatchesStatsEntry]):
+            A map associating each issue resource name with its
+            respective number of matches in the set of conversations.
+            Key has the format:
+            ``projects/<ProjectID>/locations/<LocationID>/issueModels/<IssueModelID>/issues/<IssueID>``
         conversation_count_time_series (google.cloud.contact_center_insights_v1.types.CalculateStatsResponse.TimeSeries):
             A time series representing the count of
             conversations created over time that match that
@@ -176,6 +182,12 @@ class CalculateStatsResponse(proto.Message):
     smart_highlighter_matches = proto.MapField(proto.STRING, proto.INT32, number=4,)
     custom_highlighter_matches = proto.MapField(proto.STRING, proto.INT32, number=5,)
     issue_matches = proto.MapField(proto.STRING, proto.INT32, number=6,)
+    issue_matches_stats = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=8,
+        message=resources.IssueModelLabelStats.IssueStats,
+    )
     conversation_count_time_series = proto.Field(
         proto.MESSAGE, number=7, message=TimeSeries,
     )
@@ -864,6 +876,25 @@ class DeletePhraseMatcherRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1,)
+
+
+class UpdatePhraseMatcherRequest(proto.Message):
+    r"""The request to update a phrase matcher.
+
+    Attributes:
+        phrase_matcher (google.cloud.contact_center_insights_v1.types.PhraseMatcher):
+            Required. The new values for the phrase
+            matcher.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of fields to be updated.
+    """
+
+    phrase_matcher = proto.Field(
+        proto.MESSAGE, number=1, message=resources.PhraseMatcher,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class GetSettingsRequest(proto.Message):

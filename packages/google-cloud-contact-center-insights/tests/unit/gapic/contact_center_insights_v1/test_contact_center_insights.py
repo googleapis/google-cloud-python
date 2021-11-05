@@ -6698,6 +6698,276 @@ async def test_delete_phrase_matcher_flattened_error_async():
         )
 
 
+def test_update_phrase_matcher(
+    transport: str = "grpc",
+    request_type=contact_center_insights.UpdatePhraseMatcherRequest,
+):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_phrase_matcher), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.PhraseMatcher(
+            name="name_value",
+            revision_id="revision_id_value",
+            version_tag="version_tag_value",
+            display_name="display_name_value",
+            type_=resources.PhraseMatcher.PhraseMatcherType.ALL_OF,
+            active=True,
+            role_match=resources.ConversationParticipant.Role.HUMAN_AGENT,
+        )
+        response = client.update_phrase_matcher(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.UpdatePhraseMatcherRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.PhraseMatcher)
+    assert response.name == "name_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.version_tag == "version_tag_value"
+    assert response.display_name == "display_name_value"
+    assert response.type_ == resources.PhraseMatcher.PhraseMatcherType.ALL_OF
+    assert response.active is True
+    assert response.role_match == resources.ConversationParticipant.Role.HUMAN_AGENT
+
+
+def test_update_phrase_matcher_from_dict():
+    test_update_phrase_matcher(request_type=dict)
+
+
+def test_update_phrase_matcher_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_phrase_matcher), "__call__"
+    ) as call:
+        client.update_phrase_matcher()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.UpdatePhraseMatcherRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_phrase_matcher_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.UpdatePhraseMatcherRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_phrase_matcher), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.PhraseMatcher(
+                name="name_value",
+                revision_id="revision_id_value",
+                version_tag="version_tag_value",
+                display_name="display_name_value",
+                type_=resources.PhraseMatcher.PhraseMatcherType.ALL_OF,
+                active=True,
+                role_match=resources.ConversationParticipant.Role.HUMAN_AGENT,
+            )
+        )
+        response = await client.update_phrase_matcher(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.UpdatePhraseMatcherRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.PhraseMatcher)
+    assert response.name == "name_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.version_tag == "version_tag_value"
+    assert response.display_name == "display_name_value"
+    assert response.type_ == resources.PhraseMatcher.PhraseMatcherType.ALL_OF
+    assert response.active is True
+    assert response.role_match == resources.ConversationParticipant.Role.HUMAN_AGENT
+
+
+@pytest.mark.asyncio
+async def test_update_phrase_matcher_async_from_dict():
+    await test_update_phrase_matcher_async(request_type=dict)
+
+
+def test_update_phrase_matcher_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.UpdatePhraseMatcherRequest()
+
+    request.phrase_matcher.name = "phrase_matcher.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_phrase_matcher), "__call__"
+    ) as call:
+        call.return_value = resources.PhraseMatcher()
+        client.update_phrase_matcher(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "phrase_matcher.name=phrase_matcher.name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_phrase_matcher_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.UpdatePhraseMatcherRequest()
+
+    request.phrase_matcher.name = "phrase_matcher.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_phrase_matcher), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.PhraseMatcher()
+        )
+        await client.update_phrase_matcher(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "phrase_matcher.name=phrase_matcher.name/value",
+    ) in kw["metadata"]
+
+
+def test_update_phrase_matcher_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_phrase_matcher), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.PhraseMatcher()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_phrase_matcher(
+            phrase_matcher=resources.PhraseMatcher(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].phrase_matcher == resources.PhraseMatcher(name="name_value")
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+
+
+def test_update_phrase_matcher_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_phrase_matcher(
+            contact_center_insights.UpdatePhraseMatcherRequest(),
+            phrase_matcher=resources.PhraseMatcher(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_phrase_matcher_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_phrase_matcher), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.PhraseMatcher()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.PhraseMatcher()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_phrase_matcher(
+            phrase_matcher=resources.PhraseMatcher(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].phrase_matcher == resources.PhraseMatcher(name="name_value")
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+
+
+@pytest.mark.asyncio
+async def test_update_phrase_matcher_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_phrase_matcher(
+            contact_center_insights.UpdatePhraseMatcherRequest(),
+            phrase_matcher=resources.PhraseMatcher(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
 def test_calculate_stats(
     transport: str = "grpc", request_type=contact_center_insights.CalculateStatsRequest
 ):
@@ -7471,6 +7741,7 @@ def test_contact_center_insights_base_transport():
         "get_phrase_matcher",
         "list_phrase_matchers",
         "delete_phrase_matcher",
+        "update_phrase_matcher",
         "calculate_stats",
         "get_settings",
         "update_settings",

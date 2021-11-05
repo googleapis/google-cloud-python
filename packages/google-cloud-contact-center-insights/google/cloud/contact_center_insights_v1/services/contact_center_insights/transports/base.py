@@ -212,6 +212,11 @@ class ContactCenterInsightsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_phrase_matcher: gapic_v1.method.wrap_method(
+                self.update_phrase_matcher,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.calculate_stats: gapic_v1.method.wrap_method(
                 self.calculate_stats, default_timeout=None, client_info=client_info,
             ),
@@ -477,6 +482,15 @@ class ContactCenterInsightsTransport(abc.ABC):
     ) -> Callable[
         [contact_center_insights.DeletePhraseMatcherRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_phrase_matcher(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdatePhraseMatcherRequest],
+        Union[resources.PhraseMatcher, Awaitable[resources.PhraseMatcher]],
     ]:
         raise NotImplementedError()
 
