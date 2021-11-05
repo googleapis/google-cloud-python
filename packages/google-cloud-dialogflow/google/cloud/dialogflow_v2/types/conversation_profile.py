@@ -80,11 +80,21 @@ class ConversationProfile(proto.Message):
         stt_config (google.cloud.dialogflow_v2.types.SpeechToTextConfig):
             Settings for speech transcription.
         language_code (str):
-            Language which represents the
-            conversationProfile. If unspecified, the default
-            language code en-us applies. Users need to
-            create a ConversationProfile for each language
-            they want to support.
+            Language code for the conversation profile. If not
+            specified, the language is en-US. Language at
+            ConversationProfile should be set for all non en-US
+            languages. This should be a
+            `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
+            language tag. Example: "en-US".
+        time_zone (str):
+            The time zone of this conversational profile from the `time
+            zone database <https://www.iana.org/time-zones>`__, e.g.,
+            America/New_York, Europe/Paris. Defaults to
+            America/New_York.
+        security_settings (str):
+            Name of the CX SecuritySettings reference for the agent.
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -115,6 +125,8 @@ class ConversationProfile(proto.Message):
         proto.MESSAGE, number=9, message=audio_config.SpeechToTextConfig,
     )
     language_code = proto.Field(proto.STRING, number=10,)
+    time_zone = proto.Field(proto.STRING, number=14,)
+    security_settings = proto.Field(proto.STRING, number=13,)
 
 
 class ListConversationProfilesRequest(proto.Message):
@@ -245,12 +257,17 @@ class AutomatedAgentConfig(proto.Message):
             ``service-<Conversation Project Number>@gcp-sa-dialogflow.iam.gserviceaccount.com``
             the ``Dialogflow API Service Agent`` role in this project.
 
-            Format:
-            ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID or '-'>``.
-            If environment is not specified, the default ``draft``
-            environment is used. Refer to
-            `DetectIntentRequest </dialogflow/docs/reference/rpc/google.cloud.dialogflow.v2#google.cloud.dialogflow.v2.DetectIntentRequest>`__
-            for more details.
+            -  For ES agents, use format:
+               ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID or '-'>``.
+               If environment is not specified, the default ``draft``
+               environment is used. Refer to
+               `DetectIntentRequest </dialogflow/docs/reference/rpc/google.cloud.dialogflow.v2#google.cloud.dialogflow.v2.DetectIntentRequest>`__
+               for more details.
+
+            -  For CX agents, use format
+               ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID or '-'>``.
+               If environment is not specified, the default ``draft``
+               environment is used.
     """
 
     agent = proto.Field(proto.STRING, number=1,)
@@ -409,7 +426,8 @@ class HumanAgentAssistantConfig(proto.Message):
                 If this field is not set, it defaults to 0.0, which means
                 that all suggestions are returned.
 
-                Supported features: ARTICLE_SUGGESTION.
+                Supported features: ARTICLE_SUGGESTION, FAQ, SMART_REPLY,
+                SMART_COMPOSE.
             context_filter_settings (google.cloud.dialogflow_v2.types.HumanAgentAssistantConfig.SuggestionQueryConfig.ContextFilterSettings):
                 Determines how recent conversation context is
                 filtered when generating suggestions. If
