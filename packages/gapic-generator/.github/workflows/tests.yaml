@@ -312,32 +312,36 @@ jobs:
         run: nox -s fragment-${{ matrix.python }}
   integration:
     runs-on: ubuntu-latest
+    container: gcr.io/gapic-images/googleapis-bazel:20210105
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.7.0
         with:
           access_token: ${{ github.token }}
       - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
+      - name: Cache Bazel files
+        id: cache-bazel
+        uses: actions/cache@v2
         with:
-          python-version: 3.8
-      - name: Install system dependencies.
+          path: ~/.cache/bazel
+          # Note: if the container is updated, the key needs to be updated as well.
+          key: ${{ runner.os }}-bazel-20210105-${{ secrets.CACHE_VERSION }}
+      - name: Cache not found
+        if: steps.cache-bazel.outputs.cache-hit != 'true'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y curl pandoc unzip gcc
-      - name: Install Bazel
+          echo "No cache found."
+      - name: Cache found
+        if: steps.cache-bazel.outputs.cache-hit == 'true'
         run: |
-          wget -q "https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/$BAZEL_BINARY"
-          wget -q "https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/$BAZEL_BINARY.sha256"
-          sha256sum -c "$BAZEL_BINARY.sha256"
-          sudo dpkg -i "$BAZEL_BINARY"
-        env:
-          BAZEL_VERSION: 3.5.0
-          BAZEL_BINARY: bazel_3.5.0-linux-x86_64.deb
+          echo -n "Cache found. Cache size: "
+          du -sh ~/.cache/bazel
+          echo "If the cache seems broken, update the CACHE_VERSION secret in"
+          echo "https://github.com/googleapis/gapic-generator-python/settings/secrets/actions"
+          echo "(use any random string, any GUID will work)"
+          echo "and it will start over with a clean cache."
+          echo "The old one will disappear after 7 days."
       - name: Integration Tests
         run: bazel test tests/integration:asset tests/integration:credentials tests/integration:logging tests/integration:redis
-
   style-check:
     runs-on: ubuntu-latest
     steps:
