@@ -29,6 +29,8 @@ __protobuf__ = proto.module(
         "HttpsTrigger",
         "EventTrigger",
         "FailurePolicy",
+        "SecretEnvVar",
+        "SecretVolume",
         "CreateFunctionRequest",
         "UpdateFunctionRequest",
         "GetFunctionRequest",
@@ -58,7 +60,7 @@ class CloudFunctionStatus(proto.Enum):
 class CloudFunction(proto.Message):
     r"""Describes a Cloud Function that contains user computation
     executed in response to an event. It encapsulate function and
-    triggers configurations.
+    triggers configurations. Next tag: 36
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -140,6 +142,9 @@ class CloudFunction(proto.Message):
         environment_variables (Sequence[google.cloud.functions_v1.types.CloudFunction.EnvironmentVariablesEntry]):
             Environment variables that shall be available
             during function execution.
+        build_environment_variables (Sequence[google.cloud.functions_v1.types.CloudFunction.BuildEnvironmentVariablesEntry]):
+            Build environment variables that shall be
+            available during build time.
         network (str):
             The VPC Network that this cloud function can connect to. It
             can be either the fully-qualified URI, or the short name of
@@ -159,7 +164,21 @@ class CloudFunction(proto.Message):
             documentation <https://cloud.google.com/compute/docs/vpc>`__
             for more information on connecting Cloud projects.
         max_instances (int):
-            The limit on the maximum number of function
+            The limit on the maximum number of function instances that
+            may coexist at a given time.
+
+            In some cases, such as rapid traffic surges, Cloud Functions
+            may, for a short period of time, create more instances than
+            the specified max instances limit. If your function cannot
+            tolerate this temporary behavior, you may want to factor in
+            a safety margin and set a lower max instances value than
+            your function can tolerate.
+
+            See the `Max
+            Instances <https://cloud.google.com/functions/docs/max-instances>`__
+            Guide for more details.
+        min_instances (int):
+            A lower bound for the number function
             instances that may coexist at a given time.
         vpc_connector (str):
             The VPC Network Connector that this cloud function can
@@ -179,9 +198,80 @@ class CloudFunction(proto.Message):
         ingress_settings (google.cloud.functions_v1.types.CloudFunction.IngressSettings):
             The ingress settings for the function,
             controlling what traffic can reach it.
+        kms_key_name (str):
+            Resource name of a KMS crypto key (managed by the user) used
+            to encrypt/decrypt function resources.
+
+            It must match the pattern
+            ``projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}``.
+
+            If specified, you must also provide an artifact registry
+            repository using the ``docker_repository`` field that was
+            created with the same KMS crypto key.
+
+            The following service accounts need to be granted Cloud KMS
+            crypto key encrypter/decrypter roles on the key.
+
+            1. Google Cloud Functions service account
+               (service-{project_number}@gcf-admin-robot.iam.gserviceaccount.com)
+               - Required to protect the function's image.
+            2. Google Storage service account
+               (service-{project_number}@gs-project-accounts.iam.gserviceaccount.com)
+               - Required to protect the function's source code. If this
+               service account does not exist, deploying a function
+               without a KMS key or retrieving the service agent name
+               provisions it. For more information, see
+               https://cloud.google.com/storage/docs/projects#service-agents
+               and
+               https://cloud.google.com/storage/docs/getting-service-agent#gsutil.
+
+            Google Cloud Functions delegates access to service agents to
+            protect function resources in internal projects that are not
+            accessible by the end user.
+        build_worker_pool (str):
+            Name of the Cloud Build Custom Worker Pool that should be
+            used to build the function. The format of this field is
+            ``projects/{project}/locations/{region}/workerPools/{workerPool}``
+            where ``{project}`` and ``{region}`` are the project id and
+            region respectively where the worker pool is defined and
+            ``{workerPool}`` is the short name of the worker pool.
+
+            If the project id is not the same as the function, then the
+            Cloud Functions Service Agent
+            (``service-<project_number>@gcf-admin-robot.iam.gserviceaccount.com``)
+            must be granted the role Cloud Build Custom Workers Builder
+            (``roles/cloudbuild.customworkers.builder``) in the project.
         build_id (str):
             Output only. The Cloud Build ID of the latest
             successful deployment of the function.
+        build_name (str):
+            Output only. The Cloud Build Name of the function
+            deployment.
+            ``projects/<project-number>/locations/<region>/builds/<build-id>``.
+        secret_environment_variables (Sequence[google.cloud.functions_v1.types.SecretEnvVar]):
+            Secret environment variables configuration.
+        secret_volumes (Sequence[google.cloud.functions_v1.types.SecretVolume]):
+            Secret volumes configuration.
+        source_token (str):
+            Input only. An identifier for Firebase
+            function sources. Disclaimer: This field is only
+            supported for Firebase function deployments.
+        docker_repository (str):
+            User managed repository created in Artifact Registry
+            optionally with a customer managed encryption key. If
+            specified, deployments will use Artifact Registry. If
+            unspecified and the deployment is eligible to use Artifact
+            Registry, GCF will create and use a repository named
+            'gcf-artifacts' for every deployed region. This is the
+            repository to which the function docker image will be pushed
+            after it is built by Cloud Build.
+
+            It must match the pattern
+            ``projects/{project}/locations/{location}/repositories/{repository}``.
+
+            Cross-project repositories are not supported. Cross-location
+            repositories are not supported. Repository format must be
+            'DOCKER'.
     """
 
     class VpcConnectorEgressSettings(proto.Enum):
@@ -231,14 +321,27 @@ class CloudFunction(proto.Message):
     version_id = proto.Field(proto.INT64, number=14,)
     labels = proto.MapField(proto.STRING, proto.STRING, number=15,)
     environment_variables = proto.MapField(proto.STRING, proto.STRING, number=17,)
+    build_environment_variables = proto.MapField(proto.STRING, proto.STRING, number=28,)
     network = proto.Field(proto.STRING, number=18,)
     max_instances = proto.Field(proto.INT32, number=20,)
+    min_instances = proto.Field(proto.INT32, number=32,)
     vpc_connector = proto.Field(proto.STRING, number=22,)
     vpc_connector_egress_settings = proto.Field(
         proto.ENUM, number=23, enum=VpcConnectorEgressSettings,
     )
     ingress_settings = proto.Field(proto.ENUM, number=24, enum=IngressSettings,)
+    kms_key_name = proto.Field(proto.STRING, number=25,)
+    build_worker_pool = proto.Field(proto.STRING, number=26,)
     build_id = proto.Field(proto.STRING, number=27,)
+    build_name = proto.Field(proto.STRING, number=33,)
+    secret_environment_variables = proto.RepeatedField(
+        proto.MESSAGE, number=29, message="SecretEnvVar",
+    )
+    secret_volumes = proto.RepeatedField(
+        proto.MESSAGE, number=30, message="SecretVolume",
+    )
+    source_token = proto.Field(proto.STRING, number=31,)
+    docker_repository = proto.Field(proto.STRING, number=34,)
 
 
 class SourceRepository(proto.Message):
@@ -383,6 +486,101 @@ class FailurePolicy(proto.Message):
         """
 
     retry = proto.Field(proto.MESSAGE, number=1, oneof="action", message=Retry,)
+
+
+class SecretEnvVar(proto.Message):
+    r"""Configuration for a secret environment variable. It has the
+    information necessary to fetch the secret value from secret
+    manager and expose it as an environment variable. Secret value
+    is not a part of the configuration. Secret values are only
+    fetched when a new clone starts.
+
+    Attributes:
+        key (str):
+            Name of the environment variable.
+        project_id (str):
+            Project identifier (preferrably project
+            number but can also be the project ID) of the
+            project that contains the secret. If not set, it
+            will be populated with the function's project
+            assuming that the secret exists in the same
+            project as of the function.
+        secret (str):
+            Name of the secret in secret manager (not the
+            full resource name).
+        version (str):
+            Version of the secret (version number or the
+            string 'latest'). It is recommended to use a
+            numeric version for secret environment variables
+            as any updates to the secret value is not
+            reflected until new clones start.
+    """
+
+    key = proto.Field(proto.STRING, number=1,)
+    project_id = proto.Field(proto.STRING, number=2,)
+    secret = proto.Field(proto.STRING, number=3,)
+    version = proto.Field(proto.STRING, number=4,)
+
+
+class SecretVolume(proto.Message):
+    r"""Configuration for a secret volume. It has the information
+    necessary to fetch the secret value from secret manager and make
+    it available as files mounted at the requested paths within the
+    application container. Secret value is not a part of the
+    configuration. Every filesystem read operation performs a lookup
+    in secret manager to retrieve the secret value.
+
+    Attributes:
+        mount_path (str):
+            The path within the container to mount the secret volume.
+            For example, setting the mount_path as ``/etc/secrets``
+            would mount the secret value files under the
+            ``/etc/secrets`` directory. This directory will also be
+            completely shadowed and unavailable to mount any other
+            secrets.
+
+            Recommended mount paths: /etc/secrets Restricted mount
+            paths: /cloudsql, /dev/log, /pod, /proc, /var/log
+        project_id (str):
+            Project identifier (preferrably project
+            number but can also be the project ID) of the
+            project that contains the secret. If not set, it
+            will be populated with the function's project
+            assuming that the secret exists in the same
+            project as of the function.
+        secret (str):
+            Name of the secret in secret manager (not the
+            full resource name).
+        versions (Sequence[google.cloud.functions_v1.types.SecretVolume.SecretVersion]):
+            List of secret versions to mount for this secret. If empty,
+            the ``latest`` version of the secret will be made available
+            in a file named after the secret under the mount point.
+    """
+
+    class SecretVersion(proto.Message):
+        r"""Configuration for a single version.
+
+        Attributes:
+            version (str):
+                Version of the secret (version number or the string
+                'latest'). It is preferrable to use ``latest`` version with
+                secret volumes as secret value changes are reflected
+                immediately.
+            path (str):
+                Relative path of the file under the mount path where the
+                secret value for this version will be fetched and made
+                available. For example, setting the mount_path as
+                '/etc/secrets' and path as ``/secret_foo`` would mount the
+                secret value file at ``/etc/secrets/secret_foo``.
+        """
+
+        version = proto.Field(proto.STRING, number=1,)
+        path = proto.Field(proto.STRING, number=2,)
+
+    mount_path = proto.Field(proto.STRING, number=1,)
+    project_id = proto.Field(proto.STRING, number=2,)
+    secret = proto.Field(proto.STRING, number=3,)
+    versions = proto.RepeatedField(proto.MESSAGE, number=4, message=SecretVersion,)
 
 
 class CreateFunctionRequest(proto.Message):

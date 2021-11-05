@@ -57,6 +57,14 @@ class CloudFunctionsServiceAsyncClient:
     parse_cloud_function_path = staticmethod(
         CloudFunctionsServiceClient.parse_cloud_function_path
     )
+    crypto_key_path = staticmethod(CloudFunctionsServiceClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(
+        CloudFunctionsServiceClient.parse_crypto_key_path
+    )
+    repository_path = staticmethod(CloudFunctionsServiceClient.repository_path)
+    parse_repository_path = staticmethod(
+        CloudFunctionsServiceClient.parse_repository_path
+    )
     common_billing_account_path = staticmethod(
         CloudFunctionsServiceClient.common_billing_account_path
     )
@@ -281,6 +289,7 @@ class CloudFunctionsServiceAsyncClient:
                 contains user computation executed in
                 response to an event. It encapsulate
                 function and triggers configurations.
+                Next tag: 36
 
         """
         # Create or coerce a protobuf request object.
@@ -373,7 +382,7 @@ class CloudFunctionsServiceAsyncClient:
 
                 The result type for the operation will be :class:`google.cloud.functions_v1.types.CloudFunction` Describes a Cloud Function that contains user computation executed in
                    response to an event. It encapsulate function and
-                   triggers configurations.
+                   triggers configurations. Next tag: 36
 
         """
         # Create or coerce a protobuf request object.
@@ -457,7 +466,7 @@ class CloudFunctionsServiceAsyncClient:
 
                 The result type for the operation will be :class:`google.cloud.functions_v1.types.CloudFunction` Describes a Cloud Function that contains user computation executed in
                    response to an event. It encapsulate function and
-                   triggers configurations.
+                   triggers configurations. Next tag: 36
 
         """
         # Create or coerce a protobuf request object.

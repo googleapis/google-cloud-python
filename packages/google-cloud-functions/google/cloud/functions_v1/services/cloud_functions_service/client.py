@@ -186,6 +186,43 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def crypto_key_path(
+        project: str, location: str, key_ring: str, crypto_key: str,
+    ) -> str:
+        """Returns a fully-qualified crypto_key string."""
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            crypto_key=crypto_key,
+        )
+
+    @staticmethod
+    def parse_crypto_key_path(path: str) -> Dict[str, str]:
+        """Parses a crypto_key path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def repository_path(project: str, location: str, repository: str,) -> str:
+        """Returns a fully-qualified repository string."""
+        return "projects/{project}/locations/{location}/repositories/{repository}".format(
+            project=project, location=location, repository=repository,
+        )
+
+    @staticmethod
+    def parse_repository_path(path: str) -> Dict[str, str]:
+        """Parses a repository path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/repositories/(?P<repository>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
@@ -455,6 +492,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 contains user computation executed in
                 response to an event. It encapsulate
                 function and triggers configurations.
+                Next tag: 36
 
         """
         # Create or coerce a protobuf request object.
@@ -537,7 +575,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
                 The result type for the operation will be :class:`google.cloud.functions_v1.types.CloudFunction` Describes a Cloud Function that contains user computation executed in
                    response to an event. It encapsulate function and
-                   triggers configurations.
+                   triggers configurations. Next tag: 36
 
         """
         # Create or coerce a protobuf request object.
@@ -621,7 +659,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
                 The result type for the operation will be :class:`google.cloud.functions_v1.types.CloudFunction` Describes a Cloud Function that contains user computation executed in
                    response to an event. It encapsulate function and
-                   triggers configurations.
+                   triggers configurations. Next tag: 36
 
         """
         # Create or coerce a protobuf request object.

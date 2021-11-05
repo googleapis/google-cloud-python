@@ -32,6 +32,8 @@ from .types.functions import GetFunctionRequest
 from .types.functions import HttpsTrigger
 from .types.functions import ListFunctionsRequest
 from .types.functions import ListFunctionsResponse
+from .types.functions import SecretEnvVar
+from .types.functions import SecretVolume
 from .types.functions import SourceRepository
 from .types.functions import UpdateFunctionRequest
 from .types.functions import CloudFunctionStatus
@@ -59,6 +61,8 @@ __all__ = (
     "ListFunctionsResponse",
     "OperationMetadataV1",
     "OperationType",
+    "SecretEnvVar",
+    "SecretVolume",
     "SourceRepository",
     "UpdateFunctionRequest",
 )

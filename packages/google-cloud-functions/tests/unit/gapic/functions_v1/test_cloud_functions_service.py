@@ -830,10 +830,16 @@ def test_get_function(
             version_id=1074,
             network="network_value",
             max_instances=1389,
+            min_instances=1387,
             vpc_connector="vpc_connector_value",
             vpc_connector_egress_settings=functions.CloudFunction.VpcConnectorEgressSettings.PRIVATE_RANGES_ONLY,
             ingress_settings=functions.CloudFunction.IngressSettings.ALLOW_ALL,
+            kms_key_name="kms_key_name_value",
+            build_worker_pool="build_worker_pool_value",
             build_id="build_id_value",
+            build_name="build_name_value",
+            source_token="source_token_value",
+            docker_repository="docker_repository_value",
             source_archive_url="source_archive_url_value",
             https_trigger=functions.HttpsTrigger(url="url_value"),
         )
@@ -856,6 +862,7 @@ def test_get_function(
     assert response.version_id == 1074
     assert response.network == "network_value"
     assert response.max_instances == 1389
+    assert response.min_instances == 1387
     assert response.vpc_connector == "vpc_connector_value"
     assert (
         response.vpc_connector_egress_settings
@@ -864,7 +871,12 @@ def test_get_function(
     assert (
         response.ingress_settings == functions.CloudFunction.IngressSettings.ALLOW_ALL
     )
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.build_worker_pool == "build_worker_pool_value"
     assert response.build_id == "build_id_value"
+    assert response.build_name == "build_name_value"
+    assert response.source_token == "source_token_value"
+    assert response.docker_repository == "docker_repository_value"
 
 
 def test_get_function_from_dict():
@@ -913,10 +925,16 @@ async def test_get_function_async(
                 version_id=1074,
                 network="network_value",
                 max_instances=1389,
+                min_instances=1387,
                 vpc_connector="vpc_connector_value",
                 vpc_connector_egress_settings=functions.CloudFunction.VpcConnectorEgressSettings.PRIVATE_RANGES_ONLY,
                 ingress_settings=functions.CloudFunction.IngressSettings.ALLOW_ALL,
+                kms_key_name="kms_key_name_value",
+                build_worker_pool="build_worker_pool_value",
                 build_id="build_id_value",
+                build_name="build_name_value",
+                source_token="source_token_value",
+                docker_repository="docker_repository_value",
             )
         )
         response = await client.get_function(request)
@@ -938,6 +956,7 @@ async def test_get_function_async(
     assert response.version_id == 1074
     assert response.network == "network_value"
     assert response.max_instances == 1389
+    assert response.min_instances == 1387
     assert response.vpc_connector == "vpc_connector_value"
     assert (
         response.vpc_connector_egress_settings
@@ -946,7 +965,12 @@ async def test_get_function_async(
     assert (
         response.ingress_settings == functions.CloudFunction.IngressSettings.ALLOW_ALL
     )
+    assert response.kms_key_name == "kms_key_name_value"
+    assert response.build_worker_pool == "build_worker_pool_value"
     assert response.build_id == "build_id_value"
+    assert response.build_name == "build_name_value"
+    assert response.source_token == "source_token_value"
+    assert response.docker_repository == "docker_repository_value"
 
 
 @pytest.mark.asyncio
@@ -3182,8 +3206,60 @@ def test_parse_cloud_function_path():
     assert expected == actual
 
 
+def test_crypto_key_path():
+    project = "cuttlefish"
+    location = "mussel"
+    key_ring = "winkle"
+    crypto_key = "nautilus"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project, location=location, key_ring=key_ring, crypto_key=crypto_key,
+    )
+    actual = CloudFunctionsServiceClient.crypto_key_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "key_ring": "squid",
+        "crypto_key": "clam",
+    }
+    path = CloudFunctionsServiceClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudFunctionsServiceClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_repository_path():
+    project = "whelk"
+    location = "octopus"
+    repository = "oyster"
+    expected = "projects/{project}/locations/{location}/repositories/{repository}".format(
+        project=project, location=location, repository=repository,
+    )
+    actual = CloudFunctionsServiceClient.repository_path(project, location, repository)
+    assert expected == actual
+
+
+def test_parse_repository_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "repository": "mussel",
+    }
+    path = CloudFunctionsServiceClient.repository_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudFunctionsServiceClient.parse_repository_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3193,7 +3269,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "nautilus",
     }
     path = CloudFunctionsServiceClient.common_billing_account_path(**expected)
 
@@ -3203,7 +3279,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "scallop"
     expected = "folders/{folder}".format(folder=folder,)
     actual = CloudFunctionsServiceClient.common_folder_path(folder)
     assert expected == actual
@@ -3211,7 +3287,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "abalone",
     }
     path = CloudFunctionsServiceClient.common_folder_path(**expected)
 
@@ -3221,7 +3297,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "squid"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = CloudFunctionsServiceClient.common_organization_path(organization)
     assert expected == actual
@@ -3229,7 +3305,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "clam",
     }
     path = CloudFunctionsServiceClient.common_organization_path(**expected)
 
@@ -3239,7 +3315,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "whelk"
     expected = "projects/{project}".format(project=project,)
     actual = CloudFunctionsServiceClient.common_project_path(project)
     assert expected == actual
@@ -3247,7 +3323,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "octopus",
     }
     path = CloudFunctionsServiceClient.common_project_path(**expected)
 
@@ -3257,8 +3333,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -3268,8 +3344,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = CloudFunctionsServiceClient.common_location_path(**expected)
 
