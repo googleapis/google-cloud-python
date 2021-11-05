@@ -57,8 +57,13 @@ class Execution(proto.Message):
         state (google.cloud.workflows.executions_v1.types.Execution.State):
             Output only. Current state of the execution.
         argument (str):
-            Input parameters of the execution represented
-            as a JSON string. The size limit is 32KB.
+            Input parameters of the execution represented as a JSON
+            string. The size limit is 32KB.
+
+            *Note*: If you are using the REST API directly to run your
+            workflow, you must escape any JSON string value of
+            ``argument``. Example:
+            ``'{"argument":"{\"firstName\":\"FIRST\",\"lastName\":\"LAST\"}"}'``
         result (str):
             Output only. Output of the execution represented as a JSON
             string. The value can only be present if the execution's
@@ -70,11 +75,14 @@ class Execution(proto.Message):
         workflow_revision_id (str):
             Output only. Revision of the workflow this
             execution is using.
+        call_log_level (google.cloud.workflows.executions_v1.types.Execution.CallLogLevel):
+            The call logging level associated to this
+            execution.
     """
 
     class State(proto.Enum):
-        r"""Describes the current state of the execution. More states may
-        be added in the future.
+        r"""Describes the current state of the execution. More states
+        might be added in the future.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
@@ -82,20 +90,86 @@ class Execution(proto.Message):
         FAILED = 3
         CANCELLED = 4
 
+    class CallLogLevel(proto.Enum):
+        r"""Describes the level of platform logging to apply to calls and
+        call responses during workflow executions.
+        """
+        CALL_LOG_LEVEL_UNSPECIFIED = 0
+        LOG_ALL_CALLS = 1
+        LOG_ERRORS_ONLY = 2
+
+    class StackTraceElement(proto.Message):
+        r"""A single stack element (frame) where an error occurred.
+
+        Attributes:
+            step (str):
+                The step the error occurred at.
+            routine (str):
+                The routine where the error occurred.
+            position (google.cloud.workflows.executions_v1.types.Execution.StackTraceElement.Position):
+                The source position information of the stack
+                trace element.
+        """
+
+        class Position(proto.Message):
+            r"""Position contains source position information about the stack
+            trace element such as line number, column number and length of
+            the code block in bytes.
+
+            Attributes:
+                line (int):
+                    The source code line number the current
+                    instruction was generated from.
+                column (int):
+                    The source code column position (of the line)
+                    the current instruction was generated from.
+                length (int):
+                    The number of bytes of source code making up
+                    this stack trace element.
+            """
+
+            line = proto.Field(proto.INT64, number=1,)
+            column = proto.Field(proto.INT64, number=2,)
+            length = proto.Field(proto.INT64, number=3,)
+
+        step = proto.Field(proto.STRING, number=1,)
+        routine = proto.Field(proto.STRING, number=2,)
+        position = proto.Field(
+            proto.MESSAGE, number=3, message="Execution.StackTraceElement.Position",
+        )
+
+    class StackTrace(proto.Message):
+        r"""A collection of stack elements (frames) where an error
+        occurred.
+
+        Attributes:
+            elements (Sequence[google.cloud.workflows.executions_v1.types.Execution.StackTraceElement]):
+                An array of stack elements.
+        """
+
+        elements = proto.RepeatedField(
+            proto.MESSAGE, number=1, message="Execution.StackTraceElement",
+        )
+
     class Error(proto.Message):
         r"""Error describes why the execution was abnormally terminated.
 
         Attributes:
             payload (str):
-                Error payload returned by the execution,
-                represented as a JSON string.
+                Error message and data returned represented
+                as a JSON string.
             context (str):
-                Human readable error context, helpful for
-                debugging purposes.
+                Human-readable stack trace string.
+            stack_trace (google.cloud.workflows.executions_v1.types.Execution.StackTrace):
+                Stack trace with detailed information of
+                where error was generated.
         """
 
         payload = proto.Field(proto.STRING, number=1,)
         context = proto.Field(proto.STRING, number=2,)
+        stack_trace = proto.Field(
+            proto.MESSAGE, number=3, message="Execution.StackTrace",
+        )
 
     name = proto.Field(proto.STRING, number=1,)
     start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
@@ -105,6 +179,7 @@ class Execution(proto.Message):
     result = proto.Field(proto.STRING, number=6,)
     error = proto.Field(proto.MESSAGE, number=7, message=Error,)
     workflow_revision_id = proto.Field(proto.STRING, number=8,)
+    call_log_level = proto.Field(proto.ENUM, number=9, enum=CallLogLevel,)
 
 
 class ListExecutionsRequest(proto.Message):

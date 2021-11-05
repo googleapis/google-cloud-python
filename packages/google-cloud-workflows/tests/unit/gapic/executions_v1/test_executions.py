@@ -823,6 +823,7 @@ def test_create_execution(
             argument="argument_value",
             result="result_value",
             workflow_revision_id="workflow_revision_id_value",
+            call_log_level=executions.Execution.CallLogLevel.LOG_ALL_CALLS,
         )
         response = client.create_execution(request)
 
@@ -838,6 +839,7 @@ def test_create_execution(
     assert response.argument == "argument_value"
     assert response.result == "result_value"
     assert response.workflow_revision_id == "workflow_revision_id_value"
+    assert response.call_log_level == executions.Execution.CallLogLevel.LOG_ALL_CALLS
 
 
 def test_create_execution_from_dict():
@@ -881,6 +883,7 @@ async def test_create_execution_async(
                 argument="argument_value",
                 result="result_value",
                 workflow_revision_id="workflow_revision_id_value",
+                call_log_level=executions.Execution.CallLogLevel.LOG_ALL_CALLS,
             )
         )
         response = await client.create_execution(request)
@@ -897,6 +900,7 @@ async def test_create_execution_async(
     assert response.argument == "argument_value"
     assert response.result == "result_value"
     assert response.workflow_revision_id == "workflow_revision_id_value"
+    assert response.call_log_level == executions.Execution.CallLogLevel.LOG_ALL_CALLS
 
 
 @pytest.mark.asyncio
@@ -1049,6 +1053,7 @@ def test_get_execution(
             argument="argument_value",
             result="result_value",
             workflow_revision_id="workflow_revision_id_value",
+            call_log_level=executions.Execution.CallLogLevel.LOG_ALL_CALLS,
         )
         response = client.get_execution(request)
 
@@ -1064,6 +1069,7 @@ def test_get_execution(
     assert response.argument == "argument_value"
     assert response.result == "result_value"
     assert response.workflow_revision_id == "workflow_revision_id_value"
+    assert response.call_log_level == executions.Execution.CallLogLevel.LOG_ALL_CALLS
 
 
 def test_get_execution_from_dict():
@@ -1107,6 +1113,7 @@ async def test_get_execution_async(
                 argument="argument_value",
                 result="result_value",
                 workflow_revision_id="workflow_revision_id_value",
+                call_log_level=executions.Execution.CallLogLevel.LOG_ALL_CALLS,
             )
         )
         response = await client.get_execution(request)
@@ -1123,6 +1130,7 @@ async def test_get_execution_async(
     assert response.argument == "argument_value"
     assert response.result == "result_value"
     assert response.workflow_revision_id == "workflow_revision_id_value"
+    assert response.call_log_level == executions.Execution.CallLogLevel.LOG_ALL_CALLS
 
 
 @pytest.mark.asyncio
@@ -1265,6 +1273,7 @@ def test_cancel_execution(
             argument="argument_value",
             result="result_value",
             workflow_revision_id="workflow_revision_id_value",
+            call_log_level=executions.Execution.CallLogLevel.LOG_ALL_CALLS,
         )
         response = client.cancel_execution(request)
 
@@ -1280,6 +1289,7 @@ def test_cancel_execution(
     assert response.argument == "argument_value"
     assert response.result == "result_value"
     assert response.workflow_revision_id == "workflow_revision_id_value"
+    assert response.call_log_level == executions.Execution.CallLogLevel.LOG_ALL_CALLS
 
 
 def test_cancel_execution_from_dict():
@@ -1323,6 +1333,7 @@ async def test_cancel_execution_async(
                 argument="argument_value",
                 result="result_value",
                 workflow_revision_id="workflow_revision_id_value",
+                call_log_level=executions.Execution.CallLogLevel.LOG_ALL_CALLS,
             )
         )
         response = await client.cancel_execution(request)
@@ -1339,6 +1350,7 @@ async def test_cancel_execution_async(
     assert response.argument == "argument_value"
     assert response.result == "result_value"
     assert response.workflow_revision_id == "workflow_revision_id_value"
+    assert response.call_log_level == executions.Execution.CallLogLevel.LOG_ALL_CALLS
 
 
 @pytest.mark.asyncio
