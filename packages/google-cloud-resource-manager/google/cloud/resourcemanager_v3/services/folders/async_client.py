@@ -376,11 +376,13 @@ class FoldersAsyncClient:
                 use escaped quotes for values that include whitespace to
                 prevent unexpected behavior.
 
-                \| Field \| Description \|
-                \|-------------------------\|----------------------------------------\|
-                \| displayName \| Filters by displayName. \| \| parent
-                \| Filters by parent (for example: folders/123). \| \|
-                state, lifecycleState \| Filters by state. \|
+                ::
+
+                   | Field                   | Description                            |
+                   |-------------------------\|----------------------------------------|
+                   | displayName             | Filters by displayName.                |
+                   | parent                  | Filters by parent (for example: folders/123). |
+                   | state, lifecycleState   | Filters by state.                      |
 
                 Some example queries are:
 
