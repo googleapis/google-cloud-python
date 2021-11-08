@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.11.1](https://www.github.com/googleapis/python-ndb/compare/v1.11.0...v1.11.1) (2021-11-03)
+
+
+### Bug Fixes
+
+* increase cache lock expiration time ([#740](https://www.github.com/googleapis/python-ndb/issues/740)) ([2634d01](https://www.github.com/googleapis/python-ndb/commit/2634d01ac9d4a73057d5e16cf476c5ecfc8e7fcf)), closes [#728](https://www.github.com/googleapis/python-ndb/issues/728)
+
 ## [1.11.0](https://www.github.com/googleapis/python-ndb/compare/v1.10.5...v1.11.0) (2021-10-28)
 
 
