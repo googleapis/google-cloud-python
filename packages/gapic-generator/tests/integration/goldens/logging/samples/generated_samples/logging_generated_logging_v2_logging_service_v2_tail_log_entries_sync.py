@@ -38,8 +38,17 @@ def sample_tail_log_entries():
         resource_names=['resource_names_value_1', 'resource_names_value_2'],
     )
 
+    # This method expects an iterator which contains
+    # 'logging_v2.TailLogEntriesRequest' objects
+    # Here we create a generator that yields a single `request` for
+    # demonstrative purposes.
+    requests = [request]
+    def request_generator():
+        for request in requests:
+            yield request
+
     # Make the request
-    stream = client.tail_log_entries([resource_names=['resource_names_value_1', 'resource_names_value_2']])
+    stream = client.tail_log_entries(requests=request_generator())
     for response in stream:
         print(response)
 

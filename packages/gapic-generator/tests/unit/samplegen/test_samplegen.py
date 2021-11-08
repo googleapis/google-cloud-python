@@ -1350,57 +1350,6 @@ def test_validate_request_reserved_input_param(dummy_api_schema):
         )
 
 
-def test_single_request_client_streaming(dummy_api_schema,
-        calling_form=types.CallingForm.RequestStreamingClient):
-    # Each API client method really only takes one parameter:
-    # either a single protobuf message or an iterable of protobuf messages.
-    # With unary request methods, python lets us describe attributes as positional
-    # and keyword parameters, which simplifies request construction.
-    # The 'base' in the transformed request refers to an attribute, and the
-    # 'field's refer to sub-attributes.
-    # Client streaming and bidirectional streaming methods can't use this notation,
-    # and generate an exception if there is more than one 'base'.
-    input_type = DummyMessage(
-        fields={
-            "cephalopod": DummyField(
-                message=DummyMessage(
-                    fields={
-                        "order": DummyField(
-                            message=DummyMessage(type="ORDER_TYPE")
-                        )
-                    },
-                    type="CEPHALOPOD_TYPE"
-                )
-            ),
-            "gastropod": DummyField(
-                message=DummyMessage(
-                    fields={
-                        "order": DummyField(
-                            message=DummyMessage(type="ORDER_TYPE")
-                        )
-                    },
-                    type="GASTROPOD_TYPE"
-                )
-            )
-        },
-        type="MOLLUSC_TYPE"
-    )
-    v = samplegen.Validator(DummyMethod(input=input_type), dummy_api_schema)
-    with pytest.raises(types.InvalidRequestSetup):
-        v.validate_and_transform_request(
-            types.CallingForm.RequestStreamingClient,
-            [
-                {"field": "cephalopod.order", "value": "cephalopoda"},
-                {"field": "gastropod.order", "value": "pulmonata"},
-            ],
-        )
-
-
-def test_single_request_bidi_streaming():
-    test_single_request_client_streaming(
-        types.CallingForm.RequestStreamingBidi)
-
-
 def test_validate_request_calling_form():
     assert (
         types.CallingForm.method_default(DummyMethod(lro=True))

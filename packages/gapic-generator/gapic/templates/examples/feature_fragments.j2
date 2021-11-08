@@ -153,7 +153,7 @@ with open({{ attr.input_parameter }}, "rb") as f:
 client = {{ module_name }}.{{ client_name }}()
 {% endmacro %}
 
-{% macro render_request_setup(full_request, module_name, request_type) %}
+{% macro render_request_setup(full_request, module_name, request_type, calling_form, calling_form_enum) %}
 # Initialize request argument(s)
 {% for parameter_block in full_request.request_list if parameter_block.body %}
 {% if parameter_block.pattern %}
@@ -179,6 +179,21 @@ request = {{ module_name }}.{{ request_type.ident.name }}(
     {{ parameter.base }}={{ parameter.base if parameter.body else parameter.single.value }},
 {% endfor %}
 )
+{# Note: This template assumes only one request needs to be sent. When samples accept
+configs the client streaming logic should be modified to allow 2+ request objects. #}
+{# If client streaming, wrap the single request in a generator that produces 'requests' #}
+{% if calling_form in [calling_form_enum.RequestStreamingBidi,
+                       calling_form_enum.RequestStreamingClient] %}
+
+# This method expects an iterator which contains
+# '{{module_name}}.{{ request_type.ident.name }}' objects
+# Here we create a generator that yields a single `request` for 
+# demonstrative purposes.
+requests = [request]
+def request_generator():
+    for request in requests:
+        yield request
+{% endif %}
 {% endif %}
 {% endmacro %}
 
@@ -219,7 +234,7 @@ await{{ " "}}
 {%- endif -%}
 {% if calling_form in [calling_form_enum.RequestStreamingBidi,
                        calling_form_enum.RequestStreamingClient] %}
-client.{{ sample.rpc|snake_case }}([{{ render_request_params(sample.request.request_list)|trim }}])
+client.{{ sample.rpc|snake_case }}(requests=request_generator())
 {% else %}{# TODO: deal with flattening #}
 {# TODO: set up client streaming once some questions are answered #}
 client.{{ sample.rpc|snake_case }}({{ render_request_params_unary(sample.request)|trim }})

@@ -26,13 +26,13 @@ Execute unit tests by running one of the sessions prefixed with `unit-`.
 -   Lint sources by running `autopep8`. The specific command is the following.
 
     ```
-    find gapic tests -name "*.py" -not -path 'tests/integration/goldens/*' | xargs autopep8 --diff --exit-code
+    find gapic tests -name "*.py" -not -path 'tests/**/goldens/*' | xargs autopep8 --diff --exit-code
     ```
 
 -  Format sources in place:
 
     ```
-    find gapic tests -name "*.py" -not -path 'tests/integration/goldens/*' | xargs autopep8 --in-place
+    find gapic tests -name "*.py" -not -path 'tests/**/goldens/*' | xargs autopep8 --in-place
     ```
 
 ## Integration Tests

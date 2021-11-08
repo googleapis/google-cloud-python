@@ -359,4 +359,4 @@ jobs:
             python -m pip install autopep8
       - name: Check diff
         run: |
-            find gapic tests -name "*.py" -not -path 'tests/integration/goldens/*' | xargs autopep8 --diff --exit-code
+            find gapic tests -name "*.py" -not -path 'tests/**/goldens/*' | xargs autopep8 --diff --exit-code

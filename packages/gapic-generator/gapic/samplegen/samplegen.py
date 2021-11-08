@@ -466,9 +466,7 @@ class Validator:
 
         Raises:
             InvalidRequestSetup: If a dict in the request lacks a "field" key,
-                                 a "value" key, if there is an unexpected keyword,
-                                 or if more than one base parameter is given for
-                                 a client-side streaming calling form.
+                                 a "value" key or if there is an unexpected keyword.
             BadAttributeLookup: If a request field refers to a non-existent field
                                 in the request message type.
             ResourceRequestMismatch: If a request attempts to describe both
@@ -547,16 +545,6 @@ class Validator:
                 request_entry.attrs.append(
                     AttributeRequestSetup(**r_dup)  # type: ignore
                 )
-
-        client_streaming_forms = {
-            types.CallingForm.RequestStreamingClient,
-            types.CallingForm.RequestStreamingBidi,
-        }
-
-        if len(base_param_to_attrs) > 1 and calling_form in client_streaming_forms:
-            raise types.InvalidRequestSetup(
-                "Too many base parameters for client side streaming form"
-            )
 
         # We can only flatten a collection of request parameters if they're a
         # subset of the flattened fields of the method.
