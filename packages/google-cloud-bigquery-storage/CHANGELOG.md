@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.10.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.9.1...v2.10.0) (2021-11-05)
+
+
+### Features
+
+* add context manager support in client ([#328](https://www.github.com/googleapis/python-bigquery-storage/issues/328)) ([afcf3dc](https://www.github.com/googleapis/python-bigquery-storage/commit/afcf3dcece980698d4b12545bf1a0d45289e41d5))
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([5390146](https://www.github.com/googleapis/python-bigquery-storage/commit/5390146e7bf83038a55755f53b119504ce000d62))
+* **deps:** require google-api-core >= 1.28.0 ([5390146](https://www.github.com/googleapis/python-bigquery-storage/commit/5390146e7bf83038a55755f53b119504ce000d62))
+
+
+### Documentation
+
+* list oneofs in docstring ([5390146](https://www.github.com/googleapis/python-bigquery-storage/commit/5390146e7bf83038a55755f53b119504ce000d62))
+
 ### [2.9.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.9.0...v2.9.1) (2021-10-06)
 
 
