@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+### [3.3.1](https://www.github.com/googleapis/python-dlp/compare/v3.3.0...v3.3.1) (2021-11-05)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([84181e9](https://www.github.com/googleapis/python-dlp/commit/84181e971ee04b46a603119d44410816fd7f04be))
+* **deps:** require google-api-core >= 1.28.0 ([84181e9](https://www.github.com/googleapis/python-dlp/commit/84181e971ee04b46a603119d44410816fd7f04be))
+* fix extras_require typo in setup.py ([84181e9](https://www.github.com/googleapis/python-dlp/commit/84181e971ee04b46a603119d44410816fd7f04be))
+
+
+### Documentation
+
+* list oneofs in docstring ([84181e9](https://www.github.com/googleapis/python-dlp/commit/84181e971ee04b46a603119d44410816fd7f04be))
+
 ## [3.3.0](https://www.github.com/googleapis/python-dlp/compare/v3.2.4...v3.3.0) (2021-10-26)
 
 
