@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,27 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.datastore_admin_v1.services.datastore_admin import pagers
 from google.cloud.datastore_admin_v1.types import datastore_admin
 from google.cloud.datastore_admin_v1.types import index
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
 from .transports.base import DatastoreAdminTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import DatastoreAdminGrpcAsyncIOTransport
 from .client import DatastoreAdminClient
@@ -112,35 +111,61 @@ class DatastoreAdminAsyncClient:
     parse_common_billing_account_path = staticmethod(
         DatastoreAdminClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(DatastoreAdminClient.common_folder_path)
     parse_common_folder_path = staticmethod(
         DatastoreAdminClient.parse_common_folder_path
     )
-
     common_organization_path = staticmethod(
         DatastoreAdminClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
         DatastoreAdminClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(DatastoreAdminClient.common_project_path)
     parse_common_project_path = staticmethod(
         DatastoreAdminClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(DatastoreAdminClient.common_location_path)
     parse_common_location_path = staticmethod(
         DatastoreAdminClient.parse_common_location_path
     )
 
-    from_service_account_file = DatastoreAdminClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+            info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            DatastoreAdminAsyncClient: The constructed client.
+        """
+        return DatastoreAdminClient.from_service_account_info.__func__(DatastoreAdminAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+            file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            DatastoreAdminAsyncClient: The constructed client.
+        """
+        return DatastoreAdminClient.from_service_account_file.__func__(DatastoreAdminAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
     def transport(self) -> DatastoreAdminTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             DatastoreAdminTransport: The transport used by the client instance.
@@ -154,12 +179,12 @@ class DatastoreAdminAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, DatastoreAdminTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the datastore admin client.
+        """Instantiates the datastore admin client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -191,7 +216,6 @@ class DatastoreAdminAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = DatastoreAdminClient(
             credentials=credentials,
             transport=transport,
@@ -201,13 +225,13 @@ class DatastoreAdminAsyncClient:
 
     async def export_entities(
         self,
-        request: datastore_admin.ExportEntitiesRequest = None,
+        request: Union[datastore_admin.ExportEntitiesRequest, dict] = None,
         *,
         project_id: str = None,
         labels: Sequence[datastore_admin.ExportEntitiesRequest.LabelsEntry] = None,
         entity_filter: datastore_admin.EntityFilter = None,
         output_url_prefix: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -223,23 +247,25 @@ class DatastoreAdminAsyncClient:
         Google Cloud Storage.
 
         Args:
-            request (:class:`~.datastore_admin.ExportEntitiesRequest`):
+            request (Union[google.cloud.datastore_admin_v1.types.ExportEntitiesRequest, dict]):
                 The request object. The request for
                 [google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities].
             project_id (:class:`str`):
                 Required. Project ID against which to
                 make the request.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            labels (:class:`Sequence[~.datastore_admin.ExportEntitiesRequest.LabelsEntry]`):
+            labels (:class:`Sequence[google.cloud.datastore_admin_v1.types.ExportEntitiesRequest.LabelsEntry]`):
                 Client-assigned labels.
                 This corresponds to the ``labels`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            entity_filter (:class:`~.datastore_admin.EntityFilter`):
+            entity_filter (:class:`google.cloud.datastore_admin_v1.types.EntityFilter`):
                 Description of what data from the
                 project is included in the export.
+
                 This corresponds to the ``entity_filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -268,10 +294,10 @@ class DatastoreAdminAsyncClient:
                 By nesting the data files deeper, the same Cloud Storage
                 bucket can be used in multiple ExportEntities operations
                 without conflict.
+
                 This corresponds to the ``output_url_prefix`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -279,13 +305,11 @@ class DatastoreAdminAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.datastore_admin.ExportEntitiesResponse``: The
-                response for
-                [google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities].
+                The result type for the operation will be :class:`google.cloud.datastore_admin_v1.types.ExportEntitiesResponse` The response for
+                   [google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities].
 
         """
         # Create or coerce a protobuf request object.
@@ -304,7 +328,6 @@ class DatastoreAdminAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if project_id is not None:
             request.project_id = project_id
         if entity_filter is not None:
@@ -339,13 +362,13 @@ class DatastoreAdminAsyncClient:
 
     async def import_entities(
         self,
-        request: datastore_admin.ImportEntitiesRequest = None,
+        request: Union[datastore_admin.ImportEntitiesRequest, dict] = None,
         *,
         project_id: str = None,
         labels: Sequence[datastore_admin.ImportEntitiesRequest.LabelsEntry] = None,
         input_url: str = None,
         entity_filter: datastore_admin.EntityFilter = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -358,16 +381,17 @@ class DatastoreAdminAsyncClient:
         imported to Cloud Datastore.
 
         Args:
-            request (:class:`~.datastore_admin.ImportEntitiesRequest`):
+            request (Union[google.cloud.datastore_admin_v1.types.ImportEntitiesRequest, dict]):
                 The request object. The request for
                 [google.datastore.admin.v1.DatastoreAdmin.ImportEntities][google.datastore.admin.v1.DatastoreAdmin.ImportEntities].
             project_id (:class:`str`):
                 Required. Project ID against which to
                 make the request.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            labels (:class:`Sequence[~.datastore_admin.ImportEntitiesRequest.LabelsEntry]`):
+            labels (:class:`Sequence[google.cloud.datastore_admin_v1.types.ImportEntitiesRequest.LabelsEntry]`):
                 Client-assigned labels.
                 This corresponds to the ``labels`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -388,20 +412,21 @@ class DatastoreAdminAsyncClient:
 
                 For more information, see
                 [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url].
+
                 This corresponds to the ``input_url`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            entity_filter (:class:`~.datastore_admin.EntityFilter`):
+            entity_filter (:class:`google.cloud.datastore_admin_v1.types.EntityFilter`):
                 Optionally specify which kinds/namespaces are to be
                 imported. If provided, the list must be a subset of the
                 EntityFilter used in creating the export, otherwise a
                 FAILED_PRECONDITION error will be returned. If no filter
                 is specified then all entities from the export are
                 imported.
+
                 This corresponds to the ``entity_filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -409,24 +434,22 @@ class DatastoreAdminAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -443,7 +466,6 @@ class DatastoreAdminAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if project_id is not None:
             request.project_id = project_id
         if input_url is not None:
@@ -469,28 +491,41 @@ class DatastoreAdminAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=datastore_admin.ImportEntitiesMetadata,
         )
 
         # Done; return the response.
         return response
 
-    async def get_index(
+    async def create_index(
         self,
-        request: datastore_admin.GetIndexRequest = None,
+        request: Union[datastore_admin.CreateIndexRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> index.Index:
-        r"""Gets an index.
+    ) -> operation_async.AsyncOperation:
+        r"""Creates the specified index. A newly created index's initial
+        state is ``CREATING``. On completion of the returned
+        [google.longrunning.Operation][google.longrunning.Operation],
+        the state will be ``READY``. If the index already exists, the
+        call will return an ``ALREADY_EXISTS`` status.
+
+        During index creation, the process could result in an error, in
+        which case the index will move to the ``ERROR`` state. The
+        process can be recovered by fixing the data that caused the
+        error, removing the index with
+        [delete][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex],
+        then re-creating the index with [create]
+        [google.datastore.admin.v1.DatastoreAdmin.CreateIndex].
+
+        Indexes with a single property cannot be created.
 
         Args:
-            request (:class:`~.datastore_admin.GetIndexRequest`):
+            request (Union[google.cloud.datastore_admin_v1.types.CreateIndexRequest, dict]):
                 The request object. The request for
-                [google.datastore.admin.v1.DatastoreAdmin.GetIndex][google.datastore.admin.v1.DatastoreAdmin.GetIndex].
-
+                [google.datastore.admin.v1.DatastoreAdmin.CreateIndex][google.datastore.admin.v1.DatastoreAdmin.CreateIndex].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -498,11 +533,131 @@ class DatastoreAdminAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.index.Index:
-                A minimal index definition.
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.datastore_admin_v1.types.Index`
+                Datastore composite index definition.
+
         """
         # Create or coerce a protobuf request object.
+        request = datastore_admin.CreateIndexRequest(request)
 
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_index,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            index.Index,
+            metadata_type=datastore_admin.IndexOperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_index(
+        self,
+        request: Union[datastore_admin.DeleteIndexRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes an existing index. An index can only be deleted if it is
+        in a ``READY`` or ``ERROR`` state. On successful execution of
+        the request, the index will be in a ``DELETING``
+        [state][google.datastore.admin.v1.Index.State]. And on
+        completion of the returned
+        [google.longrunning.Operation][google.longrunning.Operation],
+        the index will be removed.
+
+        During index deletion, the process could result in an error, in
+        which case the index will move to the ``ERROR`` state. The
+        process can be recovered by fixing the data that caused the
+        error, followed by calling
+        [delete][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex]
+        again.
+
+        Args:
+            request (Union[google.cloud.datastore_admin_v1.types.DeleteIndexRequest, dict]):
+                The request object. The request for
+                [google.datastore.admin.v1.DatastoreAdmin.DeleteIndex][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.datastore_admin_v1.types.Index`
+                Datastore composite index definition.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = datastore_admin.DeleteIndexRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_index,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            index.Index,
+            metadata_type=datastore_admin.IndexOperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_index(
+        self,
+        request: Union[datastore_admin.GetIndexRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> index.Index:
+        r"""Gets an index.
+
+        Args:
+            request (Union[google.cloud.datastore_admin_v1.types.GetIndexRequest, dict]):
+                The request object. The request for
+                [google.datastore.admin.v1.DatastoreAdmin.GetIndex][google.datastore.admin.v1.DatastoreAdmin.GetIndex].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datastore_admin_v1.types.Index:
+                Datastore composite index definition.
+        """
+        # Create or coerce a protobuf request object.
         request = datastore_admin.GetIndexRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -514,8 +669,10 @@ class DatastoreAdminAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -529,9 +686,9 @@ class DatastoreAdminAsyncClient:
 
     async def list_indexes(
         self,
-        request: datastore_admin.ListIndexesRequest = None,
+        request: Union[datastore_admin.ListIndexesRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListIndexesAsyncPager:
@@ -541,10 +698,9 @@ class DatastoreAdminAsyncClient:
         results.
 
         Args:
-            request (:class:`~.datastore_admin.ListIndexesRequest`):
+            request (Union[google.cloud.datastore_admin_v1.types.ListIndexesRequest, dict]):
                 The request object. The request for
                 [google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -552,16 +708,15 @@ class DatastoreAdminAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListIndexesAsyncPager:
+            google.cloud.datastore_admin_v1.services.datastore_admin.pagers.ListIndexesAsyncPager:
                 The response for
-                [google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes].
+                   [google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
-
         request = datastore_admin.ListIndexesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -573,8 +728,10 @@ class DatastoreAdminAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -591,6 +748,12 @@ class DatastoreAdminAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        await self.transport.close()
 
 
 try:

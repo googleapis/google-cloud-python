@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -22,7 +20,7 @@ __protobuf__ = proto.module(package="google.datastore.admin.v1", manifest={"Inde
 
 
 class Index(proto.Message):
-    r"""A minimal index definition.
+    r"""Datastore composite index definition.
 
     Attributes:
         project_id (str):
@@ -32,13 +30,13 @@ class Index(proto.Message):
         kind (str):
             Required. The entity kind to which this index
             applies.
-        ancestor (~.index.Index.AncestorMode):
+        ancestor (google.cloud.datastore_admin_v1.types.Index.AncestorMode):
             Required. The index's ancestor mode. Must not be
             ANCESTOR_MODE_UNSPECIFIED.
-        properties (Sequence[~.index.Index.IndexedProperty]):
+        properties (Sequence[google.cloud.datastore_admin_v1.types.Index.IndexedProperty]):
             Required. An ordered sequence of property
             names and their index attributes.
-        state (~.index.Index.State):
+        state (google.cloud.datastore_admin_v1.types.Index.State):
             Output only. The state of the index.
     """
 
@@ -70,25 +68,19 @@ class Index(proto.Message):
         Attributes:
             name (str):
                 Required. The property name to index.
-            direction (~.index.Index.Direction):
+            direction (google.cloud.datastore_admin_v1.types.Index.Direction):
                 Required. The indexed property's direction. Must not be
                 DIRECTION_UNSPECIFIED.
         """
 
-        name = proto.Field(proto.STRING, number=1)
-
+        name = proto.Field(proto.STRING, number=1,)
         direction = proto.Field(proto.ENUM, number=2, enum="Index.Direction",)
 
-    project_id = proto.Field(proto.STRING, number=1)
-
-    index_id = proto.Field(proto.STRING, number=3)
-
-    kind = proto.Field(proto.STRING, number=4)
-
+    project_id = proto.Field(proto.STRING, number=1,)
+    index_id = proto.Field(proto.STRING, number=3,)
+    kind = proto.Field(proto.STRING, number=4,)
     ancestor = proto.Field(proto.ENUM, number=5, enum=AncestorMode,)
-
     properties = proto.RepeatedField(proto.MESSAGE, number=6, message=IndexedProperty,)
-
     state = proto.Field(proto.ENUM, number=7, enum=State,)
 
 

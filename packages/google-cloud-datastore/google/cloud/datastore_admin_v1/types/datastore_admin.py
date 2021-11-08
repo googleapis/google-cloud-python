@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.cloud.datastore_admin_v1.types import index
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.cloud.datastore_admin_v1.types import index as gda_index
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -34,6 +31,8 @@ __protobuf__ = proto.module(
         "ExportEntitiesMetadata",
         "ImportEntitiesMetadata",
         "EntityFilter",
+        "CreateIndexRequest",
+        "DeleteIndexRequest",
         "GetIndexRequest",
         "ListIndexesRequest",
         "ListIndexesResponse",
@@ -55,19 +54,19 @@ class CommonMetadata(proto.Message):
     r"""Metadata common to all Datastore Admin operations.
 
     Attributes:
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             The time that work began on the operation.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time the operation ended, either
             successfully or otherwise.
-        operation_type (~.datastore_admin.OperationType):
+        operation_type (google.cloud.datastore_admin_v1.types.OperationType):
             The type of the operation. Can be used as a
             filter in ListOperationsRequest.
-        labels (Sequence[~.datastore_admin.CommonMetadata.LabelsEntry]):
+        labels (Sequence[google.cloud.datastore_admin_v1.types.CommonMetadata.LabelsEntry]):
             The client-assigned labels which were
             provided when the operation was created. May
             also include additional labels.
-        state (~.datastore_admin.CommonMetadata.State):
+        state (google.cloud.datastore_admin_v1.types.CommonMetadata.State):
             The current state of the Operation.
     """
 
@@ -82,14 +81,10 @@ class CommonMetadata(proto.Message):
         FAILED = 6
         CANCELLED = 7
 
-    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
-
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
+    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
     operation_type = proto.Field(proto.ENUM, number=3, enum="OperationType",)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4)
-
+    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
     state = proto.Field(proto.ENUM, number=5, enum=State,)
 
 
@@ -106,9 +101,8 @@ class Progress(proto.Message):
             unavailable.
     """
 
-    work_completed = proto.Field(proto.INT64, number=1)
-
-    work_estimated = proto.Field(proto.INT64, number=2)
+    work_completed = proto.Field(proto.INT64, number=1,)
+    work_estimated = proto.Field(proto.INT64, number=2,)
 
 
 class ExportEntitiesRequest(proto.Message):
@@ -119,9 +113,9 @@ class ExportEntitiesRequest(proto.Message):
         project_id (str):
             Required. Project ID against which to make
             the request.
-        labels (Sequence[~.datastore_admin.ExportEntitiesRequest.LabelsEntry]):
+        labels (Sequence[google.cloud.datastore_admin_v1.types.ExportEntitiesRequest.LabelsEntry]):
             Client-assigned labels.
-        entity_filter (~.datastore_admin.EntityFilter):
+        entity_filter (google.cloud.datastore_admin_v1.types.EntityFilter):
             Description of what data from the project is
             included in the export.
         output_url_prefix (str):
@@ -149,13 +143,10 @@ class ExportEntitiesRequest(proto.Message):
             without conflict.
     """
 
-    project_id = proto.Field(proto.STRING, number=1)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=2)
-
+    project_id = proto.Field(proto.STRING, number=1,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=2,)
     entity_filter = proto.Field(proto.MESSAGE, number=3, message="EntityFilter",)
-
-    output_url_prefix = proto.Field(proto.STRING, number=4)
+    output_url_prefix = proto.Field(proto.STRING, number=4,)
 
 
 class ImportEntitiesRequest(proto.Message):
@@ -166,7 +157,7 @@ class ImportEntitiesRequest(proto.Message):
         project_id (str):
             Required. Project ID against which to make
             the request.
-        labels (Sequence[~.datastore_admin.ImportEntitiesRequest.LabelsEntry]):
+        labels (Sequence[google.cloud.datastore_admin_v1.types.ImportEntitiesRequest.LabelsEntry]):
             Client-assigned labels.
         input_url (str):
             Required. The full resource URL of the external storage
@@ -184,7 +175,7 @@ class ImportEntitiesRequest(proto.Message):
 
             For more information, see
             [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url].
-        entity_filter (~.datastore_admin.EntityFilter):
+        entity_filter (google.cloud.datastore_admin_v1.types.EntityFilter):
             Optionally specify which kinds/namespaces are to be
             imported. If provided, the list must be a subset of the
             EntityFilter used in creating the export, otherwise a
@@ -192,12 +183,9 @@ class ImportEntitiesRequest(proto.Message):
             specified then all entities from the export are imported.
     """
 
-    project_id = proto.Field(proto.STRING, number=1)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=2)
-
-    input_url = proto.Field(proto.STRING, number=3)
-
+    project_id = proto.Field(proto.STRING, number=1,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    input_url = proto.Field(proto.STRING, number=3,)
     entity_filter = proto.Field(proto.MESSAGE, number=4, message="EntityFilter",)
 
 
@@ -214,22 +202,22 @@ class ExportEntitiesResponse(proto.Message):
             Only present if the operation completed successfully.
     """
 
-    output_url = proto.Field(proto.STRING, number=1)
+    output_url = proto.Field(proto.STRING, number=1,)
 
 
 class ExportEntitiesMetadata(proto.Message):
     r"""Metadata for ExportEntities operations.
 
     Attributes:
-        common (~.datastore_admin.CommonMetadata):
+        common (google.cloud.datastore_admin_v1.types.CommonMetadata):
             Metadata common to all Datastore Admin
             operations.
-        progress_entities (~.datastore_admin.Progress):
+        progress_entities (google.cloud.datastore_admin_v1.types.Progress):
             An estimate of the number of entities
             processed.
-        progress_bytes (~.datastore_admin.Progress):
+        progress_bytes (google.cloud.datastore_admin_v1.types.Progress):
             An estimate of the number of bytes processed.
-        entity_filter (~.datastore_admin.EntityFilter):
+        entity_filter (google.cloud.datastore_admin_v1.types.EntityFilter):
             Description of which entities are being
             exported.
         output_url_prefix (str):
@@ -241,29 +229,25 @@ class ExportEntitiesMetadata(proto.Message):
     """
 
     common = proto.Field(proto.MESSAGE, number=1, message="CommonMetadata",)
-
     progress_entities = proto.Field(proto.MESSAGE, number=2, message="Progress",)
-
     progress_bytes = proto.Field(proto.MESSAGE, number=3, message="Progress",)
-
     entity_filter = proto.Field(proto.MESSAGE, number=4, message="EntityFilter",)
-
-    output_url_prefix = proto.Field(proto.STRING, number=5)
+    output_url_prefix = proto.Field(proto.STRING, number=5,)
 
 
 class ImportEntitiesMetadata(proto.Message):
     r"""Metadata for ImportEntities operations.
 
     Attributes:
-        common (~.datastore_admin.CommonMetadata):
+        common (google.cloud.datastore_admin_v1.types.CommonMetadata):
             Metadata common to all Datastore Admin
             operations.
-        progress_entities (~.datastore_admin.Progress):
+        progress_entities (google.cloud.datastore_admin_v1.types.Progress):
             An estimate of the number of entities
             processed.
-        progress_bytes (~.datastore_admin.Progress):
+        progress_bytes (google.cloud.datastore_admin_v1.types.Progress):
             An estimate of the number of bytes processed.
-        entity_filter (~.datastore_admin.EntityFilter):
+        entity_filter (google.cloud.datastore_admin_v1.types.EntityFilter):
             Description of which entities are being
             imported.
         input_url (str):
@@ -274,14 +258,10 @@ class ImportEntitiesMetadata(proto.Message):
     """
 
     common = proto.Field(proto.MESSAGE, number=1, message="CommonMetadata",)
-
     progress_entities = proto.Field(proto.MESSAGE, number=2, message="Progress",)
-
     progress_bytes = proto.Field(proto.MESSAGE, number=3, message="Progress",)
-
     entity_filter = proto.Field(proto.MESSAGE, number=4, message="EntityFilter",)
-
-    input_url = proto.Field(proto.STRING, number=5)
+    input_url = proto.Field(proto.STRING, number=5,)
 
 
 class EntityFilter(proto.Message):
@@ -316,9 +296,41 @@ class EntityFilter(proto.Message):
             Each namespace in this list must be unique.
     """
 
-    kinds = proto.RepeatedField(proto.STRING, number=1)
+    kinds = proto.RepeatedField(proto.STRING, number=1,)
+    namespace_ids = proto.RepeatedField(proto.STRING, number=2,)
 
-    namespace_ids = proto.RepeatedField(proto.STRING, number=2)
+
+class CreateIndexRequest(proto.Message):
+    r"""The request for
+    [google.datastore.admin.v1.DatastoreAdmin.CreateIndex][google.datastore.admin.v1.DatastoreAdmin.CreateIndex].
+
+    Attributes:
+        project_id (str):
+            Project ID against which to make the request.
+        index (google.cloud.datastore_admin_v1.types.Index):
+            The index to create. The name and state
+            fields are output only and will be ignored.
+            Single property indexes cannot be created or
+            deleted.
+    """
+
+    project_id = proto.Field(proto.STRING, number=1,)
+    index = proto.Field(proto.MESSAGE, number=3, message=gda_index.Index,)
+
+
+class DeleteIndexRequest(proto.Message):
+    r"""The request for
+    [google.datastore.admin.v1.DatastoreAdmin.DeleteIndex][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex].
+
+    Attributes:
+        project_id (str):
+            Project ID against which to make the request.
+        index_id (str):
+            The resource ID of the index to delete.
+    """
+
+    project_id = proto.Field(proto.STRING, number=1,)
+    index_id = proto.Field(proto.STRING, number=3,)
 
 
 class GetIndexRequest(proto.Message):
@@ -332,9 +344,8 @@ class GetIndexRequest(proto.Message):
             The resource ID of the index to get.
     """
 
-    project_id = proto.Field(proto.STRING, number=1)
-
-    index_id = proto.Field(proto.STRING, number=3)
+    project_id = proto.Field(proto.STRING, number=1,)
+    index_id = proto.Field(proto.STRING, number=3,)
 
 
 class ListIndexesRequest(proto.Message):
@@ -354,13 +365,10 @@ class ListIndexesRequest(proto.Message):
             request, if any.
     """
 
-    project_id = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=3)
-
-    page_size = proto.Field(proto.INT32, number=4)
-
-    page_token = proto.Field(proto.STRING, number=5)
+    project_id = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=3,)
+    page_size = proto.Field(proto.INT32, number=4,)
+    page_token = proto.Field(proto.STRING, number=5,)
 
 
 class ListIndexesResponse(proto.Message):
@@ -368,7 +376,7 @@ class ListIndexesResponse(proto.Message):
     [google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes].
 
     Attributes:
-        indexes (Sequence[~.index.Index]):
+        indexes (Sequence[google.cloud.datastore_admin_v1.types.Index]):
             The indexes.
         next_page_token (str):
             The standard List next-page token.
@@ -378,19 +386,18 @@ class ListIndexesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    indexes = proto.RepeatedField(proto.MESSAGE, number=1, message=index.Index,)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    indexes = proto.RepeatedField(proto.MESSAGE, number=1, message=gda_index.Index,)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class IndexOperationMetadata(proto.Message):
     r"""Metadata for Index operations.
 
     Attributes:
-        common (~.datastore_admin.CommonMetadata):
+        common (google.cloud.datastore_admin_v1.types.CommonMetadata):
             Metadata common to all Datastore Admin
             operations.
-        progress_entities (~.datastore_admin.Progress):
+        progress_entities (google.cloud.datastore_admin_v1.types.Progress):
             An estimate of the number of entities
             processed.
         index_id (str):
@@ -399,10 +406,8 @@ class IndexOperationMetadata(proto.Message):
     """
 
     common = proto.Field(proto.MESSAGE, number=1, message="CommonMetadata",)
-
     progress_entities = proto.Field(proto.MESSAGE, number=2, message="Progress",)
-
-    index_id = proto.Field(proto.STRING, number=3)
+    index_id = proto.Field(proto.STRING, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

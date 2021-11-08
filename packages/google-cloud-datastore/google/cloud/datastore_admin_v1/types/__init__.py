@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,36 +13,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-from .index import Index
 from .datastore_admin import (
     CommonMetadata,
-    Progress,
-    ExportEntitiesRequest,
-    ImportEntitiesRequest,
-    ExportEntitiesResponse,
-    ExportEntitiesMetadata,
-    ImportEntitiesMetadata,
+    CreateIndexRequest,
+    DeleteIndexRequest,
     EntityFilter,
+    ExportEntitiesMetadata,
+    ExportEntitiesRequest,
+    ExportEntitiesResponse,
     GetIndexRequest,
+    ImportEntitiesMetadata,
+    ImportEntitiesRequest,
+    IndexOperationMetadata,
     ListIndexesRequest,
     ListIndexesResponse,
-    IndexOperationMetadata,
+    Progress,
+    OperationType,
 )
-
+from .index import Index
 
 __all__ = (
-    "Index",
     "CommonMetadata",
-    "Progress",
-    "ExportEntitiesRequest",
-    "ImportEntitiesRequest",
-    "ExportEntitiesResponse",
-    "ExportEntitiesMetadata",
-    "ImportEntitiesMetadata",
+    "CreateIndexRequest",
+    "DeleteIndexRequest",
     "EntityFilter",
+    "ExportEntitiesMetadata",
+    "ExportEntitiesRequest",
+    "ExportEntitiesResponse",
     "GetIndexRequest",
+    "ImportEntitiesMetadata",
+    "ImportEntitiesRequest",
+    "IndexOperationMetadata",
     "ListIndexesRequest",
     "ListIndexesResponse",
-    "IndexOperationMetadata",
+    "Progress",
+    "OperationType",
+    "Index",
 )

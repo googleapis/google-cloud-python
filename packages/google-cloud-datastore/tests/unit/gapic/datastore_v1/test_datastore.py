@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import os
 import mock
 
@@ -24,13 +22,14 @@ import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
-from google import auth
+
 from google.api_core import client_options
-from google.api_core import exceptions
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
-from google.auth import credentials
+from google.api_core import path_template
+from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.datastore_v1.services.datastore import DatastoreAsyncClient
 from google.cloud.datastore_v1.services.datastore import DatastoreClient
@@ -39,10 +38,11 @@ from google.cloud.datastore_v1.types import datastore
 from google.cloud.datastore_v1.types import entity
 from google.cloud.datastore_v1.types import query
 from google.oauth2 import service_account
-from google.protobuf import struct_pb2 as struct  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
-from google.type import latlng_pb2 as latlng  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
+from google.type import latlng_pb2  # type: ignore
+import google.auth
 
 
 def client_cert_source_callback():
@@ -84,25 +84,70 @@ def test__get_default_mtls_endpoint():
     assert DatastoreClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [DatastoreClient, DatastoreAsyncClient])
+@pytest.mark.parametrize("client_class", [DatastoreClient, DatastoreAsyncClient,])
+def test_datastore_client_from_service_account_info(client_class):
+    creds = ga_credentials.AnonymousCredentials()
+    with mock.patch.object(
+        service_account.Credentials, "from_service_account_info"
+    ) as factory:
+        factory.return_value = creds
+        info = {"valid": True}
+        client = client_class.from_service_account_info(info)
+        assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
+
+        assert client.transport._host == "datastore.googleapis.com:443"
+
+
+@pytest.mark.parametrize(
+    "transport_class,transport_name",
+    [
+        (transports.DatastoreGrpcTransport, "grpc"),
+        (transports.DatastoreGrpcAsyncIOTransport, "grpc_asyncio"),
+    ],
+)
+def test_datastore_client_service_account_always_use_jwt(
+    transport_class, transport_name
+):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
+
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=False)
+        use_jwt.assert_not_called()
+
+
+@pytest.mark.parametrize("client_class", [DatastoreClient, DatastoreAsyncClient,])
 def test_datastore_client_from_service_account_file(client_class):
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "datastore.googleapis.com:443"
 
 
 def test_datastore_client_get_transport_class():
     transport = DatastoreClient.get_transport_class()
-    assert transport == transports.DatastoreGrpcTransport
+    available_transports = [
+        transports.DatastoreGrpcTransport,
+    ]
+    assert transport in available_transports
 
     transport = DatastoreClient.get_transport_class("grpc")
     assert transport == transports.DatastoreGrpcTransport
@@ -130,7 +175,7 @@ def test_datastore_client_get_transport_class():
 def test_datastore_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(DatastoreClient, "get_transport_class") as gtc:
-        transport = transport_class(credentials=credentials.AnonymousCredentials())
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -143,15 +188,16 @@ def test_datastore_client_client_options(client_class, transport_class, transpor
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
         )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -159,15 +205,16 @@ def test_datastore_client_client_options(client_class, transport_class, transpor
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -175,15 +222,16 @@ def test_datastore_client_client_options(client_class, transport_class, transpor
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
@@ -203,15 +251,16 @@ def test_datastore_client_client_options(client_class, transport_class, transpor
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
         )
 
 
@@ -258,29 +307,26 @@ def test_datastore_client_mtls_env_auto(
             client_cert_source=client_cert_source_callback
         )
         with mock.patch.object(transport_class, "__init__") as patched:
-            ssl_channel_creds = mock.Mock()
-            with mock.patch(
-                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
-            ):
-                patched.return_value = None
-                client = client_class(client_options=options)
+            patched.return_value = None
+            client = client_class(transport=transport_name, client_options=options)
 
-                if use_client_cert_env == "false":
-                    expected_ssl_channel_creds = None
-                    expected_host = client.DEFAULT_ENDPOINT
-                else:
-                    expected_ssl_channel_creds = ssl_channel_creds
-                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+            if use_client_cert_env == "false":
+                expected_client_cert_source = None
+                expected_host = client.DEFAULT_ENDPOINT
+            else:
+                expected_client_cert_source = client_cert_source_callback
+                expected_host = client.DEFAULT_MTLS_ENDPOINT
 
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=expected_host,
-                    scopes=None,
-                    ssl_channel_credentials=expected_ssl_channel_creds,
-                    quota_project_id=None,
-                    client_info=transports.base.DEFAULT_CLIENT_INFO,
-                )
+            patched.assert_called_once_with(
+                credentials=None,
+                credentials_file=None,
+                host=expected_host,
+                scopes=None,
+                client_cert_source_for_mtls=expected_client_cert_source,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+            )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
@@ -289,40 +335,32 @@ def test_datastore_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=True,
             ):
                 with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    with mock.patch(
-                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
-                        new_callable=mock.PropertyMock,
-                    ) as ssl_credentials_mock:
-                        if use_client_cert_env == "false":
-                            is_mtls_mock.return_value = False
-                            ssl_credentials_mock.return_value = None
-                            expected_host = client.DEFAULT_ENDPOINT
-                            expected_ssl_channel_creds = None
-                        else:
-                            is_mtls_mock.return_value = True
-                            ssl_credentials_mock.return_value = mock.Mock()
-                            expected_host = client.DEFAULT_MTLS_ENDPOINT
-                            expected_ssl_channel_creds = (
-                                ssl_credentials_mock.return_value
-                            )
+                    "google.auth.transport.mtls.default_client_cert_source",
+                    return_value=client_cert_source_callback,
+                ):
+                    if use_client_cert_env == "false":
+                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_client_cert_source = None
+                    else:
+                        expected_host = client.DEFAULT_MTLS_ENDPOINT
+                        expected_client_cert_source = client_cert_source_callback
 
-                        patched.return_value = None
-                        client = client_class()
-                        patched.assert_called_once_with(
-                            credentials=None,
-                            credentials_file=None,
-                            host=expected_host,
-                            scopes=None,
-                            ssl_channel_credentials=expected_ssl_channel_creds,
-                            quota_project_id=None,
-                            client_info=transports.base.DEFAULT_CLIENT_INFO,
-                        )
+                    patched.return_value = None
+                    client = client_class(transport=transport_name)
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=expected_host,
+                        scopes=None,
+                        client_cert_source_for_mtls=expected_client_cert_source,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                        always_use_jwt_access=True,
+                    )
 
     # Check the case client_cert_source and ADC client cert are not provided.
     with mock.patch.dict(
@@ -330,24 +368,21 @@ def test_datastore_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=False,
             ):
-                with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    is_mtls_mock.return_value = False
-                    patched.return_value = None
-                    client = client_class()
-                    patched.assert_called_once_with(
-                        credentials=None,
-                        credentials_file=None,
-                        host=client.DEFAULT_ENDPOINT,
-                        scopes=None,
-                        ssl_channel_credentials=None,
-                        quota_project_id=None,
-                        client_info=transports.base.DEFAULT_CLIENT_INFO,
-                    )
+                patched.return_value = None
+                client = client_class(transport=transport_name)
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=client.DEFAULT_ENDPOINT,
+                    scopes=None,
+                    client_cert_source_for_mtls=None,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    always_use_jwt_access=True,
+                )
 
 
 @pytest.mark.parametrize(
@@ -368,15 +403,16 @@ def test_datastore_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
         )
 
 
@@ -398,15 +434,16 @@ def test_datastore_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
         )
 
 
@@ -421,15 +458,16 @@ def test_datastore_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
         )
 
 
 def test_lookup(transport: str = "grpc", request_type=datastore.LookupRequest):
     client = DatastoreClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -440,17 +478,14 @@ def test_lookup(transport: str = "grpc", request_type=datastore.LookupRequest):
     with mock.patch.object(type(client.transport.lookup), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.LookupResponse()
-
         response = client.lookup(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == datastore.LookupRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, datastore.LookupResponse)
 
 
@@ -458,12 +493,27 @@ def test_lookup_from_dict():
     test_lookup(request_type=dict)
 
 
+def test_lookup_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        client.lookup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore.LookupRequest()
+
+
 @pytest.mark.asyncio
 async def test_lookup_async(
     transport: str = "grpc_asyncio", request_type=datastore.LookupRequest
 ):
     client = DatastoreAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -476,13 +526,11 @@ async def test_lookup_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datastore.LookupResponse()
         )
-
         response = await client.lookup(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == datastore.LookupRequest()
 
     # Establish that the response is the type that we expect.
@@ -495,13 +543,12 @@ async def test_lookup_async_from_dict():
 
 
 def test_lookup_flattened():
-    client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.LookupResponse()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.lookup(
@@ -520,20 +567,17 @@ def test_lookup_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].project_id == "project_id_value"
-
         assert args[0].read_options == datastore.ReadOptions(
             read_consistency=datastore.ReadOptions.ReadConsistency.STRONG
         )
-
         assert args[0].keys == [
             entity.Key(partition_id=entity.PartitionId(project_id="project_id_value"))
         ]
 
 
 def test_lookup_flattened_error():
-    client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -554,7 +598,7 @@ def test_lookup_flattened_error():
 
 @pytest.mark.asyncio
 async def test_lookup_flattened_async():
-    client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup), "__call__") as call:
@@ -582,13 +626,10 @@ async def test_lookup_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].project_id == "project_id_value"
-
         assert args[0].read_options == datastore.ReadOptions(
             read_consistency=datastore.ReadOptions.ReadConsistency.STRONG
         )
-
         assert args[0].keys == [
             entity.Key(partition_id=entity.PartitionId(project_id="project_id_value"))
         ]
@@ -596,7 +637,7 @@ async def test_lookup_flattened_async():
 
 @pytest.mark.asyncio
 async def test_lookup_flattened_error_async():
-    client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -617,7 +658,7 @@ async def test_lookup_flattened_error_async():
 
 def test_run_query(transport: str = "grpc", request_type=datastore.RunQueryRequest):
     client = DatastoreClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -628,17 +669,14 @@ def test_run_query(transport: str = "grpc", request_type=datastore.RunQueryReque
     with mock.patch.object(type(client.transport.run_query), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.RunQueryResponse()
-
         response = client.run_query(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == datastore.RunQueryRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, datastore.RunQueryResponse)
 
 
@@ -646,12 +684,27 @@ def test_run_query_from_dict():
     test_run_query(request_type=dict)
 
 
+def test_run_query_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
+        client.run_query()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore.RunQueryRequest()
+
+
 @pytest.mark.asyncio
 async def test_run_query_async(
     transport: str = "grpc_asyncio", request_type=datastore.RunQueryRequest
 ):
     client = DatastoreAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -664,13 +717,11 @@ async def test_run_query_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datastore.RunQueryResponse()
         )
-
         response = await client.run_query(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == datastore.RunQueryRequest()
 
     # Establish that the response is the type that we expect.
@@ -686,7 +737,7 @@ def test_begin_transaction(
     transport: str = "grpc", request_type=datastore.BeginTransactionRequest
 ):
     client = DatastoreClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -701,19 +752,15 @@ def test_begin_transaction(
         call.return_value = datastore.BeginTransactionResponse(
             transaction=b"transaction_blob",
         )
-
         response = client.begin_transaction(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == datastore.BeginTransactionRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, datastore.BeginTransactionResponse)
-
     assert response.transaction == b"transaction_blob"
 
 
@@ -721,12 +768,29 @@ def test_begin_transaction_from_dict():
     test_begin_transaction(request_type=dict)
 
 
+def test_begin_transaction_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.begin_transaction), "__call__"
+    ) as call:
+        client.begin_transaction()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore.BeginTransactionRequest()
+
+
 @pytest.mark.asyncio
 async def test_begin_transaction_async(
     transport: str = "grpc_asyncio", request_type=datastore.BeginTransactionRequest
 ):
     client = DatastoreAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -741,18 +805,15 @@ async def test_begin_transaction_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datastore.BeginTransactionResponse(transaction=b"transaction_blob",)
         )
-
         response = await client.begin_transaction(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == datastore.BeginTransactionRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.BeginTransactionResponse)
-
     assert response.transaction == b"transaction_blob"
 
 
@@ -762,7 +823,7 @@ async def test_begin_transaction_async_from_dict():
 
 
 def test_begin_transaction_flattened():
-    client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -770,7 +831,6 @@ def test_begin_transaction_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.BeginTransactionResponse()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.begin_transaction(project_id="project_id_value",)
@@ -779,12 +839,11 @@ def test_begin_transaction_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].project_id == "project_id_value"
 
 
 def test_begin_transaction_flattened_error():
-    client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -796,7 +855,7 @@ def test_begin_transaction_flattened_error():
 
 @pytest.mark.asyncio
 async def test_begin_transaction_flattened_async():
-    client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -816,13 +875,12 @@ async def test_begin_transaction_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].project_id == "project_id_value"
 
 
 @pytest.mark.asyncio
 async def test_begin_transaction_flattened_error_async():
-    client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -834,7 +892,7 @@ async def test_begin_transaction_flattened_error_async():
 
 def test_commit(transport: str = "grpc", request_type=datastore.CommitRequest):
     client = DatastoreClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -845,19 +903,15 @@ def test_commit(transport: str = "grpc", request_type=datastore.CommitRequest):
     with mock.patch.object(type(client.transport.commit), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.CommitResponse(index_updates=1389,)
-
         response = client.commit(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == datastore.CommitRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, datastore.CommitResponse)
-
     assert response.index_updates == 1389
 
 
@@ -865,12 +919,27 @@ def test_commit_from_dict():
     test_commit(request_type=dict)
 
 
+def test_commit_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
+        client.commit()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore.CommitRequest()
+
+
 @pytest.mark.asyncio
 async def test_commit_async(
     transport: str = "grpc_asyncio", request_type=datastore.CommitRequest
 ):
     client = DatastoreAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -883,18 +952,15 @@ async def test_commit_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datastore.CommitResponse(index_updates=1389,)
         )
-
         response = await client.commit(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == datastore.CommitRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.CommitResponse)
-
     assert response.index_updates == 1389
 
 
@@ -904,13 +970,12 @@ async def test_commit_async_from_dict():
 
 
 def test_commit_flattened():
-    client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.commit), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.CommitResponse()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.commit(
@@ -934,11 +999,8 @@ def test_commit_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].project_id == "project_id_value"
-
         assert args[0].mode == datastore.CommitRequest.Mode.TRANSACTIONAL
-
         assert args[0].mutations == [
             datastore.Mutation(
                 insert=entity.Entity(
@@ -948,12 +1010,11 @@ def test_commit_flattened():
                 )
             )
         ]
-
         assert args[0].transaction == b"transaction_blob"
 
 
 def test_commit_flattened_error():
-    client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -979,7 +1040,7 @@ def test_commit_flattened_error():
 
 @pytest.mark.asyncio
 async def test_commit_flattened_async():
-    client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.commit), "__call__") as call:
@@ -1012,11 +1073,8 @@ async def test_commit_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].project_id == "project_id_value"
-
         assert args[0].mode == datastore.CommitRequest.Mode.TRANSACTIONAL
-
         assert args[0].mutations == [
             datastore.Mutation(
                 insert=entity.Entity(
@@ -1026,13 +1084,12 @@ async def test_commit_flattened_async():
                 )
             )
         ]
-
         assert args[0].transaction == b"transaction_blob"
 
 
 @pytest.mark.asyncio
 async def test_commit_flattened_error_async():
-    client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1058,7 +1115,7 @@ async def test_commit_flattened_error_async():
 
 def test_rollback(transport: str = "grpc", request_type=datastore.RollbackRequest):
     client = DatastoreClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1069,17 +1126,14 @@ def test_rollback(transport: str = "grpc", request_type=datastore.RollbackReques
     with mock.patch.object(type(client.transport.rollback), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.RollbackResponse()
-
         response = client.rollback(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == datastore.RollbackRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, datastore.RollbackResponse)
 
 
@@ -1087,12 +1141,27 @@ def test_rollback_from_dict():
     test_rollback(request_type=dict)
 
 
+def test_rollback_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
+        client.rollback()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore.RollbackRequest()
+
+
 @pytest.mark.asyncio
 async def test_rollback_async(
     transport: str = "grpc_asyncio", request_type=datastore.RollbackRequest
 ):
     client = DatastoreAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1105,13 +1174,11 @@ async def test_rollback_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datastore.RollbackResponse()
         )
-
         response = await client.rollback(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == datastore.RollbackRequest()
 
     # Establish that the response is the type that we expect.
@@ -1124,13 +1191,12 @@ async def test_rollback_async_from_dict():
 
 
 def test_rollback_flattened():
-    client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rollback), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.RollbackResponse()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.rollback(
@@ -1141,14 +1207,12 @@ def test_rollback_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].project_id == "project_id_value"
-
         assert args[0].transaction == b"transaction_blob"
 
 
 def test_rollback_flattened_error():
-    client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1162,7 +1226,7 @@ def test_rollback_flattened_error():
 
 @pytest.mark.asyncio
 async def test_rollback_flattened_async():
-    client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rollback), "__call__") as call:
@@ -1182,15 +1246,13 @@ async def test_rollback_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].project_id == "project_id_value"
-
         assert args[0].transaction == b"transaction_blob"
 
 
 @pytest.mark.asyncio
 async def test_rollback_flattened_error_async():
-    client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1206,7 +1268,7 @@ def test_allocate_ids(
     transport: str = "grpc", request_type=datastore.AllocateIdsRequest
 ):
     client = DatastoreClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1217,17 +1279,14 @@ def test_allocate_ids(
     with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.AllocateIdsResponse()
-
         response = client.allocate_ids(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == datastore.AllocateIdsRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, datastore.AllocateIdsResponse)
 
 
@@ -1235,12 +1294,27 @@ def test_allocate_ids_from_dict():
     test_allocate_ids(request_type=dict)
 
 
+def test_allocate_ids_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
+        client.allocate_ids()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore.AllocateIdsRequest()
+
+
 @pytest.mark.asyncio
 async def test_allocate_ids_async(
     transport: str = "grpc_asyncio", request_type=datastore.AllocateIdsRequest
 ):
     client = DatastoreAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1253,13 +1327,11 @@ async def test_allocate_ids_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datastore.AllocateIdsResponse()
         )
-
         response = await client.allocate_ids(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == datastore.AllocateIdsRequest()
 
     # Establish that the response is the type that we expect.
@@ -1272,13 +1344,12 @@ async def test_allocate_ids_async_from_dict():
 
 
 def test_allocate_ids_flattened():
-    client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.AllocateIdsResponse()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.allocate_ids(
@@ -1294,16 +1365,14 @@ def test_allocate_ids_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].project_id == "project_id_value"
-
         assert args[0].keys == [
             entity.Key(partition_id=entity.PartitionId(project_id="project_id_value"))
         ]
 
 
 def test_allocate_ids_flattened_error():
-    client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1321,7 +1390,7 @@ def test_allocate_ids_flattened_error():
 
 @pytest.mark.asyncio
 async def test_allocate_ids_flattened_async():
-    client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
@@ -1346,9 +1415,7 @@ async def test_allocate_ids_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].project_id == "project_id_value"
-
         assert args[0].keys == [
             entity.Key(partition_id=entity.PartitionId(project_id="project_id_value"))
         ]
@@ -1356,7 +1423,7 @@ async def test_allocate_ids_flattened_async():
 
 @pytest.mark.asyncio
 async def test_allocate_ids_flattened_error_async():
-    client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1374,7 +1441,7 @@ async def test_allocate_ids_flattened_error_async():
 
 def test_reserve_ids(transport: str = "grpc", request_type=datastore.ReserveIdsRequest):
     client = DatastoreClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1385,17 +1452,14 @@ def test_reserve_ids(transport: str = "grpc", request_type=datastore.ReserveIdsR
     with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.ReserveIdsResponse()
-
         response = client.reserve_ids(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == datastore.ReserveIdsRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, datastore.ReserveIdsResponse)
 
 
@@ -1403,12 +1467,27 @@ def test_reserve_ids_from_dict():
     test_reserve_ids(request_type=dict)
 
 
+def test_reserve_ids_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastoreClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
+        client.reserve_ids()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastore.ReserveIdsRequest()
+
+
 @pytest.mark.asyncio
 async def test_reserve_ids_async(
     transport: str = "grpc_asyncio", request_type=datastore.ReserveIdsRequest
 ):
     client = DatastoreAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1421,13 +1500,11 @@ async def test_reserve_ids_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datastore.ReserveIdsResponse()
         )
-
         response = await client.reserve_ids(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == datastore.ReserveIdsRequest()
 
     # Establish that the response is the type that we expect.
@@ -1440,13 +1517,12 @@ async def test_reserve_ids_async_from_dict():
 
 
 def test_reserve_ids_flattened():
-    client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.ReserveIdsResponse()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.reserve_ids(
@@ -1462,16 +1538,14 @@ def test_reserve_ids_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].project_id == "project_id_value"
-
         assert args[0].keys == [
             entity.Key(partition_id=entity.PartitionId(project_id="project_id_value"))
         ]
 
 
 def test_reserve_ids_flattened_error():
-    client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1489,7 +1563,7 @@ def test_reserve_ids_flattened_error():
 
 @pytest.mark.asyncio
 async def test_reserve_ids_flattened_async():
-    client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
@@ -1514,9 +1588,7 @@ async def test_reserve_ids_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].project_id == "project_id_value"
-
         assert args[0].keys == [
             entity.Key(partition_id=entity.PartitionId(project_id="project_id_value"))
         ]
@@ -1524,7 +1596,7 @@ async def test_reserve_ids_flattened_async():
 
 @pytest.mark.asyncio
 async def test_reserve_ids_flattened_error_async():
-    client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1543,16 +1615,16 @@ async def test_reserve_ids_flattened_error_async():
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DatastoreGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = DatastoreClient(
-            credentials=credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.DatastoreGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = DatastoreClient(
@@ -1562,7 +1634,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.DatastoreGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = DatastoreClient(
@@ -1573,7 +1645,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.DatastoreGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = DatastoreClient(transport=transport)
     assert client.transport is transport
@@ -1582,13 +1654,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.DatastoreGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.DatastoreGrpcAsyncIOTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -1596,27 +1668,27 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.DatastoreGrpcTransport, transports.DatastoreGrpcAsyncIOTransport],
+    [transports.DatastoreGrpcTransport, transports.DatastoreGrpcAsyncIOTransport,],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
+    client = DatastoreClient(credentials=ga_credentials.AnonymousCredentials(),)
     assert isinstance(client.transport, transports.DatastoreGrpcTransport,)
 
 
 def test_datastore_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
-    with pytest.raises(exceptions.DuplicateCredentialArgs):
+    with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.DatastoreTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -1628,7 +1700,7 @@ def test_datastore_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.DatastoreTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -1646,22 +1718,26 @@ def test_datastore_base_transport():
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
 
+    with pytest.raises(NotImplementedError):
+        transport.close()
+
 
 def test_datastore_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
-        auth, "load_credentials_from_file"
+        google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
         "google.cloud.datastore_v1.services.datastore.transports.DatastoreTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (credentials.AnonymousCredentials(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DatastoreTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
-            scopes=(
+            scopes=None,
+            default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/datastore",
             ),
@@ -1671,22 +1747,23 @@ def test_datastore_base_transport_with_credentials_file():
 
 def test_datastore_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(auth, "default") as adc, mock.patch(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
         "google.cloud.datastore_v1.services.datastore.transports.DatastoreTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DatastoreTransport()
         adc.assert_called_once()
 
 
 def test_datastore_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         DatastoreClient()
         adc.assert_called_once_with(
-            scopes=(
+            scopes=None,
+            default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/datastore",
             ),
@@ -1694,16 +1771,19 @@ def test_datastore_auth_adc():
         )
 
 
-def test_datastore_transport_auth_adc():
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.DatastoreGrpcTransport, transports.DatastoreGrpcAsyncIOTransport,],
+)
+def test_datastore_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
-        transports.DatastoreGrpcTransport(
-            host="squid.clam.whelk", quota_project_id="octopus"
-        )
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
-            scopes=(
+            scopes=["1", "2"],
+            default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/datastore",
             ),
@@ -1711,9 +1791,89 @@ def test_datastore_transport_auth_adc():
         )
 
 
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.DatastoreGrpcTransport, grpc_helpers),
+        (transports.DatastoreGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+def test_datastore_transport_create_channel(transport_class, grpc_helpers):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+
+        create_channel.assert_called_with(
+            "datastore.googleapis.com:443",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/datastore",
+            ),
+            scopes=["1", "2"],
+            default_host="datastore.googleapis.com",
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.DatastoreGrpcTransport, transports.DatastoreGrpcAsyncIOTransport],
+)
+def test_datastore_grpc_transport_client_cert_source_for_mtls(transport_class):
+    cred = ga_credentials.AnonymousCredentials()
+
+    # Check ssl_channel_credentials is used if provided.
+    with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
+        mock_ssl_channel_creds = mock.Mock()
+        transport_class(
+            host="squid.clam.whelk",
+            credentials=cred,
+            ssl_channel_credentials=mock_ssl_channel_creds,
+        )
+        mock_create_channel.assert_called_once_with(
+            "squid.clam.whelk:443",
+            credentials=cred,
+            credentials_file=None,
+            scopes=None,
+            ssl_credentials=mock_ssl_channel_creds,
+            quota_project_id=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+    # Check if ssl_channel_credentials is not provided, then client_cert_source_for_mtls
+    # is used.
+    with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
+        with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
+            transport_class(
+                credentials=cred,
+                client_cert_source_for_mtls=client_cert_source_callback,
+            )
+            expected_cert, expected_key = client_cert_source_callback()
+            mock_ssl_cred.assert_called_once_with(
+                certificate_chain=expected_cert, private_key=expected_key
+            )
+
+
 def test_datastore_host_no_port():
     client = DatastoreClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="datastore.googleapis.com"
         ),
@@ -1723,7 +1883,7 @@ def test_datastore_host_no_port():
 
 def test_datastore_host_with_port():
     client = DatastoreClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="datastore.googleapis.com:8000"
         ),
@@ -1732,7 +1892,7 @@ def test_datastore_host_with_port():
 
 
 def test_datastore_grpc_transport_channel():
-    channel = grpc.insecure_channel("http://localhost/")
+    channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.DatastoreGrpcTransport(
@@ -1744,7 +1904,7 @@ def test_datastore_grpc_transport_channel():
 
 
 def test_datastore_grpc_asyncio_transport_channel():
-    channel = aio.insecure_channel("http://localhost/")
+    channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.DatastoreGrpcAsyncIOTransport(
@@ -1755,6 +1915,8 @@ def test_datastore_grpc_asyncio_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [transports.DatastoreGrpcTransport, transports.DatastoreGrpcAsyncIOTransport],
@@ -1764,7 +1926,7 @@ def test_datastore_transport_channel_mtls_with_client_cert_source(transport_clas
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
@@ -1772,9 +1934,9 @@ def test_datastore_transport_channel_mtls_with_client_cert_source(transport_clas
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = credentials.AnonymousCredentials()
+            cred = ga_credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
-                with mock.patch.object(auth, "default") as adc:
+                with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
                     transport = transport_class(
                         host="squid.clam.whelk",
@@ -1790,17 +1952,20 @@ def test_datastore_transport_channel_mtls_with_client_cert_source(transport_clas
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
                 credentials_file=None,
-                scopes=(
-                    "https://www.googleapis.com/auth/cloud-platform",
-                    "https://www.googleapis.com/auth/datastore",
-                ),
+                scopes=None,
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
             assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [transports.DatastoreGrpcTransport, transports.DatastoreGrpcAsyncIOTransport],
@@ -1813,7 +1978,7 @@ def test_datastore_transport_channel_mtls_with_adc(transport_class):
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
@@ -1831,19 +1996,19 @@ def test_datastore_transport_channel_mtls_with_adc(transport_class):
                 "mtls.squid.clam.whelk:443",
                 credentials=mock_cred,
                 credentials_file=None,
-                scopes=(
-                    "https://www.googleapis.com/auth/cloud-platform",
-                    "https://www.googleapis.com/auth/datastore",
-                ),
+                scopes=None,
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
 
 
 def test_common_billing_account_path():
     billing_account = "squid"
-
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -1864,7 +2029,6 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-
     expected = "folders/{folder}".format(folder=folder,)
     actual = DatastoreClient.common_folder_path(folder)
     assert expected == actual
@@ -1883,7 +2047,6 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-
     expected = "organizations/{organization}".format(organization=organization,)
     actual = DatastoreClient.common_organization_path(organization)
     assert expected == actual
@@ -1902,7 +2065,6 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-
     expected = "projects/{project}".format(project=project,)
     actual = DatastoreClient.common_project_path(project)
     assert expected == actual
@@ -1922,7 +2084,6 @@ def test_parse_common_project_path():
 def test_common_location_path():
     project = "winkle"
     location = "nautilus"
-
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -1949,7 +2110,7 @@ def test_client_withDEFAULT_CLIENT_INFO():
         transports.DatastoreTransport, "_prep_wrapped_messages"
     ) as prep:
         client = DatastoreClient(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1958,6 +2119,52 @@ def test_client_withDEFAULT_CLIENT_INFO():
     ) as prep:
         transport_class = DatastoreClient.get_transport_class()
         transport = transport_class(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
+
+
+@pytest.mark.asyncio
+async def test_transport_close_async():
+    client = DatastoreAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close():
+    transports = {
+        "grpc": "_grpc_channel",
+    }
+
+    for transport, close_name in transports.items():
+        client = DatastoreClient(
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
+        )
+        with mock.patch.object(
+            type(getattr(client.transport, close_name)), "close"
+        ) as close:
+            with client:
+                close.assert_not_called()
+            close.assert_called_once()
+
+
+def test_client_ctx():
+    transports = [
+        "grpc",
+    ]
+    for transport in transports:
+        client = DatastoreClient(
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
+        )
+        # Test client calls underlying transport.
+        with mock.patch.object(type(client.transport), "close") as close:
+            close.assert_not_called()
+            with client:
+                pass
+            close.assert_called()

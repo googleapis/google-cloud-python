@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import struct_pb2 as struct  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.type import latlng_pb2 as latlng  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import latlng_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -59,9 +56,8 @@ class PartitionId(proto.Message):
             which the entities belong.
     """
 
-    project_id = proto.Field(proto.STRING, number=2)
-
-    namespace_id = proto.Field(proto.STRING, number=4)
+    project_id = proto.Field(proto.STRING, number=2,)
+    namespace_id = proto.Field(proto.STRING, number=4,)
 
 
 class Key(proto.Message):
@@ -72,12 +68,12 @@ class Key(proto.Message):
     contexts.
 
     Attributes:
-        partition_id (~.entity.PartitionId):
+        partition_id (google.cloud.datastore_v1.types.PartitionId):
             Entities are partitioned into subsets,
             currently identified by a project ID and
             namespace ID. Queries are scoped to a single
             partition.
-        path (Sequence[~.entity.Key.PathElement]):
+        path (Sequence[google.cloud.datastore_v1.types.Key.PathElement]):
             The entity path. An entity path consists of one or more
             elements composed of a kind and a string or numerical
             identifier, which identify entities. The first element
@@ -104,6 +100,13 @@ class Key(proto.Message):
         If either name or ID is set, the element is complete. If neither
         is set, the element is incomplete.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             kind (str):
                 The kind of the entity. A kind matching regex ``__.*__`` is
@@ -114,20 +117,19 @@ class Key(proto.Message):
                 Never equal to zero. Values less than zero are
                 discouraged and may not be supported in the
                 future.
+                This field is a member of `oneof`_ ``id_type``.
             name (str):
                 The name of the entity. A name matching regex ``__.*__`` is
                 reserved/read-only. A name must not be more than 1500 bytes
                 when UTF-8 encoded. Cannot be ``""``.
+                This field is a member of `oneof`_ ``id_type``.
         """
 
-        kind = proto.Field(proto.STRING, number=1)
-
-        id = proto.Field(proto.INT64, number=2, oneof="id_type")
-
-        name = proto.Field(proto.STRING, number=3, oneof="id_type")
+        kind = proto.Field(proto.STRING, number=1,)
+        id = proto.Field(proto.INT64, number=2, oneof="id_type",)
+        name = proto.Field(proto.STRING, number=3, oneof="id_type",)
 
     partition_id = proto.Field(proto.MESSAGE, number=1, message="PartitionId",)
-
     path = proto.RepeatedField(proto.MESSAGE, number=2, message=PathElement,)
 
 
@@ -135,7 +137,7 @@ class ArrayValue(proto.Message):
     r"""An array value.
 
     Attributes:
-        values (Sequence[~.entity.Value]):
+        values (Sequence[google.cloud.datastore_v1.types.Value]):
             Values in the array. The order of values in an array is
             preserved as long as all values have identical settings for
             'exclude_from_indexes'.
@@ -148,42 +150,60 @@ class Value(proto.Message):
     r"""A message that can hold any of the supported value types and
     associated metadata.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
-        null_value (~.struct.NullValue):
+        null_value (google.protobuf.struct_pb2.NullValue):
             A null value.
+            This field is a member of `oneof`_ ``value_type``.
         boolean_value (bool):
             A boolean value.
+            This field is a member of `oneof`_ ``value_type``.
         integer_value (int):
             An integer value.
+            This field is a member of `oneof`_ ``value_type``.
         double_value (float):
             A double value.
-        timestamp_value (~.timestamp.Timestamp):
+            This field is a member of `oneof`_ ``value_type``.
+        timestamp_value (google.protobuf.timestamp_pb2.Timestamp):
             A timestamp value.
             When stored in the Datastore, precise only to
             microseconds; any additional precision is
             rounded down.
-        key_value (~.entity.Key):
+            This field is a member of `oneof`_ ``value_type``.
+        key_value (google.cloud.datastore_v1.types.Key):
             A key value.
+            This field is a member of `oneof`_ ``value_type``.
         string_value (str):
             A UTF-8 encoded string value. When ``exclude_from_indexes``
             is false (it is indexed), may have at most 1500 bytes.
             Otherwise, may be set to at most 1,000,000 bytes.
+            This field is a member of `oneof`_ ``value_type``.
         blob_value (bytes):
             A blob value. May have at most 1,000,000 bytes. When
             ``exclude_from_indexes`` is false, may have at most 1500
             bytes. In JSON requests, must be base64-encoded.
-        geo_point_value (~.latlng.LatLng):
+            This field is a member of `oneof`_ ``value_type``.
+        geo_point_value (google.type.latlng_pb2.LatLng):
             A geo point value representing a point on the
             surface of Earth.
-        entity_value (~.entity.Entity):
+            This field is a member of `oneof`_ ``value_type``.
+        entity_value (google.cloud.datastore_v1.types.Entity):
             An entity value.
             - May have no key.
             - May have a key with an incomplete key path. -
             May have a reserved/read-only key.
-        array_value (~.entity.ArrayValue):
+            This field is a member of `oneof`_ ``value_type``.
+        array_value (google.cloud.datastore_v1.types.ArrayValue):
             An array value. Cannot contain another array value. A
             ``Value`` instance that sets field ``array_value`` must not
             set fields ``meaning`` or ``exclude_from_indexes``.
+            This field is a member of `oneof`_ ``value_type``.
         meaning (int):
             The ``meaning`` field should only be populated for backwards
             compatibility.
@@ -193,40 +213,28 @@ class Value(proto.Message):
     """
 
     null_value = proto.Field(
-        proto.ENUM, number=11, oneof="value_type", enum=struct.NullValue,
+        proto.ENUM, number=11, oneof="value_type", enum=struct_pb2.NullValue,
     )
-
-    boolean_value = proto.Field(proto.BOOL, number=1, oneof="value_type")
-
-    integer_value = proto.Field(proto.INT64, number=2, oneof="value_type")
-
-    double_value = proto.Field(proto.DOUBLE, number=3, oneof="value_type")
-
+    boolean_value = proto.Field(proto.BOOL, number=1, oneof="value_type",)
+    integer_value = proto.Field(proto.INT64, number=2, oneof="value_type",)
+    double_value = proto.Field(proto.DOUBLE, number=3, oneof="value_type",)
     timestamp_value = proto.Field(
-        proto.MESSAGE, number=10, oneof="value_type", message=timestamp.Timestamp,
+        proto.MESSAGE, number=10, oneof="value_type", message=timestamp_pb2.Timestamp,
     )
-
     key_value = proto.Field(proto.MESSAGE, number=5, oneof="value_type", message="Key",)
-
-    string_value = proto.Field(proto.STRING, number=17, oneof="value_type")
-
-    blob_value = proto.Field(proto.BYTES, number=18, oneof="value_type")
-
+    string_value = proto.Field(proto.STRING, number=17, oneof="value_type",)
+    blob_value = proto.Field(proto.BYTES, number=18, oneof="value_type",)
     geo_point_value = proto.Field(
-        proto.MESSAGE, number=8, oneof="value_type", message=latlng.LatLng,
+        proto.MESSAGE, number=8, oneof="value_type", message=latlng_pb2.LatLng,
     )
-
     entity_value = proto.Field(
         proto.MESSAGE, number=6, oneof="value_type", message="Entity",
     )
-
     array_value = proto.Field(
         proto.MESSAGE, number=9, oneof="value_type", message="ArrayValue",
     )
-
-    meaning = proto.Field(proto.INT32, number=14)
-
-    exclude_from_indexes = proto.Field(proto.BOOL, number=19)
+    meaning = proto.Field(proto.INT32, number=14,)
+    exclude_from_indexes = proto.Field(proto.BOOL, number=19,)
 
 
 class Entity(proto.Message):
@@ -237,14 +245,14 @@ class Entity(proto.Message):
     message.
 
     Attributes:
-        key (~.entity.Key):
+        key (google.cloud.datastore_v1.types.Key):
             The entity's key.
 
             An entity must have a key, unless otherwise documented (for
             example, an entity in ``Value.entity_value`` may have no
             key). An entity's kind is its key path's last element's
             kind, or null if it has no key.
-        properties (Sequence[~.entity.Entity.PropertiesEntry]):
+        properties (Sequence[google.cloud.datastore_v1.types.Entity.PropertiesEntry]):
             The entity's properties. The map's keys are property names.
             A property name matching regex ``__.*__`` is reserved. A
             reserved property name is forbidden in certain documented
@@ -253,7 +261,6 @@ class Entity(proto.Message):
     """
 
     key = proto.Field(proto.MESSAGE, number=1, message="Key",)
-
     properties = proto.MapField(proto.STRING, proto.MESSAGE, number=3, message="Value",)
 
 

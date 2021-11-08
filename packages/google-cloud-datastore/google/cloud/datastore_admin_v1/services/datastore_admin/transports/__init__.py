@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from typing import Dict, Type
 
@@ -27,7 +25,6 @@ from .grpc_asyncio import DatastoreAdminGrpcAsyncIOTransport
 _transport_registry = OrderedDict()  # type: Dict[str, Type[DatastoreAdminTransport]]
 _transport_registry["grpc"] = DatastoreAdminGrpcTransport
 _transport_registry["grpc_asyncio"] = DatastoreAdminGrpcAsyncIOTransport
-
 
 __all__ = (
     "DatastoreAdminTransport",

@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,11 +39,12 @@ def partition(
 class datastore_adminCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'export_entities': ('project_id', 'output_url_prefix', 'labels', 'entity_filter', ),
-    'get_index': ('project_id', 'index_id', ),
-    'import_entities': ('project_id', 'input_url', 'labels', 'entity_filter', ),
-    'list_indexes': ('project_id', 'filter', 'page_size', 'page_token', ),
-
+        'create_index': ('project_id', 'index', ),
+        'delete_index': ('project_id', 'index_id', ),
+        'export_entities': ('project_id', 'output_url_prefix', 'labels', 'entity_filter', ),
+        'get_index': ('project_id', 'index_id', ),
+        'import_entities': ('project_id', 'input_url', 'labels', 'entity_filter', ),
+        'list_indexes': ('project_id', 'filter', 'page_size', 'page_token', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -64,7 +63,7 @@ class datastore_adminCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
@@ -76,7 +75,7 @@ class datastore_adminCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that
