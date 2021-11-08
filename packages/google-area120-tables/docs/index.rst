@@ -2,6 +2,7 @@
 
 .. include:: multiprocessing.rst
 
+
 API Reference
 -------------
 .. toctree::
@@ -10,12 +11,13 @@ API Reference
     tables_v1alpha1/services
     tables_v1alpha1/types
 
+
 Changelog
 ---------
 
 For a list of all ``google-area120-tables`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
