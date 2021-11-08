@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.6.2](https://www.github.com/googleapis/python-channel/compare/v1.6.1...v1.6.2) (2021-11-04)
+
+
+### Documentation
+
+* clarified usage of entitlement parameters ([#116](https://www.github.com/googleapis/python-channel/issues/116)) ([20fb1ff](https://www.github.com/googleapis/python-channel/commit/20fb1ffdf922875d420266c9a761c184fe19d671))
+
 ### [1.6.1](https://www.github.com/googleapis/python-channel/compare/v1.6.0...v1.6.1) (2021-11-01)
 
 
