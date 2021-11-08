@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.16.0](https://www.github.com/googleapis/python-bigquery-pandas/compare/v0.16.0...v0.16.0) (2021-11-08)
+
+
+### Features
+
+* `to_gbq` uses Parquet by default, use `api_method="load_csv"` for old behavior ([#413](https://www.github.com/googleapis/python-bigquery-pandas/issues/413)) ([9a65383](https://www.github.com/googleapis/python-bigquery-pandas/commit/9a65383916697ff02358aba58df555c85b16350c))
+* allow Python 3.10 ([#417](https://www.github.com/googleapis/python-bigquery-pandas/issues/417)) ([faba940](https://www.github.com/googleapis/python-bigquery-pandas/commit/faba940bc19d5c260b9dce3f973a9b729a179d20))
+
+
+### Miscellaneous Chores
+
+* release 0.16.0 ([#415](https://www.github.com/googleapis/python-bigquery-pandas/issues/415)) ([ea0f4e9](https://www.github.com/googleapis/python-bigquery-pandas/commit/ea0f4e97f3518895e824b1b7328d578081588d84))
+
+
+### Documentation
+
+* clarify `table_schema` ([#383](https://www.github.com/googleapis/python-bigquery-pandas/issues/383)) ([326e674](https://www.github.com/googleapis/python-bigquery-pandas/commit/326e674a24fc7e057e213596df92f0c4a8225f9e))
+
 ## 0.15.0 / 2021-03-30
 
 ### Features
