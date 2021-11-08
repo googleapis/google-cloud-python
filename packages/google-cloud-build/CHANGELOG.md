@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+### [3.7.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.7.0...v3.7.1) (2021-11-05)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core >= 1.28.0, drop packaging dep ([f3fb436](https://www.github.com/googleapis/python-cloudbuild/commit/f3fb4367ba598506d4cdd296870b61a8ffad75ef))
+
+
+### Documentation
+
+* list oneofs in docstring ([f3fb436](https://www.github.com/googleapis/python-cloudbuild/commit/f3fb4367ba598506d4cdd296870b61a8ffad75ef))
+
 ## [3.7.0](https://www.github.com/googleapis/python-cloudbuild/compare/v3.6.0...v3.7.0) (2021-10-13)
 
 
