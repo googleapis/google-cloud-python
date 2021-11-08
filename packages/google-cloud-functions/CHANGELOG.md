@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://www.github.com/googleapis/python-functions/compare/v1.3.1...v1.4.0) (2021-11-05)
+
+
+### Features
+
+* CMEK integration fields 'kms_key_name' and 'docker_repository' added ([47c99d0](https://www.github.com/googleapis/python-functions/commit/47c99d0ea2e5e7d74d10976ea1ec7d8d399e06a4))
+* Secret Manager integration fields 'secret_environment_variables' and 'secret_volumes' added ([#130](https://www.github.com/googleapis/python-functions/issues/130)) ([47c99d0](https://www.github.com/googleapis/python-functions/commit/47c99d0ea2e5e7d74d10976ea1ec7d8d399e06a4))
+
 ### [1.3.1](https://www.github.com/googleapis/python-functions/compare/v1.3.0...v1.3.1) (2021-11-01)
 
 
