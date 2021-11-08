@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.0](https://www.github.com/googleapis/python-workflows/compare/v1.4.1...v1.5.0) (2021-11-05)
+
+
+### Features
+
+* add a stack_trace field to the Error messages specifying where the error occurred ([#113](https://www.github.com/googleapis/python-workflows/issues/113)) ([22f55d3](https://www.github.com/googleapis/python-workflows/commit/22f55d30c57d31bf8d0839bd7289e1392ff65a18))
+* add call_log_level field to Execution messages ([22f55d3](https://www.github.com/googleapis/python-workflows/commit/22f55d30c57d31bf8d0839bd7289e1392ff65a18))
+
 ### [1.4.1](https://www.github.com/googleapis/python-workflows/compare/v1.4.0...v1.4.1) (2021-11-01)
 
 
