@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.6.0](https://www.github.com/googleapis/python-datacatalog/compare/v3.5.0...v3.6.0) (2021-11-08)
+
+
+### Features
+
+* Added BigQueryDateShardedSpec.latest_shard_resource field ([#256](https://www.github.com/googleapis/python-datacatalog/issues/256)) ([36019b6](https://www.github.com/googleapis/python-datacatalog/commit/36019b6218ed8153ef9cdcfc2d57434c6e7f0b25))
+* Added SearchCatalogResult.description field ([36019b6](https://www.github.com/googleapis/python-datacatalog/commit/36019b6218ed8153ef9cdcfc2d57434c6e7f0b25))
+* Added SearchCatalogResult.display_name field ([36019b6](https://www.github.com/googleapis/python-datacatalog/commit/36019b6218ed8153ef9cdcfc2d57434c6e7f0b25))
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([0dcc0c3](https://www.github.com/googleapis/python-datacatalog/commit/0dcc0c36484ac8013ba911322d7641f5b73efe11))
+* **deps:** require google-api-core >= 1.28.0 ([0dcc0c3](https://www.github.com/googleapis/python-datacatalog/commit/0dcc0c36484ac8013ba911322d7641f5b73efe11))
+
+
+### Documentation
+
+* attempt to fix table layout ([#249](https://www.github.com/googleapis/python-datacatalog/issues/249)) ([26c19ae](https://www.github.com/googleapis/python-datacatalog/commit/26c19ae8bbe96f7a82e4f36a251e7abea98ce2b1))
+* list oneofs in docstring ([0dcc0c3](https://www.github.com/googleapis/python-datacatalog/commit/0dcc0c36484ac8013ba911322d7641f5b73efe11))
+
 ## [3.5.0](https://www.github.com/googleapis/python-datacatalog/compare/v3.4.3...v3.5.0) (2021-10-28)
 
 
