@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import distutils
 import logging
 import os
 import pytest
@@ -78,7 +77,7 @@ def test_stream_stream_passing_dict(echo):
     assert responses.trailing_metadata() == metadata
 
 
-if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
+if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     import asyncio
 
     @pytest.mark.asyncio

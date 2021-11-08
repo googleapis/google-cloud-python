@@ -15,7 +15,6 @@
 import os
 import pytest
 import grpc
-import distutils
 
 
 def test_client(echo):
@@ -34,7 +33,7 @@ def test_client_destroyed(echo):
         })
 
 
-if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
+if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_client_async(async_echo):

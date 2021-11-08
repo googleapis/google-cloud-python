@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import collections
-import distutils
 import grpc
 import mock
 import os
@@ -25,7 +24,7 @@ from google.showcase import EchoClient
 from google.showcase import IdentityClient
 from google.showcase import MessagingClient
 
-if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
+if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     from grpc.experimental import aio
     import asyncio
     from google.showcase import EchoAsyncClient

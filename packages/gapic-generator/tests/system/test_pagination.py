@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import distutils
 import os
 import pytest
 from google import showcase
@@ -49,7 +48,7 @@ def test_pagination_pages(echo):
                        for i in text.split(' ')]
 
 
-if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
+if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     @pytest.mark.asyncio
     async def test_pagination_async(async_echo):
         text = 'The hail in Wales falls mainly on the snails.'

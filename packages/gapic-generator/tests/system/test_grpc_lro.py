@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import distutils
 import os
 import pytest
 from datetime import datetime, timedelta, timezone
@@ -32,7 +31,7 @@ def test_lro(echo):
     assert response.content.endswith('the snails...eventually.')
 
 
-if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
+if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
 
     @pytest.mark.asyncio
     async def test_lro_async(async_echo):
