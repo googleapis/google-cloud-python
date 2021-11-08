@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-db-dtypes-pandas/compare/v0.2.0...v0.3.0) (2021-11-08)
+
+
+### Features
+
+* support conversion from pyarrow RecordBatch to pandas DataFrame ([#39](https://www.github.com/googleapis/python-db-dtypes-pandas/issues/39)) ([facc7b0](https://www.github.com/googleapis/python-db-dtypes-pandas/commit/facc7b0897e27c5ba99399b7d453818c5b4aeca7))
+* support Python 3.10 ([#40](https://www.github.com/googleapis/python-db-dtypes-pandas/issues/40)) ([a31d55d](https://www.github.com/googleapis/python-db-dtypes-pandas/commit/a31d55db57b2f5655b1fee4230a930d5bee4b1c9))
+
 ## [0.2.0](https://www.github.com/googleapis/python-db-dtypes-pandas/compare/v0.1.1...v0.2.0) (2021-10-14)
 
 
