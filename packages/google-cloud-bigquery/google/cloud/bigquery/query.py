@@ -367,14 +367,14 @@ class _AbstractQueryParameter(object):
     """
 
     @classmethod
-    def from_api_repr(cls, resource: dict) -> "ScalarQueryParameter":
+    def from_api_repr(cls, resource: dict) -> "_AbstractQueryParameter":
         """Factory: construct parameter from JSON resource.
 
         Args:
             resource (Dict): JSON mapping of parameter
 
         Returns:
-            google.cloud.bigquery.query.ScalarQueryParameter
+            A new instance of _AbstractQueryParameter subclass.
         """
         raise NotImplementedError
 
@@ -471,7 +471,7 @@ class ScalarQueryParameter(_AbstractQueryParameter):
         converter = _SCALAR_VALUE_TO_JSON_PARAM.get(self.type_)
         if converter is not None:
             value = converter(value)
-        resource = {
+        resource: Dict[str, Any] = {
             "parameterType": {"type": self.type_},
             "parameterValue": {"value": value},
         }
@@ -734,7 +734,7 @@ class StructQueryParameter(_AbstractQueryParameter):
         struct_values = resource["parameterValue"]["structValues"]
         for key, value in struct_values.items():
             type_ = types[key]
-            converted = None
+            converted: Optional[Union[ArrayQueryParameter, StructQueryParameter]] = None
             if type_ == "STRUCT":
                 struct_resource = {
                     "name": key,

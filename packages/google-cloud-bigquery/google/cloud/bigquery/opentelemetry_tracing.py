@@ -14,7 +14,7 @@
 
 import logging
 from contextlib import contextmanager
-from google.api_core.exceptions import GoogleAPICallError
+from google.api_core.exceptions import GoogleAPICallError  # type: ignore
 
 logger = logging.getLogger(__name__)
 try:

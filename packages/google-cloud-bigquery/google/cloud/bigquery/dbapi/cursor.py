@@ -31,7 +31,7 @@ else:
 from google.cloud.bigquery import job
 from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.dbapi import exceptions
-import google.cloud.exceptions
+import google.cloud.exceptions  # type: ignore
 
 
 _LOGGER = logging.getLogger(__name__)

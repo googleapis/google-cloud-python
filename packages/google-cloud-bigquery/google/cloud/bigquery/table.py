@@ -21,37 +21,37 @@ import datetime
 import functools
 import operator
 import typing
-from typing import Any, Dict, Iterable, Iterator, Optional, Tuple
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple, Union
 import warnings
 
 try:
-    import pandas
+    import pandas  # type: ignore
 except ImportError:  # pragma: NO COVER
     pandas = None
 
 try:
-    import geopandas
+    import geopandas  # type: ignore
 except ImportError:
     geopandas = None
 else:
     _COORDINATE_REFERENCE_SYSTEM = "EPSG:4326"
 
 try:
-    import shapely.geos
+    import shapely.geos  # type: ignore
 except ImportError:
     shapely = None
 else:
     _read_wkt = shapely.geos.WKTReader(shapely.geos.lgeos).read
 
 try:
-    import pyarrow
+    import pyarrow  # type: ignore
 except ImportError:  # pragma: NO COVER
     pyarrow = None
 
 import google.api_core.exceptions
 from google.api_core.page_iterator import HTTPIterator
 
-import google.cloud._helpers
+import google.cloud._helpers  # type: ignore
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery import _pandas_helpers
 from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
@@ -130,7 +130,7 @@ def _view_use_legacy_sql_getter(table):
 class _TableBase:
     """Base class for Table-related classes with common functionality."""
 
-    _PROPERTY_TO_API_FIELD = {
+    _PROPERTY_TO_API_FIELD: Dict[str, Union[str, List[str]]] = {
         "dataset_id": ["tableReference", "datasetId"],
         "project": ["tableReference", "projectId"],
         "table_id": ["tableReference", "tableId"],
@@ -807,7 +807,7 @@ class Table(_TableBase):
 
     view_use_legacy_sql = property(_view_use_legacy_sql_getter)
 
-    @view_use_legacy_sql.setter
+    @view_use_legacy_sql.setter  # type: ignore  # (redefinition from above)
     def view_use_legacy_sql(self, value):
         if not isinstance(value, bool):
             raise ValueError("Pass a boolean")
@@ -1746,7 +1746,7 @@ class RowIterator(HTTPIterator):
                 progress_bar.close()
         finally:
             if owns_bqstorage_client:
-                bqstorage_client._transport.grpc_channel.close()
+                bqstorage_client._transport.grpc_channel.close()  # type: ignore
 
         if record_batches and bqstorage_client is not None:
             return pyarrow.Table.from_batches(record_batches)
@@ -1763,7 +1763,7 @@ class RowIterator(HTTPIterator):
         self,
         bqstorage_client: "bigquery_storage.BigQueryReadClient" = None,
         dtypes: Dict[str, Any] = None,
-        max_queue_size: int = _pandas_helpers._MAX_QUEUE_SIZE_DEFAULT,
+        max_queue_size: int = _pandas_helpers._MAX_QUEUE_SIZE_DEFAULT,  # type: ignore
     ) -> "pandas.DataFrame":
         """Create an iterable of pandas DataFrames, to process the table as a stream.
 
@@ -2307,8 +2307,6 @@ class PartitionRange(object):
         key_vals = ["{}={}".format(key, val) for key, val in self._key()]
         return "PartitionRange({})".format(", ".join(key_vals))
 
-    __hash__ = None
-
 
 class RangePartitioning(object):
     """Range-based partitioning configuration for a table.
@@ -2386,8 +2384,6 @@ class RangePartitioning(object):
     def __repr__(self):
         key_vals = ["{}={}".format(key, repr(val)) for key, val in self._key()]
         return "RangePartitioning({})".format(", ".join(key_vals))
-
-    __hash__ = None
 
 
 class TimePartitioningType(object):
@@ -2657,7 +2653,7 @@ def _rows_page_start(iterator, page, response):
 # pylint: enable=unused-argument
 
 
-def _table_arg_to_table_ref(value, default_project=None):
+def _table_arg_to_table_ref(value, default_project=None) -> TableReference:
     """Helper to convert a string or Table to TableReference.
 
     This function keeps TableReference and other kinds of objects unchanged.
@@ -2669,7 +2665,7 @@ def _table_arg_to_table_ref(value, default_project=None):
     return value
 
 
-def _table_arg_to_table(value, default_project=None):
+def _table_arg_to_table(value, default_project=None) -> Table:
     """Helper to convert a string or TableReference to a Table.
 
     This function keeps Table and other kinds of objects unchanged.

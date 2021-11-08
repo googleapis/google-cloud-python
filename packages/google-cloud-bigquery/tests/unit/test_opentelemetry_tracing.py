@@ -51,8 +51,15 @@ def setup():
     memory_exporter = InMemorySpanExporter()
     span_processor = SimpleSpanProcessor(memory_exporter)
     tracer_provider.add_span_processor(span_processor)
-    trace.set_tracer_provider(tracer_provider)
+
+    # OpenTelemetry API >= 0.12b0 does not allow overriding the tracer once
+    # initialized, thus directly override (and then restore) the internal global var.
+    orig_trace_provider = trace._TRACER_PROVIDER
+    trace._TRACER_PROVIDER = tracer_provider
+
     yield memory_exporter
+
+    trace._TRACER_PROVIDER = orig_trace_provider
 
 
 @pytest.mark.skipif(opentelemetry is None, reason="Require `opentelemetry`")

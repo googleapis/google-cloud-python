@@ -98,7 +98,7 @@ class AutoStrEnum(str, enum.Enum):
         return name
 
 
-TokenType = AutoStrEnum(  # pytype: disable=wrong-arg-types
+TokenType = AutoStrEnum(  # type: ignore  # pytype: disable=wrong-arg-types
     "TokenType",
     [
         (name, enum.auto())

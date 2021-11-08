@@ -16,7 +16,7 @@
 
 import collections
 import enum
-from typing import Iterable, Union
+from typing import Any, Dict, Iterable, Union
 
 from google.cloud.bigquery_v2 import types
 
@@ -106,7 +106,7 @@ class SchemaField(object):
         scale: Union[int, _DefaultSentinel] = _DEFAULT_VALUE,
         max_length: Union[int, _DefaultSentinel] = _DEFAULT_VALUE,
     ):
-        self._properties = {
+        self._properties: Dict[str, Any] = {
             "name": name,
             "type": field_type,
         }

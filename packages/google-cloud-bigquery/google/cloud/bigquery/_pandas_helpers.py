@@ -21,7 +21,7 @@ import queue
 import warnings
 
 try:
-    import pandas
+    import pandas  # type: ignore
 except ImportError:  # pragma: NO COVER
     pandas = None
 else:
@@ -29,7 +29,7 @@ else:
 
 try:
     # _BaseGeometry is used to detect shapely objevys in `bq_to_arrow_array`
-    from shapely.geometry.base import BaseGeometry as _BaseGeometry
+    from shapely.geometry.base import BaseGeometry as _BaseGeometry  # type: ignore
 except ImportError:  # pragma: NO COVER
     # No shapely, use NoneType for _BaseGeometry as a placeholder.
     _BaseGeometry = type(None)
@@ -43,7 +43,7 @@ else:
             # - Avoid extra work done by `shapely.wkb.dumps` that we don't need.
             # - Caches the WKBWriter (and write method lookup :) )
             # - Avoids adding WKBWriter, lgeos, and notnull to the module namespace.
-            from shapely.geos import WKBWriter, lgeos
+            from shapely.geos import WKBWriter, lgeos  # type: ignore
 
             write = WKBWriter(lgeos).write
             notnull = pandas.notnull
@@ -574,7 +574,7 @@ def dataframe_to_parquet(
     """
     pyarrow = _helpers.PYARROW_VERSIONS.try_import(raise_if_error=True)
 
-    import pyarrow.parquet
+    import pyarrow.parquet  # type: ignore
 
     kwargs = (
         {"use_compliant_nested_type": parquet_use_compliant_nested_type}

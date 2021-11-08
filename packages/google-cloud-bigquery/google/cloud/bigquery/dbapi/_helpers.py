@@ -161,7 +161,7 @@ def _parse_struct_fields(
         yield m.group(1, 2)
 
 
-SCALAR, ARRAY, STRUCT = "sar"
+SCALAR, ARRAY, STRUCT = ("s", "a", "r")
 
 
 def _parse_type(
@@ -226,19 +226,19 @@ def complex_query_parameter_type(name: typing.Optional[str], type_: str, base: s
 
     type_type, sub_type = _parse_type(type_, name, base)
     if type_type == SCALAR:
-        type_ = sub_type
+        result_type = sub_type
     elif type_type == ARRAY:
-        type_ = query.ArrayQueryParameterType(sub_type, name=name)
+        result_type = query.ArrayQueryParameterType(sub_type, name=name)
     elif type_type == STRUCT:
         fields = [
             complex_query_parameter_type(field_name, field_type, base)
             for field_name, field_type in sub_type
         ]
-        type_ = query.StructQueryParameterType(*fields, name=name)
+        result_type = query.StructQueryParameterType(*fields, name=name)
     else:  # pragma: NO COVER
         raise AssertionError("Bad type_type", type_type)  # Can't happen :)
 
-    return type_
+    return result_type
 
 
 def complex_query_parameter(
@@ -256,6 +256,12 @@ def complex_query_parameter(
     struct<name string, children array<struct<name string, bdate date>>>
 
     """
+    param: typing.Union[
+        query.ScalarQueryParameter,
+        query.ArrayQueryParameter,
+        query.StructQueryParameter,
+    ]
+
     base = base or type_
 
     type_type, sub_type = _parse_type(type_, name, base)

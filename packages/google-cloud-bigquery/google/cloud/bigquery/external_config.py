@@ -556,6 +556,10 @@ _OPTION_CLASSES = (
     ParquetOptions,
 )
 
+OptionsType = Union[
+    AvroOptions, BigtableOptions, CSVOptions, GoogleSheetsOptions, ParquetOptions,
+]
+
 
 class HivePartitioningOptions(object):
     """[Beta] Options that configure hive partitioning.
@@ -664,13 +668,15 @@ class ExternalConfig(object):
         return self._properties["sourceFormat"]
 
     @property
-    def options(self) -> Optional[Union[_OPTION_CLASSES]]:
+    def options(self) -> Optional[OptionsType]:
         """Source-specific options."""
         for optcls in _OPTION_CLASSES:
-            if self.source_format == optcls._SOURCE_FORMAT:
-                options = optcls()
-                self._properties.setdefault(optcls._RESOURCE_NAME, {})
-                options._properties = self._properties[optcls._RESOURCE_NAME]
+            # The code below is too much magic for mypy to handle.
+            if self.source_format == optcls._SOURCE_FORMAT:  # type: ignore
+                options: OptionsType = optcls()  # type: ignore
+                options._properties = self._properties.setdefault(
+                    optcls._RESOURCE_NAME, {}  # type: ignore
+                )
                 return options
 
         # No matching source format found.
@@ -799,6 +805,13 @@ class ExternalConfig(object):
         prop = self._properties.get("schema", {})
         return [SchemaField.from_api_repr(field) for field in prop.get("fields", [])]
 
+    @schema.setter
+    def schema(self, value):
+        prop = value
+        if value is not None:
+            prop = {"fields": [field.to_api_repr() for field in value]}
+        self._properties["schema"] = prop
+
     @property
     def connection_id(self):
         """Optional[str]: [Experimental] ID of a BigQuery Connection API
@@ -815,13 +828,6 @@ class ExternalConfig(object):
     @connection_id.setter
     def connection_id(self, value):
         self._properties["connectionId"] = value
-
-    @schema.setter
-    def schema(self, value):
-        prop = value
-        if value is not None:
-            prop = {"fields": [field.to_api_repr() for field in value]}
-        self._properties["schema"] = prop
 
     @property
     def avro_options(self) -> Optional[AvroOptions]:

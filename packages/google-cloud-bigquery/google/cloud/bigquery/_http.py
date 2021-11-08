@@ -17,7 +17,7 @@
 import os
 import pkg_resources
 
-from google.cloud import _http  # pytype: disable=import-error
+from google.cloud import _http  # type: ignore  # pytype: disable=import-error
 from google.cloud.bigquery import __version__
 
 

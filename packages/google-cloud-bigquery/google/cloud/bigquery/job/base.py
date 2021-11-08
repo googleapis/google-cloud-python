@@ -696,7 +696,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             self.reload(retry=retry, timeout=timeout)
         return self.state == _DONE_STATE
 
-    def result(
+    def result(  # type: ignore  # (signature complaint)
         self, retry: "retries.Retry" = DEFAULT_RETRY, timeout: float = None
     ) -> "_AsyncJob":
         """Start the job and wait for it to complete and get the result.
@@ -921,7 +921,7 @@ class _JobConfig(object):
         # cls is one of the job config subclasses that provides the job_type argument to
         # this base class on instantiation, thus missing-parameter warning is a false
         # positive here.
-        job_config = cls()  # pytype: disable=missing-parameter
+        job_config = cls()  # type: ignore  # pytype: disable=missing-parameter
         job_config._properties = resource
         return job_config
 

@@ -22,7 +22,7 @@ import re
 from typing import Any, Optional, Union
 
 from dateutil import relativedelta
-from google.cloud._helpers import UTC
+from google.cloud._helpers import UTC  # type: ignore
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _RFC3339_MICROS
@@ -126,7 +126,7 @@ class PyarrowVersions:
     def installed_version(self) -> packaging.version.Version:
         """Return the parsed version of pyarrow."""
         if self._installed_version is None:
-            import pyarrow
+            import pyarrow  # type: ignore
 
             self._installed_version = packaging.version.parse(
                 # Use 0.0.0, since it is earlier than any released version.

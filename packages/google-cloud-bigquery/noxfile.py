@@ -22,6 +22,7 @@ import shutil
 import nox
 
 
+MYPY_VERSION = "mypy==0.910"
 PYTYPE_VERSION = "pytype==2021.4.9"
 BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ("docs", "google", "samples", "tests", "noxfile.py", "setup.py")
@@ -41,6 +42,7 @@ nox.options.sessions = [
     "lint",
     "lint_setup_py",
     "blacken",
+    "mypy",
     "pytype",
     "docs",
 ]
@@ -114,8 +116,23 @@ def unit_noextras(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy(session):
+    """Run type checks with mypy."""
+    session.install("-e", ".[all]")
+    session.install("ipython")
+    session.install(MYPY_VERSION)
+
+    # Just install the dependencies' type info directly, since "mypy --install-types"
+    # might require an additional pass.
+    session.install(
+        "types-protobuf", "types-python-dateutil", "types-requests", "types-setuptools",
+    )
+    session.run("mypy", "google/cloud")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def pytype(session):
-    """Run type checks."""
+    """Run type checks with pytype."""
     # An indirect dependecy attrs==21.1.0 breaks the check, and installing a less
     # recent version avoids the error until a possibly better fix is found.
     # https://github.com/googleapis/python-bigquery/issues/655

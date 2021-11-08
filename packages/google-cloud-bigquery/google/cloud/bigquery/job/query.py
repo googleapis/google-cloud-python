@@ -56,9 +56,9 @@ from google.cloud.bigquery.job.base import _JobReference
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     # Assumption: type checks are only used by library developers and CI environments
     # that have all optional dependencies installed, thus no conditional imports.
-    import pandas
-    import geopandas
-    import pyarrow
+    import pandas  # type: ignore
+    import geopandas  # type: ignore
+    import pyarrow  # type: ignore
     from google.api_core import retry as retries
     from google.cloud import bigquery_storage
     from google.cloud.bigquery.client import Client
@@ -144,7 +144,7 @@ class DmlStats(typing.NamedTuple):
 
         args = (
             int(stats.get(api_field, default_val))
-            for api_field, default_val in zip(api_fields, cls.__new__.__defaults__)
+            for api_field, default_val in zip(api_fields, cls.__new__.__defaults__)  # type: ignore
         )
         return cls(*args)
 
@@ -161,7 +161,7 @@ class ScriptOptions:
         statement_byte_budget: Optional[int] = None,
         key_result_statement: Optional[KeyResultStatementKind] = None,
     ):
-        self._properties = {}
+        self._properties: Dict[str, Any] = {}
         self.statement_timeout_ms = statement_timeout_ms
         self.statement_byte_budget = statement_byte_budget
         self.key_result_statement = key_result_statement
@@ -193,9 +193,8 @@ class ScriptOptions:
 
     @statement_timeout_ms.setter
     def statement_timeout_ms(self, value: Union[int, None]):
-        if value is not None:
-            value = str(value)
-        self._properties["statementTimeoutMs"] = value
+        new_value = None if value is None else str(value)
+        self._properties["statementTimeoutMs"] = new_value
 
     @property
     def statement_byte_budget(self) -> Union[int, None]:
@@ -207,9 +206,8 @@ class ScriptOptions:
 
     @statement_byte_budget.setter
     def statement_byte_budget(self, value: Union[int, None]):
-        if value is not None:
-            value = str(value)
-        self._properties["statementByteBudget"] = value
+        new_value = None if value is None else str(value)
+        self._properties["statementByteBudget"] = new_value
 
     @property
     def key_result_statement(self) -> Union[KeyResultStatementKind, None]:
@@ -666,9 +664,8 @@ class QueryJobConfig(_JobConfig):
 
     @script_options.setter
     def script_options(self, value: Union[ScriptOptions, None]):
-        if value is not None:
-            value = value.to_api_repr()
-        self._set_sub_prop("scriptOptions", value)
+        new_value = None if value is None else value.to_api_repr()
+        self._set_sub_prop("scriptOptions", new_value)
 
     def to_api_repr(self) -> dict:
         """Build an API representation of the query job config.
@@ -1330,7 +1327,7 @@ class QueryJob(_AsyncJob):
             except exceptions.GoogleAPIError as exc:
                 self.set_exception(exc)
 
-    def result(
+    def result(  # type: ignore  # (complaints about the overloaded signature)
         self,
         page_size: int = None,
         max_results: int = None,
@@ -1400,7 +1397,7 @@ class QueryJob(_AsyncJob):
             retry_do_query = getattr(self, "_retry_do_query", None)
             if retry_do_query is not None:
                 if job_retry is DEFAULT_JOB_RETRY:
-                    job_retry = self._job_retry
+                    job_retry = self._job_retry  # type: ignore
             else:
                 if job_retry is not None and job_retry is not DEFAULT_JOB_RETRY:
                     raise TypeError(
@@ -1451,7 +1448,7 @@ class QueryJob(_AsyncJob):
 
         except exceptions.GoogleAPICallError as exc:
             exc.message += self._format_for_exception(self.query, self.job_id)
-            exc.query_job = self
+            exc.query_job = self  # type: ignore
             raise
         except requests.exceptions.Timeout as exc:
             raise concurrent.futures.TimeoutError from exc

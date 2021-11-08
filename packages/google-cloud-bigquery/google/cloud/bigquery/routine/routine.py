@@ -18,7 +18,7 @@
 
 from google.protobuf import json_format
 
-import google.cloud._helpers
+import google.cloud._helpers  # type: ignore
 from google.cloud.bigquery import _helpers
 import google.cloud.bigquery_v2.types
 from google.cloud.bigquery_v2.types import StandardSqlTableType

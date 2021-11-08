@@ -14,7 +14,7 @@
 
 from google.api_core import exceptions
 from google.api_core import retry
-from google.auth import exceptions as auth_exceptions
+from google.auth import exceptions as auth_exceptions  # type: ignore
 import requests.exceptions
 
 

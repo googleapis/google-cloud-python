@@ -90,16 +90,16 @@ import warnings
 from concurrent import futures
 
 try:
-    import IPython
-    from IPython import display
-    from IPython.core import magic_arguments
+    import IPython  # type: ignore
+    from IPython import display  # type: ignore
+    from IPython.core import magic_arguments  # type: ignore
 except ImportError:  # pragma: NO COVER
     raise ImportError("This module can only be loaded in IPython.")
 
 from google.api_core import client_info
 from google.api_core import client_options
 from google.api_core.exceptions import NotFound
-import google.auth
+import google.auth  # type: ignore
 from google.cloud import bigquery
 import google.cloud.bigquery.dataset
 from google.cloud.bigquery.dbapi import _helpers
