@@ -19,7 +19,7 @@ from google.api_core.exceptions import GoogleAPICallError
 logger = logging.getLogger(__name__)
 try:
     from opentelemetry import trace
-    from opentelemetry.instrumentation.utils import http_status_to_canonical_code
+    from opentelemetry.instrumentation.utils import http_status_to_status_code
     from opentelemetry.trace.status import Status
 
     HAS_OPENTELEMETRY = True
@@ -65,9 +65,10 @@ def create_span(name, attributes=None, client=None, job_ref=None):
         if not _warned_telemetry:
             logger.debug(
                 "This service is instrumented using OpenTelemetry. "
-                "OpenTelemetry could not be imported; please "
-                "add opentelemetry-api and opentelemetry-instrumentation "
-                "packages in order to get BigQuery Tracing data."
+                "OpenTelemetry or one of its components could not be imported; "
+                "please add compatible versions of opentelemetry-api and "
+                "opentelemetry-instrumentation packages in order to get BigQuery "
+                "Tracing data."
             )
             _warned_telemetry = True
 
@@ -81,7 +82,7 @@ def create_span(name, attributes=None, client=None, job_ref=None):
             yield span
         except GoogleAPICallError as error:
             if error.code is not None:
-                span.set_status(Status(http_status_to_canonical_code(error.code)))
+                span.set_status(Status(http_status_to_status_code(error.code)))
             raise
 
 

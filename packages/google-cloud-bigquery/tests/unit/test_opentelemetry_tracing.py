@@ -20,14 +20,21 @@ import mock
 
 try:
     import opentelemetry
-    from opentelemetry import trace
-    from opentelemetry.sdk.trace import TracerProvider
-    from opentelemetry.sdk.trace.export import SimpleExportSpanProcessor
-    from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
-        InMemorySpanExporter,
-    )
 except ImportError:  # pragma: NO COVER
     opentelemetry = None
+
+if opentelemetry is not None:
+    try:
+        from opentelemetry import trace
+        from opentelemetry.sdk.trace import TracerProvider
+        from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+        from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
+            InMemorySpanExporter,
+        )
+    except (ImportError, AttributeError) as exc:  # pragma: NO COVER
+        msg = "Error importing from opentelemetry, is the installed version compatible?"
+        raise ImportError(msg) from exc
+
 import pytest
 
 from google.cloud.bigquery import opentelemetry_tracing
@@ -42,7 +49,7 @@ def setup():
     importlib.reload(opentelemetry_tracing)
     tracer_provider = TracerProvider()
     memory_exporter = InMemorySpanExporter()
-    span_processor = SimpleExportSpanProcessor(memory_exporter)
+    span_processor = SimpleSpanProcessor(memory_exporter)
     tracer_provider.add_span_processor(span_processor)
     trace.set_tracer_provider(tracer_provider)
     yield memory_exporter
