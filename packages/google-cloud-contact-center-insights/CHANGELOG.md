@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-contact-center-insights/compare/v1.0.0...v1.1.0) (2021-11-05)
+
+
+### Features
+
+* Add ability to update phrase matchers ([#93](https://www.github.com/googleapis/python-contact-center-insights/issues/93)) ([0b5b07a](https://www.github.com/googleapis/python-contact-center-insights/commit/0b5b07a2b1747c567cce0baea481db07403dc465))
+* Add display name to issue model stats ([0b5b07a](https://www.github.com/googleapis/python-contact-center-insights/commit/0b5b07a2b1747c567cce0baea481db07403dc465))
+* Add issue model stats to time series ([0b5b07a](https://www.github.com/googleapis/python-contact-center-insights/commit/0b5b07a2b1747c567cce0baea481db07403dc465))
+
 ## [1.0.0](https://www.github.com/googleapis/python-contact-center-insights/compare/v0.6.1...v1.0.0) (2021-11-03)
 
 
