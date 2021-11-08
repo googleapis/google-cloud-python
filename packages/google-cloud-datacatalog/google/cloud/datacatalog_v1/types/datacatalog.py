@@ -102,7 +102,7 @@ class SearchCatalogRequest(proto.Message):
             Optional. The query string with a minimum of 3 characters
             and specific syntax. For more information, see `Data Catalog
             search
-            syntax <https://cloud.google.com/data-catalog/docs/how-to/search-reference>`__.
+            syntax </data-catalog/docs/how-to/search-reference>`__.
 
             An empty query string returns all data assets (in the
             specified scope) that you have access to.
@@ -950,11 +950,18 @@ class UpdateTagTemplateRequest(proto.Message):
             set.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Names of fields whose values to overwrite on a tag template.
-            Currently, only ``display_name`` can be overwritten.
+            Currently, only ``display_name`` and
+            ``is_publicly_readable`` can be overwritten.
 
             If this parameter is absent or empty, all modifiable fields
             are overwritten. If such fields are non-required and omitted
             in the request body, their values are emptied.
+
+            Note: Updating the ``is_publicly_readable`` field may
+            require up to 12 hours to take effect in search results.
+            Additionally, it also requires the
+            ``tagTemplates.getIamPolicy`` and
+            ``tagTemplates.setIamPolicy`` permissions.
     """
 
     tag_template = proto.Field(proto.MESSAGE, number=1, message=gcd_tags.TagTemplate,)
@@ -1114,7 +1121,7 @@ class RenameTagTemplateFieldRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the tag template.
+            Required. The name of the tag template field.
         new_tag_template_field_id (str):
             Required. The new ID of this tag template field. For
             example, ``my_new_field``.

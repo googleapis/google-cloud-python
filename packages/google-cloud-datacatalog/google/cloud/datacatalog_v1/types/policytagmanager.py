@@ -131,7 +131,7 @@ class PolicyTag(proto.Message):
             Output only. Resource name of this policy tag
             in the URL format.
             The policy tag manager generates unique taxonomy
-            IDs and policy tag IDs.<br /><br />
+            IDs and policy tag IDs.
         display_name (str):
             Required. User-defined name of this policy
             tag.
@@ -285,7 +285,7 @@ class CreatePolicyTagRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Resource name of the taxonomy that
-            the policy tag will belong to.<br /><br />
+            the policy tag will belong to.
         policy_tag (google.cloud.datacatalog_v1.types.PolicyTag):
             The policy tag to create.
     """

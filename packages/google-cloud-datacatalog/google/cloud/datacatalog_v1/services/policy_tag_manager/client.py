@@ -805,7 +805,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
             parent (str):
                 Required. Resource name of the
                 taxonomy that the policy tag will belong
-                to.<br /><br />
+                to.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
