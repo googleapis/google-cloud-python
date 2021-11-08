@@ -242,10 +242,7 @@ def test_get_response_enumerates_proto():
 
 
 def test_get_response_divides_subpackages():
-    # NOTE: autogen-snippets is intentionally disabled for this test
-    # The API schema below is incomplete and will result in errors when the
-    # snippetgen logic tries to parse it.
-    g = make_generator("autogen-snippets=false")
+    g = make_generator()
     api_schema = api.API.build(
         [
             descriptor_pb2.FileDescriptorProto(
@@ -280,7 +277,7 @@ def test_get_response_divides_subpackages():
             """.strip()
             )
             cgr = g.get_response(api_schema=api_schema,
-                                 opts=Options.build("autogen-snippets=false"))
+                                 opts=Options.build(""))
             assert len(cgr.file) == 6
             assert {i.name for i in cgr.file} == {
                 "foo/types/top.py",
@@ -686,12 +683,7 @@ def test_dont_generate_in_code_samples(mock_gmtime, mock_generate_sample, fs):
         ),
     )
 
-    # NOTE: autogen-snippets is intentionally disabled for this test
-    # The API schema below is incomplete and will result in errors when the
-    # snippetgen logic attempts to parse it.
-    generator = make_generator(
-        f"samples={config_fpath},autogen-snippets=False")
-    print(generator)
+    generator = make_generator(f"samples={config_fpath}")
     generator._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
     api_schema = make_api(
         make_proto(
@@ -751,7 +743,7 @@ def test_dont_generate_in_code_samples(mock_gmtime, mock_generate_sample, fs):
     expected.supported_features |= CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL
 
     actual = generator.get_response(
-        api_schema=api_schema, opts=Options.build("autogen-snippets=False")
+        api_schema=api_schema, opts=Options.build("")
     )
     assert actual == expected
 

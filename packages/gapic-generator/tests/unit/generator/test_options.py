@@ -141,7 +141,9 @@ def test_options_service_config(fs):
 
 
 def test_options_bool_flags():
-    # Most options are default False.
+    # All these options are default False.
+    # If new options violate this assumption,
+    # this test may need to be tweaked.
     # New options should follow the dash-case/snake_case convention.
     opt_str_to_attr_name = {
         name: re.sub(r"-", "_", name)
@@ -159,22 +161,3 @@ def test_options_bool_flags():
 
         options = Options.build(opt)
         assert getattr(options, attr)
-
-    # Check autogen-snippets separately, as it is default True
-    options = Options.build("")
-    assert options.autogen_snippets
-
-    options = Options.build("autogen-snippets=False")
-    assert not options.autogen_snippets
-
-
-def test_options_autogen_snippets_false_for_old_naming():
-    # NOTE: Snippets are not currently correct for the alternative (Ads) templates
-    # so always disable snippetgen in that case
-    # https://github.com/googleapis/gapic-generator-python/issues/1052
-    options = Options.build("old-naming")
-    assert not options.autogen_snippets
-
-    # Even if autogen-snippets is set to True, do not enable snippetgen
-    options = Options.build("old-naming,autogen-snippets=True")
-    assert not options.autogen_snippets
