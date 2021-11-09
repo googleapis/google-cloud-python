@@ -94,7 +94,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
     -  As such, Redis instances are resources of the form:
        ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
 
-    Note that location_id must be refering to a GCP ``region``; for
+    Note that location_id must be referring to a GCP ``region``; for
     example:
 
     -  ``projects/redpepper-1290/locations/us-central1/instances/my-redis``
@@ -416,7 +416,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         Returns:
             google.cloud.redis_v1beta1.services.cloud_redis.pagers.ListInstancesPager:
                 Response for
-                [ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances].
+                   [ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -554,8 +554,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         The creation is executed asynchronously and callers may check
         the returned operation to track its progress. Once the operation
-        is completed the Redis instance will be fully functional.
-        Completed longrunning.Operation will contain the new instance
+        is completed the Redis instance will be fully functional. The
+        completed longrunning.Operation will contain the new instance
         object in the response field.
 
         The returned operation is automatically deleted after a few
@@ -688,6 +688,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 -  ``labels``
                 -  ``memorySizeGb``
                 -  ``redisConfig``
+                -  ``replica_count``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1065,7 +1066,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Initiates a failover of the master node to current
+        r"""Initiates a failover of the primary node to current
         replica node for a specific STANDARD tier Cloud
         Memorystore for Redis instance.
 
