@@ -55,6 +55,7 @@ class Organization(proto.Message):
         directory_customer_id (str):
             Immutable. The G Suite / Workspace customer
             id used in the Directory API.
+
             This field is a member of `oneof`_ ``owner``.
         state (google.cloud.resourcemanager_v3.types.Organization.State):
             Output only. The organization's current
