@@ -80,61 +80,80 @@ class AuditData(proto.Message):
     Attributes:
         table_insert_request (google.cloud.bigquery_logging_v1.types.TableInsertRequest):
             Table insert request.
+
             This field is a member of `oneof`_ ``request``.
         table_update_request (google.cloud.bigquery_logging_v1.types.TableUpdateRequest):
             Table update request.
+
             This field is a member of `oneof`_ ``request``.
         dataset_list_request (google.cloud.bigquery_logging_v1.types.DatasetListRequest):
             Dataset list request.
+
             This field is a member of `oneof`_ ``request``.
         dataset_insert_request (google.cloud.bigquery_logging_v1.types.DatasetInsertRequest):
             Dataset insert request.
+
             This field is a member of `oneof`_ ``request``.
         dataset_update_request (google.cloud.bigquery_logging_v1.types.DatasetUpdateRequest):
             Dataset update request.
+
             This field is a member of `oneof`_ ``request``.
         job_insert_request (google.cloud.bigquery_logging_v1.types.JobInsertRequest):
             Job insert request.
+
             This field is a member of `oneof`_ ``request``.
         job_query_request (google.cloud.bigquery_logging_v1.types.JobQueryRequest):
             Job query request.
+
             This field is a member of `oneof`_ ``request``.
         job_get_query_results_request (google.cloud.bigquery_logging_v1.types.JobGetQueryResultsRequest):
             Job get query results request.
+
             This field is a member of `oneof`_ ``request``.
         table_data_list_request (google.cloud.bigquery_logging_v1.types.TableDataListRequest):
             Table data-list request.
+
             This field is a member of `oneof`_ ``request``.
         set_iam_policy_request (google.iam.v1.iam_policy_pb2.SetIamPolicyRequest):
             Iam policy request.
+
             This field is a member of `oneof`_ ``request``.
         table_insert_response (google.cloud.bigquery_logging_v1.types.TableInsertResponse):
             Table insert response.
+
             This field is a member of `oneof`_ ``response``.
         table_update_response (google.cloud.bigquery_logging_v1.types.TableUpdateResponse):
             Table update response.
+
             This field is a member of `oneof`_ ``response``.
         dataset_insert_response (google.cloud.bigquery_logging_v1.types.DatasetInsertResponse):
             Dataset insert response.
+
             This field is a member of `oneof`_ ``response``.
         dataset_update_response (google.cloud.bigquery_logging_v1.types.DatasetUpdateResponse):
             Dataset update response.
+
             This field is a member of `oneof`_ ``response``.
         job_insert_response (google.cloud.bigquery_logging_v1.types.JobInsertResponse):
             Job insert response.
+
             This field is a member of `oneof`_ ``response``.
         job_query_response (google.cloud.bigquery_logging_v1.types.JobQueryResponse):
             Job query response.
+
             This field is a member of `oneof`_ ``response``.
         job_get_query_results_response (google.cloud.bigquery_logging_v1.types.JobGetQueryResultsResponse):
             Job get query results response.
+
             This field is a member of `oneof`_ ``response``.
         job_query_done_response (google.cloud.bigquery_logging_v1.types.JobQueryDoneResponse):
             Deprecated: Job query-done response. Use this
             information for usage analysis.
+
             This field is a member of `oneof`_ ``response``.
         policy_response (google.iam.v1.policy_pb2.Policy):
             Iam Policy.
+
             This field is a member of `oneof`_ ``response``.
         job_completed_event (google.cloud.bigquery_logging_v1.types.JobCompletedEvent):
             A job completion event.
@@ -673,15 +692,19 @@ class JobConfiguration(proto.Message):
     Attributes:
         query (google.cloud.bigquery_logging_v1.types.JobConfiguration.Query):
             Query job information.
+
             This field is a member of `oneof`_ ``configuration``.
         load (google.cloud.bigquery_logging_v1.types.JobConfiguration.Load):
             Load job information.
+
             This field is a member of `oneof`_ ``configuration``.
         extract (google.cloud.bigquery_logging_v1.types.JobConfiguration.Extract):
             Extract job information.
+
             This field is a member of `oneof`_ ``configuration``.
         table_copy (google.cloud.bigquery_logging_v1.types.JobConfiguration.TableCopy):
             TableCopy job information.
+
             This field is a member of `oneof`_ ``configuration``.
         dry_run (bool):
             If true, don't actually run the job. Just
