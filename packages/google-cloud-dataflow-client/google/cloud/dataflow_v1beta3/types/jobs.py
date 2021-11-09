@@ -670,28 +670,35 @@ class DisplayData(proto.Message):
             rendering.
         str_value (str):
             Contains value if the data is of string type.
+
             This field is a member of `oneof`_ ``Value``.
         int64_value (int):
             Contains value if the data is of int64 type.
+
             This field is a member of `oneof`_ ``Value``.
         float_value (float):
             Contains value if the data is of float type.
+
             This field is a member of `oneof`_ ``Value``.
         java_class_value (str):
             Contains value if the data is of java class
             type.
+
             This field is a member of `oneof`_ ``Value``.
         timestamp_value (google.protobuf.timestamp_pb2.Timestamp):
             Contains value if the data is of timestamp
             type.
+
             This field is a member of `oneof`_ ``Value``.
         duration_value (google.protobuf.duration_pb2.Duration):
             Contains value if the data is of duration
             type.
+
             This field is a member of `oneof`_ ``Value``.
         bool_value (bool):
             Contains value if the data is of a boolean
             type.
+
             This field is a member of `oneof`_ ``Value``.
         short_str_value (str):
             A possible additional shorter value to display. For example

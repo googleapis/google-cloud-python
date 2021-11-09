@@ -116,10 +116,12 @@ class LaunchFlexTemplateParameter(proto.Message):
             same as the existing running job.
         container_spec (google.cloud.dataflow_v1beta3.types.ContainerSpec):
             Spec about the container image to launch.
+
             This field is a member of `oneof`_ ``template``.
         container_spec_gcs_path (str):
             Cloud Storage path to a file with json
             serialized ContainerSpec as content.
+
             This field is a member of `oneof`_ ``template``.
         parameters (Sequence[google.cloud.dataflow_v1beta3.types.LaunchFlexTemplateParameter.ParametersEntry]):
             The parameters for FlexTemplate. Ex. {"num_workers":"5"}
@@ -492,6 +494,7 @@ class CreateJobFromTemplateRequest(proto.Message):
             Required. A Cloud Storage path to the template from which to
             create the job. Must be a valid Cloud Storage URL, beginning
             with ``gs://``.
+
             This field is a member of `oneof`_ ``template``.
         parameters (Sequence[google.cloud.dataflow_v1beta3.types.CreateJobFromTemplateRequest.ParametersEntry]):
             The runtime parameters to pass to the job.
@@ -525,6 +528,7 @@ class GetTemplateRequest(proto.Message):
             template from which to create the job.
             Must be valid Cloud Storage URL, beginning with
             'gs://'.
+
             This field is a member of `oneof`_ ``template``.
         view (google.cloud.dataflow_v1beta3.types.GetTemplateRequest.TemplateView):
             The view to retrieve. Defaults to METADATA_ONLY.
@@ -624,9 +628,11 @@ class LaunchTemplateRequest(proto.Message):
             which to create the job.
             Must be valid Cloud Storage URL, beginning with
             'gs://'.
+
             This field is a member of `oneof`_ ``template``.
         dynamic_template (google.cloud.dataflow_v1beta3.types.DynamicTemplateLaunchParams):
             Params for launching a dynamic template.
+
             This field is a member of `oneof`_ ``template``.
         launch_parameters (google.cloud.dataflow_v1beta3.types.LaunchTemplateParameters):
             The parameters of the template to launch.

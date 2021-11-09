@@ -168,15 +168,19 @@ class StreamLocation(proto.Message):
         streaming_stage_location (google.cloud.dataflow_v1beta3.types.StreamingStageLocation):
             The stream is part of another computation
             within the current streaming Dataflow job.
+
             This field is a member of `oneof`_ ``location``.
         pubsub_location (google.cloud.dataflow_v1beta3.types.PubsubLocation):
             The stream is a pubsub stream.
+
             This field is a member of `oneof`_ ``location``.
         side_input_location (google.cloud.dataflow_v1beta3.types.StreamingSideInputLocation):
             The stream is a streaming side input.
+
             This field is a member of `oneof`_ ``location``.
         custom_source_location (google.cloud.dataflow_v1beta3.types.CustomSourceLocation):
             The stream is a custom source.
+
             This field is a member of `oneof`_ ``location``.
     """
 
