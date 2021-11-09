@@ -205,19 +205,23 @@ class Workload(proto.Message):
         il4_settings (google.cloud.assuredworkloads_v1beta1.types.Workload.IL4Settings):
             Required. Input only. Immutable. Settings
             specific to resources needed for IL4.
+
             This field is a member of `oneof`_ ``compliance_regime_settings``.
         cjis_settings (google.cloud.assuredworkloads_v1beta1.types.Workload.CJISSettings):
             Required. Input only. Immutable. Settings
             specific to resources needed for CJIS.
+
             This field is a member of `oneof`_ ``compliance_regime_settings``.
         fedramp_high_settings (google.cloud.assuredworkloads_v1beta1.types.Workload.FedrampHighSettings):
             Required. Input only. Immutable. Settings
             specific to resources needed for FedRAMP High.
+
             This field is a member of `oneof`_ ``compliance_regime_settings``.
         fedramp_moderate_settings (google.cloud.assuredworkloads_v1beta1.types.Workload.FedrampModerateSettings):
             Required. Input only. Immutable. Settings
             specific to resources needed for FedRAMP
             Moderate.
+
             This field is a member of `oneof`_ ``compliance_regime_settings``.
         etag (str):
             Optional. ETag of the workload, it is
