@@ -154,6 +154,7 @@ class AuthorizationPolicy(proto.Message):
                         request, use a headerMatch with headerName set
                         to Host and a regular expression that satisfies
                         the RFC2616 Host header's port specifier.
+
                         This field is a member of `oneof`_ ``type``.
                     header_name (str):
                         Required. The name of the HTTP header to

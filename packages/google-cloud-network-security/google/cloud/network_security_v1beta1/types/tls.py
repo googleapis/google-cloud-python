@@ -56,12 +56,14 @@ class ValidationCA(proto.Message):
         grpc_endpoint (google.cloud.network_security_v1beta1.types.GrpcEndpoint):
             gRPC specific configuration to access the
             gRPC server to obtain the CA certificate.
+
             This field is a member of `oneof`_ ``type``.
         certificate_provider_instance (google.cloud.network_security_v1beta1.types.CertificateProviderInstance):
             The certificate provider instance
             specification that will be passed to the data
             plane, which will be used to load necessary
             credential information.
+
             This field is a member of `oneof`_ ``type``.
     """
 
@@ -108,12 +110,14 @@ class CertificateProvider(proto.Message):
         grpc_endpoint (google.cloud.network_security_v1beta1.types.GrpcEndpoint):
             gRPC specific configuration to access the
             gRPC server to obtain the cert and private key.
+
             This field is a member of `oneof`_ ``type``.
         certificate_provider_instance (google.cloud.network_security_v1beta1.types.CertificateProviderInstance):
             The certificate provider instance
             specification that will be passed to the data
             plane, which will be used to load necessary
             credential information.
+
             This field is a member of `oneof`_ ``type``.
     """
 
