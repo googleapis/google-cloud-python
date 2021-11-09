@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
         "ListAttestorsRequest",
         "ListAttestorsResponse",
         "DeleteAttestorRequest",
+        "GetSystemPolicyRequest",
     },
 )
 
@@ -175,6 +176,19 @@ class DeleteAttestorRequest(proto.Message):
             Required. The name of the
             [attestors][google.cloud.binaryauthorization.v1beta1.Attestor]
             to delete, in the format ``projects/*/attestors/*``.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class GetSystemPolicyRequest(proto.Message):
+    r"""Request to read the current system policy.
+
+    Attributes:
+        name (str):
+            Required. The resource name, in the format
+            ``locations/*/policy``. Note that the system policy is not
+            associated with a project.
     """
 
     name = proto.Field(proto.STRING, number=1,)

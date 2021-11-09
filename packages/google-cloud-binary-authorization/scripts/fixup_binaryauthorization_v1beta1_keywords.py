@@ -43,6 +43,7 @@ class binaryauthorizationCallTransformer(cst.CSTTransformer):
         'delete_attestor': ('name', ),
         'get_attestor': ('name', ),
         'get_policy': ('name', ),
+        'get_system_policy': ('name', ),
         'list_attestors': ('parent', 'page_size', 'page_token', ),
         'update_attestor': ('attestor', ),
         'update_policy': ('policy', ),

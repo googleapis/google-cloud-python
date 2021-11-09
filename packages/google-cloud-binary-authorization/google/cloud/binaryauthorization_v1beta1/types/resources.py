@@ -34,7 +34,7 @@ __protobuf__ = proto.module(
 
 class Policy(proto.Message):
     r"""A [policy][google.cloud.binaryauthorization.v1beta1.Policy] for
-    container image binary authorization.
+    Binary Authorization.
 
     Attributes:
         name (str):
@@ -64,6 +64,19 @@ class Policy(proto.Message):
             zone (e.g. us-central1-a) or a region (e.g. us-central1).
             For ``clusterId`` syntax restrictions see
             https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters.
+        kubernetes_namespace_admission_rules (Sequence[google.cloud.binaryauthorization_v1beta1.types.Policy.KubernetesNamespaceAdmissionRulesEntry]):
+            Optional. Per-kubernetes-namespace admission rules. K8s
+            namespace spec format: ``[a-z.-]+``, e.g. ``some-namespace``
+        kubernetes_service_account_admission_rules (Sequence[google.cloud.binaryauthorization_v1beta1.types.Policy.KubernetesServiceAccountAdmissionRulesEntry]):
+            Optional. Per-kubernetes-service-account admission rules.
+            Service account spec format: ``namespace:serviceaccount``.
+            e.g. ``test-ns:default``
+        istio_service_identity_admission_rules (Sequence[google.cloud.binaryauthorization_v1beta1.types.Policy.IstioServiceIdentityAdmissionRulesEntry]):
+            Optional. Per-istio-service-identity admission rules. Istio
+            service identity spec format:
+            ``spiffe://<domain>/ns/<namespace>/sa/<serviceaccount>`` or
+            ``<domain>/ns/<namespace>/sa/<serviceaccount>`` e.g.
+            ``spiffe://example.com/ns/test-ns/sa/default``
         default_admission_rule (google.cloud.binaryauthorization_v1beta1.types.AdmissionRule):
             Required. Default admission rule for a
             cluster without a per-cluster, per- kubernetes-
@@ -91,6 +104,15 @@ class Policy(proto.Message):
     cluster_admission_rules = proto.MapField(
         proto.STRING, proto.MESSAGE, number=3, message="AdmissionRule",
     )
+    kubernetes_namespace_admission_rules = proto.MapField(
+        proto.STRING, proto.MESSAGE, number=10, message="AdmissionRule",
+    )
+    kubernetes_service_account_admission_rules = proto.MapField(
+        proto.STRING, proto.MESSAGE, number=8, message="AdmissionRule",
+    )
+    istio_service_identity_admission_rules = proto.MapField(
+        proto.STRING, proto.MESSAGE, number=9, message="AdmissionRule",
+    )
     default_admission_rule = proto.Field(
         proto.MESSAGE, number=4, message="AdmissionRule",
     )
@@ -105,10 +127,14 @@ class AdmissionWhitelistPattern(proto.Message):
 
     Attributes:
         name_pattern (str):
-            An image name pattern to allow, in the form
+            An image name pattern to allowlist, in the form
             ``registry/path/to/image``. This supports a trailing ``*``
             as a wildcard, but this is allowed only in text after the
-            ``registry/`` part.
+            ``registry/`` part. ``*`` wildcard does not match ``/``,
+            i.e., ``gcr.io/nginx*`` matches ``gcr.io/nginx@latest``, but
+            it does not match ``gcr.io/nginx/image``. This also supports
+            a trailing ``**`` wildcard which matches subdirectories,
+            i.e., ``gcr.io/nginx**`` matches ``gcr.io/nginx/image``.
     """
 
     name_pattern = proto.Field(proto.STRING, number=1,)
@@ -275,6 +301,7 @@ class PkixPublicKey(proto.Message):
         the future, BinAuthz might support additional public key types
         independently of Tink and/or KMS.
         """
+        _pb_options = {"allow_alias": True}
         SIGNATURE_ALGORITHM_UNSPECIFIED = 0
         RSA_PSS_2048_SHA256 = 1
         RSA_PSS_3072_SHA256 = 2
@@ -285,8 +312,11 @@ class PkixPublicKey(proto.Message):
         RSA_SIGN_PKCS1_4096_SHA256 = 7
         RSA_SIGN_PKCS1_4096_SHA512 = 8
         ECDSA_P256_SHA256 = 9
+        EC_SIGN_P256_SHA256 = 9
         ECDSA_P384_SHA384 = 10
+        EC_SIGN_P384_SHA384 = 10
         ECDSA_P521_SHA512 = 11
+        EC_SIGN_P521_SHA512 = 11
 
     public_key_pem = proto.Field(proto.STRING, number=1,)
     signature_algorithm = proto.Field(proto.ENUM, number=2, enum=SignatureAlgorithm,)

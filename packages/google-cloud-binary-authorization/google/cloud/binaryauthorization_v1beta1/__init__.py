@@ -20,6 +20,8 @@ from .services.binauthz_management_service_v1_beta1 import (
 from .services.binauthz_management_service_v1_beta1 import (
     BinauthzManagementServiceV1Beta1AsyncClient,
 )
+from .services.system_policy_v1_beta1 import SystemPolicyV1Beta1Client
+from .services.system_policy_v1_beta1 import SystemPolicyV1Beta1AsyncClient
 
 from .types.continuous_validation_logging import ContinuousValidationEvent
 from .types.resources import AdmissionRule
@@ -33,6 +35,7 @@ from .types.service import CreateAttestorRequest
 from .types.service import DeleteAttestorRequest
 from .types.service import GetAttestorRequest
 from .types.service import GetPolicyRequest
+from .types.service import GetSystemPolicyRequest
 from .types.service import ListAttestorsRequest
 from .types.service import ListAttestorsResponse
 from .types.service import UpdateAttestorRequest
@@ -40,6 +43,7 @@ from .types.service import UpdatePolicyRequest
 
 __all__ = (
     "BinauthzManagementServiceV1Beta1AsyncClient",
+    "SystemPolicyV1Beta1AsyncClient",
     "AdmissionRule",
     "AdmissionWhitelistPattern",
     "Attestor",
@@ -50,10 +54,12 @@ __all__ = (
     "DeleteAttestorRequest",
     "GetAttestorRequest",
     "GetPolicyRequest",
+    "GetSystemPolicyRequest",
     "ListAttestorsRequest",
     "ListAttestorsResponse",
     "PkixPublicKey",
     "Policy",
+    "SystemPolicyV1Beta1Client",
     "UpdateAttestorRequest",
     "UpdatePolicyRequest",
     "UserOwnedDrydockNote",
