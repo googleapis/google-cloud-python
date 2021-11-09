@@ -659,12 +659,18 @@ def test_create_subscription_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].topic == "topic_value"
-        assert args[0].push_config == pubsub.PushConfig(
-            push_endpoint="push_endpoint_value"
-        )
-        assert args[0].ack_deadline_seconds == 2066
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].topic
+        mock_val = "topic_value"
+        assert arg == mock_val
+        arg = args[0].push_config
+        mock_val = pubsub.PushConfig(push_endpoint="push_endpoint_value")
+        assert arg == mock_val
+        arg = args[0].ack_deadline_seconds
+        mock_val = 2066
+        assert arg == mock_val
 
 
 def test_create_subscription_flattened_error():
@@ -707,12 +713,18 @@ async def test_create_subscription_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].topic == "topic_value"
-        assert args[0].push_config == pubsub.PushConfig(
-            push_endpoint="push_endpoint_value"
-        )
-        assert args[0].ack_deadline_seconds == 2066
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].topic
+        mock_val = "topic_value"
+        assert arg == mock_val
+        arg = args[0].push_config
+        mock_val = pubsub.PushConfig(push_endpoint="push_endpoint_value")
+        assert arg == mock_val
+        arg = args[0].ack_deadline_seconds
+        mock_val = 2066
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -908,7 +920,9 @@ def test_get_subscription_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].subscription == "subscription_value"
+        arg = args[0].subscription
+        mock_val = "subscription_value"
+        assert arg == mock_val
 
 
 def test_get_subscription_flattened_error():
@@ -940,7 +954,9 @@ async def test_get_subscription_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].subscription == "subscription_value"
+        arg = args[0].subscription
+        mock_val = "subscription_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1290,7 +1306,9 @@ def test_list_subscriptions_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project == "project_value"
+        arg = args[0].project
+        mock_val = "project_value"
+        assert arg == mock_val
 
 
 def test_list_subscriptions_flattened_error():
@@ -1326,7 +1344,9 @@ async def test_list_subscriptions_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project == "project_value"
+        arg = args[0].project
+        mock_val = "project_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1644,7 +1664,9 @@ def test_delete_subscription_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].subscription == "subscription_value"
+        arg = args[0].subscription
+        mock_val = "subscription_value"
+        assert arg == mock_val
 
 
 def test_delete_subscription_flattened_error():
@@ -1678,7 +1700,9 @@ async def test_delete_subscription_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].subscription == "subscription_value"
+        arg = args[0].subscription
+        mock_val = "subscription_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1854,9 +1878,15 @@ def test_modify_ack_deadline_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].subscription == "subscription_value"
-        assert args[0].ack_ids == ["ack_ids_value"]
-        assert args[0].ack_deadline_seconds == 2066
+        arg = args[0].subscription
+        mock_val = "subscription_value"
+        assert arg == mock_val
+        arg = args[0].ack_ids
+        mock_val = ["ack_ids_value"]
+        assert arg == mock_val
+        arg = args[0].ack_deadline_seconds
+        mock_val = 2066
+        assert arg == mock_val
 
 
 def test_modify_ack_deadline_flattened_error():
@@ -1897,9 +1927,15 @@ async def test_modify_ack_deadline_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].subscription == "subscription_value"
-        assert args[0].ack_ids == ["ack_ids_value"]
-        assert args[0].ack_deadline_seconds == 2066
+        arg = args[0].subscription
+        mock_val = "subscription_value"
+        assert arg == mock_val
+        arg = args[0].ack_ids
+        mock_val = ["ack_ids_value"]
+        assert arg == mock_val
+        arg = args[0].ack_deadline_seconds
+        mock_val = 2066
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2062,8 +2098,12 @@ def test_acknowledge_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].subscription == "subscription_value"
-        assert args[0].ack_ids == ["ack_ids_value"]
+        arg = args[0].subscription
+        mock_val = "subscription_value"
+        assert arg == mock_val
+        arg = args[0].ack_ids
+        mock_val = ["ack_ids_value"]
+        assert arg == mock_val
 
 
 def test_acknowledge_flattened_error():
@@ -2099,8 +2139,12 @@ async def test_acknowledge_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].subscription == "subscription_value"
-        assert args[0].ack_ids == ["ack_ids_value"]
+        arg = args[0].subscription
+        mock_val = "subscription_value"
+        assert arg == mock_val
+        arg = args[0].ack_ids
+        mock_val = ["ack_ids_value"]
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2266,9 +2310,15 @@ def test_pull_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].subscription == "subscription_value"
-        assert args[0].return_immediately == True
-        assert args[0].max_messages == 1277
+        arg = args[0].subscription
+        mock_val = "subscription_value"
+        assert arg == mock_val
+        arg = args[0].return_immediately
+        mock_val = True
+        assert arg == mock_val
+        arg = args[0].max_messages
+        mock_val = 1277
+        assert arg == mock_val
 
 
 def test_pull_flattened_error():
@@ -2309,9 +2359,15 @@ async def test_pull_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].subscription == "subscription_value"
-        assert args[0].return_immediately == True
-        assert args[0].max_messages == 1277
+        arg = args[0].subscription
+        mock_val = "subscription_value"
+        assert arg == mock_val
+        arg = args[0].return_immediately
+        mock_val = True
+        assert arg == mock_val
+        arg = args[0].max_messages
+        mock_val = 1277
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2558,10 +2614,12 @@ def test_modify_push_config_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].subscription == "subscription_value"
-        assert args[0].push_config == pubsub.PushConfig(
-            push_endpoint="push_endpoint_value"
-        )
+        arg = args[0].subscription
+        mock_val = "subscription_value"
+        assert arg == mock_val
+        arg = args[0].push_config
+        mock_val = pubsub.PushConfig(push_endpoint="push_endpoint_value")
+        assert arg == mock_val
 
 
 def test_modify_push_config_flattened_error():
@@ -2600,10 +2658,12 @@ async def test_modify_push_config_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].subscription == "subscription_value"
-        assert args[0].push_config == pubsub.PushConfig(
-            push_endpoint="push_endpoint_value"
-        )
+        arg = args[0].subscription
+        mock_val = "subscription_value"
+        assert arg == mock_val
+        arg = args[0].push_config
+        mock_val = pubsub.PushConfig(push_endpoint="push_endpoint_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2765,7 +2825,9 @@ def test_get_snapshot_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].snapshot == "snapshot_value"
+        arg = args[0].snapshot
+        mock_val = "snapshot_value"
+        assert arg == mock_val
 
 
 def test_get_snapshot_flattened_error():
@@ -2797,7 +2859,9 @@ async def test_get_snapshot_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].snapshot == "snapshot_value"
+        arg = args[0].snapshot
+        mock_val = "snapshot_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2961,7 +3025,9 @@ def test_list_snapshots_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project == "project_value"
+        arg = args[0].project
+        mock_val = "project_value"
+        assert arg == mock_val
 
 
 def test_list_snapshots_flattened_error():
@@ -2995,7 +3061,9 @@ async def test_list_snapshots_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project == "project_value"
+        arg = args[0].project
+        mock_val = "project_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3281,8 +3349,12 @@ def test_create_snapshot_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].subscription == "subscription_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].subscription
+        mock_val = "subscription_value"
+        assert arg == mock_val
 
 
 def test_create_snapshot_flattened_error():
@@ -3318,8 +3390,12 @@ async def test_create_snapshot_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].subscription == "subscription_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].subscription
+        mock_val = "subscription_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3613,7 +3689,9 @@ def test_delete_snapshot_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].snapshot == "snapshot_value"
+        arg = args[0].snapshot
+        mock_val = "snapshot_value"
+        assert arg == mock_val
 
 
 def test_delete_snapshot_flattened_error():
@@ -3645,7 +3723,9 @@ async def test_delete_snapshot_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].snapshot == "snapshot_value"
+        arg = args[0].snapshot
+        mock_val = "snapshot_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

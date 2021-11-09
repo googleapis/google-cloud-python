@@ -217,9 +217,11 @@ class ValidateMessageRequest(proto.Message):
             Name of the schema against which to validate.
 
             Format is ``projects/{project}/schemas/{schema}``.
+
             This field is a member of `oneof`_ ``schema_spec``.
         schema (google.pubsub_v1.types.Schema):
             Ad-hoc schema against which to validate
+
             This field is a member of `oneof`_ ``schema_spec``.
         message (bytes):
             Message to validate against the provided ``schema_spec``.

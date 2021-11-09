@@ -644,9 +644,15 @@ def test_create_schema_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].schema == gp_schema.Schema(name="name_value")
-        assert args[0].schema_id == "schema_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].schema
+        mock_val = gp_schema.Schema(name="name_value")
+        assert arg == mock_val
+        arg = args[0].schema_id
+        mock_val = "schema_id_value"
+        assert arg == mock_val
 
 
 def test_create_schema_flattened_error():
@@ -687,9 +693,15 @@ async def test_create_schema_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].schema == gp_schema.Schema(name="name_value")
-        assert args[0].schema_id == "schema_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].schema
+        mock_val = gp_schema.Schema(name="name_value")
+        assert arg == mock_val
+        arg = args[0].schema_id
+        mock_val = "schema_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -866,7 +878,9 @@ def test_get_schema_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_schema_flattened_error():
@@ -900,7 +914,9 @@ async def test_get_schema_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1066,7 +1082,9 @@ def test_list_schemas_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_schemas_flattened_error():
@@ -1102,7 +1120,9 @@ async def test_list_schemas_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1376,7 +1396,9 @@ def test_delete_schema_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_schema_flattened_error():
@@ -1410,7 +1432,9 @@ async def test_delete_schema_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1576,8 +1600,12 @@ def test_validate_schema_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].schema == gp_schema.Schema(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].schema
+        mock_val = gp_schema.Schema(name="name_value")
+        assert arg == mock_val
 
 
 def test_validate_schema_flattened_error():
@@ -1617,8 +1645,12 @@ async def test_validate_schema_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].schema == gp_schema.Schema(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].schema
+        mock_val = gp_schema.Schema(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

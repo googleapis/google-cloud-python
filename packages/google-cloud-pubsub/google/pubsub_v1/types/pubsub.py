@@ -733,6 +733,7 @@ class PushConfig(proto.Message):
             If specified, Pub/Sub will generate and attach an OIDC JWT
             token as an ``Authorization`` header in the HTTP request for
             every pushed message.
+
             This field is a member of `oneof`_ ``authentication_method``.
     """
 
@@ -1309,11 +1310,13 @@ class SeekRequest(proto.Message):
             subscription creation time), only retained messages will be
             marked as unacknowledged, and already-expunged messages will
             not be restored.
+
             This field is a member of `oneof`_ ``target``.
         snapshot (str):
             The snapshot to seek to. The snapshot's topic must be the
             same as that of the provided subscription. Format is
             ``projects/{project}/snapshots/{snap}``.
+
             This field is a member of `oneof`_ ``target``.
     """
 
