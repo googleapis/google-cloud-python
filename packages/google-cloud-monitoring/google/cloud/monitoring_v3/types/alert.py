@@ -204,19 +204,23 @@ class AlertPolicy(proto.Message):
             condition_threshold (google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold):
                 A condition that compares a time series
                 against a threshold.
+
                 This field is a member of `oneof`_ ``condition``.
             condition_absent (google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricAbsence):
                 A condition that checks that a time series
                 continues to receive new data points.
+
                 This field is a member of `oneof`_ ``condition``.
             condition_matched_log (google.cloud.monitoring_v3.types.AlertPolicy.Condition.LogMatch):
                 A condition that checks for log messages
                 matching given constraints. If set, no other
                 conditions can be present.
+
                 This field is a member of `oneof`_ ``condition``.
             condition_monitoring_query_language (google.cloud.monitoring_v3.types.AlertPolicy.Condition.MonitoringQueryLanguageCondition):
                 A condition that uses the Monitoring Query
                 Language to define alerts.
+
                 This field is a member of `oneof`_ ``condition``.
         """
 
@@ -236,10 +240,12 @@ class AlertPolicy(proto.Message):
                     The absolute number of time series that must
                     fail the predicate for the condition to be
                     triggered.
+
                     This field is a member of `oneof`_ ``type``.
                 percent (float):
                     The percentage of time series that must fail
                     the predicate for the condition to be triggered.
+
                     This field is a member of `oneof`_ ``type``.
             """
 

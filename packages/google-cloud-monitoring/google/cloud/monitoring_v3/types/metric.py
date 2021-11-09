@@ -235,12 +235,15 @@ class LabelValue(proto.Message):
     Attributes:
         bool_value (bool):
             A bool label value.
+
             This field is a member of `oneof`_ ``value``.
         int64_value (int):
             An int64 label value.
+
             This field is a member of `oneof`_ ``value``.
         string_value (str):
             A string label value.
+
             This field is a member of `oneof`_ ``value``.
     """
 

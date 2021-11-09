@@ -61,25 +61,31 @@ class Service(proto.Message):
             Service.
         custom (google.cloud.monitoring_v3.types.Service.Custom):
             Custom service type.
+
             This field is a member of `oneof`_ ``identifier``.
         app_engine (google.cloud.monitoring_v3.types.Service.AppEngine):
             Type used for App Engine services.
+
             This field is a member of `oneof`_ ``identifier``.
         cloud_endpoints (google.cloud.monitoring_v3.types.Service.CloudEndpoints):
             Type used for Cloud Endpoints services.
+
             This field is a member of `oneof`_ ``identifier``.
         cluster_istio (google.cloud.monitoring_v3.types.Service.ClusterIstio):
             Type used for Istio services that live in a
             Kubernetes cluster.
+
             This field is a member of `oneof`_ ``identifier``.
         mesh_istio (google.cloud.monitoring_v3.types.Service.MeshIstio):
             Type used for Istio services scoped to an
             Istio mesh.
+
             This field is a member of `oneof`_ ``identifier``.
         istio_canonical_service (google.cloud.monitoring_v3.types.Service.IstioCanonicalService):
             Type used for canonical services scoped to an Istio mesh.
             Metrics for Istio are `documented
             here <https://istio.io/latest/docs/reference/config/metrics/>`__
+
             This field is a member of `oneof`_ ``identifier``.
         telemetry (google.cloud.monitoring_v3.types.Service.Telemetry):
             Configuration for how to query telemetry on a
@@ -284,11 +290,13 @@ class ServiceLevelObjective(proto.Message):
             A rolling time period, semantically "in the past
             ``<rolling_period>``". Must be an integer multiple of 1 day
             no larger than 30 days.
+
             This field is a member of `oneof`_ ``period``.
         calendar_period (google.type.calendar_period_pb2.CalendarPeriod):
             A calendar period, semantically "since the start of the
             current ``<calendar_period>``". At this time, only ``DAY``,
             ``WEEK``, ``FORTNIGHT``, and ``MONTH`` are supported.
+
             This field is a member of `oneof`_ ``period``.
         user_labels (Sequence[google.cloud.monitoring_v3.types.ServiceLevelObjective.UserLabelsEntry]):
             Labels which have been used to annotate the
@@ -355,12 +363,15 @@ class ServiceLevelIndicator(proto.Message):
     Attributes:
         basic_sli (google.cloud.monitoring_v3.types.BasicSli):
             Basic SLI on a well-known service type.
+
             This field is a member of `oneof`_ ``type``.
         request_based (google.cloud.monitoring_v3.types.RequestBasedSli):
             Request-based SLIs
+
             This field is a member of `oneof`_ ``type``.
         windows_based (google.cloud.monitoring_v3.types.WindowsBasedSli):
             Windows-based SLIs
+
             This field is a member of `oneof`_ ``type``.
     """
 
@@ -418,11 +429,13 @@ class BasicSli(proto.Message):
             Good service is defined to be the count of
             requests made to this service that return
             successfully.
+
             This field is a member of `oneof`_ ``sli_criteria``.
         latency (google.cloud.monitoring_v3.types.BasicSli.LatencyCriteria):
             Good service is defined to be the count of requests made to
             this service that are fast enough with respect to
             ``latency.threshold``.
+
             This field is a member of `oneof`_ ``sli_criteria``.
     """
 
@@ -482,12 +495,14 @@ class RequestBasedSli(proto.Message):
             ``good_total_ratio`` is used when the ratio of
             ``good_service`` to ``total_service`` is computed from two
             ``TimeSeries``.
+
             This field is a member of `oneof`_ ``method``.
         distribution_cut (google.cloud.monitoring_v3.types.DistributionCut):
             ``distribution_cut`` is used when ``good_service`` is a
             count of values aggregated in a ``Distribution`` that fall
             into a good range. The ``total_service`` is the total count
             of all values aggregated in the ``Distribution``.
+
             This field is a member of `oneof`_ ``method``.
     """
 
@@ -581,17 +596,21 @@ class WindowsBasedSli(proto.Message):
             filter <https://cloud.google.com/monitoring/api/v3/filters>`__
             specifying a ``TimeSeries`` with ``ValueType = BOOL``. The
             window is good if any ``true`` values appear in the window.
+
             This field is a member of `oneof`_ ``window_criterion``.
         good_total_ratio_threshold (google.cloud.monitoring_v3.types.WindowsBasedSli.PerformanceThreshold):
             A window is good if its ``performance`` is high enough.
+
             This field is a member of `oneof`_ ``window_criterion``.
         metric_mean_in_range (google.cloud.monitoring_v3.types.WindowsBasedSli.MetricRange):
             A window is good if the metric's value is in
             a good range, averaged across returned streams.
+
             This field is a member of `oneof`_ ``window_criterion``.
         metric_sum_in_range (google.cloud.monitoring_v3.types.WindowsBasedSli.MetricRange):
             A window is good if the metric's value is in
             a good range, summed across returned streams.
+
             This field is a member of `oneof`_ ``window_criterion``.
         window_period (google.protobuf.duration_pb2.Duration):
             Duration over which window quality is evaluated. Must be an
@@ -612,9 +631,11 @@ class WindowsBasedSli(proto.Message):
         Attributes:
             performance (google.cloud.monitoring_v3.types.RequestBasedSli):
                 ``RequestBasedSli`` to evaluate to judge window quality.
+
                 This field is a member of `oneof`_ ``type``.
             basic_sli_performance (google.cloud.monitoring_v3.types.BasicSli):
                 ``BasicSli`` to evaluate to judge window quality.
+
                 This field is a member of `oneof`_ ``type``.
             threshold (float):
                 If window ``performance >= threshold``, the window is

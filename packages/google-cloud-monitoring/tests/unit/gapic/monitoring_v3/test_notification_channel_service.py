@@ -701,7 +701,9 @@ def test_list_notification_channel_descriptors_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_list_notification_channel_descriptors_flattened_error():
@@ -746,7 +748,9 @@ async def test_list_notification_channel_descriptors_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1135,7 +1139,9 @@ def test_get_notification_channel_descriptor_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_notification_channel_descriptor_flattened_error():
@@ -1176,7 +1182,9 @@ async def test_get_notification_channel_descriptor_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1367,7 +1375,9 @@ def test_list_notification_channels_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_list_notification_channels_flattened_error():
@@ -1407,7 +1417,9 @@ async def test_list_notification_channels_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1795,7 +1807,9 @@ def test_get_notification_channel_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_notification_channel_flattened_error():
@@ -1835,7 +1849,9 @@ async def test_get_notification_channel_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2048,10 +2064,12 @@ def test_create_notification_channel_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].notification_channel == notification.NotificationChannel(
-            type_="type__value"
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].notification_channel
+        mock_val = notification.NotificationChannel(type_="type__value")
+        assert arg == mock_val
 
 
 def test_create_notification_channel_flattened_error():
@@ -2096,10 +2114,12 @@ async def test_create_notification_channel_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].notification_channel == notification.NotificationChannel(
-            type_="type__value"
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].notification_channel
+        mock_val = notification.NotificationChannel(type_="type__value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2320,10 +2340,12 @@ def test_update_notification_channel_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert args[0].notification_channel == notification.NotificationChannel(
-            type_="type__value"
-        )
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+        arg = args[0].notification_channel
+        mock_val = notification.NotificationChannel(type_="type__value")
+        assert arg == mock_val
 
 
 def test_update_notification_channel_flattened_error():
@@ -2368,10 +2390,12 @@ async def test_update_notification_channel_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert args[0].notification_channel == notification.NotificationChannel(
-            type_="type__value"
-        )
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+        arg = args[0].notification_channel
+        mock_val = notification.NotificationChannel(type_="type__value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2553,8 +2577,12 @@ def test_delete_notification_channel_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].force == True
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].force
+        mock_val = True
+        assert arg == mock_val
 
 
 def test_delete_notification_channel_flattened_error():
@@ -2596,8 +2624,12 @@ async def test_delete_notification_channel_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].force == True
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].force
+        mock_val = True
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2786,7 +2818,9 @@ def test_send_notification_channel_verification_code_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_send_notification_channel_verification_code_flattened_error():
@@ -2827,7 +2861,9 @@ async def test_send_notification_channel_verification_code_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3033,7 +3069,9 @@ def test_get_notification_channel_verification_code_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_notification_channel_verification_code_flattened_error():
@@ -3078,7 +3116,9 @@ async def test_get_notification_channel_verification_code_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3291,8 +3331,12 @@ def test_verify_notification_channel_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].code == "code_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].code
+        mock_val = "code_value"
+        assert arg == mock_val
 
 
 def test_verify_notification_channel_flattened_error():
@@ -3336,8 +3380,12 @@ async def test_verify_notification_channel_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].code == "code_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].code
+        mock_val = "code_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

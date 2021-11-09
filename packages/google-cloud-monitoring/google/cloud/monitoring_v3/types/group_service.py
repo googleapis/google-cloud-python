@@ -64,6 +64,7 @@ class ListGroupsRequest(proto.Message):
             Returns groups whose ``parent_name`` field contains the
             group name. If no groups have this parent, the results are
             empty.
+
             This field is a member of `oneof`_ ``filter``.
         ancestors_of_group (str):
             A group name. The format is:
@@ -77,6 +78,7 @@ class ListGroupsRequest(proto.Message):
             immediate parent and ending with the most distant ancestor.
             If the specified group has no immediate parent, the results
             are empty.
+
             This field is a member of `oneof`_ ``filter``.
         descendants_of_group (str):
             A group name. The format is:
@@ -89,6 +91,7 @@ class ListGroupsRequest(proto.Message):
             superset of the results returned by the
             ``children_of_group`` filter, and includes
             children-of-children, and so forth.
+
             This field is a member of `oneof`_ ``filter``.
         page_size (int):
             A positive number that is the maximum number

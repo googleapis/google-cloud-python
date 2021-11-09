@@ -618,7 +618,9 @@ def test_list_groups_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_list_groups_flattened_error():
@@ -652,7 +654,9 @@ async def test_list_groups_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -944,7 +948,9 @@ def test_get_group_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_group_flattened_error():
@@ -976,7 +982,9 @@ async def test_get_group_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1158,8 +1166,12 @@ def test_create_group_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].group == gm_group.Group(name="name_value")
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].group
+        mock_val = gm_group.Group(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_group_flattened_error():
@@ -1195,8 +1207,12 @@ async def test_create_group_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].group == gm_group.Group(name="name_value")
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].group
+        mock_val = gm_group.Group(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1378,7 +1394,9 @@ def test_update_group_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].group == gm_group.Group(name="name_value")
+        arg = args[0].group
+        mock_val = gm_group.Group(name="name_value")
+        assert arg == mock_val
 
 
 def test_update_group_flattened_error():
@@ -1410,7 +1428,9 @@ async def test_update_group_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].group == gm_group.Group(name="name_value")
+        arg = args[0].group
+        mock_val = gm_group.Group(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1566,7 +1586,9 @@ def test_delete_group_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_group_flattened_error():
@@ -1598,7 +1620,9 @@ async def test_delete_group_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1778,7 +1802,9 @@ def test_list_group_members_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_list_group_members_flattened_error():
@@ -1814,7 +1840,9 @@ async def test_list_group_members_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

@@ -655,7 +655,9 @@ def test_list_monitored_resource_descriptors_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_list_monitored_resource_descriptors_flattened_error():
@@ -693,7 +695,9 @@ async def test_list_monitored_resource_descriptors_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1075,7 +1079,9 @@ def test_get_monitored_resource_descriptor_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_monitored_resource_descriptor_flattened_error():
@@ -1113,7 +1119,9 @@ async def test_get_monitored_resource_descriptor_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1296,7 +1304,9 @@ def test_list_metric_descriptors_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_list_metric_descriptors_flattened_error():
@@ -1334,7 +1344,9 @@ async def test_list_metric_descriptors_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1711,7 +1723,9 @@ def test_get_metric_descriptor_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_metric_descriptor_flattened_error():
@@ -1749,7 +1763,9 @@ async def test_get_metric_descriptor_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1959,10 +1975,12 @@ def test_create_metric_descriptor_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].metric_descriptor == metric_pb2.MetricDescriptor(
-            name="name_value"
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].metric_descriptor
+        mock_val = metric_pb2.MetricDescriptor(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_metric_descriptor_flattened_error():
@@ -2005,10 +2023,12 @@ async def test_create_metric_descriptor_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].metric_descriptor == metric_pb2.MetricDescriptor(
-            name="name_value"
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].metric_descriptor
+        mock_val = metric_pb2.MetricDescriptor(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2183,7 +2203,9 @@ def test_delete_metric_descriptor_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_metric_descriptor_flattened_error():
@@ -2219,7 +2241,9 @@ async def test_delete_metric_descriptor_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2396,14 +2420,18 @@ def test_list_time_series_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].filter == "filter_value"
-        assert args[0].interval == common.TimeInterval(
-            end_time=timestamp_pb2.Timestamp(seconds=751)
-        )
-        assert (
-            args[0].view == metric_service.ListTimeSeriesRequest.TimeSeriesView.HEADERS
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+        arg = args[0].interval
+        mock_val = common.TimeInterval(end_time=timestamp_pb2.Timestamp(seconds=751))
+        assert arg == mock_val
+        arg = args[0].view
+        mock_val = metric_service.ListTimeSeriesRequest.TimeSeriesView.HEADERS
+        assert arg == mock_val
 
 
 def test_list_time_series_flattened_error():
@@ -2448,14 +2476,18 @@ async def test_list_time_series_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].filter == "filter_value"
-        assert args[0].interval == common.TimeInterval(
-            end_time=timestamp_pb2.Timestamp(seconds=751)
-        )
-        assert (
-            args[0].view == metric_service.ListTimeSeriesRequest.TimeSeriesView.HEADERS
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+        arg = args[0].interval
+        mock_val = common.TimeInterval(end_time=timestamp_pb2.Timestamp(seconds=751))
+        assert arg == mock_val
+        arg = args[0].view
+        mock_val = metric_service.ListTimeSeriesRequest.TimeSeriesView.HEADERS
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2782,10 +2814,12 @@ def test_create_time_series_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].time_series == [
-            gm_metric.TimeSeries(metric=metric_pb2.Metric(type="type_value"))
-        ]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].time_series
+        mock_val = [gm_metric.TimeSeries(metric=metric_pb2.Metric(type="type_value"))]
+        assert arg == mock_val
 
 
 def test_create_time_series_flattened_error():
@@ -2830,10 +2864,12 @@ async def test_create_time_series_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].time_series == [
-            gm_metric.TimeSeries(metric=metric_pb2.Metric(type="type_value"))
-        ]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].time_series
+        mock_val = [gm_metric.TimeSeries(metric=metric_pb2.Metric(type="type_value"))]
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3014,10 +3050,12 @@ def test_create_service_time_series_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].time_series == [
-            gm_metric.TimeSeries(metric=metric_pb2.Metric(type="type_value"))
-        ]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].time_series
+        mock_val = [gm_metric.TimeSeries(metric=metric_pb2.Metric(type="type_value"))]
+        assert arg == mock_val
 
 
 def test_create_service_time_series_flattened_error():
@@ -3062,10 +3100,12 @@ async def test_create_service_time_series_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].time_series == [
-            gm_metric.TimeSeries(metric=metric_pb2.Metric(type="type_value"))
-        ]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].time_series
+        mock_val = [gm_metric.TimeSeries(metric=metric_pb2.Metric(type="type_value"))]
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
