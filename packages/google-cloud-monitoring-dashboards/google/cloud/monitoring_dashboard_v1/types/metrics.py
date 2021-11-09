@@ -53,13 +53,16 @@ class TimeSeriesQuery(proto.Message):
     Attributes:
         time_series_filter (google.cloud.monitoring_dashboard_v1.types.TimeSeriesFilter):
             Filter parameters to fetch time series.
+
             This field is a member of `oneof`_ ``source``.
         time_series_filter_ratio (google.cloud.monitoring_dashboard_v1.types.TimeSeriesFilterRatio):
             Parameters to fetch a ratio between two time
             series filters.
+
             This field is a member of `oneof`_ ``source``.
         time_series_query_language (str):
             A query used to fetch time series.
+
             This field is a member of `oneof`_ ``source``.
         unit_override (str):
             The unit of data contained in fetched time series. If
@@ -106,11 +109,13 @@ class TimeSeriesFilter(proto.Message):
             Apply a second aggregation after ``aggregation`` is applied.
         pick_time_series_filter (google.cloud.monitoring_dashboard_v1.types.PickTimeSeriesFilter):
             Ranking based time series filter.
+
             This field is a member of `oneof`_ ``output_filter``.
         statistical_time_series_filter (google.cloud.monitoring_dashboard_v1.types.StatisticalTimeSeriesFilter):
             Statistics based time series filter.
             Note: This field is deprecated and completely
             ignored by the API.
+
             This field is a member of `oneof`_ ``output_filter``.
     """
 
@@ -156,11 +161,13 @@ class TimeSeriesFilterRatio(proto.Message):
             computed.
         pick_time_series_filter (google.cloud.monitoring_dashboard_v1.types.PickTimeSeriesFilter):
             Ranking based time series filter.
+
             This field is a member of `oneof`_ ``output_filter``.
         statistical_time_series_filter (google.cloud.monitoring_dashboard_v1.types.StatisticalTimeSeriesFilter):
             Statistics based time series filter.
             Note: This field is deprecated and completely
             ignored by the API.
+
             This field is a member of `oneof`_ ``output_filter``.
     """
 

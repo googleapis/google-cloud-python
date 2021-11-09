@@ -53,19 +53,23 @@ class Dashboard(proto.Message):
             Content is arranged with a basic layout that
             re-flows a simple list of informational elements
             like widgets or tiles.
+
             This field is a member of `oneof`_ ``layout``.
         mosaic_layout (google.cloud.monitoring_dashboard_v1.types.MosaicLayout):
             The content is arranged as a grid of tiles,
             with each content widget occupying one or more
             grid blocks.
+
             This field is a member of `oneof`_ ``layout``.
         row_layout (google.cloud.monitoring_dashboard_v1.types.RowLayout):
             The content is divided into equally spaced
             rows and the widgets are arranged horizontally.
+
             This field is a member of `oneof`_ ``layout``.
         column_layout (google.cloud.monitoring_dashboard_v1.types.ColumnLayout):
             The content is divided into equally spaced
             columns and the widgets are arranged vertically.
+
             This field is a member of `oneof`_ ``layout``.
     """
 

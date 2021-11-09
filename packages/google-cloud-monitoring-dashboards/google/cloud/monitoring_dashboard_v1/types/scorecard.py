@@ -42,10 +42,12 @@ class Scorecard(proto.Message):
         gauge_view (google.cloud.monitoring_dashboard_v1.types.Scorecard.GaugeView):
             Will cause the scorecard to show a gauge
             chart.
+
             This field is a member of `oneof`_ ``data_view``.
         spark_chart_view (google.cloud.monitoring_dashboard_v1.types.Scorecard.SparkChartView):
             Will cause the scorecard to show a spark
             chart.
+
             This field is a member of `oneof`_ ``data_view``.
         thresholds (Sequence[google.cloud.monitoring_dashboard_v1.types.Threshold]):
             The thresholds used to determine the state of

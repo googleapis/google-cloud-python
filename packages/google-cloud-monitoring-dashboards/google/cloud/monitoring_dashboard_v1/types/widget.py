@@ -43,19 +43,24 @@ class Widget(proto.Message):
             Optional. The title of the widget.
         xy_chart (google.cloud.monitoring_dashboard_v1.types.XyChart):
             A chart of time series data.
+
             This field is a member of `oneof`_ ``content``.
         scorecard (google.cloud.monitoring_dashboard_v1.types.Scorecard):
             A scorecard summarizing time series data.
+
             This field is a member of `oneof`_ ``content``.
         text (google.cloud.monitoring_dashboard_v1.types.Text):
             A raw string or markdown displaying textual
             content.
+
             This field is a member of `oneof`_ ``content``.
         blank (google.protobuf.empty_pb2.Empty):
             A blank space.
+
             This field is a member of `oneof`_ ``content``.
         alert_chart (google.cloud.monitoring_dashboard_v1.types.AlertChart):
             A chart of alert policy data.
+
             This field is a member of `oneof`_ ``content``.
     """
 
