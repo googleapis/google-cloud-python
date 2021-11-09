@@ -110,6 +110,7 @@ class DeliveryPipeline(proto.Message):
         serial_pipeline (google.cloud.deploy_v1.types.SerialPipeline):
             SerialPipeline defines a sequential set of stages for a
             ``DeliveryPipeline``.
+
             This field is a member of `oneof`_ ``pipeline``.
         condition (google.cloud.deploy_v1.types.PipelineCondition):
             Output only. Information around the state of
@@ -495,6 +496,7 @@ class Target(proto.Message):
             updated.
         gke (google.cloud.deploy_v1.types.GkeCluster):
             Information specifying a GKE Cluster.
+
             This field is a member of `oneof`_ ``deployment_target``.
         etag (str):
             Optional. This checksum is computed by the
@@ -548,9 +550,11 @@ class ExecutionConfig(proto.Message):
             should be applied.
         default_pool (google.cloud.deploy_v1.types.DefaultPool):
             Optional. Use default Cloud Build pool.
+
             This field is a member of `oneof`_ ``execution_environment``.
         private_pool (google.cloud.deploy_v1.types.PrivatePool):
             Optional. Use private Cloud Build pool.
+
             This field is a member of `oneof`_ ``execution_environment``.
     """
 
@@ -1013,6 +1017,7 @@ class TargetArtifact(proto.Message):
             the artifacts. This contains deployment
             configuration used by Skaffold during a rollout,
             and all paths are relative to this location.
+
             This field is a member of `oneof`_ ``uri``.
         skaffold_config_path (str):
             Output only. File path of the resolved
