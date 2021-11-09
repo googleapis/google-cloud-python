@@ -645,12 +645,15 @@ class Volume(proto.Message):
             characters and hyphens and cannot start with a hyphen.
         persistent_disk (google.cloud.lifesciences_v2beta.types.PersistentDisk):
             Configuration for a persistent disk.
+
             This field is a member of `oneof`_ ``storage``.
         existing_disk (google.cloud.lifesciences_v2beta.types.ExistingDisk):
             Configuration for a existing disk.
+
             This field is a member of `oneof`_ ``storage``.
         nfs_mount (google.cloud.lifesciences_v2beta.types.NFSMount):
             Configuration for an NFS mount.
+
             This field is a member of `oneof`_ ``storage``.
     """
 
@@ -790,42 +793,52 @@ class Event(proto.Message):
         delayed (google.cloud.lifesciences_v2beta.types.DelayedEvent):
             See
             [google.cloud.lifesciences.v2beta.DelayedEvent][google.cloud.lifesciences.v2beta.DelayedEvent].
+
             This field is a member of `oneof`_ ``details``.
         worker_assigned (google.cloud.lifesciences_v2beta.types.WorkerAssignedEvent):
             See
             [google.cloud.lifesciences.v2beta.WorkerAssignedEvent][google.cloud.lifesciences.v2beta.WorkerAssignedEvent].
+
             This field is a member of `oneof`_ ``details``.
         worker_released (google.cloud.lifesciences_v2beta.types.WorkerReleasedEvent):
             See
             [google.cloud.lifesciences.v2beta.WorkerReleasedEvent][google.cloud.lifesciences.v2beta.WorkerReleasedEvent].
+
             This field is a member of `oneof`_ ``details``.
         pull_started (google.cloud.lifesciences_v2beta.types.PullStartedEvent):
             See
             [google.cloud.lifesciences.v2beta.PullStartedEvent][google.cloud.lifesciences.v2beta.PullStartedEvent].
+
             This field is a member of `oneof`_ ``details``.
         pull_stopped (google.cloud.lifesciences_v2beta.types.PullStoppedEvent):
             See
             [google.cloud.lifesciences.v2beta.PullStoppedEvent][google.cloud.lifesciences.v2beta.PullStoppedEvent].
+
             This field is a member of `oneof`_ ``details``.
         container_started (google.cloud.lifesciences_v2beta.types.ContainerStartedEvent):
             See
             [google.cloud.lifesciences.v2beta.ContainerStartedEvent][google.cloud.lifesciences.v2beta.ContainerStartedEvent].
+
             This field is a member of `oneof`_ ``details``.
         container_stopped (google.cloud.lifesciences_v2beta.types.ContainerStoppedEvent):
             See
             [google.cloud.lifesciences.v2beta.ContainerStoppedEvent][google.cloud.lifesciences.v2beta.ContainerStoppedEvent].
+
             This field is a member of `oneof`_ ``details``.
         container_killed (google.cloud.lifesciences_v2beta.types.ContainerKilledEvent):
             See
             [google.cloud.lifesciences.v2beta.ContainerKilledEvent][google.cloud.lifesciences.v2beta.ContainerKilledEvent].
+
             This field is a member of `oneof`_ ``details``.
         unexpected_exit_status (google.cloud.lifesciences_v2beta.types.UnexpectedExitStatusEvent):
             See
             [google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent][google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent].
+
             This field is a member of `oneof`_ ``details``.
         failed (google.cloud.lifesciences_v2beta.types.FailedEvent):
             See
             [google.cloud.lifesciences.v2beta.FailedEvent][google.cloud.lifesciences.v2beta.FailedEvent].
+
             This field is a member of `oneof`_ ``details``.
     """
 
