@@ -52,6 +52,7 @@ class NotificationConfig(proto.Message):
         streaming_config (google.cloud.securitycenter_v1p1beta1.types.NotificationConfig.StreamingConfig):
             The config for triggering streaming-based
             notifications.
+
             This field is a member of `oneof`_ ``notify_config``.
     """
 

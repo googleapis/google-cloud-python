@@ -36,6 +36,7 @@ class NotificationMessage(proto.Message):
         finding (google.cloud.securitycenter_v1.types.Finding):
             If it's a Finding based notification config,
             this field will be populated.
+
             This field is a member of `oneof`_ ``event``.
         resource (google.cloud.securitycenter_v1.types.Resource):
             The Cloud resource tied to this
