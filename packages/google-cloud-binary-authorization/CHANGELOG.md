@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-binary-authorization/compare/v1.0.1...v1.1.0) (2021-11-09)
+
+
+### Features
+
+* **v1beta1:** add new admission rule types to Policy ([#95](https://www.github.com/googleapis/python-binary-authorization/issues/95)) ([f25d17a](https://www.github.com/googleapis/python-binary-authorization/commit/f25d17abaefe4a2d317161ec15b867b33eb3e8ba))
+* **v1beta1:** add SystemPolicyV1Beta1 service ([f25d17a](https://www.github.com/googleapis/python-binary-authorization/commit/f25d17abaefe4a2d317161ec15b867b33eb3e8ba))
+* **v1beta1:** update SignatureAlgorithm enum to match algorithm names in KMS ([f25d17a](https://www.github.com/googleapis/python-binary-authorization/commit/f25d17abaefe4a2d317161ec15b867b33eb3e8ba))
+
 ### [1.0.1](https://www.github.com/googleapis/python-binary-authorization/compare/v1.0.0...v1.0.1) (2021-11-01)
 
 
