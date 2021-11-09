@@ -71,6 +71,7 @@ class Service(proto.Message):
             Configuration information specific to running
             Hive metastore software as the metastore
             service.
+
             This field is a member of `oneof`_ ``metastore_config``.
         name (str):
             Immutable. The relative resource name of the metastore
@@ -295,6 +296,7 @@ class Secret(proto.Message):
             version, in the following form:
 
             ``projects/{project_number}/secrets/{secret_id}/versions/{version_id}``.
+
             This field is a member of `oneof`_ ``value``.
     """
 
@@ -328,6 +330,7 @@ class MetadataImport(proto.Message):
         database_dump (google.cloud.metastore_v1alpha.types.MetadataImport.DatabaseDump):
             Immutable. A database dump from a pre-
             xisting metastore's database.
+
             This field is a member of `oneof`_ ``metadata``.
         name (str):
             Immutable. The relative resource name of the metadata
@@ -406,6 +409,7 @@ class MetadataExport(proto.Message):
             are exported to, in the form of
             ``gs://<bucket_name>/<path_inside_bucket>/<export_folder>``,
             where ``<export_folder>`` is automatically generated.
+
             This field is a member of `oneof`_ ``destination``.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the export
@@ -1074,6 +1078,7 @@ class ExportMetadataRequest(proto.Message):
             ``gs://<bucket_name>/<path_inside_bucket>``. A sub-folder
             ``<export_folder>`` containing exported files will be
             created below it.
+
             This field is a member of `oneof`_ ``destination``.
         service (str):
             Required. The relative resource name of the metastore
