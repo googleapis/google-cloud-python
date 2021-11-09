@@ -268,6 +268,7 @@ class CertificateAuthority(proto.Message):
                 must match at least one listed
                 [ReusableConfigWrapper][google.cloud.security.privateca.v1beta1.ReusableConfigWrapper]
                 in the list.
+
                 This field is a member of `oneof`_ ``config_policy``.
             overwrite_config_values (google.cloud.security.privateca_v1beta1.types.ReusableConfigWrapper):
                 Optional. All
@@ -276,6 +277,7 @@ class CertificateAuthority(proto.Message):
                 [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
                 will use the provided configuration values, overwriting any
                 requested configuration values.
+
                 This field is a member of `oneof`_ ``config_policy``.
             allowed_locations_and_organizations (Sequence[google.cloud.security.privateca_v1beta1.types.Subject]):
                 Optional. If any
@@ -489,6 +491,7 @@ class CertificateAuthority(proto.Message):
                 ``projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*``.
                 This option enables full flexibility in the key's
                 capabilities and properties.
+
                 This field is a member of `oneof`_ ``KeyVersion``.
             algorithm (google.cloud.security.privateca_v1beta1.types.CertificateAuthority.SignHashAlgorithm):
                 Required. The algorithm to use for creating a managed Cloud
@@ -496,6 +499,7 @@ class CertificateAuthority(proto.Message):
                 will be have their
                 [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] as
                 ``HSM``.
+
                 This field is a member of `oneof`_ ``KeyVersion``.
         """
 
@@ -645,10 +649,12 @@ class Certificate(proto.Message):
         pem_csr (str):
             Immutable. A pem-encoded X.509 certificate
             signing request (CSR).
+
             This field is a member of `oneof`_ ``certificate_config``.
         config (google.cloud.security.privateca_v1beta1.types.CertificateConfig):
             Immutable. A description of the certificate
             and key that does not require X.509 or ASN.1.
+
             This field is a member of `oneof`_ ``certificate_config``.
         lifetime (google.protobuf.duration_pb2.Duration):
             Required. Immutable. The desired lifetime of a certificate.
@@ -847,10 +853,12 @@ class ReusableConfigWrapper(proto.Message):
             Required. A resource path to a
             [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
             in the format ``projects/*/locations/*/reusableConfigs/*``.
+
             This field is a member of `oneof`_ ``config_values``.
         reusable_config_values (google.cloud.security.privateca_v1beta1.types.ReusableConfigValues):
             Required. A user-specified inline
             [ReusableConfigValues][google.cloud.security.privateca.v1beta1.ReusableConfigValues].
+
             This field is a member of `oneof`_ ``config_values``.
     """
 
@@ -882,12 +890,14 @@ class SubordinateConfig(proto.Message):
             This field is used for information and usability purposes
             only. The resource name is in the format
             ``projects/*/locations/*/certificateAuthorities/*``.
+
             This field is a member of `oneof`_ ``subordinate_config``.
         pem_issuer_chain (google.cloud.security.privateca_v1beta1.types.SubordinateConfig.SubordinateConfigChain):
             Required. Contains the PEM certificate chain for the issuers
             of this
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority],
             but not pem certificate for this CA itself.
+
             This field is a member of `oneof`_ ``subordinate_config``.
     """
 

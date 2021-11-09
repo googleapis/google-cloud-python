@@ -265,6 +265,7 @@ class CertificateAuthority(proto.Message):
                 ``projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*``.
                 This option enables full flexibility in the key's
                 capabilities and properties.
+
                 This field is a member of `oneof`_ ``KeyVersion``.
             algorithm (google.cloud.security.privateca_v1.types.CertificateAuthority.SignHashAlgorithm):
                 The algorithm to use for creating a managed Cloud KMS key
@@ -272,6 +273,7 @@ class CertificateAuthority(proto.Message):
                 have their
                 [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] as
                 ``HSM``.
+
                 This field is a member of `oneof`_ ``KeyVersion``.
         """
 
@@ -483,10 +485,12 @@ class CaPool(proto.Message):
             Attributes:
                 rsa (google.cloud.security.privateca_v1.types.CaPool.IssuancePolicy.AllowedKeyType.RsaKeyType):
                     Represents an allowed RSA key type.
+
                     This field is a member of `oneof`_ ``key_type``.
                 elliptic_curve (google.cloud.security.privateca_v1.types.CaPool.IssuancePolicy.AllowedKeyType.EcKeyType):
                     Represents an allowed Elliptic Curve key
                     type.
+
                     This field is a member of `oneof`_ ``key_type``.
             """
 
@@ -715,10 +719,12 @@ class Certificate(proto.Message):
         pem_csr (str):
             Immutable. A pem-encoded X.509 certificate
             signing request (CSR).
+
             This field is a member of `oneof`_ ``certificate_config``.
         config (google.cloud.security.privateca_v1.types.CertificateConfig):
             Immutable. A description of the certificate
             and key that does not require X.509 or ASN.1.
+
             This field is a member of `oneof`_ ``certificate_config``.
         issuer_certificate_authority (str):
             Output only. The resource name of the issuing
@@ -938,6 +944,7 @@ class X509Parameters(proto.Message):
                 which is a boolean value. When this value is
                 missing, the extension will be omitted from the
                 CA certificate.
+
                 This field is a member of `oneof`_ ``_is_ca``.
             max_issuer_path_length (int):
                 Optional. Refers to the path length
@@ -947,6 +954,7 @@ class X509Parameters(proto.Message):
                 If this value is less than 0, the request will
                 fail. If this value is missing, the max path
                 length will be omitted from the CA certificate.
+
                 This field is a member of `oneof`_ ``_max_issuer_path_length``.
         """
 
@@ -984,12 +992,14 @@ class SubordinateConfig(proto.Message):
             This field is used for information and usability purposes
             only. The resource name is in the format
             ``projects/*/locations/*/caPools/*/certificateAuthorities/*``.
+
             This field is a member of `oneof`_ ``subordinate_config``.
         pem_issuer_chain (google.cloud.security.privateca_v1.types.SubordinateConfig.SubordinateConfigChain):
             Required. Contains the PEM certificate chain for the issuers
             of this
             [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority],
             but not pem certificate for this CA itself.
+
             This field is a member of `oneof`_ ``subordinate_config``.
     """
 
@@ -1433,6 +1443,7 @@ class CertificateIdentityConstraints(proto.Message):
             certificate. Otherwise, the requested
             [Subject][google.cloud.security.privateca.v1.Subject] will
             be discarded.
+
             This field is a member of `oneof`_ ``_allow_subject_passthrough``.
         allow_subject_alt_names_passthrough (bool):
             Required. If this is true, the
@@ -1441,6 +1452,7 @@ class CertificateIdentityConstraints(proto.Message):
             signed certificate. Otherwise, the requested
             [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
             will be discarded.
+
             This field is a member of `oneof`_ ``_allow_subject_alt_names_passthrough``.
     """
 
