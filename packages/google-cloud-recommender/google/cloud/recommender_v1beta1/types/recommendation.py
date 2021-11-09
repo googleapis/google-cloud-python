@@ -199,11 +199,13 @@ class Operation(proto.Message):
             actions:'add'/'replace'. Maybe set for action: 'test'.
             Either this or ``value_matcher`` will be set for 'test'
             operation. An exact match must be performed.
+
             This field is a member of `oneof`_ ``path_value``.
         value_matcher (google.cloud.recommender_v1beta1.types.ValueMatcher):
             Can be set for action 'test' for advanced matching for the
             value of 'path' field. Either this or ``value`` will be set
             for 'test' operation.
+
             This field is a member of `oneof`_ ``path_value``.
         path_filters (Sequence[google.cloud.recommender_v1beta1.types.Operation.PathFiltersEntry]):
             Set of filters to apply if ``path`` refers to array elements
@@ -284,6 +286,7 @@ class ValueMatcher(proto.Message):
             syntax
             (https://github.com/google/re2/wiki/Syntax), so
             to be used with RE2::FullMatch
+
             This field is a member of `oneof`_ ``match_variant``.
     """
 
@@ -321,6 +324,7 @@ class Impact(proto.Message):
             Category that is being targeted.
         cost_projection (google.cloud.recommender_v1beta1.types.CostProjection):
             Use with CategoryType.COST
+
             This field is a member of `oneof`_ ``projection``.
     """
 
