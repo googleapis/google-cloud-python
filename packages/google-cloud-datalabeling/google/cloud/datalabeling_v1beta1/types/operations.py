@@ -156,48 +156,60 @@ class LabelOperationMetadata(proto.Message):
         image_classification_details (google.cloud.datalabeling_v1beta1.types.LabelImageClassificationOperationMetadata):
             Details of label image classification
             operation.
+
             This field is a member of `oneof`_ ``details``.
         image_bounding_box_details (google.cloud.datalabeling_v1beta1.types.LabelImageBoundingBoxOperationMetadata):
             Details of label image bounding box
             operation.
+
             This field is a member of `oneof`_ ``details``.
         image_bounding_poly_details (google.cloud.datalabeling_v1beta1.types.LabelImageBoundingPolyOperationMetadata):
             Details of label image bounding poly
             operation.
+
             This field is a member of `oneof`_ ``details``.
         image_oriented_bounding_box_details (google.cloud.datalabeling_v1beta1.types.LabelImageOrientedBoundingBoxOperationMetadata):
             Details of label image oriented bounding box
             operation.
+
             This field is a member of `oneof`_ ``details``.
         image_polyline_details (google.cloud.datalabeling_v1beta1.types.LabelImagePolylineOperationMetadata):
             Details of label image polyline operation.
+
             This field is a member of `oneof`_ ``details``.
         image_segmentation_details (google.cloud.datalabeling_v1beta1.types.LabelImageSegmentationOperationMetadata):
             Details of label image segmentation
             operation.
+
             This field is a member of `oneof`_ ``details``.
         video_classification_details (google.cloud.datalabeling_v1beta1.types.LabelVideoClassificationOperationMetadata):
             Details of label video classification
             operation.
+
             This field is a member of `oneof`_ ``details``.
         video_object_detection_details (google.cloud.datalabeling_v1beta1.types.LabelVideoObjectDetectionOperationMetadata):
             Details of label video object detection
             operation.
+
             This field is a member of `oneof`_ ``details``.
         video_object_tracking_details (google.cloud.datalabeling_v1beta1.types.LabelVideoObjectTrackingOperationMetadata):
             Details of label video object tracking
             operation.
+
             This field is a member of `oneof`_ ``details``.
         video_event_details (google.cloud.datalabeling_v1beta1.types.LabelVideoEventOperationMetadata):
             Details of label video event operation.
+
             This field is a member of `oneof`_ ``details``.
         text_classification_details (google.cloud.datalabeling_v1beta1.types.LabelTextClassificationOperationMetadata):
             Details of label text classification
             operation.
+
             This field is a member of `oneof`_ ``details``.
         text_entity_extraction_details (google.cloud.datalabeling_v1beta1.types.LabelTextEntityExtractionOperationMetadata):
             Details of label text entity extraction
             operation.
+
             This field is a member of `oneof`_ ``details``.
         progress_percent (int):
             Output only. Progress of label operation. Range: [0, 100].

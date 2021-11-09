@@ -133,10 +133,12 @@ class AnnotationValue(proto.Message):
         image_classification_annotation (google.cloud.datalabeling_v1beta1.types.ImageClassificationAnnotation):
             Annotation value for image classification
             case.
+
             This field is a member of `oneof`_ ``value_type``.
         image_bounding_poly_annotation (google.cloud.datalabeling_v1beta1.types.ImageBoundingPolyAnnotation):
             Annotation value for image bounding box,
             oriented bounding box and polygon cases.
+
             This field is a member of `oneof`_ ``value_type``.
         image_polyline_annotation (google.cloud.datalabeling_v1beta1.types.ImagePolylineAnnotation):
             Annotation value for image polyline cases.
@@ -144,28 +146,35 @@ class AnnotationValue(proto.Message):
             is formed by line segments connected to each
             other but not closed form(Bounding Poly). The
             line segments can cross each other.
+
             This field is a member of `oneof`_ ``value_type``.
         image_segmentation_annotation (google.cloud.datalabeling_v1beta1.types.ImageSegmentationAnnotation):
             Annotation value for image segmentation.
+
             This field is a member of `oneof`_ ``value_type``.
         text_classification_annotation (google.cloud.datalabeling_v1beta1.types.TextClassificationAnnotation):
             Annotation value for text classification
             case.
+
             This field is a member of `oneof`_ ``value_type``.
         text_entity_extraction_annotation (google.cloud.datalabeling_v1beta1.types.TextEntityExtractionAnnotation):
             Annotation value for text entity extraction
             case.
+
             This field is a member of `oneof`_ ``value_type``.
         video_classification_annotation (google.cloud.datalabeling_v1beta1.types.VideoClassificationAnnotation):
             Annotation value for video classification
             case.
+
             This field is a member of `oneof`_ ``value_type``.
         video_object_tracking_annotation (google.cloud.datalabeling_v1beta1.types.VideoObjectTrackingAnnotation):
             Annotation value for video object detection
             and tracking case.
+
             This field is a member of `oneof`_ ``value_type``.
         video_event_annotation (google.cloud.datalabeling_v1beta1.types.VideoEventAnnotation):
             Annotation value for video event case.
+
             This field is a member of `oneof`_ ``value_type``.
     """
 
