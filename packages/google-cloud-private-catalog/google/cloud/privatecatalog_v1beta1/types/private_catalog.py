@@ -462,12 +462,15 @@ class AssetReference(proto.Message):
         asset (str):
             Output only. The asset resource name if an
             asset is hosted by Private Catalog.
+
             This field is a member of `oneof`_ ``source``.
         gcs_path (str):
             Output only. The cloud storage object path.
+
             This field is a member of `oneof`_ ``source``.
         git_source (google.cloud.privatecatalog_v1beta1.types.GitSource):
             Output only. The git source.
+
             This field is a member of `oneof`_ ``source``.
         gcs_source (google.cloud.privatecatalog_v1beta1.types.GcsSource):
             Output only. The cloud storage source.
@@ -565,12 +568,15 @@ class GitSource(proto.Message):
             that step's execution.
         commit (str):
             The revision commit to use.
+
             This field is a member of `oneof`_ ``ref``.
         branch (str):
             The revision branch to use.
+
             This field is a member of `oneof`_ ``ref``.
         tag (str):
             The revision tag to use.
+
             This field is a member of `oneof`_ ``ref``.
     """
 
