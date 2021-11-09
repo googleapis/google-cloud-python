@@ -240,10 +240,12 @@ class Rollout(proto.Message):
         traffic_percent_strategy (google.cloud.servicemanagement_v1.types.Rollout.TrafficPercentStrategy):
             Google Service Control selects service
             configurations based on traffic percentage.
+
             This field is a member of `oneof`_ ``strategy``.
         delete_service_strategy (google.cloud.servicemanagement_v1.types.Rollout.DeleteServiceStrategy):
             The strategy associated with a rollout to delete a
             ``ManagedService``. Readonly.
+
             This field is a member of `oneof`_ ``strategy``.
         service_name (str):
             The name of the service associated with this
