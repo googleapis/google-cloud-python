@@ -171,15 +171,18 @@ class RepoSource(proto.Message):
             The syntax of the regular expressions accepted
             is the syntax accepted by RE2 and described at
             https://github.com/google/re2/wiki/Syntax
+
             This field is a member of `oneof`_ ``revision``.
         tag_name (str):
             Regex matching tags to build.
             The syntax of the regular expressions accepted
             is the syntax accepted by RE2 and described at
             https://github.com/google/re2/wiki/Syntax
+
             This field is a member of `oneof`_ ``revision``.
         commit_sha (str):
             Explicit commit SHA to build.
+
             This field is a member of `oneof`_ ``revision``.
         dir_ (str):
             Directory, relative to the source root, in which to run the
@@ -245,15 +248,18 @@ class Source(proto.Message):
         storage_source (google.cloud.devtools.cloudbuild_v1.types.StorageSource):
             If provided, get the source from this
             location in Google Cloud Storage.
+
             This field is a member of `oneof`_ ``source``.
         repo_source (google.cloud.devtools.cloudbuild_v1.types.RepoSource):
             If provided, get the source from this
             location in a Cloud Source Repository.
+
             This field is a member of `oneof`_ ``source``.
         storage_source_manifest (google.cloud.devtools.cloudbuild_v1.types.StorageSourceManifest):
             If provided, get the source from this manifest in Google
             Cloud Storage. This feature is in Preview; see description
             `here <https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher>`__.
+
             This field is a member of `oneof`_ ``source``.
     """
 
@@ -1238,13 +1244,16 @@ class BuildTrigger(proto.Message):
 
             Currently only available for GitHub App
             Triggers.
+
             This field is a member of `oneof`_ ``build_template``.
         build (google.cloud.devtools.cloudbuild_v1.types.Build):
             Contents of the build template.
+
             This field is a member of `oneof`_ ``build_template``.
         filename (str):
             Path, from the source root, to the build
             configuration file (i.e. cloudbuild.yaml).
+
             This field is a member of `oneof`_ ``build_template``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the trigger was
@@ -1341,10 +1350,12 @@ class GitHubEventsConfig(proto.Message):
             builders is "cloud-builders".
         pull_request (google.cloud.devtools.cloudbuild_v1.types.PullRequestFilter):
             filter to match changes in pull requests.
+
             This field is a member of `oneof`_ ``event``.
         push (google.cloud.devtools.cloudbuild_v1.types.PushFilter):
             filter to match changes in refs like
             branches, tags.
+
             This field is a member of `oneof`_ ``event``.
     """
 
@@ -1406,6 +1417,7 @@ class WebhookConfig(proto.Message):
         secret (str):
             Required. Resource name for the secret
             required as a URL parameter.
+
             This field is a member of `oneof`_ ``auth_method``.
         state (google.cloud.devtools.cloudbuild_v1.types.WebhookConfig.State):
             Potential issues with the underlying Pub/Sub
@@ -1438,6 +1450,7 @@ class PullRequestFilter(proto.Message):
             The syntax of the regular expressions accepted
             is the syntax accepted by RE2 and described at
             https://github.com/google/re2/wiki/Syntax
+
             This field is a member of `oneof`_ ``git_ref``.
         comment_control (google.cloud.devtools.cloudbuild_v1.types.PullRequestFilter.CommentControl):
             Configure builds to run whether a repository owner or
@@ -1475,12 +1488,14 @@ class PushFilter(proto.Message):
             The syntax of the regular expressions accepted
             is the syntax accepted by RE2 and described at
             https://github.com/google/re2/wiki/Syntax
+
             This field is a member of `oneof`_ ``git_ref``.
         tag (str):
             Regexes matching tags to build.
             The syntax of the regular expressions accepted
             is the syntax accepted by RE2 and described at
             https://github.com/google/re2/wiki/Syntax
+
             This field is a member of `oneof`_ ``git_ref``.
         invert_regex (bool):
             When true, only trigger a build if the revision regex does
@@ -1849,6 +1864,7 @@ class WorkerPool(proto.Message):
             Output only. ``WorkerPool`` state.
         private_pool_v1_config (google.cloud.devtools.cloudbuild_v1.types.PrivatePoolV1Config):
             Private Pool using a v1 configuration.
+
             This field is a member of `oneof`_ ``config``.
         etag (str):
             Output only. Checksum computed by the server.

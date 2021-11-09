@@ -571,8 +571,12 @@ def test_create_build_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].build == cloudbuild.Build(name="name_value")
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].build
+        mock_val = cloudbuild.Build(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_build_flattened_error():
@@ -610,8 +614,12 @@ async def test_create_build_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].build == cloudbuild.Build(name="name_value")
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].build
+        mock_val = cloudbuild.Build(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -768,8 +776,12 @@ def test_get_build_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].id == "id_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].id
+        mock_val = "id_value"
+        assert arg == mock_val
 
 
 def test_get_build_flattened_error():
@@ -801,8 +813,12 @@ async def test_get_build_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].id == "id_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].id
+        mock_val = "id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -917,8 +933,12 @@ def test_list_builds_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].filter == "filter_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
 
 
 def test_list_builds_flattened_error():
@@ -956,8 +976,12 @@ async def test_list_builds_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].filter == "filter_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1235,8 +1259,12 @@ def test_cancel_build_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].id == "id_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].id
+        mock_val = "id_value"
+        assert arg == mock_val
 
 
 def test_cancel_build_flattened_error():
@@ -1272,8 +1300,12 @@ async def test_cancel_build_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].id == "id_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].id
+        mock_val = "id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1386,8 +1418,12 @@ def test_retry_build_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].id == "id_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].id
+        mock_val = "id_value"
+        assert arg == mock_val
 
 
 def test_retry_build_flattened_error():
@@ -1425,8 +1461,12 @@ async def test_retry_build_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].id == "id_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].id
+        mock_val = "id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1593,10 +1633,12 @@ def test_approve_build_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].approval_result == cloudbuild.ApprovalResult(
-            approver_account="approver_account_value"
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].approval_result
+        mock_val = cloudbuild.ApprovalResult(approver_account="approver_account_value")
+        assert arg == mock_val
 
 
 def test_approve_build_flattened_error():
@@ -1639,10 +1681,12 @@ async def test_approve_build_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].approval_result == cloudbuild.ApprovalResult(
-            approver_account="approver_account_value"
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].approval_result
+        mock_val = cloudbuild.ApprovalResult(approver_account="approver_account_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1809,10 +1853,12 @@ def test_create_build_trigger_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].trigger == cloudbuild.BuildTrigger(
-            resource_name="resource_name_value"
-        )
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].trigger
+        mock_val = cloudbuild.BuildTrigger(resource_name="resource_name_value")
+        assert arg == mock_val
 
 
 def test_create_build_trigger_flattened_error():
@@ -1853,10 +1899,12 @@ async def test_create_build_trigger_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].trigger == cloudbuild.BuildTrigger(
-            resource_name="resource_name_value"
-        )
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].trigger
+        mock_val = cloudbuild.BuildTrigger(resource_name="resource_name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2020,8 +2068,12 @@ def test_get_build_trigger_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].trigger_id == "trigger_id_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].trigger_id
+        mock_val = "trigger_id_value"
+        assert arg == mock_val
 
 
 def test_get_build_trigger_flattened_error():
@@ -2061,8 +2113,12 @@ async def test_get_build_trigger_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].trigger_id == "trigger_id_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].trigger_id
+        mock_val = "trigger_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2187,7 +2243,9 @@ def test_list_build_triggers_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
 
 
 def test_list_build_triggers_flattened_error():
@@ -2223,7 +2281,9 @@ async def test_list_build_triggers_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2483,8 +2543,12 @@ def test_delete_build_trigger_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].trigger_id == "trigger_id_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].trigger_id
+        mock_val = "trigger_id_value"
+        assert arg == mock_val
 
 
 def test_delete_build_trigger_flattened_error():
@@ -2522,8 +2586,12 @@ async def test_delete_build_trigger_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].trigger_id == "trigger_id_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].trigger_id
+        mock_val = "trigger_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2689,11 +2757,15 @@ def test_update_build_trigger_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].trigger_id == "trigger_id_value"
-        assert args[0].trigger == cloudbuild.BuildTrigger(
-            resource_name="resource_name_value"
-        )
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].trigger_id
+        mock_val = "trigger_id_value"
+        assert arg == mock_val
+        arg = args[0].trigger
+        mock_val = cloudbuild.BuildTrigger(resource_name="resource_name_value")
+        assert arg == mock_val
 
 
 def test_update_build_trigger_flattened_error():
@@ -2736,11 +2808,15 @@ async def test_update_build_trigger_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].trigger_id == "trigger_id_value"
-        assert args[0].trigger == cloudbuild.BuildTrigger(
-            resource_name="resource_name_value"
-        )
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].trigger_id
+        mock_val = "trigger_id_value"
+        assert arg == mock_val
+        arg = args[0].trigger
+        mock_val = cloudbuild.BuildTrigger(resource_name="resource_name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2864,9 +2940,15 @@ def test_run_build_trigger_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].trigger_id == "trigger_id_value"
-        assert args[0].source == cloudbuild.RepoSource(project_id="project_id_value")
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].trigger_id
+        mock_val = "trigger_id_value"
+        assert arg == mock_val
+        arg = args[0].source
+        mock_val = cloudbuild.RepoSource(project_id="project_id_value")
+        assert arg == mock_val
 
 
 def test_run_build_trigger_flattened_error():
@@ -2909,9 +2991,15 @@ async def test_run_build_trigger_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].trigger_id == "trigger_id_value"
-        assert args[0].source == cloudbuild.RepoSource(project_id="project_id_value")
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].trigger_id
+        mock_val = "trigger_id_value"
+        assert arg == mock_val
+        arg = args[0].source
+        mock_val = cloudbuild.RepoSource(project_id="project_id_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3176,9 +3264,15 @@ def test_create_worker_pool_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].worker_pool == cloudbuild.WorkerPool(name="name_value")
-        assert args[0].worker_pool_id == "worker_pool_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].worker_pool
+        mock_val = cloudbuild.WorkerPool(name="name_value")
+        assert arg == mock_val
+        arg = args[0].worker_pool_id
+        mock_val = "worker_pool_id_value"
+        assert arg == mock_val
 
 
 def test_create_worker_pool_flattened_error():
@@ -3221,9 +3315,15 @@ async def test_create_worker_pool_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].worker_pool == cloudbuild.WorkerPool(name="name_value")
-        assert args[0].worker_pool_id == "worker_pool_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].worker_pool
+        mock_val = cloudbuild.WorkerPool(name="name_value")
+        assert arg == mock_val
+        arg = args[0].worker_pool_id
+        mock_val = "worker_pool_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3413,7 +3513,9 @@ def test_get_worker_pool_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_worker_pool_flattened_error():
@@ -3447,7 +3549,9 @@ async def test_get_worker_pool_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3619,7 +3723,9 @@ def test_delete_worker_pool_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_worker_pool_flattened_error():
@@ -3655,7 +3761,9 @@ async def test_delete_worker_pool_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3834,8 +3942,12 @@ def test_update_worker_pool_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].worker_pool == cloudbuild.WorkerPool(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].worker_pool
+        mock_val = cloudbuild.WorkerPool(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_worker_pool_flattened_error():
@@ -3876,8 +3988,12 @@ async def test_update_worker_pool_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].worker_pool == cloudbuild.WorkerPool(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].worker_pool
+        mock_val = cloudbuild.WorkerPool(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4055,7 +4171,9 @@ def test_list_worker_pools_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_worker_pools_flattened_error():
@@ -4091,7 +4209,9 @@ async def test_list_worker_pools_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
