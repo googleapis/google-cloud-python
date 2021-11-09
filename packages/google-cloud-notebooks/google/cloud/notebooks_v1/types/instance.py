@@ -69,10 +69,12 @@ class Instance(proto.Message):
         vm_image (google.cloud.notebooks_v1.types.VmImage):
             Use a Compute Engine VM image to start the
             notebook instance.
+
             This field is a member of `oneof`_ ``environment``.
         container_image (google.cloud.notebooks_v1.types.ContainerImage):
             Use a container image to start the notebook
             instance.
+
             This field is a member of `oneof`_ ``environment``.
         post_startup_script (str):
             Path to a Bash script that automatically runs after a

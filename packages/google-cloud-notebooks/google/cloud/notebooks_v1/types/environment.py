@@ -46,10 +46,12 @@ class Environment(proto.Message):
         vm_image (google.cloud.notebooks_v1.types.VmImage):
             Use a Compute Engine VM image to start the
             notebook instance.
+
             This field is a member of `oneof`_ ``image_type``.
         container_image (google.cloud.notebooks_v1.types.ContainerImage):
             Use a container image to start the notebook
             instance.
+
             This field is a member of `oneof`_ ``image_type``.
         post_startup_script (str):
             Path to a Bash script that automatically runs after a
@@ -92,10 +94,12 @@ class VmImage(proto.Message):
             image belongs to. Format: ``projects/{project_id}``
         image_name (str):
             Use VM image name to find the image.
+
             This field is a member of `oneof`_ ``image``.
         image_family (str):
             Use this VM image family to find the image;
             the newest image in this family will be used.
+
             This field is a member of `oneof`_ ``image``.
     """
 

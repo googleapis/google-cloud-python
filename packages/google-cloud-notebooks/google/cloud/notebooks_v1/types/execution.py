@@ -127,6 +127,7 @@ class ExecutionTemplate(proto.Message):
         dataproc_parameters (google.cloud.notebooks_v1.types.ExecutionTemplate.DataprocParameters):
             Parameters used in Dataproc JobType
             executions.
+
             This field is a member of `oneof`_ ``job_parameters``.
     """
 
