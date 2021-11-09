@@ -565,6 +565,7 @@ class OutputConfig(proto.Message):
             glossary_error_file will be generated that contains error
             details. glossary_error_file has format of
             gs://translation_test/a_b_c\_'trg'_glossary_errors.[extension]
+
             This field is a member of `oneof`_ ``destination``.
     """
 
@@ -592,6 +593,7 @@ class DocumentInputConfig(proto.Message):
         gcs_source (google.cloud.translate_v3.types.GcsSource):
             Google Cloud Storage location. This must be a single file.
             For example: gs://example_bucket/example_file.pdf
+
             This field is a member of `oneof`_ ``source``.
         mime_type (str):
             Specifies the input document's mime_type.

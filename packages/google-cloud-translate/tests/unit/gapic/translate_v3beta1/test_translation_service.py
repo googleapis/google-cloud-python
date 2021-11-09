@@ -786,9 +786,15 @@ def test_detect_language_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].model == "model_value"
-        assert args[0].mime_type == "mime_type_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].model
+        mock_val = "model_value"
+        assert arg == mock_val
+        arg = args[0].mime_type
+        mock_val = "mime_type_value"
+        assert arg == mock_val
 
 
 def test_detect_language_flattened_error():
@@ -831,9 +837,15 @@ async def test_detect_language_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].model == "model_value"
-        assert args[0].mime_type == "mime_type_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].model
+        mock_val = "model_value"
+        assert arg == mock_val
+        arg = args[0].mime_type
+        mock_val = "mime_type_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1022,9 +1034,15 @@ def test_get_supported_languages_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].display_language_code == "display_language_code_value"
-        assert args[0].model == "model_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].display_language_code
+        mock_val = "display_language_code_value"
+        assert arg == mock_val
+        arg = args[0].model
+        mock_val = "model_value"
+        assert arg == mock_val
 
 
 def test_get_supported_languages_flattened_error():
@@ -1071,9 +1089,15 @@ async def test_get_supported_languages_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].display_language_code == "display_language_code_value"
-        assert args[0].model == "model_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].display_language_code
+        mock_val = "display_language_code_value"
+        assert arg == mock_val
+        arg = args[0].model
+        mock_val = "model_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1568,19 +1592,29 @@ def test_batch_translate_document_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].source_language_code == "source_language_code_value"
-        assert args[0].target_language_codes == ["target_language_codes_value"]
-        assert args[0].input_configs == [
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].source_language_code
+        mock_val = "source_language_code_value"
+        assert arg == mock_val
+        arg = args[0].target_language_codes
+        mock_val = ["target_language_codes_value"]
+        assert arg == mock_val
+        arg = args[0].input_configs
+        mock_val = [
             translation_service.BatchDocumentInputConfig(
                 gcs_source=translation_service.GcsSource(input_uri="input_uri_value")
             )
         ]
-        assert args[0].output_config == translation_service.BatchDocumentOutputConfig(
+        assert arg == mock_val
+        arg = args[0].output_config
+        mock_val = translation_service.BatchDocumentOutputConfig(
             gcs_destination=translation_service.GcsDestination(
                 output_uri_prefix="output_uri_prefix_value"
             )
         )
+        assert arg == mock_val
 
 
 def test_batch_translate_document_flattened_error():
@@ -1651,19 +1685,29 @@ async def test_batch_translate_document_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].source_language_code == "source_language_code_value"
-        assert args[0].target_language_codes == ["target_language_codes_value"]
-        assert args[0].input_configs == [
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].source_language_code
+        mock_val = "source_language_code_value"
+        assert arg == mock_val
+        arg = args[0].target_language_codes
+        mock_val = ["target_language_codes_value"]
+        assert arg == mock_val
+        arg = args[0].input_configs
+        mock_val = [
             translation_service.BatchDocumentInputConfig(
                 gcs_source=translation_service.GcsSource(input_uri="input_uri_value")
             )
         ]
-        assert args[0].output_config == translation_service.BatchDocumentOutputConfig(
+        assert arg == mock_val
+        arg = args[0].output_config
+        mock_val = translation_service.BatchDocumentOutputConfig(
             gcs_destination=translation_service.GcsDestination(
                 output_uri_prefix="output_uri_prefix_value"
             )
         )
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1850,8 +1894,12 @@ def test_create_glossary_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].glossary == translation_service.Glossary(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].glossary
+        mock_val = translation_service.Glossary(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_glossary_flattened_error():
@@ -1894,8 +1942,12 @@ async def test_create_glossary_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].glossary == translation_service.Glossary(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].glossary
+        mock_val = translation_service.Glossary(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2074,8 +2126,12 @@ def test_list_glossaries_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].filter == "filter_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
 
 
 def test_list_glossaries_flattened_error():
@@ -2117,8 +2173,12 @@ async def test_list_glossaries_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].filter == "filter_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2460,7 +2520,9 @@ def test_get_glossary_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_glossary_flattened_error():
@@ -2498,7 +2560,9 @@ async def test_get_glossary_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2667,7 +2731,9 @@ def test_delete_glossary_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_glossary_flattened_error():
@@ -2705,7 +2771,9 @@ async def test_delete_glossary_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
