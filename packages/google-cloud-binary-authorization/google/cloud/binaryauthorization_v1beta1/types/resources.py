@@ -212,6 +212,7 @@ class Attestor(proto.Message):
             chooser dialogs.
         user_owned_drydock_note (google.cloud.binaryauthorization_v1beta1.types.UserOwnedDrydockNote):
             A Drydock ATTESTATION_AUTHORITY Note, created by the user.
+
             This field is a member of `oneof`_ ``attestor_type``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the attestor was last
@@ -355,6 +356,7 @@ class AttestorPublicKey(proto.Message):
             OpenPGP RFC4880 V4 fingerprint, represented as upper-case
             hex. If ``id`` is provided by the caller, it will be
             overwritten by the API-calculated ID.
+
             This field is a member of `oneof`_ ``public_key``.
         pkix_public_key (google.cloud.binaryauthorization_v1beta1.types.PkixPublicKey):
             A raw PKIX SubjectPublicKeyInfo format public key.
@@ -364,6 +366,7 @@ class AttestorPublicKey(proto.Message):
             RFC3986 URI. If ``id`` is left blank, a default one will be
             computed based on the digest of the DER encoding of the
             public key.
+
             This field is a member of `oneof`_ ``public_key``.
     """
 

@@ -37,9 +37,11 @@ class ContinuousValidationEvent(proto.Message):
     Attributes:
         pod_event (google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.ContinuousValidationPodEvent):
             Pod event.
+
             This field is a member of `oneof`_ ``event_type``.
         unsupported_policy_event (google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.UnsupportedPolicyEvent):
             Unsupported policy event.
+
             This field is a member of `oneof`_ ``event_type``.
     """
 

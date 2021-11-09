@@ -704,7 +704,9 @@ def test_get_policy_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_policy_flattened_error():
@@ -740,7 +742,9 @@ async def test_get_policy_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -926,7 +930,9 @@ def test_update_policy_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].policy == resources.Policy(name="name_value")
+        arg = args[0].policy
+        mock_val = resources.Policy(name="name_value")
+        assert arg == mock_val
 
 
 def test_update_policy_flattened_error():
@@ -964,7 +970,9 @@ async def test_update_policy_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].policy == resources.Policy(name="name_value")
+        arg = args[0].policy
+        mock_val = resources.Policy(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1144,9 +1152,15 @@ def test_create_attestor_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].attestor_id == "attestor_id_value"
-        assert args[0].attestor == resources.Attestor(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].attestor_id
+        mock_val = "attestor_id_value"
+        assert arg == mock_val
+        arg = args[0].attestor
+        mock_val = resources.Attestor(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_attestor_flattened_error():
@@ -1189,9 +1203,15 @@ async def test_create_attestor_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].attestor_id == "attestor_id_value"
-        assert args[0].attestor == resources.Attestor(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].attestor_id
+        mock_val = "attestor_id_value"
+        assert arg == mock_val
+        arg = args[0].attestor
+        mock_val = resources.Attestor(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1368,7 +1388,9 @@ def test_get_attestor_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_attestor_flattened_error():
@@ -1404,7 +1426,9 @@ async def test_get_attestor_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1584,7 +1608,9 @@ def test_update_attestor_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].attestor == resources.Attestor(name="name_value")
+        arg = args[0].attestor
+        mock_val = resources.Attestor(name="name_value")
+        assert arg == mock_val
 
 
 def test_update_attestor_flattened_error():
@@ -1623,7 +1649,9 @@ async def test_update_attestor_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].attestor == resources.Attestor(name="name_value")
+        arg = args[0].attestor
+        mock_val = resources.Attestor(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1796,7 +1824,9 @@ def test_list_attestors_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_attestors_flattened_error():
@@ -1834,7 +1864,9 @@ async def test_list_attestors_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2144,7 +2176,9 @@ def test_delete_attestor_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_attestor_flattened_error():
@@ -2180,7 +2214,9 @@ async def test_delete_attestor_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
