@@ -464,14 +464,17 @@ class Key(proto.Message):
         web_settings (google.cloud.recaptchaenterprise_v1.types.WebKeySettings):
             Settings for keys that can be used by
             websites.
+
             This field is a member of `oneof`_ ``platform_settings``.
         android_settings (google.cloud.recaptchaenterprise_v1.types.AndroidKeySettings):
             Settings for keys that can be used by Android
             apps.
+
             This field is a member of `oneof`_ ``platform_settings``.
         ios_settings (google.cloud.recaptchaenterprise_v1.types.IOSKeySettings):
             Settings for keys that can be used by iOS
             apps.
+
             This field is a member of `oneof`_ ``platform_settings``.
         labels (Sequence[google.cloud.recaptchaenterprise_v1.types.Key.LabelsEntry]):
             See <a

@@ -687,8 +687,12 @@ def test_create_assessment_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].assessment == recaptchaenterprise.Assessment(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].assessment
+        mock_val = recaptchaenterprise.Assessment(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_assessment_flattened_error():
@@ -733,8 +737,12 @@ async def test_create_assessment_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].assessment == recaptchaenterprise.Assessment(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].assessment
+        mock_val = recaptchaenterprise.Assessment(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -920,11 +928,12 @@ def test_annotate_assessment_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert (
-            args[0].annotation
-            == recaptchaenterprise.AnnotateAssessmentRequest.Annotation.LEGITIMATE
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].annotation
+        mock_val = recaptchaenterprise.AnnotateAssessmentRequest.Annotation.LEGITIMATE
+        assert arg == mock_val
 
 
 def test_annotate_assessment_flattened_error():
@@ -969,11 +978,12 @@ async def test_annotate_assessment_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert (
-            args[0].annotation
-            == recaptchaenterprise.AnnotateAssessmentRequest.Annotation.LEGITIMATE
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].annotation
+        mock_val = recaptchaenterprise.AnnotateAssessmentRequest.Annotation.LEGITIMATE
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2137,7 +2147,9 @@ def test_get_metrics_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_metrics_flattened_error():
@@ -2175,7 +2187,9 @@ async def test_get_metrics_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2363,7 +2377,9 @@ def test_list_related_account_groups_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_related_account_groups_flattened_error():
@@ -2404,7 +2420,9 @@ async def test_list_related_account_groups_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2785,7 +2803,9 @@ def test_list_related_account_group_memberships_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_related_account_group_memberships_flattened_error():
@@ -2830,7 +2850,9 @@ async def test_list_related_account_group_memberships_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3225,8 +3247,12 @@ def test_search_related_account_group_memberships_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].hashed_account_id == b"hashed_account_id_blob"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].hashed_account_id
+        mock_val = b"hashed_account_id_blob"
+        assert arg == mock_val
 
 
 def test_search_related_account_group_memberships_flattened_error():
@@ -3272,8 +3298,12 @@ async def test_search_related_account_group_memberships_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].hashed_account_id == b"hashed_account_id_blob"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].hashed_account_id
+        mock_val = b"hashed_account_id_blob"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
