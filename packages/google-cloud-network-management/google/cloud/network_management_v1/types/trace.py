@@ -104,14 +104,17 @@ class Step(proto.Message):
         instance (google.cloud.network_management_v1.types.InstanceInfo):
             Display information of a Compute Engine
             instance.
+
             This field is a member of `oneof`_ ``step_info``.
         firewall (google.cloud.network_management_v1.types.FirewallInfo):
             Display information of a Compute Engine
             firewall rule.
+
             This field is a member of `oneof`_ ``step_info``.
         route (google.cloud.network_management_v1.types.RouteInfo):
             Display information of a Compute Engine
             route.
+
             This field is a member of `oneof`_ ``step_info``.
         endpoint (google.cloud.network_management_v1.types.EndpointInfo):
             Display information of the source and
@@ -119,48 +122,60 @@ class Step(proto.Message):
             information in an intermediate state may differ
             with the initial input, as it might be modified
             by state like NAT, or Connection Proxy.
+
             This field is a member of `oneof`_ ``step_info``.
         forwarding_rule (google.cloud.network_management_v1.types.ForwardingRuleInfo):
             Display information of a Compute Engine
             forwarding rule.
+
             This field is a member of `oneof`_ ``step_info``.
         vpn_gateway (google.cloud.network_management_v1.types.VpnGatewayInfo):
             Display information of a Compute Engine VPN
             gateway.
+
             This field is a member of `oneof`_ ``step_info``.
         vpn_tunnel (google.cloud.network_management_v1.types.VpnTunnelInfo):
             Display information of a Compute Engine VPN
             tunnel.
+
             This field is a member of `oneof`_ ``step_info``.
         deliver (google.cloud.network_management_v1.types.DeliverInfo):
             Display information of the final state
             "deliver" and reason.
+
             This field is a member of `oneof`_ ``step_info``.
         forward (google.cloud.network_management_v1.types.ForwardInfo):
             Display information of the final state
             "forward" and reason.
+
             This field is a member of `oneof`_ ``step_info``.
         abort (google.cloud.network_management_v1.types.AbortInfo):
             Display information of the final state
             "abort" and reason.
+
             This field is a member of `oneof`_ ``step_info``.
         drop (google.cloud.network_management_v1.types.DropInfo):
             Display information of the final state "drop"
             and reason.
+
             This field is a member of `oneof`_ ``step_info``.
         load_balancer (google.cloud.network_management_v1.types.LoadBalancerInfo):
             Display information of the load balancers.
+
             This field is a member of `oneof`_ ``step_info``.
         network (google.cloud.network_management_v1.types.NetworkInfo):
             Display information of a Google Cloud
             network.
+
             This field is a member of `oneof`_ ``step_info``.
         gke_master (google.cloud.network_management_v1.types.GKEMasterInfo):
             Display information of a Google Kubernetes
             Engine cluster master.
+
             This field is a member of `oneof`_ ``step_info``.
         cloud_sql_instance (google.cloud.network_management_v1.types.CloudSQLInstanceInfo):
             Display information of a Cloud SQL instance.
+
             This field is a member of `oneof`_ ``step_info``.
     """
 
