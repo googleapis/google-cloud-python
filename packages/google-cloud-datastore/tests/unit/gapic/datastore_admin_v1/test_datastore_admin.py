@@ -585,12 +585,18 @@ def test_export_entities_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].labels == {"key_value": "value_value"}
-        assert args[0].entity_filter == datastore_admin.EntityFilter(
-            kinds=["kinds_value"]
-        )
-        assert args[0].output_url_prefix == "output_url_prefix_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].labels
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
+        arg = args[0].entity_filter
+        mock_val = datastore_admin.EntityFilter(kinds=["kinds_value"])
+        assert arg == mock_val
+        arg = args[0].output_url_prefix
+        mock_val = "output_url_prefix_value"
+        assert arg == mock_val
 
 
 def test_export_entities_flattened_error():
@@ -635,12 +641,18 @@ async def test_export_entities_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].labels == {"key_value": "value_value"}
-        assert args[0].entity_filter == datastore_admin.EntityFilter(
-            kinds=["kinds_value"]
-        )
-        assert args[0].output_url_prefix == "output_url_prefix_value"
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].labels
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
+        arg = args[0].entity_filter
+        mock_val = datastore_admin.EntityFilter(kinds=["kinds_value"])
+        assert arg == mock_val
+        arg = args[0].output_url_prefix
+        mock_val = "output_url_prefix_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -760,12 +772,18 @@ def test_import_entities_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].labels == {"key_value": "value_value"}
-        assert args[0].input_url == "input_url_value"
-        assert args[0].entity_filter == datastore_admin.EntityFilter(
-            kinds=["kinds_value"]
-        )
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].labels
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
+        arg = args[0].input_url
+        mock_val = "input_url_value"
+        assert arg == mock_val
+        arg = args[0].entity_filter
+        mock_val = datastore_admin.EntityFilter(kinds=["kinds_value"])
+        assert arg == mock_val
 
 
 def test_import_entities_flattened_error():
@@ -810,12 +828,18 @@ async def test_import_entities_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_id == "project_id_value"
-        assert args[0].labels == {"key_value": "value_value"}
-        assert args[0].input_url == "input_url_value"
-        assert args[0].entity_filter == datastore_admin.EntityFilter(
-            kinds=["kinds_value"]
-        )
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].labels
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
+        arg = args[0].input_url
+        mock_val = "input_url_value"
+        assert arg == mock_val
+        arg = args[0].entity_filter
+        mock_val = datastore_admin.EntityFilter(kinds=["kinds_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

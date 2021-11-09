@@ -117,11 +117,13 @@ class Key(proto.Message):
                 Never equal to zero. Values less than zero are
                 discouraged and may not be supported in the
                 future.
+
                 This field is a member of `oneof`_ ``id_type``.
             name (str):
                 The name of the entity. A name matching regex ``__.*__`` is
                 reserved/read-only. A name must not be more than 1500 bytes
                 when UTF-8 encoded. Cannot be ``""``.
+
                 This field is a member of `oneof`_ ``id_type``.
         """
 
@@ -160,49 +162,60 @@ class Value(proto.Message):
     Attributes:
         null_value (google.protobuf.struct_pb2.NullValue):
             A null value.
+
             This field is a member of `oneof`_ ``value_type``.
         boolean_value (bool):
             A boolean value.
+
             This field is a member of `oneof`_ ``value_type``.
         integer_value (int):
             An integer value.
+
             This field is a member of `oneof`_ ``value_type``.
         double_value (float):
             A double value.
+
             This field is a member of `oneof`_ ``value_type``.
         timestamp_value (google.protobuf.timestamp_pb2.Timestamp):
             A timestamp value.
             When stored in the Datastore, precise only to
             microseconds; any additional precision is
             rounded down.
+
             This field is a member of `oneof`_ ``value_type``.
         key_value (google.cloud.datastore_v1.types.Key):
             A key value.
+
             This field is a member of `oneof`_ ``value_type``.
         string_value (str):
             A UTF-8 encoded string value. When ``exclude_from_indexes``
             is false (it is indexed), may have at most 1500 bytes.
             Otherwise, may be set to at most 1,000,000 bytes.
+
             This field is a member of `oneof`_ ``value_type``.
         blob_value (bytes):
             A blob value. May have at most 1,000,000 bytes. When
             ``exclude_from_indexes`` is false, may have at most 1500
             bytes. In JSON requests, must be base64-encoded.
+
             This field is a member of `oneof`_ ``value_type``.
         geo_point_value (google.type.latlng_pb2.LatLng):
             A geo point value representing a point on the
             surface of Earth.
+
             This field is a member of `oneof`_ ``value_type``.
         entity_value (google.cloud.datastore_v1.types.Entity):
             An entity value.
             - May have no key.
             - May have a key with an incomplete key path. -
             May have a reserved/read-only key.
+
             This field is a member of `oneof`_ ``value_type``.
         array_value (google.cloud.datastore_v1.types.ArrayValue):
             An array value. Cannot contain another array value. A
             ``Value`` instance that sets field ``array_value`` must not
             set fields ``meaning`` or ``exclude_from_indexes``.
+
             This field is a member of `oneof`_ ``value_type``.
         meaning (int):
             The ``meaning`` field should only be populated for backwards

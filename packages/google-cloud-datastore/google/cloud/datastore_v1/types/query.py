@@ -203,9 +203,11 @@ class Filter(proto.Message):
     Attributes:
         composite_filter (google.cloud.datastore_v1.types.CompositeFilter):
             A composite filter.
+
             This field is a member of `oneof`_ ``filter_type``.
         property_filter (google.cloud.datastore_v1.types.PropertyFilter):
             A filter on a property.
+
             This field is a member of `oneof`_ ``filter_type``.
     """
 
@@ -318,10 +320,12 @@ class GqlQueryParameter(proto.Message):
     Attributes:
         value (google.cloud.datastore_v1.types.Value):
             A value parameter.
+
             This field is a member of `oneof`_ ``parameter_type``.
         cursor (bytes):
             A query cursor. Query cursors are returned in
             query result batches.
+
             This field is a member of `oneof`_ ``parameter_type``.
     """
 

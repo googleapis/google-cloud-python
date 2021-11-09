@@ -115,9 +115,11 @@ class RunQueryRequest(proto.Message):
             The options for this query.
         query (google.cloud.datastore_v1.types.Query):
             The query to run.
+
             This field is a member of `oneof`_ ``query_type``.
         gql_query (google.cloud.datastore_v1.types.GqlQuery):
             The GQL query to run.
+
             This field is a member of `oneof`_ ``query_type``.
     """
 
@@ -221,6 +223,7 @@ class CommitRequest(proto.Message):
             The identifier of the transaction associated with the
             commit. A transaction identifier is returned by a call to
             [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
+
             This field is a member of `oneof`_ ``transaction_selector``.
         mutations (Sequence[google.cloud.datastore_v1.types.Mutation]):
             The mutations to perform.
@@ -347,27 +350,32 @@ class Mutation(proto.Message):
             The entity to insert. The entity must not
             already exist. The entity key's final path
             element may be incomplete.
+
             This field is a member of `oneof`_ ``operation``.
         update (google.cloud.datastore_v1.types.Entity):
             The entity to update. The entity must already
             exist. Must have a complete key path.
+
             This field is a member of `oneof`_ ``operation``.
         upsert (google.cloud.datastore_v1.types.Entity):
             The entity to upsert. The entity may or may
             not already exist. The entity key's final path
             element may be incomplete.
+
             This field is a member of `oneof`_ ``operation``.
         delete (google.cloud.datastore_v1.types.Key):
             The key of the entity to delete. The entity
             may or may not already exist. Must have a
             complete key path and must not be reserved/read-
             only.
+
             This field is a member of `oneof`_ ``operation``.
         base_version (int):
             The version of the entity that this mutation
             is being applied to. If this does not match the
             current version on the server, the mutation
             conflicts.
+
             This field is a member of `oneof`_ ``conflict_detection_strategy``.
     """
 
@@ -429,11 +437,13 @@ class ReadOptions(proto.Message):
         read_consistency (google.cloud.datastore_v1.types.ReadOptions.ReadConsistency):
             The non-transactional read consistency to use. Cannot be set
             to ``STRONG`` for global queries.
+
             This field is a member of `oneof`_ ``consistency_type``.
         transaction (bytes):
             The identifier of the transaction in which to read. A
             transaction identifier is returned by a call to
             [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
+
             This field is a member of `oneof`_ ``consistency_type``.
     """
 
@@ -469,9 +479,11 @@ class TransactionOptions(proto.Message):
         read_write (google.cloud.datastore_v1.types.TransactionOptions.ReadWrite):
             The transaction should allow both reads and
             writes.
+
             This field is a member of `oneof`_ ``mode``.
         read_only (google.cloud.datastore_v1.types.TransactionOptions.ReadOnly):
             The transaction should only allow reads.
+
             This field is a member of `oneof`_ ``mode``.
     """
 
