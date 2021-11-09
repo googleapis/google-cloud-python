@@ -98,6 +98,7 @@ class TranscriptOutputConfig(proto.Message):
             Must be specified in the format:
             ``gs://bucket_name/object_name``, and the bucket must
             already exist.
+
             This field is a member of `oneof`_ ``output_type``.
     """
 
@@ -125,6 +126,7 @@ class StreamingRecognizeRequest(proto.Message):
             Provides information to the recognizer that specifies how to
             process the request. The first ``StreamingRecognizeRequest``
             message must contain a ``streaming_config`` message.
+
             This field is a member of `oneof`_ ``streaming_request``.
         audio_content (bytes):
             The audio data to be recognized. Sequential chunks of audio
@@ -137,6 +139,7 @@ class StreamingRecognizeRequest(proto.Message):
             fields, proto buffers use a pure binary representation (not
             base64). See `content
             limits <https://cloud.google.com/speech-to-text/quotas#content>`__.
+
             This field is a member of `oneof`_ ``streaming_request``.
     """
 
@@ -557,6 +560,7 @@ class RecognitionAudio(proto.Message):
             ``RecognitionConfig``. Note: as with all bytes fields, proto
             buffers use a pure binary representation, whereas JSON
             representations use base64.
+
             This field is a member of `oneof`_ ``audio_source``.
         uri (str):
             URI that points to a file that contains audio data bytes as
@@ -568,6 +572,7 @@ class RecognitionAudio(proto.Message):
             [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]).
             For more information, see `Request
             URIs <https://cloud.google.com/storage/docs/reference-uris>`__.
+
             This field is a member of `oneof`_ ``audio_source``.
     """
 
