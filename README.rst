@@ -139,9 +139,15 @@ Libraries
    * - `Channel Services <https://github.com/googleapis/python-channel>`_
      - |ga|
      - |PyPI-google-cloud-channel|
+   * - `Common <https://github.com/googleapis/python-cloud-common>`_
+     - |ga|
+     - |PyPI-google-cloud-common|
    * - `Composer <https://github.com/googleapis/python-orchestration-airflow>`_
      - |ga|
      - |PyPI-google-cloud-orchestration-airflow|
+   * - `Contact Center AI Insights API <https://github.com/googleapis/python-contact-center-insights>`_
+     - |ga|
+     - |PyPI-google-cloud-contact-center-insights|
    * - `Container Analysis <https://github.com/googleapis/python-containeranalysis>`_
      - |ga|
      - |PyPI-google-cloud-containeranalysis|
@@ -187,6 +193,9 @@ Libraries
    * - `Eventarc <https://github.com/googleapis/python-eventarc>`_
      - |ga|
      - |PyPI-google-cloud-eventarc|
+   * - `Filestore <https://github.com/googleapis/python-filestore>`_
+     - |ga|
+     - |PyPI-google-cloud-filestore|
    * - `Firestore <https://github.com/googleapis/python-firestore>`_
      - |ga|
      - |PyPI-google-cloud-firestore|
@@ -367,12 +376,6 @@ Libraries
    * - `BigQuery connector for pandas <https://github.com/googleapis/python-bigquery-pandas>`_
      - |beta|
      - |PyPI-pandas-gbq|
-   * - `Common <https://github.com/googleapis/python-cloud-common>`_
-     - |beta|
-     - |PyPI-google-cloud-common|
-   * - `Contact Center AI Insights API <https://github.com/googleapis/python-contact-center-insights>`_
-     - |beta|
-     - |PyPI-google-cloud-contact-center-insights|
    * - `Data Labeling <https://github.com/googleapis/python-datalabeling>`_
      - |beta|
      - |PyPI-google-cloud-datalabeling|
@@ -385,9 +388,6 @@ Libraries
    * - `Error Reporting <https://github.com/googleapis/python-error-reporting>`_
      - |beta|
      - |PyPI-google-cloud-error-reporting|
-   * - `Filestore <https://github.com/googleapis/python-filestore>`_
-     - |beta|
-     - |PyPI-google-cloud-filestore|
    * - `GKE Connect Gateway API <https://github.com/googleapis/python-gke-connect-gateway>`_
      - |beta|
      - |PyPI-google-cloud-gke-connect-gateway|
@@ -492,8 +492,12 @@ Libraries
      :target: https://pypi.org/project/google-cloud-build
 .. |PyPI-google-cloud-channel| image:: https://img.shields.io/pypi/v/google-cloud-channel.svg
      :target: https://pypi.org/project/google-cloud-channel
+.. |PyPI-google-cloud-common| image:: https://img.shields.io/pypi/v/google-cloud-common.svg
+     :target: https://pypi.org/project/google-cloud-common
 .. |PyPI-google-cloud-orchestration-airflow| image:: https://img.shields.io/pypi/v/google-cloud-orchestration-airflow.svg
      :target: https://pypi.org/project/google-cloud-orchestration-airflow
+.. |PyPI-google-cloud-contact-center-insights| image:: https://img.shields.io/pypi/v/google-cloud-contact-center-insights.svg
+     :target: https://pypi.org/project/google-cloud-contact-center-insights
 .. |PyPI-google-cloud-containeranalysis| image:: https://img.shields.io/pypi/v/google-cloud-containeranalysis.svg
      :target: https://pypi.org/project/google-cloud-containeranalysis
 .. |PyPI-google-cloud-datacatalog| image:: https://img.shields.io/pypi/v/google-cloud-datacatalog.svg
@@ -524,6 +528,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-essential-contacts
 .. |PyPI-google-cloud-eventarc| image:: https://img.shields.io/pypi/v/google-cloud-eventarc.svg
      :target: https://pypi.org/project/google-cloud-eventarc
+.. |PyPI-google-cloud-filestore| image:: https://img.shields.io/pypi/v/google-cloud-filestore.svg
+     :target: https://pypi.org/project/google-cloud-filestore
 .. |PyPI-google-cloud-firestore| image:: https://img.shields.io/pypi/v/google-cloud-firestore.svg
      :target: https://pypi.org/project/google-cloud-firestore
 .. |PyPI-google-cloud-functions| image:: https://img.shields.io/pypi/v/google-cloud-functions.svg
@@ -644,10 +650,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-audit-log
 .. |PyPI-pandas-gbq| image:: https://img.shields.io/pypi/v/pandas-gbq.svg
      :target: https://pypi.org/project/pandas-gbq
-.. |PyPI-google-cloud-common| image:: https://img.shields.io/pypi/v/google-cloud-common.svg
-     :target: https://pypi.org/project/google-cloud-common
-.. |PyPI-google-cloud-contact-center-insights| image:: https://img.shields.io/pypi/v/google-cloud-contact-center-insights.svg
-     :target: https://pypi.org/project/google-cloud-contact-center-insights
 .. |PyPI-google-cloud-datalabeling| image:: https://img.shields.io/pypi/v/google-cloud-datalabeling.svg
      :target: https://pypi.org/project/google-cloud-datalabeling
 .. |PyPI-google-cloud-dataflow-client| image:: https://img.shields.io/pypi/v/google-cloud-dataflow-client.svg
@@ -656,8 +658,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-domains
 .. |PyPI-google-cloud-error-reporting| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
      :target: https://pypi.org/project/google-cloud-error-reporting
-.. |PyPI-google-cloud-filestore| image:: https://img.shields.io/pypi/v/google-cloud-filestore.svg
-     :target: https://pypi.org/project/google-cloud-filestore
 .. |PyPI-google-cloud-gke-connect-gateway| image:: https://img.shields.io/pypi/v/google-cloud-gke-connect-gateway.svg
      :target: https://pypi.org/project/google-cloud-gke-connect-gateway
 .. |PyPI-google-cloud-life-sciences| image:: https://img.shields.io/pypi/v/google-cloud-life-sciences.svg
