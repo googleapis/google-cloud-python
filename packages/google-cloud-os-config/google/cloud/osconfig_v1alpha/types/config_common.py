@@ -84,6 +84,7 @@ class OSPolicyResourceCompliance(proto.Message):
             Compliance state of the OS policy resource.
         exec_resource_output (google.cloud.osconfig_v1alpha.types.OSPolicyResourceCompliance.ExecResourceOutput):
             ExecResource specific output.
+
             This field is a member of `oneof`_ ``output``.
     """
 

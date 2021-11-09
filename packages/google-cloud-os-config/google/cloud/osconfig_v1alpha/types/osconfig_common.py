@@ -35,11 +35,13 @@ class FixedOrPercent(proto.Message):
     Attributes:
         fixed (int):
             Specifies a fixed value.
+
             This field is a member of `oneof`_ ``mode``.
         percent (int):
             Specifies the relative value defined as a
             percentage, which will be multiplied by a
             reference value.
+
             This field is a member of `oneof`_ ``mode``.
     """
 

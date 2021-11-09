@@ -76,9 +76,11 @@ class PatchDeployment(proto.Message):
             duration ends, the patch times out.
         one_time_schedule (google.cloud.osconfig_v1.types.OneTimeSchedule):
             Required. Schedule a one-time execution.
+
             This field is a member of `oneof`_ ``schedule``.
         recurring_schedule (google.cloud.osconfig_v1.types.RecurringSchedule):
             Required. Schedule recurring executions.
+
             This field is a member of `oneof`_ ``schedule``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time the patch deployment was created.
@@ -165,9 +167,11 @@ class RecurringSchedule(proto.Message):
             recurring schedule.
         weekly (google.cloud.osconfig_v1.types.WeeklySchedule):
             Required. Schedule with weekly executions.
+
             This field is a member of `oneof`_ ``schedule_config``.
         monthly (google.cloud.osconfig_v1.types.MonthlySchedule):
             Required. Schedule with monthly executions.
+
             This field is a member of `oneof`_ ``schedule_config``.
         last_execute_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the last patch job ran
@@ -229,6 +233,7 @@ class MonthlySchedule(proto.Message):
     Attributes:
         week_day_of_month (google.cloud.osconfig_v1.types.WeekDayOfMonth):
             Required. Week day in a month.
+
             This field is a member of `oneof`_ ``day_of_month``.
         month_day (int):
             Required. One day of the month. 1-31
@@ -237,6 +242,7 @@ class MonthlySchedule(proto.Message):
             target day will be skipped. For example, a
             schedule to run "every month on the 31st" will
             not run in February, April, June, etc.
+
             This field is a member of `oneof`_ ``day_of_month``.
     """
 

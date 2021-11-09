@@ -115,15 +115,19 @@ class OSPolicy(proto.Message):
                 -  Must be unique within the OS policy.
             pkg (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.PackageResource):
                 Package resource
+
                 This field is a member of `oneof`_ ``resource_type``.
             repository (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.RepositoryResource):
                 Package repository resource
+
                 This field is a member of `oneof`_ ``resource_type``.
             exec_ (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.ExecResource):
                 Exec resource
+
                 This field is a member of `oneof`_ ``resource_type``.
             file (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.FileResource):
                 File resource
+
                 This field is a member of `oneof`_ ``resource_type``.
         """
 
@@ -140,12 +144,15 @@ class OSPolicy(proto.Message):
             Attributes:
                 remote (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.File.Remote):
                     A generic remote file.
+
                     This field is a member of `oneof`_ ``type``.
                 gcs (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.File.Gcs):
                     A Cloud Storage object.
+
                     This field is a member of `oneof`_ ``type``.
                 local_path (str):
                     A local path within the VM to use.
+
                     This field is a member of `oneof`_ ``type``.
                 allow_insecure (bool):
                     Defaults to false. When false, files are
@@ -218,24 +225,31 @@ class OSPolicy(proto.Message):
                     maintain for this package.
                 apt (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.PackageResource.APT):
                     A package managed by Apt.
+
                     This field is a member of `oneof`_ ``system_package``.
                 deb (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.PackageResource.Deb):
                     A deb package file.
+
                     This field is a member of `oneof`_ ``system_package``.
                 yum (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.PackageResource.YUM):
                     A package managed by YUM.
+
                     This field is a member of `oneof`_ ``system_package``.
                 zypper (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.PackageResource.Zypper):
                     A package managed by Zypper.
+
                     This field is a member of `oneof`_ ``system_package``.
                 rpm (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.PackageResource.RPM):
                     An rpm package file.
+
                     This field is a member of `oneof`_ ``system_package``.
                 googet (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.PackageResource.GooGet):
                     A package managed by GooGet.
+
                     This field is a member of `oneof`_ ``system_package``.
                 msi (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.PackageResource.MSI):
                     An MSI package.
+
                     This field is a member of `oneof`_ ``system_package``.
             """
 
@@ -418,15 +432,19 @@ class OSPolicy(proto.Message):
             Attributes:
                 apt (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.RepositoryResource.AptRepository):
                     An Apt Repository.
+
                     This field is a member of `oneof`_ ``repository``.
                 yum (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.RepositoryResource.YumRepository):
                     A Yum Repository.
+
                     This field is a member of `oneof`_ ``repository``.
                 zypper (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.RepositoryResource.ZypperRepository):
                     A Zypper Repository.
+
                     This field is a member of `oneof`_ ``repository``.
                 goo (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.RepositoryResource.GooRepository):
                     A Goo Repository.
+
                     This field is a member of `oneof`_ ``repository``.
             """
 
@@ -617,11 +635,13 @@ class OSPolicy(proto.Message):
                 Attributes:
                     file (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.File):
                         A remote or local file.
+
                         This field is a member of `oneof`_ ``source``.
                     script (str):
                         An inline script.
                         The size of the script is limited to 1024
                         characters.
+
                         This field is a member of `oneof`_ ``source``.
                     args (Sequence[str]):
                         Optional arguments to pass to the source
@@ -680,11 +700,13 @@ class OSPolicy(proto.Message):
             Attributes:
                 file (google.cloud.osconfig_v1alpha.types.OSPolicy.Resource.File):
                     A remote or local source.
+
                     This field is a member of `oneof`_ ``source``.
                 content (str):
                     A a file with this content.
                     The size of the content is limited to 1024
                     characters.
+
                     This field is a member of `oneof`_ ``source``.
                 path (str):
                     Required. The absolute path of the file

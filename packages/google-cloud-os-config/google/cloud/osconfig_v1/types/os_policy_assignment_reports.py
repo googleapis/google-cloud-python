@@ -235,6 +235,7 @@ class OSPolicyAssignmentReport(proto.Message):
                        compliance state couldn't be determined.
                 exec_resource_output (google.cloud.osconfig_v1.types.OSPolicyAssignmentReport.OSPolicyCompliance.OSPolicyResourceCompliance.ExecResourceOutput):
                     ExecResource specific output.
+
                     This field is a member of `oneof`_ ``output``.
             """
 

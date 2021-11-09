@@ -688,11 +688,15 @@ def test_create_os_policy_assignment_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].os_policy_assignment == os_policy_assignments.OSPolicyAssignment(
-            name="name_value"
-        )
-        assert args[0].os_policy_assignment_id == "os_policy_assignment_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].os_policy_assignment
+        mock_val = os_policy_assignments.OSPolicyAssignment(name="name_value")
+        assert arg == mock_val
+        arg = args[0].os_policy_assignment_id
+        mock_val = "os_policy_assignment_id_value"
+        assert arg == mock_val
 
 
 def test_create_os_policy_assignment_flattened_error():
@@ -743,11 +747,15 @@ async def test_create_os_policy_assignment_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].os_policy_assignment == os_policy_assignments.OSPolicyAssignment(
-            name="name_value"
-        )
-        assert args[0].os_policy_assignment_id == "os_policy_assignment_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].os_policy_assignment
+        mock_val = os_policy_assignments.OSPolicyAssignment(name="name_value")
+        assert arg == mock_val
+        arg = args[0].os_policy_assignment_id
+        mock_val = "os_policy_assignment_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -945,10 +953,12 @@ def test_update_os_policy_assignment_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].os_policy_assignment == os_policy_assignments.OSPolicyAssignment(
-            name="name_value"
-        )
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].os_policy_assignment
+        mock_val = os_policy_assignments.OSPolicyAssignment(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_os_policy_assignment_flattened_error():
@@ -997,10 +1007,12 @@ async def test_update_os_policy_assignment_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].os_policy_assignment == os_policy_assignments.OSPolicyAssignment(
-            name="name_value"
-        )
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].os_policy_assignment
+        mock_val = os_policy_assignments.OSPolicyAssignment(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1226,7 +1238,9 @@ def test_get_os_policy_assignment_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_os_policy_assignment_flattened_error():
@@ -1266,7 +1280,9 @@ async def test_get_os_policy_assignment_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1454,7 +1470,9 @@ def test_list_os_policy_assignments_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_os_policy_assignments_flattened_error():
@@ -1495,7 +1513,9 @@ async def test_list_os_policy_assignments_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1870,7 +1890,9 @@ def test_list_os_policy_assignment_revisions_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_list_os_policy_assignment_revisions_flattened_error():
@@ -1913,7 +1935,9 @@ async def test_list_os_policy_assignment_revisions_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2280,7 +2304,9 @@ def test_delete_os_policy_assignment_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_os_policy_assignment_flattened_error():
@@ -2320,7 +2346,9 @@ async def test_delete_os_policy_assignment_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2545,7 +2573,9 @@ def test_get_instance_os_policies_compliance_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_instance_os_policies_compliance_flattened_error():
@@ -2588,7 +2618,9 @@ async def test_get_instance_os_policies_compliance_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2790,7 +2822,9 @@ def test_list_instance_os_policies_compliances_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_instance_os_policies_compliances_flattened_error():
@@ -2835,7 +2869,9 @@ async def test_list_instance_os_policies_compliances_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3198,7 +3234,9 @@ def test_get_inventory_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_inventory_flattened_error():
@@ -3234,7 +3272,9 @@ async def test_get_inventory_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3406,7 +3446,9 @@ def test_list_inventories_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_inventories_flattened_error():
@@ -3444,7 +3486,9 @@ async def test_list_inventories_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3773,7 +3817,9 @@ def test_get_vulnerability_report_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_vulnerability_report_flattened_error():
@@ -3813,7 +3859,9 @@ async def test_get_vulnerability_report_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4000,7 +4048,9 @@ def test_list_vulnerability_reports_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_vulnerability_reports_flattened_error():
@@ -4040,7 +4090,9 @@ async def test_list_vulnerability_reports_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
