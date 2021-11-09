@@ -641,7 +641,9 @@ def test_list_instances_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_instances_flattened_error():
@@ -677,7 +679,9 @@ async def test_list_instances_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1021,7 +1025,9 @@ def test_get_instance_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_instance_flattened_error():
@@ -1057,7 +1063,9 @@ async def test_get_instance_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1225,9 +1233,15 @@ def test_create_instance_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].instance_id == "instance_id_value"
-        assert args[0].resource == cloud_memcache.Instance(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].instance_id
+        mock_val = "instance_id_value"
+        assert arg == mock_val
+        arg = args[0].resource
+        mock_val = cloud_memcache.Instance(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_instance_flattened_error():
@@ -1270,9 +1284,15 @@ async def test_create_instance_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].instance_id == "instance_id_value"
-        assert args[0].resource == cloud_memcache.Instance(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].instance_id
+        mock_val = "instance_id_value"
+        assert arg == mock_val
+        arg = args[0].resource
+        mock_val = cloud_memcache.Instance(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1446,8 +1466,12 @@ def test_update_instance_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert args[0].resource == cloud_memcache.Instance(name="name_value")
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+        arg = args[0].resource
+        mock_val = cloud_memcache.Instance(name="name_value")
+        assert arg == mock_val
 
 
 def test_update_instance_flattened_error():
@@ -1488,8 +1512,12 @@ async def test_update_instance_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert args[0].resource == cloud_memcache.Instance(name="name_value")
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+        arg = args[0].resource
+        mock_val = cloud_memcache.Instance(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1671,9 +1699,15 @@ def test_update_parameters_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert args[0].parameters == cloud_memcache.MemcacheParameters(id="id_value")
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+        arg = args[0].parameters
+        mock_val = cloud_memcache.MemcacheParameters(id="id_value")
+        assert arg == mock_val
 
 
 def test_update_parameters_flattened_error():
@@ -1718,9 +1752,15 @@ async def test_update_parameters_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
-        assert args[0].parameters == cloud_memcache.MemcacheParameters(id="id_value")
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+        arg = args[0].parameters
+        mock_val = cloud_memcache.MemcacheParameters(id="id_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1887,7 +1927,9 @@ def test_delete_instance_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_instance_flattened_error():
@@ -1923,7 +1965,9 @@ async def test_delete_instance_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2089,9 +2133,15 @@ def test_apply_parameters_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].node_ids == ["node_ids_value"]
-        assert args[0].apply_all == True
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].node_ids
+        mock_val = ["node_ids_value"]
+        assert arg == mock_val
+        arg = args[0].apply_all
+        mock_val = True
+        assert arg == mock_val
 
 
 def test_apply_parameters_flattened_error():
@@ -2132,9 +2182,15 @@ async def test_apply_parameters_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].node_ids == ["node_ids_value"]
-        assert args[0].apply_all == True
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].node_ids
+        mock_val = ["node_ids_value"]
+        assert arg == mock_val
+        arg = args[0].apply_all
+        mock_val = True
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2316,9 +2372,15 @@ def test_apply_software_update_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].instance == "instance_value"
-        assert args[0].node_ids == ["node_ids_value"]
-        assert args[0].apply_all == True
+        arg = args[0].instance
+        mock_val = "instance_value"
+        assert arg == mock_val
+        arg = args[0].node_ids
+        mock_val = ["node_ids_value"]
+        assert arg == mock_val
+        arg = args[0].apply_all
+        mock_val = True
+        assert arg == mock_val
 
 
 def test_apply_software_update_flattened_error():
@@ -2361,9 +2423,15 @@ async def test_apply_software_update_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].instance == "instance_value"
-        assert args[0].node_ids == ["node_ids_value"]
-        assert args[0].apply_all == True
+        arg = args[0].instance
+        mock_val = "instance_value"
+        assert arg == mock_val
+        arg = args[0].node_ids
+        mock_val = ["node_ids_value"]
+        assert arg == mock_val
+        arg = args[0].apply_all
+        mock_val = True
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
