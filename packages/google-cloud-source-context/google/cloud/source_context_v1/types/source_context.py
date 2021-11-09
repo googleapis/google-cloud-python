@@ -49,18 +49,22 @@ class SourceContext(proto.Message):
         cloud_repo (google.cloud.source_context_v1.types.CloudRepoSourceContext):
             A SourceContext referring to a revision in a
             cloud repo.
+
             This field is a member of `oneof`_ ``context``.
         cloud_workspace (google.cloud.source_context_v1.types.CloudWorkspaceSourceContext):
             A SourceContext referring to a snapshot in a
             cloud workspace.
+
             This field is a member of `oneof`_ ``context``.
         gerrit (google.cloud.source_context_v1.types.GerritSourceContext):
             A SourceContext referring to a Gerrit
             project.
+
             This field is a member of `oneof`_ ``context``.
         git (google.cloud.source_context_v1.types.GitSourceContext):
             A SourceContext referring to any third party
             Git repo (e.g. GitHub).
+
             This field is a member of `oneof`_ ``context``.
     """
 
@@ -130,12 +134,15 @@ class CloudRepoSourceContext(proto.Message):
             The ID of the repo.
         revision_id (str):
             A revision ID.
+
             This field is a member of `oneof`_ ``revision``.
         alias_name (str):
             The name of an alias (branch, tag, etc.).
+
             This field is a member of `oneof`_ ``revision``.
         alias_context (google.cloud.source_context_v1.types.AliasContext):
             An alias, which may be a branch or tag.
+
             This field is a member of `oneof`_ ``revision``.
     """
 
@@ -183,12 +190,15 @@ class GerritSourceContext(proto.Message):
             hostURI/project.
         revision_id (str):
             A revision (commit) ID.
+
             This field is a member of `oneof`_ ``revision``.
         alias_name (str):
             The name of an alias (branch, tag, etc.).
+
             This field is a member of `oneof`_ ``revision``.
         alias_context (google.cloud.source_context_v1.types.AliasContext):
             An alias, which may be a branch or tag.
+
             This field is a member of `oneof`_ ``revision``.
     """
 
@@ -231,10 +241,12 @@ class RepoId(proto.Message):
         project_repo_id (google.cloud.source_context_v1.types.ProjectRepoId):
             A combination of a project ID and a repo
             name.
+
             This field is a member of `oneof`_ ``id``.
         uid (str):
             A server-assigned, globally unique
             identifier.
+
             This field is a member of `oneof`_ ``id``.
     """
 
