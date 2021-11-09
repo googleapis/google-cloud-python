@@ -46,12 +46,14 @@ class Document(proto.Message):
             supported. See `Google Cloud Storage Request
             URIs <https://cloud.google.com/storage/docs/reference-uris>`__
             for more info.
+
             This field is a member of `oneof`_ ``source``.
         content (bytes):
             Inline document content, represented as a stream of bytes.
             Note: As with all ``bytes`` fields, protobuffers use a pure
             binary representation, whereas JSON representations use
             base64.
+
             This field is a member of `oneof`_ ``source``.
         mime_type (str):
             An IANA published MIME type (also referred to
@@ -126,6 +128,7 @@ class Document(proto.Message):
 
                 Format:
                 ``projects/{project-id}/locations/{location-id}/models/{model-id}``
+
                 This field is a member of `oneof`_ ``source``.
             name (str):
                 Name of the label.

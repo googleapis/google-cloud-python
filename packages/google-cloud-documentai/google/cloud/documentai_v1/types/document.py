@@ -51,12 +51,14 @@ class Document(proto.Message):
             not supported. See `Google Cloud Storage Request
             URIs <https://cloud.google.com/storage/docs/reference-uris>`__
             for more info.
+
             This field is a member of `oneof`_ ``source``.
         content (bytes):
             Optional. Inline document content, represented as a stream
             of bytes. Note: As with all ``bytes`` fields, protobuffers
             use a pure binary representation, whereas JSON
             representations use base64.
+
             This field is a member of `oneof`_ ``source``.
         mime_type (str):
             An IANA published MIME type (also referred to
@@ -703,24 +705,29 @@ class Document(proto.Message):
                 money_value (google.type.money_pb2.Money):
                     Money value. See also:
                     https://github.com/googleapis/googleapis/blob/master/google/type/money.proto
+
                     This field is a member of `oneof`_ ``structured_value``.
                 date_value (google.type.date_pb2.Date):
                     Date value. Includes year, month, day. See
                     also:
                     https://github.com/googleapis/googleapis/blob/master/google/type/date.proto
+
                     This field is a member of `oneof`_ ``structured_value``.
                 datetime_value (google.type.datetime_pb2.DateTime):
                     DateTime value. Includes date, time, and
                     timezone. See also:
                     https://github.com/googleapis/googleapis/blob/master/google/type/datetime.proto
+
                     This field is a member of `oneof`_ ``structured_value``.
                 address_value (google.type.postal_address_pb2.PostalAddress):
                     Postal address. See also:
                     https://github.com/googleapis/googleapis/blob/master/google/type/postal_address.proto
+
                     This field is a member of `oneof`_ ``structured_value``.
                 boolean_value (bool):
                     Boolean value. Can be used for entities with
                     binary values, or for checkboxes.
+
                     This field is a member of `oneof`_ ``structured_value``.
                 text (str):
                     Required. Normalized entity value stored as a string. This
@@ -979,10 +986,12 @@ class Document(proto.Message):
             agent (str):
                 If the change was made by a person specify
                 the name or id of that person.
+
                 This field is a member of `oneof`_ ``source``.
             processor (str):
                 If the annotation was made by processor
                 identify the processor by its resource name.
+
                 This field is a member of `oneof`_ ``source``.
             id (str):
                 Id of the revision.  Unique within the

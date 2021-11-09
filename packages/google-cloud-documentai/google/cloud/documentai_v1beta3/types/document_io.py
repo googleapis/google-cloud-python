@@ -96,10 +96,12 @@ class BatchDocumentsInputConfig(proto.Message):
         gcs_prefix (google.cloud.documentai_v1beta3.types.GcsPrefix):
             The set of documents that match the specified Cloud Storage
             [gcs_prefix].
+
             This field is a member of `oneof`_ ``source``.
         gcs_documents (google.cloud.documentai_v1beta3.types.GcsDocuments):
             The set of documents individually specified
             on Cloud Storage.
+
             This field is a member of `oneof`_ ``source``.
     """
 
@@ -122,6 +124,7 @@ class DocumentOutputConfig(proto.Message):
         gcs_output_config (google.cloud.documentai_v1beta3.types.DocumentOutputConfig.GcsOutputConfig):
             Output config to write the results to Cloud
             Storage.
+
             This field is a member of `oneof`_ ``destination``.
     """
 

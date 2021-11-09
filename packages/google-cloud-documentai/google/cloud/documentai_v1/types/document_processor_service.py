@@ -51,9 +51,11 @@ class ProcessRequest(proto.Message):
     Attributes:
         inline_document (google.cloud.documentai_v1.types.Document):
             An inline document proto.
+
             This field is a member of `oneof`_ ``source``.
         raw_document (google.cloud.documentai_v1.types.RawDocument):
             A raw document content (bytes).
+
             This field is a member of `oneof`_ ``source``.
         name (str):
             Required. The processor resource name.
@@ -226,6 +228,7 @@ class ReviewDocumentRequest(proto.Message):
     Attributes:
         inline_document (google.cloud.documentai_v1.types.Document):
             An inline document proto.
+
             This field is a member of `oneof`_ ``source``.
         human_review_config (str):
             Required. The resource name of the
