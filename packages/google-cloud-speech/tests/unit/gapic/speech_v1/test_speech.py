@@ -543,10 +543,14 @@ def test_recognize_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].config == cloud_speech.RecognitionConfig(
+        arg = args[0].config
+        mock_val = cloud_speech.RecognitionConfig(
             encoding=cloud_speech.RecognitionConfig.AudioEncoding.LINEAR16
         )
-        assert args[0].audio == cloud_speech.RecognitionAudio(content=b"content_blob")
+        assert arg == mock_val
+        arg = args[0].audio
+        mock_val = cloud_speech.RecognitionAudio(content=b"content_blob")
+        assert arg == mock_val
 
 
 def test_recognize_flattened_error():
@@ -589,10 +593,14 @@ async def test_recognize_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].config == cloud_speech.RecognitionConfig(
+        arg = args[0].config
+        mock_val = cloud_speech.RecognitionConfig(
             encoding=cloud_speech.RecognitionConfig.AudioEncoding.LINEAR16
         )
-        assert args[0].audio == cloud_speech.RecognitionAudio(content=b"content_blob")
+        assert arg == mock_val
+        arg = args[0].audio
+        mock_val = cloud_speech.RecognitionAudio(content=b"content_blob")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -719,10 +727,14 @@ def test_long_running_recognize_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].config == cloud_speech.RecognitionConfig(
+        arg = args[0].config
+        mock_val = cloud_speech.RecognitionConfig(
             encoding=cloud_speech.RecognitionConfig.AudioEncoding.LINEAR16
         )
-        assert args[0].audio == cloud_speech.RecognitionAudio(content=b"content_blob")
+        assert arg == mock_val
+        arg = args[0].audio
+        mock_val = cloud_speech.RecognitionAudio(content=b"content_blob")
+        assert arg == mock_val
 
 
 def test_long_running_recognize_flattened_error():
@@ -767,10 +779,14 @@ async def test_long_running_recognize_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].config == cloud_speech.RecognitionConfig(
+        arg = args[0].config
+        mock_val = cloud_speech.RecognitionConfig(
             encoding=cloud_speech.RecognitionConfig.AudioEncoding.LINEAR16
         )
-        assert args[0].audio == cloud_speech.RecognitionAudio(content=b"content_blob")
+        assert arg == mock_val
+        arg = args[0].audio
+        mock_val = cloud_speech.RecognitionAudio(content=b"content_blob")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
