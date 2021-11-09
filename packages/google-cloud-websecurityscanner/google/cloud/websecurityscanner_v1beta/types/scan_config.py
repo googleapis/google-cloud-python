@@ -113,9 +113,11 @@ class ScanConfig(proto.Message):
         Attributes:
             google_account (google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.GoogleAccount):
                 Authentication using a Google account.
+
                 This field is a member of `oneof`_ ``authentication``.
             custom_account (google.cloud.websecurityscanner_v1beta.types.ScanConfig.Authentication.CustomAccount):
                 Authentication using a custom account.
+
                 This field is a member of `oneof`_ ``authentication``.
         """
 
