@@ -115,23 +115,6 @@ def cover(session):
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
 
 
-@nox.session(python="3.7")
-def docgen(session):
-    session.env["SPHINX_APIDOC_OPTIONS"] = "members,inherited-members,show-inheritance"
-    session.install("-r", "testing/requirements.txt")
-    session.install("sphinx")
-    session.install("-e", ".")
-    session.run("rm", "-r", "docs/reference")
-    session.run(
-        "sphinx-apidoc",
-        "--output-dir",
-        "docs/reference",
-        "--separate",
-        "--module-first",
-        "google",
-    )
-
-
 @nox.session(python="3.8")
 def docs(session):
     """Build the docs for this library."""
