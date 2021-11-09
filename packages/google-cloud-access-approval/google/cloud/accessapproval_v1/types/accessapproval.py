@@ -201,9 +201,11 @@ class ApprovalRequest(proto.Message):
             time.
         approve (google.cloud.accessapproval_v1.types.ApproveDecision):
             Access was approved.
+
             This field is a member of `oneof`_ ``decision``.
         dismiss (google.cloud.accessapproval_v1.types.DismissDecision):
             The request was dismissed.
+
             This field is a member of `oneof`_ ``decision``.
     """
 
