@@ -2,8 +2,9 @@
 
 .. include:: multiprocessing.rst
 
+
 API Reference
-~~~~~~~~~~~~~
+-------------
 .. toctree::
     :maxdepth: 2
 
@@ -12,11 +13,11 @@ API Reference
 
 
 Changelog
-~~~~~~~~~
+---------
 
 For a list of all ``google-analytics-admin`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog

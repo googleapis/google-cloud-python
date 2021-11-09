@@ -1,5 +1,5 @@
 Python Client for Analytics Admin API
-=================================================
+=====================================
 
 |beta| |pypi| |versions|
 
@@ -17,6 +17,19 @@ Python Client for Analytics Admin API
 .. _Analytics Admin API: https://developers.google.com/analytics/
 .. _Client Library Documentation: https://googleapis.dev/python/analyticsadmin/latest
 .. _Product Documentation:  https://developers.google.com/analytics/
+
+Quick Start
+-----------
+
+In order to use this library, you first need to go through the following steps:
+
+1. `Enable the Analytics Admin API.`_
+2. `Setup Authentication.`_
+3. `Install the library.`_
+
+.. _Enable the Analytics Admin API.: https://developers.google.com/analytics/devguides/config/admin/v1/quickstart-client-libraries#step_1_enable_the_api
+.. _Setup Authentication.: https://developers.google.com/analytics/devguides/config/admin/v1/quickstart-client-libraries#step_2_configure_authentication
+.. _Install the library.: https://developers.google.com/analytics/devguides/config/admin/v1/quickstart-client-libraries#step_3_install_the_client_library
 
 Installation
 ~~~~~~~~~~~~
