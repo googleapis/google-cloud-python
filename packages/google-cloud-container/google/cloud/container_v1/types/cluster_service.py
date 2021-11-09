@@ -1621,13 +1621,16 @@ class OperationProgress(proto.Message):
                 "percent done".
             int_value (int):
                 For metrics with integer value.
+
                 This field is a member of `oneof`_ ``value``.
             double_value (float):
                 For metrics with floating point value.
+
                 This field is a member of `oneof`_ ``value``.
             string_value (str):
                 For metrics with custom values (ratios,
                 visual progress, etc.).
+
                 This field is a member of `oneof`_ ``value``.
         """
 
@@ -2731,6 +2734,7 @@ class MaintenanceWindow(proto.Message):
         daily_maintenance_window (google.cloud.container_v1.types.DailyMaintenanceWindow):
             DailyMaintenanceWindow specifies a daily
             maintenance operation window.
+
             This field is a member of `oneof`_ ``policy``.
         recurring_window (google.cloud.container_v1.types.RecurringTimeWindow):
             RecurringWindow specifies some number of
@@ -2738,6 +2742,7 @@ class MaintenanceWindow(proto.Message):
             The time windows may be overlapping. If no
             maintenance windows are set, maintenance can
             occur at any time.
+
             This field is a member of `oneof`_ ``policy``.
         maintenance_exclusions (Sequence[google.cloud.container_v1.types.MaintenanceWindow.MaintenanceExclusionsEntry]):
             Exceptions to maintenance window. Non-
