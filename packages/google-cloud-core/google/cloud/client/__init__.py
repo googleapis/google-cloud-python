@@ -18,6 +18,8 @@ import io
 import json
 import os
 from pickle import PicklingError
+from typing import Tuple
+from typing import Union
 
 import google.api_core.client_options
 import google.api_core.exceptions
@@ -142,7 +144,7 @@ class Client(_ClientFactoryMixin):
             to acquire default credentials.
     """
 
-    SCOPE = None
+    SCOPE: Union[Tuple[str], None] = None
     """The scopes required for authenticating with a service.
 
     Needs to be set by subclasses.

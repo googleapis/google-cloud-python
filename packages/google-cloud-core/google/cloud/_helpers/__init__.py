@@ -25,6 +25,7 @@ import http.client
 import os
 import re
 from threading import local as Local
+from typing import Union
 
 import google.auth
 import google.auth.transport.requests
@@ -62,6 +63,7 @@ _RFC3339_NANOS = re.compile(
 )
 # NOTE: Catching this ImportError is a workaround for GAE not supporting the
 #       "pwd" module which is imported lazily when "expanduser" is called.
+_USER_ROOT: Union[str, None]
 try:
     _USER_ROOT = os.path.expanduser("~")
 except ImportError:  # pragma: NO COVER

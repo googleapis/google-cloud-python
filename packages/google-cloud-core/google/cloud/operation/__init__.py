@@ -14,13 +14,15 @@
 
 """Wrap long-running operations returned from Google Cloud APIs."""
 
+from typing import Dict
+
 from google.longrunning import operations_pb2
 from google.protobuf import json_format
 
 
 _GOOGLE_APIS_PREFIX = "type.googleapis.com"
 
-_TYPE_URL_MAP = {}
+_TYPE_URL_MAP: Dict[str, type] = {}
 
 
 def _compute_type_url(klass, prefix=_GOOGLE_APIS_PREFIX):
