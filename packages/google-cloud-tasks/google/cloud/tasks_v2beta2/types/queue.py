@@ -68,12 +68,14 @@ class Queue(proto.Message):
 
             An App Engine queue is a queue that has an
             [AppEngineHttpTarget][google.cloud.tasks.v2beta2.AppEngineHttpTarget].
+
             This field is a member of `oneof`_ ``target_type``.
         pull_target (google.cloud.tasks_v2beta2.types.PullTarget):
             Pull target.
 
             A pull queue is a queue that has a
             [PullTarget][google.cloud.tasks.v2beta2.PullTarget].
+
             This field is a member of `oneof`_ ``target_type``.
         rate_limits (google.cloud.tasks_v2beta2.types.RateLimits):
             Rate limits for task dispatches.
@@ -308,10 +310,12 @@ class RetryConfig(proto.Message):
             Cloud Tasks will attempt the task ``max_attempts`` times
             (that is, if the first attempt fails, then there will be
             ``max_attempts - 1`` retries). Must be > 0.
+
             This field is a member of `oneof`_ ``num_attempts``.
         unlimited_attempts (bool):
             If true, then the number of attempts is
             unlimited.
+
             This field is a member of `oneof`_ ``num_attempts``.
         max_retry_duration (google.protobuf.duration_pb2.Duration):
             If positive, ``max_retry_duration`` specifies the time limit

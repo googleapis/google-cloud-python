@@ -71,6 +71,7 @@ class Task(proto.Message):
             An App Engine task is a task that has
             [AppEngineHttpRequest][google.cloud.tasks.v2beta2.AppEngineHttpRequest]
             set.
+
             This field is a member of `oneof`_ ``payload_type``.
         pull_message (google.cloud.tasks_v2beta2.types.PullMessage):
             [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks]
@@ -80,6 +81,7 @@ class Task(proto.Message):
 
             A pull task is a task that has
             [PullMessage][google.cloud.tasks.v2beta2.PullMessage] set.
+
             This field is a member of `oneof`_ ``payload_type``.
         schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the task is scheduled to be attempted.

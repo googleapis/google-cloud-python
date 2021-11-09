@@ -68,12 +68,14 @@ class Task(proto.Message):
             An App Engine task is a task that has
             [AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest]
             set.
+
             This field is a member of `oneof`_ ``payload_type``.
         http_request (google.cloud.tasks_v2beta3.types.HttpRequest):
             HTTP request that is sent to the task's target.
 
             An HTTP task is a task that has
             [HttpRequest][google.cloud.tasks.v2beta3.HttpRequest] set.
+
             This field is a member of `oneof`_ ``payload_type``.
         pull_message (google.cloud.tasks_v2beta3.types.PullMessage):
             Pull Message contained in a task in a
@@ -85,6 +87,7 @@ class Task(proto.Message):
             queues to provide a way to inspect contents of pull tasks
             through the
             [CloudTasks.GetTask][google.cloud.tasks.v2beta3.CloudTasks.GetTask].
+
             This field is a member of `oneof`_ ``payload_type``.
         schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the task is scheduled to be attempted.

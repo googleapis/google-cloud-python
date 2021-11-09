@@ -68,12 +68,14 @@ class Task(proto.Message):
             An App Engine task is a task that has
             [AppEngineHttpRequest][google.cloud.tasks.v2.AppEngineHttpRequest]
             set.
+
             This field is a member of `oneof`_ ``message_type``.
         http_request (google.cloud.tasks_v2.types.HttpRequest):
             HTTP request that is sent to the worker.
 
             An HTTP task is a task that has
             [HttpRequest][google.cloud.tasks.v2.HttpRequest] set.
+
             This field is a member of `oneof`_ ``message_type``.
         schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the task is scheduled to be attempted or

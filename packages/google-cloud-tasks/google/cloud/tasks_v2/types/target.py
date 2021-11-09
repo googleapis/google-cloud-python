@@ -150,6 +150,7 @@ class HttpRequest(proto.Message):
 
             This type of authorization should generally only be used
             when calling Google APIs hosted on \*.googleapis.com.
+
             This field is a member of `oneof`_ ``authorization_header``.
         oidc_token (google.cloud.tasks_v2.types.OidcToken):
             If specified, an
@@ -160,6 +161,7 @@ class HttpRequest(proto.Message):
             This type of authorization can be used for many scenarios,
             including calling Cloud Run, or endpoints where you intend
             to validate the token yourself.
+
             This field is a member of `oneof`_ ``authorization_header``.
     """
 

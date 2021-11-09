@@ -72,6 +72,7 @@ class Queue(proto.Message):
             this queue. [Http
             tasks][google.cloud.tasks.v2beta3.HttpRequest] are not
             affected by this proto.
+
             This field is a member of `oneof`_ ``queue_type``.
         rate_limits (google.cloud.tasks_v2beta3.types.RateLimits):
             Rate limits for task dispatches.
