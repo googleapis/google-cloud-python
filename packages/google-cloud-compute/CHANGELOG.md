@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://www.github.com/googleapis/python-compute/compare/v0.6.0...v0.7.0) (2021-11-09)
+
+
+### Features
+
+* Integrate latest compute API definitions ([#143](https://www.github.com/googleapis/python-compute/issues/143)) ([878f8fc](https://www.github.com/googleapis/python-compute/commit/878f8fc1508bca794e6b6e633111593aa4aaf265))
+
 ## [0.6.0](https://www.github.com/googleapis/python-compute/compare/v0.5.0...v0.6.0) (2021-10-14)
 
 
