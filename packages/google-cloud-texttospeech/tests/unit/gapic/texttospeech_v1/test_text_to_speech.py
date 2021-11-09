@@ -555,7 +555,9 @@ def test_list_voices_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].language_code == "language_code_value"
+        arg = args[0].language_code
+        mock_val = "language_code_value"
+        assert arg == mock_val
 
 
 def test_list_voices_flattened_error():
@@ -589,7 +591,9 @@ async def test_list_voices_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].language_code == "language_code_value"
+        arg = args[0].language_code
+        mock_val = "language_code_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -716,13 +720,17 @@ def test_synthesize_speech_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].input == cloud_tts.SynthesisInput(text="text_value")
-        assert args[0].voice == cloud_tts.VoiceSelectionParams(
-            language_code="language_code_value"
-        )
-        assert args[0].audio_config == cloud_tts.AudioConfig(
+        arg = args[0].input
+        mock_val = cloud_tts.SynthesisInput(text="text_value")
+        assert arg == mock_val
+        arg = args[0].voice
+        mock_val = cloud_tts.VoiceSelectionParams(language_code="language_code_value")
+        assert arg == mock_val
+        arg = args[0].audio_config
+        mock_val = cloud_tts.AudioConfig(
             audio_encoding=cloud_tts.AudioEncoding.LINEAR16
         )
+        assert arg == mock_val
 
 
 def test_synthesize_speech_flattened_error():
@@ -769,13 +777,17 @@ async def test_synthesize_speech_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].input == cloud_tts.SynthesisInput(text="text_value")
-        assert args[0].voice == cloud_tts.VoiceSelectionParams(
-            language_code="language_code_value"
-        )
-        assert args[0].audio_config == cloud_tts.AudioConfig(
+        arg = args[0].input
+        mock_val = cloud_tts.SynthesisInput(text="text_value")
+        assert arg == mock_val
+        arg = args[0].voice
+        mock_val = cloud_tts.VoiceSelectionParams(language_code="language_code_value")
+        assert arg == mock_val
+        arg = args[0].audio_config
+        mock_val = cloud_tts.AudioConfig(
             audio_encoding=cloud_tts.AudioEncoding.LINEAR16
         )
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

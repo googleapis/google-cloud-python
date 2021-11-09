@@ -164,6 +164,7 @@ class SynthesisInput(proto.Message):
     Attributes:
         text (str):
             The raw text to be synthesized.
+
             This field is a member of `oneof`_ ``input_source``.
         ssml (str):
             The SSML document to be synthesized. The SSML document must
@@ -171,6 +172,7 @@ class SynthesisInput(proto.Message):
             return [google.rpc.Code.INVALID_ARGUMENT][]. For more
             information, see
             `SSML <https://cloud.google.com/text-to-speech/docs/ssml>`__.
+
             This field is a member of `oneof`_ ``input_source``.
     """
 
