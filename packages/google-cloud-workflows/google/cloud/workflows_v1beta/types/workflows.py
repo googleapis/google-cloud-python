@@ -96,6 +96,7 @@ class Workflow(proto.Message):
         source_contents (str):
             Workflow code to be executed. The size limit
             is 32KB.
+
             This field is a member of `oneof`_ ``source_code``.
     """
 
