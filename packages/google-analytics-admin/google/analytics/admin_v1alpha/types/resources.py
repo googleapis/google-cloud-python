@@ -811,63 +811,78 @@ class ChangeHistoryChange(proto.Message):
             account (google.analytics.admin_v1alpha.types.Account):
                 A snapshot of an Account resource in change
                 history.
+
                 This field is a member of `oneof`_ ``resource``.
             property (google.analytics.admin_v1alpha.types.Property):
                 A snapshot of a Property resource in change
                 history.
+
                 This field is a member of `oneof`_ ``resource``.
             web_data_stream (google.analytics.admin_v1alpha.types.WebDataStream):
                 A snapshot of a WebDataStream resource in
                 change history.
+
                 This field is a member of `oneof`_ ``resource``.
             android_app_data_stream (google.analytics.admin_v1alpha.types.AndroidAppDataStream):
                 A snapshot of an AndroidAppDataStream
                 resource in change history.
+
                 This field is a member of `oneof`_ ``resource``.
             ios_app_data_stream (google.analytics.admin_v1alpha.types.IosAppDataStream):
                 A snapshot of an IosAppDataStream resource in
                 change history.
+
                 This field is a member of `oneof`_ ``resource``.
             firebase_link (google.analytics.admin_v1alpha.types.FirebaseLink):
                 A snapshot of a FirebaseLink resource in
                 change history.
+
                 This field is a member of `oneof`_ ``resource``.
             google_ads_link (google.analytics.admin_v1alpha.types.GoogleAdsLink):
                 A snapshot of a GoogleAdsLink resource in
                 change history.
+
                 This field is a member of `oneof`_ ``resource``.
             google_signals_settings (google.analytics.admin_v1alpha.types.GoogleSignalsSettings):
                 A snapshot of a GoogleSignalsSettings
                 resource in change history.
+
                 This field is a member of `oneof`_ ``resource``.
             display_video_360_advertiser_link (google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLink):
                 A snapshot of a DisplayVideo360AdvertiserLink
                 resource in change history.
+
                 This field is a member of `oneof`_ ``resource``.
             display_video_360_advertiser_link_proposal (google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal):
                 A snapshot of a
                 DisplayVideo360AdvertiserLinkProposal resource
                 in change history.
+
                 This field is a member of `oneof`_ ``resource``.
             conversion_event (google.analytics.admin_v1alpha.types.ConversionEvent):
                 A snapshot of a ConversionEvent resource in
                 change history.
+
                 This field is a member of `oneof`_ ``resource``.
             measurement_protocol_secret (google.analytics.admin_v1alpha.types.MeasurementProtocolSecret):
                 A snapshot of a MeasurementProtocolSecret
                 resource in change history.
+
                 This field is a member of `oneof`_ ``resource``.
             custom_dimension (google.analytics.admin_v1alpha.types.CustomDimension):
                 A snapshot of a CustomDimension resource in
                 change history.
+
                 This field is a member of `oneof`_ ``resource``.
             custom_metric (google.analytics.admin_v1alpha.types.CustomMetric):
                 A snapshot of a CustomMetric resource in
                 change history.
+
                 This field is a member of `oneof`_ ``resource``.
             data_retention_settings (google.analytics.admin_v1alpha.types.DataRetentionSettings):
                 A snapshot of a data retention settings
                 resource in change history.
+
                 This field is a member of `oneof`_ ``resource``.
         """
 
