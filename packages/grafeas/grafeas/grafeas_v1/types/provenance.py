@@ -243,14 +243,17 @@ class SourceContext(proto.Message):
         cloud_repo (grafeas.grafeas_v1.types.CloudRepoSourceContext):
             A SourceContext referring to a revision in a
             Google Cloud Source Repo.
+
             This field is a member of `oneof`_ ``context``.
         gerrit (grafeas.grafeas_v1.types.GerritSourceContext):
             A SourceContext referring to a Gerrit
             project.
+
             This field is a member of `oneof`_ ``context``.
         git (grafeas.grafeas_v1.types.GitSourceContext):
             A SourceContext referring to any third party
             Git repo (e.g., GitHub).
+
             This field is a member of `oneof`_ ``context``.
         labels (Sequence[grafeas.grafeas_v1.types.SourceContext.LabelsEntry]):
             Labels with user defined metadata.
@@ -305,9 +308,11 @@ class CloudRepoSourceContext(proto.Message):
             The ID of the repo.
         revision_id (str):
             A revision ID.
+
             This field is a member of `oneof`_ ``revision``.
         alias_context (grafeas.grafeas_v1.types.AliasContext):
             An alias, which may be a branch or tag.
+
             This field is a member of `oneof`_ ``revision``.
     """
 
@@ -338,9 +343,11 @@ class GerritSourceContext(proto.Message):
             hostURI/project.
         revision_id (str):
             A revision (commit) ID.
+
             This field is a member of `oneof`_ ``revision``.
         alias_context (grafeas.grafeas_v1.types.AliasContext):
             An alias, which may be a branch or tag.
+
             This field is a member of `oneof`_ ``revision``.
     """
 
@@ -381,10 +388,12 @@ class RepoId(proto.Message):
         project_repo_id (grafeas.grafeas_v1.types.ProjectRepoId):
             A combination of a project ID and a repo
             name.
+
             This field is a member of `oneof`_ ``id``.
         uid (str):
             A server-assigned, globally unique
             identifier.
+
             This field is a member of `oneof`_ ``id``.
     """
 
