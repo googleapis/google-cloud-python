@@ -444,6 +444,7 @@ class InputConfig(proto.Message):
         gcs_source (google.cloud.redis_v1.types.GcsSource):
             Google Cloud Storage location where input
             content is located.
+
             This field is a member of `oneof`_ ``source``.
     """
 
@@ -491,6 +492,7 @@ class OutputConfig(proto.Message):
         gcs_destination (google.cloud.redis_v1.types.GcsDestination):
             Google Cloud Storage destination for output
             content.
+
             This field is a member of `oneof`_ ``destination``.
     """
 
