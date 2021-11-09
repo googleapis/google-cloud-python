@@ -634,7 +634,9 @@ def test_list_catalogs_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_catalogs_flattened_error():
@@ -670,7 +672,9 @@ async def test_list_catalogs_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -967,8 +971,12 @@ def test_update_catalog_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].catalog == gcr_catalog.Catalog(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].catalog
+        mock_val = gcr_catalog.Catalog(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_catalog_flattened_error():
@@ -1007,8 +1015,12 @@ async def test_update_catalog_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].catalog == gcr_catalog.Catalog(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].catalog
+        mock_val = gcr_catalog.Catalog(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1183,7 +1195,9 @@ def test_set_default_branch_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].catalog == "catalog_value"
+        arg = args[0].catalog
+        mock_val = "catalog_value"
+        assert arg == mock_val
 
 
 def test_set_default_branch_flattened_error():
@@ -1219,7 +1233,9 @@ async def test_set_default_branch_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].catalog == "catalog_value"
+        arg = args[0].catalog
+        mock_val = "catalog_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1404,7 +1420,9 @@ def test_get_default_branch_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].catalog == "catalog_value"
+        arg = args[0].catalog
+        mock_val = "catalog_value"
+        assert arg == mock_val
 
 
 def test_get_default_branch_flattened_error():
@@ -1442,7 +1460,9 @@ async def test_get_default_branch_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].catalog == "catalog_value"
+        arg = args[0].catalog
+        mock_val = "catalog_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

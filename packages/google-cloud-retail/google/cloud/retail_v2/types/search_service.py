@@ -770,10 +770,12 @@ class SearchResponse(proto.Message):
                 value (str):
                     Text value of a facet, such as "Black" for
                     facet "colorFamilies".
+
                     This field is a member of `oneof`_ ``facet_value``.
                 interval (google.cloud.retail_v2.types.Interval):
                     Interval value for a facet, such as [10, 20) for facet
                     "price".
+
                     This field is a member of `oneof`_ ``facet_value``.
                 count (int):
                     Number of items that have this facet value.

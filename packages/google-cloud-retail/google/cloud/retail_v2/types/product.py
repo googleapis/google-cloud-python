@@ -60,6 +60,7 @@ class Product(proto.Message):
 
             Google Merchant Center property
             `expiration_date <https://support.google.com/merchants/answer/6324499>`__.
+
             This field is a member of `oneof`_ ``expiration``.
         ttl (google.protobuf.duration_pb2.Duration):
             Input only. The TTL (time to live) of the product.
@@ -81,6 +82,7 @@ class Product(proto.Message):
             [ProductService.GetProduct][google.cloud.retail.v2.ProductService.GetProduct]
             and
             [ProductService.ListProducts][google.cloud.retail.v2.ProductService.ListProducts].
+
             This field is a member of `oneof`_ ``expiration``.
         name (str):
             Immutable. Full resource name of the product, such as

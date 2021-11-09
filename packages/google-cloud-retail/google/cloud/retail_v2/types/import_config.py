@@ -99,6 +99,7 @@ class BigQuerySource(proto.Message):
             Only supported when
             [ImportProductsRequest.reconciliation_mode][google.cloud.retail.v2.ImportProductsRequest.reconciliation_mode]
             is set to ``FULL``.
+
             This field is a member of `oneof`_ ``partition``.
         project_id (str):
             The project ID (can be project # or ID) that
@@ -190,6 +191,7 @@ class ImportErrorsConfig(proto.Message):
             empty, existing Cloud Storage bucket. Import errors will be
             written to a file in this bucket, one per line, as a
             JSON-encoded ``google.rpc.Status`` message.
+
             This field is a member of `oneof`_ ``destination``.
     """
 
@@ -328,13 +330,16 @@ class ProductInputConfig(proto.Message):
         product_inline_source (google.cloud.retail_v2.types.ProductInlineSource):
             The Inline source for the input content for
             products.
+
             This field is a member of `oneof`_ ``source``.
         gcs_source (google.cloud.retail_v2.types.GcsSource):
             Google Cloud Storage location for the input
             content.
+
             This field is a member of `oneof`_ ``source``.
         big_query_source (google.cloud.retail_v2.types.BigQuerySource):
             BigQuery input source.
+
             This field is a member of `oneof`_ ``source``.
     """
 
@@ -363,13 +368,16 @@ class UserEventInputConfig(proto.Message):
         user_event_inline_source (google.cloud.retail_v2.types.UserEventInlineSource):
             Required. The Inline source for the input
             content for UserEvents.
+
             This field is a member of `oneof`_ ``source``.
         gcs_source (google.cloud.retail_v2.types.GcsSource):
             Required. Google Cloud Storage location for
             the input content.
+
             This field is a member of `oneof`_ ``source``.
         big_query_source (google.cloud.retail_v2.types.BigQuerySource):
             Required. BigQuery input source.
+
             This field is a member of `oneof`_ ``source``.
     """
 
@@ -396,6 +404,7 @@ class CompletionDataInputConfig(proto.Message):
             for cloud-retail-customer-data-
             access@system.gserviceaccount.com before using
             this feature otherwise an error is thrown.
+
             This field is a member of `oneof`_ ``source``.
     """
 
