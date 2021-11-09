@@ -166,12 +166,15 @@ class Connection(proto.Message):
             User provided description.
         cloud_sql (google.cloud.bigquery_connection_v1.types.CloudSqlProperties):
             Cloud SQL properties.
+
             This field is a member of `oneof`_ ``properties``.
         aws (google.cloud.bigquery_connection_v1.types.AwsProperties):
             Amazon Web Services (AWS) properties.
+
             This field is a member of `oneof`_ ``properties``.
         cloud_spanner (google.cloud.bigquery_connection_v1.types.CloudSpannerProperties):
             Cloud Spanner properties.
+
             This field is a member of `oneof`_ ``properties``.
         creation_time (int):
             Output only. The creation timestamp of the
@@ -273,10 +276,12 @@ class AwsProperties(proto.Message):
             Authentication using Google owned AWS IAM
             user's access key to assume into customer's AWS
             IAM Role.
+
             This field is a member of `oneof`_ ``authentication_method``.
         access_role (google.cloud.bigquery_connection_v1.types.AwsAccessRole):
             Authentication using Google owned service
             account to assume into customer's AWS IAM Role.
+
             This field is a member of `oneof`_ ``authentication_method``.
     """
 
