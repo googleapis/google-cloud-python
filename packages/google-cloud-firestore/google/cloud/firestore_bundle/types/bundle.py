@@ -42,6 +42,7 @@ class BundledQuery(proto.Message):
             The parent resource name.
         structured_query (google.firestore.v1.query_pb2.StructuredQuery):
             A structured query.
+
             This field is a member of `oneof`_ ``query_type``.
         limit_type (google.cloud.bundle.types.BundledQuery.LimitType):
 

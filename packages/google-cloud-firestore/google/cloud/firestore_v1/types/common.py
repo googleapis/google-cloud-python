@@ -56,10 +56,12 @@ class Precondition(proto.Message):
         exists (bool):
             When set to ``true``, the target document must exist. When
             set to ``false``, the target document must not exist.
+
             This field is a member of `oneof`_ ``condition_type``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             When set, the target document must exist and
             have been last updated at that time.
+
             This field is a member of `oneof`_ ``condition_type``.
     """
 
@@ -86,10 +88,12 @@ class TransactionOptions(proto.Message):
         read_only (google.cloud.firestore_v1.types.TransactionOptions.ReadOnly):
             The transaction can only be used for read
             operations.
+
             This field is a member of `oneof`_ ``mode``.
         read_write (google.cloud.firestore_v1.types.TransactionOptions.ReadWrite):
             The transaction can be used for both read and
             write operations.
+
             This field is a member of `oneof`_ ``mode``.
     """
 
@@ -115,6 +119,7 @@ class TransactionOptions(proto.Message):
             read_time (google.protobuf.timestamp_pb2.Timestamp):
                 Reads documents at the given time.
                 This may not be older than 60 seconds.
+
                 This field is a member of `oneof`_ ``consistency_selector``.
         """
 

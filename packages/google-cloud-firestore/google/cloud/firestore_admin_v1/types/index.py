@@ -98,10 +98,12 @@ class Index(proto.Message):
                 Indicates that this field supports ordering
                 by the specified order or comparing using =, <,
                 <=, >, >=.
+
                 This field is a member of `oneof`_ ``value_mode``.
             array_config (google.cloud.firestore_admin_v1.types.Index.IndexField.ArrayConfig):
                 Indicates that this field supports operations on
                 ``array_value``\ s.
+
                 This field is a member of `oneof`_ ``value_mode``.
         """
 

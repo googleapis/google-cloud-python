@@ -81,11 +81,13 @@ class GetDocumentRequest(proto.Message):
             the response.
         transaction (bytes):
             Reads the document in a transaction.
+
             This field is a member of `oneof`_ ``consistency_selector``.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Reads the version of the document at the
             given time. This may not be older than 270
             seconds.
+
             This field is a member of `oneof`_ ``consistency_selector``.
     """
 
@@ -139,10 +141,12 @@ class ListDocumentsRequest(proto.Message):
             the response.
         transaction (bytes):
             Reads documents in a transaction.
+
             This field is a member of `oneof`_ ``consistency_selector``.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Reads documents as they were at the given
             time. This may not be older than 270 seconds.
+
             This field is a member of `oneof`_ ``consistency_selector``.
         show_missing (bool):
             If the list should show missing documents. A missing
@@ -319,16 +323,19 @@ class BatchGetDocumentsRequest(proto.Message):
             the response.
         transaction (bytes):
             Reads documents in a transaction.
+
             This field is a member of `oneof`_ ``consistency_selector``.
         new_transaction (google.cloud.firestore_v1.types.TransactionOptions):
             Starts a new transaction and reads the
             documents. Defaults to a read-only transaction.
             The new transaction ID will be returned as the
             first response in the stream.
+
             This field is a member of `oneof`_ ``consistency_selector``.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Reads documents as they were at the given
             time. This may not be older than 270 seconds.
+
             This field is a member of `oneof`_ ``consistency_selector``.
     """
 
@@ -364,11 +371,13 @@ class BatchGetDocumentsResponse(proto.Message):
     Attributes:
         found (google.cloud.firestore_v1.types.Document):
             A document that was requested.
+
             This field is a member of `oneof`_ ``result``.
         missing (str):
             A document name that was requested but does not exist. In
             the format:
             ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
+
             This field is a member of `oneof`_ ``result``.
         transaction (bytes):
             The transaction that was started as part of this request.
@@ -499,19 +508,23 @@ class RunQueryRequest(proto.Message):
             ``projects/my-project/databases/my-database/documents/chatrooms/my-chatroom``
         structured_query (google.cloud.firestore_v1.types.StructuredQuery):
             A structured query.
+
             This field is a member of `oneof`_ ``query_type``.
         transaction (bytes):
             Reads documents in a transaction.
+
             This field is a member of `oneof`_ ``consistency_selector``.
         new_transaction (google.cloud.firestore_v1.types.TransactionOptions):
             Starts a new transaction and reads the
             documents. Defaults to a read-only transaction.
             The new transaction ID will be returned as the
             first response in the stream.
+
             This field is a member of `oneof`_ ``consistency_selector``.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Reads documents as they were at the given
             time. This may not be older than 270 seconds.
+
             This field is a member of `oneof`_ ``consistency_selector``.
     """
 
@@ -588,6 +601,7 @@ class PartitionQueryRequest(proto.Message):
             descendants and be ordered by name ascending.
             Other filters, order bys, limits, offsets, and
             start/end cursors are not supported.
+
             This field is a member of `oneof`_ ``query_type``.
         partition_count (int):
             The desired maximum number of partition
@@ -783,10 +797,12 @@ class ListenRequest(proto.Message):
             ``projects/{project_id}/databases/{database_id}``.
         add_target (google.cloud.firestore_v1.types.Target):
             A target to add to this stream.
+
             This field is a member of `oneof`_ ``target_change``.
         remove_target (int):
             The ID of a target to remove from this
             stream.
+
             This field is a member of `oneof`_ ``target_change``.
         labels (Sequence[google.cloud.firestore_v1.types.ListenRequest.LabelsEntry]):
             Labels associated with this target change.
@@ -814,17 +830,21 @@ class ListenResponse(proto.Message):
     Attributes:
         target_change (google.cloud.firestore_v1.types.TargetChange):
             Targets have changed.
+
             This field is a member of `oneof`_ ``response_type``.
         document_change (google.cloud.firestore_v1.types.DocumentChange):
             A [Document][google.firestore.v1.Document] has changed.
+
             This field is a member of `oneof`_ ``response_type``.
         document_delete (google.cloud.firestore_v1.types.DocumentDelete):
             A [Document][google.firestore.v1.Document] has been deleted.
+
             This field is a member of `oneof`_ ``response_type``.
         document_remove (google.cloud.firestore_v1.types.DocumentRemove):
             A [Document][google.firestore.v1.Document] has been removed
             from a target (because it is no longer relevant to that
             target).
+
             This field is a member of `oneof`_ ``response_type``.
         filter (google.cloud.firestore_v1.types.ExistenceFilter):
             A filter to apply to the set of documents
@@ -833,6 +853,7 @@ class ListenResponse(proto.Message):
             Returned when documents may have been removed
             from the given target, but the exact documents
             are unknown.
+
             This field is a member of `oneof`_ ``response_type``.
     """
 
@@ -866,10 +887,12 @@ class Target(proto.Message):
     Attributes:
         query (google.cloud.firestore_v1.types.Target.QueryTarget):
             A target specified by a query.
+
             This field is a member of `oneof`_ ``target_type``.
         documents (google.cloud.firestore_v1.types.Target.DocumentsTarget):
             A target specified by a set of document
             names.
+
             This field is a member of `oneof`_ ``target_type``.
         resume_token (bytes):
             A resume token from a prior
@@ -878,12 +901,14 @@ class Target(proto.Message):
 
             Using a resume token with a different target is unsupported
             and may fail.
+
             This field is a member of `oneof`_ ``resume_type``.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Start listening after a specific ``read_time``.
 
             The client must know the state of matching documents at this
             time.
+
             This field is a member of `oneof`_ ``resume_type``.
         target_id (int):
             The target ID that identifies the target on
@@ -924,6 +949,7 @@ class Target(proto.Message):
                 ``projects/my-project/databases/my-database/documents/chatrooms/my-chatroom``
             structured_query (google.cloud.firestore_v1.types.StructuredQuery):
                 A structured query.
+
                 This field is a member of `oneof`_ ``query_type``.
         """
 
