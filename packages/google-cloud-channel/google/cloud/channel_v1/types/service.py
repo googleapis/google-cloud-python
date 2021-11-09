@@ -274,9 +274,11 @@ class ImportCustomerRequest(proto.Message):
     Attributes:
         domain (str):
             Required. Customer domain.
+
             This field is a member of `oneof`_ ``customer_identity``.
         cloud_identity_id (str):
             Required. Customer's Cloud Identity ID
+
             This field is a member of `oneof`_ ``customer_identity``.
         parent (str):
             Required. The resource name of the reseller's account.
@@ -407,12 +409,14 @@ class ListTransferableSkusRequest(proto.Message):
     Attributes:
         cloud_identity_id (str):
             Customer's Cloud Identity ID
+
             This field is a member of `oneof`_ ``transferred_customer_identity``.
         customer_name (str):
             A reseller is required to create a customer and use the
             resource name of the created customer here. Customer_name
             uses the format:
             accounts/{account_id}/customers/{customer_id}
+
             This field is a member of `oneof`_ ``transferred_customer_identity``.
         parent (str):
             Required. The reseller account's resource name. Parent uses
@@ -497,10 +501,12 @@ class ListTransferableOffersRequest(proto.Message):
     Attributes:
         cloud_identity_id (str):
             Customer's Cloud Identity ID
+
             This field is a member of `oneof`_ ``transferred_customer_identity``.
         customer_name (str):
             A reseller should create a customer and use
             the resource name of that customer here.
+
             This field is a member of `oneof`_ ``transferred_customer_identity``.
         parent (str):
             Required. The resource name of the reseller's
@@ -1277,10 +1283,12 @@ class ListPurchasableSkusRequest(proto.Message):
     Attributes:
         create_entitlement_purchase (google.cloud.channel_v1.types.ListPurchasableSkusRequest.CreateEntitlementPurchase):
             List SKUs for CreateEntitlement purchase.
+
             This field is a member of `oneof`_ ``purchase_option``.
         change_offer_purchase (google.cloud.channel_v1.types.ListPurchasableSkusRequest.ChangeOfferPurchase):
             List SKUs for ChangeOffer purchase with a new
             SKU.
+
             This field is a member of `oneof`_ ``purchase_option``.
         customer (str):
             Required. The resource name of the customer to list SKUs
@@ -1400,9 +1408,11 @@ class ListPurchasableOffersRequest(proto.Message):
     Attributes:
         create_entitlement_purchase (google.cloud.channel_v1.types.ListPurchasableOffersRequest.CreateEntitlementPurchase):
             List Offers for CreateEntitlement purchase.
+
             This field is a member of `oneof`_ ``purchase_option``.
         change_offer_purchase (google.cloud.channel_v1.types.ListPurchasableOffersRequest.ChangeOfferPurchase):
             List Offers for ChangeOffer purchase.
+
             This field is a member of `oneof`_ ``purchase_option``.
         customer (str):
             Required. The resource name of the customer to list Offers

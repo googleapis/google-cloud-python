@@ -118,18 +118,23 @@ class Value(proto.Message):
     Attributes:
         int64_value (int):
             Represents an int64 value.
+
             This field is a member of `oneof`_ ``kind``.
         string_value (str):
             Represents a string value.
+
             This field is a member of `oneof`_ ``kind``.
         double_value (float):
             Represents a double value.
+
             This field is a member of `oneof`_ ``kind``.
         proto_value (google.protobuf.any_pb2.Any):
             Represents an 'Any' proto value.
+
             This field is a member of `oneof`_ ``kind``.
         bool_value (bool):
             Represents a boolean value.
+
             This field is a member of `oneof`_ ``kind``.
     """
 

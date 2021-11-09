@@ -92,10 +92,12 @@ class SubscriberEvent(proto.Message):
         customer_event (google.cloud.channel_v1.types.CustomerEvent):
             Customer event send as part of Pub/Sub event
             to partners.
+
             This field is a member of `oneof`_ ``event``.
         entitlement_event (google.cloud.channel_v1.types.EntitlementEvent):
             Entitlement event send as part of Pub/Sub
             event to partners.
+
             This field is a member of `oneof`_ ``event``.
     """
 
