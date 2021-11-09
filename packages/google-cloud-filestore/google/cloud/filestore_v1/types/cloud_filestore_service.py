@@ -99,6 +99,7 @@ class FileShareConfig(proto.Message):
             The resource name of the backup, in the format
             ``projects/{project_number}/locations/{location_id}/backups/{backup_id}``,
             that this file share has been restored from.
+
             This field is a member of `oneof`_ ``source``.
         nfs_export_options (Sequence[google.cloud.filestore_v1.types.NfsExportOptions]):
             Nfs Export Options.
@@ -317,6 +318,7 @@ class RestoreInstanceRequest(proto.Message):
         source_backup (str):
             The resource name of the backup, in the format
             ``projects/{project_number}/locations/{location_id}/backups/{backup_id}``.
+
             This field is a member of `oneof`_ ``source``.
     """
 
