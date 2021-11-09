@@ -87,6 +87,7 @@ class Job(proto.Message):
             This field is a member of `oneof`_ ``job_config``.
         config (google.cloud.video.transcoder_v1beta1.types.JobConfig):
             The configuration for this job.
+
             This field is a member of `oneof`_ ``job_config``.
         priority (int):
             Specify the priority of the job. Enter a
@@ -340,13 +341,16 @@ class ElementaryStream(proto.Message):
             A unique key for this elementary stream.
         video_stream (google.cloud.video.transcoder_v1beta1.types.VideoStream):
             Encoding of a video stream.
+
             This field is a member of `oneof`_ ``elementary_stream``.
         audio_stream (google.cloud.video.transcoder_v1beta1.types.AudioStream):
             Encoding of an audio stream.
+
             This field is a member of `oneof`_ ``elementary_stream``.
         text_stream (google.cloud.video.transcoder_v1beta1.types.TextStream):
             Encoding of a text stream. For example,
             closed captions or subtitles.
+
             This field is a member of `oneof`_ ``elementary_stream``.
     """
 
@@ -508,10 +512,12 @@ class SpriteSheet(proto.Message):
             number of sprites distributed evenly across the
             timeline of the output media. The default is
             100.
+
             This field is a member of `oneof`_ ``extraction_strategy``.
         interval (google.protobuf.duration_pb2.Duration):
             Starting from ``0s``, create sprites at regular intervals.
             Specify the interval value in seconds.
+
             This field is a member of `oneof`_ ``extraction_strategy``.
         quality (int):
             The quality of the generated sprite sheet.
@@ -684,12 +690,15 @@ class Overlay(proto.Message):
         Attributes:
             animation_static (google.cloud.video.transcoder_v1beta1.types.Overlay.AnimationStatic):
                 Display static overlay object.
+
                 This field is a member of `oneof`_ ``animation_type``.
             animation_fade (google.cloud.video.transcoder_v1beta1.types.Overlay.AnimationFade):
                 Display overlay object with fade animation.
+
                 This field is a member of `oneof`_ ``animation_type``.
             animation_end (google.cloud.video.transcoder_v1beta1.types.Overlay.AnimationEnd):
                 End previous animation.
+
                 This field is a member of `oneof`_ ``animation_type``.
         """
 
@@ -983,6 +992,7 @@ class VideoStream(proto.Message):
         gop_frame_count (int):
             Select the GOP size based on the specified
             frame count. Must be greater than zero.
+
             This field is a member of `oneof`_ ``gop_mode``.
         gop_duration (google.protobuf.duration_pb2.Duration):
             Select the GOP size based on the specified duration. The
@@ -990,6 +1000,7 @@ class VideoStream(proto.Message):
             than or equal to ```segmentDuration`` <#SegmentSettings>`__,
             and ```segmentDuration`` <#SegmentSettings>`__ must be
             divisible by ``gopDuration``.
+
             This field is a member of `oneof`_ ``gop_mode``.
         entropy_coder (str):
             The entropy coder to use. The default is ``"cabac"``.
@@ -1255,13 +1266,16 @@ class Encryption(proto.Message):
             represented as lowercase hexadecimal digits.
         aes_128 (google.cloud.video.transcoder_v1beta1.types.Encryption.Aes128Encryption):
             Configuration for AES-128 encryption.
+
             This field is a member of `oneof`_ ``encryption_mode``.
         sample_aes (google.cloud.video.transcoder_v1beta1.types.Encryption.SampleAesEncryption):
             Configuration for SAMPLE-AES encryption.
+
             This field is a member of `oneof`_ ``encryption_mode``.
         mpeg_cenc (google.cloud.video.transcoder_v1beta1.types.Encryption.MpegCommonEncryption):
             Configuration for MPEG Common Encryption
             (MPEG-CENC).
+
             This field is a member of `oneof`_ ``encryption_mode``.
     """
 
