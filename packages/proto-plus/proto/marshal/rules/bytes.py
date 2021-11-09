@@ -19,7 +19,7 @@ import base64
 class BytesRule:
     """A marshal between Python strings and protobuf bytes.
 
-    Note: this conversion is asymmetric becasue Python does have a bytes type.
+    Note: this conversion is asymmetric because Python does have a bytes type.
     It is sometimes necessary to convert proto bytes fields to strings, e.g. for
     JSON encoding, marshalling a message to a dict. Because bytes fields can
     represent arbitrary data, bytes fields are base64 encoded when they need to

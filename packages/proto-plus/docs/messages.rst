@@ -129,7 +129,7 @@ just as if it were a regular python object.
       song.composer = composer
       composer.given_name = "Carl"
 
-      # 'composer' is STILL not a referene to song.composer.
+      # 'composer' is STILL not a reference to song.composer.
       assert song.composer.given_name == "Wilhelm"
 
       # It does work in reverse, though,

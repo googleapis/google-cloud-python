@@ -63,7 +63,7 @@ def _to_rfc3339(value, ignore_zone=True):
             datetime object is ignored and the datetime is treated as UTC.
 
     Returns:
-        str: The RFC3339 formated string representing the datetime.
+        str: The RFC3339 formatted string representing the datetime.
     """
     if not ignore_zone and value.tzinfo is not None:
         # Convert to UTC and remove the time zone info.
@@ -97,7 +97,7 @@ class DatetimeWithNanoseconds(datetime.datetime):
         new values by whichever keyword arguments are specified. For example,
         if d == date(2002, 12, 31), then
         d.replace(day=26) == date(2002, 12, 26).
-        NOTE: nanosecond and microsecond are mutually exclusive arguemnts.
+        NOTE: nanosecond and microsecond are mutually exclusive arguments.
         """
 
         ms_provided = "microsecond" in kw

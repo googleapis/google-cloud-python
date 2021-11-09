@@ -475,7 +475,7 @@ class Message(metaclass=MessageMeta):
             # passed in.
             #
             # The `wrap` method on the metaclass is the public API for taking
-            # ownership of the passed in protobuf objet.
+            # ownership of the passed in protobuf object.
             mapping = copy.deepcopy(mapping)
             if kwargs:
                 mapping.MergeFrom(self._meta.pb(**kwargs))
@@ -540,7 +540,7 @@ class Message(metaclass=MessageMeta):
         to get a boolean that distinguishes between ``False`` and ``None``
         (or the same for a string, int, etc.). This library transparently
         handles that case for you, but this method remains available to
-        accomodate cases not automatically covered.
+        accommodate cases not automatically covered.
 
         Args:
             key (str): The name of the field.

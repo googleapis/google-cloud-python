@@ -281,7 +281,7 @@ def _to_seconds(value):
     """Convert a datetime to seconds since the unix epoch.
 
     Args:
-        value (datetime.datetime): The datetime to covert.
+        value (datetime.datetime): The datetime to convert.
 
     Returns:
         int: Microseconds since the unix epoch.
