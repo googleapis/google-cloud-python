@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-talent/compare/v2.3.0...v2.4.0) (2021-11-04)
+
+
+### Features
+
+* add context manager support in client ([#168](https://www.github.com/googleapis/python-talent/issues/168)) ([04dd991](https://www.github.com/googleapis/python-talent/commit/04dd991f185380bafa81a68e90be19f7bef9e3bc))
+* Add new commute methods in Search APIs feat: Add new histogram type 'publish_time_in_day' feat: Support filtering by requisitionId is ListJobs API ([#148](https://www.github.com/googleapis/python-talent/issues/148)) ([3e72647](https://www.github.com/googleapis/python-talent/commit/3e72647c6cf9b69a157bd790a26e5dd915e2056e))
+* Added a new `KeywordMatchMode` field to support more keyword matching options feat: Added more `DiversificationLevel` configuration options ([#159](https://www.github.com/googleapis/python-talent/issues/159)) ([4626497](https://www.github.com/googleapis/python-talent/commit/4626497c55596d876f7a63314bc55e2b9330361c))
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([c0945eb](https://www.github.com/googleapis/python-talent/commit/c0945ebabb75f0cc53c09ce30dce46fd424fa0d4))
+* **deps:** drop packaging dependency ([84914d5](https://www.github.com/googleapis/python-talent/commit/84914d54499f677f0db3ee44c74030d5afaead32))
+* **deps:** require google-api-core >= 1.28.0 ([84914d5](https://www.github.com/googleapis/python-talent/commit/84914d54499f677f0db3ee44c74030d5afaead32))
+* improper types in pagers generation ([31f3a51](https://www.github.com/googleapis/python-talent/commit/31f3a516a1f778dca07ba91dfa14f6010d3f66f1))
+
+
+### Documentation
+
+* list oneofs in docstring ([84914d5](https://www.github.com/googleapis/python-talent/commit/84914d54499f677f0db3ee44c74030d5afaead32))
+
 ## [2.3.0](https://www.github.com/googleapis/python-talent/compare/v2.2.1...v2.3.0) (2021-08-09)
 
 
