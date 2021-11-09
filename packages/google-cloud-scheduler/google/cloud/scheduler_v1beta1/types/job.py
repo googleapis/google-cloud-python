@@ -69,12 +69,15 @@ class Job(proto.Message):
             not contain more than 500 characters.
         pubsub_target (google.cloud.scheduler_v1beta1.types.PubsubTarget):
             Pub/Sub target.
+
             This field is a member of `oneof`_ ``target``.
         app_engine_http_target (google.cloud.scheduler_v1beta1.types.AppEngineHttpTarget):
             App Engine HTTP target.
+
             This field is a member of `oneof`_ ``target``.
         http_target (google.cloud.scheduler_v1beta1.types.HttpTarget):
             HTTP target.
+
             This field is a member of `oneof`_ ``target``.
         schedule (str):
             Required, except when used with
