@@ -317,9 +317,11 @@ class GenerateSshScriptRequest(proto.Message):
             to create.
         vm_creation_config (google.cloud.clouddms_v1.types.VmCreationConfig):
             The VM creation configuration
+
             This field is a member of `oneof`_ ``vm_config``.
         vm_selection_config (google.cloud.clouddms_v1.types.VmSelectionConfig):
             The VM selection configuration
+
             This field is a member of `oneof`_ ``vm_config``.
         vm_port (int):
             The port that will be open on the bastion

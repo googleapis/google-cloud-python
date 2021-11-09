@@ -227,10 +227,12 @@ class SqlAclEntry(proto.Message):
             The time when this access control entry expires in `RFC
             3339 <https://tools.ietf.org/html/rfc3339>`__ format, for
             example: ``2012-11-15T16:19:00.094Z``.
+
             This field is a member of `oneof`_ ``expiration``.
         ttl (google.protobuf.duration_pb2.Duration):
             Input only. The time-to-leave of this access
             control entry.
+
             This field is a member of `oneof`_ ``expiration``.
         label (str):
             A label to identify this entry.
@@ -523,14 +525,17 @@ class MigrationJob(proto.Message):
         reverse_ssh_connectivity (google.cloud.clouddms_v1.types.ReverseSshConnectivity):
             The details needed to communicate to the
             source over Reverse SSH tunnel connectivity.
+
             This field is a member of `oneof`_ ``connectivity``.
         vpc_peering_connectivity (google.cloud.clouddms_v1.types.VpcPeeringConnectivity):
             The details of the VPC network that the
             source database is located in.
+
             This field is a member of `oneof`_ ``connectivity``.
         static_ip_connectivity (google.cloud.clouddms_v1.types.StaticIpConnectivity):
             static ip connectivity data (default, no
             additional details needed).
+
             This field is a member of `oneof`_ ``connectivity``.
         duration (google.protobuf.duration_pb2.Duration):
             Output only. The duration of the migration
@@ -660,12 +665,15 @@ class ConnectionProfile(proto.Message):
             The connection profile display name.
         mysql (google.cloud.clouddms_v1.types.MySqlConnectionProfile):
             A MySQL database connection profile.
+
             This field is a member of `oneof`_ ``connection_profile``.
         postgresql (google.cloud.clouddms_v1.types.PostgreSqlConnectionProfile):
             A PostgreSQL database connection profile.
+
             This field is a member of `oneof`_ ``connection_profile``.
         cloudsql (google.cloud.clouddms_v1.types.CloudSqlConnectionProfile):
             A CloudSQL database connection profile.
+
             This field is a member of `oneof`_ ``connection_profile``.
         error (google.rpc.status_pb2.Status):
             Output only. The error details in case of
