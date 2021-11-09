@@ -639,7 +639,9 @@ def test_list_connection_profiles_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_connection_profiles_flattened_error():
@@ -675,7 +677,9 @@ async def test_list_connection_profiles_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1034,7 +1038,9 @@ def test_get_connection_profile_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_connection_profile_flattened_error():
@@ -1070,7 +1076,9 @@ async def test_get_connection_profile_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1249,11 +1257,15 @@ def test_create_connection_profile_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].connection_profile == datastream_resources.ConnectionProfile(
-            name="name_value"
-        )
-        assert args[0].connection_profile_id == "connection_profile_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].connection_profile
+        mock_val = datastream_resources.ConnectionProfile(name="name_value")
+        assert arg == mock_val
+        arg = args[0].connection_profile_id
+        mock_val = "connection_profile_id_value"
+        assert arg == mock_val
 
 
 def test_create_connection_profile_flattened_error():
@@ -1300,11 +1312,15 @@ async def test_create_connection_profile_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].connection_profile == datastream_resources.ConnectionProfile(
-            name="name_value"
-        )
-        assert args[0].connection_profile_id == "connection_profile_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].connection_profile
+        mock_val = datastream_resources.ConnectionProfile(name="name_value")
+        assert arg == mock_val
+        arg = args[0].connection_profile_id
+        mock_val = "connection_profile_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1493,10 +1509,12 @@ def test_update_connection_profile_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].connection_profile == datastream_resources.ConnectionProfile(
-            name="name_value"
-        )
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].connection_profile
+        mock_val = datastream_resources.ConnectionProfile(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_connection_profile_flattened_error():
@@ -1541,10 +1559,12 @@ async def test_update_connection_profile_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].connection_profile == datastream_resources.ConnectionProfile(
-            name="name_value"
-        )
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].connection_profile
+        mock_val = datastream_resources.ConnectionProfile(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1721,7 +1741,9 @@ def test_delete_connection_profile_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_connection_profile_flattened_error():
@@ -1757,7 +1779,9 @@ async def test_delete_connection_profile_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2073,7 +2097,9 @@ def test_list_streams_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_streams_flattened_error():
@@ -2107,7 +2133,9 @@ async def test_list_streams_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2426,7 +2454,9 @@ def test_get_stream_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_stream_flattened_error():
@@ -2460,7 +2490,9 @@ async def test_get_stream_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2624,9 +2656,15 @@ def test_create_stream_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].stream == datastream_resources.Stream(name="name_value")
-        assert args[0].stream_id == "stream_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].stream
+        mock_val = datastream_resources.Stream(name="name_value")
+        assert arg == mock_val
+        arg = args[0].stream_id
+        mock_val = "stream_id_value"
+        assert arg == mock_val
 
 
 def test_create_stream_flattened_error():
@@ -2667,9 +2705,15 @@ async def test_create_stream_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].stream == datastream_resources.Stream(name="name_value")
-        assert args[0].stream_id == "stream_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].stream
+        mock_val = datastream_resources.Stream(name="name_value")
+        assert arg == mock_val
+        arg = args[0].stream_id
+        mock_val = "stream_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2835,8 +2879,12 @@ def test_update_stream_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].stream == datastream_resources.Stream(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].stream
+        mock_val = datastream_resources.Stream(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_stream_flattened_error():
@@ -2875,8 +2923,12 @@ async def test_update_stream_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].stream == datastream_resources.Stream(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].stream
+        mock_val = datastream_resources.Stream(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3038,7 +3090,9 @@ def test_delete_stream_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_stream_flattened_error():
@@ -3072,7 +3126,9 @@ async def test_delete_stream_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3371,7 +3427,9 @@ def test_fetch_static_ips_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_fetch_static_ips_flattened_error():
@@ -3405,7 +3463,9 @@ async def test_fetch_static_ips_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3694,11 +3754,15 @@ def test_create_private_connection_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].private_connection == datastream_resources.PrivateConnection(
-            name="name_value"
-        )
-        assert args[0].private_connection_id == "private_connection_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].private_connection
+        mock_val = datastream_resources.PrivateConnection(name="name_value")
+        assert arg == mock_val
+        arg = args[0].private_connection_id
+        mock_val = "private_connection_id_value"
+        assert arg == mock_val
 
 
 def test_create_private_connection_flattened_error():
@@ -3745,11 +3809,15 @@ async def test_create_private_connection_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].private_connection == datastream_resources.PrivateConnection(
-            name="name_value"
-        )
-        assert args[0].private_connection_id == "private_connection_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].private_connection
+        mock_val = datastream_resources.PrivateConnection(name="name_value")
+        assert arg == mock_val
+        arg = args[0].private_connection_id
+        mock_val = "private_connection_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3940,7 +4008,9 @@ def test_get_private_connection_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_private_connection_flattened_error():
@@ -3976,7 +4046,9 @@ async def test_get_private_connection_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4158,7 +4230,9 @@ def test_list_private_connections_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_private_connections_flattened_error():
@@ -4194,7 +4268,9 @@ async def test_list_private_connections_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4541,7 +4617,9 @@ def test_delete_private_connection_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_private_connection_flattened_error():
@@ -4577,7 +4655,9 @@ async def test_delete_private_connection_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4741,9 +4821,15 @@ def test_create_route_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].route == datastream_resources.Route(name="name_value")
-        assert args[0].route_id == "route_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].route
+        mock_val = datastream_resources.Route(name="name_value")
+        assert arg == mock_val
+        arg = args[0].route_id
+        mock_val = "route_id_value"
+        assert arg == mock_val
 
 
 def test_create_route_flattened_error():
@@ -4784,9 +4870,15 @@ async def test_create_route_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].route == datastream_resources.Route(name="name_value")
-        assert args[0].route_id == "route_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].route
+        mock_val = datastream_resources.Route(name="name_value")
+        assert arg == mock_val
+        arg = args[0].route_id
+        mock_val = "route_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4965,7 +5057,9 @@ def test_get_route_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_route_flattened_error():
@@ -4999,7 +5093,9 @@ async def test_get_route_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -5168,7 +5264,9 @@ def test_list_routes_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_routes_flattened_error():
@@ -5202,7 +5300,9 @@ async def test_list_routes_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -5500,7 +5600,9 @@ def test_delete_route_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_route_flattened_error():
@@ -5534,7 +5636,9 @@ async def test_delete_route_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

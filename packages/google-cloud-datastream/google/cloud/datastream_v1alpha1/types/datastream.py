@@ -72,26 +72,32 @@ class DiscoverConnectionProfileRequest(proto.Message):
             Must be in the format ``projects/*/locations/*``.
         connection_profile (google.cloud.datastream_v1alpha1.types.ConnectionProfile):
             An ad-hoc ConnectionProfile configuration.
+
             This field is a member of `oneof`_ ``target``.
         connection_profile_name (str):
             A reference to an existing ConnectionProfile.
+
             This field is a member of `oneof`_ ``target``.
         recursive (bool):
             Whether to retrieve the full hierarchy of
             data objects (TRUE) or only the current level
             (FALSE).
+
             This field is a member of `oneof`_ ``depth``.
         recursion_depth (int):
             The number of hierarchy levels below the
             current level to be retrieved.
+
             This field is a member of `oneof`_ ``depth``.
         oracle_rdbms (google.cloud.datastream_v1alpha1.types.OracleRdbms):
             Oracle RDBMS to enrich with child data
             objects and metadata.
+
             This field is a member of `oneof`_ ``data_object``.
         mysql_rdbms (google.cloud.datastream_v1alpha1.types.MysqlRdbms):
             MySQL RDBMS to enrich with child data objects
             and metadata.
+
             This field is a member of `oneof`_ ``data_object``.
     """
 
@@ -132,9 +138,11 @@ class DiscoverConnectionProfileResponse(proto.Message):
     Attributes:
         oracle_rdbms (google.cloud.datastream_v1alpha1.types.OracleRdbms):
             Enriched Oracle RDBMS object.
+
             This field is a member of `oneof`_ ``data_object``.
         mysql_rdbms (google.cloud.datastream_v1alpha1.types.MysqlRdbms):
             Enriched MySQL RDBMS object.
+
             This field is a member of `oneof`_ ``data_object``.
     """
 

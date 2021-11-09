@@ -171,9 +171,11 @@ class ForwardSshTunnelConnectivity(proto.Message):
             Port for the SSH tunnel, default value is 22.
         password (str):
             Input only. SSH password.
+
             This field is a member of `oneof`_ ``authentication_method``.
         private_key (str):
             Input only. SSH private key.
+
             This field is a member of `oneof`_ ``authentication_method``.
     """
 
@@ -346,25 +348,32 @@ class ConnectionProfile(proto.Message):
             Required. Display name.
         oracle_profile (google.cloud.datastream_v1alpha1.types.OracleProfile):
             Oracle ConnectionProfile configuration.
+
             This field is a member of `oneof`_ ``profile``.
         gcs_profile (google.cloud.datastream_v1alpha1.types.GcsProfile):
             Cloud Storage ConnectionProfile
             configuration.
+
             This field is a member of `oneof`_ ``profile``.
         mysql_profile (google.cloud.datastream_v1alpha1.types.MysqlProfile):
             MySQL ConnectionProfile configuration.
+
             This field is a member of `oneof`_ ``profile``.
         no_connectivity (google.cloud.datastream_v1alpha1.types.NoConnectivitySettings):
             No connectivity option chosen.
+
             This field is a member of `oneof`_ ``connectivity``.
         static_service_ip_connectivity (google.cloud.datastream_v1alpha1.types.StaticServiceIpConnectivity):
             Static Service IP connectivity.
+
             This field is a member of `oneof`_ ``connectivity``.
         forward_ssh_connectivity (google.cloud.datastream_v1alpha1.types.ForwardSshTunnelConnectivity):
             Forward SSH tunnel connectivity.
+
             This field is a member of `oneof`_ ``connectivity``.
         private_connectivity (google.cloud.datastream_v1alpha1.types.PrivateConnectivity):
             Private connectivity.
+
             This field is a member of `oneof`_ ``connectivity``.
     """
 
@@ -611,9 +620,11 @@ class SourceConfig(proto.Message):
             identifier.
         oracle_source_config (google.cloud.datastream_v1alpha1.types.OracleSourceConfig):
             Oracle data source configuration
+
             This field is a member of `oneof`_ ``source_stream_config``.
         mysql_source_config (google.cloud.datastream_v1alpha1.types.MysqlSourceConfig):
             MySQL data source configuration
+
             This field is a member of `oneof`_ ``source_stream_config``.
     """
 
@@ -683,9 +694,11 @@ class GcsDestinationConfig(proto.Message):
             created.
         avro_file_format (google.cloud.datastream_v1alpha1.types.AvroFileFormat):
             AVRO file format configuration.
+
             This field is a member of `oneof`_ ``file_format``.
         json_file_format (google.cloud.datastream_v1alpha1.types.JsonFileFormat):
             JSON file format configuration.
+
             This field is a member of `oneof`_ ``file_format``.
     """
 
@@ -760,9 +773,11 @@ class Stream(proto.Message):
             Automatically backfill objects included in
             the stream source configuration. Specific
             objects can be excluded.
+
             This field is a member of `oneof`_ ``backfill_strategy``.
         backfill_none (google.cloud.datastream_v1alpha1.types.Stream.BackfillNoneStrategy):
             Do not automatically backfill any objects.
+
             This field is a member of `oneof`_ ``backfill_strategy``.
         errors (Sequence[google.cloud.datastream_v1alpha1.types.Error]):
             Output only. Errors on the Stream.
@@ -795,10 +810,12 @@ class Stream(proto.Message):
             oracle_excluded_objects (google.cloud.datastream_v1alpha1.types.OracleRdbms):
                 Oracle data source objects to avoid
                 backfilling.
+
                 This field is a member of `oneof`_ ``excluded_objects``.
             mysql_excluded_objects (google.cloud.datastream_v1alpha1.types.MysqlRdbms):
                 MySQL data source objects to avoid
                 backfilling.
+
                 This field is a member of `oneof`_ ``excluded_objects``.
         """
 
