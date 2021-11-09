@@ -286,10 +286,12 @@ class BatchUpdateEntityTypesRequest(proto.Message):
             file format can either be a serialized proto (of
             EntityBatch type) or a JSON object. Note: The
             URI must start with "gs://".
+
             This field is a member of `oneof`_ ``entity_type_batch``.
         entity_type_batch_inline (google.cloud.dialogflow_v2.types.EntityTypeBatch):
             The collection of entity types to update or
             create.
+
             This field is a member of `oneof`_ ``entity_type_batch``.
         language_code (str):
             Optional. The language used to access language-specific

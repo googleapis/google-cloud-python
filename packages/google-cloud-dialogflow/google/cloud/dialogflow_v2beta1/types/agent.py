@@ -306,9 +306,11 @@ class ExportAgentResponse(proto.Message):
             The URI to a file containing the exported agent. This field
             is populated only if ``agent_uri`` is specified in
             ``ExportAgentRequest``.
+
             This field is a member of `oneof`_ ``agent``.
         agent_content (bytes):
             Zip compressed raw byte content for agent.
+
             This field is a member of `oneof`_ ``agent``.
     """
 
@@ -336,9 +338,11 @@ class ImportAgentRequest(proto.Message):
             The URI to a Google Cloud Storage file
             containing the agent to import. Note: The URI
             must start with "gs://".
+
             This field is a member of `oneof`_ ``agent``.
         agent_content (bytes):
             Zip compressed raw byte content for agent.
+
             This field is a member of `oneof`_ ``agent``.
     """
 
@@ -367,9 +371,11 @@ class RestoreAgentRequest(proto.Message):
             The URI to a Google Cloud Storage file
             containing the agent to restore. Note: The URI
             must start with "gs://".
+
             This field is a member of `oneof`_ ``agent``.
         agent_content (bytes):
             Zip compressed raw byte content for agent.
+
             This field is a member of `oneof`_ ``agent``.
     """
 

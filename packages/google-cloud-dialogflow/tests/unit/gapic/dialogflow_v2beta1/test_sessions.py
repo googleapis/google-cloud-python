@@ -617,12 +617,16 @@ def test_detect_intent_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].session == "session_value"
-        assert args[0].query_input == gcd_session.QueryInput(
+        arg = args[0].session
+        mock_val = "session_value"
+        assert arg == mock_val
+        arg = args[0].query_input
+        mock_val = gcd_session.QueryInput(
             audio_config=audio_config.InputAudioConfig(
                 audio_encoding=audio_config.AudioEncoding.AUDIO_ENCODING_LINEAR_16
             )
         )
+        assert arg == mock_val
 
 
 def test_detect_intent_flattened_error():
@@ -669,12 +673,16 @@ async def test_detect_intent_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].session == "session_value"
-        assert args[0].query_input == gcd_session.QueryInput(
+        arg = args[0].session
+        mock_val = "session_value"
+        assert arg == mock_val
+        arg = args[0].query_input
+        mock_val = gcd_session.QueryInput(
             audio_config=audio_config.InputAudioConfig(
                 audio_encoding=audio_config.AudioEncoding.AUDIO_ENCODING_LINEAR_16
             )
         )
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

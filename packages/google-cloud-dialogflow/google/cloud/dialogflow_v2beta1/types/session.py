@@ -274,16 +274,20 @@ class QueryInput(proto.Message):
         audio_config (google.cloud.dialogflow_v2beta1.types.InputAudioConfig):
             Instructs the speech recognizer how to
             process the speech audio.
+
             This field is a member of `oneof`_ ``input``.
         text (google.cloud.dialogflow_v2beta1.types.TextInput):
             The natural language text to be processed.
+
             This field is a member of `oneof`_ ``input``.
         event (google.cloud.dialogflow_v2beta1.types.EventInput):
             The event to be processed.
+
             This field is a member of `oneof`_ ``input``.
         dtmf (google.cloud.dialogflow_v2beta1.types.TelephonyDtmfEvents):
             The DTMF digits used to invoke intent and
             fill in parameter value.
+
             This field is a member of `oneof`_ ``input``.
     """
 

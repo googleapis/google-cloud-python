@@ -78,10 +78,12 @@ class Document(proto.Message):
             URLs for showing documents in Google Cloud Storage (i.e. the
             URL in your browser) are not supported. Instead use the
             ``gs://`` format URI described above.
+
             This field is a member of `oneof`_ ``source``.
         raw_content (bytes):
             The raw content of the document. This field is only
             permitted for EXTRACTIVE_QA and FAQ knowledge types.
+
             This field is a member of `oneof`_ ``source``.
         enable_auto_reload (bool):
             Optional. If true, we try to automatically reload the
@@ -272,6 +274,7 @@ class ReloadDocumentRequest(proto.Message):
 
             For documents stored in Google Cloud Storage, these URIs
             must have the form ``gs://<bucket-name>/<object-name>``.
+
             This field is a member of `oneof`_ ``source``.
     """
 

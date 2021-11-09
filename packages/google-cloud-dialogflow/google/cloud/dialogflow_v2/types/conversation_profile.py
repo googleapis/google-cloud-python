@@ -393,14 +393,17 @@ class HumanAgentAssistantConfig(proto.Message):
             knowledge_base_query_source (google.cloud.dialogflow_v2.types.HumanAgentAssistantConfig.SuggestionQueryConfig.KnowledgeBaseQuerySource):
                 Query from knowledgebase. It is used by: ARTICLE_SUGGESTION,
                 FAQ.
+
                 This field is a member of `oneof`_ ``query_source``.
             document_query_source (google.cloud.dialogflow_v2.types.HumanAgentAssistantConfig.SuggestionQueryConfig.DocumentQuerySource):
                 Query from knowledge base document. It is used by:
                 SMART_REPLY, SMART_COMPOSE.
+
                 This field is a member of `oneof`_ ``query_source``.
             dialogflow_query_source (google.cloud.dialogflow_v2.types.HumanAgentAssistantConfig.SuggestionQueryConfig.DialogflowQuerySource):
                 Query from Dialogflow agent. It is used by
                 DIALOGFLOW_ASSIST.
+
                 This field is a member of `oneof`_ ``query_source``.
             max_results (int):
                 Maximum number of results to return.
@@ -609,9 +612,11 @@ class HumanAgentHandoffConfig(proto.Message):
     Attributes:
         live_person_config (google.cloud.dialogflow_v2.types.HumanAgentHandoffConfig.LivePersonConfig):
             Uses LivePerson (https://www.liveperson.com).
+
             This field is a member of `oneof`_ ``agent_service``.
         salesforce_live_agent_config (google.cloud.dialogflow_v2.types.HumanAgentHandoffConfig.SalesforceLiveAgentConfig):
             Uses Salesforce Live Agent.
+
             This field is a member of `oneof`_ ``agent_service``.
     """
 

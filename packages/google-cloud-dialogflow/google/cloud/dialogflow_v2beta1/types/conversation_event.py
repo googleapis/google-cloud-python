@@ -44,6 +44,7 @@ class ConversationEvent(proto.Message):
             for type UNRECOVERABLE_ERROR_IN_PHONE_CALL.
         new_message_payload (google.cloud.dialogflow_v2beta1.types.Message):
             Payload of NEW_MESSAGE event.
+
             This field is a member of `oneof`_ ``payload``.
     """
 

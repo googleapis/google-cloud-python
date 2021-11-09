@@ -55,6 +55,7 @@ class Fulfillment(proto.Message):
             Environment.
         generic_web_service (google.cloud.dialogflow_v2.types.Fulfillment.GenericWebService):
             Configuration for a generic web service.
+
             This field is a member of `oneof`_ ``fulfillment``.
         enabled (bool):
             Optional. Whether fulfillment is enabled.

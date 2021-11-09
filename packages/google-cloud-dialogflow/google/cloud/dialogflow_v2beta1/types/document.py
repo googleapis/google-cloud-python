@@ -82,16 +82,19 @@ class Document(proto.Message):
             URLs for showing documents in Google Cloud Storage (i.e. the
             URL in your browser) are not supported. Instead use the
             ``gs://`` format URI described above.
+
             This field is a member of `oneof`_ ``source``.
         content (str):
             The raw content of the document. This field is only
             permitted for EXTRACTIVE_QA and FAQ knowledge types. Note:
             This field is in the process of being deprecated, please use
             raw_content instead.
+
             This field is a member of `oneof`_ ``source``.
         raw_content (bytes):
             The raw content of the document. This field is only
             permitted for EXTRACTIVE_QA and FAQ knowledge types.
+
             This field is a member of `oneof`_ ``source``.
         enable_auto_reload (bool):
             Optional. If true, we try to automatically reload the
@@ -284,6 +287,7 @@ class ImportDocumentsRequest(proto.Message):
             These URIs may have the forms
             ``gs://<bucket-name>/<object-name>``.
             ``gs://<bucket-name>/<object-path>/*.<extension>``.
+
             This field is a member of `oneof`_ ``source``.
         document_template (google.cloud.dialogflow_v2beta1.types.ImportDocumentTemplate):
             Required. Document template used for
@@ -408,6 +412,7 @@ class ReloadDocumentRequest(proto.Message):
             The path for a Cloud Storage source file for
             reloading document content. If not provided, the
             Document's existing source will be reloaded.
+
             This field is a member of `oneof`_ ``source``.
         import_gcs_custom_metadata (bool):
             Whether to import custom metadata from Google

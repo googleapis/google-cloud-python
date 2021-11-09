@@ -231,9 +231,11 @@ class AnalyzeContentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/participants/<Participant ID>``.
         text_input (google.cloud.dialogflow_v2.types.TextInput):
             The natural language text to be processed.
+
             This field is a member of `oneof`_ ``input``.
         event_input (google.cloud.dialogflow_v2.types.EventInput):
             An input event to send to Dialogflow.
+
             This field is a member of `oneof`_ ``input``.
         reply_audio_config (google.cloud.dialogflow_v2.types.OutputAudioConfig):
             Speech synthesis configuration.
@@ -592,13 +594,16 @@ class SuggestionResult(proto.Message):
     Attributes:
         error (google.rpc.status_pb2.Status):
             Error status if the request failed.
+
             This field is a member of `oneof`_ ``suggestion_response``.
         suggest_articles_response (google.cloud.dialogflow_v2.types.SuggestArticlesResponse):
             SuggestArticlesResponse if request is for
             ARTICLE_SUGGESTION.
+
             This field is a member of `oneof`_ ``suggestion_response``.
         suggest_faq_answers_response (google.cloud.dialogflow_v2.types.SuggestFaqAnswersResponse):
             SuggestFaqAnswersResponse if request is for FAQ_ANSWER.
+
             This field is a member of `oneof`_ ``suggestion_response``.
     """
 

@@ -82,6 +82,7 @@ class AnswerRecord(proto.Message):
         agent_assistant_record (google.cloud.dialogflow_v2beta1.types.AgentAssistantRecord):
             Output only. The record for human agent
             assistant.
+
             This field is a member of `oneof`_ ``record``.
     """
 
@@ -105,9 +106,11 @@ class AgentAssistantRecord(proto.Message):
     Attributes:
         article_suggestion_answer (google.cloud.dialogflow_v2beta1.types.ArticleAnswer):
             Output only. The article suggestion answer.
+
             This field is a member of `oneof`_ ``answer``.
         faq_answer (google.cloud.dialogflow_v2beta1.types.FaqAnswer):
             Output only. The FAQ answer.
+
             This field is a member of `oneof`_ ``answer``.
     """
 
@@ -132,6 +135,7 @@ class AnswerFeedback(proto.Message):
         agent_assistant_detail_feedback (google.cloud.dialogflow_v2beta1.types.AgentAssistantFeedback):
             Optional. Detail feedback of agent assistant
             suggestions.
+
             This field is a member of `oneof`_ ``detail_feedback``.
         clicked (bool):
             Indicates whether the answer/item was clicked
