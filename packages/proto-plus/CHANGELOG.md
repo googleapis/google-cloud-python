@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.19.8](https://www.github.com/googleapis/proto-plus-python/compare/v1.19.7...v1.19.8) (2021-11-09)
+
+
+### Documentation
+
+* fix typos ([#277](https://www.github.com/googleapis/proto-plus-python/issues/277)) ([e3b71e8](https://www.github.com/googleapis/proto-plus-python/commit/e3b71e8b2a81a5abb5af666c9625facb1814a609))
+
 ### [1.19.7](https://www.github.com/googleapis/proto-plus-python/compare/v1.19.6...v1.19.7) (2021-10-27)
 
 
