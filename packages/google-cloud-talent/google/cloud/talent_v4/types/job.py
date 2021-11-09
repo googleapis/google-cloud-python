@@ -133,7 +133,7 @@ class Job(proto.Message):
             structured fields.
 
             The keys of the map are strings up to 64 bytes and must
-            match the pattern: ``[a-zA-Z][a-zA-Z0-9\_]*``. For example,
+            match the pattern: ``[a-zA-Z][a-zA-Z0-9_]*``. For example,
             key0LikeThis or KEY_1_LIKE_THIS.
 
             At most 100 filterable and at most 100 unfilterable keys are

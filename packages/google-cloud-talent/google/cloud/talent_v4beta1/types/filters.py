@@ -729,6 +729,7 @@ class CommuteFilter(proto.Message):
         road_traffic (google.cloud.talent_v4beta1.types.CommuteFilter.RoadTraffic):
             Specifies the traffic density to use when
             calculating commute time.
+
             This field is a member of `oneof`_ ``traffic_option``.
         departure_time (google.type.timeofday_pb2.TimeOfDay):
             The departure time used to calculate traffic impact,
@@ -738,6 +739,7 @@ class CommuteFilter(proto.Message):
 
             Currently traffic model is restricted to hour level
             resolution.
+
             This field is a member of `oneof`_ ``traffic_option``.
     """
 

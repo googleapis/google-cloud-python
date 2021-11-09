@@ -55,11 +55,13 @@ class ClientEvent(proto.Message):
             An event issued when a job seeker interacts
             with the application that implements Cloud
             Talent Solution.
+
             This field is a member of `oneof`_ ``event``.
         profile_event (google.cloud.talent_v4beta1.types.ProfileEvent):
             An event issued when a profile searcher
             interacts with the application that implements
             Cloud Talent Solution.
+
             This field is a member of `oneof`_ ``event``.
         event_notes (str):
             Notes about the event provided by recruiters

@@ -635,9 +635,11 @@ class CompensationInfo(proto.Message):
                 [CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED][google.cloud.talent.v4beta1.CompensationInfo.CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED].
             amount (google.type.money_pb2.Money):
                 Compensation amount.
+
                 This field is a member of `oneof`_ ``compensation_amount``.
             range_ (google.cloud.talent_v4beta1.types.CompensationInfo.CompensationRange):
                 Compensation range.
+
                 This field is a member of `oneof`_ ``compensation_amount``.
             description (str):
                 Compensation description.  For example, could
