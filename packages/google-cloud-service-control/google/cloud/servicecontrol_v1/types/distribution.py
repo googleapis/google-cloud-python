@@ -75,12 +75,15 @@ class Distribution(proto.Message):
             Any suffix of trailing zeros may be omitted.
         linear_buckets (google.cloud.servicecontrol_v1.types.Distribution.LinearBuckets):
             Buckets with constant width.
+
             This field is a member of `oneof`_ ``bucket_option``.
         exponential_buckets (google.cloud.servicecontrol_v1.types.Distribution.ExponentialBuckets):
             Buckets with exponentially growing width.
+
             This field is a member of `oneof`_ ``bucket_option``.
         explicit_buckets (google.cloud.servicecontrol_v1.types.Distribution.ExplicitBuckets):
             Buckets with arbitrary user-provided width.
+
             This field is a member of `oneof`_ ``bucket_option``.
         exemplars (Sequence[google.api.distribution_pb2.Exemplar]):
             Example points. Must be in increasing order of ``value``

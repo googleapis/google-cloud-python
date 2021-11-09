@@ -70,14 +70,17 @@ class LogEntry(proto.Message):
             The log entry payload, represented as a protocol buffer that
             is expressed as a JSON object. The only accepted type
             currently is [AuditLog][google.cloud.audit.AuditLog].
+
             This field is a member of `oneof`_ ``payload``.
         text_payload (str):
             The log entry payload, represented as a
             Unicode string (UTF-8).
+
             This field is a member of `oneof`_ ``payload``.
         struct_payload (google.protobuf.struct_pb2.Struct):
             The log entry payload, represented as a
             structure that is expressed as a JSON object.
+
             This field is a member of `oneof`_ ``payload``.
         operation (google.cloud.servicecontrol_v1.types.LogEntryOperation):
             Optional. Information about an operation

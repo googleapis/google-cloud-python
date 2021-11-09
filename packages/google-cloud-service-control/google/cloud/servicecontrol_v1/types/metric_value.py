@@ -55,18 +55,23 @@ class MetricValue(proto.Message):
             will be used.
         bool_value (bool):
             A boolean value.
+
             This field is a member of `oneof`_ ``value``.
         int64_value (int):
             A signed 64-bit integer value.
+
             This field is a member of `oneof`_ ``value``.
         double_value (float):
             A double precision floating point value.
+
             This field is a member of `oneof`_ ``value``.
         string_value (str):
             A text string value.
+
             This field is a member of `oneof`_ ``value``.
         distribution_value (google.cloud.servicecontrol_v1.types.Distribution):
             A distribution value.
+
             This field is a member of `oneof`_ ``value``.
     """
 
