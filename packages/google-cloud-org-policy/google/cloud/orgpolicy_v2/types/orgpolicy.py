@@ -162,21 +162,25 @@ class PolicySpec(proto.Message):
                 List of values to be used for this
                 PolicyRule. This field can be set only in
                 Policies for list constraints.
+
                 This field is a member of `oneof`_ ``kind``.
             allow_all (bool):
                 Setting this to true means that all values
                 are allowed. This field can be set only in
                 Policies for list constraints.
+
                 This field is a member of `oneof`_ ``kind``.
             deny_all (bool):
                 Setting this to true means that all values
                 are denied. This field can be set only in
                 Policies for list constraints.
+
                 This field is a member of `oneof`_ ``kind``.
             enforce (bool):
                 If ``true``, then the ``Policy`` is enforced. If ``false``,
                 then any configuration is acceptable. This field can be set
                 only in Policies for boolean constraints.
+
                 This field is a member of `oneof`_ ``kind``.
             condition (google.type.expr_pb2.Expr):
                 A condition which determines whether this rule is used in

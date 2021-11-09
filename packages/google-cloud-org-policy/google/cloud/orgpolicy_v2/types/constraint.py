@@ -72,10 +72,12 @@ class Constraint(proto.Message):
         list_constraint (google.cloud.orgpolicy_v2.types.Constraint.ListConstraint):
             Defines this constraint as being a
             ListConstraint.
+
             This field is a member of `oneof`_ ``constraint_type``.
         boolean_constraint (google.cloud.orgpolicy_v2.types.Constraint.BooleanConstraint):
             Defines this constraint as being a
             BooleanConstraint.
+
             This field is a member of `oneof`_ ``constraint_type``.
     """
 
