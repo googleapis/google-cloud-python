@@ -27,6 +27,9 @@ class NotificationConfig(proto.Message):
     contains the configuration to send notifications for
     create/update events of findings, assets and etc.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The relative resource name of this notification config. See:
@@ -49,6 +52,7 @@ class NotificationConfig(proto.Message):
         streaming_config (google.cloud.securitycenter_v1p1beta1.types.NotificationConfig.StreamingConfig):
             The config for triggering streaming-based
             notifications.
+            This field is a member of `oneof`_ ``notify_config``.
     """
 
     class EventType(proto.Enum):

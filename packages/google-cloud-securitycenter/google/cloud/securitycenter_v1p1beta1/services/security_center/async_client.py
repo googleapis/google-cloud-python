@@ -19,12 +19,14 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+OptionalRetry = Union[retries.Retry, object]
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -209,18 +211,18 @@ class SecurityCenterAsyncClient:
 
     async def create_source(
         self,
-        request: securitycenter_service.CreateSourceRequest = None,
+        request: Union[securitycenter_service.CreateSourceRequest, dict] = None,
         *,
         parent: str = None,
         source: gcs_source.Source = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_source.Source:
         r"""Creates a source.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.CreateSourceRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.CreateSourceRequest, dict]):
                 The request object. Request message for creating a
                 source.
             parent (:class:`str`):
@@ -295,12 +297,12 @@ class SecurityCenterAsyncClient:
 
     async def create_finding(
         self,
-        request: securitycenter_service.CreateFindingRequest = None,
+        request: Union[securitycenter_service.CreateFindingRequest, dict] = None,
         *,
         parent: str = None,
         finding_id: str = None,
         finding: gcs_finding.Finding = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_finding.Finding:
@@ -308,7 +310,7 @@ class SecurityCenterAsyncClient:
         exist for finding creation to succeed.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.CreateFindingRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.CreateFindingRequest, dict]):
                 The request object. Request message for creating a
                 finding.
             parent (:class:`str`):
@@ -396,19 +398,21 @@ class SecurityCenterAsyncClient:
 
     async def create_notification_config(
         self,
-        request: securitycenter_service.CreateNotificationConfigRequest = None,
+        request: Union[
+            securitycenter_service.CreateNotificationConfigRequest, dict
+        ] = None,
         *,
         parent: str = None,
         config_id: str = None,
         notification_config: gcs_notification_config.NotificationConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_notification_config.NotificationConfig:
         r"""Creates a notification config.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.CreateNotificationConfigRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.CreateNotificationConfigRequest, dict]):
                 The request object. Request message for creating a
                 notification config.
             parent (:class:`str`):
@@ -497,17 +501,19 @@ class SecurityCenterAsyncClient:
 
     async def delete_notification_config(
         self,
-        request: securitycenter_service.DeleteNotificationConfigRequest = None,
+        request: Union[
+            securitycenter_service.DeleteNotificationConfigRequest, dict
+        ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a notification config.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.DeleteNotificationConfigRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.DeleteNotificationConfigRequest, dict]):
                 The request object. Request message for deleting a
                 notification config.
             name (:class:`str`):
@@ -562,10 +568,10 @@ class SecurityCenterAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -573,7 +579,7 @@ class SecurityCenterAsyncClient:
         Source.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.GetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -699,17 +705,19 @@ class SecurityCenterAsyncClient:
 
     async def get_notification_config(
         self,
-        request: securitycenter_service.GetNotificationConfigRequest = None,
+        request: Union[
+            securitycenter_service.GetNotificationConfigRequest, dict
+        ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification_config.NotificationConfig:
         r"""Gets a notification config.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.GetNotificationConfigRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.GetNotificationConfigRequest, dict]):
                 The request object. Request message for getting a
                 notification config.
             name (:class:`str`):
@@ -786,17 +794,19 @@ class SecurityCenterAsyncClient:
 
     async def get_organization_settings(
         self,
-        request: securitycenter_service.GetOrganizationSettingsRequest = None,
+        request: Union[
+            securitycenter_service.GetOrganizationSettingsRequest, dict
+        ] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> organization_settings.OrganizationSettings:
         r"""Gets the settings for an organization.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.GetOrganizationSettingsRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.GetOrganizationSettingsRequest, dict]):
                 The request object. Request message for getting
                 organization settings.
             name (:class:`str`):
@@ -869,17 +879,17 @@ class SecurityCenterAsyncClient:
 
     async def get_source(
         self,
-        request: securitycenter_service.GetSourceRequest = None,
+        request: Union[securitycenter_service.GetSourceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> source.Source:
         r"""Gets a source.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.GetSourceRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.GetSourceRequest, dict]):
                 The request object. Request message for getting a
                 source.
             name (:class:`str`):
@@ -955,9 +965,9 @@ class SecurityCenterAsyncClient:
 
     async def group_assets(
         self,
-        request: securitycenter_service.GroupAssetsRequest = None,
+        request: Union[securitycenter_service.GroupAssetsRequest, dict] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.GroupAssetsAsyncPager:
@@ -965,7 +975,7 @@ class SecurityCenterAsyncClient:
         their specified properties.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.GroupAssetsRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.GroupAssetsRequest, dict]):
                 The request object. Request message for grouping by
                 assets.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1024,11 +1034,11 @@ class SecurityCenterAsyncClient:
 
     async def group_findings(
         self,
-        request: securitycenter_service.GroupFindingsRequest = None,
+        request: Union[securitycenter_service.GroupFindingsRequest, dict] = None,
         *,
         parent: str = None,
         group_by: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.GroupFindingsAsyncPager:
@@ -1041,7 +1051,7 @@ class SecurityCenterAsyncClient:
         /v1/projects/{project_id}/sources/-/findings
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.GroupFindingsRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.GroupFindingsRequest, dict]):
                 The request object. Request message for grouping by
                 findings.
             parent (:class:`str`):
@@ -1151,17 +1161,17 @@ class SecurityCenterAsyncClient:
 
     async def list_assets(
         self,
-        request: securitycenter_service.ListAssetsRequest = None,
+        request: Union[securitycenter_service.ListAssetsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAssetsAsyncPager:
         r"""Lists an organization's assets.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.ListAssetsRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.ListAssetsRequest, dict]):
                 The request object. Request message for listing assets.
             parent (:class:`str`):
                 Required. Name of the organization assets should belong
@@ -1240,10 +1250,10 @@ class SecurityCenterAsyncClient:
 
     async def list_findings(
         self,
-        request: securitycenter_service.ListFindingsRequest = None,
+        request: Union[securitycenter_service.ListFindingsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFindingsAsyncPager:
@@ -1254,7 +1264,7 @@ class SecurityCenterAsyncClient:
         /v1p1beta1/organizations/{organization_id}/sources/-/findings
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.ListFindingsRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.ListFindingsRequest, dict]):
                 The request object. Request message for listing
                 findings.
             parent (:class:`str`):
@@ -1341,17 +1351,19 @@ class SecurityCenterAsyncClient:
 
     async def list_notification_configs(
         self,
-        request: securitycenter_service.ListNotificationConfigsRequest = None,
+        request: Union[
+            securitycenter_service.ListNotificationConfigsRequest, dict
+        ] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNotificationConfigsAsyncPager:
         r"""Lists notification configs.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.ListNotificationConfigsRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.ListNotificationConfigsRequest, dict]):
                 The request object. Request message for listing
                 notification configs.
             parent (:class:`str`):
@@ -1432,17 +1444,17 @@ class SecurityCenterAsyncClient:
 
     async def list_sources(
         self,
-        request: securitycenter_service.ListSourcesRequest = None,
+        request: Union[securitycenter_service.ListSourcesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSourcesAsyncPager:
         r"""Lists all sources belonging to an organization.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.ListSourcesRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.ListSourcesRequest, dict]):
                 The request object. Request message for listing sources.
             parent (:class:`str`):
                 Required. Resource name of the parent of sources to
@@ -1522,10 +1534,10 @@ class SecurityCenterAsyncClient:
 
     async def run_asset_discovery(
         self,
-        request: securitycenter_service.RunAssetDiscoveryRequest = None,
+        request: Union[securitycenter_service.RunAssetDiscoveryRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -1537,7 +1549,7 @@ class SecurityCenterAsyncClient:
         receive a TOO_MANY_REQUESTS error.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.RunAssetDiscoveryRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.RunAssetDiscoveryRequest, dict]):
                 The request object. Request message for running asset
                 discovery for an organization.
             parent (:class:`str`):
@@ -1610,19 +1622,19 @@ class SecurityCenterAsyncClient:
 
     async def set_finding_state(
         self,
-        request: securitycenter_service.SetFindingStateRequest = None,
+        request: Union[securitycenter_service.SetFindingStateRequest, dict] = None,
         *,
         name: str = None,
         state: finding.Finding.State = None,
         start_time: timestamp_pb2.Timestamp = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> finding.Finding:
         r"""Updates the state of a finding.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.SetFindingStateRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.SetFindingStateRequest, dict]):
                 The request object. Request message for updating a
                 finding's state.
             name (:class:`str`):
@@ -1711,10 +1723,10 @@ class SecurityCenterAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -1722,7 +1734,7 @@ class SecurityCenterAsyncClient:
         Source.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.SetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1838,11 +1850,11 @@ class SecurityCenterAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
@@ -1850,7 +1862,7 @@ class SecurityCenterAsyncClient:
         specified source.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):
@@ -1932,11 +1944,11 @@ class SecurityCenterAsyncClient:
 
     async def update_finding(
         self,
-        request: securitycenter_service.UpdateFindingRequest = None,
+        request: Union[securitycenter_service.UpdateFindingRequest, dict] = None,
         *,
         finding: gcs_finding.Finding = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_finding.Finding:
@@ -1944,7 +1956,7 @@ class SecurityCenterAsyncClient:
         source must exist for a finding creation to succeed.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.UpdateFindingRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.UpdateFindingRequest, dict]):
                 The request object. Request message for updating or
                 creating a finding.
             finding (:class:`google.cloud.securitycenter_v1p1beta1.types.Finding`):
@@ -2035,11 +2047,13 @@ class SecurityCenterAsyncClient:
 
     async def update_notification_config(
         self,
-        request: securitycenter_service.UpdateNotificationConfigRequest = None,
+        request: Union[
+            securitycenter_service.UpdateNotificationConfigRequest, dict
+        ] = None,
         *,
         notification_config: gcs_notification_config.NotificationConfig = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_notification_config.NotificationConfig:
@@ -2047,7 +2061,7 @@ class SecurityCenterAsyncClient:
         allowed: description, pubsub_topic, streaming_config.filter
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.UpdateNotificationConfigRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.UpdateNotificationConfigRequest, dict]):
                 The request object. Request message for updating a
                 notification config.
             notification_config (:class:`google.cloud.securitycenter_v1p1beta1.types.NotificationConfig`):
@@ -2126,17 +2140,19 @@ class SecurityCenterAsyncClient:
 
     async def update_organization_settings(
         self,
-        request: securitycenter_service.UpdateOrganizationSettingsRequest = None,
+        request: Union[
+            securitycenter_service.UpdateOrganizationSettingsRequest, dict
+        ] = None,
         *,
         organization_settings: gcs_organization_settings.OrganizationSettings = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_organization_settings.OrganizationSettings:
         r"""Updates an organization's settings.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.UpdateOrganizationSettingsRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.UpdateOrganizationSettingsRequest, dict]):
                 The request object. Request message for updating an
                 organization's settings.
             organization_settings (:class:`google.cloud.securitycenter_v1p1beta1.types.OrganizationSettings`):
@@ -2200,18 +2216,18 @@ class SecurityCenterAsyncClient:
 
     async def update_source(
         self,
-        request: securitycenter_service.UpdateSourceRequest = None,
+        request: Union[securitycenter_service.UpdateSourceRequest, dict] = None,
         *,
         source: gcs_source.Source = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_source.Source:
         r"""Updates a source.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.UpdateSourceRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.UpdateSourceRequest, dict]):
                 The request object. Request message for updating a
                 source.
             source (:class:`google.cloud.securitycenter_v1p1beta1.types.Source`):
@@ -2289,18 +2305,18 @@ class SecurityCenterAsyncClient:
 
     async def update_security_marks(
         self,
-        request: securitycenter_service.UpdateSecurityMarksRequest = None,
+        request: Union[securitycenter_service.UpdateSecurityMarksRequest, dict] = None,
         *,
         security_marks: gcs_security_marks.SecurityMarks = None,
         update_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_security_marks.SecurityMarks:
         r"""Updates security marks.
 
         Args:
-            request (:class:`google.cloud.securitycenter_v1p1beta1.types.UpdateSecurityMarksRequest`):
+            request (Union[google.cloud.securitycenter_v1p1beta1.types.UpdateSecurityMarksRequest, dict]):
                 The request object. Request message for updating a
                 SecurityMarks resource.
             security_marks (:class:`google.cloud.securitycenter_v1p1beta1.types.SecurityMarks`):

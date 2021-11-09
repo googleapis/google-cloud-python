@@ -1023,6 +1023,7 @@ class ListFindingsRequest(proto.Message):
                -  resource.project_display_name: ``=``, ``:``
                -  resource.type: ``=``, ``:``
                -  resource.folders.resource_folder: ``=``, ``:``
+               -  resource.display_name: ``=``, ``:``
         order_by (str):
             Expression that defines what fields and order to use for
             sorting. The string value should follow SQL syntax: comma
@@ -1169,11 +1170,15 @@ class ListFindingsResponse(proto.Message):
                     The full resource name of resource's parent.
                 parent_display_name (str):
                     The human readable name of resource's parent.
+                type_ (str):
+                    The full resource type of the resource.
                 folders (Sequence[google.cloud.securitycenter_v1.types.Folder]):
                     Contains a Folder message for each folder in
                     the assets ancestry. The first folder is the
                     deepest nested folder, and the last folder is
                     the folder directly under the Organization.
+                display_name (str):
+                    The human readable name of the resource.
             """
 
             name = proto.Field(proto.STRING, number=1,)
@@ -1181,9 +1186,11 @@ class ListFindingsResponse(proto.Message):
             project_display_name = proto.Field(proto.STRING, number=3,)
             parent_name = proto.Field(proto.STRING, number=4,)
             parent_display_name = proto.Field(proto.STRING, number=5,)
+            type_ = proto.Field(proto.STRING, number=6,)
             folders = proto.RepeatedField(
                 proto.MESSAGE, number=7, message=folder.Folder,
             )
+            display_name = proto.Field(proto.STRING, number=8,)
 
         finding = proto.Field(proto.MESSAGE, number=1, message=gcs_finding.Finding,)
         state_change = proto.Field(
