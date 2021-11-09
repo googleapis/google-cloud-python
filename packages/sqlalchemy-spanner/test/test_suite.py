@@ -111,6 +111,7 @@ from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
     UnicodeTextTest as _UnicodeTextTest,
     _UnicodeFixture as _UnicodeFixtureTest,
 )
+from test._helpers import get_db_url
 
 config.test_schema = ""
 
@@ -678,7 +679,7 @@ class ComponentReflectionTest(_ComponentReflectionTest):
             Column("foo", sqlalchemy.INT),
             sqlalchemy.Index("user_tmp_uq", "name", unique=True),
             sqlalchemy.Index("user_tmp_ix", "foo"),
-            **kw
+            **kw,
         )
         if (
             testing.requires.view_reflection.enabled
@@ -1508,10 +1509,7 @@ class InterleavedTablesTest(fixtures.TestBase):
     """
 
     def setUp(self):
-        self._engine = create_engine(
-            "spanner:///projects/appdev-soda-spanner-staging/instances/"
-            "sqlalchemy-dialect-test/databases/compliance-test"
-        )
+        self._engine = create_engine(get_db_url())
         self._metadata = MetaData(bind=self._engine)
 
     def test_interleave(self):
@@ -1560,10 +1558,7 @@ class UserAgentTest(fixtures.TestBase):
     """Check that SQLAlchemy dialect uses correct user agent."""
 
     def setUp(self):
-        self._engine = create_engine(
-            "spanner:///projects/appdev-soda-spanner-staging/instances/"
-            "sqlalchemy-dialect-test/databases/compliance-test"
-        )
+        self._engine = create_engine(get_db_url())
         self._metadata = MetaData(bind=self._engine)
 
     def test_user_agent(self):
@@ -1583,10 +1578,7 @@ class ExecutionOptionsTest(fixtures.TestBase):
     """
 
     def setUp(self):
-        self._engine = create_engine(
-            "spanner:///projects/appdev-soda-spanner-staging/instances/"
-            "sqlalchemy-dialect-test/databases/compliance-test"
-        )
+        self._engine = create_engine(get_db_url())
         self._metadata = MetaData(bind=self._engine)
 
         self._table = Table(

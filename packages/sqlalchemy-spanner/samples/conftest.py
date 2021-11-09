@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import configparser
 import datetime
+import os
 import uuid
 
 import pytest
@@ -30,10 +32,20 @@ from sqlalchemy import (
 
 @pytest.fixture
 def db_url():
-    return (
-        "spanner:///projects/appdev-soda-spanner-staging/instances/"
+    project = os.getenv(
+        "GOOGLE_CLOUD_PROJECT", os.getenv("PROJECT_ID", "emulator-test-project"),
+    )
+    db_url = (
+        f"spanner:///projects/{project}/instances/"
         "sqlalchemy-dialect-test/databases/compliance-test"
     )
+
+    config = configparser.ConfigParser()
+    if os.path.exists("test.cfg"):
+        config.read("test.cfg")
+    else:
+        config.read("setup.cfg")
+    return config.get("db", "default", fallback=db_url)
 
 
 @pytest.fixture

@@ -18,6 +18,14 @@ from sqlalchemy.testing.requirements import SuiteRequirements
 
 class Requirements(SuiteRequirements):
     @property
+    def sane_rowcount(self):
+        return exclusions.closed()
+
+    @property
+    def sane_multi_rowcount(self):
+        return exclusions.closed()
+
+    @property
     def foreign_key_constraint_name_reflection(self):
         return exclusions.open()
 

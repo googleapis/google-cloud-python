@@ -5,7 +5,9 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 
+import configparser
 import mock
+import os
 from sqlalchemy.testing import fixtures
 
 try:
@@ -27,6 +29,24 @@ except ImportError:
 
 _TEST_OT_EXPORTER = None
 _TEST_OT_PROVIDER_INITIALIZED = False
+
+
+PROJECT = os.getenv(
+    "GOOGLE_CLOUD_PROJECT", os.getenv("PROJECT_ID", "emulator-test-project"),
+)
+DB_URL = (
+    f"spanner:///projects/{PROJECT}/instances/"
+    "sqlalchemy-dialect-test/databases/compliance-test"
+)
+
+
+def get_db_url():
+    config = configparser.ConfigParser()
+    if os.path.exists("test.cfg"):
+        config.read("test.cfg")
+    else:
+        config.read("setup.cfg")
+    return config.get("db", "default", fallback=DB_URL)
 
 
 def get_test_ot_exporter():

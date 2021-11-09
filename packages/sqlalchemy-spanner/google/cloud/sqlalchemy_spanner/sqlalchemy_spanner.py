@@ -394,7 +394,7 @@ class SpannerDialect(DefaultDialect):
     execute_sequence_format = list
 
     supports_alter = True
-    supports_sane_rowcount = True
+    supports_sane_rowcount = False
     supports_sane_multi_rowcount = False
     supports_default_values = False
     supports_sequences = True

@@ -82,11 +82,11 @@ def create_test_instance():
     instance = CLIENT.instance(instance_id, instance_config, labels=labels)
 
     created_op = instance.create()
-    created_op.result(120)  # block until completion
+    created_op.result(1800)  # block until completion
 
     database = instance.database("compliance-test")
     created_op = database.create()
-    created_op.result(120)
+    created_op.result(1800)
 
     config = configparser.ConfigParser()
     url = "spanner:///projects/{project}/instances/{instance_id}/databases/compliance-test".format(
