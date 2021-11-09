@@ -241,6 +241,7 @@ class LogSink(proto.Message):
         bigquery_options (google.cloud.logging_v2.types.BigQueryOptions):
             Optional. Options that affect sinks exporting
             data to BigQuery.
+
             This field is a member of `oneof`_ ``options``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation timestamp of the

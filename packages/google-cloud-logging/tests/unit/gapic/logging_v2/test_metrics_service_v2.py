@@ -649,7 +649,9 @@ def test_list_log_metrics_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_log_metrics_flattened_error():
@@ -685,7 +687,9 @@ async def test_list_log_metrics_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1013,7 +1017,9 @@ def test_get_log_metric_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].metric_name == "metric_name_value"
+        arg = args[0].metric_name
+        mock_val = "metric_name_value"
+        assert arg == mock_val
 
 
 def test_get_log_metric_flattened_error():
@@ -1049,7 +1055,9 @@ async def test_get_log_metric_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].metric_name == "metric_name_value"
+        arg = args[0].metric_name
+        mock_val = "metric_name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1249,8 +1257,12 @@ def test_create_log_metric_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].metric == logging_metrics.LogMetric(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].metric
+        mock_val = logging_metrics.LogMetric(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_log_metric_flattened_error():
@@ -1292,8 +1304,12 @@ async def test_create_log_metric_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].metric == logging_metrics.LogMetric(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].metric
+        mock_val = logging_metrics.LogMetric(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1496,8 +1512,12 @@ def test_update_log_metric_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].metric_name == "metric_name_value"
-        assert args[0].metric == logging_metrics.LogMetric(name="name_value")
+        arg = args[0].metric_name
+        mock_val = "metric_name_value"
+        assert arg == mock_val
+        arg = args[0].metric
+        mock_val = logging_metrics.LogMetric(name="name_value")
+        assert arg == mock_val
 
 
 def test_update_log_metric_flattened_error():
@@ -1540,8 +1560,12 @@ async def test_update_log_metric_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].metric_name == "metric_name_value"
-        assert args[0].metric == logging_metrics.LogMetric(name="name_value")
+        arg = args[0].metric_name
+        mock_val = "metric_name_value"
+        assert arg == mock_val
+        arg = args[0].metric
+        mock_val = logging_metrics.LogMetric(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1715,7 +1739,9 @@ def test_delete_log_metric_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].metric_name == "metric_name_value"
+        arg = args[0].metric_name
+        mock_val = "metric_name_value"
+        assert arg == mock_val
 
 
 def test_delete_log_metric_flattened_error():
@@ -1751,7 +1777,9 @@ async def test_delete_log_metric_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].metric_name == "metric_name_value"
+        arg = args[0].metric_name
+        mock_val = "metric_name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

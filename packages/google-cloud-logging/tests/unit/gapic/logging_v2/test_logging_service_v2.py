@@ -639,7 +639,9 @@ def test_delete_log_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].log_name == "log_name_value"
+        arg = args[0].log_name
+        mock_val = "log_name_value"
+        assert arg == mock_val
 
 
 def test_delete_log_flattened_error():
@@ -673,7 +675,9 @@ async def test_delete_log_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].log_name == "log_name_value"
+        arg = args[0].log_name
+        mock_val = "log_name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -797,12 +801,18 @@ def test_write_log_entries_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].log_name == "log_name_value"
-        assert args[0].resource == monitored_resource_pb2.MonitoredResource(
-            type="type__value"
-        )
-        assert args[0].labels == {"key_value": "value_value"}
-        assert args[0].entries == [log_entry.LogEntry(log_name="log_name_value")]
+        arg = args[0].log_name
+        mock_val = "log_name_value"
+        assert arg == mock_val
+        arg = args[0].resource
+        mock_val = monitored_resource_pb2.MonitoredResource(type="type__value")
+        assert arg == mock_val
+        arg = args[0].labels
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
+        arg = args[0].entries
+        mock_val = [log_entry.LogEntry(log_name="log_name_value")]
+        assert arg == mock_val
 
 
 def test_write_log_entries_flattened_error():
@@ -849,12 +859,18 @@ async def test_write_log_entries_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].log_name == "log_name_value"
-        assert args[0].resource == monitored_resource_pb2.MonitoredResource(
-            type="type__value"
-        )
-        assert args[0].labels == {"key_value": "value_value"}
-        assert args[0].entries == [log_entry.LogEntry(log_name="log_name_value")]
+        arg = args[0].log_name
+        mock_val = "log_name_value"
+        assert arg == mock_val
+        arg = args[0].resource
+        mock_val = monitored_resource_pb2.MonitoredResource(type="type__value")
+        assert arg == mock_val
+        arg = args[0].labels
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
+        arg = args[0].entries
+        mock_val = [log_entry.LogEntry(log_name="log_name_value")]
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -977,9 +993,15 @@ def test_list_log_entries_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].resource_names == ["resource_names_value"]
-        assert args[0].filter == "filter_value"
-        assert args[0].order_by == "order_by_value"
+        arg = args[0].resource_names
+        mock_val = ["resource_names_value"]
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+        arg = args[0].order_by
+        mock_val = "order_by_value"
+        assert arg == mock_val
 
 
 def test_list_log_entries_flattened_error():
@@ -1022,9 +1044,15 @@ async def test_list_log_entries_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].resource_names == ["resource_names_value"]
-        assert args[0].filter == "filter_value"
-        assert args[0].order_by == "order_by_value"
+        arg = args[0].resource_names
+        mock_val = ["resource_names_value"]
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
+        arg = args[0].order_by
+        mock_val = "order_by_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1616,7 +1644,9 @@ def test_list_logs_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_logs_flattened_error():
@@ -1652,7 +1682,9 @@ async def test_list_logs_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
