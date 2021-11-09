@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.6.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.5.0...v1.6.0) (2021-11-05)
+
+
+### Features
+
+* add support for python 3.10 ([#192](https://www.github.com/googleapis/python-dialogflow-cx/issues/192)) ([527b679](https://www.github.com/googleapis/python-dialogflow-cx/commit/527b679286ce7ed6481bf5c9258858473ca1f601))
+* **v3:** added API for changelogs ([#197](https://www.github.com/googleapis/python-dialogflow-cx/issues/197)) ([4f41653](https://www.github.com/googleapis/python-dialogflow-cx/commit/4f41653b08a5be4aa6c871f285d941a2f43740a9))
+* **v3beta1:** added API for changelogs ([#198](https://www.github.com/googleapis/python-dialogflow-cx/issues/198)) ([484e13a](https://www.github.com/googleapis/python-dialogflow-cx/commit/484e13a78830a3d0ce8b1745fdf2dfce0f88a21e))
+* **v3beta1:** added support for comparing between versions ([#202](https://www.github.com/googleapis/python-dialogflow-cx/issues/202)) ([b8e16f8](https://www.github.com/googleapis/python-dialogflow-cx/commit/b8e16f8a17a49c1fc65f7f4392e33fb273bcd8ca))
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([c44582e](https://www.github.com/googleapis/python-dialogflow-cx/commit/c44582e2fe3d49327bb0fc5ba05d2959b6965b7b))
+* **deps:** require google-api-core >= 1.28.0 ([c44582e](https://www.github.com/googleapis/python-dialogflow-cx/commit/c44582e2fe3d49327bb0fc5ba05d2959b6965b7b))
+
+
+### Documentation
+
+* list oneofs in docstring ([c44582e](https://www.github.com/googleapis/python-dialogflow-cx/commit/c44582e2fe3d49327bb0fc5ba05d2959b6965b7b))
+* **samples:** add voice selection ([#184](https://www.github.com/googleapis/python-dialogflow-cx/issues/184)) ([778b86f](https://www.github.com/googleapis/python-dialogflow-cx/commit/778b86f69e88ceb884bb9933128d2b14c6689174))
+* **samples:** added webhook sample ([#169](https://www.github.com/googleapis/python-dialogflow-cx/issues/169)) ([74cfc9a](https://www.github.com/googleapis/python-dialogflow-cx/commit/74cfc9a7ab9b85fa05565c406534a3cd3391ab4f))
+* **samples:** adds list training phrases sample ([#196](https://www.github.com/googleapis/python-dialogflow-cx/issues/196)) ([dfefa4e](https://www.github.com/googleapis/python-dialogflow-cx/commit/dfefa4e21bcd6bf37d341911187fab283152f514))
+* **v3beta1:** clarified security settings API reference ([b8e16f8](https://www.github.com/googleapis/python-dialogflow-cx/commit/b8e16f8a17a49c1fc65f7f4392e33fb273bcd8ca))
+* **v3:** clarified semantic of the streaming APIs ([4f41653](https://www.github.com/googleapis/python-dialogflow-cx/commit/4f41653b08a5be4aa6c871f285d941a2f43740a9))
+
 ## [1.5.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.4.0...v1.5.0) (2021-10-11)
 
 
