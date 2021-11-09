@@ -1222,6 +1222,7 @@ class ObjectTrackingAnnotation(proto.Message):
             Non-streaming batch mode ONLY.
             Each object track corresponds to one video
             segment where it appears.
+
             This field is a member of `oneof`_ ``track_info``.
         track_id (int):
             Streaming mode ONLY. In streaming mode, we do not know the
@@ -1230,6 +1231,7 @@ class ObjectTrackingAnnotation(proto.Message):
             a unique identifiable integer track_id so that the customers
             can correlate the results of the ongoing
             ObjectTrackAnnotation of the same track_id over time.
+
             This field is a member of `oneof`_ ``track_info``.
         entity (google.cloud.videointelligence_v1p3beta1.types.Entity):
             Entity to specify the object category that
@@ -1302,6 +1304,7 @@ class StreamingAnnotateVideoRequest(proto.Message):
             process the request. The first
             ``AnnotateStreamingVideoRequest`` message must only contain
             a ``video_config`` message.
+
             This field is a member of `oneof`_ ``streaming_request``.
         input_content (bytes):
             The video data to be annotated. Chunks of video data are
@@ -1312,6 +1315,7 @@ class StreamingAnnotateVideoRequest(proto.Message):
             ``AnnotateStreamingVideoRequest`` messages must only contain
             ``input_content`` field. Note: as with all bytes fields,
             protobuffers use a pure binary representation (not base64).
+
             This field is a member of `oneof`_ ``streaming_request``.
     """
 
@@ -1338,24 +1342,31 @@ class StreamingVideoConfig(proto.Message):
     Attributes:
         shot_change_detection_config (google.cloud.videointelligence_v1p3beta1.types.StreamingShotChangeDetectionConfig):
             Config for STREAMING_SHOT_CHANGE_DETECTION.
+
             This field is a member of `oneof`_ ``streaming_config``.
         label_detection_config (google.cloud.videointelligence_v1p3beta1.types.StreamingLabelDetectionConfig):
             Config for STREAMING_LABEL_DETECTION.
+
             This field is a member of `oneof`_ ``streaming_config``.
         explicit_content_detection_config (google.cloud.videointelligence_v1p3beta1.types.StreamingExplicitContentDetectionConfig):
             Config for STREAMING_EXPLICIT_CONTENT_DETECTION.
+
             This field is a member of `oneof`_ ``streaming_config``.
         object_tracking_config (google.cloud.videointelligence_v1p3beta1.types.StreamingObjectTrackingConfig):
             Config for STREAMING_OBJECT_TRACKING.
+
             This field is a member of `oneof`_ ``streaming_config``.
         automl_action_recognition_config (google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlActionRecognitionConfig):
             Config for STREAMING_AUTOML_ACTION_RECOGNITION.
+
             This field is a member of `oneof`_ ``streaming_config``.
         automl_classification_config (google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlClassificationConfig):
             Config for STREAMING_AUTOML_CLASSIFICATION.
+
             This field is a member of `oneof`_ ``streaming_config``.
         automl_object_tracking_config (google.cloud.videointelligence_v1p3beta1.types.StreamingAutomlObjectTrackingConfig):
             Config for STREAMING_AUTOML_OBJECT_TRACKING.
+
             This field is a member of `oneof`_ ``streaming_config``.
         feature (google.cloud.videointelligence_v1p3beta1.types.StreamingFeature):
             Requested annotation feature.

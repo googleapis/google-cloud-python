@@ -1194,6 +1194,7 @@ class ObjectTrackingAnnotation(proto.Message):
             Non-streaming batch mode ONLY.
             Each object track corresponds to one video
             segment where it appears.
+
             This field is a member of `oneof`_ ``track_info``.
         track_id (int):
             Streaming mode ONLY. In streaming mode, we do not know the
@@ -1202,6 +1203,7 @@ class ObjectTrackingAnnotation(proto.Message):
             a unique identifiable integer track_id so that the customers
             can correlate the results of the ongoing
             ObjectTrackAnnotation of the same track_id over time.
+
             This field is a member of `oneof`_ ``track_info``.
         entity (google.cloud.videointelligence_v1.types.Entity):
             Entity to specify the object category that
