@@ -90,10 +90,12 @@ class Secret(proto.Message):
             [Secret][google.cloud.secretmanager.v1.Secret] is scheduled
             to expire. This is always provided on output, regardless of
             what was sent on input.
+
             This field is a member of `oneof`_ ``expiration``.
         ttl (google.protobuf.duration_pb2.Duration):
             Input only. The TTL for the
             [Secret][google.cloud.secretmanager.v1.Secret].
+
             This field is a member of `oneof`_ ``expiration``.
         etag (str):
             Optional. Etag of the currently stored
@@ -191,10 +193,12 @@ class Replication(proto.Message):
         automatic (google.cloud.secretmanager_v1.types.Replication.Automatic):
             The [Secret][google.cloud.secretmanager.v1.Secret] will
             automatically be replicated without any restrictions.
+
             This field is a member of `oneof`_ ``replication``.
         user_managed (google.cloud.secretmanager_v1.types.Replication.UserManaged):
             The [Secret][google.cloud.secretmanager.v1.Secret] will only
             be replicated into the locations specified.
+
             This field is a member of `oneof`_ ``replication``.
     """
 
@@ -323,6 +327,7 @@ class ReplicationStatus(proto.Message):
             Only populated if the parent
             [Secret][google.cloud.secretmanager.v1.Secret] has an
             automatic replication policy.
+
             This field is a member of `oneof`_ ``replication_status``.
         user_managed (google.cloud.secretmanager_v1.types.ReplicationStatus.UserManagedStatus):
             Describes the replication status of a
@@ -332,6 +337,7 @@ class ReplicationStatus(proto.Message):
             Only populated if the parent
             [Secret][google.cloud.secretmanager.v1.Secret] has a
             user-managed replication policy.
+
             This field is a member of `oneof`_ ``replication_status``.
     """
 
