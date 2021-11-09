@@ -86,6 +86,8 @@ for instructions on setting up credentials for applications.
 * [Enable Requester Pays](#enable-requester-pays)
 * [Enable Uniform Bucket Level Access](#enable-uniform-bucket-level-access)
 * [Enable Versioning](#enable-versioning)
+* [FileIO Write-Read] (#fileio-write-read)
+* [FileIO Pandas] (#fileio-pandas)
 * [Generate Encryption Key](#generate-encryption-key)
 * [Generate Signed Post Policy V4](#generate-signed-post-policy-v4)
 * [Generate Signed Url V2](#generate-signed-url-v2)
@@ -486,6 +488,22 @@ View the [source code](https://github.com/googleapis/python-storage/blob/main/sa
 
 `python storage_enable_versioning.py`
 
+-----
+### FileIO Write-Read
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/snippets/storage_fileio_write_read.py,samples/README.md)
+
+View the [source code](https://github.com/googleapis/python-storage/blob/main/samples/snippets/storage_fileio_write_read.py). To run this sample:
+
+
+`python storage_fileio_write_read.py <BUCKET_NAME> <BLOB_NAME>`
+-----
+### FileIO Pandas
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/snippets/storage_fileio_pandas.py,samples/README.md)
+
+View the [source code](https://github.com/googleapis/python-storage/blob/main/samples/snippets/storage_fileio_pandas.py). To run this sample:
+
+
+`python storage_fileio_pandas.py <BUCKET_NAME> <BLOB_NAME>`
 -----
 ### Generate Encryption Key
 [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/snippets/storage_generate_encryption_key.py,samples/README.md)
