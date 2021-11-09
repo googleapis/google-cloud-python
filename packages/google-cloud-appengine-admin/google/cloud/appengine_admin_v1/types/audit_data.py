@@ -38,10 +38,12 @@ class AuditData(proto.Message):
         update_service (google.cloud.appengine_admin_v1.types.UpdateServiceMethod):
             Detailed information about UpdateService
             call.
+
             This field is a member of `oneof`_ ``method``.
         create_version (google.cloud.appengine_admin_v1.types.CreateVersionMethod):
             Detailed information about CreateVersion
             call.
+
             This field is a member of `oneof`_ ``method``.
     """
 

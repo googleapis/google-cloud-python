@@ -142,15 +142,18 @@ class UrlMap(proto.Message):
         static_files (google.cloud.appengine_admin_v1.types.StaticFilesHandler):
             Returns the contents of a file, such as an
             image, as the response.
+
             This field is a member of `oneof`_ ``handler_type``.
         script (google.cloud.appengine_admin_v1.types.ScriptHandler):
             Executes a script to handle the requests that match this URL
             pattern. Only the ``auto`` value is supported for Node.js in
             the App Engine standard environment, for example
             ``"script": "auto"``.
+
             This field is a member of `oneof`_ ``handler_type``.
         api_endpoint (google.cloud.appengine_admin_v1.types.ApiEndpointHandler):
             Uses API Endpoints to handle requests.
+
             This field is a member of `oneof`_ ``handler_type``.
         security_level (google.cloud.appengine_admin_v1.types.SecurityLevel):
             Security (HTTPS) enforcement for this URL.

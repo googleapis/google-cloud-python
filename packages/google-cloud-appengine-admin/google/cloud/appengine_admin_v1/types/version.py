@@ -92,6 +92,7 @@ class Version(proto.Message):
             response latencies, and other application
             metrics. Instances are dynamically created and
             destroyed as needed in order to handle traffic.
+
             This field is a member of `oneof`_ ``scaling``.
         basic_scaling (google.cloud.appengine_admin_v1.types.BasicScaling):
             A service with basic scaling will create an
@@ -100,6 +101,7 @@ class Version(proto.Message):
             the app becomes idle. Basic scaling is ideal for
             work that is intermittent or driven by user
             activity.
+
             This field is a member of `oneof`_ ``scaling``.
         manual_scaling (google.cloud.appengine_admin_v1.types.ManualScaling):
             A service with manual scaling runs
@@ -107,6 +109,7 @@ class Version(proto.Message):
             initialization and rely on the state of its
             memory over time. Manually scaled versions are
             sometimes referred to as "backends".
+
             This field is a member of `oneof`_ ``scaling``.
         inbound_services (Sequence[google.cloud.appengine_admin_v1.types.InboundServiceType]):
             Before an application can receive email or
@@ -714,6 +717,7 @@ class Entrypoint(proto.Message):
         shell (str):
             The format should be a shell command that can be fed to
             ``bash -c``.
+
             This field is a member of `oneof`_ ``command``.
     """
 
