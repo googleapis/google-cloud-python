@@ -688,9 +688,15 @@ def test_create_microsoft_ad_domain_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].domain_name == "domain_name_value"
-        assert args[0].domain == resource.Domain(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].domain_name
+        mock_val = "domain_name_value"
+        assert arg == mock_val
+        arg = args[0].domain
+        mock_val = resource.Domain(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_microsoft_ad_domain_flattened_error():
@@ -737,9 +743,15 @@ async def test_create_microsoft_ad_domain_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].domain_name == "domain_name_value"
-        assert args[0].domain == resource.Domain(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].domain_name
+        mock_val = "domain_name_value"
+        assert arg == mock_val
+        arg = args[0].domain
+        mock_val = resource.Domain(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -930,7 +942,9 @@ def test_reset_admin_password_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_reset_admin_password_flattened_error():
@@ -970,7 +984,9 @@ async def test_reset_admin_password_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1148,7 +1164,9 @@ def test_list_domains_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_domains_flattened_error():
@@ -1186,7 +1204,9 @@ async def test_list_domains_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1525,7 +1545,9 @@ def test_get_domain_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_domain_flattened_error():
@@ -1561,7 +1583,9 @@ async def test_get_domain_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1733,8 +1757,12 @@ def test_update_domain_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].domain == resource.Domain(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].domain
+        mock_val = resource.Domain(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_domain_flattened_error():
@@ -1777,8 +1805,12 @@ async def test_update_domain_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].domain == resource.Domain(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].domain
+        mock_val = resource.Domain(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1949,7 +1981,9 @@ def test_delete_domain_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_domain_flattened_error():
@@ -1987,7 +2021,9 @@ async def test_delete_domain_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2159,10 +2195,12 @@ def test_attach_trust_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].trust == resource.Trust(
-            target_domain_name="target_domain_name_value"
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].trust
+        mock_val = resource.Trust(target_domain_name="target_domain_name_value")
+        assert arg == mock_val
 
 
 def test_attach_trust_flattened_error():
@@ -2205,10 +2243,12 @@ async def test_attach_trust_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].trust == resource.Trust(
-            target_domain_name="target_domain_name_value"
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].trust
+        mock_val = resource.Trust(target_domain_name="target_domain_name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2396,9 +2436,15 @@ def test_reconfigure_trust_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].target_domain_name == "target_domain_name_value"
-        assert args[0].target_dns_ip_addresses == ["target_dns_ip_addresses_value"]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].target_domain_name
+        mock_val = "target_domain_name_value"
+        assert arg == mock_val
+        arg = args[0].target_dns_ip_addresses
+        mock_val = ["target_dns_ip_addresses_value"]
+        assert arg == mock_val
 
 
 def test_reconfigure_trust_flattened_error():
@@ -2445,9 +2491,15 @@ async def test_reconfigure_trust_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].target_domain_name == "target_domain_name_value"
-        assert args[0].target_dns_ip_addresses == ["target_dns_ip_addresses_value"]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].target_domain_name
+        mock_val = "target_domain_name_value"
+        assert arg == mock_val
+        arg = args[0].target_dns_ip_addresses
+        mock_val = ["target_dns_ip_addresses_value"]
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2622,10 +2674,12 @@ def test_detach_trust_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].trust == resource.Trust(
-            target_domain_name="target_domain_name_value"
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].trust
+        mock_val = resource.Trust(target_domain_name="target_domain_name_value")
+        assert arg == mock_val
 
 
 def test_detach_trust_flattened_error():
@@ -2668,10 +2722,12 @@ async def test_detach_trust_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].trust == resource.Trust(
-            target_domain_name="target_domain_name_value"
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].trust
+        mock_val = resource.Trust(target_domain_name="target_domain_name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2846,10 +2902,12 @@ def test_validate_trust_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].trust == resource.Trust(
-            target_domain_name="target_domain_name_value"
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].trust
+        mock_val = resource.Trust(target_domain_name="target_domain_name_value")
+        assert arg == mock_val
 
 
 def test_validate_trust_flattened_error():
@@ -2892,10 +2950,12 @@ async def test_validate_trust_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].trust == resource.Trust(
-            target_domain_name="target_domain_name_value"
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].trust
+        mock_val = resource.Trust(target_domain_name="target_domain_name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
