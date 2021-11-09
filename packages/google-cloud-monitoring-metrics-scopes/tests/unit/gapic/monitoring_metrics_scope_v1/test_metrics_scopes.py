@@ -647,7 +647,9 @@ def test_get_metrics_scope_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_metrics_scope_flattened_error():
@@ -685,7 +687,9 @@ async def test_get_metrics_scope_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -956,10 +960,12 @@ def test_create_monitored_project_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].monitored_project == metrics_scope.MonitoredProject(
-            name="name_value"
-        )
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].monitored_project
+        mock_val = metrics_scope.MonitoredProject(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_monitored_project_flattened_error():
@@ -1002,10 +1008,12 @@ async def test_create_monitored_project_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].monitored_project == metrics_scope.MonitoredProject(
-            name="name_value"
-        )
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].monitored_project
+        mock_val = metrics_scope.MonitoredProject(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1184,7 +1192,9 @@ def test_delete_monitored_project_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_monitored_project_flattened_error():
@@ -1222,7 +1232,9 @@ async def test_delete_monitored_project_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
