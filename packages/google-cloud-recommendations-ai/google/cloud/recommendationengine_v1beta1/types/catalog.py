@@ -91,6 +91,7 @@ class CatalogItem(proto.Message):
         product_metadata (google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem):
             Optional. Metadata specific to retail
             products.
+
             This field is a member of `oneof`_ ``recommendation_type``.
     """
 
@@ -140,9 +141,11 @@ class ProductCatalogItem(proto.Message):
     Attributes:
         exact_price (google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem.ExactPrice):
             Optional. The exact product price.
+
             This field is a member of `oneof`_ ``price``.
         price_range (google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem.PriceRange):
             Optional. The product price range.
+
             This field is a member of `oneof`_ ``price``.
         costs (Sequence[google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem.CostsEntry]):
             Optional. A map to pass the costs associated with the

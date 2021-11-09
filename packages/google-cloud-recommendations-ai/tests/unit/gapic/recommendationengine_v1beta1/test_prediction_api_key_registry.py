@@ -713,12 +713,14 @@ def test_create_prediction_api_key_registration_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[
-            0
-        ].prediction_api_key_registration == prediction_apikey_registry_service.PredictionApiKeyRegistration(
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].prediction_api_key_registration
+        mock_val = prediction_apikey_registry_service.PredictionApiKeyRegistration(
             api_key="api_key_value"
         )
+        assert arg == mock_val
 
 
 def test_create_prediction_api_key_registration_flattened_error():
@@ -769,12 +771,14 @@ async def test_create_prediction_api_key_registration_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[
-            0
-        ].prediction_api_key_registration == prediction_apikey_registry_service.PredictionApiKeyRegistration(
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].prediction_api_key_registration
+        mock_val = prediction_apikey_registry_service.PredictionApiKeyRegistration(
             api_key="api_key_value"
         )
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -983,7 +987,9 @@ def test_list_prediction_api_key_registrations_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_prediction_api_key_registrations_flattened_error():
@@ -1028,7 +1034,9 @@ async def test_list_prediction_api_key_registrations_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1418,7 +1426,9 @@ def test_delete_prediction_api_key_registration_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_prediction_api_key_registration_flattened_error():
@@ -1459,7 +1469,9 @@ async def test_delete_prediction_api_key_registration_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

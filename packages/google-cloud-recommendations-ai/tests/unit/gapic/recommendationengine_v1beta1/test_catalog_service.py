@@ -682,8 +682,12 @@ def test_create_catalog_item_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].catalog_item == catalog.CatalogItem(id="id_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].catalog_item
+        mock_val = catalog.CatalogItem(id="id_value")
+        assert arg == mock_val
 
 
 def test_create_catalog_item_flattened_error():
@@ -723,8 +727,12 @@ async def test_create_catalog_item_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].catalog_item == catalog.CatalogItem(id="id_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].catalog_item
+        mock_val = catalog.CatalogItem(id="id_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -917,7 +925,9 @@ def test_get_catalog_item_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_catalog_item_flattened_error():
@@ -951,7 +961,9 @@ async def test_get_catalog_item_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1136,8 +1148,12 @@ def test_list_catalog_items_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].filter == "filter_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
 
 
 def test_list_catalog_items_flattened_error():
@@ -1179,8 +1195,12 @@ async def test_list_catalog_items_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].filter == "filter_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = "filter_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1544,9 +1564,15 @@ def test_update_catalog_item_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].catalog_item == catalog.CatalogItem(id="id_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].catalog_item
+        mock_val = catalog.CatalogItem(id="id_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_catalog_item_flattened_error():
@@ -1589,9 +1615,15 @@ async def test_update_catalog_item_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].catalog_item == catalog.CatalogItem(id="id_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].catalog_item
+        mock_val = catalog.CatalogItem(id="id_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1767,7 +1799,9 @@ def test_delete_catalog_item_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_catalog_item_flattened_error():
@@ -1803,7 +1837,9 @@ async def test_delete_catalog_item_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1988,16 +2024,22 @@ def test_import_catalog_items_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].request_id == "request_id_value"
-        assert args[0].input_config == import_.InputConfig(
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].request_id
+        mock_val = "request_id_value"
+        assert arg == mock_val
+        arg = args[0].input_config
+        mock_val = import_.InputConfig(
             catalog_inline_source=import_.CatalogInlineSource(
                 catalog_items=[catalog.CatalogItem(id="id_value")]
             )
         )
-        assert args[0].errors_config == import_.ImportErrorsConfig(
-            gcs_prefix="gcs_prefix_value"
-        )
+        assert arg == mock_val
+        arg = args[0].errors_config
+        mock_val = import_.ImportErrorsConfig(gcs_prefix="gcs_prefix_value")
+        assert arg == mock_val
 
 
 def test_import_catalog_items_flattened_error():
@@ -2052,16 +2094,22 @@ async def test_import_catalog_items_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].request_id == "request_id_value"
-        assert args[0].input_config == import_.InputConfig(
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].request_id
+        mock_val = "request_id_value"
+        assert arg == mock_val
+        arg = args[0].input_config
+        mock_val = import_.InputConfig(
             catalog_inline_source=import_.CatalogInlineSource(
                 catalog_items=[catalog.CatalogItem(id="id_value")]
             )
         )
-        assert args[0].errors_config == import_.ImportErrorsConfig(
-            gcs_prefix="gcs_prefix_value"
-        )
+        assert arg == mock_val
+        arg = args[0].errors_config
+        mock_val = import_.ImportErrorsConfig(gcs_prefix="gcs_prefix_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
