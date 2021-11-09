@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.8.0](https://www.github.com/googleapis/python-secret-manager/compare/v2.7.3...v2.8.0) (2021-11-08)
+
+
+### Features
+
+* add context manager support in client ([#210](https://www.github.com/googleapis/python-secret-manager/issues/210)) ([8d247d4](https://www.github.com/googleapis/python-secret-manager/commit/8d247d4b7f96faa61532ac09ef95e2599c523702))
+* add support for python 3.10 ([#214](https://www.github.com/googleapis/python-secret-manager/issues/214)) ([5e3cc7e](https://www.github.com/googleapis/python-secret-manager/commit/5e3cc7ef9a0e3660c9734f989d5b1e82a18d336c))
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([6aac11f](https://www.github.com/googleapis/python-secret-manager/commit/6aac11f08d396835f7c4ca71c7a2f2a2a48e96db))
+* **deps:** require google-api-core >= 1.28.0 ([6aac11f](https://www.github.com/googleapis/python-secret-manager/commit/6aac11f08d396835f7c4ca71c7a2f2a2a48e96db))
+
+
+### Documentation
+
+* list oneofs in docstring ([6aac11f](https://www.github.com/googleapis/python-secret-manager/commit/6aac11f08d396835f7c4ca71c7a2f2a2a48e96db))
+* **samples:** Add filtered listing samples ([#209](https://www.github.com/googleapis/python-secret-manager/issues/209)) ([316de2d](https://www.github.com/googleapis/python-secret-manager/commit/316de2d68283e4c1da7f4fdc24fc7e6d65adbfd0))
+
 ### [2.7.3](https://www.github.com/googleapis/python-secret-manager/compare/v2.7.2...v2.7.3) (2021-09-30)
 
 
