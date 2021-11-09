@@ -596,8 +596,12 @@ def test_search_domains_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].location == "location_value"
-        assert args[0].query == "query_value"
+        arg = args[0].location
+        mock_val = "location_value"
+        assert arg == mock_val
+        arg = args[0].query
+        mock_val = "query_value"
+        assert arg == mock_val
 
 
 def test_search_domains_flattened_error():
@@ -635,8 +639,12 @@ async def test_search_domains_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].location == "location_value"
-        assert args[0].query == "query_value"
+        arg = args[0].location
+        mock_val = "location_value"
+        assert arg == mock_val
+        arg = args[0].query
+        mock_val = "query_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -813,8 +821,12 @@ def test_retrieve_register_parameters_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].location == "location_value"
-        assert args[0].domain_name == "domain_name_value"
+        arg = args[0].location
+        mock_val = "location_value"
+        assert arg == mock_val
+        arg = args[0].domain_name
+        mock_val = "domain_name_value"
+        assert arg == mock_val
 
 
 def test_retrieve_register_parameters_flattened_error():
@@ -854,8 +866,12 @@ async def test_retrieve_register_parameters_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].location == "location_value"
-        assert args[0].domain_name == "domain_name_value"
+        arg = args[0].location
+        mock_val = "location_value"
+        assert arg == mock_val
+        arg = args[0].domain_name
+        mock_val = "domain_name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1021,11 +1037,15 @@ def test_register_domain_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].registration == domains.Registration(name="name_value")
-        assert args[0].yearly_price == money_pb2.Money(
-            currency_code="currency_code_value"
-        )
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].registration
+        mock_val = domains.Registration(name="name_value")
+        assert arg == mock_val
+        arg = args[0].yearly_price
+        mock_val = money_pb2.Money(currency_code="currency_code_value")
+        assert arg == mock_val
 
 
 def test_register_domain_flattened_error():
@@ -1066,11 +1086,15 @@ async def test_register_domain_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].registration == domains.Registration(name="name_value")
-        assert args[0].yearly_price == money_pb2.Money(
-            currency_code="currency_code_value"
-        )
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].registration
+        mock_val = domains.Registration(name="name_value")
+        assert arg == mock_val
+        arg = args[0].yearly_price
+        mock_val = money_pb2.Money(currency_code="currency_code_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1248,8 +1272,12 @@ def test_retrieve_transfer_parameters_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].location == "location_value"
-        assert args[0].domain_name == "domain_name_value"
+        arg = args[0].location
+        mock_val = "location_value"
+        assert arg == mock_val
+        arg = args[0].domain_name
+        mock_val = "domain_name_value"
+        assert arg == mock_val
 
 
 def test_retrieve_transfer_parameters_flattened_error():
@@ -1289,8 +1317,12 @@ async def test_retrieve_transfer_parameters_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].location == "location_value"
-        assert args[0].domain_name == "domain_name_value"
+        arg = args[0].location
+        mock_val = "location_value"
+        assert arg == mock_val
+        arg = args[0].domain_name
+        mock_val = "domain_name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1457,14 +1489,18 @@ def test_transfer_domain_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].registration == domains.Registration(name="name_value")
-        assert args[0].yearly_price == money_pb2.Money(
-            currency_code="currency_code_value"
-        )
-        assert args[0].authorization_code == domains.AuthorizationCode(
-            code="code_value"
-        )
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].registration
+        mock_val = domains.Registration(name="name_value")
+        assert arg == mock_val
+        arg = args[0].yearly_price
+        mock_val = money_pb2.Money(currency_code="currency_code_value")
+        assert arg == mock_val
+        arg = args[0].authorization_code
+        mock_val = domains.AuthorizationCode(code="code_value")
+        assert arg == mock_val
 
 
 def test_transfer_domain_flattened_error():
@@ -1507,14 +1543,18 @@ async def test_transfer_domain_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].registration == domains.Registration(name="name_value")
-        assert args[0].yearly_price == money_pb2.Money(
-            currency_code="currency_code_value"
-        )
-        assert args[0].authorization_code == domains.AuthorizationCode(
-            code="code_value"
-        )
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].registration
+        mock_val = domains.Registration(name="name_value")
+        assert arg == mock_val
+        arg = args[0].yearly_price
+        mock_val = money_pb2.Money(currency_code="currency_code_value")
+        assert arg == mock_val
+        arg = args[0].authorization_code
+        mock_val = domains.AuthorizationCode(code="code_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1694,7 +1734,9 @@ def test_list_registrations_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_registrations_flattened_error():
@@ -1730,7 +1772,9 @@ async def test_list_registrations_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2058,7 +2102,9 @@ def test_get_registration_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_registration_flattened_error():
@@ -2092,7 +2138,9 @@ async def test_get_registration_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2273,8 +2321,12 @@ def test_update_registration_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].registration == domains.Registration(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].registration
+        mock_val = domains.Registration(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_registration_flattened_error():
@@ -2315,8 +2367,12 @@ async def test_update_registration_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].registration == domains.Registration(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].registration
+        mock_val = domains.Registration(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2501,11 +2557,17 @@ def test_configure_management_settings_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].registration == "registration_value"
-        assert args[0].management_settings == domains.ManagementSettings(
+        arg = args[0].registration
+        mock_val = "registration_value"
+        assert arg == mock_val
+        arg = args[0].management_settings
+        mock_val = domains.ManagementSettings(
             renewal_method=domains.ManagementSettings.RenewalMethod.AUTOMATIC_RENEWAL
         )
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_configure_management_settings_flattened_error():
@@ -2552,11 +2614,17 @@ async def test_configure_management_settings_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].registration == "registration_value"
-        assert args[0].management_settings == domains.ManagementSettings(
+        arg = args[0].registration
+        mock_val = "registration_value"
+        assert arg == mock_val
+        arg = args[0].management_settings
+        mock_val = domains.ManagementSettings(
             renewal_method=domains.ManagementSettings.RenewalMethod.AUTOMATIC_RENEWAL
         )
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2745,13 +2813,19 @@ def test_configure_dns_settings_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].registration == "registration_value"
-        assert args[0].dns_settings == domains.DnsSettings(
+        arg = args[0].registration
+        mock_val = "registration_value"
+        assert arg == mock_val
+        arg = args[0].dns_settings
+        mock_val = domains.DnsSettings(
             custom_dns=domains.DnsSettings.CustomDns(
                 name_servers=["name_servers_value"]
             )
         )
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_configure_dns_settings_flattened_error():
@@ -2802,13 +2876,19 @@ async def test_configure_dns_settings_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].registration == "registration_value"
-        assert args[0].dns_settings == domains.DnsSettings(
+        arg = args[0].registration
+        mock_val = "registration_value"
+        assert arg == mock_val
+        arg = args[0].dns_settings
+        mock_val = domains.DnsSettings(
             custom_dns=domains.DnsSettings.CustomDns(
                 name_servers=["name_servers_value"]
             )
         )
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2998,11 +3078,17 @@ def test_configure_contact_settings_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].registration == "registration_value"
-        assert args[0].contact_settings == domains.ContactSettings(
+        arg = args[0].registration
+        mock_val = "registration_value"
+        assert arg == mock_val
+        arg = args[0].contact_settings
+        mock_val = domains.ContactSettings(
             privacy=domains.ContactPrivacy.PUBLIC_CONTACT_DATA
         )
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_configure_contact_settings_flattened_error():
@@ -3049,11 +3135,17 @@ async def test_configure_contact_settings_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].registration == "registration_value"
-        assert args[0].contact_settings == domains.ContactSettings(
+        arg = args[0].registration
+        mock_val = "registration_value"
+        assert arg == mock_val
+        arg = args[0].contact_settings
+        mock_val = domains.ContactSettings(
             privacy=domains.ContactPrivacy.PUBLIC_CONTACT_DATA
         )
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3230,7 +3322,9 @@ def test_export_registration_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_export_registration_flattened_error():
@@ -3266,7 +3360,9 @@ async def test_export_registration_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3438,7 +3534,9 @@ def test_delete_registration_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_registration_flattened_error():
@@ -3474,7 +3572,9 @@ async def test_delete_registration_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3653,7 +3753,9 @@ def test_retrieve_authorization_code_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].registration == "registration_value"
+        arg = args[0].registration
+        mock_val = "registration_value"
+        assert arg == mock_val
 
 
 def test_retrieve_authorization_code_flattened_error():
@@ -3692,7 +3794,9 @@ async def test_retrieve_authorization_code_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].registration == "registration_value"
+        arg = args[0].registration
+        mock_val = "registration_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3871,7 +3975,9 @@ def test_reset_authorization_code_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].registration == "registration_value"
+        arg = args[0].registration
+        mock_val = "registration_value"
+        assert arg == mock_val
 
 
 def test_reset_authorization_code_flattened_error():
@@ -3909,7 +4015,9 @@ async def test_reset_authorization_code_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].registration == "registration_value"
+        arg = args[0].registration
+        mock_val = "registration_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

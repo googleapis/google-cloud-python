@@ -242,10 +242,12 @@ class DnsSettings(proto.Message):
         custom_dns (google.cloud.domains_v1.types.DnsSettings.CustomDns):
             An arbitrary DNS provider identified by its
             name servers.
+
             This field is a member of `oneof`_ ``dns_provider``.
         google_domains_dns (google.cloud.domains_v1.types.DnsSettings.GoogleDomainsDns):
             The free DNS zone provided by `Google
             Domains <https://domains.google/>`__.
+
             This field is a member of `oneof`_ ``dns_provider``.
         glue_records (Sequence[google.cloud.domains_v1.types.DnsSettings.GlueRecord]):
             The list of glue records for this ``Registration``. Commonly
