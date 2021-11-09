@@ -628,7 +628,9 @@ def test_list_hubs_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_hubs_flattened_error():
@@ -662,7 +664,9 @@ async def test_list_hubs_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -942,7 +946,9 @@ def test_get_hub_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_hub_flattened_error():
@@ -974,7 +980,9 @@ async def test_get_hub_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1136,9 +1144,15 @@ def test_create_hub_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].hub == gcn_hub.Hub(name="name_value")
-        assert args[0].hub_id == "hub_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].hub
+        mock_val = gcn_hub.Hub(name="name_value")
+        assert arg == mock_val
+        arg = args[0].hub_id
+        mock_val = "hub_id_value"
+        assert arg == mock_val
 
 
 def test_create_hub_flattened_error():
@@ -1179,9 +1193,15 @@ async def test_create_hub_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].hub == gcn_hub.Hub(name="name_value")
-        assert args[0].hub_id == "hub_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].hub
+        mock_val = gcn_hub.Hub(name="name_value")
+        assert arg == mock_val
+        arg = args[0].hub_id
+        mock_val = "hub_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1345,8 +1365,12 @@ def test_update_hub_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].hub == gcn_hub.Hub(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].hub
+        mock_val = gcn_hub.Hub(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_hub_flattened_error():
@@ -1385,8 +1409,12 @@ async def test_update_hub_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].hub == gcn_hub.Hub(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].hub
+        mock_val = gcn_hub.Hub(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1546,7 +1574,9 @@ def test_delete_hub_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_hub_flattened_error():
@@ -1580,7 +1610,9 @@ async def test_delete_hub_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1747,7 +1779,9 @@ def test_list_spokes_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_spokes_flattened_error():
@@ -1781,7 +1815,9 @@ async def test_list_spokes_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2075,7 +2111,9 @@ def test_get_spoke_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_spoke_flattened_error():
@@ -2107,7 +2145,9 @@ async def test_get_spoke_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2269,9 +2309,15 @@ def test_create_spoke_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].spoke == hub.Spoke(name="name_value")
-        assert args[0].spoke_id == "spoke_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].spoke
+        mock_val = hub.Spoke(name="name_value")
+        assert arg == mock_val
+        arg = args[0].spoke_id
+        mock_val = "spoke_id_value"
+        assert arg == mock_val
 
 
 def test_create_spoke_flattened_error():
@@ -2312,9 +2358,15 @@ async def test_create_spoke_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].spoke == hub.Spoke(name="name_value")
-        assert args[0].spoke_id == "spoke_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].spoke
+        mock_val = hub.Spoke(name="name_value")
+        assert arg == mock_val
+        arg = args[0].spoke_id
+        mock_val = "spoke_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2478,8 +2530,12 @@ def test_update_spoke_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].spoke == hub.Spoke(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].spoke
+        mock_val = hub.Spoke(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_spoke_flattened_error():
@@ -2518,8 +2574,12 @@ async def test_update_spoke_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].spoke == hub.Spoke(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].spoke
+        mock_val = hub.Spoke(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2679,7 +2739,9 @@ def test_delete_spoke_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_spoke_flattened_error():
@@ -2713,7 +2775,9 @@ async def test_delete_spoke_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
