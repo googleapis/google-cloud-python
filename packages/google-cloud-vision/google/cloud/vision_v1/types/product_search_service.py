@@ -718,6 +718,7 @@ class ImportProductSetsInputConfig(proto.Message):
             The Google Cloud Storage location for a csv
             file which preserves a list of
             ImportProductSetRequests in each line.
+
             This field is a member of `oneof`_ ``source``.
     """
 
@@ -836,10 +837,12 @@ class PurgeProductsRequest(proto.Message):
         product_set_purge_config (google.cloud.vision_v1.types.ProductSetPurgeConfig):
             Specify which ProductSet contains the
             Products to be deleted.
+
             This field is a member of `oneof`_ ``target``.
         delete_orphan_products (bool):
             If delete_orphan_products is true, all Products that are not
             in any ProductSet will be deleted.
+
             This field is a member of `oneof`_ ``target``.
         parent (str):
             Required. The project and location in which the Products

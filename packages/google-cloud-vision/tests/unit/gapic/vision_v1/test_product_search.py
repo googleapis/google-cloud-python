@@ -658,11 +658,15 @@ def test_create_product_set_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].product_set == product_search_service.ProductSet(
-            name="name_value"
-        )
-        assert args[0].product_set_id == "product_set_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].product_set
+        mock_val = product_search_service.ProductSet(name="name_value")
+        assert arg == mock_val
+        arg = args[0].product_set_id
+        mock_val = "product_set_id_value"
+        assert arg == mock_val
 
 
 def test_create_product_set_flattened_error():
@@ -707,11 +711,15 @@ async def test_create_product_set_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].product_set == product_search_service.ProductSet(
-            name="name_value"
-        )
-        assert args[0].product_set_id == "product_set_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].product_set
+        mock_val = product_search_service.ProductSet(name="name_value")
+        assert arg == mock_val
+        arg = args[0].product_set_id
+        mock_val = "product_set_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -897,7 +905,9 @@ def test_list_product_sets_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_product_sets_flattened_error():
@@ -935,7 +945,9 @@ async def test_list_product_sets_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1278,7 +1290,9 @@ def test_get_product_set_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_product_set_flattened_error():
@@ -1314,7 +1328,9 @@ async def test_get_product_set_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1506,10 +1522,12 @@ def test_update_product_set_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].product_set == product_search_service.ProductSet(
-            name="name_value"
-        )
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].product_set
+        mock_val = product_search_service.ProductSet(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_product_set_flattened_error():
@@ -1552,10 +1570,12 @@ async def test_update_product_set_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].product_set == product_search_service.ProductSet(
-            name="name_value"
-        )
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].product_set
+        mock_val = product_search_service.ProductSet(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1730,7 +1750,9 @@ def test_delete_product_set_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_product_set_flattened_error():
@@ -1766,7 +1788,9 @@ async def test_delete_product_set_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1953,9 +1977,15 @@ def test_create_product_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].product == product_search_service.Product(name="name_value")
-        assert args[0].product_id == "product_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].product
+        mock_val = product_search_service.Product(name="name_value")
+        assert arg == mock_val
+        arg = args[0].product_id
+        mock_val = "product_id_value"
+        assert arg == mock_val
 
 
 def test_create_product_flattened_error():
@@ -1998,9 +2028,15 @@ async def test_create_product_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].product == product_search_service.Product(name="name_value")
-        assert args[0].product_id == "product_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].product
+        mock_val = product_search_service.Product(name="name_value")
+        assert arg == mock_val
+        arg = args[0].product_id
+        mock_val = "product_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2174,7 +2210,9 @@ def test_list_products_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_products_flattened_error():
@@ -2210,7 +2248,9 @@ async def test_list_products_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2551,7 +2591,9 @@ def test_get_product_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_product_flattened_error():
@@ -2587,7 +2629,9 @@ async def test_get_product_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2777,8 +2821,12 @@ def test_update_product_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].product == product_search_service.Product(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].product
+        mock_val = product_search_service.Product(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_product_flattened_error():
@@ -2819,8 +2867,12 @@ async def test_update_product_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].product == product_search_service.Product(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].product
+        mock_val = product_search_service.Product(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2983,7 +3035,9 @@ def test_delete_product_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_product_flattened_error():
@@ -3017,7 +3071,9 @@ async def test_delete_product_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3205,11 +3261,15 @@ def test_create_reference_image_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].reference_image == product_search_service.ReferenceImage(
-            name="name_value"
-        )
-        assert args[0].reference_image_id == "reference_image_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].reference_image
+        mock_val = product_search_service.ReferenceImage(name="name_value")
+        assert arg == mock_val
+        arg = args[0].reference_image_id
+        mock_val = "reference_image_id_value"
+        assert arg == mock_val
 
 
 def test_create_reference_image_flattened_error():
@@ -3254,11 +3314,15 @@ async def test_create_reference_image_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].reference_image == product_search_service.ReferenceImage(
-            name="name_value"
-        )
-        assert args[0].reference_image_id == "reference_image_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].reference_image
+        mock_val = product_search_service.ReferenceImage(name="name_value")
+        assert arg == mock_val
+        arg = args[0].reference_image_id
+        mock_val = "reference_image_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3435,7 +3499,9 @@ def test_delete_reference_image_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_reference_image_flattened_error():
@@ -3471,7 +3537,9 @@ async def test_delete_reference_image_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3657,7 +3725,9 @@ def test_list_reference_images_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_reference_images_flattened_error():
@@ -3695,7 +3765,9 @@ async def test_list_reference_images_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4053,7 +4125,9 @@ def test_get_reference_image_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_reference_image_flattened_error():
@@ -4091,7 +4165,9 @@ async def test_get_reference_image_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4267,8 +4343,12 @@ def test_add_product_to_product_set_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].product == "product_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].product
+        mock_val = "product_value"
+        assert arg == mock_val
 
 
 def test_add_product_to_product_set_flattened_error():
@@ -4308,8 +4388,12 @@ async def test_add_product_to_product_set_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].product == "product_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].product
+        mock_val = "product_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4487,8 +4571,12 @@ def test_remove_product_from_product_set_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].product == "product_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].product
+        mock_val = "product_value"
+        assert arg == mock_val
 
 
 def test_remove_product_from_product_set_flattened_error():
@@ -4528,8 +4616,12 @@ async def test_remove_product_from_product_set_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].product == "product_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].product
+        mock_val = "product_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4715,7 +4807,9 @@ def test_list_products_in_product_set_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_list_products_in_product_set_flattened_error():
@@ -4753,7 +4847,9 @@ async def test_list_products_in_product_set_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -5106,14 +5202,16 @@ def test_import_product_sets_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[
-            0
-        ].input_config == product_search_service.ImportProductSetsInputConfig(
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].input_config
+        mock_val = product_search_service.ImportProductSetsInputConfig(
             gcs_source=product_search_service.ImportProductSetsGcsSource(
                 csv_file_uri="csv_file_uri_value"
             )
         )
+        assert arg == mock_val
 
 
 def test_import_product_sets_flattened_error():
@@ -5164,14 +5262,16 @@ async def test_import_product_sets_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[
-            0
-        ].input_config == product_search_service.ImportProductSetsInputConfig(
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].input_config
+        mock_val = product_search_service.ImportProductSetsInputConfig(
             gcs_source=product_search_service.ImportProductSetsGcsSource(
                 csv_file_uri="csv_file_uri_value"
             )
         )
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -5342,7 +5442,9 @@ def test_purge_products_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_purge_products_flattened_error():
@@ -5378,7 +5480,9 @@ async def test_purge_products_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

@@ -699,6 +699,7 @@ class ImportProductSetsInputConfig(proto.Message):
             The Google Cloud Storage location for a csv
             file which preserves a list of
             ImportProductSetRequests in each line.
+
             This field is a member of `oneof`_ ``source``.
     """
 

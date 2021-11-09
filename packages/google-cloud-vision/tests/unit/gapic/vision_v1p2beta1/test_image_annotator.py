@@ -592,11 +592,13 @@ def test_batch_annotate_images_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].requests == [
+        arg = args[0].requests
+        mock_val = [
             image_annotator.AnnotateImageRequest(
                 image=image_annotator.Image(content=b"content_blob")
             )
         ]
+        assert arg == mock_val
 
 
 def test_batch_annotate_images_flattened_error():
@@ -645,11 +647,13 @@ async def test_batch_annotate_images_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].requests == [
+        arg = args[0].requests
+        mock_val = [
             image_annotator.AnnotateImageRequest(
                 image=image_annotator.Image(content=b"content_blob")
             )
         ]
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -782,13 +786,15 @@ def test_async_batch_annotate_files_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].requests == [
+        arg = args[0].requests
+        mock_val = [
             image_annotator.AsyncAnnotateFileRequest(
                 input_config=image_annotator.InputConfig(
                     gcs_source=image_annotator.GcsSource(uri="uri_value")
                 )
             )
         ]
+        assert arg == mock_val
 
 
 def test_async_batch_annotate_files_flattened_error():
@@ -841,13 +847,15 @@ async def test_async_batch_annotate_files_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].requests == [
+        arg = args[0].requests
+        mock_val = [
             image_annotator.AsyncAnnotateFileRequest(
                 input_config=image_annotator.InputConfig(
                     gcs_source=image_annotator.GcsSource(uri="uri_value")
                 )
             )
         ]
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
