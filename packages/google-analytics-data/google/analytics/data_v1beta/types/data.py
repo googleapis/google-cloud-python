@@ -145,6 +145,7 @@ class MinuteRange(proto.Message):
             minutes of event data (``startMinutesAgo <= 29``), and 360
             Analytics properties can request up to the last 60 minutes
             of event data (``startMinutesAgo <= 59``).
+
             This field is a member of `oneof`_ ``_start_minutes_ago``.
         end_minutes_ago (int):
             The inclusive end minute for the query as a number of
@@ -157,6 +158,7 @@ class MinuteRange(proto.Message):
             last 30 minutes of event data (``endMinutesAgo <= 29``), and
             360 Analytics properties can request any minute in the last
             60 minutes of event data (``endMinutesAgo <= 59``).
+
             This field is a member of `oneof`_ ``_end_minutes_ago``.
         name (str):
             Assigns a name to this minute range. The dimension
@@ -226,15 +228,18 @@ class DimensionExpression(proto.Message):
         lower_case (google.analytics.data_v1beta.types.DimensionExpression.CaseExpression):
             Used to convert a dimension value to lower
             case.
+
             This field is a member of `oneof`_ ``one_expression``.
         upper_case (google.analytics.data_v1beta.types.DimensionExpression.CaseExpression):
             Used to convert a dimension value to upper
             case.
+
             This field is a member of `oneof`_ ``one_expression``.
         concatenate (google.analytics.data_v1beta.types.DimensionExpression.ConcatenateExpression):
             Used to combine dimension values to a single
             dimension. For example, dimension "country,
             city": concatenate(country, ", ", city).
+
             This field is a member of `oneof`_ ``one_expression``.
     """
 
@@ -333,17 +338,21 @@ class FilterExpression(proto.Message):
     Attributes:
         and_group (google.analytics.data_v1beta.types.FilterExpressionList):
             The FilterExpressions in and_group have an AND relationship.
+
             This field is a member of `oneof`_ ``expr``.
         or_group (google.analytics.data_v1beta.types.FilterExpressionList):
             The FilterExpressions in or_group have an OR relationship.
+
             This field is a member of `oneof`_ ``expr``.
         not_expression (google.analytics.data_v1beta.types.FilterExpression):
             The FilterExpression is NOT of not_expression.
+
             This field is a member of `oneof`_ ``expr``.
         filter (google.analytics.data_v1beta.types.Filter):
             A primitive filter.
             All fields in filter in same FilterExpression
             needs to be either all dimensions or metrics.
+
             This field is a member of `oneof`_ ``expr``.
     """
 
@@ -388,15 +397,19 @@ class Filter(proto.Message):
             name defined in dimensions or metrics.
         string_filter (google.analytics.data_v1beta.types.Filter.StringFilter):
             Strings related filter.
+
             This field is a member of `oneof`_ ``one_filter``.
         in_list_filter (google.analytics.data_v1beta.types.Filter.InListFilter):
             A filter for in list values.
+
             This field is a member of `oneof`_ ``one_filter``.
         numeric_filter (google.analytics.data_v1beta.types.Filter.NumericFilter):
             A filter for numeric or date values.
+
             This field is a member of `oneof`_ ``one_filter``.
         between_filter (google.analytics.data_v1beta.types.Filter.BetweenFilter):
             A filter for two values.
+
             This field is a member of `oneof`_ ``one_filter``.
     """
 
@@ -508,13 +521,16 @@ class OrderBy(proto.Message):
     Attributes:
         metric (google.analytics.data_v1beta.types.OrderBy.MetricOrderBy):
             Sorts results by a metric's values.
+
             This field is a member of `oneof`_ ``one_order_by``.
         dimension (google.analytics.data_v1beta.types.OrderBy.DimensionOrderBy):
             Sorts results by a dimension's values.
+
             This field is a member of `oneof`_ ``one_order_by``.
         pivot (google.analytics.data_v1beta.types.OrderBy.PivotOrderBy):
             Sorts results by a metric's values within a
             pivot column group.
+
             This field is a member of `oneof`_ ``one_order_by``.
         desc (bool):
             If true, sorts by descending order.
@@ -836,6 +852,7 @@ class ResponseMetaData(proto.Message):
             creating this report. To learn more, see `Access and
             data-restriction
             management <https://support.google.com/analytics/answer/10851388>`__.
+
             This field is a member of `oneof`_ ``_schema_restriction_response``.
         currency_code (str):
             The currency code used in this report. Intended to be used
@@ -850,6 +867,7 @@ class ResponseMetaData(proto.Message):
             (https://en.wikipedia.org/wiki/ISO_4217); for example "USD",
             "EUR", "JPY". To learn more, see
             https://support.google.com/analytics/answer/9796179.
+
             This field is a member of `oneof`_ ``_currency_code``.
         time_zone (str):
             The property's current timezone. Intended to be used to
@@ -857,10 +875,12 @@ class ResponseMetaData(proto.Message):
             ``minute``. Formatted as strings from the IANA Time Zone
             database (https://www.iana.org/time-zones); for example
             "America/New_York" or "Asia/Tokyo".
+
             This field is a member of `oneof`_ ``_time_zone``.
         empty_reason (str):
             If empty reason is specified, the report is
             empty for this reason.
+
             This field is a member of `oneof`_ ``_empty_reason``.
     """
 
@@ -884,6 +904,7 @@ class ResponseMetaData(proto.Message):
             Attributes:
                 metric_name (str):
                     The name of the restricted metric.
+
                     This field is a member of `oneof`_ ``_metric_name``.
                 restricted_metric_types (Sequence[google.analytics.data_v1beta.types.RestrictedMetricType]):
                     The reason for this metric's restriction.
@@ -1036,6 +1057,7 @@ class DimensionValue(proto.Message):
         value (str):
             Value as a string if the dimension type is a
             string.
+
             This field is a member of `oneof`_ ``one_value``.
     """
 
@@ -1050,6 +1072,7 @@ class MetricValue(proto.Message):
     Attributes:
         value (str):
             Measurement value. See MetricHeader for type.
+
             This field is a member of `oneof`_ ``one_value``.
     """
 
@@ -1069,9 +1092,11 @@ class NumericValue(proto.Message):
     Attributes:
         int64_value (int):
             Integer value
+
             This field is a member of `oneof`_ ``one_value``.
         double_value (float):
             Double value
+
             This field is a member of `oneof`_ ``one_value``.
     """
 
@@ -1249,11 +1274,13 @@ class DimensionCompatibility(proto.Message):
             for this compatibility information. The
             dimension metadata also contains other helpful
             information like the UI name and description.
+
             This field is a member of `oneof`_ ``_dimension_metadata``.
         compatibility (google.analytics.data_v1beta.types.Compatibility):
             The compatibility of this dimension. If the
             compatibility is COMPATIBLE, this dimension can
             be successfully added to the report.
+
             This field is a member of `oneof`_ ``_compatibility``.
     """
 
@@ -1274,11 +1301,13 @@ class MetricCompatibility(proto.Message):
             this compatibility information. The metric
             metadata also contains other helpful information
             like the UI name and description.
+
             This field is a member of `oneof`_ ``_metric_metadata``.
         compatibility (google.analytics.data_v1beta.types.Compatibility):
             The compatibility of this metric. If the
             compatibility is COMPATIBLE, this metric can be
             successfully added to the report.
+
             This field is a member of `oneof`_ ``_compatibility``.
     """
 
