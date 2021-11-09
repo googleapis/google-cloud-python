@@ -162,6 +162,7 @@ class StreamingTranslateSpeechRequest(proto.Message):
             process the request. The first
             ``StreamingTranslateSpeechRequest`` message must contain a
             ``streaming_config`` message.
+
             This field is a member of `oneof`_ ``streaming_request``.
         audio_content (bytes):
             The audio data to be translated. Sequential chunks of audio
@@ -174,6 +175,7 @@ class StreamingTranslateSpeechRequest(proto.Message):
             specified in ``StreamingTranslateSpeechConfig``. Note: as
             with all bytes fields, protobuffers use a pure binary
             representation (not base64).
+
             This field is a member of `oneof`_ ``streaming_request``.
     """
 
@@ -196,6 +198,7 @@ class StreamingTranslateSpeechResult(proto.Message):
     Attributes:
         text_translation_result (google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResult.TextTranslationResult):
             Text translation result.
+
             This field is a member of `oneof`_ ``result``.
     """
 
