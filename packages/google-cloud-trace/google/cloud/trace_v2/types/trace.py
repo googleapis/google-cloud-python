@@ -167,10 +167,12 @@ class Span(proto.Message):
                 occurred.
             annotation (google.cloud.trace_v2.types.Span.TimeEvent.Annotation):
                 Text annotation with a set of attributes.
+
                 This field is a member of `oneof`_ ``value``.
             message_event (google.cloud.trace_v2.types.Span.TimeEvent.MessageEvent):
                 An event describing a message sent/received
                 between Spans.
+
                 This field is a member of `oneof`_ ``value``.
         """
 
@@ -345,12 +347,15 @@ class AttributeValue(proto.Message):
     Attributes:
         string_value (google.cloud.trace_v2.types.TruncatableString):
             A string up to 256 bytes long.
+
             This field is a member of `oneof`_ ``value``.
         int_value (int):
             A 64-bit signed integer.
+
             This field is a member of `oneof`_ ``value``.
         bool_value (bool):
             A Boolean value represented by ``true`` or ``false``.
+
             This field is a member of `oneof`_ ``value``.
     """
 

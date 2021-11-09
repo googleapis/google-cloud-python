@@ -623,8 +623,12 @@ def test_batch_write_spans_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].spans == [trace.Span(name="name_value")]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].spans
+        mock_val = [trace.Span(name="name_value")]
+        assert arg == mock_val
 
 
 def test_batch_write_spans_flattened_error():
@@ -662,8 +666,12 @@ async def test_batch_write_spans_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].spans == [trace.Span(name="name_value")]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].spans
+        mock_val = [trace.Span(name="name_value")]
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
