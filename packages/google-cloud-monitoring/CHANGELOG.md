@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.7.0](https://www.github.com/googleapis/python-monitoring/compare/v2.6.0...v2.7.0) (2021-11-09)
+
+
+### Features
+
+* add CreateServiceTimeSeries RPC ([b347e70](https://www.github.com/googleapis/python-monitoring/commit/b347e7083ff04c04e287b7afc79c425a1d04f731))
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([b347e70](https://www.github.com/googleapis/python-monitoring/commit/b347e7083ff04c04e287b7afc79c425a1d04f731))
+* **deps:** require google-api-core >= 1.28.0 ([b347e70](https://www.github.com/googleapis/python-monitoring/commit/b347e7083ff04c04e287b7afc79c425a1d04f731))
+* Reintroduce deprecated field/enum `ServiceTier` for backward compatibility ([b347e70](https://www.github.com/googleapis/python-monitoring/commit/b347e7083ff04c04e287b7afc79c425a1d04f731))
+
+
+### Miscellaneous Chores
+
+* release as 2.7.0 ([#247](https://www.github.com/googleapis/python-monitoring/issues/247)) ([b347e70](https://www.github.com/googleapis/python-monitoring/commit/b347e7083ff04c04e287b7afc79c425a1d04f731))
+
+
+### Documentation
+
+* list oneofs in docstring ([b347e70](https://www.github.com/googleapis/python-monitoring/commit/b347e7083ff04c04e287b7afc79c425a1d04f731))
+* Use absolute link targets in comments ([b347e70](https://www.github.com/googleapis/python-monitoring/commit/b347e7083ff04c04e287b7afc79c425a1d04f731))
+
 ## [2.6.0](https://www.github.com/googleapis/python-monitoring/compare/v2.5.2...v2.6.0) (2021-11-01)
 
 
