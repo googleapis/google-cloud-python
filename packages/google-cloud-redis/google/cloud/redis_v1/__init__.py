@@ -30,6 +30,7 @@ from .types.cloud_redis import Instance
 from .types.cloud_redis import ListInstancesRequest
 from .types.cloud_redis import ListInstancesResponse
 from .types.cloud_redis import LocationMetadata
+from .types.cloud_redis import NodeInfo
 from .types.cloud_redis import OperationMetadata
 from .types.cloud_redis import OutputConfig
 from .types.cloud_redis import UpdateInstanceRequest
@@ -52,6 +53,7 @@ __all__ = (
     "ListInstancesRequest",
     "ListInstancesResponse",
     "LocationMetadata",
+    "NodeInfo",
     "OperationMetadata",
     "OutputConfig",
     "UpdateInstanceRequest",

@@ -22,6 +22,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.redis.v1",
     manifest={
+        "NodeInfo",
         "Instance",
         "ListInstancesRequest",
         "ListInstancesResponse",
@@ -42,6 +43,21 @@ __protobuf__ = proto.module(
         "ZoneMetadata",
     },
 )
+
+
+class NodeInfo(proto.Message):
+    r"""Node specific properties.
+
+    Attributes:
+        id (str):
+            Output only. Node identifying string. e.g.
+            'node-0', 'node-1'
+        zone (str):
+            Output only. Location of the node.
+    """
+
+    id = proto.Field(proto.STRING, number=1,)
+    zone = proto.Field(proto.STRING, number=2,)
 
 
 class Instance(proto.Message):
@@ -69,19 +85,21 @@ class Instance(proto.Message):
             Resource labels to represent user provided
             metadata
         location_id (str):
-            Optional. The zone where the instance will be provisioned.
-            If not provided, the service will choose a zone for the
-            instance. For STANDARD_HA tier, instances will be created
-            across two zones for protection against zonal failures. If
-            [alternative_location_id][google.cloud.redis.v1.Instance.alternative_location_id]
-            is also provided, it must be different from
-            [location_id][google.cloud.redis.v1.Instance.location_id].
+            Optional. The zone where the instance will be
+            provisioned. If not provided, the service will
+            choose a zone from the specified region for the
+            instance. For standard tier, additional nodes
+            will be added across multiple zones for
+            protection against zonal failures. If specified,
+            at least one node will be provisioned in this
+            zone.
         alternative_location_id (str):
-            Optional. Only applicable to STANDARD_HA tier which protects
-            the instance against zonal failures by provisioning it
-            across two zones. If provided, it must be a different zone
-            from the one provided in
-            [location_id][google.cloud.redis.v1.Instance.location_id].
+            Optional. If specified, at least one node will be
+            provisioned in this zone in addition to the zone specified
+            in location_id. Only applicable to standard tier. If
+            provided, it must be a different zone from the one provided
+            in [location_id]. Additional nodes beyond the first 2 will
+            be placed in zones selected by the service.
         redis_version (str):
             Optional. The version of Redis software. If not provided,
             latest supported version will be used. Currently, the
@@ -90,14 +108,17 @@ class Instance(proto.Message):
             -  ``REDIS_3_2`` for Redis 3.2 compatibility
             -  ``REDIS_4_0`` for Redis 4.0 compatibility (default)
             -  ``REDIS_5_0`` for Redis 5.0 compatibility
+            -  ``REDIS_6_X`` for Redis 6.x compatibility
         reserved_ip_range (str):
-            Optional. The CIDR range of internal
-            addresses that are reserved for this instance.
-            If not provided, the service will choose an
-            unused /29 block, for example, 10.0.0.0/29 or
-            192.168.0.0/29. Ranges must be unique and non-
-            overlapping with existing subnets in an
-            authorized network.
+            Optional. For DIRECT_PEERING mode, the CIDR range of
+            internal addresses that are reserved for this instance.
+            Range must be unique and non-overlapping with existing
+            subnets in an authorized network. For PRIVATE_SERVICE_ACCESS
+            mode, the name of one allocated IP address ranges associated
+            with this private service access connection. If not
+            provided, the service will choose an unused /29 block, for
+            example, 10.0.0.0/29 or 192.168.0.0/29. For
+            READ_REPLICAS_ENABLED the default block size is /28.
         host (str):
             Output only. Hostname or IP address of the
             exposed Redis endpoint used by clients to
@@ -106,15 +127,10 @@ class Instance(proto.Message):
             Output only. The port number of the exposed
             Redis endpoint.
         current_location_id (str):
-            Output only. The current zone where the Redis endpoint is
-            placed. For Basic Tier instances, this will always be the
-            same as the
-            [location_id][google.cloud.redis.v1.Instance.location_id]
-            provided by the user at creation time. For Standard Tier
-            instances, this can be either
-            [location_id][google.cloud.redis.v1.Instance.location_id] or
-            [alternative_location_id][google.cloud.redis.v1.Instance.alternative_location_id]
-            and can change after a failover event.
+            Output only. The current zone where the Redis primary node
+            is located. In basic tier, this will always be the same as
+            [location_id]. In standard tier, this can be the zone of any
+            node in the instance.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the instance was
             created.
@@ -163,6 +179,25 @@ class Instance(proto.Message):
         connect_mode (google.cloud.redis_v1.types.Instance.ConnectMode):
             Optional. The network connect mode of the Redis instance. If
             not provided, the connect mode defaults to DIRECT_PEERING.
+        replica_count (int):
+            Optional. The number of replica nodes. Valid range for
+            standard tier is [1-5] and defaults to 1. Valid value for
+            basic tier is 0 and defaults to 0.
+        nodes (Sequence[google.cloud.redis_v1.types.NodeInfo]):
+            Output only. Info per node.
+        read_endpoint (str):
+            Output only. Hostname or IP address of the
+            exposed readonly Redis endpoint. Standard tier
+            only. Targets all healthy replica nodes in
+            instance. Replication is asynchronous and
+            replica nodes will exhibit some lag behind the
+            primary. Write requests must target 'host'.
+        read_endpoint_port (int):
+            Output only. The port number of the exposed
+            readonly redis endpoint. Standard tier only.
+            Write requests should target 'port'.
+        read_replicas_mode (google.cloud.redis_v1.types.Instance.ReadReplicasMode):
+            Optional. Read replica mode.
     """
 
     class State(proto.Enum):
@@ -189,6 +224,12 @@ class Instance(proto.Message):
         DIRECT_PEERING = 1
         PRIVATE_SERVICE_ACCESS = 2
 
+    class ReadReplicasMode(proto.Enum):
+        r"""Read replicas mode."""
+        READ_REPLICAS_MODE_UNSPECIFIED = 0
+        READ_REPLICAS_DISABLED = 1
+        READ_REPLICAS_ENABLED = 2
+
     name = proto.Field(proto.STRING, number=1,)
     display_name = proto.Field(proto.STRING, number=2,)
     labels = proto.MapField(proto.STRING, proto.STRING, number=3,)
@@ -210,6 +251,11 @@ class Instance(proto.Message):
     authorized_network = proto.Field(proto.STRING, number=20,)
     persistence_iam_identity = proto.Field(proto.STRING, number=21,)
     connect_mode = proto.Field(proto.ENUM, number=22, enum=ConnectMode,)
+    replica_count = proto.Field(proto.INT32, number=31,)
+    nodes = proto.RepeatedField(proto.MESSAGE, number=32, message="NodeInfo",)
+    read_endpoint = proto.Field(proto.STRING, number=33,)
+    read_endpoint_port = proto.Field(proto.INT32, number=34,)
+    read_replicas_mode = proto.Field(proto.ENUM, number=35, enum=ReadReplicasMode,)
 
 
 class ListInstancesRequest(proto.Message):
@@ -253,9 +299,9 @@ class ListInstancesResponse(proto.Message):
             If the ``location_id`` in the parent field of the request is
             "-", all regions available to the project are queried, and
             the results aggregated. If in such an aggregated query a
-            location is unavailable, a dummy Redis entry is included in
-            the response with the ``name`` field set to a value of the
-            form
+            location is unavailable, a placeholder Redis entry is
+            included in the response with the ``name`` field set to a
+            value of the form
             ``projects/{project_id}/locations/{location_id}/instances/``-
             and the ``status`` field set to ERROR and ``status_message``
             field set to "location not available for ListInstances".
@@ -333,6 +379,7 @@ class UpdateInstanceRequest(proto.Message):
             -  ``labels``
             -  ``memorySizeGb``
             -  ``redisConfig``
+            -  ``replica_count``
         instance (google.cloud.redis_v1.types.Instance):
             Required. Update description. Only fields specified in
             update_mask are updated.

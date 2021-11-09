@@ -687,6 +687,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 -  ``labels``
                 -  ``memorySizeGb``
                 -  ``redisConfig``
+                -  ``replica_count``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1064,7 +1065,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Initiates a failover of the master node to current
+        r"""Initiates a failover of the primary node to current
         replica node for a specific STANDARD tier Cloud
         Memorystore for Redis instance.
 

@@ -842,6 +842,10 @@ def test_get_instance(
             authorized_network="authorized_network_value",
             persistence_iam_identity="persistence_iam_identity_value",
             connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+            replica_count=1384,
+            read_endpoint="read_endpoint_value",
+            read_endpoint_port=1920,
+            read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
         )
         response = client.get_instance(request)
 
@@ -868,6 +872,13 @@ def test_get_instance(
     assert response.authorized_network == "authorized_network_value"
     assert response.persistence_iam_identity == "persistence_iam_identity_value"
     assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
+    assert response.replica_count == 1384
+    assert response.read_endpoint == "read_endpoint_value"
+    assert response.read_endpoint_port == 1920
+    assert (
+        response.read_replicas_mode
+        == cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED
+    )
 
 
 def test_get_instance_from_dict():
@@ -922,6 +933,10 @@ async def test_get_instance_async(
                 authorized_network="authorized_network_value",
                 persistence_iam_identity="persistence_iam_identity_value",
                 connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+                replica_count=1384,
+                read_endpoint="read_endpoint_value",
+                read_endpoint_port=1920,
+                read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
             )
         )
         response = await client.get_instance(request)
@@ -949,6 +964,13 @@ async def test_get_instance_async(
     assert response.authorized_network == "authorized_network_value"
     assert response.persistence_iam_identity == "persistence_iam_identity_value"
     assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
+    assert response.replica_count == 1384
+    assert response.read_endpoint == "read_endpoint_value"
+    assert response.read_endpoint_port == 1920
+    assert (
+        response.read_replicas_mode
+        == cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED
+    )
 
 
 @pytest.mark.asyncio

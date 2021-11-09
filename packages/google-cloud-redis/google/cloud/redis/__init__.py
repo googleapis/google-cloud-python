@@ -32,6 +32,7 @@ from google.cloud.redis_v1.types.cloud_redis import Instance
 from google.cloud.redis_v1.types.cloud_redis import ListInstancesRequest
 from google.cloud.redis_v1.types.cloud_redis import ListInstancesResponse
 from google.cloud.redis_v1.types.cloud_redis import LocationMetadata
+from google.cloud.redis_v1.types.cloud_redis import NodeInfo
 from google.cloud.redis_v1.types.cloud_redis import OperationMetadata
 from google.cloud.redis_v1.types.cloud_redis import OutputConfig
 from google.cloud.redis_v1.types.cloud_redis import UpdateInstanceRequest
@@ -54,6 +55,7 @@ __all__ = (
     "ListInstancesRequest",
     "ListInstancesResponse",
     "LocationMetadata",
+    "NodeInfo",
     "OperationMetadata",
     "OutputConfig",
     "UpdateInstanceRequest",
