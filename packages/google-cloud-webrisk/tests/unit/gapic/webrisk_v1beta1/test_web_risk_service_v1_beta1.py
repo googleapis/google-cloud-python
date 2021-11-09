@@ -630,11 +630,17 @@ def test_compute_threat_list_diff_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].threat_type == webrisk.ThreatType.MALWARE
-        assert args[0].version_token == b"version_token_blob"
-        assert args[0].constraints == webrisk.ComputeThreatListDiffRequest.Constraints(
+        arg = args[0].threat_type
+        mock_val = webrisk.ThreatType.MALWARE
+        assert arg == mock_val
+        arg = args[0].version_token
+        mock_val = b"version_token_blob"
+        assert arg == mock_val
+        arg = args[0].constraints
+        mock_val = webrisk.ComputeThreatListDiffRequest.Constraints(
             max_diff_entries=1687
         )
+        assert arg == mock_val
 
 
 def test_compute_threat_list_diff_flattened_error():
@@ -685,11 +691,17 @@ async def test_compute_threat_list_diff_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].threat_type == webrisk.ThreatType.MALWARE
-        assert args[0].version_token == b"version_token_blob"
-        assert args[0].constraints == webrisk.ComputeThreatListDiffRequest.Constraints(
+        arg = args[0].threat_type
+        mock_val = webrisk.ThreatType.MALWARE
+        assert arg == mock_val
+        arg = args[0].version_token
+        mock_val = b"version_token_blob"
+        assert arg == mock_val
+        arg = args[0].constraints
+        mock_val = webrisk.ComputeThreatListDiffRequest.Constraints(
             max_diff_entries=1687
         )
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -807,8 +819,12 @@ def test_search_uris_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].uri == "uri_value"
-        assert args[0].threat_types == [webrisk.ThreatType.MALWARE]
+        arg = args[0].uri
+        mock_val = "uri_value"
+        assert arg == mock_val
+        arg = args[0].threat_types
+        mock_val = [webrisk.ThreatType.MALWARE]
+        assert arg == mock_val
 
 
 def test_search_uris_flattened_error():
@@ -850,8 +866,12 @@ async def test_search_uris_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].uri == "uri_value"
-        assert args[0].threat_types == [webrisk.ThreatType.MALWARE]
+        arg = args[0].uri
+        mock_val = "uri_value"
+        assert arg == mock_val
+        arg = args[0].threat_types
+        mock_val = [webrisk.ThreatType.MALWARE]
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -968,8 +988,12 @@ def test_search_hashes_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].hash_prefix == b"hash_prefix_blob"
-        assert args[0].threat_types == [webrisk.ThreatType.MALWARE]
+        arg = args[0].hash_prefix
+        mock_val = b"hash_prefix_blob"
+        assert arg == mock_val
+        arg = args[0].threat_types
+        mock_val = [webrisk.ThreatType.MALWARE]
+        assert arg == mock_val
 
 
 def test_search_hashes_flattened_error():
@@ -1011,8 +1035,12 @@ async def test_search_hashes_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].hash_prefix == b"hash_prefix_blob"
-        assert args[0].threat_types == [webrisk.ThreatType.MALWARE]
+        arg = args[0].hash_prefix
+        mock_val = b"hash_prefix_blob"
+        assert arg == mock_val
+        arg = args[0].threat_types
+        mock_val = [webrisk.ThreatType.MALWARE]
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
