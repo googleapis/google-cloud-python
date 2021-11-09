@@ -133,6 +133,7 @@ class Destination(proto.Message):
             Cloud Run fully-managed service that receives
             the events. The service should be running in the
             same project of the trigger.
+
             This field is a member of `oneof`_ ``descriptor``.
     """
 
@@ -152,6 +153,7 @@ class Transport(proto.Message):
         pubsub (google.cloud.eventarc_v1.types.Pubsub):
             The Pub/Sub topic and subscription used by
             Eventarc as delivery intermediary.
+
             This field is a member of `oneof`_ ``intermediary``.
     """
 
