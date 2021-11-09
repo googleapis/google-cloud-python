@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.5.0](https://www.github.com/googleapis/python-redis/compare/v2.4.1...v2.5.0) (2021-11-09)
+
+
+### Features
+
+* **v1beta1:** Support Multiple Read Replicas when creating Instance ([#136](https://www.github.com/googleapis/python-redis/issues/136)) ([d7146eb](https://www.github.com/googleapis/python-redis/commit/d7146eb1ed826bcd1f2bb29b4de4793ff3105573))
+* **v1:** Support Multiple Read Replicas when creating Instance ([#135](https://www.github.com/googleapis/python-redis/issues/135)) ([27dfdca](https://www.github.com/googleapis/python-redis/commit/27dfdcab82c091d77f40542e6393a0a3f466bcb0))
+
 ### [2.4.1](https://www.github.com/googleapis/python-redis/compare/v2.4.0...v2.4.1) (2021-11-01)
 
 
