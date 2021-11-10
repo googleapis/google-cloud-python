@@ -119,6 +119,7 @@ class TransferConfig(proto.Message):
             transfer config.
         destination_dataset_id (str):
             The BigQuery target dataset id.
+
             This field is a member of `oneof`_ ``destination``.
         display_name (str):
             User specified display name for the data
@@ -247,6 +248,7 @@ class TransferRun(proto.Message):
             transfer/docs/cloud-storage-transfer#bq
         destination_dataset_id (str):
             Output only. The BigQuery target dataset id.
+
             This field is a member of `oneof`_ ``destination``.
         data_source_id (str):
             Output only. Data source id.

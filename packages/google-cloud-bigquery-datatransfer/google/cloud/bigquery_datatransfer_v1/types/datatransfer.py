@@ -734,10 +734,12 @@ class StartManualTransferRunsRequest(proto.Message):
         requested_time_range (google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.TimeRange):
             Time range for the transfer runs that should
             be started.
+
             This field is a member of `oneof`_ ``time``.
         requested_run_time (google.protobuf.timestamp_pb2.Timestamp):
             Specific run_time for a transfer run to be started. The
             requested_run_time must not be in the future.
+
             This field is a member of `oneof`_ ``time``.
     """
 
