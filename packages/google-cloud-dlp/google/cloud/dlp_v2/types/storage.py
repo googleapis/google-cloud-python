@@ -141,19 +141,23 @@ class CustomInfoType(proto.Message):
         dictionary (google.cloud.dlp_v2.types.CustomInfoType.Dictionary):
             A list of phrases to detect as a
             CustomInfoType.
+
             This field is a member of `oneof`_ ``type``.
         regex (google.cloud.dlp_v2.types.CustomInfoType.Regex):
             Regular expression based CustomInfoType.
+
             This field is a member of `oneof`_ ``type``.
         surrogate_type (google.cloud.dlp_v2.types.CustomInfoType.SurrogateType):
             Message for detecting output from
             deidentification transformations that support
             reversing.
+
             This field is a member of `oneof`_ ``type``.
         stored_type (google.cloud.dlp_v2.types.StoredType):
             Load an existing ``StoredInfoType`` resource for use in
             ``InspectDataSource``. Not currently supported in
             ``InspectContent``.
+
             This field is a member of `oneof`_ ``type``.
         detection_rules (Sequence[google.cloud.dlp_v2.types.CustomInfoType.DetectionRule]):
             Set of detection rules to apply to all findings of this
@@ -206,10 +210,12 @@ class CustomInfoType(proto.Message):
         Attributes:
             word_list (google.cloud.dlp_v2.types.CustomInfoType.Dictionary.WordList):
                 List of words or phrases to search for.
+
                 This field is a member of `oneof`_ ``source``.
             cloud_storage_path (google.cloud.dlp_v2.types.CloudStoragePath):
                 Newline-delimited file of words in Cloud
                 Storage. Only a single file is accepted.
+
                 This field is a member of `oneof`_ ``source``.
         """
 
@@ -280,6 +286,7 @@ class CustomInfoType(proto.Message):
         Attributes:
             hotword_rule (google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.HotwordRule):
                 Hotword-based detection rule.
+
                 This field is a member of `oneof`_ ``type``.
         """
 
@@ -314,6 +321,7 @@ class CustomInfoType(proto.Message):
                 fixed_likelihood (google.cloud.dlp_v2.types.Likelihood):
                     Set the likelihood of a finding to a fixed
                     value.
+
                     This field is a member of `oneof`_ ``adjustment``.
                 relative_likelihood (int):
                     Increase or decrease the likelihood by the specified number
@@ -325,6 +333,7 @@ class CustomInfoType(proto.Message):
                     applying an adjustment of 1 followed by an adjustment of -1
                     when base likelihood is ``VERY_LIKELY`` will result in a
                     final likelihood of ``LIKELY``.
+
                     This field is a member of `oneof`_ ``adjustment``.
             """
 
@@ -696,12 +705,15 @@ class StorageConfig(proto.Message):
     Attributes:
         datastore_options (google.cloud.dlp_v2.types.DatastoreOptions):
             Google Cloud Datastore options.
+
             This field is a member of `oneof`_ ``type``.
         cloud_storage_options (google.cloud.dlp_v2.types.CloudStorageOptions):
             Google Cloud Storage options.
+
             This field is a member of `oneof`_ ``type``.
         big_query_options (google.cloud.dlp_v2.types.BigQueryOptions):
             BigQuery options.
+
             This field is a member of `oneof`_ ``type``.
         hybrid_options (google.cloud.dlp_v2.types.HybridOptions):
             Hybrid inspection options.
@@ -710,6 +722,7 @@ class StorageConfig(proto.Message):
             more information, see
             https://cloud.google.com/products#product-
             launch-stages.
+
             This field is a member of `oneof`_ ``type``.
         timespan_config (google.cloud.dlp_v2.types.StorageConfig.TimespanConfig):
 
@@ -910,11 +923,13 @@ class Key(proto.Message):
                 Never equal to zero. Values less than zero are
                 discouraged and may not be supported in the
                 future.
+
                 This field is a member of `oneof`_ ``id_type``.
             name (str):
                 The name of the entity. A name matching regex ``__.*__`` is
                 reserved/read-only. A name must not be more than 1500 bytes
                 when UTF-8 encoded. Cannot be ``""``.
+
                 This field is a member of `oneof`_ ``id_type``.
         """
 
