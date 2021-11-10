@@ -97,12 +97,15 @@ class Payload(proto.Message):
     Attributes:
         http_request (google.cloud.apigeeconnect_v1.types.HttpRequest):
             The HttpRequest proto.
+
             This field is a member of `oneof`_ ``kind``.
         stream_info (google.cloud.apigeeconnect_v1.types.StreamInfo):
             The information of stream.
+
             This field is a member of `oneof`_ ``kind``.
         action (google.cloud.apigeeconnect_v1.types.Action):
             The action taken by agent.
+
             This field is a member of `oneof`_ ``kind``.
     """
 
