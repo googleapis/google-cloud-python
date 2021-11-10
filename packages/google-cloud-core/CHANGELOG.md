@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+### [2.2.1](https://www.github.com/googleapis/python-cloud-core/compare/v2.2.0...v2.2.1) (2021-11-10)
+
+
+### Bug Fixes
+
+* correct Client and Connection type annotations ([#156](https://www.github.com/googleapis/python-cloud-core/issues/156)) ([a427681](https://www.github.com/googleapis/python-cloud-core/commit/a427681913ab76379e007a8c3ae519b41e8cee62))
+
 ## [2.2.0](https://www.github.com/googleapis/python-cloud-core/compare/v2.1.0...v2.2.0) (2021-11-09)
 
 
