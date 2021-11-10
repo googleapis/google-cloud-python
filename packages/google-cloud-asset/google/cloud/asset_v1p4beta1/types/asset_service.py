@@ -293,6 +293,7 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
     Attributes:
         gcs_destination (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisOutputConfig.GcsDestination):
             Destination on Cloud Storage.
+
             This field is a member of `oneof`_ ``destination``.
     """
 

@@ -103,9 +103,11 @@ class IamPolicyAnalysisResult(proto.Message):
         Attributes:
             role (str):
                 The role.
+
                 This field is a member of `oneof`_ ``oneof_access``.
             permission (str):
                 The permission.
+
                 This field is a member of `oneof`_ ``oneof_access``.
             analysis_state (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisResult.AnalysisState):
                 The analysis state of this access node.

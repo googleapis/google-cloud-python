@@ -159,14 +159,17 @@ class Asset(proto.Message):
         access_policy (google.identity.accesscontextmanager.v1.access_policy_pb2.AccessPolicy):
             Please also refer to the `access policy user
             guide <https://cloud.google.com/access-context-manager/docs/overview#access-policies>`__.
+
             This field is a member of `oneof`_ ``access_context_policy``.
         access_level (google.identity.accesscontextmanager.v1.access_level_pb2.AccessLevel):
             Please also refer to the `access level user
             guide <https://cloud.google.com/access-context-manager/docs/overview#access-levels>`__.
+
             This field is a member of `oneof`_ ``access_context_policy``.
         service_perimeter (google.identity.accesscontextmanager.v1.service_perimeter_pb2.ServicePerimeter):
             Please also refer to the `service perimeter user
             guide <https://cloud.google.com/vpc-service-controls/docs/overview>`__.
+
             This field is a member of `oneof`_ ``access_context_policy``.
         os_inventory (google.cloud.osconfig_v1.Inventory):
             A representation of runtime OS Inventory information. See
@@ -957,9 +960,11 @@ class IamPolicyAnalysisResult(proto.Message):
         Attributes:
             role (str):
                 The role.
+
                 This field is a member of `oneof`_ ``oneof_access``.
             permission (str):
                 The permission.
+
                 This field is a member of `oneof`_ ``oneof_access``.
             analysis_state (google.cloud.asset_v1.types.IamPolicyAnalysisState):
                 The analysis state of this access.
