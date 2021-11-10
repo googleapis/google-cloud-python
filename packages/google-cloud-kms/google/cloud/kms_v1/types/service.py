@@ -576,6 +576,7 @@ class ImportCryptoKeyVersionRequest(proto.Message):
 
             This format is the same as the format produced by PKCS#11
             mechanism CKM_RSA_AES_KEY_WRAP.
+
             This field is a member of `oneof`_ ``wrapped_key_material``.
     """
 
@@ -1548,14 +1549,17 @@ class Digest(proto.Message):
         sha256 (bytes):
             A message digest produced with the SHA-256
             algorithm.
+
             This field is a member of `oneof`_ ``digest``.
         sha384 (bytes):
             A message digest produced with the SHA-384
             algorithm.
+
             This field is a member of `oneof`_ ``digest``.
         sha512 (bytes):
             A message digest produced with the SHA-512
             algorithm.
+
             This field is a member of `oneof`_ ``digest``.
     """
 

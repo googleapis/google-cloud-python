@@ -141,6 +141,7 @@ class CryptoKey(proto.Message):
             [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT]
             support automatic rotation. For other keys, this field must
             be omitted.
+
             This field is a member of `oneof`_ ``rotation_schedule``.
         version_template (google.cloud.kms_v1.types.CryptoKeyVersionTemplate):
             A template describing settings for new
