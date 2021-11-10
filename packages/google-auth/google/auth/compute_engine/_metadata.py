@@ -161,7 +161,7 @@ def get(
             retries += 1
     else:
         raise exceptions.TransportError(
-            "Failed to retrieve {} from the Google Compute Engine"
+            "Failed to retrieve {} from the Google Compute Engine "
             "metadata service. Compute Engine Metadata server unavailable".format(url)
         )
 
@@ -172,7 +172,7 @@ def get(
                 return json.loads(content)
             except ValueError as caught_exc:
                 new_exc = exceptions.TransportError(
-                    "Received invalid JSON from the Google Compute Engine"
+                    "Received invalid JSON from the Google Compute Engine "
                     "metadata service: {:.20}".format(content)
                 )
                 six.raise_from(new_exc, caught_exc)
@@ -180,7 +180,7 @@ def get(
             return content
     else:
         raise exceptions.TransportError(
-            "Failed to retrieve {} from the Google Compute Engine"
+            "Failed to retrieve {} from the Google Compute Engine "
             "metadata service. Status: {} Response:\n{}".format(
                 url, response.status, response.data
             ),
