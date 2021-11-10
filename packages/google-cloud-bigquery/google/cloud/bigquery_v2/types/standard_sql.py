@@ -49,10 +49,12 @@ class StandardSqlDataType(proto.Message):
             "INT64", "DATE", "ARRAY").
         array_element_type (google.cloud.bigquery_v2.types.StandardSqlDataType):
             The type of the array's elements, if type_kind = "ARRAY".
+
             This field is a member of `oneof`_ ``sub_type``.
         struct_type (google.cloud.bigquery_v2.types.StandardSqlStructType):
             The fields of this struct, in order, if type_kind =
             "STRUCT".
+
             This field is a member of `oneof`_ ``sub_type``.
     """
 

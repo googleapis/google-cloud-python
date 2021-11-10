@@ -573,9 +573,11 @@ class Model(proto.Message):
                     numerical_value (google.protobuf.wrappers_pb2.DoubleValue):
                         The numerical feature value. This is the
                         centroid value for this feature.
+
                         This field is a member of `oneof`_ ``value``.
                     categorical_value (google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue):
                         The categorical feature value.
+
                         This field is a member of `oneof`_ ``value``.
                 """
 
@@ -804,24 +806,30 @@ class Model(proto.Message):
             regression_metrics (google.cloud.bigquery_v2.types.Model.RegressionMetrics):
                 Populated for regression models and explicit
                 feedback type matrix factorization models.
+
                 This field is a member of `oneof`_ ``metrics``.
             binary_classification_metrics (google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics):
                 Populated for binary
                 classification/classifier models.
+
                 This field is a member of `oneof`_ ``metrics``.
             multi_class_classification_metrics (google.cloud.bigquery_v2.types.Model.MultiClassClassificationMetrics):
                 Populated for multi-class
                 classification/classifier models.
+
                 This field is a member of `oneof`_ ``metrics``.
             clustering_metrics (google.cloud.bigquery_v2.types.Model.ClusteringMetrics):
                 Populated for clustering models.
+
                 This field is a member of `oneof`_ ``metrics``.
             ranking_metrics (google.cloud.bigquery_v2.types.Model.RankingMetrics):
                 Populated for implicit feedback type matrix
                 factorization models.
+
                 This field is a member of `oneof`_ ``metrics``.
             arima_forecasting_metrics (google.cloud.bigquery_v2.types.Model.ArimaForecastingMetrics):
                 Populated for ARIMA models.
+
                 This field is a member of `oneof`_ ``metrics``.
         """
 
