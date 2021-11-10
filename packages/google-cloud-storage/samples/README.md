@@ -65,10 +65,12 @@ for instructions on setting up credentials for applications.
 * [CORS Configuration](#cors-configuration)
 * [Create Bucket](#create-bucket)
 * [Create Bucket Class Location](#create-bucket-class-location)
+* [Create Bucket Notifications](#create-bucket-notifications)
 * [Create HMAC Key](#create-hmac-key)
 * [Deactivate HMAC Key](#deactivate-hmac-key)
 * [Define Bucket Website Configuration](#define-bucket-website-configuration)
 * [Delete Bucket](#delete-bucket)
+* [Delete Bucket Notification](#delete-bucket-notification)
 * [Delete File](#delete-file)
 * [Delete File Archived Generation](#delete-file-archived-generation)
 * [Delete HMAC Key](#delete-hmac-key)
@@ -104,6 +106,7 @@ for instructions on setting up credentials for applications.
 * [Get Service Account](#get-service-account)
 * [Get Uniform Bucket Level Access](#get-uniform-bucket-level-access)
 * [List Buckets](#list-buckets)
+* [List Bucket Notifications](#list-bucket-notifications)
 * [List File Archived Generations](#list-file-archived-generations)
 * [List Files](#list-files)
 * [List Files With Prefix](#list-files-with-prefix)
@@ -117,6 +120,7 @@ for instructions on setting up credentials for applications.
 * [Print Bucket ACL For User](#print-bucket-acl-for-user)
 * [Print File ACL](#print-file-acl)
 * [Print File ACL For User](#print-file-acl-for-user)
+* [Print PubSub Bucket Notification](#print-pubsub-bucket-notification)
 * [Release Event Based Hold](#release-event-based-hold)
 * [Release Temporary Hold](#release-temporary-hold)
 * [Remove Bucket Conditional IAM Binding](#remove-bucket-conditional-iam-binding)
@@ -300,6 +304,15 @@ View the [source code](https://github.com/googleapis/python-storage/blob/main/sa
 `python storage_create_bucket_class_location.py`
 
 -----
+### Create Bucket Notifications
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/snippets/storage_create_bucket_notifications.py,samples/README.md)
+
+View the [source code](https://github.com/googleapis/python-storage/blob/main/samples/snippets/storage_create_bucket_notifications.py). To run this sample:
+
+
+`python storage_create_bucket_notifications.py <BUCKET_NAME> <TOPIC_NAME>`
+
+-----
 ### Create HMAC Key
 [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/snippets/storage_create_hmac_key.py,samples/README.md)
 
@@ -334,6 +347,15 @@ View the [source code](https://github.com/googleapis/python-storage/blob/main/sa
 
 
 `python storage_delete_bucket.py`
+
+-----
+### Delete Bucket Notification
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/snippets/storage_delete_bucket_notification.py,samples/README.md)
+
+View the [source code](https://github.com/googleapis/python-storage/blob/main/samples/snippets/storage_delete_bucket_notification.py). To run this sample:
+
+
+`python storage_delete_bucket_notification.py <BUCKET_NAME> <NOTIFICATION_ID>`
 
 -----
 ### Delete File
@@ -649,6 +671,15 @@ View the [source code](https://github.com/googleapis/python-storage/blob/main/sa
 `python storage_list_buckets.py`
 
 -----
+### List Bucket Notifications
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/snippets/storage_list_bucket_notifications.py,samples/README.md)
+
+View the [source code](https://github.com/googleapis/python-storage/blob/main/samples/snippets/storage_list_bucket_notifications.py). To run this sample:
+
+
+`python storage_list_bucket_notifications.py <BUCKET_NAME>`
+
+-----
 ### List File Archived Generations
 [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/snippets/storage_list_file_archived_generations.py,samples/README.md)
 
@@ -764,6 +795,15 @@ View the [source code](https://github.com/googleapis/python-storage/blob/main/sa
 
 
 `python storage_print_file_acl_for_user.py`
+
+-----
+### Print PubSub Bucket Notification
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/snippets/storage_print_pubsub_bucket_notification.py,samples/README.md)
+
+View the [source code](https://github.com/googleapis/python-storage/blob/main/samples/snippets/storage_print_pubsub_bucket_notification.py). To run this sample:
+
+
+`python storage_print_pubsub_bucket_notification.py <BUCKET_NAME> <NOTIFICATION_ID>`
 
 -----
 ### Release Event Based Hold
