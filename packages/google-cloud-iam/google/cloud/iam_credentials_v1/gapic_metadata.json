@@ -1,7 +1,7 @@
  {
   "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
   "language": "python",
-  "libraryPackage": "google.iam.credentials_v1",
+  "libraryPackage": "google.cloud.iam_credentials_v1",
   "protoPackage": "google.iam.credentials.v1",
   "schema": "1.0",
   "services": {

@@ -36,7 +36,7 @@ def partition(
     return results[1], results[0]
 
 
-class credentialsCallTransformer(cst.CSTTransformer):
+class iam_credentialsCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'generate_access_token': ('name', 'scope', 'delegates', 'lifetime', ),
@@ -91,7 +91,7 @@ def fix_files(
     in_dir: pathlib.Path,
     out_dir: pathlib.Path,
     *,
-    transformer=credentialsCallTransformer(),
+    transformer=iam_credentialsCallTransformer(),
 ):
     """Duplicate the input dir to the output dir, fixing file method calls.
 
@@ -124,7 +124,7 @@ def fix_files(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description="""Fix up source that uses the credentials client library.
+        description="""Fix up source that uses the iam_credentials client library.
 
 The existing sources are NOT overwritten but are copied to output_dir with changes made.
 

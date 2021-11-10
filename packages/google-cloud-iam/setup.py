@@ -80,7 +80,7 @@ setuptools.setup(
     install_requires=dependencies,
     extras_require={"fixup": ["libcst >= 0.2.5"]},
     python_requires=">=3.6",
-    scripts=["scripts/fixup_credentials_v1_keywords.py"],
+    scripts=["scripts/fixup_iam_credentials_v1_keywords.py"],
     include_package_data=True,
     zip_safe=False,
 )
