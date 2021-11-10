@@ -645,9 +645,15 @@ def test_create_batch_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].batch == batches.Batch(name="name_value")
-        assert args[0].batch_id == "batch_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].batch
+        mock_val = batches.Batch(name="name_value")
+        assert arg == mock_val
+        arg = args[0].batch_id
+        mock_val = "batch_id_value"
+        assert arg == mock_val
 
 
 def test_create_batch_flattened_error():
@@ -690,9 +696,15 @@ async def test_create_batch_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].batch == batches.Batch(name="name_value")
-        assert args[0].batch_id == "batch_id_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].batch
+        mock_val = batches.Batch(name="name_value")
+        assert arg == mock_val
+        arg = args[0].batch_id
+        mock_val = "batch_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -884,7 +896,9 @@ def test_get_batch_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_batch_flattened_error():
@@ -918,7 +932,9 @@ async def test_get_batch_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1084,7 +1100,9 @@ def test_list_batches_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_batches_flattened_error():
@@ -1120,7 +1138,9 @@ async def test_list_batches_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1396,7 +1416,9 @@ def test_delete_batch_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_batch_flattened_error():
@@ -1430,7 +1452,9 @@ async def test_delete_batch_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

@@ -691,8 +691,12 @@ def test_create_workflow_template_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].template == workflow_templates.WorkflowTemplate(id="id_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].template
+        mock_val = workflow_templates.WorkflowTemplate(id="id_value")
+        assert arg == mock_val
 
 
 def test_create_workflow_template_flattened_error():
@@ -737,8 +741,12 @@ async def test_create_workflow_template_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].template == workflow_templates.WorkflowTemplate(id="id_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].template
+        mock_val = workflow_templates.WorkflowTemplate(id="id_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -931,7 +939,9 @@ def test_get_workflow_template_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_workflow_template_flattened_error():
@@ -971,7 +981,9 @@ async def test_get_workflow_template_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1155,8 +1167,12 @@ def test_instantiate_workflow_template_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].parameters == {"key_value": "value_value"}
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].parameters
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
 
 
 def test_instantiate_workflow_template_flattened_error():
@@ -1200,8 +1216,12 @@ async def test_instantiate_workflow_template_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].parameters == {"key_value": "value_value"}
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].parameters
+        mock_val = {"key_value": "value_value"}
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1388,8 +1408,12 @@ def test_instantiate_inline_workflow_template_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].template == workflow_templates.WorkflowTemplate(id="id_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].template
+        mock_val = workflow_templates.WorkflowTemplate(id="id_value")
+        assert arg == mock_val
 
 
 def test_instantiate_inline_workflow_template_flattened_error():
@@ -1434,8 +1458,12 @@ async def test_instantiate_inline_workflow_template_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].template == workflow_templates.WorkflowTemplate(id="id_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].template
+        mock_val = workflow_templates.WorkflowTemplate(id="id_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1635,7 +1663,9 @@ def test_update_workflow_template_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].template == workflow_templates.WorkflowTemplate(id="id_value")
+        arg = args[0].template
+        mock_val = workflow_templates.WorkflowTemplate(id="id_value")
+        assert arg == mock_val
 
 
 def test_update_workflow_template_flattened_error():
@@ -1678,7 +1708,9 @@ async def test_update_workflow_template_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].template == workflow_templates.WorkflowTemplate(id="id_value")
+        arg = args[0].template
+        mock_val = workflow_templates.WorkflowTemplate(id="id_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1867,7 +1899,9 @@ def test_list_workflow_templates_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_workflow_templates_flattened_error():
@@ -1907,7 +1941,9 @@ async def test_list_workflow_templates_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2265,7 +2301,9 @@ def test_delete_workflow_template_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_workflow_template_flattened_error():
@@ -2303,7 +2341,9 @@ async def test_delete_workflow_template_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

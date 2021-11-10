@@ -162,15 +162,19 @@ class Batch(proto.Message):
             created.
         pyspark_batch (google.cloud.dataproc_v1.types.PySparkBatch):
             Optional. PySpark batch config.
+
             This field is a member of `oneof`_ ``batch_config``.
         spark_batch (google.cloud.dataproc_v1.types.SparkBatch):
             Optional. Spark batch config.
+
             This field is a member of `oneof`_ ``batch_config``.
         spark_r_batch (google.cloud.dataproc_v1.types.SparkRBatch):
             Optional. SparkR batch config.
+
             This field is a member of `oneof`_ ``batch_config``.
         spark_sql_batch (google.cloud.dataproc_v1.types.SparkSqlBatch):
             Optional. SparkSql batch config.
+
             This field is a member of `oneof`_ ``batch_config``.
         runtime_info (google.cloud.dataproc_v1.types.RuntimeInfo):
             Output only. Runtime information about batch
@@ -324,11 +328,13 @@ class SparkBatch(proto.Message):
         main_jar_file_uri (str):
             Optional. The HCFS URI of the jar file that
             contains the main class.
+
             This field is a member of `oneof`_ ``driver``.
         main_class (str):
             Optional. The name of the driver main class. The jar file
             that contains the class must be in the classpath or
             specified in ``jar_file_uris``.
+
             This field is a member of `oneof`_ ``driver``.
         args (Sequence[str]):
             Optional. The arguments to pass to the driver. Do not

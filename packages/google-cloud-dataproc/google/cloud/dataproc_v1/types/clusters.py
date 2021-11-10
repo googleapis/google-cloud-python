@@ -946,6 +946,7 @@ class LifecycleConfig(proto.Message):
             Optional. The time when cluster will be auto-deleted (see
             JSON representation of
             `Timestamp <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
+
             This field is a member of `oneof`_ ``ttl``.
         auto_delete_ttl (google.protobuf.duration_pb2.Duration):
             Optional. The lifetime duration of cluster. The cluster will
@@ -953,6 +954,7 @@ class LifecycleConfig(proto.Message):
             10 minutes; maximum value is 14 days (see JSON
             representation of
             `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
+
             This field is a member of `oneof`_ ``ttl``.
         idle_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when cluster became idle (most recent

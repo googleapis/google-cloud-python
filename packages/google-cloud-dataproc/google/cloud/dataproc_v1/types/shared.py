@@ -104,10 +104,12 @@ class ExecutionConfig(proto.Message):
             execute workload.
         network_uri (str):
             Optional. Network URI to connect workload to.
+
             This field is a member of `oneof`_ ``network``.
         subnetwork_uri (str):
             Optional. Subnetwork URI to connect workload
             to.
+
             This field is a member of `oneof`_ ``network``.
         network_tags (Sequence[str]):
             Optional. Tags used for network traffic

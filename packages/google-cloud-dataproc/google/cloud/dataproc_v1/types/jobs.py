@@ -102,11 +102,13 @@ class HadoopJob(proto.Message):
             samples/custom-wordcount.jar'
             'file:///home/usr/lib/hadoop-mapreduce/hadoop-
             mapreduce-examples.jar'
+
             This field is a member of `oneof`_ ``driver``.
         main_class (str):
             The name of the driver's main class. The jar file containing
             the class must be in the default CLASSPATH or specified in
             ``jar_file_uris``.
+
             This field is a member of `oneof`_ ``driver``.
         args (Sequence[str]):
             Optional. The arguments to pass to the driver. Do not
@@ -162,11 +164,13 @@ class SparkJob(proto.Message):
         main_jar_file_uri (str):
             The HCFS URI of the jar file that contains
             the main class.
+
             This field is a member of `oneof`_ ``driver``.
         main_class (str):
             The name of the driver's main class. The jar file that
             contains the class must be in the default CLASSPATH or
             specified in ``jar_file_uris``.
+
             This field is a member of `oneof`_ ``driver``.
         args (Sequence[str]):
             Optional. The arguments to pass to the driver. Do not
@@ -302,9 +306,11 @@ class HiveJob(proto.Message):
         query_file_uri (str):
             The HCFS URI of the script that contains Hive
             queries.
+
             This field is a member of `oneof`_ ``queries``.
         query_list (google.cloud.dataproc_v1.types.QueryList):
             A list of queries.
+
             This field is a member of `oneof`_ ``queries``.
         continue_on_failure (bool):
             Optional. Whether to continue executing queries if a query
@@ -351,9 +357,11 @@ class SparkSqlJob(proto.Message):
         query_file_uri (str):
             The HCFS URI of the script that contains SQL
             queries.
+
             This field is a member of `oneof`_ ``queries``.
         query_list (google.cloud.dataproc_v1.types.QueryList):
             A list of queries.
+
             This field is a member of `oneof`_ ``queries``.
         script_variables (Sequence[google.cloud.dataproc_v1.types.SparkSqlJob.ScriptVariablesEntry]):
             Optional. Mapping of query variable names to values
@@ -397,9 +405,11 @@ class PigJob(proto.Message):
         query_file_uri (str):
             The HCFS URI of the script that contains the
             Pig queries.
+
             This field is a member of `oneof`_ ``queries``.
         query_list (google.cloud.dataproc_v1.types.QueryList):
             A list of queries.
+
             This field is a member of `oneof`_ ``queries``.
         continue_on_failure (bool):
             Optional. Whether to continue executing queries if a query
@@ -496,9 +506,11 @@ class PrestoJob(proto.Message):
         query_file_uri (str):
             The HCFS URI of the script that contains SQL
             queries.
+
             This field is a member of `oneof`_ ``queries``.
         query_list (google.cloud.dataproc_v1.types.QueryList):
             A list of queries.
+
             This field is a member of `oneof`_ ``queries``.
         continue_on_failure (bool):
             Optional. Whether to continue executing queries if a query
@@ -689,27 +701,35 @@ class Job(proto.Message):
             when, and where to run the job.
         hadoop_job (google.cloud.dataproc_v1.types.HadoopJob):
             Optional. Job is a Hadoop job.
+
             This field is a member of `oneof`_ ``type_job``.
         spark_job (google.cloud.dataproc_v1.types.SparkJob):
             Optional. Job is a Spark job.
+
             This field is a member of `oneof`_ ``type_job``.
         pyspark_job (google.cloud.dataproc_v1.types.PySparkJob):
             Optional. Job is a PySpark job.
+
             This field is a member of `oneof`_ ``type_job``.
         hive_job (google.cloud.dataproc_v1.types.HiveJob):
             Optional. Job is a Hive job.
+
             This field is a member of `oneof`_ ``type_job``.
         pig_job (google.cloud.dataproc_v1.types.PigJob):
             Optional. Job is a Pig job.
+
             This field is a member of `oneof`_ ``type_job``.
         spark_r_job (google.cloud.dataproc_v1.types.SparkRJob):
             Optional. Job is a SparkR job.
+
             This field is a member of `oneof`_ ``type_job``.
         spark_sql_job (google.cloud.dataproc_v1.types.SparkSqlJob):
             Optional. Job is a SparkSql job.
+
             This field is a member of `oneof`_ ``type_job``.
         presto_job (google.cloud.dataproc_v1.types.PrestoJob):
             Optional. Job is a Presto job.
+
             This field is a member of `oneof`_ ``type_job``.
         status (google.cloud.dataproc_v1.types.JobStatus):
             Output only. The job status. Additional application-specific
