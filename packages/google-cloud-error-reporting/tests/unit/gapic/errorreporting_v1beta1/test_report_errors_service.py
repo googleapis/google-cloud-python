@@ -680,10 +680,14 @@ def test_report_error_event_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_name == "project_name_value"
-        assert args[0].event == report_errors_service.ReportedErrorEvent(
+        arg = args[0].project_name
+        mock_val = "project_name_value"
+        assert arg == mock_val
+        arg = args[0].event
+        mock_val = report_errors_service.ReportedErrorEvent(
             event_time=timestamp_pb2.Timestamp(seconds=751)
         )
+        assert arg == mock_val
 
 
 def test_report_error_event_flattened_error():
@@ -732,10 +736,14 @@ async def test_report_error_event_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].project_name == "project_name_value"
-        assert args[0].event == report_errors_service.ReportedErrorEvent(
+        arg = args[0].project_name
+        mock_val = "project_name_value"
+        assert arg == mock_val
+        arg = args[0].event
+        mock_val = report_errors_service.ReportedErrorEvent(
             event_time=timestamp_pb2.Timestamp(seconds=751)
         )
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
