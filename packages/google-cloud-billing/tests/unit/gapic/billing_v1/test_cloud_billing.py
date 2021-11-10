@@ -644,7 +644,9 @@ def test_get_billing_account_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_billing_account_flattened_error():
@@ -680,7 +682,9 @@ async def test_get_billing_account_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1132,8 +1136,12 @@ def test_update_billing_account_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].account == cloud_billing.BillingAccount(name="name_value")
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].account
+        mock_val = cloud_billing.BillingAccount(name="name_value")
+        assert arg == mock_val
 
 
 def test_update_billing_account_flattened_error():
@@ -1173,8 +1181,12 @@ async def test_update_billing_account_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].account == cloud_billing.BillingAccount(name="name_value")
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].account
+        mock_val = cloud_billing.BillingAccount(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1314,9 +1326,9 @@ def test_create_billing_account_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].billing_account == cloud_billing.BillingAccount(
-            name="name_value"
-        )
+        arg = args[0].billing_account
+        mock_val = cloud_billing.BillingAccount(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_billing_account_flattened_error():
@@ -1355,9 +1367,9 @@ async def test_create_billing_account_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].billing_account == cloud_billing.BillingAccount(
-            name="name_value"
-        )
+        arg = args[0].billing_account
+        mock_val = cloud_billing.BillingAccount(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1537,7 +1549,9 @@ def test_list_project_billing_info_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_list_project_billing_info_flattened_error():
@@ -1573,7 +1587,9 @@ async def test_list_project_billing_info_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1934,7 +1950,9 @@ def test_get_project_billing_info_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_project_billing_info_flattened_error():
@@ -1970,7 +1988,9 @@ async def test_get_project_billing_info_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2164,10 +2184,12 @@ def test_update_project_billing_info_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].project_billing_info == cloud_billing.ProjectBillingInfo(
-            name="name_value"
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].project_billing_info
+        mock_val = cloud_billing.ProjectBillingInfo(name="name_value")
+        assert arg == mock_val
 
 
 def test_update_project_billing_info_flattened_error():
@@ -2208,10 +2230,12 @@ async def test_update_project_billing_info_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].project_billing_info == cloud_billing.ProjectBillingInfo(
-            name="name_value"
-        )
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].project_billing_info
+        mock_val = cloud_billing.ProjectBillingInfo(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2390,7 +2414,9 @@ def test_get_iam_policy_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].resource == "resource_value"
+        arg = args[0].resource
+        mock_val = "resource_value"
+        assert arg == mock_val
 
 
 def test_get_iam_policy_flattened_error():
@@ -2422,7 +2448,9 @@ async def test_get_iam_policy_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].resource == "resource_value"
+        arg = args[0].resource
+        mock_val = "resource_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2599,7 +2627,9 @@ def test_set_iam_policy_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].resource == "resource_value"
+        arg = args[0].resource
+        mock_val = "resource_value"
+        assert arg == mock_val
 
 
 def test_set_iam_policy_flattened_error():
@@ -2631,7 +2661,9 @@ async def test_set_iam_policy_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].resource == "resource_value"
+        arg = args[0].resource
+        mock_val = "resource_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2829,8 +2861,12 @@ def test_test_iam_permissions_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].resource == "resource_value"
-        assert args[0].permissions == ["permissions_value"]
+        arg = args[0].resource
+        mock_val = "resource_value"
+        assert arg == mock_val
+        arg = args[0].permissions
+        mock_val = ["permissions_value"]
+        assert arg == mock_val
 
 
 def test_test_iam_permissions_flattened_error():
@@ -2870,8 +2906,12 @@ async def test_test_iam_permissions_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].resource == "resource_value"
-        assert args[0].permissions == ["permissions_value"]
+        arg = args[0].resource
+        mock_val = "resource_value"
+        assert arg == mock_val
+        arg = args[0].permissions
+        mock_val = ["permissions_value"]
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
