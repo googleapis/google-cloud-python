@@ -144,7 +144,7 @@ class Client(_ClientFactoryMixin):
             to acquire default credentials.
     """
 
-    SCOPE: Union[Tuple[str], None] = None
+    SCOPE: Union[Tuple[str, ...], None] = None
     """The scopes required for authenticating with a service.
 
     Needs to be set by subclasses.

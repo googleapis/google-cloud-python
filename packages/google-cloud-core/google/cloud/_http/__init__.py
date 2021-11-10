@@ -19,6 +19,7 @@ import collections.abc
 import json
 import os
 import platform
+from typing import Optional
 from urllib.parse import urlencode
 import warnings
 
@@ -168,19 +169,19 @@ class JSONConnection(Connection):
     must be updated by subclasses.
     """
 
-    API_BASE_URL = None
+    API_BASE_URL: Optional[str] = None
     """The base of the API call URL."""
 
-    API_BASE_MTLS_URL = None
+    API_BASE_MTLS_URL: Optional[str] = None
     """The base of the API call URL for mutual TLS."""
 
     ALLOW_AUTO_SWITCH_TO_MTLS_URL = False
     """Indicates if auto switch to mTLS url is allowed."""
 
-    API_VERSION = None
+    API_VERSION: Optional[str] = None
     """The version of the API, used in building the API call's URL."""
 
-    API_URL_TEMPLATE = None
+    API_URL_TEMPLATE: Optional[str] = None
     """A template for the URL of a particular API call."""
 
     def get_api_base_url_for_mtls(self, api_base_url=None):
