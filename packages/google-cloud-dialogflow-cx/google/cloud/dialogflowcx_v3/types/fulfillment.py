@@ -132,9 +132,11 @@ class Fulfillment(proto.Message):
                 Attributes:
                     message (google.cloud.dialogflowcx_v3.types.ResponseMessage):
                         Returned message.
+
                         This field is a member of `oneof`_ ``cases_or_message``.
                     additional_cases (google.cloud.dialogflowcx_v3.types.Fulfillment.ConditionalCases):
                         Additional cases to be evaluated.
+
                         This field is a member of `oneof`_ ``cases_or_message``.
                 """
 

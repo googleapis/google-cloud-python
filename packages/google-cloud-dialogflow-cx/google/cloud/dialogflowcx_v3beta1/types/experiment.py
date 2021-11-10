@@ -124,6 +124,7 @@ class Experiment(proto.Message):
             version_variants (google.cloud.dialogflowcx_v3beta1.types.VersionVariants):
                 The flow versions as the variants of this
                 experiment.
+
                 This field is a member of `oneof`_ ``variants``.
         """
 
@@ -203,9 +204,11 @@ class Experiment(proto.Message):
                     specified in each Metric.
                 ratio (float):
                     Ratio value of a metric.
+
                     This field is a member of `oneof`_ ``value``.
                 count (float):
                     Count value of a metric.
+
                     This field is a member of `oneof`_ ``value``.
                 confidence_interval (google.cloud.dialogflowcx_v3beta1.types.Experiment.Result.ConfidenceInterval):
                     The probability that the treatment is better
@@ -384,6 +387,7 @@ class VariantsHistory(proto.Message):
     Attributes:
         version_variants (google.cloud.dialogflowcx_v3beta1.types.VersionVariants):
             The flow versions as the variants.
+
             This field is a member of `oneof`_ ``variants``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Update time of the variants.

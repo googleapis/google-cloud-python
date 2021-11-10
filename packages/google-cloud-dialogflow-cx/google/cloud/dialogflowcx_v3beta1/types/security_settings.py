@@ -221,6 +221,7 @@ class SecuritySettings(proto.Message):
             Note: Interaction logging is a limited access
             feature. Talk to your Google representative to
             check availability for you.
+
             This field is a member of `oneof`_ ``data_retention``.
         purge_data_types (Sequence[google.cloud.dialogflowcx_v3beta1.types.SecuritySettings.PurgeDataType]):
             List of types of data to remove when

@@ -66,11 +66,13 @@ class Webhook(proto.Message):
             webhook, unique within the agent.
         generic_web_service (google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService):
             Configuration for a generic web service.
+
             This field is a member of `oneof`_ ``webhook``.
         service_directory (google.cloud.dialogflowcx_v3beta1.types.Webhook.ServiceDirectoryConfig):
             Configuration for a `Service
             Directory <https://cloud.google.com/service-directory>`__
             service.
+
             This field is a member of `oneof`_ ``webhook``.
         timeout (google.protobuf.duration_pb2.Duration):
             Webhook execution timeout. Execution is
@@ -277,6 +279,7 @@ class WebhookRequest(proto.Message):
             text][google.cloud.dialogflow.cx.v3beta1.TextInput] was
             provided as input, this field will contain a copy of the
             text.
+
             This field is a member of `oneof`_ ``query``.
         trigger_intent (str):
             If an
@@ -284,17 +287,20 @@ class WebhookRequest(proto.Message):
             provided as input, this field will contain a copy of the
             intent identifier. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+
             This field is a member of `oneof`_ ``query``.
         transcript (str):
             If [natural language speech
             audio][google.cloud.dialogflow.cx.v3beta1.AudioInput] was
             provided as input, this field will contain the transcript
             for the audio.
+
             This field is a member of `oneof`_ ``query``.
         trigger_event (str):
             If an [event][google.cloud.dialogflow.cx.v3beta1.EventInput]
             was provided as input, this field will contain the name of
             the event.
+
             This field is a member of `oneof`_ ``query``.
         language_code (str):
             The language code specified in the [original
@@ -450,10 +456,12 @@ class WebhookResponse(proto.Message):
         target_page (str):
             The target page to transition to. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+
             This field is a member of `oneof`_ ``transition``.
         target_flow (str):
             The target flow to transition to. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+
             This field is a member of `oneof`_ ``transition``.
     """
 

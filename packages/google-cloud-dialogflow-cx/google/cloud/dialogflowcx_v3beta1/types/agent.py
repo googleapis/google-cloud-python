@@ -296,9 +296,11 @@ class ExportAgentResponse(proto.Message):
             The URI to a file containing the exported agent. This field
             is populated only if ``agent_uri`` is specified in
             [ExportAgentRequest][google.cloud.dialogflow.cx.v3beta1.ExportAgentRequest].
+
             This field is a member of `oneof`_ ``agent``.
         agent_content (bytes):
             Uncompressed raw byte content for agent.
+
             This field is a member of `oneof`_ ``agent``.
     """
 
@@ -326,9 +328,11 @@ class RestoreAgentRequest(proto.Message):
             Storage <https://cloud.google.com/storage/docs/>`__ URI to
             restore agent from. The format of this URI must be
             ``gs://<bucket-name>/<object-name>``.
+
             This field is a member of `oneof`_ ``agent``.
         agent_content (bytes):
             Uncompressed raw byte content for agent.
+
             This field is a member of `oneof`_ ``agent``.
         restore_option (google.cloud.dialogflowcx_v3beta1.types.RestoreAgentRequest.RestoreOption):
             Agent restore mode. If not specified, ``KEEP`` is assumed.

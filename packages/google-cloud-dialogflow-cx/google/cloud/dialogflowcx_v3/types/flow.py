@@ -436,9 +436,11 @@ class ImportFlowRequest(proto.Message):
             Storage <https://cloud.google.com/storage/docs/>`__ URI to
             import flow from. The format of this URI must be
             ``gs://<bucket-name>/<object-name>``.
+
             This field is a member of `oneof`_ ``flow``.
         flow_content (bytes):
             Uncompressed raw byte content for flow.
+
             This field is a member of `oneof`_ ``flow``.
         import_option (google.cloud.dialogflowcx_v3.types.ImportFlowRequest.ImportOption):
             Flow import mode. If not specified, ``KEEP`` is assumed.
@@ -509,9 +511,11 @@ class ExportFlowResponse(proto.Message):
             The URI to a file containing the exported flow. This field
             is populated only if ``flow_uri`` is specified in
             [ExportFlowRequest][google.cloud.dialogflow.cx.v3.ExportFlowRequest].
+
             This field is a member of `oneof`_ ``flow``.
         flow_content (bytes):
             Uncompressed raw byte content for flow.
+
             This field is a member of `oneof`_ ``flow``.
     """
 
