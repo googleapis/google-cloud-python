@@ -117,6 +117,7 @@ class BudgetAmount(proto.Message):
             updating a budget, it must match the currency_code of the
             existing budget. The ``currency_code`` is provided on
             output.
+
             This field is a member of `oneof`_ ``budget_amount``.
         last_period_amount (google.cloud.billing.budgets_v1.types.LastPeriodAmount):
             Use the last period's actual spend as the budget for the
@@ -125,6 +126,7 @@ class BudgetAmount(proto.Message):
             [Filter.calendar_period][google.cloud.billing.budgets.v1.Filter.calendar_period].
             It cannot be set in combination with
             [Filter.custom_period][google.cloud.billing.budgets.v1.Filter.custom_period].
+
             This field is a member of `oneof`_ ``budget_amount``.
     """
 
@@ -298,12 +300,14 @@ class Filter(proto.Message):
             After that, it will track usage from July 1 to
             September 30 when the current calendar month is
             July, August, September, so on.
+
             This field is a member of `oneof`_ ``usage_period``.
         custom_period (google.cloud.billing.budgets_v1.types.CustomPeriod):
             Optional. Specifies to track usage from any
             start date (required) to any end date
             (optional). This time period is static, it does
             not recur.
+
             This field is a member of `oneof`_ ``usage_period``.
     """
 
