@@ -19,12 +19,17 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core.client_options import ClientOptions
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -193,10 +198,10 @@ class InstanceAdminAsyncClient:
 
     async def list_instance_configs(
         self,
-        request: spanner_instance_admin.ListInstanceConfigsRequest = None,
+        request: Union[spanner_instance_admin.ListInstanceConfigsRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstanceConfigsAsyncPager:
@@ -204,7 +209,7 @@ class InstanceAdminAsyncClient:
         given project.
 
         Args:
-            request (:class:`google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigsRequest`):
+            request (Union[google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigsRequest, dict]):
                 The request object. The request for
                 [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs].
             parent (:class:`str`):
@@ -285,10 +290,10 @@ class InstanceAdminAsyncClient:
 
     async def get_instance_config(
         self,
-        request: spanner_instance_admin.GetInstanceConfigRequest = None,
+        request: Union[spanner_instance_admin.GetInstanceConfigRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> spanner_instance_admin.InstanceConfig:
@@ -296,7 +301,7 @@ class InstanceAdminAsyncClient:
         configuration.
 
         Args:
-            request (:class:`google.cloud.spanner_admin_instance_v1.types.GetInstanceConfigRequest`):
+            request (Union[google.cloud.spanner_admin_instance_v1.types.GetInstanceConfigRequest, dict]):
                 The request object. The request for
                 [GetInstanceConfigRequest][google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig].
             name (:class:`str`):
@@ -370,17 +375,17 @@ class InstanceAdminAsyncClient:
 
     async def list_instances(
         self,
-        request: spanner_instance_admin.ListInstancesRequest = None,
+        request: Union[spanner_instance_admin.ListInstancesRequest, dict] = None,
         *,
         parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesAsyncPager:
         r"""Lists all instances in the given project.
 
         Args:
-            request (:class:`google.cloud.spanner_admin_instance_v1.types.ListInstancesRequest`):
+            request (Union[google.cloud.spanner_admin_instance_v1.types.ListInstancesRequest, dict]):
                 The request object. The request for
                 [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances].
             parent (:class:`str`):
@@ -461,17 +466,17 @@ class InstanceAdminAsyncClient:
 
     async def get_instance(
         self,
-        request: spanner_instance_admin.GetInstanceRequest = None,
+        request: Union[spanner_instance_admin.GetInstanceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> spanner_instance_admin.Instance:
         r"""Gets information about a particular instance.
 
         Args:
-            request (:class:`google.cloud.spanner_admin_instance_v1.types.GetInstanceRequest`):
+            request (Union[google.cloud.spanner_admin_instance_v1.types.GetInstanceRequest, dict]):
                 The request object. The request for
                 [GetInstance][google.spanner.admin.instance.v1.InstanceAdmin.GetInstance].
             name (:class:`str`):
@@ -543,12 +548,12 @@ class InstanceAdminAsyncClient:
 
     async def create_instance(
         self,
-        request: spanner_instance_admin.CreateInstanceRequest = None,
+        request: Union[spanner_instance_admin.CreateInstanceRequest, dict] = None,
         *,
         parent: str = None,
         instance_id: str = None,
         instance: spanner_instance_admin.Instance = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -592,7 +597,7 @@ class InstanceAdminAsyncClient:
         successful.
 
         Args:
-            request (:class:`google.cloud.spanner_admin_instance_v1.types.CreateInstanceRequest`):
+            request (Union[google.cloud.spanner_admin_instance_v1.types.CreateInstanceRequest, dict]):
                 The request object. The request for
                 [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance].
             parent (:class:`str`):
@@ -685,11 +690,11 @@ class InstanceAdminAsyncClient:
 
     async def update_instance(
         self,
-        request: spanner_instance_admin.UpdateInstanceRequest = None,
+        request: Union[spanner_instance_admin.UpdateInstanceRequest, dict] = None,
         *,
         instance: spanner_instance_admin.Instance = None,
         field_mask: field_mask_pb2.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
@@ -740,7 +745,7 @@ class InstanceAdminAsyncClient:
         [name][google.spanner.admin.instance.v1.Instance.name].
 
         Args:
-            request (:class:`google.cloud.spanner_admin_instance_v1.types.UpdateInstanceRequest`):
+            request (Union[google.cloud.spanner_admin_instance_v1.types.UpdateInstanceRequest, dict]):
                 The request object. The request for
                 [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance].
             instance (:class:`google.cloud.spanner_admin_instance_v1.types.Instance`):
@@ -832,10 +837,10 @@ class InstanceAdminAsyncClient:
 
     async def delete_instance(
         self,
-        request: spanner_instance_admin.DeleteInstanceRequest = None,
+        request: Union[spanner_instance_admin.DeleteInstanceRequest, dict] = None,
         *,
         name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
@@ -852,7 +857,7 @@ class InstanceAdminAsyncClient:
            is permanently deleted.
 
         Args:
-            request (:class:`google.cloud.spanner_admin_instance_v1.types.DeleteInstanceRequest`):
+            request (Union[google.cloud.spanner_admin_instance_v1.types.DeleteInstanceRequest, dict]):
                 The request object. The request for
                 [DeleteInstance][google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstance].
             name (:class:`str`):
@@ -917,10 +922,10 @@ class InstanceAdminAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy_pb2.SetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -931,7 +936,7 @@ class InstanceAdminAsyncClient:
         [resource][google.iam.v1.SetIamPolicyRequest.resource].
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.SetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1047,10 +1052,10 @@ class InstanceAdminAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy_pb2.GetIamPolicyRequest = None,
+        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
@@ -1062,7 +1067,7 @@ class InstanceAdminAsyncClient:
         [resource][google.iam.v1.GetIamPolicyRequest.resource].
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.GetIamPolicyRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -1188,11 +1193,11 @@ class InstanceAdminAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy_pb2.TestIamPermissionsRequest = None,
+        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
@@ -1205,7 +1210,7 @@ class InstanceAdminAsyncClient:
         Cloud Project. Otherwise returns an empty set of permissions.
 
         Args:
-            request (:class:`google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest`):
+            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
                 `TestIamPermissions` method.
             resource (:class:`str`):
@@ -1274,6 +1279,12 @@ class InstanceAdminAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        await self.transport.close()
 
 
 try:

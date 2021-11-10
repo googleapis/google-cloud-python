@@ -27,15 +27,26 @@ class Mutation(proto.Message):
     applied to a Cloud Spanner database by sending them in a
     [Commit][google.spanner.v1.Spanner.Commit] call.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         insert (google.cloud.spanner_v1.types.Mutation.Write):
             Insert new rows in a table. If any of the rows already
             exist, the write or transaction fails with error
             ``ALREADY_EXISTS``.
+
+            This field is a member of `oneof`_ ``operation``.
         update (google.cloud.spanner_v1.types.Mutation.Write):
             Update existing rows in a table. If any of the rows does not
             already exist, the transaction fails with error
             ``NOT_FOUND``.
+
+            This field is a member of `oneof`_ ``operation``.
         insert_or_update (google.cloud.spanner_v1.types.Mutation.Write):
             Like [insert][google.spanner.v1.Mutation.insert], except
             that if the row already exists, then its column values are
@@ -49,6 +60,8 @@ class Mutation(proto.Message):
             ``NOT NULL`` columns in the table must be given a value.
             This holds true even when the row already exists and will
             therefore actually be updated.
+
+            This field is a member of `oneof`_ ``operation``.
         replace (google.cloud.spanner_v1.types.Mutation.Write):
             Like [insert][google.spanner.v1.Mutation.insert], except
             that if the row already exists, it is deleted, and the
@@ -61,9 +74,13 @@ class Mutation(proto.Message):
             the ``ON DELETE CASCADE`` annotation, then replacing a
             parent row also deletes the child rows. Otherwise, you must
             delete the child rows before you replace the parent row.
+
+            This field is a member of `oneof`_ ``operation``.
         delete (google.cloud.spanner_v1.types.Mutation.Delete):
             Delete rows from a table. Succeeds whether or
             not the named rows were present.
+
+            This field is a member of `oneof`_ ``operation``.
     """
 
     class Write(proto.Message):
@@ -107,6 +124,7 @@ class Mutation(proto.Message):
 
     class Delete(proto.Message):
         r"""Arguments to [delete][google.spanner.v1.Mutation.delete] operations.
+
         Attributes:
             table (str):
                 Required. The table whose rows will be

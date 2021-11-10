@@ -109,6 +109,7 @@ class BatchCreateSessionsResponse(proto.Message):
 
 class Session(proto.Message):
     r"""A session in the Cloud Spanner API.
+
     Attributes:
         name (str):
             Output only. The name of the session. This is
@@ -146,6 +147,7 @@ class Session(proto.Message):
 
 class GetSessionRequest(proto.Message):
     r"""The request for [GetSession][google.spanner.v1.Spanner.GetSession].
+
     Attributes:
         name (str):
             Required. The name of the session to
@@ -227,6 +229,7 @@ class DeleteSessionRequest(proto.Message):
 
 class RequestOptions(proto.Message):
     r"""Common request options for various APIs.
+
     Attributes:
         priority (google.cloud.spanner_v1.types.RequestOptions.Priority):
             Priority for the request.
@@ -389,6 +392,7 @@ class ExecuteSqlRequest(proto.Message):
 
     class QueryOptions(proto.Message):
         r"""Query optimizer configuration.
+
         Attributes:
             optimizer_version (str):
                 An option to control the selection of optimizer version.
@@ -507,6 +511,7 @@ class ExecuteBatchDmlRequest(proto.Message):
 
     class Statement(proto.Message):
         r"""A single DML statement.
+
         Attributes:
             sql (str):
                 Required. The DML string.
@@ -930,12 +935,22 @@ class BeginTransactionRequest(proto.Message):
 
 class CommitRequest(proto.Message):
     r"""The request for [Commit][google.spanner.v1.Spanner.Commit].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         session (str):
             Required. The session in which the
             transaction to be committed is running.
         transaction_id (bytes):
             Commit a previously-started transaction.
+
+            This field is a member of `oneof`_ ``transaction``.
         single_use_transaction (google.cloud.spanner_v1.types.TransactionOptions):
             Execute mutations in a temporary transaction. Note that
             unlike commit of a previously-started transaction, commit
@@ -946,6 +961,8 @@ class CommitRequest(proto.Message):
             are executed more than once. If this is undesirable, use
             [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction]
             and [Commit][google.spanner.v1.Spanner.Commit] instead.
+
+            This field is a member of `oneof`_ ``transaction``.
         mutations (Sequence[google.cloud.spanner_v1.types.Mutation]):
             The mutations to be executed when this
             transaction commits. All mutations are applied
@@ -975,6 +992,7 @@ class CommitRequest(proto.Message):
 
 class RollbackRequest(proto.Message):
     r"""The request for [Rollback][google.spanner.v1.Spanner.Rollback].
+
     Attributes:
         session (str):
             Required. The session in which the

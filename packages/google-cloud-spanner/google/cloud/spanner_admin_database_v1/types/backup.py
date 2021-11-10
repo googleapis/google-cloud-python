@@ -42,6 +42,7 @@ __protobuf__ = proto.module(
 
 class Backup(proto.Message):
     r"""A backup of a Cloud Spanner database.
+
     Attributes:
         database (str):
             Required for the
@@ -461,6 +462,7 @@ class ListBackupOperationsResponse(proto.Message):
 
 class BackupInfo(proto.Message):
     r"""Information about a backup.
+
     Attributes:
         backup (str):
             Name of the backup.
@@ -491,6 +493,7 @@ class BackupInfo(proto.Message):
 
 class CreateBackupEncryptionConfig(proto.Message):
     r"""Encryption configuration for the backup to create.
+
     Attributes:
         encryption_type (google.cloud.spanner_admin_database_v1.types.CreateBackupEncryptionConfig.EncryptionType):
             Required. The encryption type of the backup.

@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.spanner_admin_database_v1.types import backup
@@ -76,14 +76,14 @@ class ListDatabasesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[spanner_database_admin.ListDatabasesResponse]:
+    def pages(self) -> Iterator[spanner_database_admin.ListDatabasesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[spanner_database_admin.Database]:
+    def __iter__(self) -> Iterator[spanner_database_admin.Database]:
         for page in self.pages:
             yield from page.databases
 
@@ -140,14 +140,14 @@ class ListDatabasesAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[spanner_database_admin.ListDatabasesResponse]:
+    ) -> AsyncIterator[spanner_database_admin.ListDatabasesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[spanner_database_admin.Database]:
+    def __aiter__(self) -> AsyncIterator[spanner_database_admin.Database]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.databases:
@@ -206,14 +206,14 @@ class ListBackupsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[backup.ListBackupsResponse]:
+    def pages(self) -> Iterator[backup.ListBackupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[backup.Backup]:
+    def __iter__(self) -> Iterator[backup.Backup]:
         for page in self.pages:
             yield from page.backups
 
@@ -268,14 +268,14 @@ class ListBackupsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[backup.ListBackupsResponse]:
+    async def pages(self) -> AsyncIterator[backup.ListBackupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[backup.Backup]:
+    def __aiter__(self) -> AsyncIterator[backup.Backup]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.backups:
@@ -334,14 +334,14 @@ class ListDatabaseOperationsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[spanner_database_admin.ListDatabaseOperationsResponse]:
+    def pages(self) -> Iterator[spanner_database_admin.ListDatabaseOperationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[operations_pb2.Operation]:
+    def __iter__(self) -> Iterator[operations_pb2.Operation]:
         for page in self.pages:
             yield from page.operations
 
@@ -400,14 +400,14 @@ class ListDatabaseOperationsAsyncPager:
     @property
     async def pages(
         self,
-    ) -> AsyncIterable[spanner_database_admin.ListDatabaseOperationsResponse]:
+    ) -> AsyncIterator[spanner_database_admin.ListDatabaseOperationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[operations_pb2.Operation]:
+    def __aiter__(self) -> AsyncIterator[operations_pb2.Operation]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.operations:
@@ -466,14 +466,14 @@ class ListBackupOperationsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[backup.ListBackupOperationsResponse]:
+    def pages(self) -> Iterator[backup.ListBackupOperationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[operations_pb2.Operation]:
+    def __iter__(self) -> Iterator[operations_pb2.Operation]:
         for page in self.pages:
             yield from page.operations
 
@@ -528,14 +528,14 @@ class ListBackupOperationsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterable[backup.ListBackupOperationsResponse]:
+    async def pages(self) -> AsyncIterator[backup.ListBackupOperationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[operations_pb2.Operation]:
+    def __aiter__(self) -> AsyncIterator[operations_pb2.Operation]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.operations:

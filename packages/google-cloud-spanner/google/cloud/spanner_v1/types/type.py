@@ -86,6 +86,7 @@ class StructType(proto.Message):
 
     class Field(proto.Message):
         r"""Message representing a single field of a struct.
+
         Attributes:
             name (str):
                 The name of the field. For reads, this is the column name.

@@ -47,6 +47,7 @@ class OperationProgress(proto.Message):
 
 class EncryptionConfig(proto.Message):
     r"""Encryption configuration for a Cloud Spanner database.
+
     Attributes:
         kms_key_name (str):
             The Cloud KMS key to be used for encrypting and decrypting

@@ -42,6 +42,7 @@ __protobuf__ = proto.module(
 
 class ReplicaInfo(proto.Message):
     r"""
+
     Attributes:
         location (str):
             The location of the serving resources, e.g.

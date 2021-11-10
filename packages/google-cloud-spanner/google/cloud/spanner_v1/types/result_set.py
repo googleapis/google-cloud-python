@@ -216,6 +216,13 @@ class ResultSetStats(proto.Message):
     [ResultSet][google.spanner.v1.ResultSet] or
     [PartialResultSet][google.spanner.v1.PartialResultSet].
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         query_plan (google.cloud.spanner_v1.types.QueryPlan):
             [QueryPlan][google.spanner.v1.QueryPlan] for the query
@@ -235,10 +242,14 @@ class ResultSetStats(proto.Message):
         row_count_exact (int):
             Standard DML returns an exact count of rows
             that were modified.
+
+            This field is a member of `oneof`_ ``row_count``.
         row_count_lower_bound (int):
             Partitioned DML does not offer exactly-once
             semantics, so it returns a lower bound of the
             rows modified.
+
+            This field is a member of `oneof`_ ``row_count``.
     """
 
     query_plan = proto.Field(proto.MESSAGE, number=1, message=gs_query_plan.QueryPlan,)

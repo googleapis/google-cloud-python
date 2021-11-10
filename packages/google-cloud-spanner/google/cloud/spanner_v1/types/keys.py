@@ -135,22 +135,37 @@ class KeyRange(proto.Message):
     Note that 100 is passed as the start, and 1 is passed as the end,
     because ``Key`` is a descending column in the schema.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         start_closed (google.protobuf.struct_pb2.ListValue):
             If the start is closed, then the range includes all rows
             whose first ``len(start_closed)`` key columns exactly match
             ``start_closed``.
+
+            This field is a member of `oneof`_ ``start_key_type``.
         start_open (google.protobuf.struct_pb2.ListValue):
             If the start is open, then the range excludes rows whose
             first ``len(start_open)`` key columns exactly match
             ``start_open``.
+
+            This field is a member of `oneof`_ ``start_key_type``.
         end_closed (google.protobuf.struct_pb2.ListValue):
             If the end is closed, then the range includes all rows whose
             first ``len(end_closed)`` key columns exactly match
             ``end_closed``.
+
+            This field is a member of `oneof`_ ``end_key_type``.
         end_open (google.protobuf.struct_pb2.ListValue):
             If the end is open, then the range excludes rows whose first
             ``len(end_open)`` key columns exactly match ``end_open``.
+
+            This field is a member of `oneof`_ ``end_key_type``.
     """
 
     start_closed = proto.Field(

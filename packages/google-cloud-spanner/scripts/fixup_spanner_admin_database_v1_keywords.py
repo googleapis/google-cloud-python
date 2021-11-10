@@ -39,23 +39,23 @@ def partition(
 class spanner_admin_databaseCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_backup': ('parent', 'backup_id', 'backup', 'encryption_config', ),
-          'create_database': ('parent', 'create_statement', 'extra_statements', 'encryption_config', ),
-          'delete_backup': ('name', ),
-          'drop_database': ('database', ),
-          'get_backup': ('name', ),
-          'get_database': ('name', ),
-          'get_database_ddl': ('database', ),
-          'get_iam_policy': ('resource', 'options', ),
-          'list_backup_operations': ('parent', 'filter', 'page_size', 'page_token', ),
-          'list_backups': ('parent', 'filter', 'page_size', 'page_token', ),
-          'list_database_operations': ('parent', 'filter', 'page_size', 'page_token', ),
-          'list_databases': ('parent', 'page_size', 'page_token', ),
-          'restore_database': ('parent', 'database_id', 'backup', 'encryption_config', ),
-          'set_iam_policy': ('resource', 'policy', ),
-          'test_iam_permissions': ('resource', 'permissions', ),
-          'update_backup': ('backup', 'update_mask', ),
-          'update_database_ddl': ('database', 'statements', 'operation_id', ),
+        'create_backup': ('parent', 'backup_id', 'backup', 'encryption_config', ),
+        'create_database': ('parent', 'create_statement', 'extra_statements', 'encryption_config', ),
+        'delete_backup': ('name', ),
+        'drop_database': ('database', ),
+        'get_backup': ('name', ),
+        'get_database': ('name', ),
+        'get_database_ddl': ('database', ),
+        'get_iam_policy': ('resource', 'options', ),
+        'list_backup_operations': ('parent', 'filter', 'page_size', 'page_token', ),
+        'list_backups': ('parent', 'filter', 'page_size', 'page_token', ),
+        'list_database_operations': ('parent', 'filter', 'page_size', 'page_token', ),
+        'list_databases': ('parent', 'page_size', 'page_token', ),
+        'restore_database': ('parent', 'database_id', 'backup', 'encryption_config', ),
+        'set_iam_policy': ('resource', 'policy', ),
+        'test_iam_permissions': ('resource', 'permissions', ),
+        'update_backup': ('backup', 'update_mask', ),
+        'update_database_ddl': ('database', 'statements', 'operation_id', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -74,7 +74,7 @@ class spanner_admin_databaseCallTransformer(cst.CSTTransformer):
             return updated
 
         kwargs, ctrl_kwargs = partition(
-            lambda a: not a.keyword.value in self.CTRL_PARAMS,
+            lambda a: a.keyword.value not in self.CTRL_PARAMS,
             kwargs
         )
 
