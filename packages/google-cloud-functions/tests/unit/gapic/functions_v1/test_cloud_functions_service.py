@@ -1050,7 +1050,9 @@ def test_get_function_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_function_flattened_error():
@@ -1088,7 +1090,9 @@ async def test_get_function_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1259,8 +1263,12 @@ def test_create_function_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].location == "location_value"
-        assert args[0].function == functions.CloudFunction(name="name_value")
+        arg = args[0].location
+        mock_val = "location_value"
+        assert arg == mock_val
+        arg = args[0].function
+        mock_val = functions.CloudFunction(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_function_flattened_error():
@@ -1303,8 +1311,12 @@ async def test_create_function_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].location == "location_value"
-        assert args[0].function == functions.CloudFunction(name="name_value")
+        arg = args[0].location
+        mock_val = "location_value"
+        assert arg == mock_val
+        arg = args[0].function
+        mock_val = functions.CloudFunction(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1478,7 +1490,9 @@ def test_update_function_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].function == functions.CloudFunction(name="name_value")
+        arg = args[0].function
+        mock_val = functions.CloudFunction(name="name_value")
+        assert arg == mock_val
 
 
 def test_update_function_flattened_error():
@@ -1519,7 +1533,9 @@ async def test_update_function_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].function == functions.CloudFunction(name="name_value")
+        arg = args[0].function
+        mock_val = functions.CloudFunction(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1688,7 +1704,9 @@ def test_delete_function_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_function_flattened_error():
@@ -1726,7 +1744,9 @@ async def test_delete_function_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1910,8 +1930,12 @@ def test_call_function_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].data == "data_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].data
+        mock_val = "data_value"
+        assert arg == mock_val
 
 
 def test_call_function_flattened_error():
@@ -1949,8 +1973,12 @@ async def test_call_function_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].data == "data_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].data
+        mock_val = "data_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

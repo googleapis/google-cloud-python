@@ -79,11 +79,13 @@ class CloudFunction(proto.Message):
         source_archive_url (str):
             The Google Cloud Storage URL, starting with ``gs://``,
             pointing to the zip archive which contains the function.
+
             This field is a member of `oneof`_ ``source_code``.
         source_repository (google.cloud.functions_v1.types.SourceRepository):
             **Beta Feature**
 
             The source repository where a function is hosted.
+
             This field is a member of `oneof`_ ``source_code``.
         source_upload_url (str):
             The Google Cloud Storage signed URL used for source
@@ -93,14 +95,17 @@ class CloudFunction(proto.Message):
             The signature is validated on write methods (Create, Update)
             The signature is stripped from the Function object on read
             methods (Get, List)
+
             This field is a member of `oneof`_ ``source_code``.
         https_trigger (google.cloud.functions_v1.types.HttpsTrigger):
             An HTTPS endpoint type of source that can be
             triggered via URL.
+
             This field is a member of `oneof`_ ``trigger``.
         event_trigger (google.cloud.functions_v1.types.EventTrigger):
             A source that fires events in response to a
             condition in another service.
+
             This field is a member of `oneof`_ ``trigger``.
         status (google.cloud.functions_v1.types.CloudFunctionStatus):
             Output only. Status of the function
@@ -473,6 +478,7 @@ class FailurePolicy(proto.Message):
         retry (google.cloud.functions_v1.types.FailurePolicy.Retry):
             If specified, then the function will be
             retried in case of a failure.
+
             This field is a member of `oneof`_ ``action``.
     """
 
