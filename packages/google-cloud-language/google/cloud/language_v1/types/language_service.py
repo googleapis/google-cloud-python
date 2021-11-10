@@ -77,6 +77,7 @@ class Document(proto.Message):
             The content of the input in string format.
             Cloud audit logging exempt since it is based on
             user data.
+
             This field is a member of `oneof`_ ``source``.
         gcs_content_uri (str):
             The Google Cloud Storage URI where the file content is
@@ -84,6 +85,7 @@ class Document(proto.Message):
             gs://bucket_name/object_name. For more details, see
             https://cloud.google.com/storage/docs/reference-uris. NOTE:
             Cloud Storage object versioning is not supported.
+
             This field is a member of `oneof`_ ``source``.
         language (str):
             The language of the document (if not specified, the language

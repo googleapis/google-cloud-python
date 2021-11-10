@@ -600,10 +600,14 @@ def test_analyze_sentiment_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].document == language_service.Document(
+        arg = args[0].document
+        mock_val = language_service.Document(
             type_=language_service.Document.Type.PLAIN_TEXT
         )
-        assert args[0].encoding_type == language_service.EncodingType.UTF8
+        assert arg == mock_val
+        arg = args[0].encoding_type
+        mock_val = language_service.EncodingType.UTF8
+        assert arg == mock_val
 
 
 def test_analyze_sentiment_flattened_error():
@@ -650,10 +654,14 @@ async def test_analyze_sentiment_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].document == language_service.Document(
+        arg = args[0].document
+        mock_val = language_service.Document(
             type_=language_service.Document.Type.PLAIN_TEXT
         )
-        assert args[0].encoding_type == language_service.EncodingType.UTF8
+        assert arg == mock_val
+        arg = args[0].encoding_type
+        mock_val = language_service.EncodingType.UTF8
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -778,10 +786,14 @@ def test_analyze_entities_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].document == language_service.Document(
+        arg = args[0].document
+        mock_val = language_service.Document(
             type_=language_service.Document.Type.PLAIN_TEXT
         )
-        assert args[0].encoding_type == language_service.EncodingType.UTF8
+        assert arg == mock_val
+        arg = args[0].encoding_type
+        mock_val = language_service.EncodingType.UTF8
+        assert arg == mock_val
 
 
 def test_analyze_entities_flattened_error():
@@ -826,10 +838,14 @@ async def test_analyze_entities_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].document == language_service.Document(
+        arg = args[0].document
+        mock_val = language_service.Document(
             type_=language_service.Document.Type.PLAIN_TEXT
         )
-        assert args[0].encoding_type == language_service.EncodingType.UTF8
+        assert arg == mock_val
+        arg = args[0].encoding_type
+        mock_val = language_service.EncodingType.UTF8
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -962,10 +978,14 @@ def test_analyze_entity_sentiment_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].document == language_service.Document(
+        arg = args[0].document
+        mock_val = language_service.Document(
             type_=language_service.Document.Type.PLAIN_TEXT
         )
-        assert args[0].encoding_type == language_service.EncodingType.UTF8
+        assert arg == mock_val
+        arg = args[0].encoding_type
+        mock_val = language_service.EncodingType.UTF8
+        assert arg == mock_val
 
 
 def test_analyze_entity_sentiment_flattened_error():
@@ -1012,10 +1032,14 @@ async def test_analyze_entity_sentiment_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].document == language_service.Document(
+        arg = args[0].document
+        mock_val = language_service.Document(
             type_=language_service.Document.Type.PLAIN_TEXT
         )
-        assert args[0].encoding_type == language_service.EncodingType.UTF8
+        assert arg == mock_val
+        arg = args[0].encoding_type
+        mock_val = language_service.EncodingType.UTF8
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1139,10 +1163,14 @@ def test_analyze_syntax_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].document == language_service.Document(
+        arg = args[0].document
+        mock_val = language_service.Document(
             type_=language_service.Document.Type.PLAIN_TEXT
         )
-        assert args[0].encoding_type == language_service.EncodingType.UTF8
+        assert arg == mock_val
+        arg = args[0].encoding_type
+        mock_val = language_service.EncodingType.UTF8
+        assert arg == mock_val
 
 
 def test_analyze_syntax_flattened_error():
@@ -1187,10 +1215,14 @@ async def test_analyze_syntax_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].document == language_service.Document(
+        arg = args[0].document
+        mock_val = language_service.Document(
             type_=language_service.Document.Type.PLAIN_TEXT
         )
-        assert args[0].encoding_type == language_service.EncodingType.UTF8
+        assert arg == mock_val
+        arg = args[0].encoding_type
+        mock_val = language_service.EncodingType.UTF8
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1309,9 +1341,11 @@ def test_classify_text_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].document == language_service.Document(
+        arg = args[0].document
+        mock_val = language_service.Document(
             type_=language_service.Document.Type.PLAIN_TEXT
         )
+        assert arg == mock_val
 
 
 def test_classify_text_flattened_error():
@@ -1354,9 +1388,11 @@ async def test_classify_text_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].document == language_service.Document(
+        arg = args[0].document
+        mock_val = language_service.Document(
             type_=language_service.Document.Type.PLAIN_TEXT
         )
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1480,13 +1516,17 @@ def test_annotate_text_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].document == language_service.Document(
+        arg = args[0].document
+        mock_val = language_service.Document(
             type_=language_service.Document.Type.PLAIN_TEXT
         )
-        assert args[0].features == language_service.AnnotateTextRequest.Features(
-            extract_syntax=True
-        )
-        assert args[0].encoding_type == language_service.EncodingType.UTF8
+        assert arg == mock_val
+        arg = args[0].features
+        mock_val = language_service.AnnotateTextRequest.Features(extract_syntax=True)
+        assert arg == mock_val
+        arg = args[0].encoding_type
+        mock_val = language_service.EncodingType.UTF8
+        assert arg == mock_val
 
 
 def test_annotate_text_flattened_error():
@@ -1533,13 +1573,17 @@ async def test_annotate_text_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].document == language_service.Document(
+        arg = args[0].document
+        mock_val = language_service.Document(
             type_=language_service.Document.Type.PLAIN_TEXT
         )
-        assert args[0].features == language_service.AnnotateTextRequest.Features(
-            extract_syntax=True
-        )
-        assert args[0].encoding_type == language_service.EncodingType.UTF8
+        assert arg == mock_val
+        arg = args[0].features
+        mock_val = language_service.AnnotateTextRequest.Features(extract_syntax=True)
+        assert arg == mock_val
+        arg = args[0].encoding_type
+        mock_val = language_service.EncodingType.UTF8
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
