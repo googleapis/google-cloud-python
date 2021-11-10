@@ -442,6 +442,7 @@ class ExportInsightsDataRequest(proto.Message):
     Attributes:
         big_query_destination (google.cloud.contact_center_insights_v1.types.ExportInsightsDataRequest.BigQueryDestination):
             Specified if sink is a BigQuery table.
+
             This field is a member of `oneof`_ ``destination``.
         parent (str):
             Required. The parent resource to export data
