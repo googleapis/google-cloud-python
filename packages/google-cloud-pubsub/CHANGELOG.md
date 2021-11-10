@@ -5,6 +5,28 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.9.0](https://www.github.com/googleapis/python-pubsub/compare/v2.8.0...v2.9.0) (2021-11-10)
+
+
+### Features
+
+* add context manager support in client ([#516](https://www.github.com/googleapis/python-pubsub/issues/516)) ([51eae67](https://www.github.com/googleapis/python-pubsub/commit/51eae67c47e2ce7d2f7620209e98df4a129801b5))
+* add support for Python 3.10 ([#518](https://www.github.com/googleapis/python-pubsub/issues/518)) ([bb25d75](https://www.github.com/googleapis/python-pubsub/commit/bb25d755d70ba19e69d8a281be65f13eb994967d))
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([b72522a](https://www.github.com/googleapis/python-pubsub/commit/b72522a4617c4b2773fb6a5a631038791aa08300))
+* **deps:** drop packaging dependency ([290b9c5](https://www.github.com/googleapis/python-pubsub/commit/290b9c5615eaa03674b773a27b756483abd76195))
+* **deps:** require google-api-core >= 1.28.0 ([290b9c5](https://www.github.com/googleapis/python-pubsub/commit/290b9c5615eaa03674b773a27b756483abd76195))
+* improper types in pagers generation ([2ad639d](https://www.github.com/googleapis/python-pubsub/commit/2ad639d6370c7a085498595d7bd0d7eaadfff3c1))
+
+
+### Documentation
+
+* add type annotations to codebase ([#509](https://www.github.com/googleapis/python-pubsub/issues/509)) ([093cabf](https://www.github.com/googleapis/python-pubsub/commit/093cabff9f0464b1dfaa8f373b6fffbc439518de))
+* list oneofs in docstring ([290b9c5](https://www.github.com/googleapis/python-pubsub/commit/290b9c5615eaa03674b773a27b756483abd76195))
+
 ## [2.8.0](https://www.github.com/googleapis/python-pubsub/compare/v2.7.1...v2.8.0) (2021-09-02)
 
 
