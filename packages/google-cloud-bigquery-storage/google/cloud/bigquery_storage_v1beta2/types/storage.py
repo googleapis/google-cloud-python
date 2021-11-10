@@ -159,10 +159,12 @@ class ReadRowsResponse(proto.Message):
     Attributes:
         avro_rows (google.cloud.bigquery_storage_v1beta2.types.AvroRows):
             Serialized row data in AVRO format.
+
             This field is a member of `oneof`_ ``rows``.
         arrow_record_batch (google.cloud.bigquery_storage_v1beta2.types.ArrowRecordBatch):
             Serialized row data in Arrow RecordBatch
             format.
+
             This field is a member of `oneof`_ ``rows``.
         row_count (int):
             Number of serialized rows in the rows block.
@@ -174,9 +176,11 @@ class ReadRowsResponse(proto.Message):
             status.
         avro_schema (google.cloud.bigquery_storage_v1beta2.types.AvroSchema):
             Output only. Avro schema.
+
             This field is a member of `oneof`_ ``schema``.
         arrow_schema (google.cloud.bigquery_storage_v1beta2.types.ArrowSchema):
             Output only. Arrow schema.
+
             This field is a member of `oneof`_ ``schema``.
     """
 
@@ -278,6 +282,7 @@ class AppendRowsRequest(proto.Message):
             AppendRows for the '_default' stream.
         proto_rows (google.cloud.bigquery_storage_v1beta2.types.AppendRowsRequest.ProtoData):
             Rows in proto format.
+
             This field is a member of `oneof`_ ``rows``.
         trace_id (str):
             Id set by client to annotate its identity.
@@ -319,6 +324,7 @@ class AppendRowsResponse(proto.Message):
     Attributes:
         append_result (google.cloud.bigquery_storage_v1beta2.types.AppendRowsResponse.AppendResult):
             Result if the append is successful.
+
             This field is a member of `oneof`_ ``response``.
         error (google.rpc.status_pb2.Status):
             Error returned when problems were encountered. If present,
@@ -344,6 +350,7 @@ class AppendRowsResponse(proto.Message):
 
             INTERNAL: Indicates server side error(s) that can be
             retried.
+
             This field is a member of `oneof`_ ``response``.
         updated_schema (google.cloud.bigquery_storage_v1beta2.types.TableSchema):
             If backend detects a schema update, pass it

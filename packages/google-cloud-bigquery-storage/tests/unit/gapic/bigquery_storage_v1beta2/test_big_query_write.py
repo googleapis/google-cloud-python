@@ -654,8 +654,12 @@ def test_create_write_stream_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].write_stream == stream.WriteStream(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].write_stream
+        mock_val = stream.WriteStream(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_write_stream_flattened_error():
@@ -695,8 +699,12 @@ async def test_create_write_stream_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].write_stream == stream.WriteStream(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].write_stream
+        mock_val = stream.WriteStream(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -935,7 +943,9 @@ def test_get_write_stream_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_write_stream_flattened_error():
@@ -969,7 +979,9 @@ async def test_get_write_stream_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1147,7 +1159,9 @@ def test_finalize_write_stream_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_finalize_write_stream_flattened_error():
@@ -1185,7 +1199,9 @@ async def test_finalize_write_stream_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1361,7 +1377,9 @@ def test_batch_commit_write_streams_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_batch_commit_write_streams_flattened_error():
@@ -1399,7 +1417,9 @@ async def test_batch_commit_write_streams_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1567,7 +1587,9 @@ def test_flush_rows_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].write_stream == "write_stream_value"
+        arg = args[0].write_stream
+        mock_val = "write_stream_value"
+        assert arg == mock_val
 
 
 def test_flush_rows_flattened_error():
@@ -1603,7 +1625,9 @@ async def test_flush_rows_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].write_stream == "write_stream_value"
+        arg = args[0].write_stream
+        mock_val = "write_stream_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

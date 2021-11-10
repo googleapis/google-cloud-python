@@ -57,9 +57,11 @@ class ReadSession(proto.Message):
             Immutable. Data format of the output data.
         avro_schema (google.cloud.bigquery_storage_v1.types.AvroSchema):
             Output only. Avro schema.
+
             This field is a member of `oneof`_ ``schema``.
         arrow_schema (google.cloud.bigquery_storage_v1.types.ArrowSchema):
             Output only. Arrow schema.
+
             This field is a member of `oneof`_ ``schema``.
         table (str):
             Immutable. Table that this ReadSession is reading from, in
@@ -125,6 +127,7 @@ class ReadSession(proto.Message):
             arrow_serialization_options (google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions):
                 Optional. Options specific to the Apache
                 Arrow output format.
+
                 This field is a member of `oneof`_ ``output_format_serialization_options``.
         """
 
