@@ -122,22 +122,27 @@ class TypedValue(proto.Message):
     Attributes:
         bool_value (bool):
             A Boolean value: ``true`` or ``false``.
+
             This field is a member of `oneof`_ ``value``.
         int64_value (int):
             A 64-bit integer. Its range is approximately
             +/-9.2x10^18.
+
             This field is a member of `oneof`_ ``value``.
         double_value (float):
             A 64-bit double-precision floating-point
             number. Its magnitude is approximately
             +/-10^(+/-300) and it has 16 significant digits
             of precision.
+
             This field is a member of `oneof`_ ``value``.
         string_value (str):
             A variable-length string value.
+
             This field is a member of `oneof`_ ``value``.
         distribution_value (google.api.distribution_pb2.Distribution):
             A distribution value.
+
             This field is a member of `oneof`_ ``value``.
     """
 
