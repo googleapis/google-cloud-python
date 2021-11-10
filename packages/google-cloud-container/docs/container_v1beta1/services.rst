@@ -1,5 +1,5 @@
-Services for Google Container v1beta1 API
-=========================================
+Services for Google Cloud Container v1beta1 API
+===============================================
 .. toctree::
     :maxdepth: 2
 
