@@ -153,10 +153,12 @@ class ReadRowsResponse(proto.Message):
             reset_row (bool):
                 Indicates that the client should drop all previous chunks
                 for ``row_key``, as it will be re-read from the beginning.
+
                 This field is a member of `oneof`_ ``row_status``.
             commit_row (bool):
                 Indicates that the client can safely process all previous
                 chunks for ``row_key``, as its data has been fully read.
+
                 This field is a member of `oneof`_ ``row_status``.
         """
 

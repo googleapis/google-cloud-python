@@ -53,6 +53,7 @@ class RestoreInfo(proto.Message):
         backup_info (google.cloud.bigtable_admin_v2.types.BackupInfo):
             Information about the backup used to restore
             the table. The backup may no longer exist.
+
             This field is a member of `oneof`_ ``source_info``.
     """
 
@@ -190,20 +191,24 @@ class GcRule(proto.Message):
         max_num_versions (int):
             Delete all cells in a column except the most
             recent N.
+
             This field is a member of `oneof`_ ``rule``.
         max_age (google.protobuf.duration_pb2.Duration):
             Delete cells in a column older than the given
             age. Values must be at least one millisecond,
             and will be truncated to microsecond
             granularity.
+
             This field is a member of `oneof`_ ``rule``.
         intersection (google.cloud.bigtable_admin_v2.types.GcRule.Intersection):
             Delete cells that would be deleted by every
             nested rule.
+
             This field is a member of `oneof`_ ``rule``.
         union (google.cloud.bigtable_admin_v2.types.GcRule.Union):
             Delete cells that would be deleted by any
             nested rule.
+
             This field is a member of `oneof`_ ``rule``.
     """
 

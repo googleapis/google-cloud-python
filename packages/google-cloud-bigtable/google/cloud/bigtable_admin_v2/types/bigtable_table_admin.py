@@ -80,6 +80,7 @@ class RestoreTableRequest(proto.Message):
             Name of the backup from which to restore. Values are of the
             form
             ``projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>``.
+
             This field is a member of `oneof`_ ``source``.
     """
 
@@ -255,10 +256,12 @@ class DropRowRangeRequest(proto.Message):
         row_key_prefix (bytes):
             Delete all rows that start with this row key
             prefix. Prefix cannot be zero length.
+
             This field is a member of `oneof`_ ``target``.
         delete_all_data_from_table (bool):
             Delete all rows in the table. Setting this to
             false is a no-op.
+
             This field is a member of `oneof`_ ``target``.
     """
 
@@ -390,15 +393,18 @@ class ModifyColumnFamiliesRequest(proto.Message):
                 Create a new column family with the specified
                 schema, or fail if one already exists with the
                 given ID.
+
                 This field is a member of `oneof`_ ``mod``.
             update (google.cloud.bigtable_admin_v2.types.ColumnFamily):
                 Update an existing column family to the
                 specified schema, or fail if no column family
                 exists with the given ID.
+
                 This field is a member of `oneof`_ ``mod``.
             drop (bool):
                 Drop (delete) the column family with the
                 given ID, or fail if no such family exists.
+
                 This field is a member of `oneof`_ ``mod``.
         """
 

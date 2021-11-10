@@ -597,8 +597,12 @@ def test_read_rows_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].table_name == "table_name_value"
-        assert args[0].app_profile_id == "app_profile_id_value"
+        arg = args[0].table_name
+        mock_val = "table_name_value"
+        assert arg == mock_val
+        arg = args[0].app_profile_id
+        mock_val = "app_profile_id_value"
+        assert arg == mock_val
 
 
 def test_read_rows_flattened_error():
@@ -634,8 +638,12 @@ async def test_read_rows_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].table_name == "table_name_value"
-        assert args[0].app_profile_id == "app_profile_id_value"
+        arg = args[0].table_name
+        mock_val = "table_name_value"
+        assert arg == mock_val
+        arg = args[0].app_profile_id
+        mock_val = "app_profile_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -803,8 +811,12 @@ def test_sample_row_keys_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].table_name == "table_name_value"
-        assert args[0].app_profile_id == "app_profile_id_value"
+        arg = args[0].table_name
+        mock_val = "table_name_value"
+        assert arg == mock_val
+        arg = args[0].app_profile_id
+        mock_val = "app_profile_id_value"
+        assert arg == mock_val
 
 
 def test_sample_row_keys_flattened_error():
@@ -840,8 +852,12 @@ async def test_sample_row_keys_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].table_name == "table_name_value"
-        assert args[0].app_profile_id == "app_profile_id_value"
+        arg = args[0].table_name
+        mock_val = "table_name_value"
+        assert arg == mock_val
+        arg = args[0].app_profile_id
+        mock_val = "app_profile_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1010,14 +1026,22 @@ def test_mutate_row_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].table_name == "table_name_value"
-        assert args[0].row_key == b"row_key_blob"
-        assert args[0].mutations == [
+        arg = args[0].table_name
+        mock_val = "table_name_value"
+        assert arg == mock_val
+        arg = args[0].row_key
+        mock_val = b"row_key_blob"
+        assert arg == mock_val
+        arg = args[0].mutations
+        mock_val = [
             data.Mutation(
                 set_cell=data.Mutation.SetCell(family_name="family_name_value")
             )
         ]
-        assert args[0].app_profile_id == "app_profile_id_value"
+        assert arg == mock_val
+        arg = args[0].app_profile_id
+        mock_val = "app_profile_id_value"
+        assert arg == mock_val
 
 
 def test_mutate_row_flattened_error():
@@ -1068,14 +1092,22 @@ async def test_mutate_row_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].table_name == "table_name_value"
-        assert args[0].row_key == b"row_key_blob"
-        assert args[0].mutations == [
+        arg = args[0].table_name
+        mock_val = "table_name_value"
+        assert arg == mock_val
+        arg = args[0].row_key
+        mock_val = b"row_key_blob"
+        assert arg == mock_val
+        arg = args[0].mutations
+        mock_val = [
             data.Mutation(
                 set_cell=data.Mutation.SetCell(family_name="family_name_value")
             )
         ]
-        assert args[0].app_profile_id == "app_profile_id_value"
+        assert arg == mock_val
+        arg = args[0].app_profile_id
+        mock_val = "app_profile_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1249,11 +1281,15 @@ def test_mutate_rows_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].table_name == "table_name_value"
-        assert args[0].entries == [
-            bigtable.MutateRowsRequest.Entry(row_key=b"row_key_blob")
-        ]
-        assert args[0].app_profile_id == "app_profile_id_value"
+        arg = args[0].table_name
+        mock_val = "table_name_value"
+        assert arg == mock_val
+        arg = args[0].entries
+        mock_val = [bigtable.MutateRowsRequest.Entry(row_key=b"row_key_blob")]
+        assert arg == mock_val
+        arg = args[0].app_profile_id
+        mock_val = "app_profile_id_value"
+        assert arg == mock_val
 
 
 def test_mutate_rows_flattened_error():
@@ -1292,11 +1328,15 @@ async def test_mutate_rows_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].table_name == "table_name_value"
-        assert args[0].entries == [
-            bigtable.MutateRowsRequest.Entry(row_key=b"row_key_blob")
-        ]
-        assert args[0].app_profile_id == "app_profile_id_value"
+        arg = args[0].table_name
+        mock_val = "table_name_value"
+        assert arg == mock_val
+        arg = args[0].entries
+        mock_val = [bigtable.MutateRowsRequest.Entry(row_key=b"row_key_blob")]
+        assert arg == mock_val
+        arg = args[0].app_profile_id
+        mock_val = "app_profile_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1498,9 +1538,14 @@ def test_check_and_mutate_row_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].table_name == "table_name_value"
-        assert args[0].row_key == b"row_key_blob"
-        assert args[0].predicate_filter == data.RowFilter(
+        arg = args[0].table_name
+        mock_val = "table_name_value"
+        assert arg == mock_val
+        arg = args[0].row_key
+        mock_val = b"row_key_blob"
+        assert arg == mock_val
+        arg = args[0].predicate_filter
+        mock_val = data.RowFilter(
             chain=data.RowFilter.Chain(
                 filters=[
                     data.RowFilter(
@@ -1509,17 +1554,24 @@ def test_check_and_mutate_row_flattened():
                 ]
             )
         )
-        assert args[0].true_mutations == [
+        assert arg == mock_val
+        arg = args[0].true_mutations
+        mock_val = [
             data.Mutation(
                 set_cell=data.Mutation.SetCell(family_name="family_name_value")
             )
         ]
-        assert args[0].false_mutations == [
+        assert arg == mock_val
+        arg = args[0].false_mutations
+        mock_val = [
             data.Mutation(
                 set_cell=data.Mutation.SetCell(family_name="family_name_value")
             )
         ]
-        assert args[0].app_profile_id == "app_profile_id_value"
+        assert arg == mock_val
+        arg = args[0].app_profile_id
+        mock_val = "app_profile_id_value"
+        assert arg == mock_val
 
 
 def test_check_and_mutate_row_flattened_error():
@@ -1604,9 +1656,14 @@ async def test_check_and_mutate_row_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].table_name == "table_name_value"
-        assert args[0].row_key == b"row_key_blob"
-        assert args[0].predicate_filter == data.RowFilter(
+        arg = args[0].table_name
+        mock_val = "table_name_value"
+        assert arg == mock_val
+        arg = args[0].row_key
+        mock_val = b"row_key_blob"
+        assert arg == mock_val
+        arg = args[0].predicate_filter
+        mock_val = data.RowFilter(
             chain=data.RowFilter.Chain(
                 filters=[
                     data.RowFilter(
@@ -1615,17 +1672,24 @@ async def test_check_and_mutate_row_flattened_async():
                 ]
             )
         )
-        assert args[0].true_mutations == [
+        assert arg == mock_val
+        arg = args[0].true_mutations
+        mock_val = [
             data.Mutation(
                 set_cell=data.Mutation.SetCell(family_name="family_name_value")
             )
         ]
-        assert args[0].false_mutations == [
+        assert arg == mock_val
+        arg = args[0].false_mutations
+        mock_val = [
             data.Mutation(
                 set_cell=data.Mutation.SetCell(family_name="family_name_value")
             )
         ]
-        assert args[0].app_profile_id == "app_profile_id_value"
+        assert arg == mock_val
+        arg = args[0].app_profile_id
+        mock_val = "app_profile_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1826,12 +1890,18 @@ def test_read_modify_write_row_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].table_name == "table_name_value"
-        assert args[0].row_key == b"row_key_blob"
-        assert args[0].rules == [
-            data.ReadModifyWriteRule(family_name="family_name_value")
-        ]
-        assert args[0].app_profile_id == "app_profile_id_value"
+        arg = args[0].table_name
+        mock_val = "table_name_value"
+        assert arg == mock_val
+        arg = args[0].row_key
+        mock_val = b"row_key_blob"
+        assert arg == mock_val
+        arg = args[0].rules
+        mock_val = [data.ReadModifyWriteRule(family_name="family_name_value")]
+        assert arg == mock_val
+        arg = args[0].app_profile_id
+        mock_val = "app_profile_id_value"
+        assert arg == mock_val
 
 
 def test_read_modify_write_row_flattened_error():
@@ -1876,12 +1946,18 @@ async def test_read_modify_write_row_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].table_name == "table_name_value"
-        assert args[0].row_key == b"row_key_blob"
-        assert args[0].rules == [
-            data.ReadModifyWriteRule(family_name="family_name_value")
-        ]
-        assert args[0].app_profile_id == "app_profile_id_value"
+        arg = args[0].table_name
+        mock_val = "table_name_value"
+        assert arg == mock_val
+        arg = args[0].row_key
+        mock_val = b"row_key_blob"
+        assert arg == mock_val
+        arg = args[0].rules
+        mock_val = [data.ReadModifyWriteRule(family_name="family_name_value")]
+        assert arg == mock_val
+        arg = args[0].app_profile_id
+        mock_val = "app_profile_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

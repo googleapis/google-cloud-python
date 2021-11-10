@@ -185,9 +185,11 @@ class AppProfile(proto.Message):
             case for this AppProfile.
         multi_cluster_routing_use_any (google.cloud.bigtable_admin_v2.types.AppProfile.MultiClusterRoutingUseAny):
             Use a multi-cluster routing policy.
+
             This field is a member of `oneof`_ ``routing_policy``.
         single_cluster_routing (google.cloud.bigtable_admin_v2.types.AppProfile.SingleClusterRouting):
             Use a single-cluster routing policy.
+
             This field is a member of `oneof`_ ``routing_policy``.
     """
 
