@@ -94,6 +94,7 @@ class ImportTaxonomiesRequest(proto.Message):
             newly created taxonomies will belong to.
         inline_source (google.cloud.datacatalog_v1beta1.types.InlineSource):
             Inline source used for taxonomies import
+
             This field is a member of `oneof`_ ``source``.
     """
 

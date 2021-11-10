@@ -582,10 +582,14 @@ def test_search_catalog_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].scope == datacatalog.SearchCatalogRequest.Scope(
+        arg = args[0].scope
+        mock_val = datacatalog.SearchCatalogRequest.Scope(
             include_org_ids=["include_org_ids_value"]
         )
-        assert args[0].query == "query_value"
+        assert arg == mock_val
+        arg = args[0].query
+        mock_val = "query_value"
+        assert arg == mock_val
 
 
 def test_search_catalog_flattened_error():
@@ -628,10 +632,14 @@ async def test_search_catalog_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].scope == datacatalog.SearchCatalogRequest.Scope(
+        arg = args[0].scope
+        mock_val = datacatalog.SearchCatalogRequest.Scope(
             include_org_ids=["include_org_ids_value"]
         )
-        assert args[0].query == "query_value"
+        assert arg == mock_val
+        arg = args[0].query
+        mock_val = "query_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -960,9 +968,15 @@ def test_create_entry_group_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].entry_group_id == "entry_group_id_value"
-        assert args[0].entry_group == datacatalog.EntryGroup(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].entry_group_id
+        mock_val = "entry_group_id_value"
+        assert arg == mock_val
+        arg = args[0].entry_group
+        mock_val = datacatalog.EntryGroup(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_entry_group_flattened_error():
@@ -1005,9 +1019,15 @@ async def test_create_entry_group_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].entry_group_id == "entry_group_id_value"
-        assert args[0].entry_group == datacatalog.EntryGroup(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].entry_group_id
+        mock_val = "entry_group_id_value"
+        assert arg == mock_val
+        arg = args[0].entry_group
+        mock_val = datacatalog.EntryGroup(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1203,8 +1223,12 @@ def test_update_entry_group_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].entry_group == datacatalog.EntryGroup(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].entry_group
+        mock_val = datacatalog.EntryGroup(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_entry_group_flattened_error():
@@ -1245,8 +1269,12 @@ async def test_update_entry_group_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].entry_group == datacatalog.EntryGroup(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].entry_group
+        mock_val = datacatalog.EntryGroup(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1425,8 +1453,12 @@ def test_get_entry_group_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].read_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].read_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_get_entry_group_flattened_error():
@@ -1465,8 +1497,12 @@ async def test_get_entry_group_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].read_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].read_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1636,7 +1672,9 @@ def test_delete_entry_group_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_entry_group_flattened_error():
@@ -1670,7 +1708,9 @@ async def test_delete_entry_group_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -1848,7 +1888,9 @@ def test_list_entry_groups_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_entry_groups_flattened_error():
@@ -1884,7 +1926,9 @@ async def test_list_entry_groups_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2223,9 +2267,15 @@ def test_create_entry_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].entry_id == "entry_id_value"
-        assert args[0].entry == datacatalog.Entry(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].entry_id
+        mock_val = "entry_id_value"
+        assert arg == mock_val
+        arg = args[0].entry
+        mock_val = datacatalog.Entry(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_entry_flattened_error():
@@ -2264,9 +2314,15 @@ async def test_create_entry_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].entry_id == "entry_id_value"
-        assert args[0].entry == datacatalog.Entry(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].entry_id
+        mock_val = "entry_id_value"
+        assert arg == mock_val
+        arg = args[0].entry
+        mock_val = datacatalog.Entry(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2453,8 +2509,12 @@ def test_update_entry_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].entry == datacatalog.Entry(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].entry
+        mock_val = datacatalog.Entry(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_entry_flattened_error():
@@ -2491,8 +2551,12 @@ async def test_update_entry_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].entry == datacatalog.Entry(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].entry
+        mock_val = datacatalog.Entry(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2650,7 +2714,9 @@ def test_delete_entry_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_entry_flattened_error():
@@ -2682,7 +2748,9 @@ async def test_delete_entry_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -2861,7 +2929,9 @@ def test_get_entry_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_entry_flattened_error():
@@ -2893,7 +2963,9 @@ async def test_get_entry_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3159,7 +3231,9 @@ def test_list_entries_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_entries_flattened_error():
@@ -3193,7 +3267,9 @@ async def test_list_entries_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3511,9 +3587,15 @@ def test_create_tag_template_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].tag_template_id == "tag_template_id_value"
-        assert args[0].tag_template == tags.TagTemplate(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].tag_template_id
+        mock_val = "tag_template_id_value"
+        assert arg == mock_val
+        arg = args[0].tag_template
+        mock_val = tags.TagTemplate(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_tag_template_flattened_error():
@@ -3554,9 +3636,15 @@ async def test_create_tag_template_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].tag_template_id == "tag_template_id_value"
-        assert args[0].tag_template == tags.TagTemplate(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].tag_template_id
+        mock_val = "tag_template_id_value"
+        assert arg == mock_val
+        arg = args[0].tag_template
+        mock_val = tags.TagTemplate(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3723,7 +3811,9 @@ def test_get_tag_template_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_get_tag_template_flattened_error():
@@ -3755,7 +3845,9 @@ async def test_get_tag_template_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -3940,8 +4032,12 @@ def test_update_tag_template_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].tag_template == tags.TagTemplate(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].tag_template
+        mock_val = tags.TagTemplate(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_tag_template_flattened_error():
@@ -3980,8 +4076,12 @@ async def test_update_tag_template_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].tag_template == tags.TagTemplate(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].tag_template
+        mock_val = tags.TagTemplate(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4153,8 +4253,12 @@ def test_delete_tag_template_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].force == True
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].force
+        mock_val = True
+        assert arg == mock_val
 
 
 def test_delete_tag_template_flattened_error():
@@ -4188,8 +4292,12 @@ async def test_delete_tag_template_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].force == True
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].force
+        mock_val = True
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4384,9 +4492,15 @@ def test_create_tag_template_field_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].tag_template_field_id == "tag_template_field_id_value"
-        assert args[0].tag_template_field == tags.TagTemplateField(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].tag_template_field_id
+        mock_val = "tag_template_field_id_value"
+        assert arg == mock_val
+        arg = args[0].tag_template_field
+        mock_val = tags.TagTemplateField(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_tag_template_field_flattened_error():
@@ -4429,9 +4543,15 @@ async def test_create_tag_template_field_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].tag_template_field_id == "tag_template_field_id_value"
-        assert args[0].tag_template_field == tags.TagTemplateField(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].tag_template_field_id
+        mock_val = "tag_template_field_id_value"
+        assert arg == mock_val
+        arg = args[0].tag_template_field
+        mock_val = tags.TagTemplateField(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4629,9 +4749,15 @@ def test_update_tag_template_field_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].tag_template_field == tags.TagTemplateField(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].tag_template_field
+        mock_val = tags.TagTemplateField(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_tag_template_field_flattened_error():
@@ -4674,9 +4800,15 @@ async def test_update_tag_template_field_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].tag_template_field == tags.TagTemplateField(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].tag_template_field
+        mock_val = tags.TagTemplateField(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -4873,8 +5005,12 @@ def test_rename_tag_template_field_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].new_tag_template_field_id == "new_tag_template_field_id_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].new_tag_template_field_id
+        mock_val = "new_tag_template_field_id_value"
+        assert arg == mock_val
 
 
 def test_rename_tag_template_field_flattened_error():
@@ -4915,8 +5051,12 @@ async def test_rename_tag_template_field_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].new_tag_template_field_id == "new_tag_template_field_id_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].new_tag_template_field_id
+        mock_val = "new_tag_template_field_id_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -5089,8 +5229,12 @@ def test_delete_tag_template_field_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].force == True
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].force
+        mock_val = True
+        assert arg == mock_val
 
 
 def test_delete_tag_template_field_flattened_error():
@@ -5126,8 +5270,12 @@ async def test_delete_tag_template_field_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
-        assert args[0].force == True
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].force
+        mock_val = True
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -5300,8 +5448,12 @@ def test_create_tag_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].tag == tags.Tag(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].tag
+        mock_val = tags.Tag(name="name_value")
+        assert arg == mock_val
 
 
 def test_create_tag_flattened_error():
@@ -5337,8 +5489,12 @@ async def test_create_tag_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
-        assert args[0].tag == tags.Tag(name="name_value")
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].tag
+        mock_val = tags.Tag(name="name_value")
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -5514,8 +5670,12 @@ def test_update_tag_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].tag == tags.Tag(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].tag
+        mock_val = tags.Tag(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 def test_update_tag_flattened_error():
@@ -5552,8 +5712,12 @@ async def test_update_tag_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].tag == tags.Tag(name="name_value")
-        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+        arg = args[0].tag
+        mock_val = tags.Tag(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -5709,7 +5873,9 @@ def test_delete_tag_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 def test_delete_tag_flattened_error():
@@ -5741,7 +5907,9 @@ async def test_delete_tag_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].name == "name_value"
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -5903,7 +6071,9 @@ def test_list_tags_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 def test_list_tags_flattened_error():
@@ -5937,7 +6107,9 @@ async def test_list_tags_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].parent == "parent_value"
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -6216,7 +6388,9 @@ def test_set_iam_policy_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].resource == "resource_value"
+        arg = args[0].resource
+        mock_val = "resource_value"
+        assert arg == mock_val
 
 
 def test_set_iam_policy_flattened_error():
@@ -6248,7 +6422,9 @@ async def test_set_iam_policy_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].resource == "resource_value"
+        arg = args[0].resource
+        mock_val = "resource_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio
@@ -6425,7 +6601,9 @@ def test_get_iam_policy_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0].resource == "resource_value"
+        arg = args[0].resource
+        mock_val = "resource_value"
+        assert arg == mock_val
 
 
 def test_get_iam_policy_flattened_error():
@@ -6457,7 +6635,9 @@ async def test_get_iam_policy_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0].resource == "resource_value"
+        arg = args[0].resource
+        mock_val = "resource_value"
+        assert arg == mock_val
 
 
 @pytest.mark.asyncio

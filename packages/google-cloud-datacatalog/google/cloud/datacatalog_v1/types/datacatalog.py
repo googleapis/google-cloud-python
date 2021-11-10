@@ -515,6 +515,7 @@ class LookupEntryRequest(proto.Message):
             Example for a DPMS table:
 
             ``dataproc_metastore:{PROJECT_ID}.{LOCATION_ID}.{INSTANCE_ID}.{DATABASE_ID}.{TABLE_ID}``
+
             This field is a member of `oneof`_ ``target_name``.
     """
 
