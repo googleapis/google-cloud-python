@@ -1,14 +1,14 @@
 Python Client for Google Cloud Bigquery Migration API
 =====================================================
 
-|GA| |pypi| |versions|
+|alpha| |pypi| |versions|
 
 Python client for `Google Cloud Bigquery Migration API`_.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-migration.svg
    :target: https://pypi.org/project/google-cloud-bigquery-migration/
