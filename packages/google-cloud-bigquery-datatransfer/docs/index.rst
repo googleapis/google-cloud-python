@@ -2,33 +2,33 @@
 
 .. include:: multiprocessing.rst
 
+
 API Reference
 -------------
-
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-    Client <bigquery_datatransfer_v1/services>
-    Types <bigquery_datatransfer_v1/types>
+    bigquery_datatransfer_v1/services
+    bigquery_datatransfer_v1/types
 
 
 Migration Guide
 ---------------
 
-See the guide below for instructions on migrating to the 2.x release of this library.
+See the guide below for instructions on migrating to the latest version.
 
 .. toctree::
     :maxdepth: 2
 
-    UPGRADING
+    UPGRADING
 
 
 Changelog
 ---------
 
-For a list of all ``google-cloud-bigquery-bigquery-datatransfer`` releases:
+For a list of all ``google-cloud-bigquery-datatransfer`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
