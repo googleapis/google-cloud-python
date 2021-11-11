@@ -12,5 +12,5 @@
     "api_id": "datalabeling.googleapis.com",
     "requires_billing": true,
     "default_version": "v1beta1",
-    "codeowner_team": ""
+    "codeowner_team": "@googleapis/cdpe-cloudai"
 }
