@@ -39,8 +39,8 @@ def partition(
 class networkconnectivityCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'create_hub': ('parent', 'hub', 'hub_id', 'request_id', ),
-        'create_spoke': ('parent', 'spoke', 'spoke_id', 'request_id', ),
+        'create_hub': ('parent', 'hub_id', 'hub', 'request_id', ),
+        'create_spoke': ('parent', 'spoke_id', 'spoke', 'request_id', ),
         'delete_hub': ('name', 'request_id', ),
         'delete_spoke': ('name', 'request_id', ),
         'get_hub': ('name', ),

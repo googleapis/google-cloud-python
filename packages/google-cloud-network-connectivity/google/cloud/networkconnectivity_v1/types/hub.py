@@ -57,10 +57,10 @@ class State(proto.Enum):
 
 
 class Hub(proto.Message):
-    r"""A hub is essentially a collection of spokes. A single hub can
-    contain spokes from multiple regions. However, all of a hub's
-    spokes must be associated with resources that reside in the same
-    VPC network.
+    r"""A hub is a collection of spokes. A single hub can contain
+    spokes from multiple regions. However, all of a hub's spokes
+    must be associated with resources that reside in the same VPC
+    network.
 
     Attributes:
         name (str):
@@ -109,12 +109,12 @@ class Hub(proto.Message):
 
 
 class RoutingVPC(proto.Message):
-    r"""RoutingsVPC contains information about a VPC network that is
+    r"""RoutingVPC contains information about the VPC network that is
     associated with a hub's spokes.
 
     Attributes:
         uri (str):
-            The URI of a VPC network.
+            The URI of the VPC network.
     """
 
     uri = proto.Field(proto.STRING, number=1,)
@@ -148,8 +148,8 @@ class Spoke(proto.Message):
         description (str):
             An optional description of the spoke.
         hub (str):
-            Immutable. The URI of the hub that this spoke
-            is attached to.
+            Immutable. The name of the hub that this
+            spoke is attached to.
         linked_vpn_tunnels (google.cloud.networkconnectivity_v1.types.LinkedVpnTunnels):
             VPN tunnels that are associated with the
             spoke.
@@ -263,7 +263,7 @@ class CreateHubRequest(proto.Message):
         parent (str):
             Required. The parent resource.
         hub_id (str):
-            Optional. A unique identifier for the hub.
+            Required. A unique identifier for the hub.
         hub (google.cloud.networkconnectivity_v1.types.Hub):
             Required. The initial values for a new hub.
         request_id (str):
@@ -442,7 +442,7 @@ class CreateSpokeRequest(proto.Message):
         parent (str):
             Required. The parent resource.
         spoke_id (str):
-            Optional. Unique id for the spoke to create.
+            Required. Unique id for the spoke to create.
         spoke (google.cloud.networkconnectivity_v1.types.Spoke):
             Required. The initial values for a new spoke.
         request_id (str):

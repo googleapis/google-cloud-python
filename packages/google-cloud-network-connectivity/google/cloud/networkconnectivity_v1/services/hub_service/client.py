@@ -558,9 +558,9 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
         Returns:
             google.cloud.networkconnectivity_v1.types.Hub:
-                A hub is essentially a collection of
-                spokes. A single hub can contain spokes
-                from multiple regions. However, all of a
+                A hub is a collection of spokes. A
+                single hub can contain spokes from
+                multiple regions. However, all of a
                 hub's spokes must be associated with
                 resources that reside in the same VPC
                 network.
@@ -634,7 +634,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             hub_id (str):
-                Optional. A unique identifier for the
+                Required. A unique identifier for the
                 hub.
 
                 This corresponds to the ``hub_id`` field
@@ -650,10 +650,10 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A hub is essentially a collection of spokes. A single hub can contain spokes
-                   from multiple regions. However, all of a hub's spokes
-                   must be associated with resources that reside in the
-                   same VPC network.
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A hub is a collection of spokes. A single hub can contain spokes from
+                   multiple regions. However, all of a hub's spokes must
+                   be associated with resources that reside in the same
+                   VPC network.
 
         """
         # Create or coerce a protobuf request object.
@@ -751,10 +751,10 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A hub is essentially a collection of spokes. A single hub can contain spokes
-                   from multiple regions. However, all of a hub's spokes
-                   must be associated with resources that reside in the
-                   same VPC network.
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A hub is a collection of spokes. A single hub can contain spokes from
+                   multiple regions. However, all of a hub's spokes must
+                   be associated with resources that reside in the same
+                   VPC network.
 
         """
         # Create or coerce a protobuf request object.
@@ -1085,7 +1085,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             spoke_id (str):
-                Optional. Unique id for the spoke to
+                Required. Unique id for the spoke to
                 create.
 
                 This corresponds to the ``spoke_id`` field
