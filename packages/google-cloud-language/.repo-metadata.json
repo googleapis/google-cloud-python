@@ -12,5 +12,5 @@
     "api_id": "language.googleapis.com",
     "requires_billing": true,
     "default_version": "v1",
-    "codeowner_team": ""
+    "codeowner_team": "@googleapis/cdpe-cloudai"
 }
