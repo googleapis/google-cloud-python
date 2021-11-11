@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://www.github.com/googleapis/python-os-config/compare/v1.8.0...v1.9.0) (2021-11-11)
+
+
+### Features
+
+* **v1:** Add OS inventory item ([#147](https://www.github.com/googleapis/python-os-config/issues/147)) ([14102d9](https://www.github.com/googleapis/python-os-config/commit/14102d97b78f5d9c10aca07452f11112d53a1788))
+
 ## [1.8.0](https://www.github.com/googleapis/python-os-config/compare/v1.7.1...v1.8.0) (2021-11-04)
 
 
