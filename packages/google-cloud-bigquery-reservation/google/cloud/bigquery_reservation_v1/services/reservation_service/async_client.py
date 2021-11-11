@@ -1666,7 +1666,6 @@ class ReservationServiceAsyncClient:
                 -  ``assignee=folders/123``
                 -  ``assignee=organizations/456``
 
-
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1801,7 +1800,6 @@ class ReservationServiceAsyncClient:
                 -  ``assignee=projects/myproject``
                 -  ``assignee=folders/123``
                 -  ``assignee=organizations/456``
-
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
