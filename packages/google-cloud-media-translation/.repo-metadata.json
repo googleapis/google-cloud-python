@@ -11,5 +11,5 @@
     "distribution_name": "google-cloud-media-translation",
     "api_id": "mediatranslation.googleapis.com",
     "default_version": "v1beta1",
-    "codeowner_team": ""
+    "codeowner_team": "@googleapis/cdpe-cloudai"
 }
