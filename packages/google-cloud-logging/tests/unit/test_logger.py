@@ -379,6 +379,107 @@ class TestLogger(unittest.TestCase):
 
         self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
 
+    def test_log_struct_inference(self):
+        """
+        LogEntry fields in _STRUCT_EXTRACTABLE_FIELDS should be inferred from
+        the payload data if not passed as a parameter
+        """
+        from google.cloud.logging_v2.handlers._monitored_resources import (
+            detect_resource,
+        )
+
+        STRUCT = {
+            "message": "System test: test_log_struct_logentry_data",
+            "severity": "warning",
+            "trace": "123",
+            "span_id": "456",
+        }
+        RESOURCE = detect_resource(self.PROJECT)._to_dict()
+        ENTRIES = [
+            {
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                "jsonPayload": STRUCT,
+                "severity": "WARNING",
+                "trace": "123",
+                "spanId": "456",
+                "resource": RESOURCE,
+            }
+        ]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+
+        logger.log_struct(STRUCT, resource=RESOURCE)
+
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+
+    def test_log_w_dict_resource(self):
+        """
+        Users should be able to input a dictionary with type and labels instead
+        of a Resource object
+        """
+        import pytest
+
+        MESSAGE = "hello world"
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+        broken_resource_dicts = [{}, {"type": ""}, {"labels": ""}]
+        for resource in broken_resource_dicts:
+            # ensure bad inputs result in a helpful error
+            with pytest.raises(TypeError):
+                logger.log(MESSAGE, resource=resource)
+        # ensure well-formed dict is converted to a resource
+        resource = {"type": "gae_app", "labels": []}
+        ENTRIES = [
+            {
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                "textPayload": MESSAGE,
+                "resource": resource,
+            }
+        ]
+        logger.log(MESSAGE, resource=resource)
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+
+    def test_log_lowercase_severity(self):
+        """
+       lower case severity strings should be accepted
+       """
+        from google.cloud.logging_v2.handlers._monitored_resources import (
+            detect_resource,
+        )
+
+        for lower_severity in [
+            "default",
+            "debug",
+            "info",
+            "notice",
+            "warning",
+            "error",
+            "critical",
+            "alert",
+            "emergency",
+        ]:
+            MESSAGE = "hello world"
+            RESOURCE = detect_resource(self.PROJECT)._to_dict()
+            ENTRIES = [
+                {
+                    "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                    "textPayload": MESSAGE,
+                    "resource": RESOURCE,
+                    "severity": lower_severity.upper(),
+                }
+            ]
+            client = _Client(self.PROJECT)
+            api = client.logging_api = _DummyLoggingAPI()
+            logger = self._make_one(self.LOGGER_NAME, client=client)
+
+            logger.log(MESSAGE, severity=lower_severity)
+
+            self.assertEqual(
+                api._write_entries_called_with, (ENTRIES, None, None, None)
+            )
+
     def test_log_proto_defaults(self):
         from google.cloud.logging_v2.handlers._monitored_resources import (
             detect_resource,

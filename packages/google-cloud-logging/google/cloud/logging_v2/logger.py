@@ -45,6 +45,8 @@ _OUTBOUND_ENTRY_FIELDS = (  # (name, default)
     ("source_location", None),
 )
 
+_STRUCT_EXTRACTABLE_FIELDS = ["severity", "trace", "span_id"]
+
 
 class Logger(object):
     """Loggers represent named targets for log entries.
@@ -133,6 +135,20 @@ class Logger(object):
         kw["labels"] = kw.pop("labels", self.labels)
         kw["resource"] = kw.pop("resource", self.default_resource)
 
+        severity = kw.get("severity", None)
+        if isinstance(severity, str) and not severity.isupper():
+            # convert severity to upper case, as expected by enum definition
+            kw["severity"] = severity.upper()
+
+        if isinstance(kw["resource"], collections.abc.Mapping):
+            # if resource was passed as a dict, attempt to parse it into a
+            # Resource object
+            try:
+                kw["resource"] = Resource(**kw["resource"])
+            except TypeError as e:
+                # dict couldn't be parsed as a Resource
+                raise TypeError("invalid resource dict") from e
+
         if payload is not None:
             entry = _entry_class(payload=payload, **kw)
         else:
@@ -186,6 +202,10 @@ class Logger(object):
             kw (Optional[dict]): additional keyword arguments for the entry.
                 See :class:`~logging_v2.entries.LogEntry`.
         """
+        for field in _STRUCT_EXTRACTABLE_FIELDS:
+            # attempt to copy relevant fields from the payload into the LogEntry body
+            if field in info and field not in kw:
+                kw[field] = info[field]
         self._do_log(client, StructEntry, info, **kw)
 
     def log_proto(self, message, *, client=None, **kw):
@@ -220,14 +240,14 @@ class Logger(object):
             kw (Optional[dict]): additional keyword arguments for the entry.
                 See :class:`~logging_v2.entries.LogEntry`.
         """
-        entry_type = LogEntry
         if isinstance(message, google.protobuf.message.Message):
-            entry_type = ProtobufEntry
+            self.log_proto(message, client=client, **kw)
         elif isinstance(message, collections.abc.Mapping):
-            entry_type = StructEntry
+            self.log_struct(message, client=client, **kw)
         elif isinstance(message, str):
-            entry_type = TextEntry
-        self._do_log(client, entry_type, message, **kw)
+            self.log_text(message, client=client, **kw)
+        else:
+            self._do_log(client, LogEntry, message, **kw)
 
     def delete(self, logger_name=None, *, client=None):
         """Delete all entries in a logger via a DELETE request

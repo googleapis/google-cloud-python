@@ -455,6 +455,25 @@ class TestLogging(unittest.TestCase):
             self.assertEqual(len(entries), 1)
             self.assertIsNone(entries[0].payload)
 
+    def test_log_struct_logentry_data(self):
+        logger = Config.CLIENT.logger(self._logger_name("log_w_struct"))
+        self.to_delete.append(logger)
+
+        JSON_PAYLOAD = {
+            "message": "System test: test_log_struct_logentry_data",
+            "severity": "warning",
+            "trace": "123",
+            "span_id": "456",
+        }
+        logger.log(JSON_PAYLOAD)
+        entries = _list_entries(logger)
+
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, JSON_PAYLOAD)
+        self.assertEqual(entries[0].severity, "WARNING")
+        self.assertEqual(entries[0].trace, JSON_PAYLOAD["trace"])
+        self.assertEqual(entries[0].span_id, JSON_PAYLOAD["span_id"])
+
     def test_log_handler_async(self):
         LOG_MESSAGE = "It was the worst of times"
 
