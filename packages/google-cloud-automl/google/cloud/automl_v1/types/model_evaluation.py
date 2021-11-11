@@ -44,20 +44,25 @@ class ModelEvaluation(proto.Message):
             video and tables classification.
             Tables problem is considered a classification
             when the target column is CATEGORY DataType.
+
             This field is a member of `oneof`_ ``metrics``.
         translation_evaluation_metrics (google.cloud.automl_v1.types.TranslationEvaluationMetrics):
             Model evaluation metrics for translation.
+
             This field is a member of `oneof`_ ``metrics``.
         image_object_detection_evaluation_metrics (google.cloud.automl_v1.types.ImageObjectDetectionEvaluationMetrics):
             Model evaluation metrics for image object
             detection.
+
             This field is a member of `oneof`_ ``metrics``.
         text_sentiment_evaluation_metrics (google.cloud.automl_v1.types.TextSentimentEvaluationMetrics):
             Evaluation metrics for text sentiment models.
+
             This field is a member of `oneof`_ ``metrics``.
         text_extraction_evaluation_metrics (google.cloud.automl_v1.types.TextExtractionEvaluationMetrics):
             Evaluation metrics for text extraction
             models.
+
             This field is a member of `oneof`_ ``metrics``.
         name (str):
             Output only. Resource name of the model evaluation. Format:

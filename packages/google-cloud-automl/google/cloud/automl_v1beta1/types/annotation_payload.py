@@ -41,30 +41,38 @@ class AnnotationPayload(proto.Message):
     Attributes:
         translation (google.cloud.automl_v1beta1.types.TranslationAnnotation):
             Annotation details for translation.
+
             This field is a member of `oneof`_ ``detail``.
         classification (google.cloud.automl_v1beta1.types.ClassificationAnnotation):
             Annotation details for content or image
             classification.
+
             This field is a member of `oneof`_ ``detail``.
         image_object_detection (google.cloud.automl_v1beta1.types.ImageObjectDetectionAnnotation):
             Annotation details for image object
             detection.
+
             This field is a member of `oneof`_ ``detail``.
         video_classification (google.cloud.automl_v1beta1.types.VideoClassificationAnnotation):
             Annotation details for video classification.
             Returned for Video Classification predictions.
+
             This field is a member of `oneof`_ ``detail``.
         video_object_tracking (google.cloud.automl_v1beta1.types.VideoObjectTrackingAnnotation):
             Annotation details for video object tracking.
+
             This field is a member of `oneof`_ ``detail``.
         text_extraction (google.cloud.automl_v1beta1.types.TextExtractionAnnotation):
             Annotation details for text extraction.
+
             This field is a member of `oneof`_ ``detail``.
         text_sentiment (google.cloud.automl_v1beta1.types.TextSentimentAnnotation):
             Annotation details for text sentiment.
+
             This field is a member of `oneof`_ ``detail``.
         tables (google.cloud.automl_v1beta1.types.TablesAnnotation):
             Annotation details for Tables.
+
             This field is a member of `oneof`_ ``detail``.
         annotation_spec_id (str):
             Output only . The resource ID of the

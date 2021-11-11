@@ -37,21 +37,27 @@ class Model(proto.Message):
     Attributes:
         translation_model_metadata (google.cloud.automl_v1.types.TranslationModelMetadata):
             Metadata for translation models.
+
             This field is a member of `oneof`_ ``model_metadata``.
         image_classification_model_metadata (google.cloud.automl_v1.types.ImageClassificationModelMetadata):
             Metadata for image classification models.
+
             This field is a member of `oneof`_ ``model_metadata``.
         text_classification_model_metadata (google.cloud.automl_v1.types.TextClassificationModelMetadata):
             Metadata for text classification models.
+
             This field is a member of `oneof`_ ``model_metadata``.
         image_object_detection_model_metadata (google.cloud.automl_v1.types.ImageObjectDetectionModelMetadata):
             Metadata for image object detection models.
+
             This field is a member of `oneof`_ ``model_metadata``.
         text_extraction_model_metadata (google.cloud.automl_v1.types.TextExtractionModelMetadata):
             Metadata for text extraction models.
+
             This field is a member of `oneof`_ ``model_metadata``.
         text_sentiment_model_metadata (google.cloud.automl_v1.types.TextSentimentModelMetadata):
             Metadata for text sentiment models.
+
             This field is a member of `oneof`_ ``model_metadata``.
         name (str):
             Output only. Resource name of the model. Format:

@@ -129,11 +129,13 @@ class TablesModelMetadata(proto.Message):
             Required when optimization_objective is
             "MAXIMIZE_PRECISION_AT_RECALL". Must be between 0 and 1,
             inclusive.
+
             This field is a member of `oneof`_ ``additional_optimization_objective_config``.
         optimization_objective_precision_value (float):
             Required when optimization_objective is
             "MAXIMIZE_RECALL_AT_PRECISION". Must be between 0 and 1,
             inclusive.
+
             This field is a member of `oneof`_ ``additional_optimization_objective_config``.
         target_column_spec (google.cloud.automl_v1beta1.types.ColumnSpec):
             Column spec of the dataset's primary table's column the

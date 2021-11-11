@@ -39,30 +39,39 @@ class Model(proto.Message):
     Attributes:
         translation_model_metadata (google.cloud.automl_v1beta1.types.TranslationModelMetadata):
             Metadata for translation models.
+
             This field is a member of `oneof`_ ``model_metadata``.
         image_classification_model_metadata (google.cloud.automl_v1beta1.types.ImageClassificationModelMetadata):
             Metadata for image classification models.
+
             This field is a member of `oneof`_ ``model_metadata``.
         text_classification_model_metadata (google.cloud.automl_v1beta1.types.TextClassificationModelMetadata):
             Metadata for text classification models.
+
             This field is a member of `oneof`_ ``model_metadata``.
         image_object_detection_model_metadata (google.cloud.automl_v1beta1.types.ImageObjectDetectionModelMetadata):
             Metadata for image object detection models.
+
             This field is a member of `oneof`_ ``model_metadata``.
         video_classification_model_metadata (google.cloud.automl_v1beta1.types.VideoClassificationModelMetadata):
             Metadata for video classification models.
+
             This field is a member of `oneof`_ ``model_metadata``.
         video_object_tracking_model_metadata (google.cloud.automl_v1beta1.types.VideoObjectTrackingModelMetadata):
             Metadata for video object tracking models.
+
             This field is a member of `oneof`_ ``model_metadata``.
         text_extraction_model_metadata (google.cloud.automl_v1beta1.types.TextExtractionModelMetadata):
             Metadata for text extraction models.
+
             This field is a member of `oneof`_ ``model_metadata``.
         tables_model_metadata (google.cloud.automl_v1beta1.types.TablesModelMetadata):
             Metadata for Tables models.
+
             This field is a member of `oneof`_ ``model_metadata``.
         text_sentiment_model_metadata (google.cloud.automl_v1beta1.types.TextSentimentModelMetadata):
             Metadata for text sentiment models.
+
             This field is a member of `oneof`_ ``model_metadata``.
         name (str):
             Output only. Resource name of the model. Format:

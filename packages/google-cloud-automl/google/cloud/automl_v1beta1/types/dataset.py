@@ -43,37 +43,46 @@ class Dataset(proto.Message):
     Attributes:
         translation_dataset_metadata (google.cloud.automl_v1beta1.types.TranslationDatasetMetadata):
             Metadata for a dataset used for translation.
+
             This field is a member of `oneof`_ ``dataset_metadata``.
         image_classification_dataset_metadata (google.cloud.automl_v1beta1.types.ImageClassificationDatasetMetadata):
             Metadata for a dataset used for image
             classification.
+
             This field is a member of `oneof`_ ``dataset_metadata``.
         text_classification_dataset_metadata (google.cloud.automl_v1beta1.types.TextClassificationDatasetMetadata):
             Metadata for a dataset used for text
             classification.
+
             This field is a member of `oneof`_ ``dataset_metadata``.
         image_object_detection_dataset_metadata (google.cloud.automl_v1beta1.types.ImageObjectDetectionDatasetMetadata):
             Metadata for a dataset used for image object
             detection.
+
             This field is a member of `oneof`_ ``dataset_metadata``.
         video_classification_dataset_metadata (google.cloud.automl_v1beta1.types.VideoClassificationDatasetMetadata):
             Metadata for a dataset used for video
             classification.
+
             This field is a member of `oneof`_ ``dataset_metadata``.
         video_object_tracking_dataset_metadata (google.cloud.automl_v1beta1.types.VideoObjectTrackingDatasetMetadata):
             Metadata for a dataset used for video object
             tracking.
+
             This field is a member of `oneof`_ ``dataset_metadata``.
         text_extraction_dataset_metadata (google.cloud.automl_v1beta1.types.TextExtractionDatasetMetadata):
             Metadata for a dataset used for text
             extraction.
+
             This field is a member of `oneof`_ ``dataset_metadata``.
         text_sentiment_dataset_metadata (google.cloud.automl_v1beta1.types.TextSentimentDatasetMetadata):
             Metadata for a dataset used for text
             sentiment.
+
             This field is a member of `oneof`_ ``dataset_metadata``.
         tables_dataset_metadata (google.cloud.automl_v1beta1.types.TablesDatasetMetadata):
             Metadata for a dataset used for Tables.
+
             This field is a member of `oneof`_ ``dataset_metadata``.
         name (str):
             Output only. The resource name of the dataset. Form:

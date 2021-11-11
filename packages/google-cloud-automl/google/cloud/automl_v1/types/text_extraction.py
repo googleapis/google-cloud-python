@@ -34,6 +34,7 @@ class TextExtractionAnnotation(proto.Message):
             An entity annotation will set this, which is
             the part of the original text to which the
             annotation pertains.
+
             This field is a member of `oneof`_ ``annotation``.
         score (float):
             Output only. A confidence estimate between

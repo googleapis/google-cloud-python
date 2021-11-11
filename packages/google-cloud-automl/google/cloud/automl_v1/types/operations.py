@@ -51,30 +51,39 @@ class OperationMetadata(proto.Message):
     Attributes:
         delete_details (google.cloud.automl_v1.types.DeleteOperationMetadata):
             Details of a Delete operation.
+
             This field is a member of `oneof`_ ``details``.
         deploy_model_details (google.cloud.automl_v1.types.DeployModelOperationMetadata):
             Details of a DeployModel operation.
+
             This field is a member of `oneof`_ ``details``.
         undeploy_model_details (google.cloud.automl_v1.types.UndeployModelOperationMetadata):
             Details of an UndeployModel operation.
+
             This field is a member of `oneof`_ ``details``.
         create_model_details (google.cloud.automl_v1.types.CreateModelOperationMetadata):
             Details of CreateModel operation.
+
             This field is a member of `oneof`_ ``details``.
         create_dataset_details (google.cloud.automl_v1.types.CreateDatasetOperationMetadata):
             Details of CreateDataset operation.
+
             This field is a member of `oneof`_ ``details``.
         import_data_details (google.cloud.automl_v1.types.ImportDataOperationMetadata):
             Details of ImportData operation.
+
             This field is a member of `oneof`_ ``details``.
         batch_predict_details (google.cloud.automl_v1.types.BatchPredictOperationMetadata):
             Details of BatchPredict operation.
+
             This field is a member of `oneof`_ ``details``.
         export_data_details (google.cloud.automl_v1.types.ExportDataOperationMetadata):
             Details of ExportData operation.
+
             This field is a member of `oneof`_ ``details``.
         export_model_details (google.cloud.automl_v1.types.ExportModelOperationMetadata):
             Details of ExportModel operation.
+
             This field is a member of `oneof`_ ``details``.
         progress_percent (int):
             Output only. Progress of operation. Range: [0, 100]. Not
@@ -203,6 +212,7 @@ class ExportDataOperationMetadata(proto.Message):
                 The full path of the Google Cloud Storage
                 directory created, into which the exported data
                 is written.
+
                 This field is a member of `oneof`_ ``output_location``.
         """
 
@@ -238,6 +248,7 @@ class BatchPredictOperationMetadata(proto.Message):
                 The full path of the Google Cloud Storage
                 directory created, into which the prediction
                 output is written.
+
                 This field is a member of `oneof`_ ``output_location``.
         """
 

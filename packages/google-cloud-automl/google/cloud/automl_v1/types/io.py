@@ -721,6 +721,7 @@ class InputConfig(proto.Message):
             ``gcs_source`` points to a CSV file with a structure
             described in
             [InputConfig][google.cloud.automl.v1.InputConfig].
+
             This field is a member of `oneof`_ ``source``.
         params (Sequence[google.cloud.automl_v1.types.InputConfig.ParamsEntry]):
             Additional domain-specific parameters describing the
@@ -1082,6 +1083,7 @@ class BatchPredictInputConfig(proto.Message):
         gcs_source (google.cloud.automl_v1.types.GcsSource):
             Required. The Google Cloud Storage location
             for the input content.
+
             This field is a member of `oneof`_ ``source``.
     """
 
@@ -1147,6 +1149,7 @@ class OutputConfig(proto.Message):
             export_data-- where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ
             ISO-8601 format. All export output will be written into that
             directory.
+
             This field is a member of `oneof`_ ``destination``.
     """
 
@@ -1452,6 +1455,7 @@ class BatchPredictOutputConfig(proto.Message):
             Required. The Google Cloud Storage location
             of the directory where the output is to be
             written to.
+
             This field is a member of `oneof`_ ``destination``.
     """
 
@@ -1477,6 +1481,7 @@ class ModelExportOutputConfig(proto.Message):
             YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format, will be created.
             Inside the model and any of its supporting files will be
             written.
+
             This field is a member of `oneof`_ ``destination``.
         model_format (str):
             The format in which the model must be exported. The

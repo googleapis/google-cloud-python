@@ -39,26 +39,32 @@ class Dataset(proto.Message):
     Attributes:
         translation_dataset_metadata (google.cloud.automl_v1.types.TranslationDatasetMetadata):
             Metadata for a dataset used for translation.
+
             This field is a member of `oneof`_ ``dataset_metadata``.
         image_classification_dataset_metadata (google.cloud.automl_v1.types.ImageClassificationDatasetMetadata):
             Metadata for a dataset used for image
             classification.
+
             This field is a member of `oneof`_ ``dataset_metadata``.
         text_classification_dataset_metadata (google.cloud.automl_v1.types.TextClassificationDatasetMetadata):
             Metadata for a dataset used for text
             classification.
+
             This field is a member of `oneof`_ ``dataset_metadata``.
         image_object_detection_dataset_metadata (google.cloud.automl_v1.types.ImageObjectDetectionDatasetMetadata):
             Metadata for a dataset used for image object
             detection.
+
             This field is a member of `oneof`_ ``dataset_metadata``.
         text_extraction_dataset_metadata (google.cloud.automl_v1.types.TextExtractionDatasetMetadata):
             Metadata for a dataset used for text
             extraction.
+
             This field is a member of `oneof`_ ``dataset_metadata``.
         text_sentiment_dataset_metadata (google.cloud.automl_v1.types.TextSentimentDatasetMetadata):
             Metadata for a dataset used for text
             sentiment.
+
             This field is a member of `oneof`_ ``dataset_metadata``.
         name (str):
             Output only. The resource name of the dataset. Form:

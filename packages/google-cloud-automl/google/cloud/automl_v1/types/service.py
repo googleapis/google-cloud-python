@@ -352,10 +352,12 @@ class DeployModelRequest(proto.Message):
         image_object_detection_model_deployment_metadata (google.cloud.automl_v1.types.ImageObjectDetectionModelDeploymentMetadata):
             Model deployment metadata specific to Image
             Object Detection.
+
             This field is a member of `oneof`_ ``model_deployment_metadata``.
         image_classification_model_deployment_metadata (google.cloud.automl_v1.types.ImageClassificationModelDeploymentMetadata):
             Model deployment metadata specific to Image
             Classification.
+
             This field is a member of `oneof`_ ``model_deployment_metadata``.
         name (str):
             Required. Resource name of the model to

@@ -347,9 +347,11 @@ class InputConfig(proto.Message):
             The Google Cloud Storage location for the input content. In
             ImportData, the gcs_source points to a csv with structure
             described in the comment.
+
             This field is a member of `oneof`_ ``source``.
         bigquery_source (google.cloud.automl_v1beta1.types.BigQuerySource):
             The BigQuery location for the input content.
+
             This field is a member of `oneof`_ ``source``.
         params (Sequence[google.cloud.automl_v1beta1.types.InputConfig.ParamsEntry]):
             Additional domain-specific parameters describing the
@@ -536,9 +538,11 @@ class BatchPredictInputConfig(proto.Message):
         gcs_source (google.cloud.automl_v1beta1.types.GcsSource):
             The Google Cloud Storage location for the
             input content.
+
             This field is a member of `oneof`_ ``source``.
         bigquery_source (google.cloud.automl_v1beta1.types.BigQuerySource):
             The BigQuery location for the input content.
+
             This field is a member of `oneof`_ ``source``.
     """
 
@@ -607,10 +611,12 @@ class OutputConfig(proto.Message):
             new directory will be created with name: export_data-- where
             timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format.
             All export output will be written into that directory.
+
             This field is a member of `oneof`_ ``destination``.
         bigquery_destination (google.cloud.automl_v1beta1.types.BigQueryDestination):
             The BigQuery location where the output is to
             be written to.
+
             This field is a member of `oneof`_ ``destination``.
     """
 
@@ -921,10 +927,12 @@ class BatchPredictOutputConfig(proto.Message):
         gcs_destination (google.cloud.automl_v1beta1.types.GcsDestination):
             The Google Cloud Storage location of the
             directory where the output is to be written to.
+
             This field is a member of `oneof`_ ``destination``.
         bigquery_destination (google.cloud.automl_v1beta1.types.BigQueryDestination):
             The BigQuery location where the output is to
             be written to.
+
             This field is a member of `oneof`_ ``destination``.
     """
 
@@ -958,6 +966,7 @@ class ModelExportOutputConfig(proto.Message):
             YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format, will be created.
             Inside the model and any of its supporting files will be
             written.
+
             This field is a member of `oneof`_ ``destination``.
         gcr_destination (google.cloud.automl_v1beta1.types.GcrDestination):
             The GCR location where model image is to be
@@ -966,6 +975,7 @@ class ModelExportOutputConfig(proto.Message):
 
             The model image will be created under the given
             URI.
+
             This field is a member of `oneof`_ ``destination``.
         model_format (str):
             The format in which the model must be exported. The
@@ -1081,6 +1091,7 @@ class ExportEvaluatedExamplesOutputConfig(proto.Message):
         bigquery_destination (google.cloud.automl_v1beta1.types.BigQueryDestination):
             The BigQuery location where the output is to
             be written to.
+
             This field is a member of `oneof`_ ``destination``.
     """
 

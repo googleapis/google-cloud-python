@@ -50,10 +50,12 @@ class Image(proto.Message):
             Image content represented as a stream of bytes. Note: As
             with all ``bytes`` fields, protobuffers use a pure binary
             representation, whereas JSON representations use base64.
+
             This field is a member of `oneof`_ ``data``.
         input_config (google.cloud.automl_v1beta1.types.InputConfig):
             An input config specifying the content of the
             image.
+
             This field is a member of `oneof`_ ``data``.
         thumbnail_uri (str):
             Output only. HTTP URI to the thumbnail image.
@@ -238,15 +240,19 @@ class ExamplePayload(proto.Message):
     Attributes:
         image (google.cloud.automl_v1beta1.types.Image):
             Example image.
+
             This field is a member of `oneof`_ ``payload``.
         text_snippet (google.cloud.automl_v1beta1.types.TextSnippet):
             Example text.
+
             This field is a member of `oneof`_ ``payload``.
         document (google.cloud.automl_v1beta1.types.Document):
             Example document.
+
             This field is a member of `oneof`_ ``payload``.
         row (google.cloud.automl_v1beta1.types.Row):
             Example relational table row.
+
             This field is a member of `oneof`_ ``payload``.
     """
 
