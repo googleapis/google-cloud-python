@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.2](https://www.github.com/googleapis/python-network-connectivity/compare/v1.2.1...v1.2.2) (2021-11-11)
+
+
+### Bug Fixes
+
+* Mark API fields as required which were already required on the backend ([#107](https://www.github.com/googleapis/python-network-connectivity/issues/107)) ([17b9d5f](https://www.github.com/googleapis/python-network-connectivity/commit/17b9d5fb6f23494b759504ed56ef80e95b960620))
+
 ### [1.2.1](https://www.github.com/googleapis/python-network-connectivity/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
