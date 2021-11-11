@@ -6,5 +6,6 @@
   "release_level": "ga",
   "language": "python",
   "repo": "googleapis/sphinx-docfx-yaml",
-  "distribution_name": "gcp-sphinx-docfx-yaml"
+  "distribution_name": "gcp-sphinx-docfx-yaml",
+  "codeowner_team": "@googleapis/cx-eng"
 }
