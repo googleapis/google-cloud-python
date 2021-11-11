@@ -11,5 +11,5 @@
     "distribution_name": "google-cloud-dialogflow-cx",
     "api_id": "dialogflow.googleapis.com",
     "default_version": "v3",
-    "codeowner_team": ""
+    "codeowner_team": "@googleapis/cdpe-cloudai"
 }
