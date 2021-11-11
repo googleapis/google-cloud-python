@@ -1,14 +1,16 @@
 {
-  "name": "firestore",
-  "name_pretty": "Cloud Firestore",
-  "product_documentation": "https://cloud.google.com/firestore",
-  "client_documentation": "https://googleapis.dev/python/firestore/latest",
-  "issue_tracker": "https://issuetracker.google.com/savedsearches/5337669",
-  "release_level": "ga",
-  "language": "python",
-  "library_type": "GAPIC_COMBO",
-  "repo": "googleapis/python-firestore",
-  "distribution_name": "google-cloud-firestore",
-  "api_id": "firestore.googleapis.com",
-  "requires_billing": true
+    "name": "firestore",
+    "name_pretty": "Cloud Firestore",
+    "product_documentation": "https://cloud.google.com/firestore",
+    "client_documentation": "https://googleapis.dev/python/firestore/latest",
+    "issue_tracker": "https://issuetracker.google.com/savedsearches/5337669",
+    "release_level": "ga",
+    "language": "python",
+    "library_type": "GAPIC_COMBO",
+    "repo": "googleapis/python-firestore",
+    "distribution_name": "google-cloud-firestore",
+    "api_id": "firestore.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v1",
+    "codeowner_team": "@googleapis/firestore-dpe @googleapis/api-firestore"
 }
