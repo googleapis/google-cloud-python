@@ -98,12 +98,30 @@ class Webhook(proto.Message):
             request_headers (Sequence[google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService.RequestHeadersEntry]):
                 The HTTP request headers to send together
                 with webhook requests.
+            allowed_ca_certs (Sequence[bytes]):
+                Optional. Specifies a list of allowed custom
+                CA certificates (in DER format) for HTTPS
+                verification. This overrides the default SSL
+                trust store. If this is empty or unspecified,
+                Dialogflow will use Google's default trust store
+                to verify certificates.
+                N.B. Make sure the HTTPS server certificates are
+                signed with "subject alt name". For instance a
+                certificate can be self-signed using the
+                following command,
+                   openssl x509 -req -days 200 -in
+                example.com.csr \      -signkey example.com.key
+                \
+                     -out example.com.crt \
+                     -extfile <(printf
+                "\nsubjectAltName='DNS:www.example.com'")
         """
 
         uri = proto.Field(proto.STRING, number=1,)
         username = proto.Field(proto.STRING, number=2,)
         password = proto.Field(proto.STRING, number=3,)
         request_headers = proto.MapField(proto.STRING, proto.STRING, number=4,)
+        allowed_ca_certs = proto.RepeatedField(proto.BYTES, number=5,)
 
     class ServiceDirectoryConfig(proto.Message):
         r"""Represents configuration for a `Service
