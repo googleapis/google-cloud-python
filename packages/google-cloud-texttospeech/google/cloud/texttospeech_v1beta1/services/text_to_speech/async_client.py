@@ -45,6 +45,8 @@ class TextToSpeechAsyncClient:
     DEFAULT_ENDPOINT = TextToSpeechClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = TextToSpeechClient.DEFAULT_MTLS_ENDPOINT
 
+    model_path = staticmethod(TextToSpeechClient.model_path)
+    parse_model_path = staticmethod(TextToSpeechClient.parse_model_path)
     common_billing_account_path = staticmethod(
         TextToSpeechClient.common_billing_account_path
     )
@@ -180,12 +182,13 @@ class TextToSpeechAsyncClient:
                 language tag. If not specified, the API will return all
                 supported voices. If specified, the ListVoices call will
                 only return voices that can be used to synthesize this
-                language_code. E.g. when specifying "en-NZ", you will
-                get supported "en-NZ" voices; when specifying "no", you
-                will get supported "no-\*" (Norwegian) and "nb-\*"
-                (Norwegian Bokmal) voices; specifying "zh" will also get
-                supported "cmn-\*" voices; specifying "zh-hk" will also
-                get supported "yue-hk" voices.
+                language_code. E.g. when specifying ``"en-NZ"``, you
+                will get supported ``"en-NZ"`` voices; when specifying
+                ``"no"``, you will get supported ``"no-\*"`` (Norwegian)
+                and ``"nb-\*"`` (Norwegian Bokmal) voices; specifying
+                ``"zh"`` will also get supported ``"cmn-\*"`` voices;
+                specifying ``"zh-hk"`` will also get supported
+                ``"yue-hk"`` voices.
 
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this

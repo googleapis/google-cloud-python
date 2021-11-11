@@ -1193,8 +1193,32 @@ def test_text_to_speech_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_model_path():
+    project = "squid"
+    location = "clam"
+    model = "whelk"
+    expected = "projects/{project}/locations/{location}/models/{model}".format(
+        project=project, location=location, model=model,
+    )
+    actual = TextToSpeechClient.model_path(project, location, model)
+    assert expected == actual
+
+
+def test_parse_model_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "model": "nudibranch",
+    }
+    path = TextToSpeechClient.model_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TextToSpeechClient.parse_model_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -1204,7 +1228,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "mussel",
     }
     path = TextToSpeechClient.common_billing_account_path(**expected)
 
@@ -1214,7 +1238,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "winkle"
     expected = "folders/{folder}".format(folder=folder,)
     actual = TextToSpeechClient.common_folder_path(folder)
     assert expected == actual
@@ -1222,7 +1246,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nautilus",
     }
     path = TextToSpeechClient.common_folder_path(**expected)
 
@@ -1232,7 +1256,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "scallop"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = TextToSpeechClient.common_organization_path(organization)
     assert expected == actual
@@ -1240,7 +1264,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "abalone",
     }
     path = TextToSpeechClient.common_organization_path(**expected)
 
@@ -1250,7 +1274,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "squid"
     expected = "projects/{project}".format(project=project,)
     actual = TextToSpeechClient.common_project_path(project)
     assert expected == actual
@@ -1258,7 +1282,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "clam",
     }
     path = TextToSpeechClient.common_project_path(**expected)
 
@@ -1268,8 +1292,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -1279,8 +1303,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = TextToSpeechClient.common_location_path(**expected)
 
