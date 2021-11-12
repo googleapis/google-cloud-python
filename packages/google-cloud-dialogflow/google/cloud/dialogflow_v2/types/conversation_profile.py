@@ -732,6 +732,7 @@ class SuggestionFeature(proto.Message):
         TYPE_UNSPECIFIED = 0
         ARTICLE_SUGGESTION = 1
         FAQ = 2
+        SMART_REPLY = 3
 
     type_ = proto.Field(proto.ENUM, number=1, enum=Type,)
 

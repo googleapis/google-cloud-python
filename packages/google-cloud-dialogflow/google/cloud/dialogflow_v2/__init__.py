@@ -166,6 +166,7 @@ from .types.participant import AnalyzeContentRequest
 from .types.participant import AnalyzeContentResponse
 from .types.participant import AnnotatedMessagePart
 from .types.participant import ArticleAnswer
+from .types.participant import AssistQueryParameters
 from .types.participant import AutomatedAgentReply
 from .types.participant import CreateParticipantRequest
 from .types.participant import DtmfParameters
@@ -243,6 +244,7 @@ __all__ = (
     "AnswerRecord",
     "AnswerRecordsClient",
     "ArticleAnswer",
+    "AssistQueryParameters",
     "AudioEncoding",
     "AutomatedAgentConfig",
     "AutomatedAgentReply",
