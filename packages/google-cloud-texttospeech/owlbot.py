@@ -24,13 +24,6 @@ common = gcp.CommonTemplates()
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
-    # Sphinx interprets `*` as emphasis
-    s.replace(
-        [library / "google/cloud/**/*client.py", library / "google/cloud/**/cloud_tts.py"],
-        "((en)|(no)|(nb)|(cmn)|(yue))-\*",
-        "\g<1>-\*",
-    )
-
     s.move(library, excludes=["setup.py", "docs/index.rst", "README.rst"])
 
 s.remove_staging_dirs()
