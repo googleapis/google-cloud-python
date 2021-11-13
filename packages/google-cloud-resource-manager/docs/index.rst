@@ -3,7 +3,7 @@
 .. include:: multiprocessing.rst
 
 
-Api Reference
+API Reference
 -------------
 .. toctree::
     :maxdepth: 2
@@ -18,6 +18,6 @@ Changelog
 For a list of all ``google-cloud-resource-manager`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog
