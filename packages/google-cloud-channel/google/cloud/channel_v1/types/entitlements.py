@@ -88,8 +88,7 @@ class Entitlement(proto.Message):
             The response may include the following output-only
             Parameters:
 
-            -  assigned_units: The number of licenses assigned to a
-               user.
+            -  assigned_units: The number of licenses assigned to users.
 
             -  max_units: The maximum assignable units for a flexible
                offer.
