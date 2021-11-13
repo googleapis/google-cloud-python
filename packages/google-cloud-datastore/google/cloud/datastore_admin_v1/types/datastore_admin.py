@@ -62,7 +62,7 @@ class CommonMetadata(proto.Message):
         operation_type (google.cloud.datastore_admin_v1.types.OperationType):
             The type of the operation. Can be used as a
             filter in ListOperationsRequest.
-        labels (Sequence[google.cloud.datastore_admin_v1.types.CommonMetadata.LabelsEntry]):
+        labels (Dict[str, str]):
             The client-assigned labels which were
             provided when the operation was created. May
             also include additional labels.
@@ -113,7 +113,7 @@ class ExportEntitiesRequest(proto.Message):
         project_id (str):
             Required. Project ID against which to make
             the request.
-        labels (Sequence[google.cloud.datastore_admin_v1.types.ExportEntitiesRequest.LabelsEntry]):
+        labels (Dict[str, str]):
             Client-assigned labels.
         entity_filter (google.cloud.datastore_admin_v1.types.EntityFilter):
             Description of what data from the project is
@@ -157,7 +157,7 @@ class ImportEntitiesRequest(proto.Message):
         project_id (str):
             Required. Project ID against which to make
             the request.
-        labels (Sequence[google.cloud.datastore_admin_v1.types.ImportEntitiesRequest.LabelsEntry]):
+        labels (Dict[str, str]):
             Client-assigned labels.
         input_url (str):
             Required. The full resource URL of the external storage

@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Dict
+from typing import Any
+
 import mock
 import pytest
 
@@ -498,7 +501,7 @@ def test__parse_commit_response():
 class _Entity(dict):
     key = None
     exclude_from_indexes = ()
-    _meanings = {}
+    _meanings: Dict[str, Any] = {}
 
 
 class _Key(object):

@@ -231,7 +231,7 @@ class DatastoreAdminAsyncClient:
         request: Union[datastore_admin.ExportEntitiesRequest, dict] = None,
         *,
         project_id: str = None,
-        labels: Sequence[datastore_admin.ExportEntitiesRequest.LabelsEntry] = None,
+        labels: Dict[str, str] = None,
         entity_filter: datastore_admin.EntityFilter = None,
         output_url_prefix: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -260,7 +260,7 @@ class DatastoreAdminAsyncClient:
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            labels (:class:`Sequence[google.cloud.datastore_admin_v1.types.ExportEntitiesRequest.LabelsEntry]`):
+            labels (:class:`Dict[str, str]`):
                 Client-assigned labels.
                 This corresponds to the ``labels`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -368,7 +368,7 @@ class DatastoreAdminAsyncClient:
         request: Union[datastore_admin.ImportEntitiesRequest, dict] = None,
         *,
         project_id: str = None,
-        labels: Sequence[datastore_admin.ImportEntitiesRequest.LabelsEntry] = None,
+        labels: Dict[str, str] = None,
         input_url: str = None,
         entity_filter: datastore_admin.EntityFilter = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -394,7 +394,7 @@ class DatastoreAdminAsyncClient:
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            labels (:class:`Sequence[google.cloud.datastore_admin_v1.types.ImportEntitiesRequest.LabelsEntry]`):
+            labels (:class:`Dict[str, str]`):
                 Client-assigned labels.
                 This corresponds to the ``labels`` field
                 on the ``request`` instance; if ``request`` is provided, this

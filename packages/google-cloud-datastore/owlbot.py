@@ -22,6 +22,7 @@ from synthtool.languages import python
 
 common = gcp.CommonTemplates()
 
+
 # This is a customized version of the s.get_staging_dirs() function from synthtool to
 # cater for copying 2 different folders from googleapis-gen
 # which are datastore and datastore/admin
@@ -59,6 +60,7 @@ def get_staging_dirs(
         return dirs
     else:
         return []
+
 
 # This library ships clients for two different APIs,
 # Datastore and Datastore Admin
@@ -197,6 +199,17 @@ def docfx(session):
 """,
 )
 
+# Work around: https://github.com/googleapis/gapic-generator-python/issues/689
+s.replace(
+    [
+        "google/**/datastore_admin/async_client.py",
+        "google/**/datastore_admin/client.py",
+        "google/**/types/datastore_admin.py",
+    ],
+    r"Sequence\[.*\.LabelsEntry\]",
+    r"Dict[str, str]",
+)
+
 # Add documentation about creating indexes and populating data for system
 # tests.
 assert 1 == s.replace(
@@ -240,7 +253,8 @@ Test Coverage
 )
 
 # add type checker nox session
-s.replace("noxfile.py",
+s.replace(
+    "noxfile.py",
     """nox.options.sessions = \[
     "unit",
     "system",""",
@@ -262,9 +276,8 @@ def lint_setup_py\(session\):
 def mypy(session):
     """Verify type hints are mypy compatible."""
     session.install("-e", ".")
-    session.install("mypy")
-    # TODO: also verify types on tests, all of google package
-    session.run("mypy", "-p", "google.cloud.datastore", "--no-incremental")
+    session.install("mypy", "types-setuptools", "types-mock", "types-requests")
+    session.run("mypy", "google/", "tests/")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

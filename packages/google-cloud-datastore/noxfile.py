@@ -77,9 +77,8 @@ def blacken(session):
 def mypy(session):
     """Verify type hints are mypy compatible."""
     session.install("-e", ".")
-    session.install("mypy")
-    # TODO: also verify types on tests, all of google package
-    session.run("mypy", "-p", "google.cloud.datastore", "--no-incremental")
+    session.install("mypy", "types-setuptools", "types-mock", "types-requests")
+    session.run("mypy", "google/", "tests/")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
