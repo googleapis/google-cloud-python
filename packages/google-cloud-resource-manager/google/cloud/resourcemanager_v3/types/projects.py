@@ -230,7 +230,7 @@ class SearchProjectsRequest(proto.Message):
             ::
 
                | Field                   | Description                                  |
-               |-------------------------\|----------------------------------------------|
+               |-------------------------|----------------------------------------------|
                | displayName, name       | Filters by displayName.                      |
                | parent                  | Project's parent. (for example: folders/123,
                organizations/*) Prefer parent field over parent.type and parent.id. |
@@ -246,17 +246,18 @@ class SearchProjectsRequest(proto.Message):
 
             Some examples queries:
 
-            \| Query \| Description \|
-            \|------------------\|-----------------------------------------------------\|
-            \| name:how\* \| The project's name starts with "how". \| \|
-            name:Howl \| The project's name is ``Howl`` or ``howl``. \|
-            \| name:HOWL \| Equivalent to above. \| \| NAME:howl \|
-            Equivalent to above. \| \| labels.color:\* \| The project
-            has the label ``color``. \| \| labels.color:red \| The
-            project's label ``color`` has the value ``red``. \| \|
-            labels.color:red labels.size:big \| The project's label
-            ``color`` has the value ``red`` and its label ``size`` has
-            the value ``big``. \|
+            ::
+
+               | Query            | Description                                         |
+               |------------------|-----------------------------------------------------|
+               | name:how*        | The project's name starts with "how".               |
+               | name:Howl        | The project's name is `Howl` or `howl`.             |
+               | name:HOWL        | Equivalent to above.                                |
+               | NAME:howl        | Equivalent to above.                                |
+               | labels.color:*   | The project has the label `color`.                  |
+               | labels.color:red | The project's label `color` has the value `red`.    |
+               | labels.color:red&nbsp;labels.size:big | The project's label `color` has
+               the value `red` and its label `size` has the value `big`.                |
 
             If no query is specified, the call will return projects for
             which the user has the ``resourcemanager.projects.get``

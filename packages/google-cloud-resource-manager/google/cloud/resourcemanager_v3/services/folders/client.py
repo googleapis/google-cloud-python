@@ -557,7 +557,7 @@ class FoldersClient(metaclass=FoldersClientMeta):
                 ::
 
                    | Field                   | Description                            |
-                   |-------------------------\|----------------------------------------|
+                   |-------------------------|----------------------------------------|
                    | displayName             | Filters by displayName.                |
                    | parent                  | Filters by parent (for example: folders/123). |
                    | state, lifecycleState   | Filters by state.                      |

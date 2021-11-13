@@ -23,49 +23,6 @@ common = gcp.CommonTemplates()
 default_version = "v3"
 
 for library in s.get_staging_dirs(default_version):
-    # Resolve sphinx warning `Inline substitution_reference start-string without end-string`
-    # Remove tables from docstring. Requested change upstream in cl/377766167 due to https://google.aip.dev/192#formatting.
-    s.replace(
-        [
-            library / f"google/cloud/resourcemanager_{library.name}/services/folders/*client.py",
-            library / f"google/cloud/resourcemanager_{library.name}/types/folders.py"
-        ],
-        "-------------------------[|]----------------------------------------",
-        "-------------------------\|----------------------------------------"
-    )
-    s.replace(
-        [
-            library / f"google/cloud/resourcemanager_{library.name}/services/organizations/*client.py",
-            library / f"google/cloud/resourcemanager_{library.name}/types/organizations.py"
-        ],
-        "------------------[|]--------------------------------------------",
-        "------------------\|--------------------------------------------"
-    )
-    s.replace(
-        [
-            library / f"google/cloud/resourcemanager_{library.name}/services/projects/*client.py",
-            library / f"google/cloud/resourcemanager_{library.name}/types/projects.py"
-        ],
-        "-------------------------[|]----------------------------------------------",
-        "-------------------------\|----------------------------------------------"
-    )
-    s.replace(
-        [
-            library / f"google/cloud/resourcemanager_{library.name}/services/projects/*client.py",
-            library / f"google/cloud/resourcemanager_{library.name}/types/projects.py"
-        ],
-        "------------------[|]-----------------------------------------------------",
-        "------------------\|-----------------------------------------------------"
-    )
-    
-    # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
-    s.replace(library / f"google/cloud/resourcemanager_{library.name}/types/folders.py",
-                r""".
-    Attributes:""",
-                r""".\n
-    Attributes:""",
-    )
-
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
 s.remove_staging_dirs()

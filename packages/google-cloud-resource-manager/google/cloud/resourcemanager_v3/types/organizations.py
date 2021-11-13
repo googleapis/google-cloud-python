@@ -128,7 +128,7 @@ class SearchOrganizationsRequest(proto.Message):
             ::
 
                | Field            | Description                                |
-               |------------------\|--------------------------------------------|
+               |------------------|--------------------------------------------|
                | directoryCustomerId, owner.directoryCustomerId | Filters by directory
                customer id. |
                | domain           | Filters by domain.                         |
