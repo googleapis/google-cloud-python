@@ -87,6 +87,7 @@ class Connection:
         # connection close
         self._own_pool = True
         self._read_only = read_only
+        self._staleness = None
 
     @property
     def autocommit(self):
@@ -164,6 +165,42 @@ class Connection:
                 "Commit or rollback the current transaction and try again."
             )
         self._read_only = value
+
+    @property
+    def staleness(self):
+        """Current read staleness option value of this `Connection`.
+
+        Returns:
+            dict: Staleness type and value.
+        """
+        return self._staleness or {}
+
+    @staleness.setter
+    def staleness(self, value):
+        """Read staleness option setter.
+
+        Args:
+            value (dict): Staleness type and value.
+        """
+        if self.inside_transaction:
+            raise ValueError(
+                "`staleness` option can't be changed while a transaction is in progress. "
+                "Commit or rollback the current transaction and try again."
+            )
+
+        possible_opts = (
+            "read_timestamp",
+            "min_read_timestamp",
+            "max_staleness",
+            "exact_staleness",
+        )
+        if value is not None and sum([opt in value for opt in possible_opts]) != 1:
+            raise ValueError(
+                "Expected one of the following staleness options: "
+                "read_timestamp, min_read_timestamp, max_staleness, exact_staleness."
+            )
+
+        self._staleness = value
 
     def _session_checkout(self):
         """Get a Cloud Spanner session from the pool.
@@ -284,7 +321,9 @@ class Connection:
         """
         if self.read_only and not self.autocommit:
             if not self._snapshot:
-                self._snapshot = Snapshot(self._session_checkout(), multi_use=True)
+                self._snapshot = Snapshot(
+                    self._session_checkout(), multi_use=True, **self.staleness
+                )
                 self._snapshot.begin()
 
             return self._snapshot

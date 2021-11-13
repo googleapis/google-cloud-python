@@ -14,6 +14,7 @@
 
 """Cloud Spanner DB-API Connection class unit tests."""
 
+import datetime
 import mock
 import unittest
 import warnings
@@ -688,9 +689,6 @@ class TestConnection(unittest.TestCase):
         run_mock.assert_called_with(statement, retried=True)
 
     def test_validate_ok(self):
-        def exit_func(self, exc_type, exc_value, traceback):
-            pass
-
         connection = self._make_connection()
 
         # mock snapshot context manager
@@ -699,7 +697,7 @@ class TestConnection(unittest.TestCase):
 
         snapshot_ctx = mock.Mock()
         snapshot_ctx.__enter__ = mock.Mock(return_value=snapshot_obj)
-        snapshot_ctx.__exit__ = exit_func
+        snapshot_ctx.__exit__ = exit_ctx_func
         snapshot_method = mock.Mock(return_value=snapshot_ctx)
 
         connection.database.snapshot = snapshot_method
@@ -710,9 +708,6 @@ class TestConnection(unittest.TestCase):
     def test_validate_fail(self):
         from google.cloud.spanner_dbapi.exceptions import OperationalError
 
-        def exit_func(self, exc_type, exc_value, traceback):
-            pass
-
         connection = self._make_connection()
 
         # mock snapshot context manager
@@ -721,7 +716,7 @@ class TestConnection(unittest.TestCase):
 
         snapshot_ctx = mock.Mock()
         snapshot_ctx.__enter__ = mock.Mock(return_value=snapshot_obj)
-        snapshot_ctx.__exit__ = exit_func
+        snapshot_ctx.__exit__ = exit_ctx_func
         snapshot_method = mock.Mock(return_value=snapshot_ctx)
 
         connection.database.snapshot = snapshot_method
@@ -734,9 +729,6 @@ class TestConnection(unittest.TestCase):
     def test_validate_error(self):
         from google.cloud.exceptions import NotFound
 
-        def exit_func(self, exc_type, exc_value, traceback):
-            pass
-
         connection = self._make_connection()
 
         # mock snapshot context manager
@@ -745,7 +737,7 @@ class TestConnection(unittest.TestCase):
 
         snapshot_ctx = mock.Mock()
         snapshot_ctx.__enter__ = mock.Mock(return_value=snapshot_obj)
-        snapshot_ctx.__exit__ = exit_func
+        snapshot_ctx.__exit__ = exit_ctx_func
         snapshot_method = mock.Mock(return_value=snapshot_ctx)
 
         connection.database.snapshot = snapshot_method
@@ -763,3 +755,117 @@ class TestConnection(unittest.TestCase):
 
         with self.assertRaises(InterfaceError):
             connection.validate()
+
+    def test_staleness_invalid_value(self):
+        """Check that `staleness` property accepts only correct values."""
+        connection = self._make_connection()
+
+        # incorrect staleness type
+        with self.assertRaises(ValueError):
+            connection.staleness = {"something": 4}
+
+        # no expected staleness types
+        with self.assertRaises(ValueError):
+            connection.staleness = {}
+
+    def test_staleness_inside_transaction(self):
+        """
+        Check that it's impossible to change the `staleness`
+        option if a transaction is in progress.
+        """
+        connection = self._make_connection()
+        connection._transaction = mock.Mock(committed=False, rolled_back=False)
+
+        with self.assertRaises(ValueError):
+            connection.staleness = {"read_timestamp": datetime.datetime(2021, 9, 21)}
+
+    def test_staleness_multi_use(self):
+        """
+        Check that `staleness` option is correctly
+        sent to the `Snapshot()` constructor.
+
+        READ_ONLY, NOT AUTOCOMMIT
+        """
+        timestamp = datetime.datetime(2021, 9, 20)
+
+        connection = self._make_connection()
+        connection._session = "session"
+        connection.read_only = True
+        connection.staleness = {"read_timestamp": timestamp}
+
+        with mock.patch(
+            "google.cloud.spanner_dbapi.connection.Snapshot"
+        ) as snapshot_mock:
+            connection.snapshot_checkout()
+
+        snapshot_mock.assert_called_with(
+            "session", multi_use=True, read_timestamp=timestamp
+        )
+
+    def test_staleness_single_use_autocommit(self):
+        """
+        Check that `staleness` option is correctly
+        sent to the snapshot context manager.
+
+        NOT READ_ONLY, AUTOCOMMIT
+        """
+        timestamp = datetime.datetime(2021, 9, 20)
+
+        connection = self._make_connection()
+        connection._session_checkout = mock.MagicMock(autospec=True)
+
+        connection.autocommit = True
+        connection.staleness = {"read_timestamp": timestamp}
+
+        # mock snapshot context manager
+        snapshot_obj = mock.Mock()
+        snapshot_obj.execute_sql = mock.Mock(return_value=[1])
+
+        snapshot_ctx = mock.Mock()
+        snapshot_ctx.__enter__ = mock.Mock(return_value=snapshot_obj)
+        snapshot_ctx.__exit__ = exit_ctx_func
+        snapshot_method = mock.Mock(return_value=snapshot_ctx)
+
+        connection.database.snapshot = snapshot_method
+
+        cursor = connection.cursor()
+        cursor.execute("SELECT 1")
+
+        connection.database.snapshot.assert_called_with(read_timestamp=timestamp)
+
+    def test_staleness_single_use_readonly_autocommit(self):
+        """
+        Check that `staleness` option is correctly sent to the
+        snapshot context manager while in `autocommit` mode.
+
+        READ_ONLY, AUTOCOMMIT
+        """
+        timestamp = datetime.datetime(2021, 9, 20)
+
+        connection = self._make_connection()
+        connection.autocommit = True
+        connection.read_only = True
+        connection._session_checkout = mock.MagicMock(autospec=True)
+
+        connection.staleness = {"read_timestamp": timestamp}
+
+        # mock snapshot context manager
+        snapshot_obj = mock.Mock()
+        snapshot_obj.execute_sql = mock.Mock(return_value=[1])
+
+        snapshot_ctx = mock.Mock()
+        snapshot_ctx.__enter__ = mock.Mock(return_value=snapshot_obj)
+        snapshot_ctx.__exit__ = exit_ctx_func
+        snapshot_method = mock.Mock(return_value=snapshot_ctx)
+
+        connection.database.snapshot = snapshot_method
+
+        cursor = connection.cursor()
+        cursor.execute("SELECT 1")
+
+        connection.database.snapshot.assert_called_with(read_timestamp=timestamp)
+
+
+def exit_ctx_func(self, exc_type, exc_value, traceback):
+    """Context __exit__ method mock."""
+    pass
