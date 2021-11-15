@@ -2,6 +2,7 @@ from docfx_yaml.extension import extract_keyword
 from docfx_yaml.extension import indent_code_left
 from docfx_yaml.extension import convert_cross_references
 from docfx_yaml.extension import search_cross_references
+from docfx_yaml.extension import format_code
 
 import unittest
 from parameterized import parameterized
@@ -157,6 +158,16 @@ for i in range(10):
             yaml_post = load(want_file, Loader=Loader)
 
         self.assertEqual(yaml_pre, yaml_post)
+
+
+    def test_format_code(self):
+        # Test to ensure black formats strings properly.
+        code_want = 'batch_predict(\n    *,\n    gcs_source: Optional[Union[str, Sequence[str]]] = None,\n    instances_format: str = "jsonl",\n    gcs_destination_prefix: Optional[str] = None,\n    predictions_format: str = "jsonl",\n    model_parameters: Optional[Dict] = None,\n    machine_type: Optional[str] = None,\n    accelerator_type: Optional[str] = None,\n    explanation_parameters: Optional[\n        google.cloud.aiplatform_v1.types.explanation.ExplanationParameters\n    ] = None,\n    labels: Optional[Dict[str, str]] = None,\n    sync: bool = True,\n)'
+
+        code = 'batch_predict(*, gcs_source: Optional[Union[str, Sequence[str]]] = None, instances_format: str = "jsonl", gcs_destination_prefix: Optional[str] = None, predictions_format: str = "jsonl", model_parameters: Optional[Dict] = None, machine_type: Optional[str] = None, accelerator_type: Optional[str] = None, explanation_parameters: Optional[google.cloud.aiplatform_v1.types.explanation.ExplanationParameters] = None, labels: Optional[Dict[str, str]] = None, sync: bool = True,)'
+
+        code_got = format_code(code)
+        self.assertEqual(code_want, code_got)
 
 if __name__ == '__main__':
     unittest.main()

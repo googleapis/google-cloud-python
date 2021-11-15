@@ -23,6 +23,7 @@ import inspect
 import re
 import copy
 import shutil
+import black
 from pathlib import Path
 from functools import partial
 from itertools import zip_longest
@@ -712,11 +713,12 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
                     if arg in type_map:
                         arg_map['var_type'] = type_map[arg]
                         args.append(arg_map)
+
             if argspec.varargs:
                 args.append({'id': argspec.varargs})
             if argspec.varkw:
                 args.append({'id': argspec.varkw})
-            # Try to add default values. Currently does not work if there is * argument present.
+
             if argspec.defaults:
                 # Attempt to add default values to arguments.
                 try:
@@ -959,10 +961,19 @@ def process_docstring(app, _type, name, obj, options, lines):
     app.env.docfx_info_uid_types[datam['uid']] = _type
 
 
+# Uses black.format_str() to reformat code as if running black/linter
+# for better presnetation.
+def format_code(code):
+    # Signature code comes in raw text without formatting, to run black it
+    # requires the code to look like actual function declaration in code.
+    # Returns the original formatted code without the added bits.
+    return black.format_str("def " + code + ": pass", mode=black.FileMode())[4:-11]
+
+
 def process_signature(app, _type, name, obj, options, signature, return_annotation):
     if signature:
         short_name = name.split('.')[-1]
-        signature = short_name + signature
+        signature = format_code(short_name + signature)
         app.env.docfx_signature_funcs_methods[name] = signature
 
 
