@@ -28,7 +28,7 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.datastore_admin_v1.types import datastore_admin
 from google.cloud.datastore_admin_v1.types import index
-from google.longrunning import operations_pb2  # type: ignore
+from google.longrunning import operations_pb2
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

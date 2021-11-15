@@ -17,7 +17,7 @@
 from google.rpc import status_pb2  # type: ignore
 
 from google.cloud import _http as connection_module
-from google.cloud import exceptions  # type: ignore
+from google.cloud import exceptions
 from google.cloud.datastore_v1.types import datastore as _datastore_pb2
 
 

@@ -77,7 +77,9 @@ def blacken(session):
 def mypy(session):
     """Verify type hints are mypy compatible."""
     session.install("-e", ".")
-    session.install("mypy", "types-setuptools", "types-mock", "types-requests")
+    session.install(
+        "mypy", "types-setuptools", "types-mock", "types-protobuf", "types-requests"
+    )
     session.run("mypy", "google/", "tests/")
 
 

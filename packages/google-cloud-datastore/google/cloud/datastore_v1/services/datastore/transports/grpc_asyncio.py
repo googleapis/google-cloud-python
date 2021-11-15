@@ -21,8 +21,8 @@ from google.api_core import grpc_helpers_async
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
+import grpc
+from grpc.experimental import aio
 
 from google.cloud.datastore_v1.types import datastore
 from .base import DatastoreTransport, DEFAULT_CLIENT_INFO

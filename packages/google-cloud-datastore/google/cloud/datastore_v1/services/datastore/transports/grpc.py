@@ -22,7 +22,7 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-import grpc  # type: ignore
+import grpc
 
 from google.cloud.datastore_v1.types import datastore
 from .base import DatastoreTransport, DEFAULT_CLIENT_INFO

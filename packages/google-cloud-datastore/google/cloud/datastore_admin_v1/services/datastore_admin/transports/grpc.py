@@ -23,11 +23,11 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-import grpc  # type: ignore
+import grpc
 
 from google.cloud.datastore_admin_v1.types import datastore_admin
 from google.cloud.datastore_admin_v1.types import index
-from google.longrunning import operations_pb2  # type: ignore
+from google.longrunning import operations_pb2
 from .base import DatastoreAdminTransport, DEFAULT_CLIENT_INFO
 
 

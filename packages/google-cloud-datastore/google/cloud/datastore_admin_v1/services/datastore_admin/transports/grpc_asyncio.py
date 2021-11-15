@@ -22,12 +22,12 @@ from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
+import grpc
+from grpc.experimental import aio
 
 from google.cloud.datastore_admin_v1.types import datastore_admin
 from google.cloud.datastore_admin_v1.types import index
-from google.longrunning import operations_pb2  # type: ignore
+from google.longrunning import operations_pb2
 from .base import DatastoreAdminTransport, DEFAULT_CLIENT_INFO
 from .grpc import DatastoreAdminGrpcTransport
 
