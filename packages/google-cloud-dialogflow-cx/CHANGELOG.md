@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.6.0...v1.7.0) (2021-11-12)
+
+
+### Features
+
+* allow setting custom CA for generic webhooks ([#207](https://www.github.com/googleapis/python-dialogflow-cx/issues/207)) ([441d66b](https://www.github.com/googleapis/python-dialogflow-cx/commit/441d66b3864c34cf37570b6c58ccf097eb20e919))
+
+
+### Documentation
+
+* **samples:** added comment to webhook sample ([#211](https://www.github.com/googleapis/python-dialogflow-cx/issues/211)) ([4d36e31](https://www.github.com/googleapis/python-dialogflow-cx/commit/4d36e31f20e38755dd5d4a7a92bb8c48722cb11e))
+
 ## [1.6.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.5.0...v1.6.0) (2021-11-05)
 
 
