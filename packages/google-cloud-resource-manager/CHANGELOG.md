@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+### [1.3.3](https://www.github.com/googleapis/python-resource-manager/compare/v1.3.2...v1.3.3) (2021-11-13)
+
+
+### Documentation
+
+* fix docstring formatting ([#140](https://www.github.com/googleapis/python-resource-manager/issues/140)) ([57bf037](https://www.github.com/googleapis/python-resource-manager/commit/57bf037175f6015b24d9b45ffb74e13dc0d37872))
+
 ### [1.3.2](https://www.github.com/googleapis/python-resource-manager/compare/v1.3.1...v1.3.2) (2021-11-05)
 
 
