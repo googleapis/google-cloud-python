@@ -3,6 +3,7 @@ from docfx_yaml.extension import disambiguate_toc_name
 from docfx_yaml.extension import _resolve_reference_in_module_summary
 from docfx_yaml.extension import REF_PATTERN
 from docfx_yaml.extension import REF_PATTERN_LAST
+from docfx_yaml.extension import REF_PATTERN_BRACKETS
 from docfx_yaml.extension import _extract_docstring_info
 from docfx_yaml.extension import find_package_group
 from docfx_yaml.extension import pretty_package_name
@@ -234,7 +235,38 @@ Args:
             }
         ]
     }
-    
+
+
+    # Test for resolving square bracketed references.
+    def test_reference_square_brackets(self):
+        xrefs_want = [
+            'google.cloud.kms.v1.KeyRing.name',
+            'google.cloud.kms.v1.KeyRing',
+            'google.cloud.kms.v1.ImportJob',
+        ]
+        summary_want = """Required.
+
+The <xref uid="google.cloud.kms.v1.KeyRing.name">name</xref> of the <xref uid="google.cloud.kms.v1.KeyRing">KeyRing</xref> associated with the <xref uid="google.cloud.kms.v1.ImportJob">ImportJobs</xref>.
+"""
+        summary_want = summary_want.split("\n")
+
+        summary = """Required.
+
+The [name][google.cloud.kms.v1.KeyRing.name] of the [KeyRing][google.cloud.kms.v1.KeyRing] associated with the [ImportJobs][google.cloud.kms.v1.ImportJob].
+"""
+        summary = summary.split("\n")
+
+        summary_got, xrefs_got = _resolve_reference_in_module_summary(REF_PATTERN_BRACKETS, summary)
+
+        self.assertEqual(summary_got, summary_want)
+        self.assertCountEqual(xrefs_got, xrefs_want)
+
+
+    # Check that other patterns throws an exception.
+    def test_reference_check_error(self):
+        with self.assertRaises(ValueError):
+            _resolve_reference_in_module_summary('.*', 'not a valid ref line'.split('\n'))
+
 
     def test_extract_docstring_info_normal_input(self):
 
