@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.2.0...v1.3.0) (2021-11-15)
+
+
+### Features
+
+* format signature using black ([#144](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/144)) ([4462b93](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/4462b93a732c9aedf35ad3321269bd4cea9f26dc))
+
 ## [1.2.0](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.1.2...v1.2.0) (2021-10-05)
 
 
