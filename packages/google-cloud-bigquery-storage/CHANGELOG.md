@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+### [2.10.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.10.0...v2.10.1) (2021-11-11)
+
+
+### Documentation
+
+* show that Python 3.9 and 3.10 are supported in classifiers ([#351](https://www.github.com/googleapis/python-bigquery-storage/issues/351)) ([1faa16f](https://www.github.com/googleapis/python-bigquery-storage/commit/1faa16f4dbeac461ebc816949a3f88f5da97540b))
+
 ## [2.10.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.9.1...v2.10.0) (2021-11-05)
 
 
