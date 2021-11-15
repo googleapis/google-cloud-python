@@ -166,6 +166,81 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
             metadata=client._rpc_metadata,
         )
 
+    @pytest.mark.asyncio
+    async def test_chunkify_w_empty(self):
+        client = _make_client()
+        firestore_api = AsyncMock(spec=["run_query"])
+        firestore_api.run_query.return_value = AsyncIter([])
+        client._firestore_api_internal = firestore_api
+        query = client.collection("asdf")._query()
+
+        chunks = []
+        async for chunk in query._chunkify(10):
+            chunks.append(chunk)
+
+        assert chunks == [[]]
+
+    @pytest.mark.asyncio
+    async def test_chunkify_w_chunksize_lt_limit(self):
+        client = _make_client()
+        firestore_api = AsyncMock(spec=["run_query"])
+        doc_ids = [
+            f"projects/project-project/databases/(default)/documents/asdf/{index}"
+            for index in range(5)
+        ]
+        responses1 = [
+            RunQueryResponse(document=Document(name=doc_id),) for doc_id in doc_ids[:2]
+        ]
+        responses2 = [
+            RunQueryResponse(document=Document(name=doc_id),) for doc_id in doc_ids[2:4]
+        ]
+        responses3 = [
+            RunQueryResponse(document=Document(name=doc_id),) for doc_id in doc_ids[4:]
+        ]
+        firestore_api.run_query.side_effect = [
+            AsyncIter(responses1),
+            AsyncIter(responses2),
+            AsyncIter(responses3),
+        ]
+        client._firestore_api_internal = firestore_api
+        query = client.collection("asdf")._query()
+
+        chunks = []
+        async for chunk in query._chunkify(2):
+            chunks.append(chunk)
+
+        self.assertEqual(len(chunks), 3)
+        expected_ids = [str(index) for index in range(5)]
+        self.assertEqual([snapshot.id for snapshot in chunks[0]], expected_ids[:2])
+        self.assertEqual([snapshot.id for snapshot in chunks[1]], expected_ids[2:4])
+        self.assertEqual([snapshot.id for snapshot in chunks[2]], expected_ids[4:])
+
+    @pytest.mark.asyncio
+    async def test_chunkify_w_chunksize_gt_limit(self):
+        client = _make_client()
+
+        firestore_api = AsyncMock(spec=["run_query"])
+        responses = [
+            RunQueryResponse(
+                document=Document(
+                    name=f"projects/project-project/databases/(default)/documents/asdf/{index}",
+                ),
+            )
+            for index in range(5)
+        ]
+        firestore_api.run_query.return_value = AsyncIter(responses)
+        client._firestore_api_internal = firestore_api
+
+        query = client.collection("asdf")._query()
+
+        chunks = []
+        async for chunk in query.limit(5)._chunkify(10):
+            chunks.append(chunk)
+
+        self.assertEqual(len(chunks), 1)
+        expected_ids = [str(index) for index in range(5)]
+        self.assertEqual([snapshot.id for snapshot in chunks[0]], expected_ids)
+
     async def _stream_helper(self, retry=None, timeout=None):
         from google.cloud.firestore_v1 import _helpers
 
@@ -470,28 +545,6 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
             },
             metadata=client._rpc_metadata,
         )
-
-    @pytest.mark.asyncio
-    async def test_unnecessary_chunkify(self):
-        client = _make_client()
-
-        firestore_api = AsyncMock(spec=["run_query"])
-        firestore_api.run_query.return_value = AsyncIter(
-            [
-                RunQueryResponse(
-                    document=Document(
-                        name=f"projects/project-project/databases/(default)/documents/asdf/{index}",
-                    ),
-                )
-                for index in range(5)
-            ]
-        )
-        client._firestore_api_internal = firestore_api
-
-        query = client.collection("asdf")._query()
-
-        async for chunk in query.limit(5)._chunkify(10):
-            self.assertEqual(len(chunk), 5)
 
 
 class TestCollectionGroup(aiounittest.AsyncTestCase):

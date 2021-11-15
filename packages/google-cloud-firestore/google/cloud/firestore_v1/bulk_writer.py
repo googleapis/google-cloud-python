@@ -252,7 +252,7 @@ class BulkWriter(AsyncBulkWriterMixin):
 
     def __init__(
         self,
-        client: Optional["BaseClient"] = None,
+        client: "BaseClient" = None,
         options: Optional["BulkWriterOptions"] = None,
     ):
         # Because `BulkWriter` instances are all synchronous/blocking on the
@@ -894,6 +894,11 @@ except ImportError:
             self.max_ops_per_second = max_ops_per_second
             self.mode = mode
             self.retry = retry
+
+        def __eq__(self, other):
+            if not isinstance(other, self.__class__):  # pragma: NO COVER
+                return NotImplemented
+            return self.__dict__ == other.__dict__
 
     class BulkWriteFailure:
         def __init__(

@@ -161,6 +161,70 @@ class TestQuery(unittest.TestCase):
             metadata=client._rpc_metadata,
         )
 
+    def test_chunkify_w_empty(self):
+        client = _make_client()
+        firestore_api = mock.Mock(spec=["run_query"])
+        firestore_api.run_query.return_value = iter([])
+        client._firestore_api_internal = firestore_api
+        query = client.collection("asdf")._query()
+
+        chunks = list(query._chunkify(10))
+
+        assert chunks == [[]]
+
+    def test_chunkify_w_chunksize_lt_limit(self):
+        client = _make_client()
+        firestore_api = mock.Mock(spec=["run_query"])
+        doc_ids = [
+            f"projects/project-project/databases/(default)/documents/asdf/{index}"
+            for index in range(5)
+        ]
+        responses1 = [
+            RunQueryResponse(document=Document(name=doc_id),) for doc_id in doc_ids[:2]
+        ]
+        responses2 = [
+            RunQueryResponse(document=Document(name=doc_id),) for doc_id in doc_ids[2:4]
+        ]
+        responses3 = [
+            RunQueryResponse(document=Document(name=doc_id),) for doc_id in doc_ids[4:]
+        ]
+        firestore_api.run_query.side_effect = [
+            iter(responses1),
+            iter(responses2),
+            iter(responses3),
+        ]
+        client._firestore_api_internal = firestore_api
+        query = client.collection("asdf")._query()
+
+        chunks = list(query._chunkify(2))
+
+        self.assertEqual(len(chunks), 3)
+        expected_ids = [str(index) for index in range(5)]
+        self.assertEqual([snapshot.id for snapshot in chunks[0]], expected_ids[:2])
+        self.assertEqual([snapshot.id for snapshot in chunks[1]], expected_ids[2:4])
+        self.assertEqual([snapshot.id for snapshot in chunks[2]], expected_ids[4:])
+
+    def test_chunkify_w_chunksize_gt_limit(self):
+        client = _make_client()
+        firestore_api = mock.Mock(spec=["run_query"])
+        doc_ids = [
+            f"projects/project-project/databases/(default)/documents/asdf/{index}"
+            for index in range(5)
+        ]
+        responses = [
+            RunQueryResponse(document=Document(name=doc_id),) for doc_id in doc_ids
+        ]
+        firestore_api.run_query.return_value = iter(responses)
+        client._firestore_api_internal = firestore_api
+        query = client.collection("asdf")._query()
+
+        chunks = list(query.limit(5)._chunkify(10))
+
+        self.assertEqual(len(chunks), 1)
+        self.assertEqual(
+            [snapshot.id for snapshot in chunks[0]], [str(index) for index in range(5)]
+        )
+
     def _stream_helper(self, retry=None, timeout=None):
         from google.cloud.firestore_v1 import _helpers
 
@@ -580,40 +644,6 @@ class TestQuery(unittest.TestCase):
         query = self._make_one(mock.sentinel.parent)
         query.on_snapshot(None)
         watch.for_query.assert_called_once()
-
-    def test_unnecessary_chunkify(self):
-        client = _make_client()
-
-        firestore_api = mock.Mock(spec=["run_query"])
-        firestore_api.run_query.return_value = iter(
-            [
-                RunQueryResponse(
-                    document=Document(
-                        name=f"projects/project-project/databases/(default)/documents/asdf/{index}",
-                    ),
-                )
-                for index in range(5)
-            ]
-        )
-        client._firestore_api_internal = firestore_api
-
-        query = client.collection("asdf")._query()
-
-        for chunk in query.limit(5)._chunkify(10):
-            self.assertEqual(len(chunk), 5)
-
-    def test__resolve_chunk_size(self):
-        # With a global limit
-        query = _make_client().collection("asdf").limit(5)
-        self.assertEqual(query._resolve_chunk_size(3, 10), 2)
-        self.assertEqual(query._resolve_chunk_size(3, 1), 1)
-        self.assertEqual(query._resolve_chunk_size(3, 2), 2)
-
-        # With no limit
-        query = _make_client().collection("asdf")._query()
-        self.assertEqual(query._resolve_chunk_size(3, 10), 10)
-        self.assertEqual(query._resolve_chunk_size(3, 1), 1)
-        self.assertEqual(query._resolve_chunk_size(3, 2), 2)
 
 
 class TestCollectionGroup(unittest.TestCase):

@@ -154,15 +154,17 @@ class TestBaseQuery(unittest.TestCase):
         other = self._make_one_all_fields()
         self.assertTrue(query == other)
 
-    def _compare_queries(self, query1, query2, attr_name):
+    def _compare_queries(self, query1, query2, *attr_names):
         attrs1 = query1.__dict__.copy()
         attrs2 = query2.__dict__.copy()
 
-        attrs1.pop(attr_name)
-        attrs2.pop(attr_name)
+        self.assertEqual(len(attrs1), len(attrs2))
 
         # The only different should be in ``attr_name``.
-        self.assertEqual(len(attrs1), len(attrs2))
+        for attr_name in attr_names:
+            attrs1.pop(attr_name)
+            attrs2.pop(attr_name)
+
         for key, value in attrs1.items():
             self.assertIs(value, attrs2[key])
 
@@ -332,6 +334,7 @@ class TestBaseQuery(unittest.TestCase):
 
         limit2 = 100
         query2 = query1.limit(limit2)
+        self.assertFalse(query2._limit_to_last)
         self.assertIsNot(query2, query1)
         self.assertIsInstance(query2, self._get_target_class())
         self.assertEqual(query2._limit, limit2)
@@ -344,6 +347,38 @@ class TestBaseQuery(unittest.TestCase):
         self.assertIsInstance(query3, self._get_target_class())
         self.assertEqual(query3._limit, limit3)
         self._compare_queries(query2, query3, "_limit")
+
+    def test_limit_to_last(self):
+        query1 = self._make_one_all_fields(all_descendants=True)
+
+        limit2 = 100
+        query2 = query1.limit_to_last(limit2)
+        self.assertTrue(query2._limit_to_last)
+        self.assertIsNot(query2, query1)
+        self.assertIsInstance(query2, self._get_target_class())
+        self.assertEqual(query2._limit, limit2)
+        self._compare_queries(query1, query2, "_limit", "_limit_to_last")
+
+        # Make sure it overrides.
+        limit3 = 10
+        query3 = query2.limit(limit3)
+        self.assertIsNot(query3, query2)
+        self.assertIsInstance(query3, self._get_target_class())
+        self.assertEqual(query3._limit, limit3)
+        self._compare_queries(query2, query3, "_limit", "_limit_to_last")
+
+    def test__resolve_chunk_size(self):
+        # With a global limit
+        query = _make_client().collection("asdf").limit(5)
+        self.assertEqual(query._resolve_chunk_size(3, 10), 2)
+        self.assertEqual(query._resolve_chunk_size(3, 1), 1)
+        self.assertEqual(query._resolve_chunk_size(3, 2), 2)
+
+        # With no limit
+        query = _make_client().collection("asdf")._query()
+        self.assertEqual(query._resolve_chunk_size(3, 10), 10)
+        self.assertEqual(query._resolve_chunk_size(3, 1), 1)
+        self.assertEqual(query._resolve_chunk_size(3, 2), 2)
 
     def test_offset(self):
         query1 = self._make_one_all_fields(all_descendants=True)

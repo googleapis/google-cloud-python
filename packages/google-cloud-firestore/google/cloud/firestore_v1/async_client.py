@@ -331,6 +331,9 @@ class AsyncClient(BaseClient):
                 The BulkWriter used to delete all matching documents. Supply this
                 if you want to override the default throttling behavior.
         """
+        if bulk_writer is None:
+            bulk_writer = self.bulk_writer()
+
         return await self._recursive_delete(
             reference, bulk_writer=bulk_writer, chunk_size=chunk_size,
         )
@@ -338,15 +341,12 @@ class AsyncClient(BaseClient):
     async def _recursive_delete(
         self,
         reference: Union[AsyncCollectionReference, AsyncDocumentReference],
+        bulk_writer: "BulkWriter",
         *,
-        bulk_writer: Optional["BulkWriter"] = None,  # type: ignore
         chunk_size: Optional[int] = 5000,
         depth: Optional[int] = 0,
     ) -> int:
         """Recursion helper for `recursive_delete."""
-        from google.cloud.firestore_v1.bulk_writer import BulkWriter
-
-        bulk_writer = bulk_writer or BulkWriter()
 
         num_deleted: int = 0
 

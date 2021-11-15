@@ -93,6 +93,8 @@ class _SyncClientMixin:
     """Mixin which helps a `_BaseBulkWriterTests` subclass simulate usage of
     synchronous Clients, Collections, DocumentReferences, etc."""
 
+    _PRESERVES_CLIENT = True
+
     @staticmethod
     def _make_client() -> Client:
         return Client(credentials=_make_credentials(), project="project-id")
@@ -102,12 +104,39 @@ class _AsyncClientMixin:
     """Mixin which helps a `_BaseBulkWriterTests` subclass simulate usage of
     AsyncClients, AsyncCollections, AsyncDocumentReferences, etc."""
 
+    _PRESERVES_CLIENT = False
+
     @staticmethod
     def _make_client() -> AsyncClient:
         return AsyncClient(credentials=_make_credentials(), project="project-id")
 
 
 class _BaseBulkWriterTests:
+    def _ctor_helper(self, **kw):
+        client = self._make_client()
+
+        if not self._PRESERVES_CLIENT:
+            sync_copy = client._sync_copy = object()
+
+        bw = NoSendBulkWriter(client, **kw)
+
+        if self._PRESERVES_CLIENT:
+            assert bw._client is client
+        else:
+            assert bw._client is sync_copy
+
+        if "options" in kw:
+            assert bw._options is kw["options"]
+        else:
+            assert bw._options == BulkWriterOptions()
+
+    def test_ctor_defaults(self):
+        self._ctor_helper()
+
+    def test_ctor_explicit(self):
+        options = BulkWriterOptions(retry=BulkRetry.immediate)
+        self._ctor_helper(options=options)
+
     @staticmethod
     def _get_document_reference(
         client: BaseClient,

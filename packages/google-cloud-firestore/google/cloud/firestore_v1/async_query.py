@@ -130,13 +130,6 @@ class AsyncQuery(BaseQuery):
     async def _chunkify(
         self, chunk_size: int
     ) -> AsyncGenerator[List[DocumentSnapshot], None]:
-        # Catch the edge case where a developer writes the following:
-        # `my_query.limit(500)._chunkify(1000)`, which ultimately nullifies any
-        # need to yield chunks.
-        if self._limit and chunk_size > self._limit:
-            yield await self.get()
-            return
-
         max_to_return: Optional[int] = self._limit
         num_returned: int = 0
         original: AsyncQuery = self._copy()
@@ -150,11 +143,15 @@ class AsyncQuery(BaseQuery):
             # Apply the optionally pruned limit and the cursor, if we are past
             # the first page.
             _q = original.limit(_chunk_size)
+
             if last_document:
                 _q = _q.start_after(last_document)
 
             snapshots = await _q.get()
-            last_document = snapshots[-1]
+
+            if snapshots:
+                last_document = snapshots[-1]
+
             num_returned += len(snapshots)
 
             yield snapshots
