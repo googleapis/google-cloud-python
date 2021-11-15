@@ -15,8 +15,7 @@
 """Pools managing shared Session objects."""
 
 import datetime
-
-from six.moves import queue
+import queue
 
 from google.cloud.exceptions import NotFound
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
@@ -189,7 +188,7 @@ class FixedSizePool(AbstractSessionPool):
         :rtype: :class:`~google.cloud.spanner_v1.session.Session`
         :returns: an existing session from the pool, or a newly-created
                   session.
-        :raises: :exc:`six.moves.queue.Empty` if the queue is empty.
+        :raises: :exc:`queue.Empty` if the queue is empty.
         """
         if timeout is None:
             timeout = self.default_timeout
@@ -210,7 +209,7 @@ class FixedSizePool(AbstractSessionPool):
         :type session: :class:`~google.cloud.spanner_v1.session.Session`
         :param session: the session being returned.
 
-        :raises: :exc:`six.moves.queue.Full` if the queue is full.
+        :raises: :exc:`queue.Full` if the queue is full.
         """
         self._sessions.put_nowait(session)
 
@@ -383,7 +382,7 @@ class PingingPool(AbstractSessionPool):
         :rtype: :class:`~google.cloud.spanner_v1.session.Session`
         :returns: an existing session from the pool, or a newly-created
                   session.
-        :raises: :exc:`six.moves.queue.Empty` if the queue is empty.
+        :raises: :exc:`queue.Empty` if the queue is empty.
         """
         if timeout is None:
             timeout = self.default_timeout
@@ -408,7 +407,7 @@ class PingingPool(AbstractSessionPool):
         :type session: :class:`~google.cloud.spanner_v1.session.Session`
         :param session: the session being returned.
 
-        :raises: :exc:`six.moves.queue.Full` if the queue is full.
+        :raises: :exc:`queue.Full` if the queue is full.
         """
         self._sessions.put_nowait((_NOW() + self._delta, session))
 
@@ -500,7 +499,7 @@ class TransactionPingingPool(PingingPool):
         :type session: :class:`~google.cloud.spanner_v1.session.Session`
         :param session: the session being returned.
 
-        :raises: :exc:`six.moves.queue.Full` if the queue is full.
+        :raises: :exc:`queue.Full` if the queue is full.
         """
         if self._sessions.full():
             raise queue.Full

@@ -146,11 +146,9 @@ class Test_make_value_pb(unittest.TestCase):
         self.assertEqual(value_pb.bool_value, True)
 
     def test_w_int(self):
-        import six
         from google.protobuf.struct_pb2 import Value
 
-        for int_type in six.integer_types:  # include 'long' on Python 2
-            value_pb = self._callFUT(int_type(42))
+        value_pb = self._callFUT(42)
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb.string_value, "42")
 

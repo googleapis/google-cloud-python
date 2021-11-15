@@ -19,8 +19,6 @@ import decimal
 import math
 import json
 
-import six
-
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
 
@@ -140,7 +138,7 @@ def _make_value_pb(value):
         return Value(list_value=_make_list_value_pb(value))
     if isinstance(value, bool):
         return Value(bool_value=value)
-    if isinstance(value, six.integer_types):
+    if isinstance(value, int):
         return Value(string_value=str(value))
     if isinstance(value, float):
         if math.isnan(value):
@@ -157,10 +155,10 @@ def _make_value_pb(value):
         return Value(string_value=_datetime_to_rfc3339(value, ignore_zone=False))
     if isinstance(value, datetime.date):
         return Value(string_value=value.isoformat())
-    if isinstance(value, six.binary_type):
+    if isinstance(value, bytes):
         value = _try_to_coerce_bytes(value)
         return Value(string_value=value)
-    if isinstance(value, six.text_type):
+    if isinstance(value, str):
         return Value(string_value=value)
     if isinstance(value, ListValue):
         return Value(list_value=value)

@@ -191,29 +191,29 @@ class TestFixedSizePool(unittest.TestCase):
         self.assertFalse(pool._sessions.full())
 
     def test_get_empty_default_timeout(self):
-        from six.moves.queue import Empty
+        import queue
 
         pool = self._make_one(size=1)
-        queue = pool._sessions = _Queue()
+        session_queue = pool._sessions = _Queue()
 
-        with self.assertRaises(Empty):
+        with self.assertRaises(queue.Empty):
             pool.get()
 
-        self.assertEqual(queue._got, {"block": True, "timeout": 10})
+        self.assertEqual(session_queue._got, {"block": True, "timeout": 10})
 
     def test_get_empty_explicit_timeout(self):
-        from six.moves.queue import Empty
+        import queue
 
         pool = self._make_one(size=1, default_timeout=0.1)
-        queue = pool._sessions = _Queue()
+        session_queue = pool._sessions = _Queue()
 
-        with self.assertRaises(Empty):
+        with self.assertRaises(queue.Empty):
             pool.get(timeout=1)
 
-        self.assertEqual(queue._got, {"block": True, "timeout": 1})
+        self.assertEqual(session_queue._got, {"block": True, "timeout": 1})
 
     def test_put_full(self):
-        from six.moves.queue import Full
+        import queue
 
         pool = self._make_one(size=4)
         database = _Database("name")
@@ -221,7 +221,7 @@ class TestFixedSizePool(unittest.TestCase):
         database._sessions.extend(SESSIONS)
         pool.bind(database)
 
-        with self.assertRaises(Full):
+        with self.assertRaises(queue.Full):
             pool.put(_Session(database))
 
         self.assertTrue(pool._sessions.full())
@@ -481,29 +481,29 @@ class TestPingingPool(unittest.TestCase):
         self.assertFalse(pool._sessions.full())
 
     def test_get_empty_default_timeout(self):
-        from six.moves.queue import Empty
+        import queue
 
         pool = self._make_one(size=1)
-        queue = pool._sessions = _Queue()
+        session_queue = pool._sessions = _Queue()
 
-        with self.assertRaises(Empty):
+        with self.assertRaises(queue.Empty):
             pool.get()
 
-        self.assertEqual(queue._got, {"block": True, "timeout": 10})
+        self.assertEqual(session_queue._got, {"block": True, "timeout": 10})
 
     def test_get_empty_explicit_timeout(self):
-        from six.moves.queue import Empty
+        import queue
 
         pool = self._make_one(size=1, default_timeout=0.1)
-        queue = pool._sessions = _Queue()
+        session_queue = pool._sessions = _Queue()
 
-        with self.assertRaises(Empty):
+        with self.assertRaises(queue.Empty):
             pool.get(timeout=1)
 
-        self.assertEqual(queue._got, {"block": True, "timeout": 1})
+        self.assertEqual(session_queue._got, {"block": True, "timeout": 1})
 
     def test_put_full(self):
-        from six.moves.queue import Full
+        import queue
 
         pool = self._make_one(size=4)
         database = _Database("name")
@@ -511,7 +511,7 @@ class TestPingingPool(unittest.TestCase):
         database._sessions.extend(SESSIONS)
         pool.bind(database)
 
-        with self.assertRaises(Full):
+        with self.assertRaises(queue.Full):
             pool.put(_Session(database))
 
         self.assertTrue(pool._sessions.full())
@@ -522,7 +522,7 @@ class TestPingingPool(unittest.TestCase):
         from google.cloud.spanner_v1 import pool as MUT
 
         pool = self._make_one(size=1)
-        queue = pool._sessions = _Queue()
+        session_queue = pool._sessions = _Queue()
 
         now = datetime.datetime.utcnow()
         database = _Database("name")
@@ -531,8 +531,8 @@ class TestPingingPool(unittest.TestCase):
         with _Monkey(MUT, _NOW=lambda: now):
             pool.put(session)
 
-        self.assertEqual(len(queue._items), 1)
-        ping_after, queued = queue._items[0]
+        self.assertEqual(len(session_queue._items), 1)
+        ping_after, queued = session_queue._items[0]
         self.assertEqual(ping_after, now + datetime.timedelta(seconds=3000))
         self.assertIs(queued, session)
 
@@ -690,7 +690,7 @@ class TestTransactionPingingPool(unittest.TestCase):
         self.assertTrue(pool._pending_sessions.empty())
 
     def test_put_full(self):
-        from six.moves.queue import Full
+        import queue
 
         pool = self._make_one(size=4)
         database = _Database("name")
@@ -698,14 +698,14 @@ class TestTransactionPingingPool(unittest.TestCase):
         database._sessions.extend(SESSIONS)
         pool.bind(database)
 
-        with self.assertRaises(Full):
+        with self.assertRaises(queue.Full):
             pool.put(_Session(database))
 
         self.assertTrue(pool._sessions.full())
 
     def test_put_non_full_w_active_txn(self):
         pool = self._make_one(size=1)
-        queue = pool._sessions = _Queue()
+        session_queue = pool._sessions = _Queue()
         pending = pool._pending_sessions = _Queue()
         database = _Database("name")
         session = _Session(database)
@@ -713,8 +713,8 @@ class TestTransactionPingingPool(unittest.TestCase):
 
         pool.put(session)
 
-        self.assertEqual(len(queue._items), 1)
-        _, queued = queue._items[0]
+        self.assertEqual(len(session_queue._items), 1)
+        _, queued = session_queue._items[0]
         self.assertIs(queued, session)
 
         self.assertEqual(len(pending._items), 0)
@@ -722,7 +722,7 @@ class TestTransactionPingingPool(unittest.TestCase):
 
     def test_put_non_full_w_committed_txn(self):
         pool = self._make_one(size=1)
-        queue = pool._sessions = _Queue()
+        session_queue = pool._sessions = _Queue()
         pending = pool._pending_sessions = _Queue()
         database = _Database("name")
         session = _Session(database)
@@ -731,7 +731,7 @@ class TestTransactionPingingPool(unittest.TestCase):
 
         pool.put(session)
 
-        self.assertEqual(len(queue._items), 0)
+        self.assertEqual(len(session_queue._items), 0)
 
         self.assertEqual(len(pending._items), 1)
         self.assertIs(pending._items[0], session)
@@ -740,14 +740,14 @@ class TestTransactionPingingPool(unittest.TestCase):
 
     def test_put_non_full(self):
         pool = self._make_one(size=1)
-        queue = pool._sessions = _Queue()
+        session_queue = pool._sessions = _Queue()
         pending = pool._pending_sessions = _Queue()
         database = _Database("name")
         session = _Session(database)
 
         pool.put(session)
 
-        self.assertEqual(len(queue._items), 0)
+        self.assertEqual(len(session_queue._items), 0)
         self.assertEqual(len(pending._items), 1)
         self.assertIs(pending._items[0], session)
 
@@ -924,13 +924,13 @@ class _Queue(object):
         return len(self._items) >= self._size
 
     def get(self, **kwargs):
-        from six.moves.queue import Empty
+        import queue
 
         self._got = kwargs
         try:
             return self._items.pop()
         except IndexError:
-            raise Empty()
+            raise queue.Empty()
 
     def put(self, item, **kwargs):
         self._put = kwargs

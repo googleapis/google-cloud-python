@@ -27,7 +27,6 @@ from google.api_core.retry import if_exception_type
 from google.cloud.exceptions import NotFound
 from google.api_core.exceptions import Aborted
 from google.api_core import gapic_v1
-import six
 
 from google.cloud.spanner_admin_database_v1 import CreateDatabaseRequest
 from google.cloud.spanner_admin_database_v1 import Database as DatabasePB
@@ -1219,7 +1218,7 @@ def _check_ddl_statements(value):
         if elements in ``value`` are not strings, or if ``value`` contains
         a ``CREATE DATABASE`` statement.
     """
-    if not all(isinstance(line, six.string_types) for line in value):
+    if not all(isinstance(line, str) for line in value):
         raise ValueError("Pass a list of strings")
 
     if any("create database" in line.lower() for line in value):
