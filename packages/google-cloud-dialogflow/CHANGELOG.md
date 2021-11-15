@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.10.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.9.1...v2.10.0) (2021-11-12)
+
+
+### Features
+
+* add context manager support in client ([#416](https://www.github.com/googleapis/python-dialogflow/issues/416)) ([317187c](https://www.github.com/googleapis/python-dialogflow/commit/317187cbaacc6889d6fff5d7ea483fe1bc2cd9ee))
+* add document metadata filter in article suggestion ([#437](https://www.github.com/googleapis/python-dialogflow/issues/437)) ([56a6e11](https://www.github.com/googleapis/python-dialogflow/commit/56a6e11622f73c6d302a5f43142ceb289b334fd1))
+* add smart reply model in human agent assistant ([56a6e11](https://www.github.com/googleapis/python-dialogflow/commit/56a6e11622f73c6d302a5f43142ceb289b334fd1))
+* add support for python 3.10 ([#422](https://www.github.com/googleapis/python-dialogflow/issues/422)) ([652e2e8](https://www.github.com/googleapis/python-dialogflow/commit/652e2e8d860f369b62e7866d6cf220204740ade8))
+* **v2:** added support to configure security settings, language code and time zone on conversation profile ([#431](https://www.github.com/googleapis/python-dialogflow/issues/431)) ([6296673](https://www.github.com/googleapis/python-dialogflow/commit/629667367d7098cfb62bae1b6e48cc11a72b9fbc))
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([fd06e9f](https://www.github.com/googleapis/python-dialogflow/commit/fd06e9fe8626ac3d86175518c52ff14efebc0f7b))
+* **deps:** require google-api-core >= 1.28.0 ([fd06e9f](https://www.github.com/googleapis/python-dialogflow/commit/fd06e9fe8626ac3d86175518c52ff14efebc0f7b))
+
+
+### Documentation
+
+* clarified meaning of the legacy editions ([#426](https://www.github.com/googleapis/python-dialogflow/issues/426)) ([d7a7544](https://www.github.com/googleapis/python-dialogflow/commit/d7a7544ce69cb357d7cad13e9a44afe26c6d3cf5))
+* clarified semantic of the streaming APIs ([d7a7544](https://www.github.com/googleapis/python-dialogflow/commit/d7a7544ce69cb357d7cad13e9a44afe26c6d3cf5))
+* list oneofs in docstring ([fd06e9f](https://www.github.com/googleapis/python-dialogflow/commit/fd06e9fe8626ac3d86175518c52ff14efebc0f7b))
+* **samples:** Added comments ([#425](https://www.github.com/googleapis/python-dialogflow/issues/425)) ([f5d40dc](https://www.github.com/googleapis/python-dialogflow/commit/f5d40dc9b4bb57b8830dcd6541a2a1189a6c9780))
+* **v2beta1:** clarified meaning of the legacy editions ([fd06e9f](https://www.github.com/googleapis/python-dialogflow/commit/fd06e9fe8626ac3d86175518c52ff14efebc0f7b))
+* **v2beta1:** clarified semantic of the streaming APIs ([fd06e9f](https://www.github.com/googleapis/python-dialogflow/commit/fd06e9fe8626ac3d86175518c52ff14efebc0f7b))
+* **v2beta1:** recommend AnalyzeContent for future users ([#420](https://www.github.com/googleapis/python-dialogflow/issues/420)) ([1afdab3](https://www.github.com/googleapis/python-dialogflow/commit/1afdab3b50c98cc082b150ff408d0f07f11f9cf3))
+* **v2:** recommend AnalyzeContent for future users ([#421](https://www.github.com/googleapis/python-dialogflow/issues/421)) ([c6940a9](https://www.github.com/googleapis/python-dialogflow/commit/c6940a9f974af95037616bd1affb34d8db4405c9))
+
 ### [2.9.1](https://www.github.com/googleapis/python-dialogflow/compare/v2.9.0...v2.9.1) (2021-10-04)
 
 
