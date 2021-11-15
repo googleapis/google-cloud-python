@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.6.3](https://www.github.com/googleapis/python-channel/compare/v1.6.2...v1.6.3) (2021-11-13)
+
+
+### Documentation
+
+* clarify entitlement parameter `assigned_units` ([#122](https://www.github.com/googleapis/python-channel/issues/122)) ([7bb783e](https://www.github.com/googleapis/python-channel/commit/7bb783ef1ba20506f35fed649a079a7b153eddb4))
+
 ### [1.6.2](https://www.github.com/googleapis/python-channel/compare/v1.6.1...v1.6.2) (2021-11-04)
 
 
