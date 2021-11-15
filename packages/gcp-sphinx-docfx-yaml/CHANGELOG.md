@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.3.0...v1.3.1) (2021-11-15)
+
+
+### Bug Fixes
+
+* resolve square bracketed references ([#146](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/146)) ([fa049ac](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/fa049ace9d14e1f9993313983ad3426ff041672d))
+
 ## [1.3.0](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.2.0...v1.3.0) (2021-11-15)
 
 
