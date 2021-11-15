@@ -26,13 +26,13 @@ priority.
 
 GA libraries have development status classifier ``Development Status :: 5 - Production/Stable``.
 
-.. note::
+.. note:: 
 
     Sub-components of GA libraries explicitly marked as beta in the
     import path (e.g. ``google.cloud.language_v1beta2``) should be considered
     to be beta.
 
-Beta Support
+Beta Support 
 ------------
 
 **Beta** indicates that the client library for a particular service is
