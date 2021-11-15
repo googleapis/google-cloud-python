@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.8.0](https://www.github.com/googleapis/python-texttospeech/compare/v2.7.1...v2.8.0) (2021-11-13)
+
+
+### Features
+
+* **v1beta1:** add CustomVoiceParams ([#215](https://www.github.com/googleapis/python-texttospeech/issues/215)) ([6a18d0f](https://www.github.com/googleapis/python-texttospeech/commit/6a18d0f097e992bd4d90eaf5032ce98aa4af004a))
+
+
+### Documentation
+
+* fix docstring formatting ([#218](https://www.github.com/googleapis/python-texttospeech/issues/218)) ([2c57f95](https://www.github.com/googleapis/python-texttospeech/commit/2c57f95a1af747b49dac41628bd43d485a68583e))
+
 ### [2.7.1](https://www.github.com/googleapis/python-texttospeech/compare/v2.7.0...v2.7.1) (2021-11-01)
 
 
