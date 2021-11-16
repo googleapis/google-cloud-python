@@ -10,6 +10,6 @@
     "repo": "googleapis/python-compute",
     "distribution_name": "google-cloud-compute",
     "api_id": "compute.googleapis.com",
-    "codeowner_team": "@googleapis/actools",
+    "codeowner_team": "@googleapis/api-compute",
     "default_version": "v1"
 }
