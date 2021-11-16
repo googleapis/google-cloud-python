@@ -2,7 +2,7 @@
     "name": "policytroubleshooter",
     "name_pretty": "IAM Policy Troubleshooter API",
     "product_documentation": "https://cloud.google.com/iam/docs/troubleshooting-access#rest-api/",
-    "client_documentation": "https://googleapis.dev/python/policytroubleshooter/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/policytroubleshooter/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",

@@ -20,7 +20,7 @@ which policies bind the member to those roles.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-policy-troubleshooter.svg
    :target: https://pypi.org/project/google-cloud-policy-troubleshooter/
 .. _IAM Policy Troubleshooter: https://cloud.google.com/iam/docs/troubleshooting-access#rest-api/
-.. _Client Library Documentation: https://googleapis.dev/python/policytroubleshooter/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/policytroubleshooter/latest
 .. _Product Documentation:  https://cloud.google.com/iam/docs/troubleshooting-access#rest-api/
 
 Quick Start
