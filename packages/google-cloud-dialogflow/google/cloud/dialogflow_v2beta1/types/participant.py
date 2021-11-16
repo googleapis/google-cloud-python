@@ -36,6 +36,7 @@ __protobuf__ = proto.module(
         "OutputAudio",
         "AutomatedAgentReply",
         "SuggestionFeature",
+        "AssistQueryParameters",
         "AnalyzeContentRequest",
         "DtmfParameters",
         "AnalyzeContentResponse",
@@ -109,6 +110,27 @@ class Participant(proto.Message):
             -  Dialogflow only accepts a UTF-8 encoded string, e.g., a
                hex digest of a hash function like SHA-512.
             -  The length of the user id must be <= 256 characters.
+        documents_metadata_filters (Sequence[google.cloud.dialogflow_v2beta1.types.Participant.DocumentsMetadataFiltersEntry]):
+            Optional. Key-value filters on the metadata of documents
+            returned by article suggestion. If specified, article
+            suggestion only returns suggested documents that match all
+            filters in their
+            [Document.metadata][google.cloud.dialogflow.v2beta1.Document.metadata].
+            Multiple values for a metadata key should be concatenated by
+            comma. For example, filters to match all documents that have
+            'US' or 'CA' in their market metadata values and 'agent' in
+            their user metadata values will be
+
+            ::
+
+                documents_metadata_filters {
+                  key: "market"
+                  value: "US,CA"
+                }
+                documents_metadata_filters {
+                  key: "user"
+                  value: "agent"
+                }
     """
 
     class Role(proto.Enum):
@@ -123,6 +145,7 @@ class Participant(proto.Message):
     name = proto.Field(proto.STRING, number=1,)
     role = proto.Field(proto.ENUM, number=2, enum=Role,)
     obfuscated_external_user_id = proto.Field(proto.STRING, number=7,)
+    documents_metadata_filters = proto.MapField(proto.STRING, proto.STRING, number=8,)
 
 
 class Message(proto.Message):
@@ -385,6 +408,35 @@ class SuggestionFeature(proto.Message):
     type_ = proto.Field(proto.ENUM, number=1, enum=Type,)
 
 
+class AssistQueryParameters(proto.Message):
+    r"""Represents the parameters of human assist query.
+
+    Attributes:
+        documents_metadata_filters (Sequence[google.cloud.dialogflow_v2beta1.types.AssistQueryParameters.DocumentsMetadataFiltersEntry]):
+            Key-value filters on the metadata of documents returned by
+            article suggestion. If specified, article suggestion only
+            returns suggested documents that match all filters in their
+            [Document.metadata][google.cloud.dialogflow.v2beta1.Document.metadata].
+            Multiple values for a metadata key should be concatenated by
+            comma. For example, filters to match all documents that have
+            'US' or 'CA' in their market metadata values and 'agent' in
+            their user metadata values will be
+
+            ::
+
+                documents_metadata_filters {
+                  key: "market"
+                  value: "US,CA"
+                }
+                documents_metadata_filters {
+                  key: "user"
+                  value: "agent"
+                }
+    """
+
+    documents_metadata_filters = proto.MapField(proto.STRING, proto.STRING, number=1,)
+
+
 class AnalyzeContentRequest(proto.Message):
     r"""The request message for
     [Participants.AnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.AnalyzeContent].
@@ -419,6 +471,8 @@ class AnalyzeContentRequest(proto.Message):
         query_params (google.cloud.dialogflow_v2beta1.types.QueryParameters):
             Parameters for a Dialogflow virtual-agent
             query.
+        assist_query_params (google.cloud.dialogflow_v2beta1.types.AssistQueryParameters):
+            Parameters for a human assist query.
         message_send_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The send time of the message from
             end user or human agent's perspective. It is
@@ -455,6 +509,9 @@ class AnalyzeContentRequest(proto.Message):
     )
     query_params = proto.Field(
         proto.MESSAGE, number=9, message=session.QueryParameters,
+    )
+    assist_query_params = proto.Field(
+        proto.MESSAGE, number=14, message="AssistQueryParameters",
     )
     message_send_time = proto.Field(
         proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
@@ -756,11 +813,17 @@ class SuggestArticlesRequest(proto.Message):
             [latest_message][google.cloud.dialogflow.v2beta1.SuggestArticlesRequest.latest_message]
             to use as context when compiling the suggestion. By default
             20 and at most 50.
+        assist_query_params (google.cloud.dialogflow_v2beta1.types.AssistQueryParameters):
+            Optional. Parameters for a human assist
+            query.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
     latest_message = proto.Field(proto.STRING, number=2,)
     context_size = proto.Field(proto.INT32, number=3,)
+    assist_query_params = proto.Field(
+        proto.MESSAGE, number=4, message="AssistQueryParameters",
+    )
 
 
 class SuggestArticlesResponse(proto.Message):
@@ -813,11 +876,17 @@ class SuggestFaqAnswersRequest(proto.Message):
             Optional. Max number of messages prior to and including
             [latest_message] to use as context when compiling the
             suggestion. By default 20 and at most 50.
+        assist_query_params (google.cloud.dialogflow_v2beta1.types.AssistQueryParameters):
+            Optional. Parameters for a human assist
+            query.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
     latest_message = proto.Field(proto.STRING, number=2,)
     context_size = proto.Field(proto.INT32, number=3,)
+    assist_query_params = proto.Field(
+        proto.MESSAGE, number=4, message="AssistQueryParameters",
+    )
 
 
 class SuggestFaqAnswersResponse(proto.Message):

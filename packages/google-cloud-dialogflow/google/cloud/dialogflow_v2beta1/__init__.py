@@ -177,6 +177,7 @@ from .types.participant import AnalyzeContentRequest
 from .types.participant import AnalyzeContentResponse
 from .types.participant import AnnotatedMessagePart
 from .types.participant import ArticleAnswer
+from .types.participant import AssistQueryParameters
 from .types.participant import AutomatedAgentReply
 from .types.participant import CompileSuggestionRequest
 from .types.participant import CompileSuggestionResponse
@@ -265,6 +266,7 @@ __all__ = (
     "AnswerRecord",
     "AnswerRecordsClient",
     "ArticleAnswer",
+    "AssistQueryParameters",
     "AudioEncoding",
     "AutomatedAgentConfig",
     "AutomatedAgentReply",
