@@ -2,7 +2,7 @@
     "name": "datastream",
     "name_pretty": "Datastream",
     "product_documentation": "https://cloud.google.com/datastream/",
-    "client_documentation": "https://googleapis.dev/python/datastream/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/datastream/latest",
     "issue_tracker": "",
     "release_level": "alpha",
     "language": "python",
