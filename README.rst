@@ -391,6 +391,9 @@ Libraries
    * - `GKE Connect Gateway API <https://github.com/googleapis/python-gke-connect-gateway>`_
      - |beta|
      - |PyPI-google-cloud-gke-connect-gateway|
+   * - `IDS <https://github.com/googleapis/python-ids>`_
+     - |beta|
+     - |PyPI-google-cloud-ids|
    * - `Life Sciences <https://github.com/googleapis/python-life-sciences>`_
      - |beta|
      - |PyPI-google-cloud-life-sciences|
@@ -424,6 +427,9 @@ Libraries
    * - `Spanner Django <https://github.com/googleapis/python-spanner-django>`_
      - |beta|
      - |PyPI-django-google-spanner|
+   * - `VM Migration <https://github.com/googleapis/python-vmmigration>`_
+     - |beta|
+     - |PyPI-google-cloud-vmmigration|
    * - `Analytics Admin <https://github.com/googleapis/python-analytics-admin>`_
      - |alpha|
      - |PyPI-google-analytics-admin|
@@ -660,6 +666,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-error-reporting
 .. |PyPI-google-cloud-gke-connect-gateway| image:: https://img.shields.io/pypi/v/google-cloud-gke-connect-gateway.svg
      :target: https://pypi.org/project/google-cloud-gke-connect-gateway
+.. |PyPI-google-cloud-ids| image:: https://img.shields.io/pypi/v/google-cloud-ids.svg
+     :target: https://pypi.org/project/google-cloud-ids
 .. |PyPI-google-cloud-life-sciences| image:: https://img.shields.io/pypi/v/google-cloud-life-sciences.svg
      :target: https://pypi.org/project/google-cloud-life-sciences
 .. |PyPI-google-cloud-media-translation| image:: https://img.shields.io/pypi/v/google-cloud-media-translation.svg
@@ -682,6 +690,8 @@ Libraries
      :target: https://pypi.org/project/sqlalchemy-bigquery
 .. |PyPI-django-google-spanner| image:: https://img.shields.io/pypi/v/django-google-spanner.svg
      :target: https://pypi.org/project/django-google-spanner
+.. |PyPI-google-cloud-vmmigration| image:: https://img.shields.io/pypi/v/google-cloud-vmmigration.svg
+     :target: https://pypi.org/project/google-cloud-vmmigration
 .. |PyPI-google-analytics-admin| image:: https://img.shields.io/pypi/v/google-analytics-admin.svg
      :target: https://pypi.org/project/google-analytics-admin
 .. |PyPI-google-area120-tables| image:: https://img.shields.io/pypi/v/google-area120-tables.svg
