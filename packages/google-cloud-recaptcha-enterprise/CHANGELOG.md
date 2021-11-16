@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.4.0...v1.4.1) (2021-11-16)
+
+
+### Documentation
+
+* **samples:** added sample and tests for annotate assessment API ([#155](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/155)) ([353f0ff](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/353f0ffa27119bf3a8a8f6cddecb41d1ca8dbd31))
+
 ## [1.4.0](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.3.1...v1.4.0) (2021-11-03)
 
 
