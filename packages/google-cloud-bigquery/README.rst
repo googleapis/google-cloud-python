@@ -18,7 +18,7 @@ processing power of Google's infrastructure.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery.svg
    :target: https://pypi.org/project/google-cloud-bigquery/
 .. _BigQuery: https://cloud.google.com/bigquery/what-is-bigquery
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquery/latest
+.. _Client Library Documentation: https://googleapis.dev/python/bigquery/latest
 .. _Product Documentation: https://cloud.google.com/bigquery/docs/reference/v2/
 
 Quick Start
