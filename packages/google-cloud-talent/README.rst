@@ -16,7 +16,7 @@ delete job postings, as well as search jobs based on keywords and filters.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-talent.svg
    :target: https://pypi.org/project/google-cloud-talent/
 .. _Cloud Talent Solution API: https://cloud.google.com/jobs
-.. _Client Library Documentation: https://googleapis.dev/python/talent/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/talent/latest
 .. _Product Documentation:  https://cloud.google.com/jobs
 
 Quick Start
