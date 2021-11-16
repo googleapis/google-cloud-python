@@ -17,7 +17,7 @@ Cloud Platform.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-redis.svg
    :target: https://pypi.org/project/google-cloud-redis/
 .. _Google Cloud Memorystore for Redis API: https://cloud.google.com/memorystore/
-.. _Client Library Documentation: https://googleapis.dev/python/redis/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/redis/latest
 .. _Product Documentation:  https://cloud.google.com/memorystore/
 
 Quick Start
