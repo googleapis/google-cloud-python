@@ -2,7 +2,7 @@
     "name": "datacatalog ",
     "name_pretty": "Google Cloud Data Catalog",
     "product_documentation": "https://cloud.google.com/data-catalog",
-    "client_documentation": "https://googleapis.dev/python/datacatalog/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/datacatalog/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",

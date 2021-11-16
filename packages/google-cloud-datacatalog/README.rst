@@ -17,7 +17,7 @@ include: Entries (Data Catalog representation of a cloud resource).
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-datacatalog.svg
    :target: https://pypi.org/project/google-cloud-datacatalog/
 .. _Google Cloud Data Catalog API: https://cloud.google.com/data-catalog
-.. _Client Library Documentation: https://googleapis.dev/python/datacatalog/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datacatalog/latest
 .. _Product Documentation:  https://cloud.google.com/data-catalog
 
 Quick Start
