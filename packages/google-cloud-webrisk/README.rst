@@ -15,7 +15,7 @@ Python Client for Web Risk API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-webrisk.svg
    :target: https://pypi.org/project/google-cloud-webrisk/
 
-.. _Client Library Documentation: https://googleapis.dev/python/webrisk/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/webrisk/latest
 .. _Product Documentation:  https://cloud.google.com/web-risk
 
 Quick Start
