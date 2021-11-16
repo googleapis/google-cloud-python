@@ -21,7 +21,7 @@ monitoring.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-service-management.svg
    :target: https://pypi.org/project/google-cloud-service-management/
 .. _Service Management API: https://cloud.google.com/service-infrastructure/docs/overview/
-.. _Client Library Documentation: https://googleapis.dev/python/servicemanagement/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/servicemanagement/latest
 .. _Product Documentation:  https://cloud.google.com/service-infrastructure/docs/overview/
 
 Quick Start
