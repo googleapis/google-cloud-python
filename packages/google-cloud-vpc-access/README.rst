@@ -18,7 +18,7 @@ and flexible.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vpc-access.svg
    :target: https://pypi.org/project/google-cloud-vpc-access/
 .. _Google Cloud Virtual Private Cloud (VPC): https://cloud.google.com/vpc/
-.. _Client Library Documentation: https://googleapis.dev/python/vpcaccess/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/vpcaccess/latest
 .. _Product Documentation:  https://cloud.google.com/vpc/docs
 
 Quick Start
