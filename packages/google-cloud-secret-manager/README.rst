@@ -16,7 +16,7 @@ Python Client for Secret Manager API
    :target: https://pypi.org/project/google-cloud-secret-manager/
 
 .. _Secret Manager API: https://cloud.google.com/secret-manager
-.. _Client Library Documentation: https://googleapis.dev/python/secretmanager/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/secretmanager/latest
 .. _Product Documentation:  https://cloud.google.com/secret-manager
 
 Quick Start

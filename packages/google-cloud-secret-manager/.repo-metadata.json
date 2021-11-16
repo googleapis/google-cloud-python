@@ -2,7 +2,7 @@
     "name": "secretmanager",
     "name_pretty": "Cloud Secret Manager",
     "product_documentation": "https://cloud.google.com/secret-manager/",
-    "client_documentation": "https://googleapis.dev/python/secretmanager/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/secretmanager/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
