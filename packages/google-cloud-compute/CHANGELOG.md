@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.8.0](https://www.github.com/googleapis/python-compute/compare/v0.7.0...v0.8.0) (2021-11-16)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([de739a1](https://www.github.com/googleapis/python-compute/commit/de739a1b2c94648135bf62bc2aff23c2896a9b2d))
+* update to the latest version of the code generator ([#147](https://www.github.com/googleapis/python-compute/issues/147)) ([de739a1](https://www.github.com/googleapis/python-compute/commit/de739a1b2c94648135bf62bc2aff23c2896a9b2d))
+
+
+### Bug Fixes
+
+* add 'dict' annotation type to 'request' ([de739a1](https://www.github.com/googleapis/python-compute/commit/de739a1b2c94648135bf62bc2aff23c2896a9b2d))
+* **deps:** require google-api-core >=2.2.0 ([de739a1](https://www.github.com/googleapis/python-compute/commit/de739a1b2c94648135bf62bc2aff23c2896a9b2d))
+* **deps:** require proto-plus >=1.19.7 ([de739a1](https://www.github.com/googleapis/python-compute/commit/de739a1b2c94648135bf62bc2aff23c2896a9b2d))
+
+
+### Documentation
+
+* list oneofs in docstring ([de739a1](https://www.github.com/googleapis/python-compute/commit/de739a1b2c94648135bf62bc2aff23c2896a9b2d))
+
 ## [0.7.0](https://www.github.com/googleapis/python-compute/compare/v0.6.0...v0.7.0) (2021-11-09)
 
 
