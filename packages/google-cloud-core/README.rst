@@ -14,7 +14,7 @@ common helpers (e.g. base ``Client`` classes) used by all of the
    :target: https://pypi.org/project/google-cloud-core/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-core.svg
    :target: https://pypi.org/project/google-cloud-core/
-.. _Documentation: https://googleapis.dev/python/google-cloud-core/latest
+.. _Documentation: https://cloud.google.com/python/docs/reference/google-cloud-core/latest
 
 Quick Start
 -----------
