@@ -17,8 +17,8 @@ import os
 import sys
 import time
 
-import google.auth.credentials
-from google.auth.environment_vars import CREDENTIALS as TEST_CREDENTIALS
+import google.auth.credentials  # type: ignore
+from google.auth.environment_vars import CREDENTIALS as TEST_CREDENTIALS  # type: ignore
 
 
 # From shell environ. May be None.

@@ -33,7 +33,8 @@ def _get_package_requirements(package_name: str) -> List[Requirement]:
         List[pkg_resources.Requirement]: A list of package requirements and extras.
     """
     dist = pkg_resources.get_distribution(package_name)
-    requirements = [Requirement(str(r)) for r in dist.requires(extras=dist.extras)]
+    extras = tuple(dist.extras)
+    requirements = [Requirement(str(r)) for r in dist.requires(extras=extras)]
 
     return requirements
 

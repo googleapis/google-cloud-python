@@ -18,9 +18,9 @@ import threading
 try:
     from unittest import mock
 except ImportError:  # pragma: NO PY3 COVER
-    import mock
+    import mock  # type: ignore
 
-import pytest
+import pytest  # type: ignore
 
 from test_utils import orchestrate
 

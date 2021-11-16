@@ -15,7 +15,7 @@
 import datetime
 import re
 
-import pytest
+import pytest  # type: ignore
 
 import test_utils.prefixer
 

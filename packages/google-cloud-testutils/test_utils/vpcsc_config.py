@@ -16,7 +16,7 @@
 
 import os
 
-import pytest
+import pytest  # type: ignore
 
 
 INSIDE_VPCSC_ENVVAR = "GOOGLE_CLOUD_TESTS_IN_VPCSC"

@@ -16,6 +16,7 @@ import datetime
 import random
 import re
 
+from typing import Union
 
 _RESOURCE_DATE_FORMAT = "%Y%m%d%H%M%S"
 _RESOURCE_DATE_LENGTH = 4 + 2 + 2 + 2 + 2 + 2
@@ -61,7 +62,7 @@ class Prefixer(object):
         random_string = hex(random.randrange(0x1000000))[2:]
         return f"{self._prefix}{self._separator}{timestamp}{self._separator}{random_string}"
 
-    def _name_to_date(self, resource_name: str) -> datetime.datetime:
+    def _name_to_date(self, resource_name: str) -> Union[datetime.datetime, None]:
         start_date = len(self._prefix) + len(self._separator)
         date_string = resource_name[start_date : start_date + _RESOURCE_DATE_LENGTH]
         try:

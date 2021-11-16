@@ -27,6 +27,7 @@ nox.options.sessions = [
     "lint",
     "blacken",
     "lint_setup_py",
+    "mypy",
     "unit",
     "check_lower_bounds"
 ]
@@ -72,6 +73,18 @@ def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.install("docutils", "pygments")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
+
+
+@nox.session(python="3.6")
+def mypy(session):
+    """Verify type hints are mypy compatible."""
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-mock",
+        "types-setuptools",
+    )
+    session.run("mypy", "test_utils/", "tests/")
 
 
 @nox.session(python=["3.6", "3.7", "3.8", "3.9", "3.10"])

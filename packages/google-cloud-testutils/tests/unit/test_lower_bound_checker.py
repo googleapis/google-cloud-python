@@ -19,7 +19,7 @@ import tempfile
 from typing import List
 
 from click.testing import CliRunner
-import pytest
+import pytest  # type: ignore
 
 from test_utils.lower_bound_checker import lower_bound_checker
 
@@ -45,7 +45,7 @@ def parse_error_msg(msg: str) -> List[str]:
     reqs = []
 
     if match:
-        reqs = match.groups(1)[0].split(",")
+        reqs = match.groups(1)[0].split(",")  # type: ignore
         reqs = [r.strip().replace("'", "").replace('"', "") for r in reqs]
     
     return reqs
