@@ -18,7 +18,7 @@ variants, to support your global user base.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-speech.svg
    :target: https://pypi.org/project/google-cloud-speech/
 .. _Cloud Speech API: https://cloud.google.com/speech
-.. _Client Library Documentation: https://googleapis.dev/python/speech/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/speech/latest
 .. _Product Documentation:  https://cloud.google.com/speech
 
 Quick Start
