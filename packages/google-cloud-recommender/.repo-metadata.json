@@ -2,7 +2,7 @@
     "name": "recommender",
     "name_pretty": "Cloud Recommender API",
     "product_documentation": "https://cloud.google.com/recommender",
-    "client_documentation": "https://googleapis.dev/python/recommender/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/recommender/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",

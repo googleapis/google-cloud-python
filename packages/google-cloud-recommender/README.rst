@@ -17,7 +17,7 @@ machine learning, and current resource usage.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-recommender.svg
    :target: https://pypi.org/project/google-cloud-recommender/
 .. _Recommender API: https://cloud.google.com/recommender
-.. _Client Library Documentation: https://googleapis.dev/python/recommender/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/recommender/latest
 .. _Product Documentation:  https://cloud.google.com/recommender/docs
 
 Quick Start
